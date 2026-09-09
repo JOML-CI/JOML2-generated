@@ -3891,6 +3891,342 @@ public final class Float4x4OpsKernelsArray {
         return dest;
     }
 
+    public static float[] obliqueZ_no_lh(float[] dest, int destOffset, float[] src, int srcOffset, float planeX, float planeY, float planeZ, float planeW) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _t0 = 2.0f * _self23;
+        float _t15 = Math.fma(planeW, 1.0f - _self22, _self23 * (planeZ + (planeX * ((planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f) - _self02) / _self00 + planeY * ((planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f) - _self12) / _self11)));
+        float _t15_inv = 1.0f / _t15;
+        dest[destOffset + 0] = _self00;
+        dest[destOffset + 1] = _self10;
+        dest[destOffset + 2] = planeX * _t0 * _t15_inv - _self30;
+        dest[destOffset + 3] = _self30;
+        dest[destOffset + 4] = _self01;
+        dest[destOffset + 5] = _self11;
+        dest[destOffset + 6] = planeY * _t0 * _t15_inv - _self31;
+        dest[destOffset + 7] = _self31;
+        dest[destOffset + 8] = _self02;
+        dest[destOffset + 9] = _self12;
+        dest[destOffset + 10] = planeZ * _t0 * _t15_inv - _self32;
+        dest[destOffset + 11] = _self32;
+        dest[destOffset + 12] = _self03;
+        dest[destOffset + 13] = _self13;
+        dest[destOffset + 14] = planeW * _t0 * _t15_inv - _self33;
+        dest[destOffset + 15] = _self33;
+        return dest;
+    }
+
+    public static float[] obliqueZ_no_rh(float[] dest, int destOffset, float[] src, int srcOffset, float planeX, float planeY, float planeZ, float planeW) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _t0 = 2.0f * _self23;
+        float _t15 = Math.fma(planeW, 1.0f + _self22, _self23 * (planeX * (_self02 + (planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f)) / _self00 + planeY * (_self12 + (planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f)) / _self11 - planeZ));
+        float _t15_inv = 1.0f / _t15;
+        dest[destOffset + 0] = _self00;
+        dest[destOffset + 1] = _self10;
+        dest[destOffset + 2] = planeX * _t0 * _t15_inv - _self30;
+        dest[destOffset + 3] = _self30;
+        dest[destOffset + 4] = _self01;
+        dest[destOffset + 5] = _self11;
+        dest[destOffset + 6] = planeY * _t0 * _t15_inv - _self31;
+        dest[destOffset + 7] = _self31;
+        dest[destOffset + 8] = _self02;
+        dest[destOffset + 9] = _self12;
+        dest[destOffset + 10] = planeZ * _t0 * _t15_inv - _self32;
+        dest[destOffset + 11] = _self32;
+        dest[destOffset + 12] = _self03;
+        dest[destOffset + 13] = _self13;
+        dest[destOffset + 14] = planeW * _t0 * _t15_inv - _self33;
+        dest[destOffset + 15] = _self33;
+        return dest;
+    }
+
+    public static float[] obliqueZ_no(float[] dest, int destOffset, float[] src, int srcOffset, float planeX, float planeY, float planeZ, float planeW, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Float4x4OpsKernelsArray.obliqueZ_no_lh(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW); }
+            default -> { return Float4x4OpsKernelsArray.obliqueZ_no_rh(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW); }
+        }
+    }
+
+    public static float[] obliqueZ_zo_lh(float[] dest, int destOffset, float[] src, int srcOffset, float planeX, float planeY, float planeZ, float planeW) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _t14 = Math.fma(planeW, 1.0f - _self22, _self23 * (planeZ + (planeX * ((planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f) - _self02) / _self00 + planeY * ((planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f) - _self12) / _self11)));
+        float _t14_inv = 1.0f / _t14;
+        dest[destOffset + 0] = _self00;
+        dest[destOffset + 1] = _self10;
+        dest[destOffset + 2] = planeX * _self23 * _t14_inv;
+        dest[destOffset + 3] = _self30;
+        dest[destOffset + 4] = _self01;
+        dest[destOffset + 5] = _self11;
+        dest[destOffset + 6] = planeY * _self23 * _t14_inv;
+        dest[destOffset + 7] = _self31;
+        dest[destOffset + 8] = _self02;
+        dest[destOffset + 9] = _self12;
+        dest[destOffset + 10] = planeZ * _self23 * _t14_inv;
+        dest[destOffset + 11] = _self32;
+        dest[destOffset + 12] = _self03;
+        dest[destOffset + 13] = _self13;
+        dest[destOffset + 14] = planeW * _self23 * _t14_inv;
+        dest[destOffset + 15] = _self33;
+        return dest;
+    }
+
+    public static float[] obliqueZ_zo_rh(float[] dest, int destOffset, float[] src, int srcOffset, float planeX, float planeY, float planeZ, float planeW) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _t14 = Math.fma(planeW, 1.0f + _self22, _self23 * (planeX * (_self02 + (planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f)) / _self00 + planeY * (_self12 + (planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f)) / _self11 - planeZ));
+        float _t14_inv = 1.0f / _t14;
+        dest[destOffset + 0] = _self00;
+        dest[destOffset + 1] = _self10;
+        dest[destOffset + 2] = planeX * _self23 * _t14_inv;
+        dest[destOffset + 3] = _self30;
+        dest[destOffset + 4] = _self01;
+        dest[destOffset + 5] = _self11;
+        dest[destOffset + 6] = planeY * _self23 * _t14_inv;
+        dest[destOffset + 7] = _self31;
+        dest[destOffset + 8] = _self02;
+        dest[destOffset + 9] = _self12;
+        dest[destOffset + 10] = planeZ * _self23 * _t14_inv;
+        dest[destOffset + 11] = _self32;
+        dest[destOffset + 12] = _self03;
+        dest[destOffset + 13] = _self13;
+        dest[destOffset + 14] = planeW * _self23 * _t14_inv;
+        dest[destOffset + 15] = _self33;
+        return dest;
+    }
+
+    public static float[] obliqueZ_zo(float[] dest, int destOffset, float[] src, int srcOffset, float planeX, float planeY, float planeZ, float planeW, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Float4x4OpsKernelsArray.obliqueZ_zo_lh(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW); }
+            default -> { return Float4x4OpsKernelsArray.obliqueZ_zo_rh(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW); }
+        }
+    }
+
+    public static float[] obliqueZ_no_lh(float[] dest, int destOffset, float[] src, int srcOffset, float[] plane, int planeOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _planex = plane[planeOffset + 0];
+        float _planey = plane[planeOffset + 1];
+        float _planez = plane[planeOffset + 2];
+        float _planew = plane[planeOffset + 3];
+        float _t0 = 2.0f * _self23;
+        float _t15 = Math.fma(_planew, 1.0f - _self22, _self23 * (_planez + (_planex * ((_planex < 0.0f ? -1.0f : _planex > 0.0f ? 1.0f : 0.0f) - _self02) / _self00 + _planey * ((_planey < 0.0f ? -1.0f : _planey > 0.0f ? 1.0f : 0.0f) - _self12) / _self11)));
+        float _t15_inv = 1.0f / _t15;
+        dest[destOffset + 0] = _self00;
+        dest[destOffset + 1] = _self10;
+        dest[destOffset + 2] = _planex * _t0 * _t15_inv - _self30;
+        dest[destOffset + 3] = _self30;
+        dest[destOffset + 4] = _self01;
+        dest[destOffset + 5] = _self11;
+        dest[destOffset + 6] = _planey * _t0 * _t15_inv - _self31;
+        dest[destOffset + 7] = _self31;
+        dest[destOffset + 8] = _self02;
+        dest[destOffset + 9] = _self12;
+        dest[destOffset + 10] = _planez * _t0 * _t15_inv - _self32;
+        dest[destOffset + 11] = _self32;
+        dest[destOffset + 12] = _self03;
+        dest[destOffset + 13] = _self13;
+        dest[destOffset + 14] = _planew * _t0 * _t15_inv - _self33;
+        dest[destOffset + 15] = _self33;
+        return dest;
+    }
+
+    public static float[] obliqueZ_no_rh(float[] dest, int destOffset, float[] src, int srcOffset, float[] plane, int planeOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _planex = plane[planeOffset + 0];
+        float _planey = plane[planeOffset + 1];
+        float _planez = plane[planeOffset + 2];
+        float _planew = plane[planeOffset + 3];
+        float _t0 = 2.0f * _self23;
+        float _t15 = Math.fma(_planew, 1.0f + _self22, _self23 * (_planex * (_self02 + (_planex < 0.0f ? -1.0f : _planex > 0.0f ? 1.0f : 0.0f)) / _self00 + _planey * (_self12 + (_planey < 0.0f ? -1.0f : _planey > 0.0f ? 1.0f : 0.0f)) / _self11 - _planez));
+        float _t15_inv = 1.0f / _t15;
+        dest[destOffset + 0] = _self00;
+        dest[destOffset + 1] = _self10;
+        dest[destOffset + 2] = _planex * _t0 * _t15_inv - _self30;
+        dest[destOffset + 3] = _self30;
+        dest[destOffset + 4] = _self01;
+        dest[destOffset + 5] = _self11;
+        dest[destOffset + 6] = _planey * _t0 * _t15_inv - _self31;
+        dest[destOffset + 7] = _self31;
+        dest[destOffset + 8] = _self02;
+        dest[destOffset + 9] = _self12;
+        dest[destOffset + 10] = _planez * _t0 * _t15_inv - _self32;
+        dest[destOffset + 11] = _self32;
+        dest[destOffset + 12] = _self03;
+        dest[destOffset + 13] = _self13;
+        dest[destOffset + 14] = _planew * _t0 * _t15_inv - _self33;
+        dest[destOffset + 15] = _self33;
+        return dest;
+    }
+
+    public static float[] obliqueZ_no(float[] dest, int destOffset, float[] src, int srcOffset, float[] plane, int planeOffset, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Float4x4OpsKernelsArray.obliqueZ_no_lh(dest, destOffset, src, srcOffset, plane, planeOffset); }
+            default -> { return Float4x4OpsKernelsArray.obliqueZ_no_rh(dest, destOffset, src, srcOffset, plane, planeOffset); }
+        }
+    }
+
+    public static float[] obliqueZ_zo_lh(float[] dest, int destOffset, float[] src, int srcOffset, float[] plane, int planeOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _planex = plane[planeOffset + 0];
+        float _planey = plane[planeOffset + 1];
+        float _planez = plane[planeOffset + 2];
+        float _planew = plane[planeOffset + 3];
+        float _t14 = Math.fma(_planew, 1.0f - _self22, _self23 * (_planez + (_planex * ((_planex < 0.0f ? -1.0f : _planex > 0.0f ? 1.0f : 0.0f) - _self02) / _self00 + _planey * ((_planey < 0.0f ? -1.0f : _planey > 0.0f ? 1.0f : 0.0f) - _self12) / _self11)));
+        float _t14_inv = 1.0f / _t14;
+        dest[destOffset + 0] = _self00;
+        dest[destOffset + 1] = _self10;
+        dest[destOffset + 2] = _planex * _self23 * _t14_inv;
+        dest[destOffset + 3] = _self30;
+        dest[destOffset + 4] = _self01;
+        dest[destOffset + 5] = _self11;
+        dest[destOffset + 6] = _planey * _self23 * _t14_inv;
+        dest[destOffset + 7] = _self31;
+        dest[destOffset + 8] = _self02;
+        dest[destOffset + 9] = _self12;
+        dest[destOffset + 10] = _planez * _self23 * _t14_inv;
+        dest[destOffset + 11] = _self32;
+        dest[destOffset + 12] = _self03;
+        dest[destOffset + 13] = _self13;
+        dest[destOffset + 14] = _planew * _self23 * _t14_inv;
+        dest[destOffset + 15] = _self33;
+        return dest;
+    }
+
+    public static float[] obliqueZ_zo_rh(float[] dest, int destOffset, float[] src, int srcOffset, float[] plane, int planeOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _planex = plane[planeOffset + 0];
+        float _planey = plane[planeOffset + 1];
+        float _planez = plane[planeOffset + 2];
+        float _planew = plane[planeOffset + 3];
+        float _t14 = Math.fma(_planew, 1.0f + _self22, _self23 * (_planex * (_self02 + (_planex < 0.0f ? -1.0f : _planex > 0.0f ? 1.0f : 0.0f)) / _self00 + _planey * (_self12 + (_planey < 0.0f ? -1.0f : _planey > 0.0f ? 1.0f : 0.0f)) / _self11 - _planez));
+        float _t14_inv = 1.0f / _t14;
+        dest[destOffset + 0] = _self00;
+        dest[destOffset + 1] = _self10;
+        dest[destOffset + 2] = _planex * _self23 * _t14_inv;
+        dest[destOffset + 3] = _self30;
+        dest[destOffset + 4] = _self01;
+        dest[destOffset + 5] = _self11;
+        dest[destOffset + 6] = _planey * _self23 * _t14_inv;
+        dest[destOffset + 7] = _self31;
+        dest[destOffset + 8] = _self02;
+        dest[destOffset + 9] = _self12;
+        dest[destOffset + 10] = _planez * _self23 * _t14_inv;
+        dest[destOffset + 11] = _self32;
+        dest[destOffset + 12] = _self03;
+        dest[destOffset + 13] = _self13;
+        dest[destOffset + 14] = _planew * _self23 * _t14_inv;
+        dest[destOffset + 15] = _self33;
+        return dest;
+    }
+
+    public static float[] obliqueZ_zo(float[] dest, int destOffset, float[] src, int srcOffset, float[] plane, int planeOffset, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Float4x4OpsKernelsArray.obliqueZ_zo_lh(dest, destOffset, src, srcOffset, plane, planeOffset); }
+            default -> { return Float4x4OpsKernelsArray.obliqueZ_zo_rh(dest, destOffset, src, srcOffset, plane, planeOffset); }
+        }
+    }
+
     public static float[] ortho_no_lh(float[] dest, int destOffset, float[] src, int srcOffset, float left, float right, float bottom, float top, float zNear, float zFar) {
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
@@ -6359,6 +6695,868 @@ public final class Float4x4OpsKernelsArray {
             case LEFT_HANDED -> { return Float4x4OpsKernelsArray.perspectiveOffCenterFov_zo_lh(dest, destOffset, src, srcOffset, angleLeft, angleRight, angleDown, angleUp, near, far); }
             default -> { return Float4x4OpsKernelsArray.perspectiveOffCenterFov_zo_rh(dest, destOffset, src, srcOffset, angleLeft, angleRight, angleDown, angleUp, near, far); }
         }
+    }
+
+    public static float[] project_no(float[] dest, int destOffset, float[] src, int srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _t2 = Math.fma(objX, _self30, Math.fma(objY, _self31, Math.fma(objZ, _self32, _self33)));
+        float _t2_inv = 1.0f / _t2;
+        dest[destOffset + 0] = Math.fma(0.5f, viewportZ * (1.0f + Math.fma(objX, _self00, Math.fma(objY, _self01, Math.fma(objZ, _self02, _self03))) * _t2_inv), viewportX);
+        dest[destOffset + 1] = Math.fma(0.5f, viewportW * (1.0f + Math.fma(objX, _self10, Math.fma(objY, _self11, Math.fma(objZ, _self12, _self13))) * _t2_inv), viewportY);
+        dest[destOffset + 2] = 0.5f * (1.0f + Math.fma(objX, _self20, Math.fma(objY, _self21, Math.fma(objZ, _self22, _self23))) * _t2_inv);
+        return dest;
+    }
+
+    public static float[] project_zo(float[] dest, int destOffset, float[] src, int srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _t2 = Math.fma(objX, _self30, Math.fma(objY, _self31, Math.fma(objZ, _self32, _self33)));
+        float _t2_inv = 1.0f / _t2;
+        dest[destOffset + 0] = Math.fma(0.5f, viewportZ * (1.0f + Math.fma(objX, _self00, Math.fma(objY, _self01, Math.fma(objZ, _self02, _self03))) * _t2_inv), viewportX);
+        dest[destOffset + 1] = Math.fma(0.5f, viewportW * (1.0f + Math.fma(objX, _self10, Math.fma(objY, _self11, Math.fma(objZ, _self12, _self13))) * _t2_inv), viewportY);
+        dest[destOffset + 2] = Math.fma(objX, _self20, Math.fma(objY, _self21, Math.fma(objZ, _self22, _self23))) * _t2_inv;
+        return dest;
+    }
+
+    public static float[] project_no(float[] dest, int destOffset, float[] src, int srcOffset, float[] obj, int objOffset, float[] viewport, int viewportOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _objx = obj[objOffset + 0];
+        float _objy = obj[objOffset + 1];
+        float _objz = obj[objOffset + 2];
+        float _viewportx = viewport[viewportOffset + 0];
+        float _viewporty = viewport[viewportOffset + 1];
+        float _viewportz = viewport[viewportOffset + 2];
+        float _viewportw = viewport[viewportOffset + 3];
+        float _t2 = Math.fma(_objx, _self30, Math.fma(_objy, _self31, Math.fma(_objz, _self32, _self33)));
+        float _t2_inv = 1.0f / _t2;
+        dest[destOffset + 0] = Math.fma(0.5f, _viewportz * (1.0f + Math.fma(_objx, _self00, Math.fma(_objy, _self01, Math.fma(_objz, _self02, _self03))) * _t2_inv), _viewportx);
+        dest[destOffset + 1] = Math.fma(0.5f, _viewportw * (1.0f + Math.fma(_objx, _self10, Math.fma(_objy, _self11, Math.fma(_objz, _self12, _self13))) * _t2_inv), _viewporty);
+        dest[destOffset + 2] = 0.5f * (1.0f + Math.fma(_objx, _self20, Math.fma(_objy, _self21, Math.fma(_objz, _self22, _self23))) * _t2_inv);
+        return dest;
+    }
+
+    public static float[] project_zo(float[] dest, int destOffset, float[] src, int srcOffset, float[] obj, int objOffset, float[] viewport, int viewportOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _objx = obj[objOffset + 0];
+        float _objy = obj[objOffset + 1];
+        float _objz = obj[objOffset + 2];
+        float _viewportx = viewport[viewportOffset + 0];
+        float _viewporty = viewport[viewportOffset + 1];
+        float _viewportz = viewport[viewportOffset + 2];
+        float _viewportw = viewport[viewportOffset + 3];
+        float _t2 = Math.fma(_objx, _self30, Math.fma(_objy, _self31, Math.fma(_objz, _self32, _self33)));
+        float _t2_inv = 1.0f / _t2;
+        dest[destOffset + 0] = Math.fma(0.5f, _viewportz * (1.0f + Math.fma(_objx, _self00, Math.fma(_objy, _self01, Math.fma(_objz, _self02, _self03))) * _t2_inv), _viewportx);
+        dest[destOffset + 1] = Math.fma(0.5f, _viewportw * (1.0f + Math.fma(_objx, _self10, Math.fma(_objy, _self11, Math.fma(_objz, _self12, _self13))) * _t2_inv), _viewporty);
+        dest[destOffset + 2] = Math.fma(_objx, _self20, Math.fma(_objy, _self21, Math.fma(_objz, _self22, _self23))) * _t2_inv;
+        return dest;
+    }
+
+    public static float[] unproject_no(float[] dest, int destOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _t23 = Math.fma(2.0f, winCoordsZ, -1.0f);
+        float _t43 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        float _t44 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        float _t45 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        float _t46 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        float _t47 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        float _t48 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        float _t49 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t50 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        float _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        float _t52 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        float _t53 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        float _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        float _t55 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        float _t56 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        float _t57 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        float _t58 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        float _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        float _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        float _t61 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
+        float _t62 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        float _t84 = Math.fma(_self02, _t52, Math.fma(_self00, _t49, -(_self01 * _t53))) + Math.fma(-Math.fma(_self02, _t54, Math.fma(_self00, _t43, -(_self01 * _t55))), _t23, Math.fma(Math.fma(_self02, _t56, Math.fma(_self00, _t46, -(_self01 * _t57))), _t62, -(Math.fma(_self12, _t56, Math.fma(_self10, _t46, -(_self11 * _t57))) * _t61)));
+        float _t84_inv = 1.0f / _t84;
+        dest[destOffset + 0] = (Math.fma(Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))), _t23, Math.fma(Math.fma(_self13, _t46, Math.fma(_self11, _t47, -(_self12 * _t48))), _t61, -(Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48))) * _t62))) - Math.fma(_self03, _t49, Math.fma(_self01, _t50, -(_self02 * _t51)))) * _t84_inv;
+        dest[destOffset + 1] = (Math.fma(_self03, _t53, Math.fma(_self00, _t50, -(_self02 * _t58))) + Math.fma(-Math.fma(_self03, _t55, Math.fma(_self00, _t44, -(_self02 * _t59))), _t23, Math.fma(Math.fma(_self03, _t57, Math.fma(_self00, _t47, -(_self02 * _t60))), _t62, -(Math.fma(_self13, _t57, Math.fma(_self10, _t47, -(_self12 * _t60))) * _t61)))) * _t84_inv;
+        dest[destOffset + 2] = (Math.fma(Math.fma(_self03, _t54, Math.fma(_self00, _t45, -(_self01 * _t59))), _t23, Math.fma(Math.fma(_self13, _t56, Math.fma(_self10, _t48, -(_self11 * _t60))), _t61, -(Math.fma(_self03, _t56, Math.fma(_self00, _t48, -(_self01 * _t60))) * _t62))) - Math.fma(_self03, _t52, Math.fma(_self00, _t51, -(_self01 * _t58)))) * _t84_inv;
+        return dest;
+    }
+
+    public static float[] unproject_zo(float[] dest, int destOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _t0 = -winCoordsZ;
+        float _t43 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        float _t44 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        float _t45 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        float _t46 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        float _t47 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        float _t48 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        float _t49 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t50 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        float _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        float _t52 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        float _t53 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        float _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        float _t55 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        float _t56 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        float _t57 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        float _t58 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        float _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        float _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        float _t61 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
+        float _t62 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        float _t83 = Math.fma(_self02, _t52, Math.fma(_self00, _t49, -(_self01 * _t53))) + Math.fma(_t0, Math.fma(_self02, _t54, Math.fma(_self00, _t43, -(_self01 * _t55))), Math.fma(Math.fma(_self02, _t56, Math.fma(_self00, _t46, -(_self01 * _t57))), _t62, -(Math.fma(_self12, _t56, Math.fma(_self10, _t46, -(_self11 * _t57))) * _t61)));
+        float _t83_inv = 1.0f / _t83;
+        dest[destOffset + 0] = (Math.fma(winCoordsZ, Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))), Math.fma(Math.fma(_self13, _t46, Math.fma(_self11, _t47, -(_self12 * _t48))), _t61, -(Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48))) * _t62))) - Math.fma(_self03, _t49, Math.fma(_self01, _t50, -(_self02 * _t51)))) * _t83_inv;
+        dest[destOffset + 1] = (Math.fma(_self03, _t53, Math.fma(_self00, _t50, -(_self02 * _t58))) + Math.fma(_t0, Math.fma(_self03, _t55, Math.fma(_self00, _t44, -(_self02 * _t59))), Math.fma(Math.fma(_self03, _t57, Math.fma(_self00, _t47, -(_self02 * _t60))), _t62, -(Math.fma(_self13, _t57, Math.fma(_self10, _t47, -(_self12 * _t60))) * _t61)))) * _t83_inv;
+        dest[destOffset + 2] = (Math.fma(winCoordsZ, Math.fma(_self03, _t54, Math.fma(_self00, _t45, -(_self01 * _t59))), Math.fma(Math.fma(_self13, _t56, Math.fma(_self10, _t48, -(_self11 * _t60))), _t61, -(Math.fma(_self03, _t56, Math.fma(_self00, _t48, -(_self01 * _t60))) * _t62))) - Math.fma(_self03, _t52, Math.fma(_self00, _t51, -(_self01 * _t58)))) * _t83_inv;
+        return dest;
+    }
+
+    public static float[] unproject_no(float[] dest, int destOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _winCoordsx = winCoords[winCoordsOffset + 0];
+        float _winCoordsy = winCoords[winCoordsOffset + 1];
+        float _winCoordsz = winCoords[winCoordsOffset + 2];
+        float _viewportx = viewport[viewportOffset + 0];
+        float _viewporty = viewport[viewportOffset + 1];
+        float _viewportz = viewport[viewportOffset + 2];
+        float _viewportw = viewport[viewportOffset + 3];
+        float _t23 = Math.fma(2.0f, _winCoordsz, -1.0f);
+        float _t43 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        float _t44 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        float _t45 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        float _t46 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        float _t47 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        float _t48 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        float _t49 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t50 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        float _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        float _t52 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        float _t53 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        float _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        float _t55 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        float _t56 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        float _t57 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        float _t58 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        float _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        float _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        float _t61 = 2.0f * (_winCoordsx - _viewportx) / _viewportz - 1.0f;
+        float _t62 = 2.0f * (_winCoordsy - _viewporty) / _viewportw - 1.0f;
+        float _t84 = Math.fma(_self02, _t52, Math.fma(_self00, _t49, -(_self01 * _t53))) + Math.fma(-Math.fma(_self02, _t54, Math.fma(_self00, _t43, -(_self01 * _t55))), _t23, Math.fma(Math.fma(_self02, _t56, Math.fma(_self00, _t46, -(_self01 * _t57))), _t62, -(Math.fma(_self12, _t56, Math.fma(_self10, _t46, -(_self11 * _t57))) * _t61)));
+        float _t84_inv = 1.0f / _t84;
+        dest[destOffset + 0] = (Math.fma(Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))), _t23, Math.fma(Math.fma(_self13, _t46, Math.fma(_self11, _t47, -(_self12 * _t48))), _t61, -(Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48))) * _t62))) - Math.fma(_self03, _t49, Math.fma(_self01, _t50, -(_self02 * _t51)))) * _t84_inv;
+        dest[destOffset + 1] = (Math.fma(_self03, _t53, Math.fma(_self00, _t50, -(_self02 * _t58))) + Math.fma(-Math.fma(_self03, _t55, Math.fma(_self00, _t44, -(_self02 * _t59))), _t23, Math.fma(Math.fma(_self03, _t57, Math.fma(_self00, _t47, -(_self02 * _t60))), _t62, -(Math.fma(_self13, _t57, Math.fma(_self10, _t47, -(_self12 * _t60))) * _t61)))) * _t84_inv;
+        dest[destOffset + 2] = (Math.fma(Math.fma(_self03, _t54, Math.fma(_self00, _t45, -(_self01 * _t59))), _t23, Math.fma(Math.fma(_self13, _t56, Math.fma(_self10, _t48, -(_self11 * _t60))), _t61, -(Math.fma(_self03, _t56, Math.fma(_self00, _t48, -(_self01 * _t60))) * _t62))) - Math.fma(_self03, _t52, Math.fma(_self00, _t51, -(_self01 * _t58)))) * _t84_inv;
+        return dest;
+    }
+
+    public static float[] unproject_zo(float[] dest, int destOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _winCoordsx = winCoords[winCoordsOffset + 0];
+        float _winCoordsy = winCoords[winCoordsOffset + 1];
+        float _winCoordsz = winCoords[winCoordsOffset + 2];
+        float _viewportx = viewport[viewportOffset + 0];
+        float _viewporty = viewport[viewportOffset + 1];
+        float _viewportz = viewport[viewportOffset + 2];
+        float _viewportw = viewport[viewportOffset + 3];
+        float _t0 = -_winCoordsz;
+        float _t43 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        float _t44 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        float _t45 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        float _t46 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        float _t47 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        float _t48 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        float _t49 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t50 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        float _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        float _t52 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        float _t53 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        float _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        float _t55 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        float _t56 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        float _t57 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        float _t58 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        float _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        float _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        float _t61 = 2.0f * (_winCoordsx - _viewportx) / _viewportz - 1.0f;
+        float _t62 = 2.0f * (_winCoordsy - _viewporty) / _viewportw - 1.0f;
+        float _t83 = Math.fma(_self02, _t52, Math.fma(_self00, _t49, -(_self01 * _t53))) + Math.fma(_t0, Math.fma(_self02, _t54, Math.fma(_self00, _t43, -(_self01 * _t55))), Math.fma(Math.fma(_self02, _t56, Math.fma(_self00, _t46, -(_self01 * _t57))), _t62, -(Math.fma(_self12, _t56, Math.fma(_self10, _t46, -(_self11 * _t57))) * _t61)));
+        float _t83_inv = 1.0f / _t83;
+        dest[destOffset + 0] = (Math.fma(_winCoordsz, Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))), Math.fma(Math.fma(_self13, _t46, Math.fma(_self11, _t47, -(_self12 * _t48))), _t61, -(Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48))) * _t62))) - Math.fma(_self03, _t49, Math.fma(_self01, _t50, -(_self02 * _t51)))) * _t83_inv;
+        dest[destOffset + 1] = (Math.fma(_self03, _t53, Math.fma(_self00, _t50, -(_self02 * _t58))) + Math.fma(_t0, Math.fma(_self03, _t55, Math.fma(_self00, _t44, -(_self02 * _t59))), Math.fma(Math.fma(_self03, _t57, Math.fma(_self00, _t47, -(_self02 * _t60))), _t62, -(Math.fma(_self13, _t57, Math.fma(_self10, _t47, -(_self12 * _t60))) * _t61)))) * _t83_inv;
+        dest[destOffset + 2] = (Math.fma(_winCoordsz, Math.fma(_self03, _t54, Math.fma(_self00, _t45, -(_self01 * _t59))), Math.fma(Math.fma(_self13, _t56, Math.fma(_self10, _t48, -(_self11 * _t60))), _t61, -(Math.fma(_self03, _t56, Math.fma(_self00, _t48, -(_self01 * _t60))) * _t62))) - Math.fma(_self03, _t52, Math.fma(_self00, _t51, -(_self01 * _t58)))) * _t83_inv;
+        return dest;
+    }
+
+    public static float[] unprojectInv_no(float[] dest, int destOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _t2 = Math.fma(2.0f, winCoordsZ, -1.0f);
+        float _t8 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
+        float _t9 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        float _t11 = Math.fma(_self30, _t8, Math.fma(_self31, _t9, Math.fma(_self32, _t2, _self33)));
+        float _t11_inv = 1.0f / _t11;
+        dest[destOffset + 0] = Math.fma(_self00, _t8, Math.fma(_self01, _t9, Math.fma(_self02, _t2, _self03))) * _t11_inv;
+        dest[destOffset + 1] = Math.fma(_self10, _t8, Math.fma(_self11, _t9, Math.fma(_self12, _t2, _self13))) * _t11_inv;
+        dest[destOffset + 2] = Math.fma(_self20, _t8, Math.fma(_self21, _t9, Math.fma(_self22, _t2, _self23))) * _t11_inv;
+        return dest;
+    }
+
+    public static float[] unprojectInv_zo(float[] dest, int destOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _t7 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
+        float _t8 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        float _t10 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, Math.fma(_self32, winCoordsZ, _self33)));
+        float _t10_inv = 1.0f / _t10;
+        dest[destOffset + 0] = Math.fma(_self00, _t7, Math.fma(_self01, _t8, Math.fma(_self02, winCoordsZ, _self03))) * _t10_inv;
+        dest[destOffset + 1] = Math.fma(_self10, _t7, Math.fma(_self11, _t8, Math.fma(_self12, winCoordsZ, _self13))) * _t10_inv;
+        dest[destOffset + 2] = Math.fma(_self20, _t7, Math.fma(_self21, _t8, Math.fma(_self22, winCoordsZ, _self23))) * _t10_inv;
+        return dest;
+    }
+
+    public static float[] unprojectInv_no(float[] dest, int destOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _winCoordsx = winCoords[winCoordsOffset + 0];
+        float _winCoordsy = winCoords[winCoordsOffset + 1];
+        float _winCoordsz = winCoords[winCoordsOffset + 2];
+        float _viewportx = viewport[viewportOffset + 0];
+        float _viewporty = viewport[viewportOffset + 1];
+        float _viewportz = viewport[viewportOffset + 2];
+        float _viewportw = viewport[viewportOffset + 3];
+        float _t2 = Math.fma(2.0f, _winCoordsz, -1.0f);
+        float _t8 = 2.0f * (_winCoordsx - _viewportx) / _viewportz - 1.0f;
+        float _t9 = 2.0f * (_winCoordsy - _viewporty) / _viewportw - 1.0f;
+        float _t11 = Math.fma(_self30, _t8, Math.fma(_self31, _t9, Math.fma(_self32, _t2, _self33)));
+        float _t11_inv = 1.0f / _t11;
+        dest[destOffset + 0] = Math.fma(_self00, _t8, Math.fma(_self01, _t9, Math.fma(_self02, _t2, _self03))) * _t11_inv;
+        dest[destOffset + 1] = Math.fma(_self10, _t8, Math.fma(_self11, _t9, Math.fma(_self12, _t2, _self13))) * _t11_inv;
+        dest[destOffset + 2] = Math.fma(_self20, _t8, Math.fma(_self21, _t9, Math.fma(_self22, _t2, _self23))) * _t11_inv;
+        return dest;
+    }
+
+    public static float[] unprojectInv_zo(float[] dest, int destOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _winCoordsx = winCoords[winCoordsOffset + 0];
+        float _winCoordsy = winCoords[winCoordsOffset + 1];
+        float _winCoordsz = winCoords[winCoordsOffset + 2];
+        float _viewportx = viewport[viewportOffset + 0];
+        float _viewporty = viewport[viewportOffset + 1];
+        float _viewportz = viewport[viewportOffset + 2];
+        float _viewportw = viewport[viewportOffset + 3];
+        float _t7 = 2.0f * (_winCoordsx - _viewportx) / _viewportz - 1.0f;
+        float _t8 = 2.0f * (_winCoordsy - _viewporty) / _viewportw - 1.0f;
+        float _t10 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, Math.fma(_self32, _winCoordsz, _self33)));
+        float _t10_inv = 1.0f / _t10;
+        dest[destOffset + 0] = Math.fma(_self00, _t7, Math.fma(_self01, _t8, Math.fma(_self02, _winCoordsz, _self03))) * _t10_inv;
+        dest[destOffset + 1] = Math.fma(_self10, _t7, Math.fma(_self11, _t8, Math.fma(_self12, _winCoordsz, _self13))) * _t10_inv;
+        dest[destOffset + 2] = Math.fma(_self20, _t7, Math.fma(_self21, _t8, Math.fma(_self22, _winCoordsz, _self23))) * _t10_inv;
+        return dest;
+    }
+
+    public static float[] unprojectInvRay_no(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _t11 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
+        float _t12 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        float _t19 = Math.fma(_self30, _t11, Math.fma(_self31, _t12, _self33 - _self32));
+        float _t19_inv = 1.0f / _t19;
+        float _t22 = Math.fma(_self30, _t11, Math.fma(_self31, _t12, _self33 + _self32));
+        float _t22_inv = 1.0f / _t22;
+        float _t23 = Math.fma(_self00, _t11, Math.fma(_self01, _t12, _self03 - _self02)) * _t19_inv;
+        float _t24 = Math.fma(_self10, _t11, Math.fma(_self11, _t12, _self13 - _self12)) * _t19_inv;
+        float _t25 = Math.fma(_self20, _t11, Math.fma(_self21, _t12, _self23 - _self22)) * _t19_inv;
+        rayOrigin[rayOriginOffset + 0] = _t23;
+        rayOrigin[rayOriginOffset + 1] = _t24;
+        rayOrigin[rayOriginOffset + 2] = _t25;
+        rayDir[rayDirOffset + 0] = Math.fma(_self00, _t11, Math.fma(_self01, _t12, _self03 + _self02)) * _t22_inv - _t23;
+        rayDir[rayDirOffset + 1] = Math.fma(_self10, _t11, Math.fma(_self11, _t12, _self13 + _self12)) * _t22_inv - _t24;
+        rayDir[rayDirOffset + 2] = Math.fma(_self20, _t11, Math.fma(_self21, _t12, _self23 + _self22)) * _t22_inv - _t25;
+        return rayOrigin;
+    }
+
+    public static float[] unprojectInvRay_zo(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _t7 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
+        float _t8 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        float _t15 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33));
+        float _t15_inv = 1.0f / _t15;
+        float _t18 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33 + _self32));
+        float _t18_inv = 1.0f / _t18;
+        float _t19 = Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03)) * _t15_inv;
+        float _t20 = Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13)) * _t15_inv;
+        float _t21 = Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23)) * _t15_inv;
+        rayOrigin[rayOriginOffset + 0] = _t19;
+        rayOrigin[rayOriginOffset + 1] = _t20;
+        rayOrigin[rayOriginOffset + 2] = _t21;
+        rayDir[rayDirOffset + 0] = Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03 + _self02)) * _t18_inv - _t19;
+        rayDir[rayDirOffset + 1] = Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13 + _self12)) * _t18_inv - _t20;
+        rayDir[rayDirOffset + 2] = Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23 + _self22)) * _t18_inv - _t21;
+        return rayOrigin;
+    }
+
+    public static float[] unprojectInvRay_no(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _winCoordsx = winCoords[winCoordsOffset + 0];
+        float _winCoordsy = winCoords[winCoordsOffset + 1];
+        float _viewportx = viewport[viewportOffset + 0];
+        float _viewporty = viewport[viewportOffset + 1];
+        float _viewportz = viewport[viewportOffset + 2];
+        float _viewportw = viewport[viewportOffset + 3];
+        float _t11 = 2.0f * (_winCoordsx - _viewportx) / _viewportz - 1.0f;
+        float _t12 = 2.0f * (_winCoordsy - _viewporty) / _viewportw - 1.0f;
+        float _t19 = Math.fma(_self30, _t11, Math.fma(_self31, _t12, _self33 - _self32));
+        float _t19_inv = 1.0f / _t19;
+        float _t22 = Math.fma(_self30, _t11, Math.fma(_self31, _t12, _self33 + _self32));
+        float _t22_inv = 1.0f / _t22;
+        float _t23 = Math.fma(_self00, _t11, Math.fma(_self01, _t12, _self03 - _self02)) * _t19_inv;
+        float _t24 = Math.fma(_self10, _t11, Math.fma(_self11, _t12, _self13 - _self12)) * _t19_inv;
+        float _t25 = Math.fma(_self20, _t11, Math.fma(_self21, _t12, _self23 - _self22)) * _t19_inv;
+        rayOrigin[rayOriginOffset + 0] = _t23;
+        rayOrigin[rayOriginOffset + 1] = _t24;
+        rayOrigin[rayOriginOffset + 2] = _t25;
+        rayDir[rayDirOffset + 0] = Math.fma(_self00, _t11, Math.fma(_self01, _t12, _self03 + _self02)) * _t22_inv - _t23;
+        rayDir[rayDirOffset + 1] = Math.fma(_self10, _t11, Math.fma(_self11, _t12, _self13 + _self12)) * _t22_inv - _t24;
+        rayDir[rayDirOffset + 2] = Math.fma(_self20, _t11, Math.fma(_self21, _t12, _self23 + _self22)) * _t22_inv - _t25;
+        return rayOrigin;
+    }
+
+    public static float[] unprojectInvRay_zo(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _winCoordsx = winCoords[winCoordsOffset + 0];
+        float _winCoordsy = winCoords[winCoordsOffset + 1];
+        float _viewportx = viewport[viewportOffset + 0];
+        float _viewporty = viewport[viewportOffset + 1];
+        float _viewportz = viewport[viewportOffset + 2];
+        float _viewportw = viewport[viewportOffset + 3];
+        float _t7 = 2.0f * (_winCoordsx - _viewportx) / _viewportz - 1.0f;
+        float _t8 = 2.0f * (_winCoordsy - _viewporty) / _viewportw - 1.0f;
+        float _t15 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33));
+        float _t15_inv = 1.0f / _t15;
+        float _t18 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33 + _self32));
+        float _t18_inv = 1.0f / _t18;
+        float _t19 = Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03)) * _t15_inv;
+        float _t20 = Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13)) * _t15_inv;
+        float _t21 = Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23)) * _t15_inv;
+        rayOrigin[rayOriginOffset + 0] = _t19;
+        rayOrigin[rayOriginOffset + 1] = _t20;
+        rayOrigin[rayOriginOffset + 2] = _t21;
+        rayDir[rayDirOffset + 0] = Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03 + _self02)) * _t18_inv - _t19;
+        rayDir[rayDirOffset + 1] = Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13 + _self12)) * _t18_inv - _t20;
+        rayDir[rayDirOffset + 2] = Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23 + _self22)) * _t18_inv - _t21;
+        return rayOrigin;
+    }
+
+    public static float[] unprojectRay_no(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _t0 = -_self01;
+        float _t1 = -_self00;
+        float _t44 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        float _t45 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        float _t46 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        float _t47 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        float _t48 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        float _t49 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        float _t50 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        float _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        float _t52 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t53 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        float _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        float _t55 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        float _t56 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        float _t57 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        float _t58 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        float _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        float _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        float _t61 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        float _t62 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
+        float _t63 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        float _t91 = -(_self01 * _t58);
+        float _t95 = -(_self02 * _t61);
+        float _t105 = Math.fma(_self02, _t51, -(_self03 * _t52));
+        float _t117 = Math.fma(_self01, _t61, -(_self03 * _t57));
+        float _t122 = Math.fma(_self13, _t44, Math.fma(_self11, _t45, -(_self12 * _t46)));
+        float _t128 = Math.fma(_self13, _t55, Math.fma(_self10, _t46, -(_self11 * _t60)));
+        float _t131 = Math.fma(_self02, _t55, Math.fma(_self00, _t44, -(_self01 * _t56))) * _t63;
+        float _t133 = Math.fma(_self03, _t56, Math.fma(_self00, _t45, -(_self02 * _t60))) * _t63;
+        float _t136 = -(Math.fma(_self03, _t44, Math.fma(_self01, _t45, -(_self02 * _t46))) * _t63);
+        float _t137 = -(Math.fma(_self12, _t55, Math.fma(_self10, _t44, -(_self11 * _t56))) * _t62);
+        float _t138 = -(Math.fma(_self13, _t56, Math.fma(_self10, _t45, -(_self12 * _t60))) * _t62);
+        float _t139 = -(Math.fma(_self03, _t55, Math.fma(_self00, _t46, -(_self01 * _t60))) * _t63);
+        float _t158 = Math.fma(_self00, _t50, -(_self01 * _t53)) + Math.fma(_self02, _t54, _t131) + (Math.fma(_self00, _t52, _t137) + Math.fma(_self02, _t57, _t91));
+        float _t158_inv = 1.0f / _t158;
+        float _t160 = Math.fma(_self00, _t52, _t91) + Math.fma(_self02, _t57, _t131) + (Math.fma(_t1, _t50, _t137) + Math.fma(_self01, _t53, -(_self02 * _t54)));
+        float _t160_inv = 1.0f / _t160;
+        float _t163 = (Math.fma(_self00, _t48, -(_self02 * _t59)) + Math.fma(_self03, _t53, _t133) + (Math.fma(_self00, _t49, _t138) + Math.fma(_self03, _t58, _t95))) * _t158_inv;
+        float _t164 = (Math.fma(_t122, _t62, _t136) + Math.fma(_self02, _t47, -(_self01 * _t48)) + (Math.fma(_t0, _t49, -(_self03 * _t50)) + _t105)) * _t158_inv;
+        float _t165 = (Math.fma(_t128, _t62, _t139) + Math.fma(_self01, _t59, -(_self00 * _t47)) + (Math.fma(_t1, _t51, -(_self03 * _t54)) + _t117)) * _t158_inv;
+        rayOrigin[rayOriginOffset + 0] = _t164;
+        rayOrigin[rayOriginOffset + 1] = _t163;
+        rayOrigin[rayOriginOffset + 2] = _t165;
+        rayDir[rayDirOffset + 0] = (Math.fma(_self01, _t48, -(_self02 * _t47)) + Math.fma(_self03, _t50, _t122 * _t62) + (Math.fma(_t0, _t49, _t136) + _t105)) * _t160_inv - _t164;
+        rayDir[rayDirOffset + 1] = (Math.fma(_self00, _t49, _t95) + Math.fma(_self03, _t58, _t133) + (Math.fma(_t1, _t48, _t138) + Math.fma(_self02, _t59, -(_self03 * _t53)))) * _t160_inv - _t163;
+        rayDir[rayDirOffset + 2] = (Math.fma(_self00, _t47, -(_self01 * _t59)) + Math.fma(_self03, _t54, _t128 * _t62) + (Math.fma(_t1, _t51, _t139) + _t117)) * _t160_inv - _t165;
+        return rayOrigin;
+    }
+
+    public static float[] unprojectRay_zo(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _t0 = -_self00;
+        float _t43 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        float _t44 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        float _t45 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        float _t46 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t47 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        float _t48 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        float _t49 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        float _t50 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        float _t51 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        float _t52 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        float _t53 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        float _t54 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        float _t55 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        float _t56 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        float _t57 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        float _t58 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        float _t59 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        float _t60 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        float _t61 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
+        float _t62 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        float _t92 = Math.fma(_self00, _t46, -(_self01 * _t50));
+        float _t95 = Math.fma(_self00, _t47, -(_self02 * _t53));
+        float _t102 = Math.fma(_self13, _t43, Math.fma(_self11, _t44, -(_self12 * _t45)));
+        float _t106 = Math.fma(_self02, _t51, Math.fma(_self00, _t43, -(_self01 * _t52)));
+        float _t109 = Math.fma(_self03, _t52, Math.fma(_self00, _t44, -(_self02 * _t54)));
+        float _t111 = Math.fma(_self13, _t51, Math.fma(_self10, _t45, -(_self11 * _t54)));
+        float _t119 = -(Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))) * _t62);
+        float _t120 = -(Math.fma(_self12, _t51, Math.fma(_self10, _t43, -(_self11 * _t52))) * _t61);
+        float _t121 = -(Math.fma(_self13, _t52, Math.fma(_self10, _t44, -(_self12 * _t54))) * _t61);
+        float _t122 = -(Math.fma(_self03, _t51, Math.fma(_self00, _t45, -(_self01 * _t54))) * _t62);
+        float _t132 = Math.fma(_self02, _t49, _t92) + Math.fma(_t106, _t62, _t120);
+        float _t132_inv = 1.0f / _t132;
+        float _t135 = _t92 + Math.fma(_self02, _t49, _t106 * _t62) + (Math.fma(_t0, _t57, _t120) + Math.fma(_self01, _t58, -(_self02 * _t59)));
+        float _t135_inv = 1.0f / _t135;
+        float _t136 = (Math.fma(_t102, _t61, _t119) - Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48)))) * _t132_inv;
+        float _t137 = (Math.fma(_self03, _t50, _t95) + Math.fma(_t109, _t62, _t121)) * _t132_inv;
+        float _t138 = (Math.fma(_t111, _t61, _t122) - Math.fma(_self03, _t49, Math.fma(_self00, _t48, -(_self01 * _t53)))) * _t132_inv;
+        rayOrigin[rayOriginOffset + 0] = _t136;
+        rayOrigin[rayOriginOffset + 1] = _t137;
+        rayOrigin[rayOriginOffset + 2] = _t138;
+        rayDir[rayDirOffset + 0] = (Math.fma(_self01, _t55, -(_self02 * _t56)) + Math.fma(_self03, _t57, _t102 * _t61) + (Math.fma(-_self01, _t47, _t119) + Math.fma(_self02, _t48, -(_self03 * _t46)))) * _t135_inv - _t136;
+        rayDir[rayDirOffset + 1] = (_t95 + Math.fma(_self03, _t50, _t109 * _t62) + (Math.fma(_t0, _t55, _t121) + Math.fma(_self02, _t60, -(_self03 * _t58)))) * _t135_inv - _t137;
+        rayDir[rayDirOffset + 2] = (Math.fma(_self00, _t56, -(_self01 * _t60)) + Math.fma(_self03, _t59, _t111 * _t61) + (Math.fma(_t0, _t48, _t122) + Math.fma(_self01, _t53, -(_self03 * _t49)))) * _t135_inv - _t138;
+        return rayOrigin;
+    }
+
+    public static float[] unprojectRay_no(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _winCoordsx = winCoords[winCoordsOffset + 0];
+        float _winCoordsy = winCoords[winCoordsOffset + 1];
+        float _viewportx = viewport[viewportOffset + 0];
+        float _viewporty = viewport[viewportOffset + 1];
+        float _viewportz = viewport[viewportOffset + 2];
+        float _viewportw = viewport[viewportOffset + 3];
+        float _t0 = -_self01;
+        float _t1 = -_self00;
+        float _t44 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        float _t45 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        float _t46 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        float _t47 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        float _t48 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        float _t49 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        float _t50 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        float _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        float _t52 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t53 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        float _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        float _t55 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        float _t56 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        float _t57 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        float _t58 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        float _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        float _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        float _t61 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        float _t62 = 2.0f * (_winCoordsx - _viewportx) / _viewportz - 1.0f;
+        float _t63 = 2.0f * (_winCoordsy - _viewporty) / _viewportw - 1.0f;
+        float _t91 = -(_self01 * _t58);
+        float _t95 = -(_self02 * _t61);
+        float _t105 = Math.fma(_self02, _t51, -(_self03 * _t52));
+        float _t117 = Math.fma(_self01, _t61, -(_self03 * _t57));
+        float _t122 = Math.fma(_self13, _t44, Math.fma(_self11, _t45, -(_self12 * _t46)));
+        float _t128 = Math.fma(_self13, _t55, Math.fma(_self10, _t46, -(_self11 * _t60)));
+        float _t131 = Math.fma(_self02, _t55, Math.fma(_self00, _t44, -(_self01 * _t56))) * _t63;
+        float _t133 = Math.fma(_self03, _t56, Math.fma(_self00, _t45, -(_self02 * _t60))) * _t63;
+        float _t136 = -(Math.fma(_self03, _t44, Math.fma(_self01, _t45, -(_self02 * _t46))) * _t63);
+        float _t137 = -(Math.fma(_self12, _t55, Math.fma(_self10, _t44, -(_self11 * _t56))) * _t62);
+        float _t138 = -(Math.fma(_self13, _t56, Math.fma(_self10, _t45, -(_self12 * _t60))) * _t62);
+        float _t139 = -(Math.fma(_self03, _t55, Math.fma(_self00, _t46, -(_self01 * _t60))) * _t63);
+        float _t158 = Math.fma(_self00, _t50, -(_self01 * _t53)) + Math.fma(_self02, _t54, _t131) + (Math.fma(_self00, _t52, _t137) + Math.fma(_self02, _t57, _t91));
+        float _t158_inv = 1.0f / _t158;
+        float _t160 = Math.fma(_self00, _t52, _t91) + Math.fma(_self02, _t57, _t131) + (Math.fma(_t1, _t50, _t137) + Math.fma(_self01, _t53, -(_self02 * _t54)));
+        float _t160_inv = 1.0f / _t160;
+        float _t163 = (Math.fma(_self00, _t48, -(_self02 * _t59)) + Math.fma(_self03, _t53, _t133) + (Math.fma(_self00, _t49, _t138) + Math.fma(_self03, _t58, _t95))) * _t158_inv;
+        float _t164 = (Math.fma(_t122, _t62, _t136) + Math.fma(_self02, _t47, -(_self01 * _t48)) + (Math.fma(_t0, _t49, -(_self03 * _t50)) + _t105)) * _t158_inv;
+        float _t165 = (Math.fma(_t128, _t62, _t139) + Math.fma(_self01, _t59, -(_self00 * _t47)) + (Math.fma(_t1, _t51, -(_self03 * _t54)) + _t117)) * _t158_inv;
+        rayOrigin[rayOriginOffset + 0] = _t164;
+        rayOrigin[rayOriginOffset + 1] = _t163;
+        rayOrigin[rayOriginOffset + 2] = _t165;
+        rayDir[rayDirOffset + 0] = (Math.fma(_self01, _t48, -(_self02 * _t47)) + Math.fma(_self03, _t50, _t122 * _t62) + (Math.fma(_t0, _t49, _t136) + _t105)) * _t160_inv - _t164;
+        rayDir[rayDirOffset + 1] = (Math.fma(_self00, _t49, _t95) + Math.fma(_self03, _t58, _t133) + (Math.fma(_t1, _t48, _t138) + Math.fma(_self02, _t59, -(_self03 * _t53)))) * _t160_inv - _t163;
+        rayDir[rayDirOffset + 2] = (Math.fma(_self00, _t47, -(_self01 * _t59)) + Math.fma(_self03, _t54, _t128 * _t62) + (Math.fma(_t1, _t51, _t139) + _t117)) * _t160_inv - _t165;
+        return rayOrigin;
+    }
+
+    public static float[] unprojectRay_zo(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        float _self03 = src[srcOffset + 12];
+        float _self13 = src[srcOffset + 13];
+        float _self23 = src[srcOffset + 14];
+        float _self33 = src[srcOffset + 15];
+        float _winCoordsx = winCoords[winCoordsOffset + 0];
+        float _winCoordsy = winCoords[winCoordsOffset + 1];
+        float _viewportx = viewport[viewportOffset + 0];
+        float _viewporty = viewport[viewportOffset + 1];
+        float _viewportz = viewport[viewportOffset + 2];
+        float _viewportw = viewport[viewportOffset + 3];
+        float _t0 = -_self00;
+        float _t43 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        float _t44 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        float _t45 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        float _t46 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t47 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        float _t48 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        float _t49 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        float _t50 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        float _t51 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        float _t52 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        float _t53 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        float _t54 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        float _t55 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        float _t56 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        float _t57 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        float _t58 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        float _t59 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        float _t60 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        float _t61 = 2.0f * (_winCoordsx - _viewportx) / _viewportz - 1.0f;
+        float _t62 = 2.0f * (_winCoordsy - _viewporty) / _viewportw - 1.0f;
+        float _t92 = Math.fma(_self00, _t46, -(_self01 * _t50));
+        float _t95 = Math.fma(_self00, _t47, -(_self02 * _t53));
+        float _t102 = Math.fma(_self13, _t43, Math.fma(_self11, _t44, -(_self12 * _t45)));
+        float _t106 = Math.fma(_self02, _t51, Math.fma(_self00, _t43, -(_self01 * _t52)));
+        float _t109 = Math.fma(_self03, _t52, Math.fma(_self00, _t44, -(_self02 * _t54)));
+        float _t111 = Math.fma(_self13, _t51, Math.fma(_self10, _t45, -(_self11 * _t54)));
+        float _t119 = -(Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))) * _t62);
+        float _t120 = -(Math.fma(_self12, _t51, Math.fma(_self10, _t43, -(_self11 * _t52))) * _t61);
+        float _t121 = -(Math.fma(_self13, _t52, Math.fma(_self10, _t44, -(_self12 * _t54))) * _t61);
+        float _t122 = -(Math.fma(_self03, _t51, Math.fma(_self00, _t45, -(_self01 * _t54))) * _t62);
+        float _t132 = Math.fma(_self02, _t49, _t92) + Math.fma(_t106, _t62, _t120);
+        float _t132_inv = 1.0f / _t132;
+        float _t135 = _t92 + Math.fma(_self02, _t49, _t106 * _t62) + (Math.fma(_t0, _t57, _t120) + Math.fma(_self01, _t58, -(_self02 * _t59)));
+        float _t135_inv = 1.0f / _t135;
+        float _t136 = (Math.fma(_t102, _t61, _t119) - Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48)))) * _t132_inv;
+        float _t137 = (Math.fma(_self03, _t50, _t95) + Math.fma(_t109, _t62, _t121)) * _t132_inv;
+        float _t138 = (Math.fma(_t111, _t61, _t122) - Math.fma(_self03, _t49, Math.fma(_self00, _t48, -(_self01 * _t53)))) * _t132_inv;
+        rayOrigin[rayOriginOffset + 0] = _t136;
+        rayOrigin[rayOriginOffset + 1] = _t137;
+        rayOrigin[rayOriginOffset + 2] = _t138;
+        rayDir[rayDirOffset + 0] = (Math.fma(_self01, _t55, -(_self02 * _t56)) + Math.fma(_self03, _t57, _t102 * _t61) + (Math.fma(-_self01, _t47, _t119) + Math.fma(_self02, _t48, -(_self03 * _t46)))) * _t135_inv - _t136;
+        rayDir[rayDirOffset + 1] = (_t95 + Math.fma(_self03, _t50, _t109 * _t62) + (Math.fma(_t0, _t55, _t121) + Math.fma(_self02, _t60, -(_self03 * _t58)))) * _t135_inv - _t137;
+        rayDir[rayDirOffset + 2] = (Math.fma(_self00, _t56, -(_self01 * _t60)) + Math.fma(_self03, _t59, _t111 * _t61) + (Math.fma(_t0, _t48, _t122) + Math.fma(_self01, _t53, -(_self03 * _t49)))) * _t135_inv - _t138;
+        return rayOrigin;
     }
 
 }

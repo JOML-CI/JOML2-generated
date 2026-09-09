@@ -43,6 +43,10 @@ public interface Double4x4R {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -55,6 +59,10 @@ public interface Double4x4R {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -67,6 +75,10 @@ public interface Double4x4R {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -79,6 +91,10 @@ public interface Double4x4R {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -91,6 +107,10 @@ public interface Double4x4R {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -103,6 +123,10 @@ public interface Double4x4R {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -2301,21 +2325,196 @@ public interface Double4x4R {
      * method): the near clip plane is replaced by the given clip plane in camera/view space, and
      * the far plane is adjusted to preserve depth precision.
      * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
+     * @param handedness the handedness of the coordinate system to map into
+     * @param depthRange the clip-space depth range the projection maps onto
      * @param dest will hold the result
      * @return dest
      */
-    Double4x4 obliqueZ(Double4R plane, @Mutated Double4x4 dest);
+    Double4x4 obliqueZ(Double4R plane, Handedness handedness, DepthRange depthRange, @Mutated Double4x4 dest);
 
     /**
      * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
      * method): the near clip plane is replaced by the given clip plane in camera/view space, and
      * the far plane is adjusted to preserve depth precision.
      * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param y the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param z the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param handedness the handedness of the coordinate system to map into
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4x4 obliqueZ(double x, double y, double z, double w, Handedness handedness, DepthRange depthRange, @Mutated Double4x4 dest);
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param plane the plane
+     * @param handedness the handedness of the coordinate system to map into
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4x4 obliqueZ(DoublePlaneR plane, Handedness handedness, DepthRange depthRange, @Mutated Double4x4 dest);
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     *
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @param dest will hold the result
+     * @return dest
+     */
+    default Double4x4 obliqueZ(Double4R plane, DepthRange depthRange, @Mutated Double4x4 dest) { return obliqueZ(plane, Handedness.RIGHT_HANDED, depthRange, dest); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     *
+     * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param y the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param z the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @param dest will hold the result
+     * @return dest
+     */
+    default Double4x4 obliqueZ(double x, double y, double z, double w, DepthRange depthRange, @Mutated Double4x4 dest) { return obliqueZ(x, y, z, w, Handedness.RIGHT_HANDED, depthRange, dest); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
+     * @param handedness the handedness of the coordinate system to map into
+     * @param dest will hold the result
+     * @return dest
+     */
+    default Double4x4 obliqueZ(Double4R plane, Handedness handedness, @Mutated Double4x4 dest) { return obliqueZ(plane, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param y the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param z the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param handedness the handedness of the coordinate system to map into
+     * @param dest will hold the result
+     * @return dest
+     */
+    default Double4x4 obliqueZ(double x, double y, double z, double w, Handedness handedness, @Mutated Double4x4 dest) { return obliqueZ(x, y, z, w, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
+     * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
+     * @param dest will hold the result
+     * @return dest
+     */
+    default Double4x4 obliqueZ(Double4R plane, @Mutated Double4x4 dest) { return obliqueZ(plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
+     * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
      *        the normal pointing into the visible half-space {@code (x, y, z, w)}
@@ -2328,20 +2527,67 @@ public interface Double4x4R {
      * @param dest will hold the result
      * @return dest
      */
-    Double4x4 obliqueZ(double x, double y, double z, double w, @Mutated Double4x4 dest);
+    default Double4x4 obliqueZ(double x, double y, double z, double w, @Mutated Double4x4 dest) { return obliqueZ(x, y, z, w, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
 
     /**
      * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
      * method): the near clip plane is replaced by the given clip plane in camera/view space, and
      * the far plane is adjusted to preserve depth precision.
      * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     *
+     * @param plane the plane
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @param dest will hold the result
+     * @return dest
+     */
+    default Double4x4 obliqueZ(DoublePlaneR plane, DepthRange depthRange, @Mutated Double4x4 dest) { return obliqueZ(plane, Handedness.RIGHT_HANDED, depthRange, dest); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param plane the plane
+     * @param handedness the handedness of the coordinate system to map into
+     * @param dest will hold the result
+     * @return dest
+     */
+    default Double4x4 obliqueZ(DoublePlaneR plane, Handedness handedness, @Mutated Double4x4 dest) { return obliqueZ(plane, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
+     * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param plane the plane
      * @param dest will hold the result
      * @return dest
      */
-    Double4x4 obliqueZ(DoublePlaneR plane, @Mutated Double4x4 dest);
+    default Double4x4 obliqueZ(DoublePlaneR plane, @Mutated Double4x4 dest) { return obliqueZ(plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
 
     /**
      * Apply an orthographic projection transformation to this matrix and store the result in
@@ -3417,10 +3663,11 @@ public interface Double4x4R {
      *
      * @param obj the object-space position to project
      * @param viewport the viewport {@code [x, y, width, height]}
+     * @param depthRange the clip-space depth range the projection maps onto
      * @param dest will hold the result
      * @return dest
      */
-    Double3 project(Double3R obj, Double4R viewport, @Mutated Double3 dest);
+    Double3 project(Double3R obj, Double4R viewport, DepthRange depthRange, @Mutated Double3 dest);
 
     /**
      * Project the given position onto window coordinates using this matrix and the given viewport
@@ -3440,10 +3687,49 @@ public interface Double4x4R {
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportW the {@code w} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param depthRange the clip-space depth range the projection maps onto
      * @param dest will hold the result
      * @return dest
      */
-    Double3 project(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest);
+    Double3 project(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange, @Mutated Double3 dest);
+
+    /**
+     * Project the given position onto window coordinates using this matrix and the given viewport
+     * and store the result in {@code dest}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param obj the object-space position to project
+     * @param viewport the viewport {@code [x, y, width, height]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    default Double3 project(Double3R obj, Double4R viewport, @Mutated Double3 dest) { return project(obj, viewport, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
+
+    /**
+     * Project the given position onto window coordinates using this matrix and the given viewport
+     * and store the result in {@code dest}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param objX the {@code x} component of the object-space position to project
+     *        {@code (objX, objY, objZ)}
+     * @param objY the {@code y} component of the object-space position to project
+     *        {@code (objX, objY, objZ)}
+     * @param objZ the {@code z} component of the object-space position to project
+     *        {@code (objX, objY, objZ)}
+     * @param viewportX the {@code x} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportY the {@code y} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportZ the {@code z} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportW the {@code w} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    default Double3 project(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) { return project(objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
 
     /**
      * Apply a reflection about the plane through the origin with the normal {@code normal} to this
@@ -4216,10 +4502,11 @@ public interface Double4x4R {
      *
      * @param winCoords the window coordinates {@code (x, y, depth)} to unproject
      * @param viewport the viewport {@code [x, y, width, height]}
+     * @param depthRange the clip-space depth range the projection maps onto
      * @param dest will hold the result
      * @return dest
      */
-    Double3 unproject(Double3R winCoords, Double4R viewport, @Mutated Double3 dest);
+    Double3 unproject(Double3R winCoords, Double4R viewport, DepthRange depthRange, @Mutated Double3 dest);
 
     /**
      * Unproject the given window coordinates into object space using this matrix (which is inverted
@@ -4239,10 +4526,49 @@ public interface Double4x4R {
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportW the {@code w} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param depthRange the clip-space depth range the projection maps onto
      * @param dest will hold the result
      * @return dest
      */
-    Double3 unproject(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest);
+    Double3 unproject(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange, @Mutated Double3 dest);
+
+    /**
+     * Unproject the given window coordinates into object space using this matrix (which is inverted
+     * internally) and the given viewport and store the result in {@code dest}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param winCoords the window coordinates {@code (x, y, depth)} to unproject
+     * @param viewport the viewport {@code [x, y, width, height]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    default Double3 unproject(Double3R winCoords, Double4R viewport, @Mutated Double3 dest) { return unproject(winCoords, viewport, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
+
+    /**
+     * Unproject the given window coordinates into object space using this matrix (which is inverted
+     * internally) and the given viewport and store the result in {@code dest}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
+     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
+     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
+     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     * @param viewportX the {@code x} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportY the {@code y} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportZ the {@code z} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportW the {@code w} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    default Double3 unproject(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) { return unproject(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
 
     /**
      * Unproject the given window coordinates into object space using this matrix (which is assumed
@@ -4251,10 +4577,11 @@ public interface Double4x4R {
      *
      * @param winCoords the window coordinates {@code (x, y, depth)} to unproject
      * @param viewport the viewport {@code [x, y, width, height]}
+     * @param depthRange the clip-space depth range the projection maps onto
      * @param dest will hold the result
      * @return dest
      */
-    Double3 unprojectInv(Double3R winCoords, Double4R viewport, @Mutated Double3 dest);
+    Double3 unprojectInv(Double3R winCoords, Double4R viewport, DepthRange depthRange, @Mutated Double3 dest);
 
     /**
      * Unproject the given window coordinates into object space using this matrix (which is assumed
@@ -4275,10 +4602,51 @@ public interface Double4x4R {
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportW the {@code w} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param depthRange the clip-space depth range the projection maps onto
      * @param dest will hold the result
      * @return dest
      */
-    Double3 unprojectInv(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest);
+    Double3 unprojectInv(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange, @Mutated Double3 dest);
+
+    /**
+     * Unproject the given window coordinates into object space using this matrix (which is assumed
+     * to be the inverse of a projection-view matrix) and the given viewport and store the result in
+     * {@code dest}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param winCoords the window coordinates {@code (x, y, depth)} to unproject
+     * @param viewport the viewport {@code [x, y, width, height]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    default Double3 unprojectInv(Double3R winCoords, Double4R viewport, @Mutated Double3 dest) { return unprojectInv(winCoords, viewport, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
+
+    /**
+     * Unproject the given window coordinates into object space using this matrix (which is assumed
+     * to be the inverse of a projection-view matrix) and the given viewport and store the result in
+     * {@code dest}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
+     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
+     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
+     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     * @param viewportX the {@code x} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportY the {@code y} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportZ the {@code z} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportW the {@code w} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    default Double3 unprojectInv(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) { return unprojectInv(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
 
     /**
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
@@ -4287,11 +4655,12 @@ public interface Double4x4R {
      *
      * @param winCoords the window coordinates {@code (x, y)} to unproject
      * @param viewport the viewport {@code [x, y, width, height]}
+     * @param depthRange the clip-space depth range the projection maps onto
      * @param rayOrigin will hold the origin of the ray
      * @param rayDir will hold the direction of the ray
      * @return this
      */
-    Double4x4 unprojectInvRay(Double2R winCoords, Double4R viewport, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir);
+    Double4x4 unprojectInvRay(Double2R winCoords, Double4R viewport, DepthRange depthRange, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir);
 
     /**
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
@@ -4310,11 +4679,52 @@ public interface Double4x4R {
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportW the {@code w} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param depthRange the clip-space depth range the projection maps onto
      * @param rayOrigin will hold the origin of the ray
      * @param rayDir will hold the direction of the ray
      * @return this
      */
-    Double4x4 unprojectInvRay(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir);
+    Double4x4 unprojectInvRay(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir);
+
+    /**
+     * Unproject the given window coordinates into a ray in object space using this matrix (which is
+     * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
+     * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param winCoords the window coordinates {@code (x, y)} to unproject
+     * @param viewport the viewport {@code [x, y, width, height]}
+     * @param rayOrigin will hold the origin of the ray
+     * @param rayDir will hold the direction of the ray
+     * @return this
+     */
+    default Double4x4 unprojectInvRay(Double2R winCoords, Double4R viewport, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) { return unprojectInvRay(winCoords, viewport, DepthRange.NEGATIVE_ONE_TO_ONE, rayOrigin, rayDir); }
+
+    /**
+     * Unproject the given window coordinates into a ray in object space using this matrix (which is
+     * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
+     * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
+     *        unproject {@code (winCoordsX, winCoordsY)}
+     * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y)} to
+     *        unproject {@code (winCoordsX, winCoordsY)}
+     * @param viewportX the {@code x} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportY the {@code y} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportZ the {@code z} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportW the {@code w} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param rayOrigin will hold the origin of the ray
+     * @param rayDir will hold the direction of the ray
+     * @return this
+     */
+    default Double4x4 unprojectInvRay(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) { return unprojectInvRay(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE, rayOrigin, rayDir); }
 
     /**
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
@@ -4323,11 +4733,12 @@ public interface Double4x4R {
      *
      * @param winCoords the window coordinates {@code (x, y)} to unproject
      * @param viewport the viewport {@code [x, y, width, height]}
+     * @param depthRange the clip-space depth range the projection maps onto
      * @param rayOrigin will hold the origin of the ray
      * @param rayDir will hold the direction of the ray
      * @return this
      */
-    Double4x4 unprojectRay(Double2R winCoords, Double4R viewport, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir);
+    Double4x4 unprojectRay(Double2R winCoords, Double4R viewport, DepthRange depthRange, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir);
 
     /**
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
@@ -4346,11 +4757,52 @@ public interface Double4x4R {
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportW the {@code w} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param depthRange the clip-space depth range the projection maps onto
      * @param rayOrigin will hold the origin of the ray
      * @param rayDir will hold the direction of the ray
      * @return this
      */
-    Double4x4 unprojectRay(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir);
+    Double4x4 unprojectRay(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir);
+
+    /**
+     * Unproject the given window coordinates into a ray in object space using this matrix (which is
+     * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
+     * the ray direction in {@code rayDir}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param winCoords the window coordinates {@code (x, y)} to unproject
+     * @param viewport the viewport {@code [x, y, width, height]}
+     * @param rayOrigin will hold the origin of the ray
+     * @param rayDir will hold the direction of the ray
+     * @return this
+     */
+    default Double4x4 unprojectRay(Double2R winCoords, Double4R viewport, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) { return unprojectRay(winCoords, viewport, DepthRange.NEGATIVE_ONE_TO_ONE, rayOrigin, rayDir); }
+
+    /**
+     * Unproject the given window coordinates into a ray in object space using this matrix (which is
+     * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
+     * the ray direction in {@code rayDir}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
+     *        unproject {@code (winCoordsX, winCoordsY)}
+     * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y)} to
+     *        unproject {@code (winCoordsX, winCoordsY)}
+     * @param viewportX the {@code x} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportY the {@code y} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportZ the {@code z} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportW the {@code w} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param rayOrigin will hold the origin of the ray
+     * @param rayDir will hold the direction of the ray
+     * @return this
+     */
+    default Double4x4 unprojectRay(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) { return unprojectRay(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE, rayOrigin, rayDir); }
 
     /**
      * Multiply this matrix by the given vector and store the result in {@code dest}.

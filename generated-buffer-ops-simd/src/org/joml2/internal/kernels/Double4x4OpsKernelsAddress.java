@@ -11304,7 +11304,56 @@ public final class Double4x4OpsKernelsAddress {
         return dest;
     }
 
-    public static long obliqueZ_unsafe(long dest, long src, double planeX, double planeY, double planeZ, double planeW) {
+    public static long obliqueZ_no_lh(long dest, long src, double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.obliqueZ_no_lh_unsafe(dest, src, planeX, planeY, planeZ, planeW);
+        Double4x4OpsKernelsSegment.obliqueZ_no_lh(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, planeX, planeY, planeZ, planeW);
+        return dest;
+    }
+
+    public static long obliqueZ_no_lh_unsafe(long dest, long src, double planeX, double planeY, double planeZ, double planeW) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self30 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 40L);
+        double _self31 = UnsafeOpsHolder.U.getDouble(src + 56L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 64L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 72L);
+        double _self22 = UnsafeOpsHolder.U.getDouble(src + 80L);
+        double _self32 = UnsafeOpsHolder.U.getDouble(src + 88L);
+        double _self03 = UnsafeOpsHolder.U.getDouble(src + 96L);
+        double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
+        double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
+        double _t0 = 2.0 * _self23;
+        double _t15 = Math.fma(planeW, 1.0 - _self22, _self23 * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - _self02) / _self00 + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - _self12) / _self11)));
+        double _t15_inv = 1.0 / _t15;
+        UnsafeOpsHolder.U.putDouble(dest + 0L, _self00);
+        UnsafeOpsHolder.U.putDouble(dest + 8L, _self10);
+        UnsafeOpsHolder.U.putDouble(dest + 16L, planeX * _t0 * _t15_inv - _self30);
+        UnsafeOpsHolder.U.putDouble(dest + 24L, _self30);
+        UnsafeOpsHolder.U.putDouble(dest + 32L, _self01);
+        UnsafeOpsHolder.U.putDouble(dest + 40L, _self11);
+        UnsafeOpsHolder.U.putDouble(dest + 48L, planeY * _t0 * _t15_inv - _self31);
+        UnsafeOpsHolder.U.putDouble(dest + 56L, _self31);
+        UnsafeOpsHolder.U.putDouble(dest + 64L, _self02);
+        UnsafeOpsHolder.U.putDouble(dest + 72L, _self12);
+        UnsafeOpsHolder.U.putDouble(dest + 80L, planeZ * _t0 * _t15_inv - _self32);
+        UnsafeOpsHolder.U.putDouble(dest + 88L, _self32);
+        UnsafeOpsHolder.U.putDouble(dest + 96L, _self03);
+        UnsafeOpsHolder.U.putDouble(dest + 104L, _self13);
+        UnsafeOpsHolder.U.putDouble(dest + 112L, planeW * _t0 * _t15_inv - _self33);
+        UnsafeOpsHolder.U.putDouble(dest + 120L, _self33);
+        return dest;
+    }
+
+    public static long obliqueZ_no_rh(long dest, long src, double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.obliqueZ_no_rh_unsafe(dest, src, planeX, planeY, planeZ, planeW);
+        Double4x4OpsKernelsSegment.obliqueZ_no_rh(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, planeX, planeY, planeZ, planeW);
+        return dest;
+    }
+
+    public static long obliqueZ_no_rh_unsafe(long dest, long src, double planeX, double planeY, double planeZ, double planeW) {
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self30 = UnsafeOpsHolder.U.getDouble(src + 24L);
@@ -11341,7 +11390,158 @@ public final class Double4x4OpsKernelsAddress {
         return dest;
     }
 
-    public static long obliqueZ_unsafe(long dest, long src, long plane) {
+    public static long obliqueZ_no(long dest, long src, double planeX, double planeY, double planeZ, double planeW, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Double4x4OpsKernelsAddress.obliqueZ_no_lh(dest, src, planeX, planeY, planeZ, planeW); }
+            default -> { return Double4x4OpsKernelsAddress.obliqueZ_no_rh(dest, src, planeX, planeY, planeZ, planeW); }
+        }
+    }
+
+    public static long obliqueZ_zo_lh(long dest, long src, double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.obliqueZ_zo_lh_unsafe(dest, src, planeX, planeY, planeZ, planeW);
+        Double4x4OpsKernelsSegment.obliqueZ_zo_lh(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, planeX, planeY, planeZ, planeW);
+        return dest;
+    }
+
+    public static long obliqueZ_zo_lh_unsafe(long dest, long src, double planeX, double planeY, double planeZ, double planeW) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self30 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 40L);
+        double _self31 = UnsafeOpsHolder.U.getDouble(src + 56L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 64L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 72L);
+        double _self22 = UnsafeOpsHolder.U.getDouble(src + 80L);
+        double _self32 = UnsafeOpsHolder.U.getDouble(src + 88L);
+        double _self03 = UnsafeOpsHolder.U.getDouble(src + 96L);
+        double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
+        double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
+        double _t14 = Math.fma(planeW, 1.0 - _self22, _self23 * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - _self02) / _self00 + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - _self12) / _self11)));
+        double _t14_inv = 1.0 / _t14;
+        UnsafeOpsHolder.U.putDouble(dest + 0L, _self00);
+        UnsafeOpsHolder.U.putDouble(dest + 8L, _self10);
+        UnsafeOpsHolder.U.putDouble(dest + 16L, planeX * _self23 * _t14_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 24L, _self30);
+        UnsafeOpsHolder.U.putDouble(dest + 32L, _self01);
+        UnsafeOpsHolder.U.putDouble(dest + 40L, _self11);
+        UnsafeOpsHolder.U.putDouble(dest + 48L, planeY * _self23 * _t14_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 56L, _self31);
+        UnsafeOpsHolder.U.putDouble(dest + 64L, _self02);
+        UnsafeOpsHolder.U.putDouble(dest + 72L, _self12);
+        UnsafeOpsHolder.U.putDouble(dest + 80L, planeZ * _self23 * _t14_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 88L, _self32);
+        UnsafeOpsHolder.U.putDouble(dest + 96L, _self03);
+        UnsafeOpsHolder.U.putDouble(dest + 104L, _self13);
+        UnsafeOpsHolder.U.putDouble(dest + 112L, planeW * _self23 * _t14_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 120L, _self33);
+        return dest;
+    }
+
+    public static long obliqueZ_zo_rh(long dest, long src, double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.obliqueZ_zo_rh_unsafe(dest, src, planeX, planeY, planeZ, planeW);
+        Double4x4OpsKernelsSegment.obliqueZ_zo_rh(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, planeX, planeY, planeZ, planeW);
+        return dest;
+    }
+
+    public static long obliqueZ_zo_rh_unsafe(long dest, long src, double planeX, double planeY, double planeZ, double planeW) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self30 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 40L);
+        double _self31 = UnsafeOpsHolder.U.getDouble(src + 56L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 64L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 72L);
+        double _self22 = UnsafeOpsHolder.U.getDouble(src + 80L);
+        double _self32 = UnsafeOpsHolder.U.getDouble(src + 88L);
+        double _self03 = UnsafeOpsHolder.U.getDouble(src + 96L);
+        double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
+        double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
+        double _t14 = Math.fma(planeW, 1.0 + _self22, _self23 * (planeX * (_self02 + (planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0)) / _self00 + planeY * (_self12 + (planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0)) / _self11 - planeZ));
+        double _t14_inv = 1.0 / _t14;
+        UnsafeOpsHolder.U.putDouble(dest + 0L, _self00);
+        UnsafeOpsHolder.U.putDouble(dest + 8L, _self10);
+        UnsafeOpsHolder.U.putDouble(dest + 16L, planeX * _self23 * _t14_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 24L, _self30);
+        UnsafeOpsHolder.U.putDouble(dest + 32L, _self01);
+        UnsafeOpsHolder.U.putDouble(dest + 40L, _self11);
+        UnsafeOpsHolder.U.putDouble(dest + 48L, planeY * _self23 * _t14_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 56L, _self31);
+        UnsafeOpsHolder.U.putDouble(dest + 64L, _self02);
+        UnsafeOpsHolder.U.putDouble(dest + 72L, _self12);
+        UnsafeOpsHolder.U.putDouble(dest + 80L, planeZ * _self23 * _t14_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 88L, _self32);
+        UnsafeOpsHolder.U.putDouble(dest + 96L, _self03);
+        UnsafeOpsHolder.U.putDouble(dest + 104L, _self13);
+        UnsafeOpsHolder.U.putDouble(dest + 112L, planeW * _self23 * _t14_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 120L, _self33);
+        return dest;
+    }
+
+    public static long obliqueZ_zo(long dest, long src, double planeX, double planeY, double planeZ, double planeW, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Double4x4OpsKernelsAddress.obliqueZ_zo_lh(dest, src, planeX, planeY, planeZ, planeW); }
+            default -> { return Double4x4OpsKernelsAddress.obliqueZ_zo_rh(dest, src, planeX, planeY, planeZ, planeW); }
+        }
+    }
+
+    public static long obliqueZ_no_lh(long dest, long src, long plane) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.obliqueZ_no_lh_unsafe(dest, src, plane);
+        Double4x4OpsKernelsSegment.obliqueZ_no_lh(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(plane, 32L), 0L);
+        return dest;
+    }
+
+    public static long obliqueZ_no_lh_unsafe(long dest, long src, long plane) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self30 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 40L);
+        double _self31 = UnsafeOpsHolder.U.getDouble(src + 56L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 64L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 72L);
+        double _self22 = UnsafeOpsHolder.U.getDouble(src + 80L);
+        double _self32 = UnsafeOpsHolder.U.getDouble(src + 88L);
+        double _self03 = UnsafeOpsHolder.U.getDouble(src + 96L);
+        double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
+        double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
+        double _planex = UnsafeOpsHolder.U.getDouble(plane + 0L);
+        double _planey = UnsafeOpsHolder.U.getDouble(plane + 8L);
+        double _planez = UnsafeOpsHolder.U.getDouble(plane + 16L);
+        double _planew = UnsafeOpsHolder.U.getDouble(plane + 24L);
+        double _t0 = 2.0 * _self23;
+        double _t15 = Math.fma(_planew, 1.0 - _self22, _self23 * (_planez + (_planex * ((_planex < 0.0 ? -1.0 : _planex > 0.0 ? 1.0 : 0.0) - _self02) / _self00 + _planey * ((_planey < 0.0 ? -1.0 : _planey > 0.0 ? 1.0 : 0.0) - _self12) / _self11)));
+        double _t15_inv = 1.0 / _t15;
+        UnsafeOpsHolder.U.putDouble(dest + 0L, _self00);
+        UnsafeOpsHolder.U.putDouble(dest + 8L, _self10);
+        UnsafeOpsHolder.U.putDouble(dest + 16L, _planex * _t0 * _t15_inv - _self30);
+        UnsafeOpsHolder.U.putDouble(dest + 24L, _self30);
+        UnsafeOpsHolder.U.putDouble(dest + 32L, _self01);
+        UnsafeOpsHolder.U.putDouble(dest + 40L, _self11);
+        UnsafeOpsHolder.U.putDouble(dest + 48L, _planey * _t0 * _t15_inv - _self31);
+        UnsafeOpsHolder.U.putDouble(dest + 56L, _self31);
+        UnsafeOpsHolder.U.putDouble(dest + 64L, _self02);
+        UnsafeOpsHolder.U.putDouble(dest + 72L, _self12);
+        UnsafeOpsHolder.U.putDouble(dest + 80L, _planez * _t0 * _t15_inv - _self32);
+        UnsafeOpsHolder.U.putDouble(dest + 88L, _self32);
+        UnsafeOpsHolder.U.putDouble(dest + 96L, _self03);
+        UnsafeOpsHolder.U.putDouble(dest + 104L, _self13);
+        UnsafeOpsHolder.U.putDouble(dest + 112L, _planew * _t0 * _t15_inv - _self33);
+        UnsafeOpsHolder.U.putDouble(dest + 120L, _self33);
+        return dest;
+    }
+
+    public static long obliqueZ_no_rh(long dest, long src, long plane) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.obliqueZ_no_rh_unsafe(dest, src, plane);
+        Double4x4OpsKernelsSegment.obliqueZ_no_rh(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(plane, 32L), 0L);
+        return dest;
+    }
+
+    public static long obliqueZ_no_rh_unsafe(long dest, long src, long plane) {
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self30 = UnsafeOpsHolder.U.getDouble(src + 24L);
@@ -11380,6 +11580,112 @@ public final class Double4x4OpsKernelsAddress {
         UnsafeOpsHolder.U.putDouble(dest + 112L, _planew * _t0 * _t15_inv - _self33);
         UnsafeOpsHolder.U.putDouble(dest + 120L, _self33);
         return dest;
+    }
+
+    public static long obliqueZ_no(long dest, long src, long plane, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Double4x4OpsKernelsAddress.obliqueZ_no_lh(dest, src, plane); }
+            default -> { return Double4x4OpsKernelsAddress.obliqueZ_no_rh(dest, src, plane); }
+        }
+    }
+
+    public static long obliqueZ_zo_lh(long dest, long src, long plane) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.obliqueZ_zo_lh_unsafe(dest, src, plane);
+        Double4x4OpsKernelsSegment.obliqueZ_zo_lh(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(plane, 32L), 0L);
+        return dest;
+    }
+
+    public static long obliqueZ_zo_lh_unsafe(long dest, long src, long plane) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self30 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 40L);
+        double _self31 = UnsafeOpsHolder.U.getDouble(src + 56L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 64L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 72L);
+        double _self22 = UnsafeOpsHolder.U.getDouble(src + 80L);
+        double _self32 = UnsafeOpsHolder.U.getDouble(src + 88L);
+        double _self03 = UnsafeOpsHolder.U.getDouble(src + 96L);
+        double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
+        double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
+        double _planex = UnsafeOpsHolder.U.getDouble(plane + 0L);
+        double _planey = UnsafeOpsHolder.U.getDouble(plane + 8L);
+        double _planez = UnsafeOpsHolder.U.getDouble(plane + 16L);
+        double _planew = UnsafeOpsHolder.U.getDouble(plane + 24L);
+        double _t14 = Math.fma(_planew, 1.0 - _self22, _self23 * (_planez + (_planex * ((_planex < 0.0 ? -1.0 : _planex > 0.0 ? 1.0 : 0.0) - _self02) / _self00 + _planey * ((_planey < 0.0 ? -1.0 : _planey > 0.0 ? 1.0 : 0.0) - _self12) / _self11)));
+        double _t14_inv = 1.0 / _t14;
+        UnsafeOpsHolder.U.putDouble(dest + 0L, _self00);
+        UnsafeOpsHolder.U.putDouble(dest + 8L, _self10);
+        UnsafeOpsHolder.U.putDouble(dest + 16L, _planex * _self23 * _t14_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 24L, _self30);
+        UnsafeOpsHolder.U.putDouble(dest + 32L, _self01);
+        UnsafeOpsHolder.U.putDouble(dest + 40L, _self11);
+        UnsafeOpsHolder.U.putDouble(dest + 48L, _planey * _self23 * _t14_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 56L, _self31);
+        UnsafeOpsHolder.U.putDouble(dest + 64L, _self02);
+        UnsafeOpsHolder.U.putDouble(dest + 72L, _self12);
+        UnsafeOpsHolder.U.putDouble(dest + 80L, _planez * _self23 * _t14_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 88L, _self32);
+        UnsafeOpsHolder.U.putDouble(dest + 96L, _self03);
+        UnsafeOpsHolder.U.putDouble(dest + 104L, _self13);
+        UnsafeOpsHolder.U.putDouble(dest + 112L, _planew * _self23 * _t14_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 120L, _self33);
+        return dest;
+    }
+
+    public static long obliqueZ_zo_rh(long dest, long src, long plane) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.obliqueZ_zo_rh_unsafe(dest, src, plane);
+        Double4x4OpsKernelsSegment.obliqueZ_zo_rh(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(plane, 32L), 0L);
+        return dest;
+    }
+
+    public static long obliqueZ_zo_rh_unsafe(long dest, long src, long plane) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self30 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 40L);
+        double _self31 = UnsafeOpsHolder.U.getDouble(src + 56L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 64L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 72L);
+        double _self22 = UnsafeOpsHolder.U.getDouble(src + 80L);
+        double _self32 = UnsafeOpsHolder.U.getDouble(src + 88L);
+        double _self03 = UnsafeOpsHolder.U.getDouble(src + 96L);
+        double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
+        double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
+        double _planex = UnsafeOpsHolder.U.getDouble(plane + 0L);
+        double _planey = UnsafeOpsHolder.U.getDouble(plane + 8L);
+        double _planez = UnsafeOpsHolder.U.getDouble(plane + 16L);
+        double _planew = UnsafeOpsHolder.U.getDouble(plane + 24L);
+        double _t14 = Math.fma(_planew, 1.0 + _self22, _self23 * (_planex * (_self02 + (_planex < 0.0 ? -1.0 : _planex > 0.0 ? 1.0 : 0.0)) / _self00 + _planey * (_self12 + (_planey < 0.0 ? -1.0 : _planey > 0.0 ? 1.0 : 0.0)) / _self11 - _planez));
+        double _t14_inv = 1.0 / _t14;
+        UnsafeOpsHolder.U.putDouble(dest + 0L, _self00);
+        UnsafeOpsHolder.U.putDouble(dest + 8L, _self10);
+        UnsafeOpsHolder.U.putDouble(dest + 16L, _planex * _self23 * _t14_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 24L, _self30);
+        UnsafeOpsHolder.U.putDouble(dest + 32L, _self01);
+        UnsafeOpsHolder.U.putDouble(dest + 40L, _self11);
+        UnsafeOpsHolder.U.putDouble(dest + 48L, _planey * _self23 * _t14_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 56L, _self31);
+        UnsafeOpsHolder.U.putDouble(dest + 64L, _self02);
+        UnsafeOpsHolder.U.putDouble(dest + 72L, _self12);
+        UnsafeOpsHolder.U.putDouble(dest + 80L, _planez * _self23 * _t14_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 88L, _self32);
+        UnsafeOpsHolder.U.putDouble(dest + 96L, _self03);
+        UnsafeOpsHolder.U.putDouble(dest + 104L, _self13);
+        UnsafeOpsHolder.U.putDouble(dest + 112L, _planew * _self23 * _t14_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 120L, _self33);
+        return dest;
+    }
+
+    public static long obliqueZ_zo(long dest, long src, long plane, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Double4x4OpsKernelsAddress.obliqueZ_zo_lh(dest, src, plane); }
+            default -> { return Double4x4OpsKernelsAddress.obliqueZ_zo_rh(dest, src, plane); }
+        }
     }
 
     public static long ortho_no_lh(long dest, long src, double left, double right, double bottom, double top, double zNear, double zFar) {
@@ -14764,7 +15070,13 @@ public final class Double4x4OpsKernelsAddress {
         return dest;
     }
 
-    public static long project_unsafe(long dest, long src, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static long project_no(long dest, long src, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.project_no_unsafe(dest, src, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsSegment.project_no(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static long project_no_unsafe(long dest, long src, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -14789,7 +15101,44 @@ public final class Double4x4OpsKernelsAddress {
         return dest;
     }
 
-    public static long project_unsafe(long dest, long src, long obj, long viewport) {
+    public static long project_zo(long dest, long src, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.project_zo_unsafe(dest, src, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsSegment.project_zo(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static long project_zo_unsafe(long dest, long src, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
+        double _self30 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 40L);
+        double _self21 = UnsafeOpsHolder.U.getDouble(src + 48L);
+        double _self31 = UnsafeOpsHolder.U.getDouble(src + 56L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 64L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 72L);
+        double _self22 = UnsafeOpsHolder.U.getDouble(src + 80L);
+        double _self32 = UnsafeOpsHolder.U.getDouble(src + 88L);
+        double _self03 = UnsafeOpsHolder.U.getDouble(src + 96L);
+        double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
+        double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
+        double _t2 = Math.fma(objX, _self30, Math.fma(objY, _self31, Math.fma(objZ, _self32, _self33)));
+        double _t2_inv = 1.0 / _t2;
+        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(0.5, viewportZ * (1.0 + Math.fma(objX, _self00, Math.fma(objY, _self01, Math.fma(objZ, _self02, _self03))) * _t2_inv), viewportX));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(0.5, viewportW * (1.0 + Math.fma(objX, _self10, Math.fma(objY, _self11, Math.fma(objZ, _self12, _self13))) * _t2_inv), viewportY));
+        UnsafeOpsHolder.U.putDouble(dest + 16L, Math.fma(objX, _self20, Math.fma(objY, _self21, Math.fma(objZ, _self22, _self23))) * _t2_inv);
+        return dest;
+    }
+
+    public static long project_no(long dest, long src, long obj, long viewport) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.project_no_unsafe(dest, src, obj, viewport);
+        Double4x4OpsKernelsSegment.project_no(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(obj, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(viewport, 32L), 0L);
+        return dest;
+    }
+
+    public static long project_no_unsafe(long dest, long src, long obj, long viewport) {
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -14818,6 +15167,44 @@ public final class Double4x4OpsKernelsAddress {
         UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(0.5, _viewportz * (1.0 + Math.fma(_objx, _self00, Math.fma(_objy, _self01, Math.fma(_objz, _self02, _self03))) * _t2_inv), _viewportx));
         UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(0.5, _viewportw * (1.0 + Math.fma(_objx, _self10, Math.fma(_objy, _self11, Math.fma(_objz, _self12, _self13))) * _t2_inv), _viewporty));
         UnsafeOpsHolder.U.putDouble(dest + 16L, 0.5 * (1.0 + Math.fma(_objx, _self20, Math.fma(_objy, _self21, Math.fma(_objz, _self22, _self23))) * _t2_inv));
+        return dest;
+    }
+
+    public static long project_zo(long dest, long src, long obj, long viewport) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.project_zo_unsafe(dest, src, obj, viewport);
+        Double4x4OpsKernelsSegment.project_zo(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(obj, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(viewport, 32L), 0L);
+        return dest;
+    }
+
+    public static long project_zo_unsafe(long dest, long src, long obj, long viewport) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
+        double _self30 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 40L);
+        double _self21 = UnsafeOpsHolder.U.getDouble(src + 48L);
+        double _self31 = UnsafeOpsHolder.U.getDouble(src + 56L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 64L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 72L);
+        double _self22 = UnsafeOpsHolder.U.getDouble(src + 80L);
+        double _self32 = UnsafeOpsHolder.U.getDouble(src + 88L);
+        double _self03 = UnsafeOpsHolder.U.getDouble(src + 96L);
+        double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
+        double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
+        double _objx = UnsafeOpsHolder.U.getDouble(obj + 0L);
+        double _objy = UnsafeOpsHolder.U.getDouble(obj + 8L);
+        double _objz = UnsafeOpsHolder.U.getDouble(obj + 16L);
+        double _viewportx = UnsafeOpsHolder.U.getDouble(viewport + 0L);
+        double _viewporty = UnsafeOpsHolder.U.getDouble(viewport + 8L);
+        double _viewportz = UnsafeOpsHolder.U.getDouble(viewport + 16L);
+        double _viewportw = UnsafeOpsHolder.U.getDouble(viewport + 24L);
+        double _t2 = Math.fma(_objx, _self30, Math.fma(_objy, _self31, Math.fma(_objz, _self32, _self33)));
+        double _t2_inv = 1.0 / _t2;
+        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(0.5, _viewportz * (1.0 + Math.fma(_objx, _self00, Math.fma(_objy, _self01, Math.fma(_objz, _self02, _self03))) * _t2_inv), _viewportx));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(0.5, _viewportw * (1.0 + Math.fma(_objx, _self10, Math.fma(_objy, _self11, Math.fma(_objz, _self12, _self13))) * _t2_inv), _viewporty));
+        UnsafeOpsHolder.U.putDouble(dest + 16L, Math.fma(_objx, _self20, Math.fma(_objy, _self21, Math.fma(_objz, _self22, _self23))) * _t2_inv);
         return dest;
     }
 
@@ -16361,7 +16748,13 @@ public final class Double4x4OpsKernelsAddress {
         return dest;
     }
 
-    public static long unproject_unsafe(long dest, long src, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static long unproject_no(long dest, long src, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.unproject_no_unsafe(dest, src, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsSegment.unproject_no(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static long unproject_no_unsafe(long dest, long src, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -16407,7 +16800,65 @@ public final class Double4x4OpsKernelsAddress {
         return dest;
     }
 
-    public static long unproject_unsafe(long dest, long src, long winCoords, long viewport) {
+    public static long unproject_zo(long dest, long src, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.unproject_zo_unsafe(dest, src, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsSegment.unproject_zo(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static long unproject_zo_unsafe(long dest, long src, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
+        double _self30 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 40L);
+        double _self21 = UnsafeOpsHolder.U.getDouble(src + 48L);
+        double _self31 = UnsafeOpsHolder.U.getDouble(src + 56L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 64L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 72L);
+        double _self22 = UnsafeOpsHolder.U.getDouble(src + 80L);
+        double _self32 = UnsafeOpsHolder.U.getDouble(src + 88L);
+        double _self03 = UnsafeOpsHolder.U.getDouble(src + 96L);
+        double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
+        double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
+        double _t0 = -winCoordsZ;
+        double _t43 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t44 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t45 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t46 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t47 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t48 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t49 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t50 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t52 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t53 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t55 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t56 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t57 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t58 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t61 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t62 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t83 = Math.fma(_self02, _t52, Math.fma(_self00, _t49, -(_self01 * _t53))) + Math.fma(_t0, Math.fma(_self02, _t54, Math.fma(_self00, _t43, -(_self01 * _t55))), Math.fma(Math.fma(_self02, _t56, Math.fma(_self00, _t46, -(_self01 * _t57))), _t62, -(Math.fma(_self12, _t56, Math.fma(_self10, _t46, -(_self11 * _t57))) * _t61)));
+        double _t83_inv = 1.0 / _t83;
+        UnsafeOpsHolder.U.putDouble(dest + 0L, (Math.fma(winCoordsZ, Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))), Math.fma(Math.fma(_self13, _t46, Math.fma(_self11, _t47, -(_self12 * _t48))), _t61, -(Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48))) * _t62))) - Math.fma(_self03, _t49, Math.fma(_self01, _t50, -(_self02 * _t51)))) * _t83_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 8L, (Math.fma(_self03, _t53, Math.fma(_self00, _t50, -(_self02 * _t58))) + Math.fma(_t0, Math.fma(_self03, _t55, Math.fma(_self00, _t44, -(_self02 * _t59))), Math.fma(Math.fma(_self03, _t57, Math.fma(_self00, _t47, -(_self02 * _t60))), _t62, -(Math.fma(_self13, _t57, Math.fma(_self10, _t47, -(_self12 * _t60))) * _t61)))) * _t83_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 16L, (Math.fma(winCoordsZ, Math.fma(_self03, _t54, Math.fma(_self00, _t45, -(_self01 * _t59))), Math.fma(Math.fma(_self13, _t56, Math.fma(_self10, _t48, -(_self11 * _t60))), _t61, -(Math.fma(_self03, _t56, Math.fma(_self00, _t48, -(_self01 * _t60))) * _t62))) - Math.fma(_self03, _t52, Math.fma(_self00, _t51, -(_self01 * _t58)))) * _t83_inv);
+        return dest;
+    }
+
+    public static long unproject_no(long dest, long src, long winCoords, long viewport) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.unproject_no_unsafe(dest, src, winCoords, viewport);
+        Double4x4OpsKernelsSegment.unproject_no(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(winCoords, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(viewport, 32L), 0L);
+        return dest;
+    }
+
+    public static long unproject_no_unsafe(long dest, long src, long winCoords, long viewport) {
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -16460,7 +16911,72 @@ public final class Double4x4OpsKernelsAddress {
         return dest;
     }
 
-    public static long unprojectInv_unsafe(long dest, long src, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static long unproject_zo(long dest, long src, long winCoords, long viewport) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.unproject_zo_unsafe(dest, src, winCoords, viewport);
+        Double4x4OpsKernelsSegment.unproject_zo(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(winCoords, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(viewport, 32L), 0L);
+        return dest;
+    }
+
+    public static long unproject_zo_unsafe(long dest, long src, long winCoords, long viewport) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
+        double _self30 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 40L);
+        double _self21 = UnsafeOpsHolder.U.getDouble(src + 48L);
+        double _self31 = UnsafeOpsHolder.U.getDouble(src + 56L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 64L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 72L);
+        double _self22 = UnsafeOpsHolder.U.getDouble(src + 80L);
+        double _self32 = UnsafeOpsHolder.U.getDouble(src + 88L);
+        double _self03 = UnsafeOpsHolder.U.getDouble(src + 96L);
+        double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
+        double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
+        double _winCoordsx = UnsafeOpsHolder.U.getDouble(winCoords + 0L);
+        double _winCoordsy = UnsafeOpsHolder.U.getDouble(winCoords + 8L);
+        double _winCoordsz = UnsafeOpsHolder.U.getDouble(winCoords + 16L);
+        double _viewportx = UnsafeOpsHolder.U.getDouble(viewport + 0L);
+        double _viewporty = UnsafeOpsHolder.U.getDouble(viewport + 8L);
+        double _viewportz = UnsafeOpsHolder.U.getDouble(viewport + 16L);
+        double _viewportw = UnsafeOpsHolder.U.getDouble(viewport + 24L);
+        double _t0 = -_winCoordsz;
+        double _t43 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t44 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t45 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t46 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t47 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t48 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t49 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t50 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t52 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t53 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t55 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t56 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t57 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t58 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t61 = 2.0 * (_winCoordsx - _viewportx) / _viewportz - 1.0;
+        double _t62 = 2.0 * (_winCoordsy - _viewporty) / _viewportw - 1.0;
+        double _t83 = Math.fma(_self02, _t52, Math.fma(_self00, _t49, -(_self01 * _t53))) + Math.fma(_t0, Math.fma(_self02, _t54, Math.fma(_self00, _t43, -(_self01 * _t55))), Math.fma(Math.fma(_self02, _t56, Math.fma(_self00, _t46, -(_self01 * _t57))), _t62, -(Math.fma(_self12, _t56, Math.fma(_self10, _t46, -(_self11 * _t57))) * _t61)));
+        double _t83_inv = 1.0 / _t83;
+        UnsafeOpsHolder.U.putDouble(dest + 0L, (Math.fma(_winCoordsz, Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))), Math.fma(Math.fma(_self13, _t46, Math.fma(_self11, _t47, -(_self12 * _t48))), _t61, -(Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48))) * _t62))) - Math.fma(_self03, _t49, Math.fma(_self01, _t50, -(_self02 * _t51)))) * _t83_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 8L, (Math.fma(_self03, _t53, Math.fma(_self00, _t50, -(_self02 * _t58))) + Math.fma(_t0, Math.fma(_self03, _t55, Math.fma(_self00, _t44, -(_self02 * _t59))), Math.fma(Math.fma(_self03, _t57, Math.fma(_self00, _t47, -(_self02 * _t60))), _t62, -(Math.fma(_self13, _t57, Math.fma(_self10, _t47, -(_self12 * _t60))) * _t61)))) * _t83_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 16L, (Math.fma(_winCoordsz, Math.fma(_self03, _t54, Math.fma(_self00, _t45, -(_self01 * _t59))), Math.fma(Math.fma(_self13, _t56, Math.fma(_self10, _t48, -(_self11 * _t60))), _t61, -(Math.fma(_self03, _t56, Math.fma(_self00, _t48, -(_self01 * _t60))) * _t62))) - Math.fma(_self03, _t52, Math.fma(_self00, _t51, -(_self01 * _t58)))) * _t83_inv);
+        return dest;
+    }
+
+    public static long unprojectInv_no(long dest, long src, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.unprojectInv_no_unsafe(dest, src, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsSegment.unprojectInv_no(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static long unprojectInv_no_unsafe(long dest, long src, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -16488,7 +17004,46 @@ public final class Double4x4OpsKernelsAddress {
         return dest;
     }
 
-    public static long unprojectInv_unsafe(long dest, long src, long winCoords, long viewport) {
+    public static long unprojectInv_zo(long dest, long src, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.unprojectInv_zo_unsafe(dest, src, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsSegment.unprojectInv_zo(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static long unprojectInv_zo_unsafe(long dest, long src, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
+        double _self30 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 40L);
+        double _self21 = UnsafeOpsHolder.U.getDouble(src + 48L);
+        double _self31 = UnsafeOpsHolder.U.getDouble(src + 56L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 64L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 72L);
+        double _self22 = UnsafeOpsHolder.U.getDouble(src + 80L);
+        double _self32 = UnsafeOpsHolder.U.getDouble(src + 88L);
+        double _self03 = UnsafeOpsHolder.U.getDouble(src + 96L);
+        double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
+        double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
+        double _t7 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t8 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t10 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, Math.fma(_self32, winCoordsZ, _self33)));
+        double _t10_inv = 1.0 / _t10;
+        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self00, _t7, Math.fma(_self01, _t8, Math.fma(_self02, winCoordsZ, _self03))) * _t10_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self10, _t7, Math.fma(_self11, _t8, Math.fma(_self12, winCoordsZ, _self13))) * _t10_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 16L, Math.fma(_self20, _t7, Math.fma(_self21, _t8, Math.fma(_self22, winCoordsZ, _self23))) * _t10_inv);
+        return dest;
+    }
+
+    public static long unprojectInv_no(long dest, long src, long winCoords, long viewport) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.unprojectInv_no_unsafe(dest, src, winCoords, viewport);
+        Double4x4OpsKernelsSegment.unprojectInv_no(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(winCoords, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(viewport, 32L), 0L);
+        return dest;
+    }
+
+    public static long unprojectInv_no_unsafe(long dest, long src, long winCoords, long viewport) {
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -16523,7 +17078,53 @@ public final class Double4x4OpsKernelsAddress {
         return dest;
     }
 
-    public static long unprojectInvRay_unsafe(long rayOrigin, long rayDir, long src, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static long unprojectInv_zo(long dest, long src, long winCoords, long viewport) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.unprojectInv_zo_unsafe(dest, src, winCoords, viewport);
+        Double4x4OpsKernelsSegment.unprojectInv_zo(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(winCoords, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(viewport, 32L), 0L);
+        return dest;
+    }
+
+    public static long unprojectInv_zo_unsafe(long dest, long src, long winCoords, long viewport) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
+        double _self30 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 40L);
+        double _self21 = UnsafeOpsHolder.U.getDouble(src + 48L);
+        double _self31 = UnsafeOpsHolder.U.getDouble(src + 56L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 64L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 72L);
+        double _self22 = UnsafeOpsHolder.U.getDouble(src + 80L);
+        double _self32 = UnsafeOpsHolder.U.getDouble(src + 88L);
+        double _self03 = UnsafeOpsHolder.U.getDouble(src + 96L);
+        double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
+        double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
+        double _winCoordsx = UnsafeOpsHolder.U.getDouble(winCoords + 0L);
+        double _winCoordsy = UnsafeOpsHolder.U.getDouble(winCoords + 8L);
+        double _winCoordsz = UnsafeOpsHolder.U.getDouble(winCoords + 16L);
+        double _viewportx = UnsafeOpsHolder.U.getDouble(viewport + 0L);
+        double _viewporty = UnsafeOpsHolder.U.getDouble(viewport + 8L);
+        double _viewportz = UnsafeOpsHolder.U.getDouble(viewport + 16L);
+        double _viewportw = UnsafeOpsHolder.U.getDouble(viewport + 24L);
+        double _t7 = 2.0 * (_winCoordsx - _viewportx) / _viewportz - 1.0;
+        double _t8 = 2.0 * (_winCoordsy - _viewporty) / _viewportw - 1.0;
+        double _t10 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, Math.fma(_self32, _winCoordsz, _self33)));
+        double _t10_inv = 1.0 / _t10;
+        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self00, _t7, Math.fma(_self01, _t8, Math.fma(_self02, _winCoordsz, _self03))) * _t10_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self10, _t7, Math.fma(_self11, _t8, Math.fma(_self12, _winCoordsz, _self13))) * _t10_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 16L, Math.fma(_self20, _t7, Math.fma(_self21, _t8, Math.fma(_self22, _winCoordsz, _self23))) * _t10_inv);
+        return dest;
+    }
+
+    public static long unprojectInvRay_no(long rayOrigin, long rayDir, long src, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.unprojectInvRay_no_unsafe(rayOrigin, rayDir, src, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsSegment.unprojectInvRay_no(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayOrigin, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayDir, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return rayOrigin;
+    }
+
+    public static long unprojectInvRay_no_unsafe(long rayOrigin, long rayDir, long src, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -16558,7 +17159,54 @@ public final class Double4x4OpsKernelsAddress {
         return rayOrigin;
     }
 
-    public static long unprojectInvRay_unsafe(long rayOrigin, long rayDir, long src, long winCoords, long viewport) {
+    public static long unprojectInvRay_zo(long rayOrigin, long rayDir, long src, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.unprojectInvRay_zo_unsafe(rayOrigin, rayDir, src, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsSegment.unprojectInvRay_zo(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayOrigin, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayDir, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return rayOrigin;
+    }
+
+    public static long unprojectInvRay_zo_unsafe(long rayOrigin, long rayDir, long src, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
+        double _self30 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 40L);
+        double _self21 = UnsafeOpsHolder.U.getDouble(src + 48L);
+        double _self31 = UnsafeOpsHolder.U.getDouble(src + 56L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 64L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 72L);
+        double _self22 = UnsafeOpsHolder.U.getDouble(src + 80L);
+        double _self32 = UnsafeOpsHolder.U.getDouble(src + 88L);
+        double _self03 = UnsafeOpsHolder.U.getDouble(src + 96L);
+        double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
+        double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
+        double _t7 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t8 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t15 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33));
+        double _t15_inv = 1.0 / _t15;
+        double _t18 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33 + _self32));
+        double _t18_inv = 1.0 / _t18;
+        double _t19 = Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03)) * _t15_inv;
+        double _t20 = Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13)) * _t15_inv;
+        double _t21 = Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23)) * _t15_inv;
+        UnsafeOpsHolder.U.putDouble(rayOrigin + 0L, _t19);
+        UnsafeOpsHolder.U.putDouble(rayOrigin + 8L, _t20);
+        UnsafeOpsHolder.U.putDouble(rayOrigin + 16L, _t21);
+        UnsafeOpsHolder.U.putDouble(rayDir + 0L, Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03 + _self02)) * _t18_inv - _t19);
+        UnsafeOpsHolder.U.putDouble(rayDir + 8L, Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13 + _self12)) * _t18_inv - _t20);
+        UnsafeOpsHolder.U.putDouble(rayDir + 16L, Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23 + _self22)) * _t18_inv - _t21);
+        return rayOrigin;
+    }
+
+    public static long unprojectInvRay_no(long rayOrigin, long rayDir, long src, long winCoords, long viewport) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.unprojectInvRay_no_unsafe(rayOrigin, rayDir, src, winCoords, viewport);
+        Double4x4OpsKernelsSegment.unprojectInvRay_no(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayOrigin, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayDir, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(winCoords, 16L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(viewport, 32L), 0L);
+        return rayOrigin;
+    }
+
+    public static long unprojectInvRay_no_unsafe(long rayOrigin, long rayDir, long src, long winCoords, long viewport) {
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -16599,7 +17247,60 @@ public final class Double4x4OpsKernelsAddress {
         return rayOrigin;
     }
 
-    public static long unprojectRay_unsafe(long rayOrigin, long rayDir, long src, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static long unprojectInvRay_zo(long rayOrigin, long rayDir, long src, long winCoords, long viewport) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.unprojectInvRay_zo_unsafe(rayOrigin, rayDir, src, winCoords, viewport);
+        Double4x4OpsKernelsSegment.unprojectInvRay_zo(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayOrigin, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayDir, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(winCoords, 16L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(viewport, 32L), 0L);
+        return rayOrigin;
+    }
+
+    public static long unprojectInvRay_zo_unsafe(long rayOrigin, long rayDir, long src, long winCoords, long viewport) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
+        double _self30 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 40L);
+        double _self21 = UnsafeOpsHolder.U.getDouble(src + 48L);
+        double _self31 = UnsafeOpsHolder.U.getDouble(src + 56L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 64L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 72L);
+        double _self22 = UnsafeOpsHolder.U.getDouble(src + 80L);
+        double _self32 = UnsafeOpsHolder.U.getDouble(src + 88L);
+        double _self03 = UnsafeOpsHolder.U.getDouble(src + 96L);
+        double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
+        double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
+        double _winCoordsx = UnsafeOpsHolder.U.getDouble(winCoords + 0L);
+        double _winCoordsy = UnsafeOpsHolder.U.getDouble(winCoords + 8L);
+        double _viewportx = UnsafeOpsHolder.U.getDouble(viewport + 0L);
+        double _viewporty = UnsafeOpsHolder.U.getDouble(viewport + 8L);
+        double _viewportz = UnsafeOpsHolder.U.getDouble(viewport + 16L);
+        double _viewportw = UnsafeOpsHolder.U.getDouble(viewport + 24L);
+        double _t7 = 2.0 * (_winCoordsx - _viewportx) / _viewportz - 1.0;
+        double _t8 = 2.0 * (_winCoordsy - _viewporty) / _viewportw - 1.0;
+        double _t15 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33));
+        double _t15_inv = 1.0 / _t15;
+        double _t18 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33 + _self32));
+        double _t18_inv = 1.0 / _t18;
+        double _t19 = Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03)) * _t15_inv;
+        double _t20 = Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13)) * _t15_inv;
+        double _t21 = Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23)) * _t15_inv;
+        UnsafeOpsHolder.U.putDouble(rayOrigin + 0L, _t19);
+        UnsafeOpsHolder.U.putDouble(rayOrigin + 8L, _t20);
+        UnsafeOpsHolder.U.putDouble(rayOrigin + 16L, _t21);
+        UnsafeOpsHolder.U.putDouble(rayDir + 0L, Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03 + _self02)) * _t18_inv - _t19);
+        UnsafeOpsHolder.U.putDouble(rayDir + 8L, Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13 + _self12)) * _t18_inv - _t20);
+        UnsafeOpsHolder.U.putDouble(rayDir + 16L, Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23 + _self22)) * _t18_inv - _t21);
+        return rayOrigin;
+    }
+
+    public static long unprojectRay_no(long rayOrigin, long rayDir, long src, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.unprojectRay_no_unsafe(rayOrigin, rayDir, src, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsSegment.unprojectRay_no(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayOrigin, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayDir, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return rayOrigin;
+    }
+
+    public static long unprojectRay_no_unsafe(long rayOrigin, long rayDir, long src, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -16666,7 +17367,83 @@ public final class Double4x4OpsKernelsAddress {
         return rayOrigin;
     }
 
-    public static long unprojectRay_unsafe(long rayOrigin, long rayDir, long src, long winCoords, long viewport) {
+    public static long unprojectRay_zo(long rayOrigin, long rayDir, long src, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.unprojectRay_zo_unsafe(rayOrigin, rayDir, src, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsSegment.unprojectRay_zo(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayOrigin, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayDir, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return rayOrigin;
+    }
+
+    public static long unprojectRay_zo_unsafe(long rayOrigin, long rayDir, long src, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
+        double _self30 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 40L);
+        double _self21 = UnsafeOpsHolder.U.getDouble(src + 48L);
+        double _self31 = UnsafeOpsHolder.U.getDouble(src + 56L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 64L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 72L);
+        double _self22 = UnsafeOpsHolder.U.getDouble(src + 80L);
+        double _self32 = UnsafeOpsHolder.U.getDouble(src + 88L);
+        double _self03 = UnsafeOpsHolder.U.getDouble(src + 96L);
+        double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
+        double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
+        double _t0 = -_self00;
+        double _t43 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t44 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t45 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t46 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t47 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t48 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t49 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t50 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t51 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t52 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t53 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t54 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t55 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t56 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t57 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t58 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t59 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t60 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t61 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t62 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t92 = Math.fma(_self00, _t46, -(_self01 * _t50));
+        double _t95 = Math.fma(_self00, _t47, -(_self02 * _t53));
+        double _t102 = Math.fma(_self13, _t43, Math.fma(_self11, _t44, -(_self12 * _t45)));
+        double _t106 = Math.fma(_self02, _t51, Math.fma(_self00, _t43, -(_self01 * _t52)));
+        double _t109 = Math.fma(_self03, _t52, Math.fma(_self00, _t44, -(_self02 * _t54)));
+        double _t111 = Math.fma(_self13, _t51, Math.fma(_self10, _t45, -(_self11 * _t54)));
+        double _t119 = -(Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))) * _t62);
+        double _t120 = -(Math.fma(_self12, _t51, Math.fma(_self10, _t43, -(_self11 * _t52))) * _t61);
+        double _t121 = -(Math.fma(_self13, _t52, Math.fma(_self10, _t44, -(_self12 * _t54))) * _t61);
+        double _t122 = -(Math.fma(_self03, _t51, Math.fma(_self00, _t45, -(_self01 * _t54))) * _t62);
+        double _t132 = Math.fma(_self02, _t49, _t92) + Math.fma(_t106, _t62, _t120);
+        double _t132_inv = 1.0 / _t132;
+        double _t135 = _t92 + Math.fma(_self02, _t49, _t106 * _t62) + (Math.fma(_t0, _t57, _t120) + Math.fma(_self01, _t58, -(_self02 * _t59)));
+        double _t135_inv = 1.0 / _t135;
+        double _t136 = (Math.fma(_t102, _t61, _t119) - Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48)))) * _t132_inv;
+        double _t137 = (Math.fma(_self03, _t50, _t95) + Math.fma(_t109, _t62, _t121)) * _t132_inv;
+        double _t138 = (Math.fma(_t111, _t61, _t122) - Math.fma(_self03, _t49, Math.fma(_self00, _t48, -(_self01 * _t53)))) * _t132_inv;
+        UnsafeOpsHolder.U.putDouble(rayOrigin + 0L, _t136);
+        UnsafeOpsHolder.U.putDouble(rayOrigin + 8L, _t137);
+        UnsafeOpsHolder.U.putDouble(rayOrigin + 16L, _t138);
+        UnsafeOpsHolder.U.putDouble(rayDir + 0L, (Math.fma(_self01, _t55, -(_self02 * _t56)) + Math.fma(_self03, _t57, _t102 * _t61) + (Math.fma(-_self01, _t47, _t119) + Math.fma(_self02, _t48, -(_self03 * _t46)))) * _t135_inv - _t136);
+        UnsafeOpsHolder.U.putDouble(rayDir + 8L, (_t95 + Math.fma(_self03, _t50, _t109 * _t62) + (Math.fma(_t0, _t55, _t121) + Math.fma(_self02, _t60, -(_self03 * _t58)))) * _t135_inv - _t137);
+        UnsafeOpsHolder.U.putDouble(rayDir + 16L, (Math.fma(_self00, _t56, -(_self01 * _t60)) + Math.fma(_self03, _t59, _t111 * _t61) + (Math.fma(_t0, _t48, _t122) + Math.fma(_self01, _t53, -(_self03 * _t49)))) * _t135_inv - _t138);
+        return rayOrigin;
+    }
+
+    public static long unprojectRay_no(long rayOrigin, long rayDir, long src, long winCoords, long viewport) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.unprojectRay_no_unsafe(rayOrigin, rayDir, src, winCoords, viewport);
+        Double4x4OpsKernelsSegment.unprojectRay_no(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayOrigin, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayDir, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(winCoords, 16L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(viewport, 32L), 0L);
+        return rayOrigin;
+    }
+
+    public static long unprojectRay_no_unsafe(long rayOrigin, long rayDir, long src, long winCoords, long viewport) {
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -16736,6 +17513,82 @@ public final class Double4x4OpsKernelsAddress {
         UnsafeOpsHolder.U.putDouble(rayDir + 0L, (Math.fma(_self01, _t48, -(_self02 * _t47)) + Math.fma(_self03, _t50, _t122 * _t62) + (Math.fma(_t0, _t49, _t136) + _t105)) * _t160_inv - _t164);
         UnsafeOpsHolder.U.putDouble(rayDir + 8L, (Math.fma(_self00, _t49, _t95) + Math.fma(_self03, _t58, _t133) + (Math.fma(_t1, _t48, _t138) + Math.fma(_self02, _t59, -(_self03 * _t53)))) * _t160_inv - _t163);
         UnsafeOpsHolder.U.putDouble(rayDir + 16L, (Math.fma(_self00, _t47, -(_self01 * _t59)) + Math.fma(_self03, _t54, _t128 * _t62) + (Math.fma(_t1, _t51, _t139) + _t117)) * _t160_inv - _t165);
+        return rayOrigin;
+    }
+
+    public static long unprojectRay_zo(long rayOrigin, long rayDir, long src, long winCoords, long viewport) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.unprojectRay_zo_unsafe(rayOrigin, rayDir, src, winCoords, viewport);
+        Double4x4OpsKernelsSegment.unprojectRay_zo(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayOrigin, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayDir, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(winCoords, 16L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(viewport, 32L), 0L);
+        return rayOrigin;
+    }
+
+    public static long unprojectRay_zo_unsafe(long rayOrigin, long rayDir, long src, long winCoords, long viewport) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
+        double _self30 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 40L);
+        double _self21 = UnsafeOpsHolder.U.getDouble(src + 48L);
+        double _self31 = UnsafeOpsHolder.U.getDouble(src + 56L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 64L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 72L);
+        double _self22 = UnsafeOpsHolder.U.getDouble(src + 80L);
+        double _self32 = UnsafeOpsHolder.U.getDouble(src + 88L);
+        double _self03 = UnsafeOpsHolder.U.getDouble(src + 96L);
+        double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
+        double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
+        double _winCoordsx = UnsafeOpsHolder.U.getDouble(winCoords + 0L);
+        double _winCoordsy = UnsafeOpsHolder.U.getDouble(winCoords + 8L);
+        double _viewportx = UnsafeOpsHolder.U.getDouble(viewport + 0L);
+        double _viewporty = UnsafeOpsHolder.U.getDouble(viewport + 8L);
+        double _viewportz = UnsafeOpsHolder.U.getDouble(viewport + 16L);
+        double _viewportw = UnsafeOpsHolder.U.getDouble(viewport + 24L);
+        double _t0 = -_self00;
+        double _t43 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t44 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t45 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t46 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t47 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t48 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t49 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t50 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t51 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t52 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t53 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t54 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t55 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t56 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t57 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t58 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t59 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t60 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t61 = 2.0 * (_winCoordsx - _viewportx) / _viewportz - 1.0;
+        double _t62 = 2.0 * (_winCoordsy - _viewporty) / _viewportw - 1.0;
+        double _t92 = Math.fma(_self00, _t46, -(_self01 * _t50));
+        double _t95 = Math.fma(_self00, _t47, -(_self02 * _t53));
+        double _t102 = Math.fma(_self13, _t43, Math.fma(_self11, _t44, -(_self12 * _t45)));
+        double _t106 = Math.fma(_self02, _t51, Math.fma(_self00, _t43, -(_self01 * _t52)));
+        double _t109 = Math.fma(_self03, _t52, Math.fma(_self00, _t44, -(_self02 * _t54)));
+        double _t111 = Math.fma(_self13, _t51, Math.fma(_self10, _t45, -(_self11 * _t54)));
+        double _t119 = -(Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))) * _t62);
+        double _t120 = -(Math.fma(_self12, _t51, Math.fma(_self10, _t43, -(_self11 * _t52))) * _t61);
+        double _t121 = -(Math.fma(_self13, _t52, Math.fma(_self10, _t44, -(_self12 * _t54))) * _t61);
+        double _t122 = -(Math.fma(_self03, _t51, Math.fma(_self00, _t45, -(_self01 * _t54))) * _t62);
+        double _t132 = Math.fma(_self02, _t49, _t92) + Math.fma(_t106, _t62, _t120);
+        double _t132_inv = 1.0 / _t132;
+        double _t135 = _t92 + Math.fma(_self02, _t49, _t106 * _t62) + (Math.fma(_t0, _t57, _t120) + Math.fma(_self01, _t58, -(_self02 * _t59)));
+        double _t135_inv = 1.0 / _t135;
+        double _t136 = (Math.fma(_t102, _t61, _t119) - Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48)))) * _t132_inv;
+        double _t137 = (Math.fma(_self03, _t50, _t95) + Math.fma(_t109, _t62, _t121)) * _t132_inv;
+        double _t138 = (Math.fma(_t111, _t61, _t122) - Math.fma(_self03, _t49, Math.fma(_self00, _t48, -(_self01 * _t53)))) * _t132_inv;
+        UnsafeOpsHolder.U.putDouble(rayOrigin + 0L, _t136);
+        UnsafeOpsHolder.U.putDouble(rayOrigin + 8L, _t137);
+        UnsafeOpsHolder.U.putDouble(rayOrigin + 16L, _t138);
+        UnsafeOpsHolder.U.putDouble(rayDir + 0L, (Math.fma(_self01, _t55, -(_self02 * _t56)) + Math.fma(_self03, _t57, _t102 * _t61) + (Math.fma(-_self01, _t47, _t119) + Math.fma(_self02, _t48, -(_self03 * _t46)))) * _t135_inv - _t136);
+        UnsafeOpsHolder.U.putDouble(rayDir + 8L, (_t95 + Math.fma(_self03, _t50, _t109 * _t62) + (Math.fma(_t0, _t55, _t121) + Math.fma(_self02, _t60, -(_self03 * _t58)))) * _t135_inv - _t137);
+        UnsafeOpsHolder.U.putDouble(rayDir + 16L, (Math.fma(_self00, _t56, -(_self01 * _t60)) + Math.fma(_self03, _t59, _t111 * _t61) + (Math.fma(_t0, _t48, _t122) + Math.fma(_self01, _t53, -(_self03 * _t49)))) * _t135_inv - _t138);
         return rayOrigin;
     }
 

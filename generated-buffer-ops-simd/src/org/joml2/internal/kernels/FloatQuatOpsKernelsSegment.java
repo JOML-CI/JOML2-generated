@@ -1011,7 +1011,7 @@ public final class FloatQuatOpsKernelsSegment {
         float _t9 = Math.abs(_t8);
         float _t11 = (float) Math.sin(alpha * _t7);
         float _t13 = (float) Math.sin(_t0 * _t7);
-        if (_t9 > 0.0f) {
+        if (_t9 > 1.0E-6f) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_selfx, _t13, targetX * _t11) * _t8_inv);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_selfy, _t13, targetY * _t11) * _t8_inv);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, Math.fma(_selfz, _t13, targetZ * _t11) * _t8_inv);
@@ -1049,7 +1049,7 @@ public final class FloatQuatOpsKernelsSegment {
         float _t9 = Math.abs(_t8);
         float _t11 = (float) Math.sin(alpha * _t7);
         float _t13 = (float) Math.sin(_t0 * _t7);
-        if (_t9 > 0.0f) {
+        if (_t9 > 1.0E-6f) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_selfx, _t13, _targetx * _t11) * _t8_inv);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_selfy, _t13, _targety * _t11) * _t8_inv);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, Math.fma(_selfz, _t13, _targetz * _t11) * _t8_inv);
@@ -1217,7 +1217,7 @@ public final class FloatQuatOpsKernelsSegment {
         float _t45 = (float) Math.sin(_t0 * _t33);
         float _t46 = (float) Math.sin(_t0 * _t34);
         float _t71, _t73, _t75, _t77;
-        if (_t37 > 0.0f) {
+        if (_t37 > 1.0E-6f) {
             _t71 = Math.fma(control0W, _t45, control1W * _t41) * _t35_inv;
             _t73 = Math.fma(control0Z, _t45, control1Z * _t41) * _t35_inv;
             _t75 = Math.fma(control0X, _t45, control1X * _t41) * _t35_inv;
@@ -1229,7 +1229,7 @@ public final class FloatQuatOpsKernelsSegment {
             _t77 = Math.fma(t, control1Y, control0Y * _t0);
         }
         float _t72, _t74, _t76, _t78;
-        if (_t39 > 0.0f) {
+        if (_t39 > 1.0E-6f) {
             _t72 = Math.fma(_selfw, _t46, targetW * _t42) * _t36_inv;
             _t74 = Math.fma(_selfz, _t46, targetZ * _t42) * _t36_inv;
             _t76 = Math.fma(_selfx, _t46, targetX * _t42) * _t36_inv;
@@ -1246,7 +1246,7 @@ public final class FloatQuatOpsKernelsSegment {
         float _t87 = Math.abs(_t86);
         float _t89 = (float) Math.sin(_t13 * _t85);
         float _t91 = (float) Math.sin(_t14 * _t85);
-        if (_t87 > 0.0f) {
+        if (_t87 > 1.0E-6f) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_t91, _t76, _t89 * _t75) * _t86_inv);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_t91, _t78, _t89 * _t77) * _t86_inv);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, Math.fma(_t91, _t74, _t89 * _t73) * _t86_inv);
@@ -1304,7 +1304,7 @@ public final class FloatQuatOpsKernelsSegment {
         float _t45 = (float) Math.sin(_t0 * _t33);
         float _t46 = (float) Math.sin(_t0 * _t34);
         float _t71, _t73, _t75, _t77;
-        if (_t37 > 0.0f) {
+        if (_t37 > 1.0E-6f) {
             _t71 = Math.fma(_control0w, _t45, _control1w * _t41) * _t35_inv;
             _t73 = Math.fma(_control0z, _t45, _control1z * _t41) * _t35_inv;
             _t75 = Math.fma(_control0x, _t45, _control1x * _t41) * _t35_inv;
@@ -1316,7 +1316,7 @@ public final class FloatQuatOpsKernelsSegment {
             _t77 = Math.fma(t, _control1y, _control0y * _t0);
         }
         float _t72, _t74, _t76, _t78;
-        if (_t39 > 0.0f) {
+        if (_t39 > 1.0E-6f) {
             _t72 = Math.fma(_selfw, _t46, _targetw * _t42) * _t36_inv;
             _t74 = Math.fma(_selfz, _t46, _targetz * _t42) * _t36_inv;
             _t76 = Math.fma(_selfx, _t46, _targetx * _t42) * _t36_inv;
@@ -1333,7 +1333,7 @@ public final class FloatQuatOpsKernelsSegment {
         float _t87 = Math.abs(_t86);
         float _t89 = (float) Math.sin(_t13 * _t85);
         float _t91 = (float) Math.sin(_t14 * _t85);
-        if (_t87 > 0.0f) {
+        if (_t87 > 1.0E-6f) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_t91, _t76, _t89 * _t75) * _t86_inv);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_t91, _t78, _t89 * _t77) * _t86_inv);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, Math.fma(_t91, _t74, _t89 * _t73) * _t86_inv);
@@ -1962,15 +1962,15 @@ public final class FloatQuatOpsKernelsSegment {
         float _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
         float _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
-        float _t7 = 2.0f * Math.fma(_selfx, _selfz, _selfy * _selfw);
-        float _t8 = 2.0f * Math.fma(_selfx, _selfy, -(_selfz * _selfw));
-        float _t9 = Math.fma(-2.0f, Math.fma(_selfy, _selfy, _selfz * _selfz), 1.0f);
-        float _t12 = Math.fma(_t7, _t7, Math.fma(_t9, _t9, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t9 * _t13));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t8 * _t13));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t7 * _t13));
+        float _t9 = 2.0f * Math.fma(_selfx, _selfz, _selfy * _selfw);
+        float _t10 = 2.0f * Math.fma(_selfx, _selfy, -(_selfz * _selfw));
+        float _t12 = Math.fma(-_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfx, _selfx, _selfw * _selfw)));
+        float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t12 * _t16));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t10 * _t16));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t9 * _t16));
         } else {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -0.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -0.0f);
@@ -1991,15 +1991,15 @@ public final class FloatQuatOpsKernelsSegment {
         float _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
         float _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
-        float _t7 = 2.0f * Math.fma(_selfx, _selfy, _selfz * _selfw);
-        float _t8 = 2.0f * Math.fma(_selfy, _selfz, -(_selfx * _selfw));
-        float _t9 = Math.fma(-2.0f, Math.fma(_selfx, _selfx, _selfz * _selfz), 1.0f);
-        float _t12 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t7 * _t7));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t7 * _t13));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t9 * _t13));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t8 * _t13));
+        float _t9 = 2.0f * Math.fma(_selfx, _selfy, _selfz * _selfw);
+        float _t10 = 2.0f * Math.fma(_selfy, _selfz, -(_selfx * _selfw));
+        float _t12 = Math.fma(-_selfz, _selfz, Math.fma(_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
+        float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t9 * _t16));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t12 * _t16));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t10 * _t16));
         } else {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -0.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -0.0f);
@@ -2020,15 +2020,15 @@ public final class FloatQuatOpsKernelsSegment {
         float _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
         float _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
-        float _t7 = 2.0f * Math.fma(_selfx, _selfw, _selfy * _selfz);
-        float _t8 = 2.0f * Math.fma(_selfx, _selfz, -(_selfy * _selfw));
-        float _t9 = Math.fma(-2.0f, Math.fma(_selfx, _selfx, _selfy * _selfy), 1.0f);
-        float _t12 = Math.fma(_t9, _t9, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t8 * _t13));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t7 * _t13));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t9 * _t13));
+        float _t9 = 2.0f * Math.fma(_selfx, _selfw, _selfy * _selfz);
+        float _t10 = 2.0f * Math.fma(_selfx, _selfz, -(_selfy * _selfw));
+        float _t12 = Math.fma(_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
+        float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t10 * _t16));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t9 * _t16));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t12 * _t16));
         } else {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -0.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -0.0f);
@@ -2157,15 +2157,15 @@ public final class FloatQuatOpsKernelsSegment {
         float _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
         float _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
-        float _t7 = 2.0f * Math.fma(_selfx, _selfz, _selfy * _selfw);
-        float _t8 = 2.0f * Math.fma(_selfx, _selfy, -(_selfz * _selfw));
-        float _t9 = Math.fma(-2.0f, Math.fma(_selfy, _selfy, _selfz * _selfz), 1.0f);
-        float _t12 = Math.fma(_t7, _t7, Math.fma(_t9, _t9, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t9 * _t13);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t8 * _t13);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t7 * _t13);
+        float _t9 = 2.0f * Math.fma(_selfx, _selfz, _selfy * _selfw);
+        float _t10 = 2.0f * Math.fma(_selfx, _selfy, -(_selfz * _selfw));
+        float _t12 = Math.fma(-_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfx, _selfx, _selfw * _selfw)));
+        float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t12 * _t16);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t10 * _t16);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t9 * _t16);
         } else {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.0f);
@@ -2186,15 +2186,15 @@ public final class FloatQuatOpsKernelsSegment {
         float _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
         float _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
-        float _t7 = 2.0f * Math.fma(_selfx, _selfy, _selfz * _selfw);
-        float _t8 = 2.0f * Math.fma(_selfy, _selfz, -(_selfx * _selfw));
-        float _t9 = Math.fma(-2.0f, Math.fma(_selfx, _selfx, _selfz * _selfz), 1.0f);
-        float _t12 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t7 * _t7));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t7 * _t13);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t9 * _t13);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t8 * _t13);
+        float _t9 = 2.0f * Math.fma(_selfx, _selfy, _selfz * _selfw);
+        float _t10 = 2.0f * Math.fma(_selfy, _selfz, -(_selfx * _selfw));
+        float _t12 = Math.fma(-_selfz, _selfz, Math.fma(_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
+        float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t9 * _t16);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t12 * _t16);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t10 * _t16);
         } else {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.0f);
@@ -2215,15 +2215,15 @@ public final class FloatQuatOpsKernelsSegment {
         float _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
         float _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
-        float _t7 = 2.0f * Math.fma(_selfx, _selfw, _selfy * _selfz);
-        float _t8 = 2.0f * Math.fma(_selfx, _selfz, -(_selfy * _selfw));
-        float _t9 = Math.fma(-2.0f, Math.fma(_selfx, _selfx, _selfy * _selfy), 1.0f);
-        float _t12 = Math.fma(_t9, _t9, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t8 * _t13);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t7 * _t13);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t9 * _t13);
+        float _t9 = 2.0f * Math.fma(_selfx, _selfw, _selfy * _selfz);
+        float _t10 = 2.0f * Math.fma(_selfx, _selfz, -(_selfy * _selfw));
+        float _t12 = Math.fma(_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
+        float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t10 * _t16);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t9 * _t16);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t12 * _t16);
         } else {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.0f);
@@ -2298,15 +2298,15 @@ public final class FloatQuatOpsKernelsSegment {
         float _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
         float _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
-        float _t7 = 2.0f * Math.fma(_selfx, _selfy, _selfz * _selfw);
-        float _t8 = 2.0f * Math.fma(_selfx, _selfz, -(_selfy * _selfw));
-        float _t9 = Math.fma(-2.0f, Math.fma(_selfy, _selfy, _selfz * _selfz), 1.0f);
-        float _t12 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t7 * _t7));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t9 * _t13));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t7 * _t13));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t8 * _t13));
+        float _t9 = 2.0f * Math.fma(_selfx, _selfy, _selfz * _selfw);
+        float _t10 = 2.0f * Math.fma(_selfx, _selfz, -(_selfy * _selfw));
+        float _t12 = Math.fma(-_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfx, _selfx, _selfw * _selfw)));
+        float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t12 * _t16));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t9 * _t16));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t10 * _t16));
         } else {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -0.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -0.0f);
@@ -2327,15 +2327,15 @@ public final class FloatQuatOpsKernelsSegment {
         float _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
         float _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
-        float _t7 = 2.0f * Math.fma(_selfx, _selfw, _selfy * _selfz);
-        float _t8 = 2.0f * Math.fma(_selfx, _selfy, -(_selfz * _selfw));
-        float _t9 = Math.fma(-2.0f, Math.fma(_selfx, _selfx, _selfz * _selfz), 1.0f);
-        float _t12 = Math.fma(_t7, _t7, Math.fma(_t9, _t9, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t8 * _t13));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t9 * _t13));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t7 * _t13));
+        float _t9 = 2.0f * Math.fma(_selfx, _selfw, _selfy * _selfz);
+        float _t10 = 2.0f * Math.fma(_selfx, _selfy, -(_selfz * _selfw));
+        float _t12 = Math.fma(-_selfz, _selfz, Math.fma(_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
+        float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t10 * _t16));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t12 * _t16));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t9 * _t16));
         } else {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -0.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -0.0f);
@@ -2356,15 +2356,15 @@ public final class FloatQuatOpsKernelsSegment {
         float _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
         float _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
-        float _t7 = 2.0f * Math.fma(_selfx, _selfz, _selfy * _selfw);
-        float _t8 = 2.0f * Math.fma(_selfy, _selfz, -(_selfx * _selfw));
-        float _t9 = Math.fma(-2.0f, Math.fma(_selfx, _selfx, _selfy * _selfy), 1.0f);
-        float _t12 = Math.fma(_t9, _t9, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t7 * _t13));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t8 * _t13));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t9 * _t13));
+        float _t9 = 2.0f * Math.fma(_selfx, _selfz, _selfy * _selfw);
+        float _t10 = 2.0f * Math.fma(_selfy, _selfz, -(_selfx * _selfw));
+        float _t12 = Math.fma(_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
+        float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t9 * _t16));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t10 * _t16));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t12 * _t16));
         } else {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -0.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -0.0f);
@@ -2521,15 +2521,15 @@ public final class FloatQuatOpsKernelsSegment {
         float _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
         float _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
-        float _t7 = 2.0f * Math.fma(_selfx, _selfy, _selfz * _selfw);
-        float _t8 = 2.0f * Math.fma(_selfx, _selfz, -(_selfy * _selfw));
-        float _t9 = Math.fma(-2.0f, Math.fma(_selfy, _selfy, _selfz * _selfz), 1.0f);
-        float _t12 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t7 * _t7));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t9 * _t13);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t7 * _t13);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t8 * _t13);
+        float _t9 = 2.0f * Math.fma(_selfx, _selfy, _selfz * _selfw);
+        float _t10 = 2.0f * Math.fma(_selfx, _selfz, -(_selfy * _selfw));
+        float _t12 = Math.fma(-_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfx, _selfx, _selfw * _selfw)));
+        float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t12 * _t16);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t9 * _t16);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t10 * _t16);
         } else {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.0f);
@@ -2550,15 +2550,15 @@ public final class FloatQuatOpsKernelsSegment {
         float _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
         float _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
-        float _t7 = 2.0f * Math.fma(_selfx, _selfw, _selfy * _selfz);
-        float _t8 = 2.0f * Math.fma(_selfx, _selfy, -(_selfz * _selfw));
-        float _t9 = Math.fma(-2.0f, Math.fma(_selfx, _selfx, _selfz * _selfz), 1.0f);
-        float _t12 = Math.fma(_t7, _t7, Math.fma(_t9, _t9, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t8 * _t13);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t9 * _t13);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t7 * _t13);
+        float _t9 = 2.0f * Math.fma(_selfx, _selfw, _selfy * _selfz);
+        float _t10 = 2.0f * Math.fma(_selfx, _selfy, -(_selfz * _selfw));
+        float _t12 = Math.fma(-_selfz, _selfz, Math.fma(_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
+        float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t10 * _t16);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t12 * _t16);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t9 * _t16);
         } else {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.0f);
@@ -2579,15 +2579,15 @@ public final class FloatQuatOpsKernelsSegment {
         float _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
         float _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
-        float _t7 = 2.0f * Math.fma(_selfx, _selfz, _selfy * _selfw);
-        float _t8 = 2.0f * Math.fma(_selfy, _selfz, -(_selfx * _selfw));
-        float _t9 = Math.fma(-2.0f, Math.fma(_selfx, _selfx, _selfy * _selfy), 1.0f);
-        float _t12 = Math.fma(_t9, _t9, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t7 * _t13);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t8 * _t13);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t9 * _t13);
+        float _t9 = 2.0f * Math.fma(_selfx, _selfz, _selfy * _selfw);
+        float _t10 = 2.0f * Math.fma(_selfy, _selfz, -(_selfx * _selfw));
+        float _t12 = Math.fma(_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
+        float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t9 * _t16);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t10 * _t16);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t12 * _t16);
         } else {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.0f);

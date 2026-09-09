@@ -204,6 +204,10 @@ public class Double4x4Impl implements Double4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -255,6 +259,10 @@ public class Double4x4Impl implements Double4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -302,6 +310,10 @@ public class Double4x4Impl implements Double4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -351,6 +363,10 @@ public class Double4x4Impl implements Double4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -400,6 +416,10 @@ public class Double4x4Impl implements Double4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -449,6 +469,10 @@ public class Double4x4Impl implements Double4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -23984,41 +24008,225 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
-     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
-     * the far plane is adjusted to preserve depth precision.
-     * <p>
-     * The result is stored in {@code dest}; {@code this} is not modified.
-     *
-     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
-     *        into the visible half-space
-     * @param dest will hold the result
-     * @return dest
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
      */
-    public Double4x4 obliqueZ(Double4R plane, @Mutated Double4x4 dest) {
-        return obliqueZ(plane.x(), plane.y(), plane.z(), plane.w(), dest);
+    private Double4x4 obliqueZ_no_lh(Double4R plane, @Mutated Double4x4 dest) {
+        return obliqueZ_no_lh(plane.x(), plane.y(), plane.z(), plane.w(), dest);
     }
 
 
     /**
-     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
-     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
-     * the far plane is adjusted to preserve depth precision.
-     *
-     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
-     *        into the visible half-space
-     * @return this
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
      */
-    public @Mutated Double4x4 obliqueZ(Double4R plane) {
-        return obliqueZ(plane.x(), plane.y(), plane.z(), plane.w());
+    private @Mutated Double4x4 obliqueZ_no_lh(Double4R plane) {
+        return obliqueZ_no_lh(plane.x(), plane.y(), plane.z(), plane.w());
     }
 
 
     /**
-     * Private body of {@code obliqueZ}, specialized by runtime matrix properties; reached only
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
      * through the public {@code obliqueZ} dispatcher.
      */
-    private Double4x4 obliqueZ_translation_general(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest, int _props) {
+    private Double4x4 obliqueZ_no_lh_identity_translation_general(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest, int _props) {
+        double[] sd = this.data;
+        double[] dd = ((Double4x4Impl) dest).data;
+        double _t0 = 2.0 * sd[14];
+        double _t15_inv = 1.0 / Math.fma(planeW, 1.0 - sd[10], sd[14] * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - sd[8]) / sd[0] + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - sd[9]) / sd[5])));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).withLane(2, planeX * _t0 * _t15_inv - sd[3]);
+        var _col1 = DoubleVector.fromArray(COL_SPECIES, sd, 4).withLane(2, planeY * _t0 * _t15_inv - sd[7]);
+        var _col2 = DoubleVector.fromArray(COL_SPECIES, sd, 8).withLane(2, planeZ * _t0 * _t15_inv - sd[11]);
+        var _col3 = DoubleVector.fromArray(COL_SPECIES, sd, 12).withLane(2, planeW * _t0 * _t15_inv - sd[15]);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Double4x4Impl) dest).properties = _props;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_no_lh_orthogonal(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double4x4Impl) dest).data;
+        double _t0 = 2.0 * sd[14];
+        double _t15 = Math.fma(planeW, 1.0 - sd[10], sd[14] * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - sd[8]) / sd[0] + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - sd[9]) / sd[5])));
+        double _t15_inv = 1.0 / _t15;
+        dd[0] = sd[0];
+        dd[1] = sd[1];
+        dd[2] = planeX * _t0 * _t15_inv;
+        dd[3] = 0.0;
+        dd[4] = sd[4];
+        dd[5] = sd[5];
+        dd[6] = planeY * _t0 * _t15_inv;
+        dd[7] = 0.0;
+        dd[8] = sd[8];
+        dd[9] = sd[9];
+        dd[10] = planeZ * _t0 * _t15_inv;
+        dd[11] = 0.0;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = -1.0 + planeW * _t0 * _t15_inv;
+        dd[15] = 1.0;
+        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code obliqueZ} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.LEFT_HANDED}, specialized by
+     * runtime matrix properties; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_no_lh_orthogonal_self(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double4x4Impl) dest).data;
+        double _t0 = 2.0 * sd[14];
+        double _t15_inv = 1.0 / Math.fma(planeW, 1.0 - sd[10], sd[14] * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - sd[8]) / sd[0] + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - sd[9]) / sd[5])));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).withLane(2, planeX * _t0 * _t15_inv);
+        var _col1 = DoubleVector.fromArray(COL_SPECIES, sd, 4).withLane(2, planeY * _t0 * _t15_inv);
+        var _col2 = DoubleVector.fromArray(COL_SPECIES, sd, 8).withLane(2, planeZ * _t0 * _t15_inv);
+        var _col3 = DoubleVector.fromArray(COL_SPECIES, sd, 12).withLane(2, -1.0 + planeW * _t0 * _t15_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_no_lh_affine(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double4x4Impl) dest).data;
+        double _t0 = 2.0 * sd[14];
+        double _t15 = Math.fma(planeW, 1.0 - sd[10], sd[14] * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - sd[8]) / sd[0] + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - sd[9]) / sd[5])));
+        double _t15_inv = 1.0 / _t15;
+        dd[0] = sd[0];
+        dd[1] = sd[1];
+        dd[2] = planeX * _t0 * _t15_inv;
+        dd[3] = 0.0;
+        dd[4] = sd[4];
+        dd[5] = sd[5];
+        dd[6] = planeY * _t0 * _t15_inv;
+        dd[7] = 0.0;
+        dd[8] = sd[8];
+        dd[9] = sd[9];
+        dd[10] = planeZ * _t0 * _t15_inv;
+        dd[11] = 0.0;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = planeW * _t0 * _t15_inv - 1.0;
+        dd[15] = 1.0;
+        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code obliqueZ} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.LEFT_HANDED}, specialized by
+     * runtime matrix properties; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_no_lh_affine_self(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double4x4Impl) dest).data;
+        double _t0 = 2.0 * sd[14];
+        double _t15_inv = 1.0 / Math.fma(planeW, 1.0 - sd[10], sd[14] * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - sd[8]) / sd[0] + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - sd[9]) / sd[5])));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).withLane(2, planeX * _t0 * _t15_inv);
+        var _col1 = DoubleVector.fromArray(COL_SPECIES, sd, 4).withLane(2, planeY * _t0 * _t15_inv);
+        var _col2 = DoubleVector.fromArray(COL_SPECIES, sd, 8).withLane(2, planeZ * _t0 * _t15_inv);
+        var _col3 = DoubleVector.fromArray(COL_SPECIES, sd, 12).withLane(2, planeW * _t0 * _t15_inv - 1.0);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_no_lh(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return obliqueZ_no_lh_identity_translation_general(planeX, planeY, planeZ, planeW, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return obliqueZ_no_lh_orthogonal(planeX, planeY, planeZ, planeW, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return obliqueZ_no_lh_affine(planeX, planeY, planeZ, planeW, dest);
+        return obliqueZ_no_lh_identity_translation_general(planeX, planeY, planeZ, planeW, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    @Mutated private Double4x4 obliqueZ_no_lh(double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.RETURN_NEW) return obliqueZ_no_lh(planeX, planeY, planeZ, planeW, Joml.double4x4());
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return obliqueZ_no_lh_identity_translation_general(planeX, planeY, planeZ, planeW, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return obliqueZ_no_lh_orthogonal_self(planeX, planeY, planeZ, planeW, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return obliqueZ_no_lh_affine_self(planeX, planeY, planeZ, planeW, this);
+        return obliqueZ_no_lh_identity_translation_general(planeX, planeY, planeZ, planeW, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_no_lh(DoublePlaneR plane, @Mutated Double4x4 dest) {
+        return obliqueZ_no_lh(plane.a(), plane.b(), plane.c(), plane.d(), dest);
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private @Mutated Double4x4 obliqueZ_no_lh(DoublePlaneR plane) {
+        return obliqueZ_no_lh(plane.a(), plane.b(), plane.c(), plane.d());
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_no_rh(Double4R plane, @Mutated Double4x4 dest) {
+        return obliqueZ_no_rh(plane.x(), plane.y(), plane.z(), plane.w(), dest);
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private @Mutated Double4x4 obliqueZ_no_rh(Double4R plane) {
+        return obliqueZ_no_rh(plane.x(), plane.y(), plane.z(), plane.w());
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_no_rh_translation_general(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest, int _props) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = 2.0 * sd[14];
@@ -24037,10 +24245,11 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private body of {@code obliqueZ}, specialized by runtime matrix properties; reached only
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
      * through the public {@code obliqueZ} dispatcher.
      */
-    private Double4x4 obliqueZ_identity(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+    private Double4x4 obliqueZ_no_rh_identity(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         if (DoubleVector.SPECIES_PREFERRED.length() >= 8) {
@@ -24058,19 +24267,21 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private in-place self-form body of {@code obliqueZ}, specialized by runtime matrix
-     * properties; reached only through the public {@code obliqueZ} dispatcher.
+     * Private in-place self-form body of {@code obliqueZ} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.RIGHT_HANDED}, specialized by
+     * runtime matrix properties; reached only through the public {@code obliqueZ} dispatcher.
      */
-    private Double4x4 obliqueZ_identity_self(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
-        return obliqueZ_identity(planeX, planeY, planeZ, planeW, dest);
+    private Double4x4 obliqueZ_no_rh_identity_self(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+        return obliqueZ_no_rh_identity(planeX, planeY, planeZ, planeW, dest);
     }
 
 
     /**
-     * Private body of {@code obliqueZ}, specialized by runtime matrix properties; reached only
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
      * through the public {@code obliqueZ} dispatcher.
      */
-    private Double4x4 obliqueZ_orthogonal(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+    private Double4x4 obliqueZ_no_rh_orthogonal(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = 2.0 * sd[14];
@@ -24098,10 +24309,11 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private in-place self-form body of {@code obliqueZ}, specialized by runtime matrix
-     * properties; reached only through the public {@code obliqueZ} dispatcher.
+     * Private in-place self-form body of {@code obliqueZ} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.RIGHT_HANDED}, specialized by
+     * runtime matrix properties; reached only through the public {@code obliqueZ} dispatcher.
      */
-    private Double4x4 obliqueZ_orthogonal_self(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+    private Double4x4 obliqueZ_no_rh_orthogonal_self(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = 2.0 * sd[14];
@@ -24120,10 +24332,11 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private body of {@code obliqueZ}, specialized by runtime matrix properties; reached only
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
      * through the public {@code obliqueZ} dispatcher.
      */
-    private Double4x4 obliqueZ_affine(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+    private Double4x4 obliqueZ_no_rh_affine(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = 2.0 * sd[14];
@@ -24151,10 +24364,11 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private in-place self-form body of {@code obliqueZ}, specialized by runtime matrix
-     * properties; reached only through the public {@code obliqueZ} dispatcher.
+     * Private in-place self-form body of {@code obliqueZ} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.RIGHT_HANDED}, specialized by
+     * runtime matrix properties; reached only through the public {@code obliqueZ} dispatcher.
      */
-    private Double4x4 obliqueZ_affine_self(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+    private Double4x4 obliqueZ_no_rh_affine_self(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = 2.0 * sd[14];
@@ -24173,11 +24387,925 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_no_rh(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return obliqueZ_no_rh_identity(planeX, planeY, planeZ, planeW, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return obliqueZ_no_rh_translation_general(planeX, planeY, planeZ, planeW, dest, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return obliqueZ_no_rh_orthogonal(planeX, planeY, planeZ, planeW, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return obliqueZ_no_rh_affine(planeX, planeY, planeZ, planeW, dest);
+        return obliqueZ_no_rh_translation_general(planeX, planeY, planeZ, planeW, dest, (p & Joml.BIT_AFFINE) | 0);
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    @Mutated private Double4x4 obliqueZ_no_rh(double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.RETURN_NEW) return obliqueZ_no_rh(planeX, planeY, planeZ, planeW, Joml.double4x4());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return obliqueZ_no_rh_identity_self(planeX, planeY, planeZ, planeW, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return obliqueZ_no_rh_translation_general(planeX, planeY, planeZ, planeW, this, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return obliqueZ_no_rh_orthogonal_self(planeX, planeY, planeZ, planeW, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return obliqueZ_no_rh_affine_self(planeX, planeY, planeZ, planeW, this);
+        return obliqueZ_no_rh_translation_general(planeX, planeY, planeZ, planeW, this, (p & Joml.BIT_AFFINE) | 0);
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_no_rh(DoublePlaneR plane, @Mutated Double4x4 dest) {
+        return obliqueZ_no_rh(plane.a(), plane.b(), plane.c(), plane.d(), dest);
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private @Mutated Double4x4 obliqueZ_no_rh(DoublePlaneR plane) {
+        return obliqueZ_no_rh(plane.a(), plane.b(), plane.c(), plane.d());
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
+     * through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_no(Double4R plane, Handedness handedness, @Mutated Double4x4 dest) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return obliqueZ_no_lh(plane, dest); }
+            default -> { return obliqueZ_no_rh(plane, dest); }
+        }
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
+     * through the public {@code obliqueZ} dispatcher.
+     */
+    @Mutated private Double4x4 obliqueZ_no(Double4R plane, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return obliqueZ_no_lh(plane); }
+            default -> { return obliqueZ_no_rh(plane); }
+        }
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
+     * through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_no(double planeX, double planeY, double planeZ, double planeW, Handedness handedness, @Mutated Double4x4 dest) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return obliqueZ_no_lh(planeX, planeY, planeZ, planeW, dest); }
+            default -> { return obliqueZ_no_rh(planeX, planeY, planeZ, planeW, dest); }
+        }
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
+     * through the public {@code obliqueZ} dispatcher.
+     */
+    @Mutated private Double4x4 obliqueZ_no(double planeX, double planeY, double planeZ, double planeW, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return obliqueZ_no_lh(planeX, planeY, planeZ, planeW); }
+            default -> { return obliqueZ_no_rh(planeX, planeY, planeZ, planeW); }
+        }
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
+     * through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_no(DoublePlaneR plane, Handedness handedness, @Mutated Double4x4 dest) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return obliqueZ_no_lh(plane, dest); }
+            default -> { return obliqueZ_no_rh(plane, dest); }
+        }
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
+     * through the public {@code obliqueZ} dispatcher.
+     */
+    @Mutated private Double4x4 obliqueZ_no(DoublePlaneR plane, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return obliqueZ_no_lh(plane); }
+            default -> { return obliqueZ_no_rh(plane); }
+        }
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_zo_lh(Double4R plane, @Mutated Double4x4 dest) {
+        return obliqueZ_zo_lh(plane.x(), plane.y(), plane.z(), plane.w(), dest);
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private @Mutated Double4x4 obliqueZ_zo_lh(Double4R plane) {
+        return obliqueZ_zo_lh(plane.x(), plane.y(), plane.z(), plane.w());
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_zo_lh_identity_translation_general(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest, int _props) {
+        double[] sd = this.data;
+        double[] dd = ((Double4x4Impl) dest).data;
+        double _t14_inv = 1.0 / Math.fma(planeW, 1.0 - sd[10], sd[14] * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - sd[8]) / sd[0] + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - sd[9]) / sd[5])));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).withLane(2, planeX * sd[14] * _t14_inv);
+        var _col1 = DoubleVector.fromArray(COL_SPECIES, sd, 4).withLane(2, planeY * sd[14] * _t14_inv);
+        var _col2 = DoubleVector.fromArray(COL_SPECIES, sd, 8).withLane(2, planeZ * sd[14] * _t14_inv);
+        var _col3 = DoubleVector.fromArray(COL_SPECIES, sd, 12).withLane(2, planeW * sd[14] * _t14_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Double4x4Impl) dest).properties = _props;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_zo_lh_orthogonal(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double4x4Impl) dest).data;
+        double _t14 = Math.fma(planeW, 1.0 - sd[10], sd[14] * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - sd[8]) / sd[0] + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - sd[9]) / sd[5])));
+        double _t14_inv = 1.0 / _t14;
+        dd[0] = sd[0];
+        dd[1] = sd[1];
+        dd[2] = planeX * sd[14] * _t14_inv;
+        dd[3] = 0.0;
+        dd[4] = sd[4];
+        dd[5] = sd[5];
+        dd[6] = planeY * sd[14] * _t14_inv;
+        dd[7] = 0.0;
+        dd[8] = sd[8];
+        dd[9] = sd[9];
+        dd[10] = planeZ * sd[14] * _t14_inv;
+        dd[11] = 0.0;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = planeW * sd[14] * _t14_inv;
+        dd[15] = 1.0;
+        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_zo_lh_orthogonal_self(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double4x4Impl) dest).data;
+        double _t14_inv = 1.0 / Math.fma(planeW, 1.0 - sd[10], sd[14] * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - sd[8]) / sd[0] + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - sd[9]) / sd[5])));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).withLane(2, planeX * sd[14] * _t14_inv);
+        var _col1 = DoubleVector.fromArray(COL_SPECIES, sd, 4).withLane(2, planeY * sd[14] * _t14_inv);
+        var _col2 = DoubleVector.fromArray(COL_SPECIES, sd, 8).withLane(2, planeZ * sd[14] * _t14_inv);
+        var _col3 = DoubleVector.fromArray(COL_SPECIES, sd, 12).withLane(2, planeW * sd[14] * _t14_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_zo_lh(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return obliqueZ_zo_lh_identity_translation_general(planeX, planeY, planeZ, planeW, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return obliqueZ_zo_lh_orthogonal(planeX, planeY, planeZ, planeW, dest);
+        return obliqueZ_zo_lh_identity_translation_general(planeX, planeY, planeZ, planeW, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    @Mutated private Double4x4 obliqueZ_zo_lh(double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.RETURN_NEW) return obliqueZ_zo_lh(planeX, planeY, planeZ, planeW, Joml.double4x4());
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return obliqueZ_zo_lh_identity_translation_general(planeX, planeY, planeZ, planeW, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return obliqueZ_zo_lh_orthogonal_self(planeX, planeY, planeZ, planeW, this);
+        return obliqueZ_zo_lh_identity_translation_general(planeX, planeY, planeZ, planeW, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_zo_lh(DoublePlaneR plane, @Mutated Double4x4 dest) {
+        return obliqueZ_zo_lh(plane.a(), plane.b(), plane.c(), plane.d(), dest);
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private @Mutated Double4x4 obliqueZ_zo_lh(DoublePlaneR plane) {
+        return obliqueZ_zo_lh(plane.a(), plane.b(), plane.c(), plane.d());
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_zo_rh(Double4R plane, @Mutated Double4x4 dest) {
+        return obliqueZ_zo_rh(plane.x(), plane.y(), plane.z(), plane.w(), dest);
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private @Mutated Double4x4 obliqueZ_zo_rh(Double4R plane) {
+        return obliqueZ_zo_rh(plane.x(), plane.y(), plane.z(), plane.w());
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_zo_rh_translation_general(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest, int _props) {
+        double[] sd = this.data;
+        double[] dd = ((Double4x4Impl) dest).data;
+        double _t14_inv = 1.0 / Math.fma(planeW, 1.0 + sd[10], sd[14] * (planeX * (sd[8] + (planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0)) / sd[0] + planeY * (sd[9] + (planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0)) / sd[5] - planeZ));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).withLane(2, planeX * sd[14] * _t14_inv);
+        var _col1 = DoubleVector.fromArray(COL_SPECIES, sd, 4).withLane(2, planeY * sd[14] * _t14_inv);
+        var _col2 = DoubleVector.fromArray(COL_SPECIES, sd, 8).withLane(2, planeZ * sd[14] * _t14_inv);
+        var _col3 = DoubleVector.fromArray(COL_SPECIES, sd, 12).withLane(2, planeW * sd[14] * _t14_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Double4x4Impl) dest).properties = _props;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_zo_rh_identity(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double4x4Impl) dest).data;
+        if (DoubleVector.SPECIES_PREFERRED.length() >= 8) {
+            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_75, 0).intoArray(dd, 0);
+            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_75, 8).intoArray(dd, 8);
+        } else {
+            DoubleVector.fromArray(COL_SPECIES, DATA_75, 0).intoArray(dd, 0);
+            DoubleVector.fromArray(COL_SPECIES, DATA_75, 4).intoArray(dd, 4);
+            DoubleVector.fromArray(COL_SPECIES, DATA_75, 8).intoArray(dd, 8);
+            DoubleVector.fromArray(COL_SPECIES, DATA_75, 12).intoArray(dd, 12);
+        }
+        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_zo_rh_identity_self(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+        return obliqueZ_zo_rh_identity(planeX, planeY, planeZ, planeW, dest);
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_zo_rh_orthogonal(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double4x4Impl) dest).data;
+        double _t14 = Math.fma(planeW, 1.0 + sd[10], sd[14] * (planeX * (sd[8] + (planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0)) / sd[0] + planeY * (sd[9] + (planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0)) / sd[5] - planeZ));
+        double _t14_inv = 1.0 / _t14;
+        dd[0] = sd[0];
+        dd[1] = sd[1];
+        dd[2] = planeX * sd[14] * _t14_inv;
+        dd[3] = 0.0;
+        dd[4] = sd[4];
+        dd[5] = sd[5];
+        dd[6] = planeY * sd[14] * _t14_inv;
+        dd[7] = 0.0;
+        dd[8] = sd[8];
+        dd[9] = sd[9];
+        dd[10] = planeZ * sd[14] * _t14_inv;
+        dd[11] = 0.0;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = planeW * sd[14] * _t14_inv;
+        dd[15] = 1.0;
+        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_zo_rh_orthogonal_self(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double4x4Impl) dest).data;
+        double _t14_inv = 1.0 / Math.fma(planeW, 1.0 + sd[10], sd[14] * (planeX * (sd[8] + (planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0)) / sd[0] + planeY * (sd[9] + (planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0)) / sd[5] - planeZ));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).withLane(2, planeX * sd[14] * _t14_inv);
+        var _col1 = DoubleVector.fromArray(COL_SPECIES, sd, 4).withLane(2, planeY * sd[14] * _t14_inv);
+        var _col2 = DoubleVector.fromArray(COL_SPECIES, sd, 8).withLane(2, planeZ * sd[14] * _t14_inv);
+        var _col3 = DoubleVector.fromArray(COL_SPECIES, sd, 12).withLane(2, planeW * sd[14] * _t14_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_zo_rh(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return obliqueZ_zo_rh_identity(planeX, planeY, planeZ, planeW, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return obliqueZ_zo_rh_translation_general(planeX, planeY, planeZ, planeW, dest, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return obliqueZ_zo_rh_orthogonal(planeX, planeY, planeZ, planeW, dest);
+        return obliqueZ_zo_rh_translation_general(planeX, planeY, planeZ, planeW, dest, (p & Joml.BIT_AFFINE) | 0);
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    @Mutated private Double4x4 obliqueZ_zo_rh(double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.RETURN_NEW) return obliqueZ_zo_rh(planeX, planeY, planeZ, planeW, Joml.double4x4());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return obliqueZ_zo_rh_identity_self(planeX, planeY, planeZ, planeW, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return obliqueZ_zo_rh_translation_general(planeX, planeY, planeZ, planeW, this, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return obliqueZ_zo_rh_orthogonal_self(planeX, planeY, planeZ, planeW, this);
+        return obliqueZ_zo_rh_translation_general(planeX, planeY, planeZ, planeW, this, (p & Joml.BIT_AFFINE) | 0);
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_zo_rh(DoublePlaneR plane, @Mutated Double4x4 dest) {
+        return obliqueZ_zo_rh(plane.a(), plane.b(), plane.c(), plane.d(), dest);
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}; reached only through the public {@code obliqueZ} dispatcher.
+     */
+    private @Mutated Double4x4 obliqueZ_zo_rh(DoublePlaneR plane) {
+        return obliqueZ_zo_rh(plane.a(), plane.b(), plane.c(), plane.d());
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE}; reached only through the
+     * public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_zo(Double4R plane, Handedness handedness, @Mutated Double4x4 dest) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return obliqueZ_zo_lh(plane, dest); }
+            default -> { return obliqueZ_zo_rh(plane, dest); }
+        }
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE}; reached only through the
+     * public {@code obliqueZ} dispatcher.
+     */
+    @Mutated private Double4x4 obliqueZ_zo(Double4R plane, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return obliqueZ_zo_lh(plane); }
+            default -> { return obliqueZ_zo_rh(plane); }
+        }
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE}; reached only through the
+     * public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_zo(double planeX, double planeY, double planeZ, double planeW, Handedness handedness, @Mutated Double4x4 dest) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return obliqueZ_zo_lh(planeX, planeY, planeZ, planeW, dest); }
+            default -> { return obliqueZ_zo_rh(planeX, planeY, planeZ, planeW, dest); }
+        }
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE}; reached only through the
+     * public {@code obliqueZ} dispatcher.
+     */
+    @Mutated private Double4x4 obliqueZ_zo(double planeX, double planeY, double planeZ, double planeW, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return obliqueZ_zo_lh(planeX, planeY, planeZ, planeW); }
+            default -> { return obliqueZ_zo_rh(planeX, planeY, planeZ, planeW); }
+        }
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE}; reached only through the
+     * public {@code obliqueZ} dispatcher.
+     */
+    private Double4x4 obliqueZ_zo(DoublePlaneR plane, Handedness handedness, @Mutated Double4x4 dest) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return obliqueZ_zo_lh(plane, dest); }
+            default -> { return obliqueZ_zo_rh(plane, dest); }
+        }
+    }
+
+
+    /**
+     * Private body of {@code obliqueZ} for {@code DepthRange.ZERO_TO_ONE}; reached only through the
+     * public {@code obliqueZ} dispatcher.
+     */
+    @Mutated private Double4x4 obliqueZ_zo(DoublePlaneR plane, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return obliqueZ_zo_lh(plane); }
+            default -> { return obliqueZ_zo_rh(plane); }
+        }
+    }
+
+
+    /**
      * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
      * method): the near clip plane is replaced by the given clip plane in camera/view space, and
      * the far plane is adjusted to preserve depth precision.
      * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
+     * @param handedness the handedness of the coordinate system to map into
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x4 obliqueZ(Double4R plane, Handedness handedness, DepthRange depthRange, @Mutated Double4x4 dest) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return obliqueZ_no(plane, handedness, dest); }
+            default -> { return obliqueZ_zo(plane, handedness, dest); }
+        }
+    }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     *
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
+     * @param handedness the handedness of the coordinate system to map into
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @return this
+     */
+    @Mutated public Double4x4 obliqueZ(Double4R plane, Handedness handedness, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return obliqueZ_no(plane, handedness); }
+            default -> { return obliqueZ_zo(plane, handedness); }
+        }
+    }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param planeX the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeY the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeZ the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param handedness the handedness of the coordinate system to map into
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x4 obliqueZ(double planeX, double planeY, double planeZ, double planeW, Handedness handedness, DepthRange depthRange, @Mutated Double4x4 dest) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return obliqueZ_no(planeX, planeY, planeZ, planeW, handedness, dest); }
+            default -> { return obliqueZ_zo(planeX, planeY, planeZ, planeW, handedness, dest); }
+        }
+    }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     *
+     * @param planeX the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeY the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeZ the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param handedness the handedness of the coordinate system to map into
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @return this
+     */
+    @Mutated public Double4x4 obliqueZ(double planeX, double planeY, double planeZ, double planeW, Handedness handedness, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return obliqueZ_no(planeX, planeY, planeZ, planeW, handedness); }
+            default -> { return obliqueZ_zo(planeX, planeY, planeZ, planeW, handedness); }
+        }
+    }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param plane the plane
+     * @param handedness the handedness of the coordinate system to map into
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x4 obliqueZ(DoublePlaneR plane, Handedness handedness, DepthRange depthRange, @Mutated Double4x4 dest) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return obliqueZ_no(plane, handedness, dest); }
+            default -> { return obliqueZ_zo(plane, handedness, dest); }
+        }
+    }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     *
+     * @param plane the plane
+     * @param handedness the handedness of the coordinate system to map into
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @return this
+     */
+    @Mutated public Double4x4 obliqueZ(DoublePlaneR plane, Handedness handedness, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return obliqueZ_no(plane, handedness); }
+            default -> { return obliqueZ_zo(plane, handedness); }
+        }
+    }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     *
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x4 obliqueZ(Double4R plane, DepthRange depthRange, @Mutated Double4x4 dest) { return obliqueZ(plane, Handedness.RIGHT_HANDED, depthRange, dest); }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     *
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @return this
+     */
+    @Mutated public Double4x4 obliqueZ(Double4R plane, DepthRange depthRange) { return obliqueZ(plane, Handedness.RIGHT_HANDED, depthRange); }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
+     * @param handedness the handedness of the coordinate system to map into
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x4 obliqueZ(Double4R plane, Handedness handedness, @Mutated Double4x4 dest) { return obliqueZ(plane, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
+     * @param handedness the handedness of the coordinate system to map into
+     * @return this
+     */
+    @Mutated public Double4x4 obliqueZ(Double4R plane, Handedness handedness) { return obliqueZ(plane, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
+     * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x4 obliqueZ(Double4R plane, @Mutated Double4x4 dest) { return obliqueZ(plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
+     * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
+     * @return this
+     */
+    @Mutated public Double4x4 obliqueZ(Double4R plane) { return obliqueZ(plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     *
+     * @param planeX the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeY the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeZ the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x4 obliqueZ(double planeX, double planeY, double planeZ, double planeW, DepthRange depthRange, @Mutated Double4x4 dest) { return obliqueZ(planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, depthRange, dest); }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     *
+     * @param planeX the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeY the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeZ the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @return this
+     */
+    @Mutated public Double4x4 obliqueZ(double planeX, double planeY, double planeZ, double planeW, DepthRange depthRange) { return obliqueZ(planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, depthRange); }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param planeX the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeY the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeZ the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param handedness the handedness of the coordinate system to map into
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x4 obliqueZ(double planeX, double planeY, double planeZ, double planeW, Handedness handedness, @Mutated Double4x4 dest) { return obliqueZ(planeX, planeY, planeZ, planeW, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param planeX the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeY the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeZ the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param handedness the handedness of the coordinate system to map into
+     * @return this
+     */
+    @Mutated public Double4x4 obliqueZ(double planeX, double planeY, double planeZ, double planeW, Handedness handedness) { return obliqueZ(planeX, planeY, planeZ, planeW, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
+     * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param planeX the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
@@ -24194,20 +25322,20 @@ public class Double4x4Impl implements Double4x4 {
      * @param dest will hold the result
      * @return dest
      */
-    public Double4x4 obliqueZ(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
-        int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return obliqueZ_identity(planeX, planeY, planeZ, planeW, dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return obliqueZ_translation_general(planeX, planeY, planeZ, planeW, dest, (p & Joml.BIT_AFFINE) | 0);
-        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return obliqueZ_orthogonal(planeX, planeY, planeZ, planeW, dest);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return obliqueZ_affine(planeX, planeY, planeZ, planeW, dest);
-        return obliqueZ_translation_general(planeX, planeY, planeZ, planeW, dest, (p & Joml.BIT_AFFINE) | 0);
-    }
+    public Double4x4 obliqueZ(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) { return obliqueZ(planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
 
 
     /**
      * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
      * method): the near clip plane is replaced by the given clip plane in camera/view space, and
      * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
+     * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param planeX the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
@@ -24223,15 +25351,7 @@ public class Double4x4Impl implements Double4x4 {
      *        {@code (planeX, planeY, planeZ, planeW)}
      * @return this
      */
-    @Mutated public Double4x4 obliqueZ(double planeX, double planeY, double planeZ, double planeW) {
-        if (Joml.RETURN_NEW) return obliqueZ(planeX, planeY, planeZ, planeW, Joml.double4x4());
-        int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return obliqueZ_identity_self(planeX, planeY, planeZ, planeW, this);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return obliqueZ_translation_general(planeX, planeY, planeZ, planeW, this, (p & Joml.BIT_AFFINE) | 0);
-        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return obliqueZ_orthogonal_self(planeX, planeY, planeZ, planeW, this);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return obliqueZ_affine_self(planeX, planeY, planeZ, planeW, this);
-        return obliqueZ_translation_general(planeX, planeY, planeZ, planeW, this, (p & Joml.BIT_AFFINE) | 0);
-    }
+    @Mutated public Double4x4 obliqueZ(double planeX, double planeY, double planeZ, double planeW) { return obliqueZ(planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
 
     /**
@@ -24239,30 +25359,116 @@ public class Double4x4Impl implements Double4x4 {
      * method): the near clip plane is replaced by the given clip plane in camera/view space, and
      * the far plane is adjusted to preserve depth precision.
      * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
-     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
-     *        into the visible half-space
+     * @param plane the plane
+     * @param depthRange the clip-space depth range the projection maps onto
      * @param dest will hold the result
      * @return dest
      */
-    public Double4x4 obliqueZ(DoublePlaneR plane, @Mutated Double4x4 dest) {
-        return obliqueZ(plane.a(), plane.b(), plane.c(), plane.d(), dest);
-    }
+    public Double4x4 obliqueZ(DoublePlaneR plane, DepthRange depthRange, @Mutated Double4x4 dest) { return obliqueZ(plane, Handedness.RIGHT_HANDED, depthRange, dest); }
 
 
     /**
      * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
      * method): the near clip plane is replaced by the given clip plane in camera/view space, and
      * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
-     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
-     *        into the visible half-space
+     * @param plane the plane
+     * @param depthRange the clip-space depth range the projection maps onto
      * @return this
      */
-    public @Mutated Double4x4 obliqueZ(DoublePlaneR plane) {
-        return obliqueZ(plane.a(), plane.b(), plane.c(), plane.d());
-    }
+    @Mutated public Double4x4 obliqueZ(DoublePlaneR plane, DepthRange depthRange) { return obliqueZ(plane, Handedness.RIGHT_HANDED, depthRange); }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param plane the plane
+     * @param handedness the handedness of the coordinate system to map into
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x4 obliqueZ(DoublePlaneR plane, Handedness handedness, @Mutated Double4x4 dest) { return obliqueZ(plane, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param plane the plane
+     * @param handedness the handedness of the coordinate system to map into
+     * @return this
+     */
+    @Mutated public Double4x4 obliqueZ(DoublePlaneR plane, Handedness handedness) { return obliqueZ(plane, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
+     * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param plane the plane
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x4 obliqueZ(DoublePlaneR plane, @Mutated Double4x4 dest) { return obliqueZ(plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
+
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
+     * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param plane the plane
+     * @return this
+     */
+    @Mutated public Double4x4 obliqueZ(DoublePlaneR plane) { return obliqueZ(plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
 
     /**
@@ -29668,7 +30874,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t232_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t225);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t224);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t228).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t232_inv))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t228).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t232_inv))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -29767,7 +30973,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t232_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t225);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t224);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t228).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t232_inv))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t228).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t232_inv))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -29841,7 +31047,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t95_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t91).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t91).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -29904,7 +31110,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t95_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t91).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t91).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -29989,7 +31195,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t91_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t84);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t83);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t87).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t91_inv))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t87).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t91_inv))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30063,7 +31269,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t91_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t84);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t83);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t87).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t91_inv))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t87).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t91_inv))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30161,7 +31367,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t167_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t160);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t159);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t163).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t167_inv))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t163).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t167_inv))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30248,7 +31454,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t167_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t160);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t159);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t163).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t167_inv))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t163).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t167_inv))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30268,13 +31474,13 @@ public class Double4x4Impl implements Double4x4 {
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
         if (DoubleVector.SPECIES_PREFERRED.length() >= 8) {
-            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_76, 0).intoArray(dd, 0);
-            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_76, 8).intoArray(dd, 8);
+            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_77, 0).intoArray(dd, 0);
+            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_77, 8).intoArray(dd, 8);
         } else {
-            DoubleVector.fromArray(COL_SPECIES, DATA_76, 0).intoArray(dd, 0);
-            DoubleVector.fromArray(COL_SPECIES, DATA_76, 4).intoArray(dd, 4);
-            DoubleVector.fromArray(COL_SPECIES, DATA_76, 8).intoArray(dd, 8);
-            DoubleVector.fromArray(COL_SPECIES, DATA_76, 12).intoArray(dd, 12);
+            DoubleVector.fromArray(COL_SPECIES, DATA_77, 0).intoArray(dd, 0);
+            DoubleVector.fromArray(COL_SPECIES, DATA_77, 4).intoArray(dd, 4);
+            DoubleVector.fromArray(COL_SPECIES, DATA_77, 8).intoArray(dd, 8);
+            DoubleVector.fromArray(COL_SPECIES, DATA_77, 12).intoArray(dd, 12);
         }
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
@@ -30314,7 +31520,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t39_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t23).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t23).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30346,7 +31552,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t39_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t23).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t23).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30389,7 +31595,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t39_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t23).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t23).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30421,7 +31627,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t39_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t23).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t23).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30465,7 +31671,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t45_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t44);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t43);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t45_inv))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t45_inv))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30498,7 +31704,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t45_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t44);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t43);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t45_inv))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t45_inv))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30572,7 +31778,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t95_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t91).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t91).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30635,7 +31841,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t95_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t91).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t91).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30709,7 +31915,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t119_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t112);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t111);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t115).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t119_inv))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t115).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t119_inv))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30772,7 +31978,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t119_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t112);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t111);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t115).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t119_inv))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t115).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t119_inv))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30858,7 +32064,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t136_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t129);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t128);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t132).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t136_inv))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t132).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t136_inv))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30933,7 +32139,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t136_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t129);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t128);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t132).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t136_inv))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t132).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t136_inv))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -31019,7 +32225,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t160_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t153);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t152);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t156).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t160_inv))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t156).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t160_inv))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -31094,7 +32300,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t160_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t153);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t152);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t156).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t160_inv))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t156).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t160_inv))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -35940,7 +37146,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t224_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t217);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t216);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t220).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t224_inv))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t220).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t224_inv))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36043,7 +37249,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t224_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t217);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t216);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t220).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t224_inv))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t220).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t224_inv))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36120,7 +37326,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t89_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36186,7 +37392,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t89_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36272,7 +37478,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t92_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36347,7 +37553,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t92_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36448,7 +37654,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t161_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t154);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t153);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t157).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t161_inv))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t157).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t161_inv))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36538,7 +37744,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t161_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t154);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t153);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t157).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t161_inv))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t157).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t161_inv))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36615,7 +37821,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t40_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36648,7 +37854,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t40_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36692,7 +37898,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t40_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36725,7 +37931,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t40_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36769,7 +37975,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t46_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t45);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t44);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t34).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t46_inv))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t34).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t46_inv))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36802,7 +38008,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t46_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t45);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t44);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t34).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t46_inv))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t34).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t46_inv))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36879,7 +38085,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t89_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36945,7 +38151,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t89_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37025,7 +38231,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t92_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37094,7 +38300,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t92_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37184,7 +38390,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t128_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t121);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t120);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t124).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t128_inv))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t124).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t128_inv))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37263,7 +38469,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t128_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t121);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t120);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t124).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t128_inv))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t124).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t128_inv))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37353,7 +38559,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t152_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t145);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t144);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t148).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t152_inv))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t148).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t152_inv))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37432,7 +38638,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col2 = _sv0.withLane(2, -1.0 * _t152_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t145);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t144);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t148).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t152_inv))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv)).neg(), MASK_75);
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t148).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t152_inv))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv)).neg(), MASK_76);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -43224,24 +44430,19 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Project the given position onto window coordinates using this matrix and the given viewport
-     * and store the result in {@code dest}.
-     *
-     * @param obj the object-space position to project
-     * @param viewport the viewport {@code [x, y, width, height]}
-     * @param dest will hold the result
-     * @return dest
+     * Private body of {@code project} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
+     * through the public {@code project} dispatcher.
      */
-    public Double3 project(Double3R obj, Double4R viewport, @Mutated Double3 dest) {
-        return project(obj.x(), obj.y(), obj.z(), viewport.x(), viewport.y(), viewport.z(), viewport.w(), dest);
+    private Double3 project_no(Double3R obj, Double4R viewport, @Mutated Double3 dest) {
+        return project_no(obj.x(), obj.y(), obj.z(), viewport.x(), viewport.y(), viewport.z(), viewport.w(), dest);
     }
 
 
     /**
-     * Private body of {@code project}, specialized by runtime matrix properties; reached only
-     * through the public {@code project} dispatcher.
+     * Private body of {@code project} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code project} dispatcher.
      */
-    private Double3 project_identity(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+    private Double3 project_no_identity(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
         dd[0] = Math.fma(0.5, viewportZ * (1.0 + objX), viewportX);
@@ -43252,10 +44453,10 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private body of {@code project}, specialized by runtime matrix properties; reached only
-     * through the public {@code project} dispatcher.
+     * Private body of {@code project} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code project} dispatcher.
      */
-    private Double3 project_translation(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+    private Double3 project_no_translation(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
         dd[0] = Math.fma(0.5, viewportZ * (1.0 + (objX + sd[12])), viewportX);
@@ -43266,10 +44467,10 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private body of {@code project}, specialized by runtime matrix properties; reached only
-     * through the public {@code project} dispatcher.
+     * Private body of {@code project} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code project} dispatcher.
      */
-    private Double3 project_orthogonal(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+    private Double3 project_no_orthogonal(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
         dd[0] = Math.fma(0.5, viewportZ * Math.fma(objX, sd[0], Math.fma(objY, sd[4], Math.fma(objZ, sd[8], 1.0 + sd[12]))), viewportX);
@@ -43280,10 +44481,10 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private body of {@code project}, specialized by runtime matrix properties; reached only
-     * through the public {@code project} dispatcher.
+     * Private body of {@code project} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code project} dispatcher.
      */
-    private Double3 project_general(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+    private Double3 project_no_general(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
         double _t2 = Math.fma(objX, sd[3], Math.fma(objY, sd[7], Math.fma(objZ, sd[11], sd[15])));
@@ -43292,6 +44493,117 @@ public class Double4x4Impl implements Double4x4 {
         dd[1] = Math.fma(0.5, viewportW * (1.0 + Math.fma(objX, sd[1], Math.fma(objY, sd[5], Math.fma(objZ, sd[9], sd[13]))) * _t2_inv), viewportY);
         dd[2] = 0.5 * (1.0 + Math.fma(objX, sd[2], Math.fma(objY, sd[6], Math.fma(objZ, sd[10], sd[14]))) * _t2_inv);
         return dest;
+    }
+
+
+    /**
+     * Private body of {@code project} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
+     * through the public {@code project} dispatcher.
+     */
+    private Double3 project_no(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return project_no_identity(objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return project_no_translation(objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return project_no_orthogonal(objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        return project_no_general(objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, dest);
+    }
+
+
+    /**
+     * Private body of {@code project} for {@code DepthRange.ZERO_TO_ONE}; reached only through the
+     * public {@code project} dispatcher.
+     */
+    private Double3 project_zo(Double3R obj, Double4R viewport, @Mutated Double3 dest) {
+        return project_zo(obj.x(), obj.y(), obj.z(), viewport.x(), viewport.y(), viewport.z(), viewport.w(), dest);
+    }
+
+
+    /**
+     * Private body of {@code project} for {@code DepthRange.ZERO_TO_ONE}, specialized by runtime
+     * matrix properties; reached only through the public {@code project} dispatcher.
+     */
+    private Double3 project_zo_identity(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        dd[0] = Math.fma(0.5, viewportZ * (1.0 + objX), viewportX);
+        dd[1] = Math.fma(0.5, viewportW * (1.0 + objY), viewportY);
+        dd[2] = objZ;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code project} for {@code DepthRange.ZERO_TO_ONE}, specialized by runtime
+     * matrix properties; reached only through the public {@code project} dispatcher.
+     */
+    private Double3 project_zo_translation(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        dd[0] = Math.fma(0.5, viewportZ * (1.0 + (objX + sd[12])), viewportX);
+        dd[1] = Math.fma(0.5, viewportW * (1.0 + (objY + sd[13])), viewportY);
+        dd[2] = objZ + sd[14];
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code project} for {@code DepthRange.ZERO_TO_ONE}, specialized by runtime
+     * matrix properties; reached only through the public {@code project} dispatcher.
+     */
+    private Double3 project_zo_orthogonal(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        dd[0] = Math.fma(0.5, viewportZ * Math.fma(objX, sd[0], Math.fma(objY, sd[4], Math.fma(objZ, sd[8], 1.0 + sd[12]))), viewportX);
+        dd[1] = Math.fma(0.5, viewportW * Math.fma(objX, sd[1], Math.fma(objY, sd[5], Math.fma(objZ, sd[9], 1.0 + sd[13]))), viewportY);
+        dd[2] = Math.fma(objX, sd[2], Math.fma(objY, sd[6], Math.fma(objZ, sd[10], sd[14])));
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code project} for {@code DepthRange.ZERO_TO_ONE}, specialized by runtime
+     * matrix properties; reached only through the public {@code project} dispatcher.
+     */
+    private Double3 project_zo_general(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        double _t2 = Math.fma(objX, sd[3], Math.fma(objY, sd[7], Math.fma(objZ, sd[11], sd[15])));
+        double _t2_inv = 1.0 / _t2;
+        dd[0] = Math.fma(0.5, viewportZ * (1.0 + Math.fma(objX, sd[0], Math.fma(objY, sd[4], Math.fma(objZ, sd[8], sd[12]))) * _t2_inv), viewportX);
+        dd[1] = Math.fma(0.5, viewportW * (1.0 + Math.fma(objX, sd[1], Math.fma(objY, sd[5], Math.fma(objZ, sd[9], sd[13]))) * _t2_inv), viewportY);
+        dd[2] = Math.fma(objX, sd[2], Math.fma(objY, sd[6], Math.fma(objZ, sd[10], sd[14]))) * _t2_inv;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code project} for {@code DepthRange.ZERO_TO_ONE}; reached only through the
+     * public {@code project} dispatcher.
+     */
+    private Double3 project_zo(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return project_zo_identity(objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return project_zo_translation(objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return project_zo_orthogonal(objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        return project_zo_general(objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, dest);
+    }
+
+
+    /**
+     * Project the given position onto window coordinates using this matrix and the given viewport
+     * and store the result in {@code dest}.
+     *
+     * @param obj the object-space position to project
+     * @param viewport the viewport {@code [x, y, width, height]}
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 project(Double3R obj, Double4R viewport, DepthRange depthRange, @Mutated Double3 dest) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return project_no(obj, viewport, dest); }
+            default -> { return project_zo(obj, viewport, dest); }
+        }
     }
 
 
@@ -43313,16 +44625,56 @@ public class Double4x4Impl implements Double4x4 {
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportW the {@code w} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param depthRange the clip-space depth range the projection maps onto
      * @param dest will hold the result
      * @return dest
      */
-    public Double3 project(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
-        int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return project_identity(objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return project_translation(objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, dest);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return project_orthogonal(objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, dest);
-        return project_general(objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, dest);
+    public Double3 project(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange, @Mutated Double3 dest) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return project_no(objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, dest); }
+            default -> { return project_zo(objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, dest); }
+        }
     }
+
+
+    /**
+     * Project the given position onto window coordinates using this matrix and the given viewport
+     * and store the result in {@code dest}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param obj the object-space position to project
+     * @param viewport the viewport {@code [x, y, width, height]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 project(Double3R obj, Double4R viewport, @Mutated Double3 dest) { return project(obj, viewport, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
+
+
+    /**
+     * Project the given position onto window coordinates using this matrix and the given viewport
+     * and store the result in {@code dest}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param objX the {@code x} component of the object-space position to project
+     *        {@code (objX, objY, objZ)}
+     * @param objY the {@code y} component of the object-space position to project
+     *        {@code (objX, objY, objZ)}
+     * @param objZ the {@code z} component of the object-space position to project
+     *        {@code (objX, objY, objZ)}
+     * @param viewportX the {@code x} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportY the {@code y} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportZ the {@code z} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportW the {@code w} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 project(double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) { return project(objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
 
 
     /**
@@ -46743,24 +48095,19 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Unproject the given window coordinates into object space using this matrix (which is inverted
-     * internally) and the given viewport and store the result in {@code dest}.
-     *
-     * @param winCoords the window coordinates {@code (x, y, depth)} to unproject
-     * @param viewport the viewport {@code [x, y, width, height]}
-     * @param dest will hold the result
-     * @return dest
+     * Private body of {@code unproject} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
+     * through the public {@code unproject} dispatcher.
      */
-    public Double3 unproject(Double3R winCoords, Double4R viewport, @Mutated Double3 dest) {
-        return unproject(winCoords.x(), winCoords.y(), winCoords.z(), viewport.x(), viewport.y(), viewport.z(), viewport.w(), dest);
+    private Double3 unproject_no(Double3R winCoords, Double4R viewport, @Mutated Double3 dest) {
+        return unproject_no(winCoords.x(), winCoords.y(), winCoords.z(), viewport.x(), viewport.y(), viewport.z(), viewport.w(), dest);
     }
 
 
     /**
-     * Private body of {@code unproject}, specialized by runtime matrix properties; reached only
-     * through the public {@code unproject} dispatcher.
+     * Private body of {@code unproject} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unproject} dispatcher.
      */
-    private Double3 unproject_identity(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+    private Double3 unproject_no_identity(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
         dd[0] = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
@@ -46771,10 +48118,10 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private body of {@code unproject}, specialized by runtime matrix properties; reached only
-     * through the public {@code unproject} dispatcher.
+     * Private body of {@code unproject} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unproject} dispatcher.
      */
-    private Double3 unproject_translation(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+    private Double3 unproject_no_translation(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
         dd[0] = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0 - sd[12];
@@ -46785,10 +48132,10 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private body of {@code unproject}, specialized by runtime matrix properties; reached only
-     * through the public {@code unproject} dispatcher.
+     * Private body of {@code unproject} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unproject} dispatcher.
      */
-    private Double3 unproject_orthogonal(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+    private Double3 unproject_no_orthogonal(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
         double _rcp0 = 1.0 / viewportZ;
@@ -46806,10 +48153,10 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private body of {@code unproject}, specialized by runtime matrix properties; reached only
-     * through the public {@code unproject} dispatcher.
+     * Private body of {@code unproject} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unproject} dispatcher.
      */
-    private Double3 unproject_affine(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+    private Double3 unproject_no_affine(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
         double _t8 = Math.fma(2.0, winCoordsZ, -1.0);
@@ -46833,10 +48180,10 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private body of {@code unproject}, specialized by runtime matrix properties; reached only
-     * through the public {@code unproject} dispatcher.
+     * Private body of {@code unproject} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unproject} dispatcher.
      */
-    private Double3 unproject_general(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+    private Double3 unproject_no_general(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
         double _t23 = Math.fma(2.0, winCoordsZ, -1.0);
@@ -46872,6 +48219,175 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
+     * Private body of {@code unproject} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
+     * through the public {@code unproject} dispatcher.
+     */
+    private Double3 unproject_no(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return unproject_no_identity(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return unproject_no_translation(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return unproject_no_orthogonal(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return unproject_no_affine(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        return unproject_no_general(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+    }
+
+
+    /**
+     * Private body of {@code unproject} for {@code DepthRange.ZERO_TO_ONE}; reached only through
+     * the public {@code unproject} dispatcher.
+     */
+    private Double3 unproject_zo(Double3R winCoords, Double4R viewport, @Mutated Double3 dest) {
+        return unproject_zo(winCoords.x(), winCoords.y(), winCoords.z(), viewport.x(), viewport.y(), viewport.z(), viewport.w(), dest);
+    }
+
+
+    /**
+     * Private body of {@code unproject} for {@code DepthRange.ZERO_TO_ONE}, specialized by runtime
+     * matrix properties; reached only through the public {@code unproject} dispatcher.
+     */
+    private Double3 unproject_zo_identity(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        dd[0] = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        dd[1] = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        dd[2] = winCoordsZ;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code unproject} for {@code DepthRange.ZERO_TO_ONE}, specialized by runtime
+     * matrix properties; reached only through the public {@code unproject} dispatcher.
+     */
+    private Double3 unproject_zo_translation(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        dd[0] = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0 - sd[12];
+        dd[1] = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0 - sd[13];
+        dd[2] = winCoordsZ - sd[14];
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code unproject} for {@code DepthRange.ZERO_TO_ONE}, specialized by runtime
+     * matrix properties; reached only through the public {@code unproject} dispatcher.
+     */
+    private Double3 unproject_zo_orthogonal(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        double _rcp0 = 1.0 / viewportZ;
+        double _rcp1 = 1.0 / viewportW;
+        double _t0 = -sd[0];
+        double _t1 = -sd[4];
+        double _t2 = -sd[8];
+        double _t5 = 2.0 * (winCoordsX - viewportX);
+        double _t6 = 2.0 * (winCoordsY - viewportY);
+        dd[0] = _t0 - sd[1] + Math.fma(_t0, sd[12], sd[0] * _t5 * _rcp0) + (Math.fma(-sd[1], sd[13], sd[1] * _t6 * _rcp1) + Math.fma(sd[2], winCoordsZ, -(sd[2] * sd[14])));
+        dd[1] = _t1 - sd[5] + Math.fma(_t1, sd[12], sd[4] * _t5 * _rcp0) + (Math.fma(-sd[5], sd[13], sd[5] * _t6 * _rcp1) + Math.fma(sd[6], winCoordsZ, -(sd[6] * sd[14])));
+        dd[2] = _t2 - sd[9] + Math.fma(_t2, sd[12], sd[8] * _t5 * _rcp0) + (Math.fma(-sd[9], sd[13], sd[9] * _t6 * _rcp1) + Math.fma(sd[10], winCoordsZ, -(sd[10] * sd[14])));
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code unproject} for {@code DepthRange.ZERO_TO_ONE}, specialized by runtime
+     * matrix properties; reached only through the public {@code unproject} dispatcher.
+     */
+    private Double3 unproject_zo_affine(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        double _t18 = Math.fma(sd[5], sd[10], -(sd[9] * sd[6]));
+        double _t19 = Math.fma(sd[9], sd[14], -(sd[13] * sd[10]));
+        double _t20 = Math.fma(sd[5], sd[14], -(sd[13] * sd[6]));
+        double _t21 = Math.fma(sd[1], sd[6], -(sd[5] * sd[2]));
+        double _t22 = Math.fma(sd[1], sd[10], -(sd[9] * sd[2]));
+        double _t23 = Math.fma(sd[1], sd[14], -(sd[13] * sd[2]));
+        double _t24 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t25 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t29 = Math.fma(sd[8], _t21, Math.fma(sd[0], _t18, -(sd[4] * _t22)));
+        double _t29_inv = 1.0 / _t29;
+        double _buf0 = (Math.fma(winCoordsZ, Math.fma(sd[4], sd[9], -(sd[8] * sd[5])), Math.fma(Math.fma(sd[8], sd[6], -(sd[4] * sd[10])), _t24, _t18 * _t25)) - Math.fma(sd[12], _t18, Math.fma(sd[4], _t19, -(sd[8] * _t20)))) * _t29_inv;
+        double _buf1 = (Math.fma(winCoordsZ, Math.fma(sd[8], sd[1], -(sd[0] * sd[9])), Math.fma(Math.fma(sd[0], sd[10], -(sd[8] * sd[2])), _t24, Math.fma(sd[9], sd[2], -(sd[1] * sd[10])) * _t25)) + Math.fma(sd[12], _t22, Math.fma(sd[0], _t19, -(sd[8] * _t23)))) * _t29_inv;
+        dd[2] = (Math.fma(winCoordsZ, Math.fma(sd[0], sd[5], -(sd[4] * sd[1])), Math.fma(Math.fma(sd[4], sd[2], -(sd[0] * sd[6])), _t24, _t21 * _t25)) - Math.fma(sd[12], _t21, Math.fma(sd[0], _t20, -(sd[4] * _t23)))) * _t29_inv;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code unproject} for {@code DepthRange.ZERO_TO_ONE}, specialized by runtime
+     * matrix properties; reached only through the public {@code unproject} dispatcher.
+     */
+    private Double3 unproject_zo_general(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        double _t0 = -winCoordsZ;
+        double _t43 = Math.fma(sd[5], sd[11], -(sd[9] * sd[7]));
+        double _t44 = Math.fma(sd[9], sd[15], -(sd[13] * sd[11]));
+        double _t45 = Math.fma(sd[5], sd[15], -(sd[13] * sd[7]));
+        double _t46 = Math.fma(sd[6], sd[11], -(sd[10] * sd[7]));
+        double _t47 = Math.fma(sd[10], sd[15], -(sd[14] * sd[11]));
+        double _t48 = Math.fma(sd[6], sd[15], -(sd[14] * sd[7]));
+        double _t49 = Math.fma(sd[5], sd[10], -(sd[9] * sd[6]));
+        double _t50 = Math.fma(sd[9], sd[14], -(sd[13] * sd[10]));
+        double _t51 = Math.fma(sd[5], sd[14], -(sd[13] * sd[6]));
+        double _t52 = Math.fma(sd[1], sd[6], -(sd[5] * sd[2]));
+        double _t53 = Math.fma(sd[1], sd[10], -(sd[9] * sd[2]));
+        double _t54 = Math.fma(sd[1], sd[7], -(sd[5] * sd[3]));
+        double _t55 = Math.fma(sd[1], sd[11], -(sd[9] * sd[3]));
+        double _t56 = Math.fma(sd[2], sd[7], -(sd[6] * sd[3]));
+        double _t57 = Math.fma(sd[2], sd[11], -(sd[10] * sd[3]));
+        double _t58 = Math.fma(sd[1], sd[14], -(sd[13] * sd[2]));
+        double _t59 = Math.fma(sd[1], sd[15], -(sd[13] * sd[3]));
+        double _t60 = Math.fma(sd[2], sd[15], -(sd[14] * sd[3]));
+        double _t61 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t62 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t83 = Math.fma(sd[8], _t52, Math.fma(sd[0], _t49, -(sd[4] * _t53))) + Math.fma(_t0, Math.fma(sd[8], _t54, Math.fma(sd[0], _t43, -(sd[4] * _t55))), Math.fma(Math.fma(sd[8], _t56, Math.fma(sd[0], _t46, -(sd[4] * _t57))), _t62, -(Math.fma(sd[9], _t56, Math.fma(sd[1], _t46, -(sd[5] * _t57))) * _t61)));
+        double _t83_inv = 1.0 / _t83;
+        double _buf0 = (Math.fma(winCoordsZ, Math.fma(sd[12], _t43, Math.fma(sd[4], _t44, -(sd[8] * _t45))), Math.fma(Math.fma(sd[13], _t46, Math.fma(sd[5], _t47, -(sd[9] * _t48))), _t61, -(Math.fma(sd[12], _t46, Math.fma(sd[4], _t47, -(sd[8] * _t48))) * _t62))) - Math.fma(sd[12], _t49, Math.fma(sd[4], _t50, -(sd[8] * _t51)))) * _t83_inv;
+        double _buf1 = (Math.fma(sd[12], _t53, Math.fma(sd[0], _t50, -(sd[8] * _t58))) + Math.fma(_t0, Math.fma(sd[12], _t55, Math.fma(sd[0], _t44, -(sd[8] * _t59))), Math.fma(Math.fma(sd[12], _t57, Math.fma(sd[0], _t47, -(sd[8] * _t60))), _t62, -(Math.fma(sd[13], _t57, Math.fma(sd[1], _t47, -(sd[9] * _t60))) * _t61)))) * _t83_inv;
+        dd[2] = (Math.fma(winCoordsZ, Math.fma(sd[12], _t54, Math.fma(sd[0], _t45, -(sd[4] * _t59))), Math.fma(Math.fma(sd[13], _t56, Math.fma(sd[1], _t48, -(sd[5] * _t60))), _t61, -(Math.fma(sd[12], _t56, Math.fma(sd[0], _t48, -(sd[4] * _t60))) * _t62))) - Math.fma(sd[12], _t52, Math.fma(sd[0], _t51, -(sd[4] * _t58)))) * _t83_inv;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code unproject} for {@code DepthRange.ZERO_TO_ONE}; reached only through
+     * the public {@code unproject} dispatcher.
+     */
+    private Double3 unproject_zo(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return unproject_zo_identity(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return unproject_zo_translation(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return unproject_zo_orthogonal(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return unproject_zo_affine(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        return unproject_zo_general(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+    }
+
+
+    /**
+     * Unproject the given window coordinates into object space using this matrix (which is inverted
+     * internally) and the given viewport and store the result in {@code dest}.
+     *
+     * @param winCoords the window coordinates {@code (x, y, depth)} to unproject
+     * @param viewport the viewport {@code [x, y, width, height]}
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 unproject(Double3R winCoords, Double4R viewport, DepthRange depthRange, @Mutated Double3 dest) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return unproject_no(winCoords, viewport, dest); }
+            default -> { return unproject_zo(winCoords, viewport, dest); }
+        }
+    }
+
+
+    /**
      * Unproject the given window coordinates into object space using this matrix (which is inverted
      * internally) and the given viewport and store the result in {@code dest}.
      *
@@ -46889,48 +48405,83 @@ public class Double4x4Impl implements Double4x4 {
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportW the {@code w} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param depthRange the clip-space depth range the projection maps onto
      * @param dest will hold the result
      * @return dest
      */
-    public Double3 unproject(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
-        int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return unproject_identity(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return unproject_translation(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
-        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return unproject_orthogonal(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return unproject_affine(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
-        return unproject_general(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+    public Double3 unproject(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange, @Mutated Double3 dest) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return unproject_no(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest); }
+            default -> { return unproject_zo(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest); }
+        }
     }
 
 
     /**
-     * Unproject the given window coordinates into object space using this matrix (which is assumed
-     * to be the inverse of a projection-view matrix) and the given viewport and store the result in
-     * {@code dest}.
+     * Unproject the given window coordinates into object space using this matrix (which is inverted
+     * internally) and the given viewport and store the result in {@code dest}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param winCoords the window coordinates {@code (x, y, depth)} to unproject
      * @param viewport the viewport {@code [x, y, width, height]}
      * @param dest will hold the result
      * @return dest
      */
-    public Double3 unprojectInv(Double3R winCoords, Double4R viewport, @Mutated Double3 dest) {
-        return unprojectInv(winCoords.x(), winCoords.y(), winCoords.z(), viewport.x(), viewport.y(), viewport.z(), viewport.w(), dest);
+    public Double3 unproject(Double3R winCoords, Double4R viewport, @Mutated Double3 dest) { return unproject(winCoords, viewport, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
+
+
+    /**
+     * Unproject the given window coordinates into object space using this matrix (which is inverted
+     * internally) and the given viewport and store the result in {@code dest}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
+     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
+     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
+     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     * @param viewportX the {@code x} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportY the {@code y} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportZ the {@code z} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportW the {@code w} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 unproject(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) { return unproject(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
+
+
+    /**
+     * Private body of {@code unprojectInv} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
+     * through the public {@code unprojectInv} dispatcher.
+     */
+    private Double3 unprojectInv_no(Double3R winCoords, Double4R viewport, @Mutated Double3 dest) {
+        return unprojectInv_no(winCoords.x(), winCoords.y(), winCoords.z(), viewport.x(), viewport.y(), viewport.z(), viewport.w(), dest);
     }
 
 
     /**
-     * Private body of {@code unprojectInv}, specialized by runtime matrix properties; reached only
-     * through the public {@code unprojectInv} dispatcher.
+     * Private body of {@code unprojectInv} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized
+     * by runtime matrix properties; reached only through the public {@code unprojectInv}
+     * dispatcher.
      */
-    private Double3 unprojectInv_identity(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
-        return unproject_identity(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+    private Double3 unprojectInv_no_identity(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        return unproject_no_identity(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
     }
 
 
     /**
-     * Private body of {@code unprojectInv}, specialized by runtime matrix properties; reached only
-     * through the public {@code unprojectInv} dispatcher.
+     * Private body of {@code unprojectInv} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized
+     * by runtime matrix properties; reached only through the public {@code unprojectInv}
+     * dispatcher.
      */
-    private Double3 unprojectInv_translation(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+    private Double3 unprojectInv_no_translation(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
         dd[0] = sd[12] + (2.0 * (winCoordsX - viewportX) / viewportZ - 1.0);
@@ -46941,10 +48492,11 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private body of {@code unprojectInv}, specialized by runtime matrix properties; reached only
-     * through the public {@code unprojectInv} dispatcher.
+     * Private body of {@code unprojectInv} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized
+     * by runtime matrix properties; reached only through the public {@code unprojectInv}
+     * dispatcher.
      */
-    private Double3 unprojectInv_orthogonal(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+    private Double3 unprojectInv_no_orthogonal(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
         double _t2 = Math.fma(2.0, winCoordsZ, -1.0);
@@ -46958,10 +48510,11 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private body of {@code unprojectInv}, specialized by runtime matrix properties; reached only
-     * through the public {@code unprojectInv} dispatcher.
+     * Private body of {@code unprojectInv} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized
+     * by runtime matrix properties; reached only through the public {@code unprojectInv}
+     * dispatcher.
      */
-    private Double3 unprojectInv_general(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+    private Double3 unprojectInv_no_general(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
         double _t2 = Math.fma(2.0, winCoordsZ, -1.0);
@@ -46973,6 +48526,117 @@ public class Double4x4Impl implements Double4x4 {
         dd[1] = Math.fma(sd[1], _t8, Math.fma(sd[5], _t9, Math.fma(sd[9], _t2, sd[13]))) * _t11_inv;
         dd[2] = Math.fma(sd[2], _t8, Math.fma(sd[6], _t9, Math.fma(sd[10], _t2, sd[14]))) * _t11_inv;
         return dest;
+    }
+
+
+    /**
+     * Private body of {@code unprojectInv} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
+     * through the public {@code unprojectInv} dispatcher.
+     */
+    private Double3 unprojectInv_no(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return unprojectInv_no_identity(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return unprojectInv_no_translation(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return unprojectInv_no_orthogonal(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        return unprojectInv_no_general(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+    }
+
+
+    /**
+     * Private body of {@code unprojectInv} for {@code DepthRange.ZERO_TO_ONE}; reached only through
+     * the public {@code unprojectInv} dispatcher.
+     */
+    private Double3 unprojectInv_zo(Double3R winCoords, Double4R viewport, @Mutated Double3 dest) {
+        return unprojectInv_zo(winCoords.x(), winCoords.y(), winCoords.z(), viewport.x(), viewport.y(), viewport.z(), viewport.w(), dest);
+    }
+
+
+    /**
+     * Private body of {@code unprojectInv} for {@code DepthRange.ZERO_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unprojectInv} dispatcher.
+     */
+    private Double3 unprojectInv_zo_identity(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        return unproject_zo_identity(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+    }
+
+
+    /**
+     * Private body of {@code unprojectInv} for {@code DepthRange.ZERO_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unprojectInv} dispatcher.
+     */
+    private Double3 unprojectInv_zo_translation(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        dd[0] = sd[12] + (2.0 * (winCoordsX - viewportX) / viewportZ - 1.0);
+        dd[1] = sd[13] + (2.0 * (winCoordsY - viewportY) / viewportW - 1.0);
+        dd[2] = sd[14] + winCoordsZ;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code unprojectInv} for {@code DepthRange.ZERO_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unprojectInv} dispatcher.
+     */
+    private Double3 unprojectInv_zo_orthogonal(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        double _t6 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t7 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        dd[0] = Math.fma(sd[0], _t6, Math.fma(sd[4], _t7, Math.fma(sd[8], winCoordsZ, sd[12])));
+        dd[1] = Math.fma(sd[1], _t6, Math.fma(sd[5], _t7, Math.fma(sd[9], winCoordsZ, sd[13])));
+        dd[2] = Math.fma(sd[2], _t6, Math.fma(sd[6], _t7, Math.fma(sd[10], winCoordsZ, sd[14])));
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code unprojectInv} for {@code DepthRange.ZERO_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unprojectInv} dispatcher.
+     */
+    private Double3 unprojectInv_zo_general(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        double _t7 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t8 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t10 = Math.fma(sd[3], _t7, Math.fma(sd[7], _t8, Math.fma(sd[11], winCoordsZ, sd[15])));
+        double _t10_inv = 1.0 / _t10;
+        dd[0] = Math.fma(sd[0], _t7, Math.fma(sd[4], _t8, Math.fma(sd[8], winCoordsZ, sd[12]))) * _t10_inv;
+        dd[1] = Math.fma(sd[1], _t7, Math.fma(sd[5], _t8, Math.fma(sd[9], winCoordsZ, sd[13]))) * _t10_inv;
+        dd[2] = Math.fma(sd[2], _t7, Math.fma(sd[6], _t8, Math.fma(sd[10], winCoordsZ, sd[14]))) * _t10_inv;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code unprojectInv} for {@code DepthRange.ZERO_TO_ONE}; reached only through
+     * the public {@code unprojectInv} dispatcher.
+     */
+    private Double3 unprojectInv_zo(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return unprojectInv_zo_identity(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return unprojectInv_zo_translation(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return unprojectInv_zo_orthogonal(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+        return unprojectInv_zo_general(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+    }
+
+
+    /**
+     * Unproject the given window coordinates into object space using this matrix (which is assumed
+     * to be the inverse of a projection-view matrix) and the given viewport and store the result in
+     * {@code dest}.
+     *
+     * @param winCoords the window coordinates {@code (x, y, depth)} to unproject
+     * @param viewport the viewport {@code [x, y, width, height]}
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 unprojectInv(Double3R winCoords, Double4R viewport, DepthRange depthRange, @Mutated Double3 dest) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return unprojectInv_no(winCoords, viewport, dest); }
+            default -> { return unprojectInv_zo(winCoords, viewport, dest); }
+        }
     }
 
 
@@ -46995,39 +48659,75 @@ public class Double4x4Impl implements Double4x4 {
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportW the {@code w} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param depthRange the clip-space depth range the projection maps onto
      * @param dest will hold the result
      * @return dest
      */
-    public Double3 unprojectInv(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) {
-        int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return unprojectInv_identity(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return unprojectInv_translation(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return unprojectInv_orthogonal(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
-        return unprojectInv_general(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
+    public Double3 unprojectInv(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange, @Mutated Double3 dest) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return unprojectInv_no(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest); }
+            default -> { return unprojectInv_zo(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest); }
+        }
     }
 
 
     /**
-     * Unproject the given window coordinates into a ray in object space using this matrix (which is
-     * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
-     * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * Unproject the given window coordinates into object space using this matrix (which is assumed
+     * to be the inverse of a projection-view matrix) and the given viewport and store the result in
+     * {@code dest}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param winCoords the window coordinates {@code (x, y)} to unproject
+     * @param winCoords the window coordinates {@code (x, y, depth)} to unproject
      * @param viewport the viewport {@code [x, y, width, height]}
-     * @param rayOrigin will hold the origin of the ray
-     * @param rayDir will hold the direction of the ray
-     * @return this
+     * @param dest will hold the result
+     * @return dest
      */
-    public Double4x4 unprojectInvRay(Double2R winCoords, Double4R viewport, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
-        return unprojectInvRay(winCoords.x(), winCoords.y(), viewport.x(), viewport.y(), viewport.z(), viewport.w(), rayOrigin, rayDir);
-    }
+    public Double3 unprojectInv(Double3R winCoords, Double4R viewport, @Mutated Double3 dest) { return unprojectInv(winCoords, viewport, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
 
 
     /**
-     * Private body of {@code unprojectInvRay}, specialized by runtime matrix properties; reached
+     * Unproject the given window coordinates into object space using this matrix (which is assumed
+     * to be the inverse of a projection-view matrix) and the given viewport and store the result in
+     * {@code dest}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
+     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
+     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
+     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     * @param viewportX the {@code x} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportY the {@code y} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportZ the {@code z} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportW the {@code w} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 unprojectInv(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 dest) { return unprojectInv(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE, dest); }
+
+
+    /**
+     * Private body of {@code unprojectInvRay} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached
      * only through the public {@code unprojectInvRay} dispatcher.
      */
-    private void unprojectInvRay_identity(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+    private Double4x4 unprojectInvRay_no(Double2R winCoords, Double4R viewport, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        return unprojectInvRay_no(winCoords.x(), winCoords.y(), viewport.x(), viewport.y(), viewport.z(), viewport.w(), rayOrigin, rayDir);
+    }
+
+
+    /**
+     * Private body of {@code unprojectInvRay} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * specialized by runtime matrix properties; reached only through the public
+     * {@code unprojectInvRay} dispatcher.
+     */
+    private void unprojectInvRay_no_identity(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
         double[] sd = this.data;
         double[] rayOriginData = ((Double3Impl) rayOrigin).data;
         double[] rayDirData = ((Double3Impl) rayDir).data;
@@ -47041,10 +48741,11 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private body of {@code unprojectInvRay}, specialized by runtime matrix properties; reached
-     * only through the public {@code unprojectInvRay} dispatcher.
+     * Private body of {@code unprojectInvRay} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * specialized by runtime matrix properties; reached only through the public
+     * {@code unprojectInvRay} dispatcher.
      */
-    private void unprojectInvRay_translation(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+    private void unprojectInvRay_no_translation(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
         double[] sd = this.data;
         double[] rayOriginData = ((Double3Impl) rayOrigin).data;
         double[] rayDirData = ((Double3Impl) rayDir).data;
@@ -47059,10 +48760,11 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private body of {@code unprojectInvRay}, specialized by runtime matrix properties; reached
-     * only through the public {@code unprojectInvRay} dispatcher.
+     * Private body of {@code unprojectInvRay} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * specialized by runtime matrix properties; reached only through the public
+     * {@code unprojectInvRay} dispatcher.
      */
-    private void unprojectInvRay_orthogonal(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+    private void unprojectInvRay_no_orthogonal(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
         double[] sd = this.data;
         double[] rayOriginData = ((Double3Impl) rayOrigin).data;
         double[] rayDirData = ((Double3Impl) rayDir).data;
@@ -47080,10 +48782,11 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private body of {@code unprojectInvRay}, specialized by runtime matrix properties; reached
-     * only through the public {@code unprojectInvRay} dispatcher.
+     * Private body of {@code unprojectInvRay} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * specialized by runtime matrix properties; reached only through the public
+     * {@code unprojectInvRay} dispatcher.
      */
-    private void unprojectInvRay_affine(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+    private void unprojectInvRay_no_affine(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
         double[] sd = this.data;
         double[] rayOriginData = ((Double3Impl) rayOrigin).data;
         double[] rayDirData = ((Double3Impl) rayDir).data;
@@ -47099,10 +48802,11 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private body of {@code unprojectInvRay}, specialized by runtime matrix properties; reached
-     * only through the public {@code unprojectInvRay} dispatcher.
+     * Private body of {@code unprojectInvRay} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * specialized by runtime matrix properties; reached only through the public
+     * {@code unprojectInvRay} dispatcher.
      */
-    private void unprojectInvRay_general(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+    private void unprojectInvRay_no_general(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
         double[] sd = this.data;
         double[] rayOriginData = ((Double3Impl) rayOrigin).data;
         double[] rayDirData = ((Double3Impl) rayDir).data;
@@ -47125,9 +48829,221 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
+     * Private body of {@code unprojectInvRay} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached
+     * only through the public {@code unprojectInvRay} dispatcher.
+     */
+    private Double4x4 unprojectInvRay_no(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) { unprojectInvRay_no_identity(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) { unprojectInvRay_no_translation(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) { unprojectInvRay_no_orthogonal(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) { unprojectInvRay_no_affine(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
+        unprojectInvRay_no_general(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir);
+        return this;
+    }
+
+
+    /**
+     * Private body of {@code unprojectInvRay} for {@code DepthRange.ZERO_TO_ONE}; reached only
+     * through the public {@code unprojectInvRay} dispatcher.
+     */
+    private Double4x4 unprojectInvRay_zo(Double2R winCoords, Double4R viewport, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        return unprojectInvRay_zo(winCoords.x(), winCoords.y(), viewport.x(), viewport.y(), viewport.z(), viewport.w(), rayOrigin, rayDir);
+    }
+
+
+    /**
+     * Private body of {@code unprojectInvRay} for {@code DepthRange.ZERO_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unprojectInvRay}
+     * dispatcher.
+     */
+    private void unprojectInvRay_zo_identity(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        double[] sd = this.data;
+        double[] rayOriginData = ((Double3Impl) rayOrigin).data;
+        double[] rayDirData = ((Double3Impl) rayDir).data;
+        rayOriginData[0] = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        rayOriginData[1] = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        rayOriginData[2] = 0.0;
+        rayDirData[0] = 0.0;
+        rayDirData[1] = 0.0;
+        rayDirData[2] = 1.0;
+    }
+
+
+    /**
+     * Private body of {@code unprojectInvRay} for {@code DepthRange.ZERO_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unprojectInvRay}
+     * dispatcher.
+     */
+    private void unprojectInvRay_zo_translation(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        double[] sd = this.data;
+        double[] rayOriginData = ((Double3Impl) rayOrigin).data;
+        double[] rayDirData = ((Double3Impl) rayDir).data;
+        rayOriginData[0] = sd[12] + (2.0 * (winCoordsX - viewportX) / viewportZ - 1.0);
+        rayOriginData[1] = sd[13] + (2.0 * (winCoordsY - viewportY) / viewportW - 1.0);
+        rayOriginData[2] = sd[14];
+        rayDirData[0] = 0.0;
+        rayDirData[1] = 0.0;
+        rayDirData[2] = 1.0 + sd[14] - sd[14];
+    }
+
+
+    /**
+     * Private body of {@code unprojectInvRay} for {@code DepthRange.ZERO_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unprojectInvRay}
+     * dispatcher.
+     */
+    private void unprojectInvRay_zo_orthogonal(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        double[] sd = this.data;
+        double[] rayOriginData = ((Double3Impl) rayOrigin).data;
+        double[] rayDirData = ((Double3Impl) rayDir).data;
+        double _rcp0 = 1.0 / viewportZ;
+        double _rcp1 = 1.0 / viewportW;
+        double _t2 = 2.0 * (winCoordsX - viewportX);
+        double _t3 = 2.0 * (winCoordsY - viewportY);
+        rayOriginData[0] = sd[12] + (-sd[0] - sd[4]) + sd[0] * _t2 * _rcp0 + sd[4] * _t3 * _rcp1;
+        rayOriginData[1] = sd[13] + (-sd[1] - sd[5]) + sd[1] * _t2 * _rcp0 + sd[5] * _t3 * _rcp1;
+        rayOriginData[2] = sd[14] + (-sd[2] - sd[6]) + sd[2] * _t2 * _rcp0 + sd[6] * _t3 * _rcp1;
+        rayDirData[0] = sd[8];
+        rayDirData[1] = sd[9];
+        rayDirData[2] = sd[10];
+    }
+
+
+    /**
+     * Private body of {@code unprojectInvRay} for {@code DepthRange.ZERO_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unprojectInvRay}
+     * dispatcher.
+     */
+    private void unprojectInvRay_zo_affine(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        double[] sd = this.data;
+        double[] rayOriginData = ((Double3Impl) rayOrigin).data;
+        double[] rayDirData = ((Double3Impl) rayDir).data;
+        double _t6 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t7 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        rayOriginData[0] = Math.fma(sd[0], _t6, Math.fma(sd[4], _t7, sd[12]));
+        rayOriginData[1] = Math.fma(sd[1], _t6, Math.fma(sd[5], _t7, sd[13]));
+        rayOriginData[2] = Math.fma(sd[2], _t6, Math.fma(sd[6], _t7, sd[14]));
+        rayDirData[0] = Math.fma(sd[0], _t6, Math.fma(sd[4], _t7, Math.fma(-sd[0], _t6, Math.fma(-sd[4], _t7, sd[12] + sd[8] - sd[12]))));
+        rayDirData[1] = Math.fma(sd[1], _t6, Math.fma(sd[5], _t7, Math.fma(-sd[1], _t6, Math.fma(-sd[5], _t7, sd[13] + sd[9] - sd[13]))));
+        rayDirData[2] = Math.fma(sd[2], _t6, Math.fma(sd[6], _t7, Math.fma(-sd[2], _t6, Math.fma(-sd[6], _t7, sd[14] + sd[10] - sd[14]))));
+    }
+
+
+    /**
+     * Private body of {@code unprojectInvRay} for {@code DepthRange.ZERO_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unprojectInvRay}
+     * dispatcher.
+     */
+    private void unprojectInvRay_zo_general(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        double[] sd = this.data;
+        double[] rayOriginData = ((Double3Impl) rayOrigin).data;
+        double[] rayDirData = ((Double3Impl) rayDir).data;
+        double _t7 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t8 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t15 = Math.fma(sd[3], _t7, Math.fma(sd[7], _t8, sd[15]));
+        double _t15_inv = 1.0 / _t15;
+        double _t18 = Math.fma(sd[3], _t7, Math.fma(sd[7], _t8, sd[15] + sd[11]));
+        double _t18_inv = 1.0 / _t18;
+        double _t19 = Math.fma(sd[0], _t7, Math.fma(sd[4], _t8, sd[12])) * _t15_inv;
+        double _t20 = Math.fma(sd[1], _t7, Math.fma(sd[5], _t8, sd[13])) * _t15_inv;
+        double _t21 = Math.fma(sd[2], _t7, Math.fma(sd[6], _t8, sd[14])) * _t15_inv;
+        rayOriginData[0] = _t19;
+        rayOriginData[1] = _t20;
+        rayOriginData[2] = _t21;
+        rayDirData[0] = Math.fma(sd[0], _t7, Math.fma(sd[4], _t8, sd[12] + sd[8])) * _t18_inv - _t19;
+        rayDirData[1] = Math.fma(sd[1], _t7, Math.fma(sd[5], _t8, sd[13] + sd[9])) * _t18_inv - _t20;
+        rayDirData[2] = Math.fma(sd[2], _t7, Math.fma(sd[6], _t8, sd[14] + sd[10])) * _t18_inv - _t21;
+    }
+
+
+    /**
+     * Private body of {@code unprojectInvRay} for {@code DepthRange.ZERO_TO_ONE}; reached only
+     * through the public {@code unprojectInvRay} dispatcher.
+     */
+    private Double4x4 unprojectInvRay_zo(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) { unprojectInvRay_zo_identity(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) { unprojectInvRay_zo_translation(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) { unprojectInvRay_zo_orthogonal(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) { unprojectInvRay_zo_affine(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
+        unprojectInvRay_zo_general(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir);
+        return this;
+    }
+
+
+    /**
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
      * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     *
+     * @param winCoords the window coordinates {@code (x, y)} to unproject
+     * @param viewport the viewport {@code [x, y, width, height]}
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @param rayOrigin will hold the origin of the ray
+     * @param rayDir will hold the direction of the ray
+     * @return this
+     */
+    public Double4x4 unprojectInvRay(Double2R winCoords, Double4R viewport, DepthRange depthRange, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return unprojectInvRay_no(winCoords, viewport, rayOrigin, rayDir); }
+            default -> { return unprojectInvRay_zo(winCoords, viewport, rayOrigin, rayDir); }
+        }
+    }
+
+
+    /**
+     * Unproject the given window coordinates into a ray in object space using this matrix (which is
+     * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
+     * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     *
+     * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
+     *        unproject {@code (winCoordsX, winCoordsY)}
+     * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y)} to
+     *        unproject {@code (winCoordsX, winCoordsY)}
+     * @param viewportX the {@code x} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportY the {@code y} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportZ the {@code z} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportW the {@code w} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @param rayOrigin will hold the origin of the ray
+     * @param rayDir will hold the direction of the ray
+     * @return this
+     */
+    public Double4x4 unprojectInvRay(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return unprojectInvRay_no(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); }
+            default -> { return unprojectInvRay_zo(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); }
+        }
+    }
+
+
+    /**
+     * Unproject the given window coordinates into a ray in object space using this matrix (which is
+     * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
+     * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param winCoords the window coordinates {@code (x, y)} to unproject
+     * @param viewport the viewport {@code [x, y, width, height]}
+     * @param rayOrigin will hold the origin of the ray
+     * @param rayDir will hold the direction of the ray
+     * @return this
+     */
+    public Double4x4 unprojectInvRay(Double2R winCoords, Double4R viewport, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) { return unprojectInvRay(winCoords, viewport, DepthRange.NEGATIVE_ONE_TO_ONE, rayOrigin, rayDir); }
+
+
+    /**
+     * Unproject the given window coordinates into a ray in object space using this matrix (which is
+     * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
+     * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
      *        unproject {@code (winCoordsX, winCoordsY)}
@@ -47145,38 +49061,24 @@ public class Double4x4Impl implements Double4x4 {
      * @param rayDir will hold the direction of the ray
      * @return this
      */
-    public Double4x4 unprojectInvRay(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
-        int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) { unprojectInvRay_identity(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) { unprojectInvRay_translation(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
-        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) { unprojectInvRay_orthogonal(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) { unprojectInvRay_affine(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
-        unprojectInvRay_general(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir);
-        return this;
-    }
+    public Double4x4 unprojectInvRay(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) { return unprojectInvRay(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE, rayOrigin, rayDir); }
 
 
     /**
-     * Unproject the given window coordinates into a ray in object space using this matrix (which is
-     * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
-     * the ray direction in {@code rayDir}.
-     *
-     * @param winCoords the window coordinates {@code (x, y)} to unproject
-     * @param viewport the viewport {@code [x, y, width, height]}
-     * @param rayOrigin will hold the origin of the ray
-     * @param rayDir will hold the direction of the ray
-     * @return this
-     */
-    public Double4x4 unprojectRay(Double2R winCoords, Double4R viewport, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
-        return unprojectRay(winCoords.x(), winCoords.y(), viewport.x(), viewport.y(), viewport.z(), viewport.w(), rayOrigin, rayDir);
-    }
-
-
-    /**
-     * Private body of {@code unprojectRay}, specialized by runtime matrix properties; reached only
+     * Private body of {@code unprojectRay} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
      * through the public {@code unprojectRay} dispatcher.
      */
-    private void unprojectRay_identity(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+    private Double4x4 unprojectRay_no(Double2R winCoords, Double4R viewport, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        return unprojectRay_no(winCoords.x(), winCoords.y(), viewport.x(), viewport.y(), viewport.z(), viewport.w(), rayOrigin, rayDir);
+    }
+
+
+    /**
+     * Private body of {@code unprojectRay} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized
+     * by runtime matrix properties; reached only through the public {@code unprojectRay}
+     * dispatcher.
+     */
+    private void unprojectRay_no_identity(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
         double[] sd = this.data;
         double[] rayOriginData = ((Double3Impl) rayOrigin).data;
         double[] rayDirData = ((Double3Impl) rayDir).data;
@@ -47190,10 +49092,11 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private body of {@code unprojectRay}, specialized by runtime matrix properties; reached only
-     * through the public {@code unprojectRay} dispatcher.
+     * Private body of {@code unprojectRay} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized
+     * by runtime matrix properties; reached only through the public {@code unprojectRay}
+     * dispatcher.
      */
-    private void unprojectRay_translation(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+    private void unprojectRay_no_translation(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
         double[] sd = this.data;
         double[] rayOriginData = ((Double3Impl) rayOrigin).data;
         double[] rayDirData = ((Double3Impl) rayDir).data;
@@ -47208,10 +49111,11 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private body of {@code unprojectRay}, specialized by runtime matrix properties; reached only
-     * through the public {@code unprojectRay} dispatcher.
+     * Private body of {@code unprojectRay} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized
+     * by runtime matrix properties; reached only through the public {@code unprojectRay}
+     * dispatcher.
      */
-    private void unprojectRay_orthogonal(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+    private void unprojectRay_no_orthogonal(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
         double[] sd = this.data;
         double[] rayOriginData = ((Double3Impl) rayOrigin).data;
         double[] rayDirData = ((Double3Impl) rayDir).data;
@@ -47235,10 +49139,11 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private body of {@code unprojectRay}, specialized by runtime matrix properties; reached only
-     * through the public {@code unprojectRay} dispatcher.
+     * Private body of {@code unprojectRay} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized
+     * by runtime matrix properties; reached only through the public {@code unprojectRay}
+     * dispatcher.
      */
-    private void unprojectRay_affine(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+    private void unprojectRay_no_affine(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
         double[] sd = this.data;
         double[] rayOriginData = ((Double3Impl) rayOrigin).data;
         double[] rayDirData = ((Double3Impl) rayDir).data;
@@ -47281,10 +49186,11 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Private body of {@code unprojectRay}, specialized by runtime matrix properties; reached only
-     * through the public {@code unprojectRay} dispatcher.
+     * Private body of {@code unprojectRay} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized
+     * by runtime matrix properties; reached only through the public {@code unprojectRay}
+     * dispatcher.
      */
-    private void unprojectRay_general(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+    private void unprojectRay_no_general(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
         double[] sd = this.data;
         double[] rayOriginData = ((Double3Impl) rayOrigin).data;
         double[] rayDirData = ((Double3Impl) rayDir).data;
@@ -47341,9 +49247,269 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
+     * Private body of {@code unprojectRay} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
+     * through the public {@code unprojectRay} dispatcher.
+     */
+    private Double4x4 unprojectRay_no(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) { unprojectRay_no_identity(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) { unprojectRay_no_translation(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) { unprojectRay_no_orthogonal(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) { unprojectRay_no_affine(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
+        unprojectRay_no_general(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir);
+        return this;
+    }
+
+
+    /**
+     * Private body of {@code unprojectRay} for {@code DepthRange.ZERO_TO_ONE}; reached only through
+     * the public {@code unprojectRay} dispatcher.
+     */
+    private Double4x4 unprojectRay_zo(Double2R winCoords, Double4R viewport, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        return unprojectRay_zo(winCoords.x(), winCoords.y(), viewport.x(), viewport.y(), viewport.z(), viewport.w(), rayOrigin, rayDir);
+    }
+
+
+    /**
+     * Private body of {@code unprojectRay} for {@code DepthRange.ZERO_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unprojectRay} dispatcher.
+     */
+    private void unprojectRay_zo_identity(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        double[] sd = this.data;
+        double[] rayOriginData = ((Double3Impl) rayOrigin).data;
+        double[] rayDirData = ((Double3Impl) rayDir).data;
+        rayOriginData[0] = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        rayOriginData[1] = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        rayOriginData[2] = 0.0;
+        rayDirData[0] = 0.0;
+        rayDirData[1] = 0.0;
+        rayDirData[2] = 1.0;
+    }
+
+
+    /**
+     * Private body of {@code unprojectRay} for {@code DepthRange.ZERO_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unprojectRay} dispatcher.
+     */
+    private void unprojectRay_zo_translation(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        double[] sd = this.data;
+        double[] rayOriginData = ((Double3Impl) rayOrigin).data;
+        double[] rayDirData = ((Double3Impl) rayDir).data;
+        rayOriginData[0] = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0 - sd[12];
+        rayOriginData[1] = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0 - sd[13];
+        rayOriginData[2] = -sd[14];
+        rayDirData[0] = 0.0;
+        rayDirData[1] = 0.0;
+        rayDirData[2] = sd[14] + (1.0 - sd[14]);
+    }
+
+
+    /**
+     * Private body of {@code unprojectRay} for {@code DepthRange.ZERO_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unprojectRay} dispatcher.
+     */
+    private void unprojectRay_zo_orthogonal(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        double[] sd = this.data;
+        double[] rayOriginData = ((Double3Impl) rayOrigin).data;
+        double[] rayDirData = ((Double3Impl) rayDir).data;
+        double _rcp0 = 1.0 / viewportZ;
+        double _rcp1 = 1.0 / viewportW;
+        double _t0 = -sd[0];
+        double _t1 = -sd[4];
+        double _t2 = -sd[8];
+        double _t5 = 2.0 * (winCoordsX - viewportX);
+        double _t6 = 2.0 * (winCoordsY - viewportY);
+        rayOriginData[0] = Math.fma(_t0, sd[12], Math.fma(-sd[1], sd[13], Math.fma(-sd[2], sd[14], _t0 - sd[1] + sd[0] * _t5 * _rcp0 + sd[1] * _t6 * _rcp1)));
+        rayOriginData[1] = Math.fma(_t1, sd[12], Math.fma(-sd[5], sd[13], Math.fma(-sd[6], sd[14], _t1 - sd[5] + sd[4] * _t5 * _rcp0 + sd[5] * _t6 * _rcp1)));
+        rayOriginData[2] = Math.fma(_t2, sd[12], Math.fma(-sd[9], sd[13], Math.fma(-sd[10], sd[14], _t2 - sd[9] + sd[8] * _t5 * _rcp0 + sd[9] * _t6 * _rcp1)));
+        rayDirData[0] = sd[2];
+        rayDirData[1] = sd[6];
+        rayDirData[2] = sd[10];
+    }
+
+
+    /**
+     * Private body of {@code unprojectRay} for {@code DepthRange.ZERO_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unprojectRay} dispatcher.
+     */
+    private void unprojectRay_zo_affine(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        double[] sd = this.data;
+        double[] rayOriginData = ((Double3Impl) rayOrigin).data;
+        double[] rayDirData = ((Double3Impl) rayDir).data;
+        double _t0 = -sd[12];
+        double _t27 = Math.fma(sd[8], sd[6], -(sd[4] * sd[10]));
+        double _t28 = Math.fma(sd[5], sd[10], -(sd[9] * sd[6]));
+        double _t29 = Math.fma(sd[9], sd[14], -(sd[13] * sd[10]));
+        double _t30 = Math.fma(sd[5], sd[14], -(sd[13] * sd[6]));
+        double _t31 = Math.fma(sd[1], sd[6], -(sd[5] * sd[2]));
+        double _t32 = Math.fma(sd[1], sd[10], -(sd[9] * sd[2]));
+        double _t33 = Math.fma(sd[1], sd[14], -(sd[13] * sd[2]));
+        double _t34 = Math.fma(sd[0], sd[10], -(sd[8] * sd[2]));
+        double _t35 = Math.fma(sd[9], sd[2], -(sd[1] * sd[10]));
+        double _t36 = Math.fma(sd[4], sd[2], -(sd[0] * sd[6]));
+        double _t37 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t38 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t43 = -(sd[8] * _t30);
+        double _t46 = -(sd[4] * _t33);
+        double _t48 = Math.fma(sd[0], _t29, -(sd[8] * _t33));
+        double _t49 = Math.fma(sd[8], _t31, Math.fma(sd[0], _t28, -(sd[4] * _t32)));
+        double _t49_inv = 1.0 / _t49;
+        double _d0buf0 = (Math.fma(_t27, _t37, _t28 * _t38) - Math.fma(sd[12], _t28, Math.fma(sd[4], _t29, _t43))) * _t49_inv;
+        rayOriginData[1] = (Math.fma(sd[12], _t32, _t48) + Math.fma(_t34, _t37, _t35 * _t38)) * _t49_inv;
+        rayOriginData[2] = (Math.fma(_t36, _t37, _t31 * _t38) - Math.fma(sd[12], _t31, Math.fma(sd[0], _t30, _t46))) * _t49_inv;
+        rayOriginData[0] = _d0buf0;
+        double _d1buf0 = (Math.fma(_t27, _t37, Math.fma(_t28, _t38, sd[4] * sd[9])) + Math.fma(-sd[8], sd[5], Math.fma(sd[8], _t30, -(sd[4] * _t29))) + (Math.fma(_t0, _t28, Math.fma(-_t28, _t38, -(_t27 * _t37))) + Math.fma(sd[4], _t29, Math.fma(sd[12], _t28, _t43)))) * _t49_inv;
+        double _d1buf1 = (Math.fma(_t34, _t37, Math.fma(_t35, _t38, sd[8] * sd[1])) + Math.fma(-sd[0], sd[9], _t48) + (Math.fma(sd[12], _t32, Math.fma(sd[8], _t33, -(sd[0] * _t29))) + Math.fma(_t0, _t32, Math.fma(-_t35, _t38, -(_t34 * _t37))))) * _t49_inv;
+        rayDirData[2] = (Math.fma(_t36, _t37, Math.fma(_t31, _t38, sd[0] * sd[5])) + Math.fma(-sd[4], sd[1], Math.fma(sd[4], _t33, -(sd[0] * _t30))) + (Math.fma(_t0, _t31, Math.fma(-_t31, _t38, -(_t36 * _t37))) + Math.fma(sd[0], _t30, Math.fma(sd[12], _t31, _t46)))) * _t49_inv;
+        rayDirData[0] = _d1buf0;
+        rayDirData[1] = _d1buf1;
+    }
+
+
+    /**
+     * Private body of {@code unprojectRay} for {@code DepthRange.ZERO_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unprojectRay} dispatcher.
+     */
+    private void unprojectRay_zo_general(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        double[] sd = this.data;
+        double[] rayOriginData = ((Double3Impl) rayOrigin).data;
+        double[] rayDirData = ((Double3Impl) rayDir).data;
+        double _t0 = -sd[0];
+        double _t43 = Math.fma(sd[6], sd[11], -(sd[10] * sd[7]));
+        double _t44 = Math.fma(sd[10], sd[15], -(sd[14] * sd[11]));
+        double _t45 = Math.fma(sd[6], sd[15], -(sd[14] * sd[7]));
+        double _t46 = Math.fma(sd[5], sd[10], -(sd[9] * sd[6]));
+        double _t47 = Math.fma(sd[9], sd[14], -(sd[13] * sd[10]));
+        double _t48 = Math.fma(sd[5], sd[14], -(sd[13] * sd[6]));
+        double _t49 = Math.fma(sd[1], sd[6], -(sd[5] * sd[2]));
+        double _t50 = Math.fma(sd[1], sd[10], -(sd[9] * sd[2]));
+        double _t51 = Math.fma(sd[2], sd[7], -(sd[6] * sd[3]));
+        double _t52 = Math.fma(sd[2], sd[11], -(sd[10] * sd[3]));
+        double _t53 = Math.fma(sd[1], sd[14], -(sd[13] * sd[2]));
+        double _t54 = Math.fma(sd[2], sd[15], -(sd[14] * sd[3]));
+        double _t55 = Math.fma(sd[9], sd[15], -(sd[13] * sd[11]));
+        double _t56 = Math.fma(sd[5], sd[15], -(sd[13] * sd[7]));
+        double _t57 = Math.fma(sd[5], sd[11], -(sd[9] * sd[7]));
+        double _t58 = Math.fma(sd[1], sd[11], -(sd[9] * sd[3]));
+        double _t59 = Math.fma(sd[1], sd[7], -(sd[5] * sd[3]));
+        double _t60 = Math.fma(sd[1], sd[15], -(sd[13] * sd[3]));
+        double _t61 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t62 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t92 = Math.fma(sd[0], _t46, -(sd[4] * _t50));
+        double _t95 = Math.fma(sd[0], _t47, -(sd[8] * _t53));
+        double _t102 = Math.fma(sd[13], _t43, Math.fma(sd[5], _t44, -(sd[9] * _t45)));
+        double _t106 = Math.fma(sd[8], _t51, Math.fma(sd[0], _t43, -(sd[4] * _t52)));
+        double _t109 = Math.fma(sd[12], _t52, Math.fma(sd[0], _t44, -(sd[8] * _t54)));
+        double _t111 = Math.fma(sd[13], _t51, Math.fma(sd[1], _t45, -(sd[5] * _t54)));
+        double _t119 = -(Math.fma(sd[12], _t43, Math.fma(sd[4], _t44, -(sd[8] * _t45))) * _t62);
+        double _t120 = -(Math.fma(sd[9], _t51, Math.fma(sd[1], _t43, -(sd[5] * _t52))) * _t61);
+        double _t121 = -(Math.fma(sd[13], _t52, Math.fma(sd[1], _t44, -(sd[9] * _t54))) * _t61);
+        double _t122 = -(Math.fma(sd[12], _t51, Math.fma(sd[0], _t45, -(sd[4] * _t54))) * _t62);
+        double _t132 = Math.fma(sd[8], _t49, _t92) + Math.fma(_t106, _t62, _t120);
+        double _t132_inv = 1.0 / _t132;
+        double _t135 = _t92 + Math.fma(sd[8], _t49, _t106 * _t62) + (Math.fma(_t0, _t57, _t120) + Math.fma(sd[4], _t58, -(sd[8] * _t59)));
+        double _t135_inv = 1.0 / _t135;
+        double _t136 = (Math.fma(_t102, _t61, _t119) - Math.fma(sd[12], _t46, Math.fma(sd[4], _t47, -(sd[8] * _t48)))) * _t132_inv;
+        double _t137 = (Math.fma(sd[12], _t50, _t95) + Math.fma(_t109, _t62, _t121)) * _t132_inv;
+        double _t138 = (Math.fma(_t111, _t61, _t122) - Math.fma(sd[12], _t49, Math.fma(sd[0], _t48, -(sd[4] * _t53)))) * _t132_inv;
+        rayOriginData[0] = _t136;
+        rayOriginData[1] = _t137;
+        rayOriginData[2] = _t138;
+        double _d1buf0 = (Math.fma(sd[4], _t55, -(sd[8] * _t56)) + Math.fma(sd[12], _t57, _t102 * _t61) + (Math.fma(-sd[4], _t47, _t119) + Math.fma(sd[8], _t48, -(sd[12] * _t46)))) * _t135_inv - _t136;
+        double _d1buf1 = (_t95 + Math.fma(sd[12], _t50, _t109 * _t62) + (Math.fma(_t0, _t55, _t121) + Math.fma(sd[8], _t60, -(sd[12] * _t58)))) * _t135_inv - _t137;
+        rayDirData[2] = (Math.fma(sd[0], _t56, -(sd[4] * _t60)) + Math.fma(sd[12], _t59, _t111 * _t61) + (Math.fma(_t0, _t48, _t122) + Math.fma(sd[4], _t53, -(sd[12] * _t49)))) * _t135_inv - _t138;
+        rayDirData[0] = _d1buf0;
+        rayDirData[1] = _d1buf1;
+    }
+
+
+    /**
+     * Private body of {@code unprojectRay} for {@code DepthRange.ZERO_TO_ONE}; reached only through
+     * the public {@code unprojectRay} dispatcher.
+     */
+    private Double4x4 unprojectRay_zo(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) { unprojectRay_zo_identity(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) { unprojectRay_zo_translation(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) { unprojectRay_zo_orthogonal(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) { unprojectRay_zo_affine(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
+        unprojectRay_zo_general(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir);
+        return this;
+    }
+
+
+    /**
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
      * the ray direction in {@code rayDir}.
+     *
+     * @param winCoords the window coordinates {@code (x, y)} to unproject
+     * @param viewport the viewport {@code [x, y, width, height]}
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @param rayOrigin will hold the origin of the ray
+     * @param rayDir will hold the direction of the ray
+     * @return this
+     */
+    public Double4x4 unprojectRay(Double2R winCoords, Double4R viewport, DepthRange depthRange, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return unprojectRay_no(winCoords, viewport, rayOrigin, rayDir); }
+            default -> { return unprojectRay_zo(winCoords, viewport, rayOrigin, rayDir); }
+        }
+    }
+
+
+    /**
+     * Unproject the given window coordinates into a ray in object space using this matrix (which is
+     * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
+     * the ray direction in {@code rayDir}.
+     *
+     * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
+     *        unproject {@code (winCoordsX, winCoordsY)}
+     * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y)} to
+     *        unproject {@code (winCoordsX, winCoordsY)}
+     * @param viewportX the {@code x} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportY the {@code y} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportZ the {@code z} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportW the {@code w} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @param rayOrigin will hold the origin of the ray
+     * @param rayDir will hold the direction of the ray
+     * @return this
+     */
+    public Double4x4 unprojectRay(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return unprojectRay_no(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); }
+            default -> { return unprojectRay_zo(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); }
+        }
+    }
+
+
+    /**
+     * Unproject the given window coordinates into a ray in object space using this matrix (which is
+     * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
+     * the ray direction in {@code rayDir}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param winCoords the window coordinates {@code (x, y)} to unproject
+     * @param viewport the viewport {@code [x, y, width, height]}
+     * @param rayOrigin will hold the origin of the ray
+     * @param rayDir will hold the direction of the ray
+     * @return this
+     */
+    public Double4x4 unprojectRay(Double2R winCoords, Double4R viewport, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) { return unprojectRay(winCoords, viewport, DepthRange.NEGATIVE_ONE_TO_ONE, rayOrigin, rayDir); }
+
+
+    /**
+     * Unproject the given window coordinates into a ray in object space using this matrix (which is
+     * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
+     * the ray direction in {@code rayDir}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
      *        unproject {@code (winCoordsX, winCoordsY)}
@@ -47361,15 +49527,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param rayDir will hold the direction of the ray
      * @return this
      */
-    public Double4x4 unprojectRay(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) {
-        int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) { unprojectRay_identity(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) { unprojectRay_translation(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
-        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) { unprojectRay_orthogonal(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) { unprojectRay_affine(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir); return this; }
-        unprojectRay_general(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, rayOrigin, rayDir);
-        return this;
-    }
+    public Double4x4 unprojectRay(double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) { return unprojectRay(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE, rayOrigin, rayDir); }
 
 
     /**
@@ -48680,7 +50838,7 @@ public class Double4x4Impl implements Double4x4 {
     private static final VectorMask<Double> MASK_16 = VectorMask.fromValues(COL_SPECIES, true, true, true, false);
     private static final VectorMask<Double> MASK_72 = VectorMask.fromValues(COL_SPECIES, true, false, true, true);
     private static final VectorMask<Double> MASK_73 = VectorMask.fromValues(COL_SPECIES, true, true, false, true);
-    private static final VectorMask<Double> MASK_75 = VectorMask.fromValues(COL_SPECIES, true, true, false, false);
+    private static final VectorMask<Double> MASK_76 = VectorMask.fromValues(COL_SPECIES, true, true, false, false);
     private static final DoubleVector VEC_0 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 0.0, 0.0, 1.0}, 0);
     private static final DoubleVector VEC_11 = DoubleVector.fromArray(COL_SPECIES, new double[]{1.0, 0.0, 0.0, 0.0}, 0);
     private static final DoubleVector VEC_12 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 1.0, 0.0, 0.0}, 0);
@@ -48744,6 +50902,7 @@ public class Double4x4Impl implements Double4x4 {
     private static final double[] DATA_70 = new double[] {0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
     private static final double[] DATA_71 = new double[] {0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
     private static final double[] DATA_74 = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 1.0};
-    private static final double[] DATA_76 = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 1.0, 1.0};
+    private static final double[] DATA_75 = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
+    private static final double[] DATA_77 = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 1.0, 1.0};
 
 }

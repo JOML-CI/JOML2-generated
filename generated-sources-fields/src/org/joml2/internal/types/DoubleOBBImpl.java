@@ -394,8 +394,10 @@ public final class DoubleOBBImpl implements DoubleOBB {
 
 
     /**
-     * Transform this oriented bounding box by {@code m} (the axes are transformed without
-     * renormalization) and store the result in {@code dest}.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
+     * axis as a direction and renormalized, and each half-size is scaled by the length its
+     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
+     * shear is approximated) and store the result in {@code dest}.
      *
      * @param m the matrix
      * @param dest will hold the result
@@ -403,36 +405,47 @@ public final class DoubleOBBImpl implements DoubleOBB {
      */
     public DoubleOBB transform(Double3x4R m, @Mutated DoubleOBB dest) {
         DoubleOBBImpl d = (DoubleOBBImpl) dest;
+        double _t18 = Math.fma(m.m02(), this.uXz, Math.fma(m.m00(), this.uXx, m.m01() * this.uXy));
+        double _t19 = Math.fma(m.m22(), this.uXz, Math.fma(m.m20(), this.uXx, m.m21() * this.uXy));
+        double _t20 = Math.fma(m.m12(), this.uXz, Math.fma(m.m10(), this.uXx, m.m11() * this.uXy));
+        double _t21 = Math.fma(m.m02(), this.uYz, Math.fma(m.m00(), this.uYx, m.m01() * this.uYy));
+        double _t22 = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
+        double _t23 = Math.fma(m.m12(), this.uYz, Math.fma(m.m10(), this.uYx, m.m11() * this.uYy));
+        double _t24 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
+        double _t25 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
+        double _t26 = Math.fma(m.m12(), this.uZz, Math.fma(m.m10(), this.uZx, m.m11() * this.uZy));
+        double _t33 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        double _t34 = Math.fma(_t22, _t22, Math.fma(_t21, _t21, _t23 * _t23));
+        double _t35 = Math.fma(_t25, _t25, Math.fma(_t24, _t24, _t26 * _t26));
+        double _t36 = (1.0 / Math.sqrt(_t33));
+        double _t37 = (1.0 / Math.sqrt(_t34));
+        double _t38 = (1.0 / Math.sqrt(_t35));
         double _buf0 = Math.fma(m.m02(), this.cZ, Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, m.m03())));
         double _buf1 = Math.fma(m.m12(), this.cZ, Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, m.m13())));
         d.cZ = Math.fma(m.m22(), this.cZ, Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, m.m23())));
-        double _buf2 = Math.fma(m.m02(), this.uXz, Math.fma(m.m00(), this.uXx, m.m01() * this.uXy));
-        double _buf3 = Math.fma(m.m12(), this.uXz, Math.fma(m.m10(), this.uXx, m.m11() * this.uXy));
-        d.uXz = Math.fma(m.m22(), this.uXz, Math.fma(m.m20(), this.uXx, m.m21() * this.uXy));
-        double _buf4 = Math.fma(m.m02(), this.uYz, Math.fma(m.m00(), this.uYx, m.m01() * this.uYy));
-        double _buf5 = Math.fma(m.m12(), this.uYz, Math.fma(m.m10(), this.uYx, m.m11() * this.uYy));
-        d.uYz = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
-        double _buf6 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
-        double _buf7 = Math.fma(m.m12(), this.uZz, Math.fma(m.m10(), this.uZx, m.m11() * this.uZy));
-        d.uZz = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
-        d.hsX = this.hsX;
-        d.hsY = this.hsY;
-        d.hsZ = this.hsZ;
+        d.uXx = _t18 * _t36;
+        d.uXy = _t20 * _t36;
+        d.uXz = _t19 * _t36;
+        d.uYx = _t21 * _t37;
+        d.uYy = _t23 * _t37;
+        d.uYz = _t22 * _t37;
+        d.uZx = _t24 * _t38;
+        d.uZy = _t26 * _t38;
+        d.uZz = _t25 * _t38;
+        d.hsX = this.hsX * Math.sqrt(_t33);
+        d.hsY = this.hsY * Math.sqrt(_t34);
+        d.hsZ = this.hsZ * Math.sqrt(_t35);
         d.cX = _buf0;
         d.cY = _buf1;
-        d.uXx = _buf2;
-        d.uXy = _buf3;
-        d.uYx = _buf4;
-        d.uYy = _buf5;
-        d.uZx = _buf6;
-        d.uZy = _buf7;
         return d;
     }
 
 
     /**
-     * Transform this oriented bounding box by {@code m} (the axes are transformed without
-     * renormalization) and store the result in {@code dest}.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
+     * axis as a direction and renormalized, and each half-size is scaled by the length its
+     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
+     * shear is approximated) and store the result in {@code dest}.
      * <p>
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
@@ -443,29 +456,38 @@ public final class DoubleOBBImpl implements DoubleOBB {
      */
     public DoubleOBB transform(Double4x4R m, @Mutated DoubleOBB dest) {
         DoubleOBBImpl d = (DoubleOBBImpl) dest;
+        double _t18 = Math.fma(m.m02(), this.uXz, Math.fma(m.m00(), this.uXx, m.m01() * this.uXy));
+        double _t19 = Math.fma(m.m22(), this.uXz, Math.fma(m.m20(), this.uXx, m.m21() * this.uXy));
+        double _t20 = Math.fma(m.m12(), this.uXz, Math.fma(m.m10(), this.uXx, m.m11() * this.uXy));
+        double _t21 = Math.fma(m.m02(), this.uYz, Math.fma(m.m00(), this.uYx, m.m01() * this.uYy));
+        double _t22 = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
+        double _t23 = Math.fma(m.m12(), this.uYz, Math.fma(m.m10(), this.uYx, m.m11() * this.uYy));
+        double _t24 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
+        double _t25 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
+        double _t26 = Math.fma(m.m12(), this.uZz, Math.fma(m.m10(), this.uZx, m.m11() * this.uZy));
+        double _t33 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        double _t34 = Math.fma(_t22, _t22, Math.fma(_t21, _t21, _t23 * _t23));
+        double _t35 = Math.fma(_t25, _t25, Math.fma(_t24, _t24, _t26 * _t26));
+        double _t36 = (1.0 / Math.sqrt(_t33));
+        double _t37 = (1.0 / Math.sqrt(_t34));
+        double _t38 = (1.0 / Math.sqrt(_t35));
         double _buf0 = Math.fma(m.m02(), this.cZ, Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, m.m03())));
         double _buf1 = Math.fma(m.m12(), this.cZ, Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, m.m13())));
         d.cZ = Math.fma(m.m22(), this.cZ, Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, m.m23())));
-        double _buf2 = Math.fma(m.m02(), this.uXz, Math.fma(m.m00(), this.uXx, m.m01() * this.uXy));
-        double _buf3 = Math.fma(m.m12(), this.uXz, Math.fma(m.m10(), this.uXx, m.m11() * this.uXy));
-        d.uXz = Math.fma(m.m22(), this.uXz, Math.fma(m.m20(), this.uXx, m.m21() * this.uXy));
-        double _buf4 = Math.fma(m.m02(), this.uYz, Math.fma(m.m00(), this.uYx, m.m01() * this.uYy));
-        double _buf5 = Math.fma(m.m12(), this.uYz, Math.fma(m.m10(), this.uYx, m.m11() * this.uYy));
-        d.uYz = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
-        double _buf6 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
-        double _buf7 = Math.fma(m.m12(), this.uZz, Math.fma(m.m10(), this.uZx, m.m11() * this.uZy));
-        d.uZz = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
-        d.hsX = this.hsX;
-        d.hsY = this.hsY;
-        d.hsZ = this.hsZ;
+        d.uXx = _t18 * _t36;
+        d.uXy = _t20 * _t36;
+        d.uXz = _t19 * _t36;
+        d.uYx = _t21 * _t37;
+        d.uYy = _t23 * _t37;
+        d.uYz = _t22 * _t37;
+        d.uZx = _t24 * _t38;
+        d.uZy = _t26 * _t38;
+        d.uZz = _t25 * _t38;
+        d.hsX = this.hsX * Math.sqrt(_t33);
+        d.hsY = this.hsY * Math.sqrt(_t34);
+        d.hsZ = this.hsZ * Math.sqrt(_t35);
         d.cX = _buf0;
         d.cY = _buf1;
-        d.uXx = _buf2;
-        d.uXy = _buf3;
-        d.uYx = _buf4;
-        d.uYy = _buf5;
-        d.uZx = _buf6;
-        d.uZy = _buf7;
         return d;
     }
 

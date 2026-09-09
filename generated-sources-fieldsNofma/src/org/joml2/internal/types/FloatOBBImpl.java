@@ -652,8 +652,10 @@ public final class FloatOBBImpl implements FloatOBB {
 
 
     /**
-     * Transform this oriented bounding box by {@code m} (the axes are transformed without
-     * renormalization) and store the result in {@code dest}.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
+     * axis as a direction and renormalized, and each half-size is scaled by the length its
+     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
+     * shear is approximated) and store the result in {@code dest}.
      *
      * @param m the matrix
      * @param dest will hold the result
@@ -661,36 +663,47 @@ public final class FloatOBBImpl implements FloatOBB {
      */
     public FloatOBB transform(Float3x4R m, @Mutated FloatOBB dest) {
         FloatOBBImpl d = (FloatOBBImpl) dest;
+        float _t36 = m.m00() * this.uXx + m.m01() * this.uXy + m.m02() * this.uXz;
+        float _t37 = m.m10() * this.uXx + m.m11() * this.uXy + m.m12() * this.uXz;
+        float _t38 = m.m20() * this.uXx + m.m21() * this.uXy + m.m22() * this.uXz;
+        float _t39 = m.m00() * this.uYx + m.m01() * this.uYy + m.m02() * this.uYz;
+        float _t40 = m.m10() * this.uYx + m.m11() * this.uYy + m.m12() * this.uYz;
+        float _t41 = m.m20() * this.uYx + m.m21() * this.uYy + m.m22() * this.uYz;
+        float _t42 = m.m00() * this.uZx + m.m01() * this.uZy + m.m02() * this.uZz;
+        float _t43 = m.m10() * this.uZx + m.m11() * this.uZy + m.m12() * this.uZz;
+        float _t44 = m.m20() * this.uZx + m.m21() * this.uZy + m.m22() * this.uZz;
+        float _t57 = _t36 * _t36 + _t37 * _t37 + _t38 * _t38;
+        float _t58 = _t39 * _t39 + _t40 * _t40 + _t41 * _t41;
+        float _t59 = _t42 * _t42 + _t43 * _t43 + _t44 * _t44;
+        float _t60 = (1.0f / (float) Math.sqrt(_t57));
+        float _t61 = (1.0f / (float) Math.sqrt(_t58));
+        float _t62 = (1.0f / (float) Math.sqrt(_t59));
         float _buf0 = m.m02() * this.cZ + (m.m00() * this.cX + (m.m01() * this.cY + m.m03()));
         float _buf1 = m.m12() * this.cZ + (m.m10() * this.cX + (m.m11() * this.cY + m.m13()));
         d.cZ = m.m22() * this.cZ + (m.m20() * this.cX + (m.m21() * this.cY + m.m23()));
-        float _buf2 = m.m00() * this.uXx + m.m01() * this.uXy + m.m02() * this.uXz;
-        float _buf3 = m.m10() * this.uXx + m.m11() * this.uXy + m.m12() * this.uXz;
-        d.uXz = m.m20() * this.uXx + m.m21() * this.uXy + m.m22() * this.uXz;
-        float _buf4 = m.m00() * this.uYx + m.m01() * this.uYy + m.m02() * this.uYz;
-        float _buf5 = m.m10() * this.uYx + m.m11() * this.uYy + m.m12() * this.uYz;
-        d.uYz = m.m20() * this.uYx + m.m21() * this.uYy + m.m22() * this.uYz;
-        float _buf6 = m.m00() * this.uZx + m.m01() * this.uZy + m.m02() * this.uZz;
-        float _buf7 = m.m10() * this.uZx + m.m11() * this.uZy + m.m12() * this.uZz;
-        d.uZz = m.m20() * this.uZx + m.m21() * this.uZy + m.m22() * this.uZz;
-        d.hsX = this.hsX;
-        d.hsY = this.hsY;
-        d.hsZ = this.hsZ;
+        d.uXx = _t36 * _t60;
+        d.uXy = _t37 * _t60;
+        d.uXz = _t38 * _t60;
+        d.uYx = _t39 * _t61;
+        d.uYy = _t40 * _t61;
+        d.uYz = _t41 * _t61;
+        d.uZx = _t42 * _t62;
+        d.uZy = _t43 * _t62;
+        d.uZz = _t44 * _t62;
+        d.hsX = this.hsX * (float) Math.sqrt(_t57);
+        d.hsY = this.hsY * (float) Math.sqrt(_t58);
+        d.hsZ = this.hsZ * (float) Math.sqrt(_t59);
         d.cX = _buf0;
         d.cY = _buf1;
-        d.uXx = _buf2;
-        d.uXy = _buf3;
-        d.uYx = _buf4;
-        d.uYy = _buf5;
-        d.uZx = _buf6;
-        d.uZy = _buf7;
         return d;
     }
 
 
     /**
-     * Transform this oriented bounding box by {@code m} (the axes are transformed without
-     * renormalization) and store the result in {@code dest}.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
+     * axis as a direction and renormalized, and each half-size is scaled by the length its
+     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
+     * shear is approximated) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -701,36 +714,47 @@ public final class FloatOBBImpl implements FloatOBB {
      */
     public DoubleOBB transform(Float3x4R m, @Mutated DoubleOBB dest) {
         DoubleOBBImpl d = (DoubleOBBImpl) dest;
+        float _t36 = m.m00() * this.uXx + m.m01() * this.uXy + m.m02() * this.uXz;
+        float _t37 = m.m10() * this.uXx + m.m11() * this.uXy + m.m12() * this.uXz;
+        float _t38 = m.m20() * this.uXx + m.m21() * this.uXy + m.m22() * this.uXz;
+        float _t39 = m.m00() * this.uYx + m.m01() * this.uYy + m.m02() * this.uYz;
+        float _t40 = m.m10() * this.uYx + m.m11() * this.uYy + m.m12() * this.uYz;
+        float _t41 = m.m20() * this.uYx + m.m21() * this.uYy + m.m22() * this.uYz;
+        float _t42 = m.m00() * this.uZx + m.m01() * this.uZy + m.m02() * this.uZz;
+        float _t43 = m.m10() * this.uZx + m.m11() * this.uZy + m.m12() * this.uZz;
+        float _t44 = m.m20() * this.uZx + m.m21() * this.uZy + m.m22() * this.uZz;
+        float _t57 = _t36 * _t36 + _t37 * _t37 + _t38 * _t38;
+        float _t58 = _t39 * _t39 + _t40 * _t40 + _t41 * _t41;
+        float _t59 = _t42 * _t42 + _t43 * _t43 + _t44 * _t44;
+        float _t60 = (1.0f / (float) Math.sqrt(_t57));
+        float _t61 = (1.0f / (float) Math.sqrt(_t58));
+        float _t62 = (1.0f / (float) Math.sqrt(_t59));
         float _buf0 = m.m02() * this.cZ + (m.m00() * this.cX + (m.m01() * this.cY + m.m03()));
         float _buf1 = m.m12() * this.cZ + (m.m10() * this.cX + (m.m11() * this.cY + m.m13()));
         d.cZ = m.m22() * this.cZ + (m.m20() * this.cX + (m.m21() * this.cY + m.m23()));
-        float _buf2 = m.m00() * this.uXx + m.m01() * this.uXy + m.m02() * this.uXz;
-        float _buf3 = m.m10() * this.uXx + m.m11() * this.uXy + m.m12() * this.uXz;
-        d.uXz = m.m20() * this.uXx + m.m21() * this.uXy + m.m22() * this.uXz;
-        float _buf4 = m.m00() * this.uYx + m.m01() * this.uYy + m.m02() * this.uYz;
-        float _buf5 = m.m10() * this.uYx + m.m11() * this.uYy + m.m12() * this.uYz;
-        d.uYz = m.m20() * this.uYx + m.m21() * this.uYy + m.m22() * this.uYz;
-        float _buf6 = m.m00() * this.uZx + m.m01() * this.uZy + m.m02() * this.uZz;
-        float _buf7 = m.m10() * this.uZx + m.m11() * this.uZy + m.m12() * this.uZz;
-        d.uZz = m.m20() * this.uZx + m.m21() * this.uZy + m.m22() * this.uZz;
-        d.hsX = this.hsX;
-        d.hsY = this.hsY;
-        d.hsZ = this.hsZ;
+        d.uXx = _t36 * _t60;
+        d.uXy = _t37 * _t60;
+        d.uXz = _t38 * _t60;
+        d.uYx = _t39 * _t61;
+        d.uYy = _t40 * _t61;
+        d.uYz = _t41 * _t61;
+        d.uZx = _t42 * _t62;
+        d.uZy = _t43 * _t62;
+        d.uZz = _t44 * _t62;
+        d.hsX = this.hsX * (float) Math.sqrt(_t57);
+        d.hsY = this.hsY * (float) Math.sqrt(_t58);
+        d.hsZ = this.hsZ * (float) Math.sqrt(_t59);
         d.cX = _buf0;
         d.cY = _buf1;
-        d.uXx = _buf2;
-        d.uXy = _buf3;
-        d.uYx = _buf4;
-        d.uYy = _buf5;
-        d.uZx = _buf6;
-        d.uZy = _buf7;
         return d;
     }
 
 
     /**
-     * Transform this oriented bounding box by {@code m} (the axes are transformed without
-     * renormalization) and store the result in {@code dest}.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
+     * axis as a direction and renormalized, and each half-size is scaled by the length its
+     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
+     * shear is approximated) and store the result in {@code dest}.
      * <p>
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
@@ -741,36 +765,47 @@ public final class FloatOBBImpl implements FloatOBB {
      */
     public FloatOBB transform(Float4x4R m, @Mutated FloatOBB dest) {
         FloatOBBImpl d = (FloatOBBImpl) dest;
+        float _t36 = m.m00() * this.uXx + m.m01() * this.uXy + m.m02() * this.uXz;
+        float _t37 = m.m10() * this.uXx + m.m11() * this.uXy + m.m12() * this.uXz;
+        float _t38 = m.m20() * this.uXx + m.m21() * this.uXy + m.m22() * this.uXz;
+        float _t39 = m.m00() * this.uYx + m.m01() * this.uYy + m.m02() * this.uYz;
+        float _t40 = m.m10() * this.uYx + m.m11() * this.uYy + m.m12() * this.uYz;
+        float _t41 = m.m20() * this.uYx + m.m21() * this.uYy + m.m22() * this.uYz;
+        float _t42 = m.m00() * this.uZx + m.m01() * this.uZy + m.m02() * this.uZz;
+        float _t43 = m.m10() * this.uZx + m.m11() * this.uZy + m.m12() * this.uZz;
+        float _t44 = m.m20() * this.uZx + m.m21() * this.uZy + m.m22() * this.uZz;
+        float _t57 = _t36 * _t36 + _t37 * _t37 + _t38 * _t38;
+        float _t58 = _t39 * _t39 + _t40 * _t40 + _t41 * _t41;
+        float _t59 = _t42 * _t42 + _t43 * _t43 + _t44 * _t44;
+        float _t60 = (1.0f / (float) Math.sqrt(_t57));
+        float _t61 = (1.0f / (float) Math.sqrt(_t58));
+        float _t62 = (1.0f / (float) Math.sqrt(_t59));
         float _buf0 = m.m02() * this.cZ + (m.m00() * this.cX + (m.m01() * this.cY + m.m03()));
         float _buf1 = m.m12() * this.cZ + (m.m10() * this.cX + (m.m11() * this.cY + m.m13()));
         d.cZ = m.m22() * this.cZ + (m.m20() * this.cX + (m.m21() * this.cY + m.m23()));
-        float _buf2 = m.m00() * this.uXx + m.m01() * this.uXy + m.m02() * this.uXz;
-        float _buf3 = m.m10() * this.uXx + m.m11() * this.uXy + m.m12() * this.uXz;
-        d.uXz = m.m20() * this.uXx + m.m21() * this.uXy + m.m22() * this.uXz;
-        float _buf4 = m.m00() * this.uYx + m.m01() * this.uYy + m.m02() * this.uYz;
-        float _buf5 = m.m10() * this.uYx + m.m11() * this.uYy + m.m12() * this.uYz;
-        d.uYz = m.m20() * this.uYx + m.m21() * this.uYy + m.m22() * this.uYz;
-        float _buf6 = m.m00() * this.uZx + m.m01() * this.uZy + m.m02() * this.uZz;
-        float _buf7 = m.m10() * this.uZx + m.m11() * this.uZy + m.m12() * this.uZz;
-        d.uZz = m.m20() * this.uZx + m.m21() * this.uZy + m.m22() * this.uZz;
-        d.hsX = this.hsX;
-        d.hsY = this.hsY;
-        d.hsZ = this.hsZ;
+        d.uXx = _t36 * _t60;
+        d.uXy = _t37 * _t60;
+        d.uXz = _t38 * _t60;
+        d.uYx = _t39 * _t61;
+        d.uYy = _t40 * _t61;
+        d.uYz = _t41 * _t61;
+        d.uZx = _t42 * _t62;
+        d.uZy = _t43 * _t62;
+        d.uZz = _t44 * _t62;
+        d.hsX = this.hsX * (float) Math.sqrt(_t57);
+        d.hsY = this.hsY * (float) Math.sqrt(_t58);
+        d.hsZ = this.hsZ * (float) Math.sqrt(_t59);
         d.cX = _buf0;
         d.cY = _buf1;
-        d.uXx = _buf2;
-        d.uXy = _buf3;
-        d.uYx = _buf4;
-        d.uYy = _buf5;
-        d.uZx = _buf6;
-        d.uZy = _buf7;
         return d;
     }
 
 
     /**
-     * Transform this oriented bounding box by {@code m} (the axes are transformed without
-     * renormalization) and store the result in {@code dest}.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
+     * axis as a direction and renormalized, and each half-size is scaled by the length its
+     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
+     * shear is approximated) and store the result in {@code dest}.
      * <p>
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
@@ -784,29 +819,38 @@ public final class FloatOBBImpl implements FloatOBB {
      */
     public DoubleOBB transform(Float4x4R m, @Mutated DoubleOBB dest) {
         DoubleOBBImpl d = (DoubleOBBImpl) dest;
+        float _t36 = m.m00() * this.uXx + m.m01() * this.uXy + m.m02() * this.uXz;
+        float _t37 = m.m10() * this.uXx + m.m11() * this.uXy + m.m12() * this.uXz;
+        float _t38 = m.m20() * this.uXx + m.m21() * this.uXy + m.m22() * this.uXz;
+        float _t39 = m.m00() * this.uYx + m.m01() * this.uYy + m.m02() * this.uYz;
+        float _t40 = m.m10() * this.uYx + m.m11() * this.uYy + m.m12() * this.uYz;
+        float _t41 = m.m20() * this.uYx + m.m21() * this.uYy + m.m22() * this.uYz;
+        float _t42 = m.m00() * this.uZx + m.m01() * this.uZy + m.m02() * this.uZz;
+        float _t43 = m.m10() * this.uZx + m.m11() * this.uZy + m.m12() * this.uZz;
+        float _t44 = m.m20() * this.uZx + m.m21() * this.uZy + m.m22() * this.uZz;
+        float _t57 = _t36 * _t36 + _t37 * _t37 + _t38 * _t38;
+        float _t58 = _t39 * _t39 + _t40 * _t40 + _t41 * _t41;
+        float _t59 = _t42 * _t42 + _t43 * _t43 + _t44 * _t44;
+        float _t60 = (1.0f / (float) Math.sqrt(_t57));
+        float _t61 = (1.0f / (float) Math.sqrt(_t58));
+        float _t62 = (1.0f / (float) Math.sqrt(_t59));
         float _buf0 = m.m02() * this.cZ + (m.m00() * this.cX + (m.m01() * this.cY + m.m03()));
         float _buf1 = m.m12() * this.cZ + (m.m10() * this.cX + (m.m11() * this.cY + m.m13()));
         d.cZ = m.m22() * this.cZ + (m.m20() * this.cX + (m.m21() * this.cY + m.m23()));
-        float _buf2 = m.m00() * this.uXx + m.m01() * this.uXy + m.m02() * this.uXz;
-        float _buf3 = m.m10() * this.uXx + m.m11() * this.uXy + m.m12() * this.uXz;
-        d.uXz = m.m20() * this.uXx + m.m21() * this.uXy + m.m22() * this.uXz;
-        float _buf4 = m.m00() * this.uYx + m.m01() * this.uYy + m.m02() * this.uYz;
-        float _buf5 = m.m10() * this.uYx + m.m11() * this.uYy + m.m12() * this.uYz;
-        d.uYz = m.m20() * this.uYx + m.m21() * this.uYy + m.m22() * this.uYz;
-        float _buf6 = m.m00() * this.uZx + m.m01() * this.uZy + m.m02() * this.uZz;
-        float _buf7 = m.m10() * this.uZx + m.m11() * this.uZy + m.m12() * this.uZz;
-        d.uZz = m.m20() * this.uZx + m.m21() * this.uZy + m.m22() * this.uZz;
-        d.hsX = this.hsX;
-        d.hsY = this.hsY;
-        d.hsZ = this.hsZ;
+        d.uXx = _t36 * _t60;
+        d.uXy = _t37 * _t60;
+        d.uXz = _t38 * _t60;
+        d.uYx = _t39 * _t61;
+        d.uYy = _t40 * _t61;
+        d.uYz = _t41 * _t61;
+        d.uZx = _t42 * _t62;
+        d.uZy = _t43 * _t62;
+        d.uZz = _t44 * _t62;
+        d.hsX = this.hsX * (float) Math.sqrt(_t57);
+        d.hsY = this.hsY * (float) Math.sqrt(_t58);
+        d.hsZ = this.hsZ * (float) Math.sqrt(_t59);
         d.cX = _buf0;
         d.cY = _buf1;
-        d.uXx = _buf2;
-        d.uXy = _buf3;
-        d.uYx = _buf4;
-        d.uYy = _buf5;
-        d.uZx = _buf6;
-        d.uZy = _buf7;
         return d;
     }
 

@@ -1686,7 +1686,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t9 = Math.abs(_t8);
         float _t11 = (float) Math.sin(alpha * _t7);
         float _t13 = (float) Math.sin(_t0 * _t7);
-        if (_t9 > 0.0f) {
+        if (_t9 > 1.0E-6f) {
             d.x = Math.fma(this.x, _t13, targetX * _t11) * _t8_inv;
             d.y = Math.fma(this.y, _t13, targetY * _t11) * _t8_inv;
             d.z = Math.fma(this.z, _t13, targetZ * _t11) * _t8_inv;
@@ -1734,7 +1734,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t9 = Math.abs(_t8);
         float _t11 = (float) Math.sin(alpha * _t7);
         float _t13 = (float) Math.sin(_t0 * _t7);
-        if (_t9 > 0.0f) {
+        if (_t9 > 1.0E-6f) {
             d.x = Math.fma(this.x, _t13, targetX * _t11) * _t8_inv;
             d.y = Math.fma(this.y, _t13, targetY * _t11) * _t8_inv;
             d.z = Math.fma(this.z, _t13, targetZ * _t11) * _t8_inv;
@@ -2010,7 +2010,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t45 = (float) Math.sin(_t0 * _t33);
         float _t46 = (float) Math.sin(_t0 * _t34);
         float _t71, _t73, _t75, _t77;
-        if (_t37 > 0.0f) {
+        if (_t37 > 1.0E-6f) {
             _t71 = Math.fma(control0W, _t45, control1W * _t41) * _t35_inv;
             _t73 = Math.fma(control0Z, _t45, control1Z * _t41) * _t35_inv;
             _t75 = Math.fma(control0X, _t45, control1X * _t41) * _t35_inv;
@@ -2022,7 +2022,7 @@ public final class FloatQuatImpl implements FloatQuat {
             _t77 = Math.fma(t, control1Y, control0Y * _t0);
         }
         float _t72, _t74, _t76, _t78;
-        if (_t39 > 0.0f) {
+        if (_t39 > 1.0E-6f) {
             _t72 = Math.fma(this.w, _t46, targetW * _t42) * _t36_inv;
             _t74 = Math.fma(this.z, _t46, targetZ * _t42) * _t36_inv;
             _t76 = Math.fma(this.x, _t46, targetX * _t42) * _t36_inv;
@@ -2039,7 +2039,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t87 = Math.abs(_t86);
         float _t89 = (float) Math.sin(_t13 * _t85);
         float _t91 = (float) Math.sin(_t14 * _t85);
-        if (_t87 > 0.0f) {
+        if (_t87 > 1.0E-6f) {
             d.x = Math.fma(_t91, _t76, _t89 * _t75) * _t86_inv;
             d.y = Math.fma(_t91, _t78, _t89 * _t77) * _t86_inv;
             d.z = Math.fma(_t91, _t74, _t89 * _t73) * _t86_inv;
@@ -2109,7 +2109,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t45 = (float) Math.sin(_t0 * _t33);
         float _t46 = (float) Math.sin(_t0 * _t34);
         float _t71, _t73, _t75, _t77;
-        if (_t37 > 0.0f) {
+        if (_t37 > 1.0E-6f) {
             _t71 = Math.fma(control0W, _t45, control1W * _t41) * _t35_inv;
             _t73 = Math.fma(control0Z, _t45, control1Z * _t41) * _t35_inv;
             _t75 = Math.fma(control0X, _t45, control1X * _t41) * _t35_inv;
@@ -2121,7 +2121,7 @@ public final class FloatQuatImpl implements FloatQuat {
             _t77 = Math.fma(t, control1Y, control0Y * _t0);
         }
         float _t72, _t74, _t76, _t78;
-        if (_t39 > 0.0f) {
+        if (_t39 > 1.0E-6f) {
             _t72 = Math.fma(this.w, _t46, targetW * _t42) * _t36_inv;
             _t74 = Math.fma(this.z, _t46, targetZ * _t42) * _t36_inv;
             _t76 = Math.fma(this.x, _t46, targetX * _t42) * _t36_inv;
@@ -2138,7 +2138,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t87 = Math.abs(_t86);
         float _t89 = (float) Math.sin(_t13 * _t85);
         float _t91 = (float) Math.sin(_t14 * _t85);
-        if (_t87 > 0.0f) {
+        if (_t87 > 1.0E-6f) {
             d.x = Math.fma(_t91, _t76, _t89 * _t75) * _t86_inv;
             d.y = Math.fma(_t91, _t78, _t89 * _t77) * _t86_inv;
             d.z = Math.fma(_t91, _t74, _t89 * _t73) * _t86_inv;
@@ -3342,15 +3342,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Float3 invNegativeX(@Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.z, this.y * this.w);
-        float _t8 = 2.0f * Math.fma(this.x, this.y, -(this.z * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.y, this.y, this.z * this.z), 1.0f);
-        float _t12 = Math.fma(_t7, _t7, Math.fma(_t9, _t9, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = -(_t9 * _t13);
-            d.y = -(_t8 * _t13);
-            d.z = -(_t7 * _t13);
+        float _t9 = 2.0f * Math.fma(this.x, this.z, this.y * this.w);
+        float _t10 = 2.0f * Math.fma(this.x, this.y, -(this.z * this.w));
+        float _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
+        float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = -(_t12 * _t16);
+            d.y = -(_t10 * _t16);
+            d.z = -(_t9 * _t16);
         } else {
             d.x = -0.0f;
             d.y = -0.0f;
@@ -3372,15 +3372,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Double3 invNegativeX(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.z, this.y * this.w);
-        float _t8 = 2.0f * Math.fma(this.x, this.y, -(this.z * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.y, this.y, this.z * this.z), 1.0f);
-        float _t12 = Math.fma(_t7, _t7, Math.fma(_t9, _t9, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = -(_t9 * _t13);
-            d.y = -(_t8 * _t13);
-            d.z = -(_t7 * _t13);
+        float _t9 = 2.0f * Math.fma(this.x, this.z, this.y * this.w);
+        float _t10 = 2.0f * Math.fma(this.x, this.y, -(this.z * this.w));
+        float _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
+        float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = -(_t12 * _t16);
+            d.y = -(_t10 * _t16);
+            d.z = -(_t9 * _t16);
         } else {
             d.x = -0.0f;
             d.y = -0.0f;
@@ -3399,15 +3399,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Float3 invNegativeY(@Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.y, this.z * this.w);
-        float _t8 = 2.0f * Math.fma(this.y, this.z, -(this.x * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.x, this.x, this.z * this.z), 1.0f);
-        float _t12 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t7 * _t7));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = -(_t7 * _t13);
-            d.y = -(_t9 * _t13);
-            d.z = -(_t8 * _t13);
+        float _t9 = 2.0f * Math.fma(this.x, this.y, this.z * this.w);
+        float _t10 = 2.0f * Math.fma(this.y, this.z, -(this.x * this.w));
+        float _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = -(_t9 * _t16);
+            d.y = -(_t12 * _t16);
+            d.z = -(_t10 * _t16);
         } else {
             d.x = -0.0f;
             d.y = -0.0f;
@@ -3429,15 +3429,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Double3 invNegativeY(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.y, this.z * this.w);
-        float _t8 = 2.0f * Math.fma(this.y, this.z, -(this.x * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.x, this.x, this.z * this.z), 1.0f);
-        float _t12 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t7 * _t7));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = -(_t7 * _t13);
-            d.y = -(_t9 * _t13);
-            d.z = -(_t8 * _t13);
+        float _t9 = 2.0f * Math.fma(this.x, this.y, this.z * this.w);
+        float _t10 = 2.0f * Math.fma(this.y, this.z, -(this.x * this.w));
+        float _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = -(_t9 * _t16);
+            d.y = -(_t12 * _t16);
+            d.z = -(_t10 * _t16);
         } else {
             d.x = -0.0f;
             d.y = -0.0f;
@@ -3456,15 +3456,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Float3 invNegativeZ(@Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.w, this.y * this.z);
-        float _t8 = 2.0f * Math.fma(this.x, this.z, -(this.y * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.x, this.x, this.y * this.y), 1.0f);
-        float _t12 = Math.fma(_t9, _t9, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = -(_t8 * _t13);
-            d.y = -(_t7 * _t13);
-            d.z = -(_t9 * _t13);
+        float _t9 = 2.0f * Math.fma(this.x, this.w, this.y * this.z);
+        float _t10 = 2.0f * Math.fma(this.x, this.z, -(this.y * this.w));
+        float _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = -(_t10 * _t16);
+            d.y = -(_t9 * _t16);
+            d.z = -(_t12 * _t16);
         } else {
             d.x = -0.0f;
             d.y = -0.0f;
@@ -3486,15 +3486,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Double3 invNegativeZ(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.w, this.y * this.z);
-        float _t8 = 2.0f * Math.fma(this.x, this.z, -(this.y * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.x, this.x, this.y * this.y), 1.0f);
-        float _t12 = Math.fma(_t9, _t9, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = -(_t8 * _t13);
-            d.y = -(_t7 * _t13);
-            d.z = -(_t9 * _t13);
+        float _t9 = 2.0f * Math.fma(this.x, this.w, this.y * this.z);
+        float _t10 = 2.0f * Math.fma(this.x, this.z, -(this.y * this.w));
+        float _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = -(_t10 * _t16);
+            d.y = -(_t9 * _t16);
+            d.z = -(_t12 * _t16);
         } else {
             d.x = -0.0f;
             d.y = -0.0f;
@@ -3783,15 +3783,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Float3 invPositiveX(@Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.z, this.y * this.w);
-        float _t8 = 2.0f * Math.fma(this.x, this.y, -(this.z * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.y, this.y, this.z * this.z), 1.0f);
-        float _t12 = Math.fma(_t7, _t7, Math.fma(_t9, _t9, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = _t9 * _t13;
-            d.y = _t8 * _t13;
-            d.z = _t7 * _t13;
+        float _t9 = 2.0f * Math.fma(this.x, this.z, this.y * this.w);
+        float _t10 = 2.0f * Math.fma(this.x, this.y, -(this.z * this.w));
+        float _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
+        float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = _t12 * _t16;
+            d.y = _t10 * _t16;
+            d.z = _t9 * _t16;
         } else {
             d.x = 0.0f;
             d.y = 0.0f;
@@ -3813,15 +3813,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Double3 invPositiveX(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.z, this.y * this.w);
-        float _t8 = 2.0f * Math.fma(this.x, this.y, -(this.z * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.y, this.y, this.z * this.z), 1.0f);
-        float _t12 = Math.fma(_t7, _t7, Math.fma(_t9, _t9, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = _t9 * _t13;
-            d.y = _t8 * _t13;
-            d.z = _t7 * _t13;
+        float _t9 = 2.0f * Math.fma(this.x, this.z, this.y * this.w);
+        float _t10 = 2.0f * Math.fma(this.x, this.y, -(this.z * this.w));
+        float _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
+        float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = _t12 * _t16;
+            d.y = _t10 * _t16;
+            d.z = _t9 * _t16;
         } else {
             d.x = 0.0f;
             d.y = 0.0f;
@@ -3840,15 +3840,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Float3 invPositiveY(@Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.y, this.z * this.w);
-        float _t8 = 2.0f * Math.fma(this.y, this.z, -(this.x * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.x, this.x, this.z * this.z), 1.0f);
-        float _t12 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t7 * _t7));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = _t7 * _t13;
-            d.y = _t9 * _t13;
-            d.z = _t8 * _t13;
+        float _t9 = 2.0f * Math.fma(this.x, this.y, this.z * this.w);
+        float _t10 = 2.0f * Math.fma(this.y, this.z, -(this.x * this.w));
+        float _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = _t9 * _t16;
+            d.y = _t12 * _t16;
+            d.z = _t10 * _t16;
         } else {
             d.x = 0.0f;
             d.y = 0.0f;
@@ -3870,15 +3870,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Double3 invPositiveY(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.y, this.z * this.w);
-        float _t8 = 2.0f * Math.fma(this.y, this.z, -(this.x * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.x, this.x, this.z * this.z), 1.0f);
-        float _t12 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t7 * _t7));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = _t7 * _t13;
-            d.y = _t9 * _t13;
-            d.z = _t8 * _t13;
+        float _t9 = 2.0f * Math.fma(this.x, this.y, this.z * this.w);
+        float _t10 = 2.0f * Math.fma(this.y, this.z, -(this.x * this.w));
+        float _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = _t9 * _t16;
+            d.y = _t12 * _t16;
+            d.z = _t10 * _t16;
         } else {
             d.x = 0.0f;
             d.y = 0.0f;
@@ -3897,15 +3897,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Float3 invPositiveZ(@Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.w, this.y * this.z);
-        float _t8 = 2.0f * Math.fma(this.x, this.z, -(this.y * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.x, this.x, this.y * this.y), 1.0f);
-        float _t12 = Math.fma(_t9, _t9, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = _t8 * _t13;
-            d.y = _t7 * _t13;
-            d.z = _t9 * _t13;
+        float _t9 = 2.0f * Math.fma(this.x, this.w, this.y * this.z);
+        float _t10 = 2.0f * Math.fma(this.x, this.z, -(this.y * this.w));
+        float _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = _t10 * _t16;
+            d.y = _t9 * _t16;
+            d.z = _t12 * _t16;
         } else {
             d.x = 0.0f;
             d.y = 0.0f;
@@ -3927,15 +3927,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Double3 invPositiveZ(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.w, this.y * this.z);
-        float _t8 = 2.0f * Math.fma(this.x, this.z, -(this.y * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.x, this.x, this.y * this.y), 1.0f);
-        float _t12 = Math.fma(_t9, _t9, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = _t8 * _t13;
-            d.y = _t7 * _t13;
-            d.z = _t9 * _t13;
+        float _t9 = 2.0f * Math.fma(this.x, this.w, this.y * this.z);
+        float _t10 = 2.0f * Math.fma(this.x, this.z, -(this.y * this.w));
+        float _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = _t10 * _t16;
+            d.y = _t9 * _t16;
+            d.z = _t12 * _t16;
         } else {
             d.x = 0.0f;
             d.y = 0.0f;
@@ -4027,15 +4027,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Float3 negativeX(@Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.y, this.z * this.w);
-        float _t8 = 2.0f * Math.fma(this.x, this.z, -(this.y * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.y, this.y, this.z * this.z), 1.0f);
-        float _t12 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t7 * _t7));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = -(_t9 * _t13);
-            d.y = -(_t7 * _t13);
-            d.z = -(_t8 * _t13);
+        float _t9 = 2.0f * Math.fma(this.x, this.y, this.z * this.w);
+        float _t10 = 2.0f * Math.fma(this.x, this.z, -(this.y * this.w));
+        float _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
+        float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = -(_t12 * _t16);
+            d.y = -(_t9 * _t16);
+            d.z = -(_t10 * _t16);
         } else {
             d.x = -0.0f;
             d.y = -0.0f;
@@ -4057,15 +4057,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Double3 negativeX(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.y, this.z * this.w);
-        float _t8 = 2.0f * Math.fma(this.x, this.z, -(this.y * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.y, this.y, this.z * this.z), 1.0f);
-        float _t12 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t7 * _t7));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = -(_t9 * _t13);
-            d.y = -(_t7 * _t13);
-            d.z = -(_t8 * _t13);
+        float _t9 = 2.0f * Math.fma(this.x, this.y, this.z * this.w);
+        float _t10 = 2.0f * Math.fma(this.x, this.z, -(this.y * this.w));
+        float _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
+        float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = -(_t12 * _t16);
+            d.y = -(_t9 * _t16);
+            d.z = -(_t10 * _t16);
         } else {
             d.x = -0.0f;
             d.y = -0.0f;
@@ -4084,15 +4084,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Float3 negativeY(@Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.w, this.y * this.z);
-        float _t8 = 2.0f * Math.fma(this.x, this.y, -(this.z * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.x, this.x, this.z * this.z), 1.0f);
-        float _t12 = Math.fma(_t7, _t7, Math.fma(_t9, _t9, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = -(_t8 * _t13);
-            d.y = -(_t9 * _t13);
-            d.z = -(_t7 * _t13);
+        float _t9 = 2.0f * Math.fma(this.x, this.w, this.y * this.z);
+        float _t10 = 2.0f * Math.fma(this.x, this.y, -(this.z * this.w));
+        float _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = -(_t10 * _t16);
+            d.y = -(_t12 * _t16);
+            d.z = -(_t9 * _t16);
         } else {
             d.x = -0.0f;
             d.y = -0.0f;
@@ -4114,15 +4114,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Double3 negativeY(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.w, this.y * this.z);
-        float _t8 = 2.0f * Math.fma(this.x, this.y, -(this.z * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.x, this.x, this.z * this.z), 1.0f);
-        float _t12 = Math.fma(_t7, _t7, Math.fma(_t9, _t9, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = -(_t8 * _t13);
-            d.y = -(_t9 * _t13);
-            d.z = -(_t7 * _t13);
+        float _t9 = 2.0f * Math.fma(this.x, this.w, this.y * this.z);
+        float _t10 = 2.0f * Math.fma(this.x, this.y, -(this.z * this.w));
+        float _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = -(_t10 * _t16);
+            d.y = -(_t12 * _t16);
+            d.z = -(_t9 * _t16);
         } else {
             d.x = -0.0f;
             d.y = -0.0f;
@@ -4141,15 +4141,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Float3 negativeZ(@Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.z, this.y * this.w);
-        float _t8 = 2.0f * Math.fma(this.y, this.z, -(this.x * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.x, this.x, this.y * this.y), 1.0f);
-        float _t12 = Math.fma(_t9, _t9, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = -(_t7 * _t13);
-            d.y = -(_t8 * _t13);
-            d.z = -(_t9 * _t13);
+        float _t9 = 2.0f * Math.fma(this.x, this.z, this.y * this.w);
+        float _t10 = 2.0f * Math.fma(this.y, this.z, -(this.x * this.w));
+        float _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = -(_t9 * _t16);
+            d.y = -(_t10 * _t16);
+            d.z = -(_t12 * _t16);
         } else {
             d.x = -0.0f;
             d.y = -0.0f;
@@ -4171,15 +4171,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Double3 negativeZ(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.z, this.y * this.w);
-        float _t8 = 2.0f * Math.fma(this.y, this.z, -(this.x * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.x, this.x, this.y * this.y), 1.0f);
-        float _t12 = Math.fma(_t9, _t9, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = -(_t7 * _t13);
-            d.y = -(_t8 * _t13);
-            d.z = -(_t9 * _t13);
+        float _t9 = 2.0f * Math.fma(this.x, this.z, this.y * this.w);
+        float _t10 = 2.0f * Math.fma(this.y, this.z, -(this.x * this.w));
+        float _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = -(_t9 * _t16);
+            d.y = -(_t10 * _t16);
+            d.z = -(_t12 * _t16);
         } else {
             d.x = -0.0f;
             d.y = -0.0f;
@@ -4521,15 +4521,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Float3 positiveX(@Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.y, this.z * this.w);
-        float _t8 = 2.0f * Math.fma(this.x, this.z, -(this.y * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.y, this.y, this.z * this.z), 1.0f);
-        float _t12 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t7 * _t7));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = _t9 * _t13;
-            d.y = _t7 * _t13;
-            d.z = _t8 * _t13;
+        float _t9 = 2.0f * Math.fma(this.x, this.y, this.z * this.w);
+        float _t10 = 2.0f * Math.fma(this.x, this.z, -(this.y * this.w));
+        float _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
+        float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = _t12 * _t16;
+            d.y = _t9 * _t16;
+            d.z = _t10 * _t16;
         } else {
             d.x = 0.0f;
             d.y = 0.0f;
@@ -4551,15 +4551,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Double3 positiveX(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.y, this.z * this.w);
-        float _t8 = 2.0f * Math.fma(this.x, this.z, -(this.y * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.y, this.y, this.z * this.z), 1.0f);
-        float _t12 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t7 * _t7));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = _t9 * _t13;
-            d.y = _t7 * _t13;
-            d.z = _t8 * _t13;
+        float _t9 = 2.0f * Math.fma(this.x, this.y, this.z * this.w);
+        float _t10 = 2.0f * Math.fma(this.x, this.z, -(this.y * this.w));
+        float _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
+        float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = _t12 * _t16;
+            d.y = _t9 * _t16;
+            d.z = _t10 * _t16;
         } else {
             d.x = 0.0f;
             d.y = 0.0f;
@@ -4578,15 +4578,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Float3 positiveY(@Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.w, this.y * this.z);
-        float _t8 = 2.0f * Math.fma(this.x, this.y, -(this.z * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.x, this.x, this.z * this.z), 1.0f);
-        float _t12 = Math.fma(_t7, _t7, Math.fma(_t9, _t9, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = _t8 * _t13;
-            d.y = _t9 * _t13;
-            d.z = _t7 * _t13;
+        float _t9 = 2.0f * Math.fma(this.x, this.w, this.y * this.z);
+        float _t10 = 2.0f * Math.fma(this.x, this.y, -(this.z * this.w));
+        float _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = _t10 * _t16;
+            d.y = _t12 * _t16;
+            d.z = _t9 * _t16;
         } else {
             d.x = 0.0f;
             d.y = 0.0f;
@@ -4608,15 +4608,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Double3 positiveY(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.w, this.y * this.z);
-        float _t8 = 2.0f * Math.fma(this.x, this.y, -(this.z * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.x, this.x, this.z * this.z), 1.0f);
-        float _t12 = Math.fma(_t7, _t7, Math.fma(_t9, _t9, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = _t8 * _t13;
-            d.y = _t9 * _t13;
-            d.z = _t7 * _t13;
+        float _t9 = 2.0f * Math.fma(this.x, this.w, this.y * this.z);
+        float _t10 = 2.0f * Math.fma(this.x, this.y, -(this.z * this.w));
+        float _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = _t10 * _t16;
+            d.y = _t12 * _t16;
+            d.z = _t9 * _t16;
         } else {
             d.x = 0.0f;
             d.y = 0.0f;
@@ -4635,15 +4635,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Float3 positiveZ(@Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.z, this.y * this.w);
-        float _t8 = 2.0f * Math.fma(this.y, this.z, -(this.x * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.x, this.x, this.y * this.y), 1.0f);
-        float _t12 = Math.fma(_t9, _t9, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = _t7 * _t13;
-            d.y = _t8 * _t13;
-            d.z = _t9 * _t13;
+        float _t9 = 2.0f * Math.fma(this.x, this.z, this.y * this.w);
+        float _t10 = 2.0f * Math.fma(this.y, this.z, -(this.x * this.w));
+        float _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = _t9 * _t16;
+            d.y = _t10 * _t16;
+            d.z = _t12 * _t16;
         } else {
             d.x = 0.0f;
             d.y = 0.0f;
@@ -4665,15 +4665,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public Double3 positiveZ(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t7 = 2.0f * Math.fma(this.x, this.z, this.y * this.w);
-        float _t8 = 2.0f * Math.fma(this.y, this.z, -(this.x * this.w));
-        float _t9 = Math.fma(-2.0f, Math.fma(this.x, this.x, this.y * this.y), 1.0f);
-        float _t12 = Math.fma(_t9, _t9, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        if (_t12 > 0.0f) {
-            d.x = _t7 * _t13;
-            d.y = _t8 * _t13;
-            d.z = _t9 * _t13;
+        float _t9 = 2.0f * Math.fma(this.x, this.z, this.y * this.w);
+        float _t10 = 2.0f * Math.fma(this.y, this.z, -(this.x * this.w));
+        float _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t16 = (1.0f / (float) Math.sqrt(_t15));
+        if (_t15 > 0.0f) {
+            d.x = _t9 * _t16;
+            d.y = _t10 * _t16;
+            d.z = _t12 * _t16;
         } else {
             d.x = 0.0f;
             d.y = 0.0f;

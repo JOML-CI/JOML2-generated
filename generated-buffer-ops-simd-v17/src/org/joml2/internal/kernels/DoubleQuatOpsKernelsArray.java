@@ -351,7 +351,7 @@ public final class DoubleQuatOpsKernelsArray {
         double _t9 = Math.abs(_t8);
         double _t11 = Math.sin(alpha * _t7);
         double _t13 = Math.sin(_t0 * _t7);
-        if (_t9 > 0.0) {
+        if (_t9 > 1.0E-6) {
             dest[destOffset + 0] = Math.fma(_selfx, _t13, targetX * _t11) * _t8_inv;
             dest[destOffset + 1] = Math.fma(_selfy, _t13, targetY * _t11) * _t8_inv;
             dest[destOffset + 2] = Math.fma(_selfz, _t13, targetZ * _t11) * _t8_inv;
@@ -381,7 +381,7 @@ public final class DoubleQuatOpsKernelsArray {
         double _t9 = Math.abs(_t8);
         double _t11 = Math.sin(alpha * _t7);
         double _t13 = Math.sin(_t0 * _t7);
-        if (_t9 > 0.0) {
+        if (_t9 > 1.0E-6) {
             dest[destOffset + 0] = Math.fma(_selfx, _t13, _targetx * _t11) * _t8_inv;
             dest[destOffset + 1] = Math.fma(_selfy, _t13, _targety * _t11) * _t8_inv;
             dest[destOffset + 2] = Math.fma(_selfz, _t13, _targetz * _t11) * _t8_inv;

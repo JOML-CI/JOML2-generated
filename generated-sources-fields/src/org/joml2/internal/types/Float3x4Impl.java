@@ -227,6 +227,10 @@ public class Float3x4Impl implements Float3x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -244,6 +248,10 @@ public class Float3x4Impl implements Float3x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -308,6 +316,10 @@ public class Float3x4Impl implements Float3x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -325,6 +337,10 @@ public class Float3x4Impl implements Float3x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -387,6 +403,10 @@ public class Float3x4Impl implements Float3x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -404,6 +424,10 @@ public class Float3x4Impl implements Float3x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -464,6 +488,10 @@ public class Float3x4Impl implements Float3x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -481,6 +509,10 @@ public class Float3x4Impl implements Float3x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -543,6 +575,10 @@ public class Float3x4Impl implements Float3x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -560,6 +596,10 @@ public class Float3x4Impl implements Float3x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -622,6 +662,10 @@ public class Float3x4Impl implements Float3x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -639,6 +683,10 @@ public class Float3x4Impl implements Float3x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.

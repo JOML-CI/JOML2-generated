@@ -1131,14 +1131,14 @@ public final class Intersectiond {
         }
         double _t26 = _t19 > _t20 ? _t19 : _t20 != _t20 ? _t19 : _t20;
         double _t27 = _t22 < _t23 ? _t22 : _t23 != _t23 ? _t22 : _t23;
-        double _t28 = _t18 > _t26 ? _t18 : _t26;
-        double _t29 = _t21 < _t27 ? _t21 : _t27;
-        double _t30 = _t29 > 1.0 ? 1.0 : 0.0;
-        if ((_t20 > _t22 ? 0.0 : _t19 > _t23 ? 0.0 : _t20 > _t21 ? 0.0 : _t18 > _t23 ? 0.0 : _t28 <= _t29 ? _t28 <= 1.0 ? _t29 >= 0.0 ? 1.0 : 0.0 : 0.0 : 0.0) != 0) {
-            if ((_t28 >= 0.0 ? _t30 : 0.0) != 0) return new DoubleHit2(1, _t28, _t28);
-            if ((_t28 < 0.0) && (_t29 <= 1.0)) return new DoubleHit2(1, _t29, _t29);
-            if ((_t28 < 0.0 ? _t30 : 0.0) != 0) return new DoubleHit2(3, _t28, _t29);
-            return new DoubleHit2(2, _t28, _t29);
+        double _t30 = _t18 > _t26 ? _t18 : _t26 != _t26 ? _t18 : _t26;
+        double _t31 = _t21 < _t27 ? _t21 : _t27 != _t27 ? _t21 : _t27;
+        double _t32 = _t31 > 1.0 ? 1.0 : 0.0;
+        if ((_t20 > _t22 ? 0.0 : _t19 > _t23 ? 0.0 : _t20 > _t21 ? 0.0 : _t18 > _t23 ? 0.0 : _t30 <= _t31 ? _t30 <= 1.0 ? _t31 >= 0.0 ? 1.0 : 0.0 : 0.0 : 0.0) != 0) {
+            if ((_t30 >= 0.0 ? _t32 : 0.0) != 0) return new DoubleHit2(1, _t30, _t30);
+            if ((_t30 < 0.0) && (_t31 <= 1.0)) return new DoubleHit2(1, _t31, _t31);
+            if ((_t30 < 0.0 ? _t32 : 0.0) != 0) return new DoubleHit2(3, _t30, _t31);
+            return new DoubleHit2(2, _t30, _t31);
         }
         return DoubleHit2.MISS;
     }
@@ -1653,9 +1653,9 @@ public final class Intersectiond {
         }
         double _t25 = _t17 > _t15 ? _t17 : (Double.isNaN(_t15) ? 1.0 : 0.0) > 0.0 ? _t17 : _t15;
         double _t26 = _t16 < _t18 ? _t16 : (Double.isNaN(_t18) ? 1.0 : 0.0) > 0.0 ? _t16 : _t18;
-        double _t27 = _t20 > _t25 ? _t20 : _t25;
-        double _t28 = _t19 < _t26 ? _t19 : _t26;
-        if ((_t15 > _t16 ? 0.0 : _t17 > _t18 ? 0.0 : _t15 > _t19 ? 0.0 : _t20 > _t18 ? 0.0 : _t27 < _t28 ? _t28 >= 0.0 ? 1.0 : 0.0 : 0.0) != 0) return new DoubleHit2(1, _t27, _t28);
+        double _t31 = _t20 > _t25 ? _t20 : (Double.isNaN(_t25) ? 1.0 : 0.0) > 0.0 ? _t20 : _t25;
+        double _t32 = _t19 < _t26 ? _t19 : (Double.isNaN(_t26) ? 1.0 : 0.0) > 0.0 ? _t19 : _t26;
+        if ((_t15 > _t16 ? 0.0 : _t17 > _t18 ? 0.0 : _t15 > _t19 ? 0.0 : _t20 > _t18 ? 0.0 : _t31 < _t32 ? _t32 >= 0.0 ? 1.0 : 0.0 : 0.0) != 0) return new DoubleHit2(1, _t31, _t32);
         return DoubleHit2.MISS;
     }
 
@@ -2792,8 +2792,8 @@ public final class Intersectiond {
         double _t27 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, -radiusSquared));
         double _t28 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, -radiusSquared));
         double _t29 = Math.fma(_t4, _t4, Math.fma(_t5, _t5, -radiusSquared));
-        double _t38 = _t25 >= 0.0 ? _t25 < _t26 ? _t26 * _t29 <= _t25 * _t25 ? 1.0 : 0.0 : 0.0 : 0.0;
-        double _t41 = _t23 > 0.0 ? _t23 <= _t24 ? _t24 * _t28 <= _t23 * _t23 ? 1.0 : _t38 : _t38 : _t38;
+        double _t38 = _t25 >= 0.0 ? _t25 <= _t26 ? _t26 * _t29 <= _t25 * _t25 ? 1.0 : 0.0 : 0.0 : 0.0;
+        double _t41 = _t23 >= 0.0 ? _t23 <= _t24 ? _t24 * _t28 <= _t23 * _t23 ? 1.0 : _t38 : _t38 : _t38;
         double _t44 = _t21 >= 0.0 ? _t21 <= _t22 ? _t22 * _t27 <= _t21 * _t21 ? 1.0 : _t41 : _t41 : _t41;
         if (_t27 <= 0.0) return true;
         if (_t28 <= 0.0) return true;
@@ -3108,9 +3108,9 @@ public final class Intersectiond {
         }
         double _t23 = _t17 > _t15 ? _t17 : _t15 != _t15 ? _t17 : _t15;
         double _t24 = _t16 < _t18 ? _t16 : _t18 != _t18 ? _t16 : _t18;
-        double _t25 = _t20 > _t23 ? _t20 : _t23;
-        double _t26 = _t19 < _t24 ? _t19 : _t24;
-        return (_t15 > _t16 ? 0.0 : _t17 > _t18 ? 0.0 : _t15 > _t19 ? 0.0 : _t20 > _t18 ? 0.0 : _t25 < _t26 ? _t26 >= 0.0 ? _t25 <= 1.0 ? 1.0 : 0.0 : 0.0 : 0.0) != 0;
+        double _t27 = _t20 > _t23 ? _t20 : _t23 != _t23 ? _t20 : _t23;
+        double _t28 = _t19 < _t24 ? _t19 : _t24 != _t24 ? _t19 : _t24;
+        return (_t15 > _t16 ? 0.0 : _t17 > _t18 ? 0.0 : _t15 > _t19 ? 0.0 : _t20 > _t18 ? 0.0 : _t27 < _t28 ? _t28 >= 0.0 ? _t27 <= 1.0 ? 1.0 : 0.0 : 0.0 : 0.0) != 0;
     }
 
     /**
@@ -3808,8 +3808,8 @@ public final class Intersectiond {
         }
         double _t23 = _t17 > _t15 ? _t17 : _t15 != _t15 ? _t17 : _t15;
         double _t24 = _t16 < _t18 ? _t16 : _t18 != _t18 ? _t16 : _t18;
-        double _t25 = _t19 < _t24 ? _t19 : _t24;
-        return (_t15 > _t16 ? 0.0 : _t17 > _t18 ? 0.0 : _t15 > _t19 ? 0.0 : _t20 > _t18 ? 0.0 : (_t20 > _t23 ? _t20 : _t23) < _t25 ? _t25 >= 0.0 ? 1.0 : 0.0 : 0.0) != 0;
+        double _t26 = _t19 < _t24 ? _t19 : _t24 != _t24 ? _t19 : _t24;
+        return (_t15 > _t16 ? 0.0 : _t17 > _t18 ? 0.0 : _t15 > _t19 ? 0.0 : _t20 > _t18 ? 0.0 : (_t20 > _t23 ? _t20 : _t23 != _t23 ? _t20 : _t23) < _t26 ? _t26 >= 0.0 ? 1.0 : 0.0 : 0.0) != 0;
     }
 
     /**

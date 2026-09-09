@@ -2232,7 +2232,22 @@ public final class Float4x4OpsSimd {
         return dest;
     }
 
-    public static float[] obliqueZ(float[] dest, int destOffset, float[] src, int srcOffset, float planeX, float planeY, float planeZ, float planeW) {
+    public static float[] obliqueZ_no_lh(float[] dest, int destOffset, float[] src, int srcOffset, float planeX, float planeY, float planeZ, float planeW) {
+        float _self23 = src[srcOffset + 14];
+        float _t0 = 2.0f * _self23;
+        float _t15_inv = 1.0f / Math.fma(planeW, 1.0f - src[srcOffset + 10], _self23 * (planeZ + (planeX * ((planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f) - src[srcOffset + 8]) / src[srcOffset + 0] + planeY * ((planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f) - src[srcOffset + 9]) / src[srcOffset + 5])));
+        var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).withLane(2, planeX * _t0 * _t15_inv - src[srcOffset + 3]);
+        var _c1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).withLane(2, planeY * _t0 * _t15_inv - src[srcOffset + 7]);
+        var _c2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, planeZ * _t0 * _t15_inv - src[srcOffset + 11]);
+        var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, planeW * _t0 * _t15_inv - src[srcOffset + 15]);
+        _c0.intoArray(dest, destOffset);
+        _c1.intoArray(dest, destOffset + 4);
+        _c2.intoArray(dest, destOffset + 8);
+        _c3.intoArray(dest, destOffset + 12);
+        return dest;
+    }
+
+    public static float[] obliqueZ_no_rh(float[] dest, int destOffset, float[] src, int srcOffset, float planeX, float planeY, float planeZ, float planeW) {
         float _self23 = src[srcOffset + 14];
         float _t0 = 2.0f * _self23;
         float _t15_inv = 1.0f / Math.fma(planeW, 1.0f + src[srcOffset + 10], _self23 * (planeX * (src[srcOffset + 8] + (planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f)) / src[srcOffset + 0] + planeY * (src[srcOffset + 9] + (planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f)) / src[srcOffset + 5] - planeZ));
@@ -2247,7 +2262,54 @@ public final class Float4x4OpsSimd {
         return dest;
     }
 
-    public static float[] obliqueZ(float[] dest, int destOffset, float[] src, int srcOffset, float[] plane, int planeOffset) {
+    public static float[] obliqueZ_zo_lh(float[] dest, int destOffset, float[] src, int srcOffset, float planeX, float planeY, float planeZ, float planeW) {
+        float _self23 = src[srcOffset + 14];
+        float _t14_inv = 1.0f / Math.fma(planeW, 1.0f - src[srcOffset + 10], _self23 * (planeZ + (planeX * ((planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f) - src[srcOffset + 8]) / src[srcOffset + 0] + planeY * ((planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f) - src[srcOffset + 9]) / src[srcOffset + 5])));
+        var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).withLane(2, planeX * _self23 * _t14_inv);
+        var _c1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).withLane(2, planeY * _self23 * _t14_inv);
+        var _c2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, planeZ * _self23 * _t14_inv);
+        var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, planeW * _self23 * _t14_inv);
+        _c0.intoArray(dest, destOffset);
+        _c1.intoArray(dest, destOffset + 4);
+        _c2.intoArray(dest, destOffset + 8);
+        _c3.intoArray(dest, destOffset + 12);
+        return dest;
+    }
+
+    public static float[] obliqueZ_zo_rh(float[] dest, int destOffset, float[] src, int srcOffset, float planeX, float planeY, float planeZ, float planeW) {
+        float _self23 = src[srcOffset + 14];
+        float _t14_inv = 1.0f / Math.fma(planeW, 1.0f + src[srcOffset + 10], _self23 * (planeX * (src[srcOffset + 8] + (planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f)) / src[srcOffset + 0] + planeY * (src[srcOffset + 9] + (planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f)) / src[srcOffset + 5] - planeZ));
+        var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).withLane(2, planeX * _self23 * _t14_inv);
+        var _c1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).withLane(2, planeY * _self23 * _t14_inv);
+        var _c2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, planeZ * _self23 * _t14_inv);
+        var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, planeW * _self23 * _t14_inv);
+        _c0.intoArray(dest, destOffset);
+        _c1.intoArray(dest, destOffset + 4);
+        _c2.intoArray(dest, destOffset + 8);
+        _c3.intoArray(dest, destOffset + 12);
+        return dest;
+    }
+
+    public static float[] obliqueZ_no_lh(float[] dest, int destOffset, float[] src, int srcOffset, float[] plane, int planeOffset) {
+        float _planex = plane[planeOffset + 0];
+        float _planey = plane[planeOffset + 1];
+        float _planez = plane[planeOffset + 2];
+        float _planew = plane[planeOffset + 3];
+        float _self23 = src[srcOffset + 14];
+        float _t0 = 2.0f * _self23;
+        float _t15_inv = 1.0f / Math.fma(_planew, 1.0f - src[srcOffset + 10], _self23 * (_planez + (_planex * ((_planex < 0.0f ? -1.0f : _planex > 0.0f ? 1.0f : 0.0f) - src[srcOffset + 8]) / src[srcOffset + 0] + _planey * ((_planey < 0.0f ? -1.0f : _planey > 0.0f ? 1.0f : 0.0f) - src[srcOffset + 9]) / src[srcOffset + 5])));
+        var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).withLane(2, _planex * _t0 * _t15_inv - src[srcOffset + 3]);
+        var _c1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).withLane(2, _planey * _t0 * _t15_inv - src[srcOffset + 7]);
+        var _c2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, _planez * _t0 * _t15_inv - src[srcOffset + 11]);
+        var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, _planew * _t0 * _t15_inv - src[srcOffset + 15]);
+        _c0.intoArray(dest, destOffset);
+        _c1.intoArray(dest, destOffset + 4);
+        _c2.intoArray(dest, destOffset + 8);
+        _c3.intoArray(dest, destOffset + 12);
+        return dest;
+    }
+
+    public static float[] obliqueZ_no_rh(float[] dest, int destOffset, float[] src, int srcOffset, float[] plane, int planeOffset) {
         float _planex = plane[planeOffset + 0];
         float _planey = plane[planeOffset + 1];
         float _planez = plane[planeOffset + 2];
@@ -2259,6 +2321,42 @@ public final class Float4x4OpsSimd {
         var _c1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).withLane(2, _planey * _t0 * _t15_inv - src[srcOffset + 7]);
         var _c2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, _planez * _t0 * _t15_inv - src[srcOffset + 11]);
         var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, _planew * _t0 * _t15_inv - src[srcOffset + 15]);
+        _c0.intoArray(dest, destOffset);
+        _c1.intoArray(dest, destOffset + 4);
+        _c2.intoArray(dest, destOffset + 8);
+        _c3.intoArray(dest, destOffset + 12);
+        return dest;
+    }
+
+    public static float[] obliqueZ_zo_lh(float[] dest, int destOffset, float[] src, int srcOffset, float[] plane, int planeOffset) {
+        float _planex = plane[planeOffset + 0];
+        float _self23 = src[srcOffset + 14];
+        float _planey = plane[planeOffset + 1];
+        float _planez = plane[planeOffset + 2];
+        float _planew = plane[planeOffset + 3];
+        float _t14_inv = 1.0f / Math.fma(_planew, 1.0f - src[srcOffset + 10], _self23 * (_planez + (_planex * ((_planex < 0.0f ? -1.0f : _planex > 0.0f ? 1.0f : 0.0f) - src[srcOffset + 8]) / src[srcOffset + 0] + _planey * ((_planey < 0.0f ? -1.0f : _planey > 0.0f ? 1.0f : 0.0f) - src[srcOffset + 9]) / src[srcOffset + 5])));
+        var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).withLane(2, _planex * _self23 * _t14_inv);
+        var _c1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).withLane(2, _planey * _self23 * _t14_inv);
+        var _c2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, _planez * _self23 * _t14_inv);
+        var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, _planew * _self23 * _t14_inv);
+        _c0.intoArray(dest, destOffset);
+        _c1.intoArray(dest, destOffset + 4);
+        _c2.intoArray(dest, destOffset + 8);
+        _c3.intoArray(dest, destOffset + 12);
+        return dest;
+    }
+
+    public static float[] obliqueZ_zo_rh(float[] dest, int destOffset, float[] src, int srcOffset, float[] plane, int planeOffset) {
+        float _planex = plane[planeOffset + 0];
+        float _self23 = src[srcOffset + 14];
+        float _planey = plane[planeOffset + 1];
+        float _planez = plane[planeOffset + 2];
+        float _planew = plane[planeOffset + 3];
+        float _t14_inv = 1.0f / Math.fma(_planew, 1.0f + src[srcOffset + 10], _self23 * (_planex * (src[srcOffset + 8] + (_planex < 0.0f ? -1.0f : _planex > 0.0f ? 1.0f : 0.0f)) / src[srcOffset + 0] + _planey * (src[srcOffset + 9] + (_planey < 0.0f ? -1.0f : _planey > 0.0f ? 1.0f : 0.0f)) / src[srcOffset + 5] - _planez));
+        var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).withLane(2, _planex * _self23 * _t14_inv);
+        var _c1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).withLane(2, _planey * _self23 * _t14_inv);
+        var _c2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, _planez * _self23 * _t14_inv);
+        var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, _planew * _self23 * _t14_inv);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);

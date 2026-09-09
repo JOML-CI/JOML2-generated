@@ -297,55 +297,57 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
     }
 
     /** Private tail of {@code transform}; reached only through it. */
-    private DoubleOBB transform_s91e96b_tail(Double3x4 m, double _sfx0, double _sfx1, double _sfx2, double _sfx3, double _sfx4, double _sfx5) {
-        double _sfx6 = Math.fma(m.m02(), this.uYz, Math.fma(m.m00(), this.uYx, m.m01() * this.uYy));
-        double _sfx7 = Math.fma(m.m12(), this.uYz, Math.fma(m.m10(), this.uYx, m.m11() * this.uYy));
-        double _sfx8 = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
-        double _sfx9 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
-        double _sfx10 = Math.fma(m.m12(), this.uZz, Math.fma(m.m10(), this.uZx, m.m11() * this.uZy));
-        double _sfx11 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
-        double _sfx12 = this.hsX;
-        double _sfx13 = this.hsY;
-        double _sfx14 = this.hsZ;
-        return new DoubleOBB(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7, _sfx8, _sfx9, _sfx10, _sfx11, _sfx12, _sfx13, _sfx14);
+    private DoubleOBB transform_s91e96b_tail(Double3x4 m, double _t19, double _t18, double _t20, double _t22, double _t21, double _t23, double _t25, double _t24) {
+        double _t26 = Math.fma(m.m12(), this.uZz, Math.fma(m.m10(), this.uZx, m.m11() * this.uZy));
+        double _t33 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        double _t34 = Math.fma(_t22, _t22, Math.fma(_t21, _t21, _t23 * _t23));
+        double _t35 = Math.fma(_t25, _t25, Math.fma(_t24, _t24, _t26 * _t26));
+        double _t36 = (1.0 / Math.sqrt(_t33));
+        double _t37 = (1.0 / Math.sqrt(_t34));
+        double _t38 = (1.0 / Math.sqrt(_t35));
+        return new DoubleOBB(Math.fma(m.m02(), this.cZ, Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, m.m03()))), Math.fma(m.m12(), this.cZ, Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, m.m13()))), Math.fma(m.m22(), this.cZ, Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, m.m23()))), _t18 * _t36, _t20 * _t36, _t19 * _t36, _t21 * _t37, _t23 * _t37, _t22 * _t37, _t24 * _t38, _t26 * _t38, _t25 * _t38, this.hsX * Math.sqrt(_t33), this.hsY * Math.sqrt(_t34), this.hsZ * Math.sqrt(_t35));
     }
 
 
     /**
-     * Transform this oriented bounding box by {@code m} (the axes are transformed without
-     * renormalization), returning the result as a value.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
+     * axis as a direction and renormalized, and each half-size is scaled by the length its
+     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
+     * shear is approximated), returning the result as a value.
      *
      * @param m the matrix
      * @return the resulting oriented bounding box
      */
     public DoubleOBB transform(Double3x4 m) {
-        double _sfx0 = Math.fma(m.m02(), this.cZ, Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, m.m03())));
-        double _sfx1 = Math.fma(m.m12(), this.cZ, Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, m.m13())));
-        double _sfx2 = Math.fma(m.m22(), this.cZ, Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, m.m23())));
-        double _sfx3 = Math.fma(m.m02(), this.uXz, Math.fma(m.m00(), this.uXx, m.m01() * this.uXy));
-        double _sfx4 = Math.fma(m.m12(), this.uXz, Math.fma(m.m10(), this.uXx, m.m11() * this.uXy));
-        double _sfx5 = Math.fma(m.m22(), this.uXz, Math.fma(m.m20(), this.uXx, m.m21() * this.uXy));
-        return transform_s91e96b_tail(m, _sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5);
+        double _t18 = Math.fma(m.m02(), this.uXz, Math.fma(m.m00(), this.uXx, m.m01() * this.uXy));
+        double _t19 = Math.fma(m.m22(), this.uXz, Math.fma(m.m20(), this.uXx, m.m21() * this.uXy));
+        double _t20 = Math.fma(m.m12(), this.uXz, Math.fma(m.m10(), this.uXx, m.m11() * this.uXy));
+        double _t21 = Math.fma(m.m02(), this.uYz, Math.fma(m.m00(), this.uYx, m.m01() * this.uYy));
+        double _t22 = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
+        double _t23 = Math.fma(m.m12(), this.uYz, Math.fma(m.m10(), this.uYx, m.m11() * this.uYy));
+        double _t24 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
+        double _t25 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
+        return transform_s91e96b_tail(m, _t19, _t18, _t20, _t22, _t21, _t23, _t25, _t24);
     }
 
     /** Private tail of {@code transform}; reached only through it. */
-    private DoubleOBB transform_sa000ec_tail(Double4x4 m, double _sfx0, double _sfx1, double _sfx2, double _sfx3, double _sfx4, double _sfx5) {
-        double _sfx6 = Math.fma(m.m02(), this.uYz, Math.fma(m.m00(), this.uYx, m.m01() * this.uYy));
-        double _sfx7 = Math.fma(m.m12(), this.uYz, Math.fma(m.m10(), this.uYx, m.m11() * this.uYy));
-        double _sfx8 = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
-        double _sfx9 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
-        double _sfx10 = Math.fma(m.m12(), this.uZz, Math.fma(m.m10(), this.uZx, m.m11() * this.uZy));
-        double _sfx11 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
-        double _sfx12 = this.hsX;
-        double _sfx13 = this.hsY;
-        double _sfx14 = this.hsZ;
-        return new DoubleOBB(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7, _sfx8, _sfx9, _sfx10, _sfx11, _sfx12, _sfx13, _sfx14);
+    private DoubleOBB transform_sa000ec_tail(Double4x4 m, double _t19, double _t18, double _t20, double _t22, double _t21, double _t23, double _t25, double _t24) {
+        double _t26 = Math.fma(m.m12(), this.uZz, Math.fma(m.m10(), this.uZx, m.m11() * this.uZy));
+        double _t33 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        double _t34 = Math.fma(_t22, _t22, Math.fma(_t21, _t21, _t23 * _t23));
+        double _t35 = Math.fma(_t25, _t25, Math.fma(_t24, _t24, _t26 * _t26));
+        double _t36 = (1.0 / Math.sqrt(_t33));
+        double _t37 = (1.0 / Math.sqrt(_t34));
+        double _t38 = (1.0 / Math.sqrt(_t35));
+        return new DoubleOBB(Math.fma(m.m02(), this.cZ, Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, m.m03()))), Math.fma(m.m12(), this.cZ, Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, m.m13()))), Math.fma(m.m22(), this.cZ, Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, m.m23()))), _t18 * _t36, _t20 * _t36, _t19 * _t36, _t21 * _t37, _t23 * _t37, _t22 * _t37, _t24 * _t38, _t26 * _t38, _t25 * _t38, this.hsX * Math.sqrt(_t33), this.hsY * Math.sqrt(_t34), this.hsZ * Math.sqrt(_t35));
     }
 
 
     /**
-     * Transform this oriented bounding box by {@code m} (the axes are transformed without
-     * renormalization), returning the result as a value.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
+     * axis as a direction and renormalized, and each half-size is scaled by the length its
+     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
+     * shear is approximated), returning the result as a value.
      * <p>
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
@@ -354,13 +356,15 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * @return the resulting oriented bounding box
      */
     public DoubleOBB transform(Double4x4 m) {
-        double _sfx0 = Math.fma(m.m02(), this.cZ, Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, m.m03())));
-        double _sfx1 = Math.fma(m.m12(), this.cZ, Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, m.m13())));
-        double _sfx2 = Math.fma(m.m22(), this.cZ, Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, m.m23())));
-        double _sfx3 = Math.fma(m.m02(), this.uXz, Math.fma(m.m00(), this.uXx, m.m01() * this.uXy));
-        double _sfx4 = Math.fma(m.m12(), this.uXz, Math.fma(m.m10(), this.uXx, m.m11() * this.uXy));
-        double _sfx5 = Math.fma(m.m22(), this.uXz, Math.fma(m.m20(), this.uXx, m.m21() * this.uXy));
-        return transform_sa000ec_tail(m, _sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5);
+        double _t18 = Math.fma(m.m02(), this.uXz, Math.fma(m.m00(), this.uXx, m.m01() * this.uXy));
+        double _t19 = Math.fma(m.m22(), this.uXz, Math.fma(m.m20(), this.uXx, m.m21() * this.uXy));
+        double _t20 = Math.fma(m.m12(), this.uXz, Math.fma(m.m10(), this.uXx, m.m11() * this.uXy));
+        double _t21 = Math.fma(m.m02(), this.uYz, Math.fma(m.m00(), this.uYx, m.m01() * this.uYy));
+        double _t22 = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
+        double _t23 = Math.fma(m.m12(), this.uYz, Math.fma(m.m10(), this.uYx, m.m11() * this.uYy));
+        double _t24 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
+        double _t25 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
+        return transform_sa000ec_tail(m, _t19, _t18, _t20, _t22, _t21, _t23, _t25, _t24);
     }
 
 

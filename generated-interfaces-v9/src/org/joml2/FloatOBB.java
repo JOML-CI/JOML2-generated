@@ -173,8 +173,10 @@ public interface FloatOBB extends FloatOBBR {
     @Mutated FloatOBB makeIdentity();
 
     /**
-     * Transform this oriented bounding box by {@code m} (the axes are transformed without
-     * renormalization).
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
+     * axis as a direction and renormalized, and each half-size is scaled by the length its
+     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
+     * shear is approximated).
      *
      * @param m the matrix
      * @return this
@@ -182,8 +184,10 @@ public interface FloatOBB extends FloatOBBR {
     @Mutated default FloatOBB transform(Float3x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.floatOBB() : this); }
 
     /**
-     * Transform this oriented bounding box by {@code m} (the axes are transformed without
-     * renormalization).
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
+     * axis as a direction and renormalized, and each half-size is scaled by the length its
+     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
+     * shear is approximated).
      * <p>
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.

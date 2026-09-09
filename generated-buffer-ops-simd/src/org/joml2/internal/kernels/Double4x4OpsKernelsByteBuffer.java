@@ -13274,14 +13274,68 @@ public final class Double4x4OpsKernelsByteBuffer {
         return dest;
     }
 
-    public static java.nio.ByteBuffer obliqueZ_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+    public static java.nio.ByteBuffer obliqueZ_no_lh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsByteBuffer.obliqueZ_no_lh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        return Double4x4OpsKernelsByteBuffer.obliqueZ_no_lh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_no_lh_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
-        Double4x4OpsKernelsAddress.obliqueZ_unsafe(_destBase, _srcBase, planeX, planeY, planeZ, planeW);
+        Double4x4OpsKernelsAddress.obliqueZ_no_lh_unsafe(_destBase, _srcBase, planeX, planeY, planeZ, planeW);
         return dest;
     }
 
-    public static java.nio.ByteBuffer obliqueZ_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+    public static java.nio.ByteBuffer obliqueZ_no_lh_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self30 = src.getDouble(srcOffset + 24);
+        double _self01 = src.getDouble(srcOffset + 32);
+        double _self11 = src.getDouble(srcOffset + 40);
+        double _self31 = src.getDouble(srcOffset + 56);
+        double _self02 = src.getDouble(srcOffset + 64);
+        double _self12 = src.getDouble(srcOffset + 72);
+        double _self22 = src.getDouble(srcOffset + 80);
+        double _self32 = src.getDouble(srcOffset + 88);
+        double _self03 = src.getDouble(srcOffset + 96);
+        double _self13 = src.getDouble(srcOffset + 104);
+        double _self23 = src.getDouble(srcOffset + 112);
+        double _self33 = src.getDouble(srcOffset + 120);
+        double _t0 = 2.0 * _self23;
+        double _t15 = Math.fma(planeW, 1.0 - _self22, _self23 * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - _self02) / _self00 + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - _self12) / _self11)));
+        double _t15_inv = 1.0 / _t15;
+        dest.putDouble(destOffset + 0, _self00);
+        dest.putDouble(destOffset + 8, _self10);
+        dest.putDouble(destOffset + 16, planeX * _t0 * _t15_inv - _self30);
+        dest.putDouble(destOffset + 24, _self30);
+        dest.putDouble(destOffset + 32, _self01);
+        dest.putDouble(destOffset + 40, _self11);
+        dest.putDouble(destOffset + 48, planeY * _t0 * _t15_inv - _self31);
+        dest.putDouble(destOffset + 56, _self31);
+        dest.putDouble(destOffset + 64, _self02);
+        dest.putDouble(destOffset + 72, _self12);
+        dest.putDouble(destOffset + 80, planeZ * _t0 * _t15_inv - _self32);
+        dest.putDouble(destOffset + 88, _self32);
+        dest.putDouble(destOffset + 96, _self03);
+        dest.putDouble(destOffset + 104, _self13);
+        dest.putDouble(destOffset + 112, planeW * _t0 * _t15_inv - _self33);
+        dest.putDouble(destOffset + 120, _self33);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_no_rh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsByteBuffer.obliqueZ_no_rh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        return Double4x4OpsKernelsByteBuffer.obliqueZ_no_rh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_no_rh_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Double4x4OpsKernelsAddress.obliqueZ_no_rh_unsafe(_destBase, _srcBase, planeX, planeY, planeZ, planeW);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_no_rh_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self30 = src.getDouble(srcOffset + 24);
@@ -13318,15 +13372,184 @@ public final class Double4x4OpsKernelsByteBuffer {
         return dest;
     }
 
-    public static java.nio.ByteBuffer obliqueZ_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset) {
+    public static java.nio.ByteBuffer obliqueZ_no(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Double4x4OpsKernelsByteBuffer.obliqueZ_no_lh(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW); }
+            default -> { return Double4x4OpsKernelsByteBuffer.obliqueZ_no_rh(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW); }
+        }
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_zo_lh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsByteBuffer.obliqueZ_zo_lh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        return Double4x4OpsKernelsByteBuffer.obliqueZ_zo_lh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_zo_lh_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
-        long _planeBase = UnsafeOpsHolder.U.getLong(plane, UnsafeCopy.BB_ADDRESS_OFFSET) + planeOffset;
-        Double4x4OpsKernelsAddress.obliqueZ_unsafe(_destBase, _srcBase, _planeBase);
+        Double4x4OpsKernelsAddress.obliqueZ_zo_lh_unsafe(_destBase, _srcBase, planeX, planeY, planeZ, planeW);
         return dest;
     }
 
-    public static java.nio.ByteBuffer obliqueZ_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset) {
+    public static java.nio.ByteBuffer obliqueZ_zo_lh_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self30 = src.getDouble(srcOffset + 24);
+        double _self01 = src.getDouble(srcOffset + 32);
+        double _self11 = src.getDouble(srcOffset + 40);
+        double _self31 = src.getDouble(srcOffset + 56);
+        double _self02 = src.getDouble(srcOffset + 64);
+        double _self12 = src.getDouble(srcOffset + 72);
+        double _self22 = src.getDouble(srcOffset + 80);
+        double _self32 = src.getDouble(srcOffset + 88);
+        double _self03 = src.getDouble(srcOffset + 96);
+        double _self13 = src.getDouble(srcOffset + 104);
+        double _self23 = src.getDouble(srcOffset + 112);
+        double _self33 = src.getDouble(srcOffset + 120);
+        double _t14 = Math.fma(planeW, 1.0 - _self22, _self23 * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - _self02) / _self00 + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - _self12) / _self11)));
+        double _t14_inv = 1.0 / _t14;
+        dest.putDouble(destOffset + 0, _self00);
+        dest.putDouble(destOffset + 8, _self10);
+        dest.putDouble(destOffset + 16, planeX * _self23 * _t14_inv);
+        dest.putDouble(destOffset + 24, _self30);
+        dest.putDouble(destOffset + 32, _self01);
+        dest.putDouble(destOffset + 40, _self11);
+        dest.putDouble(destOffset + 48, planeY * _self23 * _t14_inv);
+        dest.putDouble(destOffset + 56, _self31);
+        dest.putDouble(destOffset + 64, _self02);
+        dest.putDouble(destOffset + 72, _self12);
+        dest.putDouble(destOffset + 80, planeZ * _self23 * _t14_inv);
+        dest.putDouble(destOffset + 88, _self32);
+        dest.putDouble(destOffset + 96, _self03);
+        dest.putDouble(destOffset + 104, _self13);
+        dest.putDouble(destOffset + 112, planeW * _self23 * _t14_inv);
+        dest.putDouble(destOffset + 120, _self33);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_zo_rh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsByteBuffer.obliqueZ_zo_rh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        return Double4x4OpsKernelsByteBuffer.obliqueZ_zo_rh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_zo_rh_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Double4x4OpsKernelsAddress.obliqueZ_zo_rh_unsafe(_destBase, _srcBase, planeX, planeY, planeZ, planeW);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_zo_rh_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self30 = src.getDouble(srcOffset + 24);
+        double _self01 = src.getDouble(srcOffset + 32);
+        double _self11 = src.getDouble(srcOffset + 40);
+        double _self31 = src.getDouble(srcOffset + 56);
+        double _self02 = src.getDouble(srcOffset + 64);
+        double _self12 = src.getDouble(srcOffset + 72);
+        double _self22 = src.getDouble(srcOffset + 80);
+        double _self32 = src.getDouble(srcOffset + 88);
+        double _self03 = src.getDouble(srcOffset + 96);
+        double _self13 = src.getDouble(srcOffset + 104);
+        double _self23 = src.getDouble(srcOffset + 112);
+        double _self33 = src.getDouble(srcOffset + 120);
+        double _t14 = Math.fma(planeW, 1.0 + _self22, _self23 * (planeX * (_self02 + (planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0)) / _self00 + planeY * (_self12 + (planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0)) / _self11 - planeZ));
+        double _t14_inv = 1.0 / _t14;
+        dest.putDouble(destOffset + 0, _self00);
+        dest.putDouble(destOffset + 8, _self10);
+        dest.putDouble(destOffset + 16, planeX * _self23 * _t14_inv);
+        dest.putDouble(destOffset + 24, _self30);
+        dest.putDouble(destOffset + 32, _self01);
+        dest.putDouble(destOffset + 40, _self11);
+        dest.putDouble(destOffset + 48, planeY * _self23 * _t14_inv);
+        dest.putDouble(destOffset + 56, _self31);
+        dest.putDouble(destOffset + 64, _self02);
+        dest.putDouble(destOffset + 72, _self12);
+        dest.putDouble(destOffset + 80, planeZ * _self23 * _t14_inv);
+        dest.putDouble(destOffset + 88, _self32);
+        dest.putDouble(destOffset + 96, _self03);
+        dest.putDouble(destOffset + 104, _self13);
+        dest.putDouble(destOffset + 112, planeW * _self23 * _t14_inv);
+        dest.putDouble(destOffset + 120, _self33);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_zo(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Double4x4OpsKernelsByteBuffer.obliqueZ_zo_lh(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW); }
+            default -> { return Double4x4OpsKernelsByteBuffer.obliqueZ_zo_rh(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW); }
+        }
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_no_lh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && plane.isDirect()) return Double4x4OpsKernelsByteBuffer.obliqueZ_no_lh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        return Double4x4OpsKernelsByteBuffer.obliqueZ_no_lh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_no_lh_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _planeBase = UnsafeOpsHolder.U.getLong(plane, UnsafeCopy.BB_ADDRESS_OFFSET) + planeOffset;
+        Double4x4OpsKernelsAddress.obliqueZ_no_lh_unsafe(_destBase, _srcBase, _planeBase);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_no_lh_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self30 = src.getDouble(srcOffset + 24);
+        double _self01 = src.getDouble(srcOffset + 32);
+        double _self11 = src.getDouble(srcOffset + 40);
+        double _self31 = src.getDouble(srcOffset + 56);
+        double _self02 = src.getDouble(srcOffset + 64);
+        double _self12 = src.getDouble(srcOffset + 72);
+        double _self22 = src.getDouble(srcOffset + 80);
+        double _self32 = src.getDouble(srcOffset + 88);
+        double _self03 = src.getDouble(srcOffset + 96);
+        double _self13 = src.getDouble(srcOffset + 104);
+        double _self23 = src.getDouble(srcOffset + 112);
+        double _self33 = src.getDouble(srcOffset + 120);
+        double _planex = plane.getDouble(planeOffset + 0);
+        double _planey = plane.getDouble(planeOffset + 8);
+        double _planez = plane.getDouble(planeOffset + 16);
+        double _planew = plane.getDouble(planeOffset + 24);
+        double _t0 = 2.0 * _self23;
+        double _t15 = Math.fma(_planew, 1.0 - _self22, _self23 * (_planez + (_planex * ((_planex < 0.0 ? -1.0 : _planex > 0.0 ? 1.0 : 0.0) - _self02) / _self00 + _planey * ((_planey < 0.0 ? -1.0 : _planey > 0.0 ? 1.0 : 0.0) - _self12) / _self11)));
+        double _t15_inv = 1.0 / _t15;
+        dest.putDouble(destOffset + 0, _self00);
+        dest.putDouble(destOffset + 8, _self10);
+        dest.putDouble(destOffset + 16, _planex * _t0 * _t15_inv - _self30);
+        dest.putDouble(destOffset + 24, _self30);
+        dest.putDouble(destOffset + 32, _self01);
+        dest.putDouble(destOffset + 40, _self11);
+        dest.putDouble(destOffset + 48, _planey * _t0 * _t15_inv - _self31);
+        dest.putDouble(destOffset + 56, _self31);
+        dest.putDouble(destOffset + 64, _self02);
+        dest.putDouble(destOffset + 72, _self12);
+        dest.putDouble(destOffset + 80, _planez * _t0 * _t15_inv - _self32);
+        dest.putDouble(destOffset + 88, _self32);
+        dest.putDouble(destOffset + 96, _self03);
+        dest.putDouble(destOffset + 104, _self13);
+        dest.putDouble(destOffset + 112, _planew * _t0 * _t15_inv - _self33);
+        dest.putDouble(destOffset + 120, _self33);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_no_rh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && plane.isDirect()) return Double4x4OpsKernelsByteBuffer.obliqueZ_no_rh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        return Double4x4OpsKernelsByteBuffer.obliqueZ_no_rh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_no_rh_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _planeBase = UnsafeOpsHolder.U.getLong(plane, UnsafeCopy.BB_ADDRESS_OFFSET) + planeOffset;
+        Double4x4OpsKernelsAddress.obliqueZ_no_rh_unsafe(_destBase, _srcBase, _planeBase);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_no_rh_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset) {
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self30 = src.getDouble(srcOffset + 24);
@@ -13365,6 +13588,126 @@ public final class Double4x4OpsKernelsByteBuffer {
         dest.putDouble(destOffset + 112, _planew * _t0 * _t15_inv - _self33);
         dest.putDouble(destOffset + 120, _self33);
         return dest;
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_no(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Double4x4OpsKernelsByteBuffer.obliqueZ_no_lh(dest, destOffset, src, srcOffset, plane, planeOffset); }
+            default -> { return Double4x4OpsKernelsByteBuffer.obliqueZ_no_rh(dest, destOffset, src, srcOffset, plane, planeOffset); }
+        }
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_zo_lh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && plane.isDirect()) return Double4x4OpsKernelsByteBuffer.obliqueZ_zo_lh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        return Double4x4OpsKernelsByteBuffer.obliqueZ_zo_lh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_zo_lh_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _planeBase = UnsafeOpsHolder.U.getLong(plane, UnsafeCopy.BB_ADDRESS_OFFSET) + planeOffset;
+        Double4x4OpsKernelsAddress.obliqueZ_zo_lh_unsafe(_destBase, _srcBase, _planeBase);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_zo_lh_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self30 = src.getDouble(srcOffset + 24);
+        double _self01 = src.getDouble(srcOffset + 32);
+        double _self11 = src.getDouble(srcOffset + 40);
+        double _self31 = src.getDouble(srcOffset + 56);
+        double _self02 = src.getDouble(srcOffset + 64);
+        double _self12 = src.getDouble(srcOffset + 72);
+        double _self22 = src.getDouble(srcOffset + 80);
+        double _self32 = src.getDouble(srcOffset + 88);
+        double _self03 = src.getDouble(srcOffset + 96);
+        double _self13 = src.getDouble(srcOffset + 104);
+        double _self23 = src.getDouble(srcOffset + 112);
+        double _self33 = src.getDouble(srcOffset + 120);
+        double _planex = plane.getDouble(planeOffset + 0);
+        double _planey = plane.getDouble(planeOffset + 8);
+        double _planez = plane.getDouble(planeOffset + 16);
+        double _planew = plane.getDouble(planeOffset + 24);
+        double _t14 = Math.fma(_planew, 1.0 - _self22, _self23 * (_planez + (_planex * ((_planex < 0.0 ? -1.0 : _planex > 0.0 ? 1.0 : 0.0) - _self02) / _self00 + _planey * ((_planey < 0.0 ? -1.0 : _planey > 0.0 ? 1.0 : 0.0) - _self12) / _self11)));
+        double _t14_inv = 1.0 / _t14;
+        dest.putDouble(destOffset + 0, _self00);
+        dest.putDouble(destOffset + 8, _self10);
+        dest.putDouble(destOffset + 16, _planex * _self23 * _t14_inv);
+        dest.putDouble(destOffset + 24, _self30);
+        dest.putDouble(destOffset + 32, _self01);
+        dest.putDouble(destOffset + 40, _self11);
+        dest.putDouble(destOffset + 48, _planey * _self23 * _t14_inv);
+        dest.putDouble(destOffset + 56, _self31);
+        dest.putDouble(destOffset + 64, _self02);
+        dest.putDouble(destOffset + 72, _self12);
+        dest.putDouble(destOffset + 80, _planez * _self23 * _t14_inv);
+        dest.putDouble(destOffset + 88, _self32);
+        dest.putDouble(destOffset + 96, _self03);
+        dest.putDouble(destOffset + 104, _self13);
+        dest.putDouble(destOffset + 112, _planew * _self23 * _t14_inv);
+        dest.putDouble(destOffset + 120, _self33);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_zo_rh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && plane.isDirect()) return Double4x4OpsKernelsByteBuffer.obliqueZ_zo_rh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        return Double4x4OpsKernelsByteBuffer.obliqueZ_zo_rh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_zo_rh_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _planeBase = UnsafeOpsHolder.U.getLong(plane, UnsafeCopy.BB_ADDRESS_OFFSET) + planeOffset;
+        Double4x4OpsKernelsAddress.obliqueZ_zo_rh_unsafe(_destBase, _srcBase, _planeBase);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_zo_rh_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self30 = src.getDouble(srcOffset + 24);
+        double _self01 = src.getDouble(srcOffset + 32);
+        double _self11 = src.getDouble(srcOffset + 40);
+        double _self31 = src.getDouble(srcOffset + 56);
+        double _self02 = src.getDouble(srcOffset + 64);
+        double _self12 = src.getDouble(srcOffset + 72);
+        double _self22 = src.getDouble(srcOffset + 80);
+        double _self32 = src.getDouble(srcOffset + 88);
+        double _self03 = src.getDouble(srcOffset + 96);
+        double _self13 = src.getDouble(srcOffset + 104);
+        double _self23 = src.getDouble(srcOffset + 112);
+        double _self33 = src.getDouble(srcOffset + 120);
+        double _planex = plane.getDouble(planeOffset + 0);
+        double _planey = plane.getDouble(planeOffset + 8);
+        double _planez = plane.getDouble(planeOffset + 16);
+        double _planew = plane.getDouble(planeOffset + 24);
+        double _t14 = Math.fma(_planew, 1.0 + _self22, _self23 * (_planex * (_self02 + (_planex < 0.0 ? -1.0 : _planex > 0.0 ? 1.0 : 0.0)) / _self00 + _planey * (_self12 + (_planey < 0.0 ? -1.0 : _planey > 0.0 ? 1.0 : 0.0)) / _self11 - _planez));
+        double _t14_inv = 1.0 / _t14;
+        dest.putDouble(destOffset + 0, _self00);
+        dest.putDouble(destOffset + 8, _self10);
+        dest.putDouble(destOffset + 16, _planex * _self23 * _t14_inv);
+        dest.putDouble(destOffset + 24, _self30);
+        dest.putDouble(destOffset + 32, _self01);
+        dest.putDouble(destOffset + 40, _self11);
+        dest.putDouble(destOffset + 48, _planey * _self23 * _t14_inv);
+        dest.putDouble(destOffset + 56, _self31);
+        dest.putDouble(destOffset + 64, _self02);
+        dest.putDouble(destOffset + 72, _self12);
+        dest.putDouble(destOffset + 80, _planez * _self23 * _t14_inv);
+        dest.putDouble(destOffset + 88, _self32);
+        dest.putDouble(destOffset + 96, _self03);
+        dest.putDouble(destOffset + 104, _self13);
+        dest.putDouble(destOffset + 112, _planew * _self23 * _t14_inv);
+        dest.putDouble(destOffset + 120, _self33);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer obliqueZ_zo(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Double4x4OpsKernelsByteBuffer.obliqueZ_zo_lh(dest, destOffset, src, srcOffset, plane, planeOffset); }
+            default -> { return Double4x4OpsKernelsByteBuffer.obliqueZ_zo_rh(dest, destOffset, src, srcOffset, plane, planeOffset); }
+        }
     }
 
     public static java.nio.ByteBuffer ortho_no_lh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar) {
@@ -17091,14 +17434,19 @@ public final class Double4x4OpsKernelsByteBuffer {
         return dest;
     }
 
-    public static java.nio.ByteBuffer project_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static java.nio.ByteBuffer project_no(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsByteBuffer.project_no_unsafe(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsByteBuffer.project_no_api(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.ByteBuffer project_no_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
-        Double4x4OpsKernelsAddress.project_unsafe(_destBase, _srcBase, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsAddress.project_no_unsafe(_destBase, _srcBase, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
         return dest;
     }
 
-    public static java.nio.ByteBuffer project_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static java.nio.ByteBuffer project_no_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -17123,16 +17471,58 @@ public final class Double4x4OpsKernelsByteBuffer {
         return dest;
     }
 
-    public static java.nio.ByteBuffer project_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer obj, int objOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+    public static java.nio.ByteBuffer project_zo(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsByteBuffer.project_zo_unsafe(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsByteBuffer.project_zo_api(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.ByteBuffer project_zo_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Double4x4OpsKernelsAddress.project_zo_unsafe(_destBase, _srcBase, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer project_zo_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self20 = src.getDouble(srcOffset + 16);
+        double _self30 = src.getDouble(srcOffset + 24);
+        double _self01 = src.getDouble(srcOffset + 32);
+        double _self11 = src.getDouble(srcOffset + 40);
+        double _self21 = src.getDouble(srcOffset + 48);
+        double _self31 = src.getDouble(srcOffset + 56);
+        double _self02 = src.getDouble(srcOffset + 64);
+        double _self12 = src.getDouble(srcOffset + 72);
+        double _self22 = src.getDouble(srcOffset + 80);
+        double _self32 = src.getDouble(srcOffset + 88);
+        double _self03 = src.getDouble(srcOffset + 96);
+        double _self13 = src.getDouble(srcOffset + 104);
+        double _self23 = src.getDouble(srcOffset + 112);
+        double _self33 = src.getDouble(srcOffset + 120);
+        double _t2 = Math.fma(objX, _self30, Math.fma(objY, _self31, Math.fma(objZ, _self32, _self33)));
+        double _t2_inv = 1.0 / _t2;
+        dest.putDouble(destOffset + 0, Math.fma(0.5, viewportZ * (1.0 + Math.fma(objX, _self00, Math.fma(objY, _self01, Math.fma(objZ, _self02, _self03))) * _t2_inv), viewportX));
+        dest.putDouble(destOffset + 8, Math.fma(0.5, viewportW * (1.0 + Math.fma(objX, _self10, Math.fma(objY, _self11, Math.fma(objZ, _self12, _self13))) * _t2_inv), viewportY));
+        dest.putDouble(destOffset + 16, Math.fma(objX, _self20, Math.fma(objY, _self21, Math.fma(objZ, _self22, _self23))) * _t2_inv);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer project_no(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer obj, int objOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && obj.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsByteBuffer.project_no_unsafe(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsByteBuffer.project_no_api(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
+    }
+
+    public static java.nio.ByteBuffer project_no_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer obj, int objOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
         long _objBase = UnsafeOpsHolder.U.getLong(obj, UnsafeCopy.BB_ADDRESS_OFFSET) + objOffset;
         long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + viewportOffset;
-        Double4x4OpsKernelsAddress.project_unsafe(_destBase, _srcBase, _objBase, _viewportBase);
+        Double4x4OpsKernelsAddress.project_no_unsafe(_destBase, _srcBase, _objBase, _viewportBase);
         return dest;
     }
 
-    public static java.nio.ByteBuffer project_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer obj, int objOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+    public static java.nio.ByteBuffer project_no_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer obj, int objOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -17161,6 +17551,52 @@ public final class Double4x4OpsKernelsByteBuffer {
         dest.putDouble(destOffset + 0, Math.fma(0.5, _viewportz * (1.0 + Math.fma(_objx, _self00, Math.fma(_objy, _self01, Math.fma(_objz, _self02, _self03))) * _t2_inv), _viewportx));
         dest.putDouble(destOffset + 8, Math.fma(0.5, _viewportw * (1.0 + Math.fma(_objx, _self10, Math.fma(_objy, _self11, Math.fma(_objz, _self12, _self13))) * _t2_inv), _viewporty));
         dest.putDouble(destOffset + 16, 0.5 * (1.0 + Math.fma(_objx, _self20, Math.fma(_objy, _self21, Math.fma(_objz, _self22, _self23))) * _t2_inv));
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer project_zo(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer obj, int objOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && obj.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsByteBuffer.project_zo_unsafe(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsByteBuffer.project_zo_api(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
+    }
+
+    public static java.nio.ByteBuffer project_zo_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer obj, int objOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _objBase = UnsafeOpsHolder.U.getLong(obj, UnsafeCopy.BB_ADDRESS_OFFSET) + objOffset;
+        long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + viewportOffset;
+        Double4x4OpsKernelsAddress.project_zo_unsafe(_destBase, _srcBase, _objBase, _viewportBase);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer project_zo_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer obj, int objOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self20 = src.getDouble(srcOffset + 16);
+        double _self30 = src.getDouble(srcOffset + 24);
+        double _self01 = src.getDouble(srcOffset + 32);
+        double _self11 = src.getDouble(srcOffset + 40);
+        double _self21 = src.getDouble(srcOffset + 48);
+        double _self31 = src.getDouble(srcOffset + 56);
+        double _self02 = src.getDouble(srcOffset + 64);
+        double _self12 = src.getDouble(srcOffset + 72);
+        double _self22 = src.getDouble(srcOffset + 80);
+        double _self32 = src.getDouble(srcOffset + 88);
+        double _self03 = src.getDouble(srcOffset + 96);
+        double _self13 = src.getDouble(srcOffset + 104);
+        double _self23 = src.getDouble(srcOffset + 112);
+        double _self33 = src.getDouble(srcOffset + 120);
+        double _objx = obj.getDouble(objOffset + 0);
+        double _objy = obj.getDouble(objOffset + 8);
+        double _objz = obj.getDouble(objOffset + 16);
+        double _viewportx = viewport.getDouble(viewportOffset + 0);
+        double _viewporty = viewport.getDouble(viewportOffset + 8);
+        double _viewportz = viewport.getDouble(viewportOffset + 16);
+        double _viewportw = viewport.getDouble(viewportOffset + 24);
+        double _t2 = Math.fma(_objx, _self30, Math.fma(_objy, _self31, Math.fma(_objz, _self32, _self33)));
+        double _t2_inv = 1.0 / _t2;
+        dest.putDouble(destOffset + 0, Math.fma(0.5, _viewportz * (1.0 + Math.fma(_objx, _self00, Math.fma(_objy, _self01, Math.fma(_objz, _self02, _self03))) * _t2_inv), _viewportx));
+        dest.putDouble(destOffset + 8, Math.fma(0.5, _viewportw * (1.0 + Math.fma(_objx, _self10, Math.fma(_objy, _self11, Math.fma(_objz, _self12, _self13))) * _t2_inv), _viewporty));
+        dest.putDouble(destOffset + 16, Math.fma(_objx, _self20, Math.fma(_objy, _self21, Math.fma(_objz, _self22, _self23))) * _t2_inv);
         return dest;
     }
 
@@ -18944,14 +19380,19 @@ public final class Double4x4OpsKernelsByteBuffer {
         return dest;
     }
 
-    public static java.nio.ByteBuffer unproject_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static java.nio.ByteBuffer unproject_no(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsByteBuffer.unproject_no_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsByteBuffer.unproject_no_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.ByteBuffer unproject_no_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
-        Double4x4OpsKernelsAddress.unproject_unsafe(_destBase, _srcBase, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsAddress.unproject_no_unsafe(_destBase, _srcBase, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
         return dest;
     }
 
-    public static java.nio.ByteBuffer unproject_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static java.nio.ByteBuffer unproject_no_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -18997,16 +19438,79 @@ public final class Double4x4OpsKernelsByteBuffer {
         return dest;
     }
 
-    public static java.nio.ByteBuffer unproject_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+    public static java.nio.ByteBuffer unproject_zo(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsByteBuffer.unproject_zo_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsByteBuffer.unproject_zo_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.ByteBuffer unproject_zo_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Double4x4OpsKernelsAddress.unproject_zo_unsafe(_destBase, _srcBase, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer unproject_zo_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self20 = src.getDouble(srcOffset + 16);
+        double _self30 = src.getDouble(srcOffset + 24);
+        double _self01 = src.getDouble(srcOffset + 32);
+        double _self11 = src.getDouble(srcOffset + 40);
+        double _self21 = src.getDouble(srcOffset + 48);
+        double _self31 = src.getDouble(srcOffset + 56);
+        double _self02 = src.getDouble(srcOffset + 64);
+        double _self12 = src.getDouble(srcOffset + 72);
+        double _self22 = src.getDouble(srcOffset + 80);
+        double _self32 = src.getDouble(srcOffset + 88);
+        double _self03 = src.getDouble(srcOffset + 96);
+        double _self13 = src.getDouble(srcOffset + 104);
+        double _self23 = src.getDouble(srcOffset + 112);
+        double _self33 = src.getDouble(srcOffset + 120);
+        double _t0 = -winCoordsZ;
+        double _t43 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t44 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t45 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t46 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t47 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t48 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t49 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t50 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t52 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t53 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t55 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t56 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t57 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t58 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t61 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t62 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t83 = Math.fma(_self02, _t52, Math.fma(_self00, _t49, -(_self01 * _t53))) + Math.fma(_t0, Math.fma(_self02, _t54, Math.fma(_self00, _t43, -(_self01 * _t55))), Math.fma(Math.fma(_self02, _t56, Math.fma(_self00, _t46, -(_self01 * _t57))), _t62, -(Math.fma(_self12, _t56, Math.fma(_self10, _t46, -(_self11 * _t57))) * _t61)));
+        double _t83_inv = 1.0 / _t83;
+        dest.putDouble(destOffset + 0, (Math.fma(winCoordsZ, Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))), Math.fma(Math.fma(_self13, _t46, Math.fma(_self11, _t47, -(_self12 * _t48))), _t61, -(Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48))) * _t62))) - Math.fma(_self03, _t49, Math.fma(_self01, _t50, -(_self02 * _t51)))) * _t83_inv);
+        dest.putDouble(destOffset + 8, (Math.fma(_self03, _t53, Math.fma(_self00, _t50, -(_self02 * _t58))) + Math.fma(_t0, Math.fma(_self03, _t55, Math.fma(_self00, _t44, -(_self02 * _t59))), Math.fma(Math.fma(_self03, _t57, Math.fma(_self00, _t47, -(_self02 * _t60))), _t62, -(Math.fma(_self13, _t57, Math.fma(_self10, _t47, -(_self12 * _t60))) * _t61)))) * _t83_inv);
+        dest.putDouble(destOffset + 16, (Math.fma(winCoordsZ, Math.fma(_self03, _t54, Math.fma(_self00, _t45, -(_self01 * _t59))), Math.fma(Math.fma(_self13, _t56, Math.fma(_self10, _t48, -(_self11 * _t60))), _t61, -(Math.fma(_self03, _t56, Math.fma(_self00, _t48, -(_self01 * _t60))) * _t62))) - Math.fma(_self03, _t52, Math.fma(_self00, _t51, -(_self01 * _t58)))) * _t83_inv);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer unproject_no(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsByteBuffer.unproject_no_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsByteBuffer.unproject_no_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.nio.ByteBuffer unproject_no_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
         long _winCoordsBase = UnsafeOpsHolder.U.getLong(winCoords, UnsafeCopy.BB_ADDRESS_OFFSET) + winCoordsOffset;
         long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + viewportOffset;
-        Double4x4OpsKernelsAddress.unproject_unsafe(_destBase, _srcBase, _winCoordsBase, _viewportBase);
+        Double4x4OpsKernelsAddress.unproject_no_unsafe(_destBase, _srcBase, _winCoordsBase, _viewportBase);
         return dest;
     }
 
-    public static java.nio.ByteBuffer unproject_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+    public static java.nio.ByteBuffer unproject_no_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -19059,14 +19563,86 @@ public final class Double4x4OpsKernelsByteBuffer {
         return dest;
     }
 
-    public static java.nio.ByteBuffer unprojectInv_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static java.nio.ByteBuffer unproject_zo(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsByteBuffer.unproject_zo_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsByteBuffer.unproject_zo_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.nio.ByteBuffer unproject_zo_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
-        Double4x4OpsKernelsAddress.unprojectInv_unsafe(_destBase, _srcBase, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        long _winCoordsBase = UnsafeOpsHolder.U.getLong(winCoords, UnsafeCopy.BB_ADDRESS_OFFSET) + winCoordsOffset;
+        long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + viewportOffset;
+        Double4x4OpsKernelsAddress.unproject_zo_unsafe(_destBase, _srcBase, _winCoordsBase, _viewportBase);
         return dest;
     }
 
-    public static java.nio.ByteBuffer unprojectInv_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static java.nio.ByteBuffer unproject_zo_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self20 = src.getDouble(srcOffset + 16);
+        double _self30 = src.getDouble(srcOffset + 24);
+        double _self01 = src.getDouble(srcOffset + 32);
+        double _self11 = src.getDouble(srcOffset + 40);
+        double _self21 = src.getDouble(srcOffset + 48);
+        double _self31 = src.getDouble(srcOffset + 56);
+        double _self02 = src.getDouble(srcOffset + 64);
+        double _self12 = src.getDouble(srcOffset + 72);
+        double _self22 = src.getDouble(srcOffset + 80);
+        double _self32 = src.getDouble(srcOffset + 88);
+        double _self03 = src.getDouble(srcOffset + 96);
+        double _self13 = src.getDouble(srcOffset + 104);
+        double _self23 = src.getDouble(srcOffset + 112);
+        double _self33 = src.getDouble(srcOffset + 120);
+        double _winCoordsx = winCoords.getDouble(winCoordsOffset + 0);
+        double _winCoordsy = winCoords.getDouble(winCoordsOffset + 8);
+        double _winCoordsz = winCoords.getDouble(winCoordsOffset + 16);
+        double _viewportx = viewport.getDouble(viewportOffset + 0);
+        double _viewporty = viewport.getDouble(viewportOffset + 8);
+        double _viewportz = viewport.getDouble(viewportOffset + 16);
+        double _viewportw = viewport.getDouble(viewportOffset + 24);
+        double _t0 = -_winCoordsz;
+        double _t43 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t44 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t45 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t46 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t47 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t48 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t49 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t50 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t52 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t53 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t55 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t56 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t57 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t58 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t61 = 2.0 * (_winCoordsx - _viewportx) / _viewportz - 1.0;
+        double _t62 = 2.0 * (_winCoordsy - _viewporty) / _viewportw - 1.0;
+        double _t83 = Math.fma(_self02, _t52, Math.fma(_self00, _t49, -(_self01 * _t53))) + Math.fma(_t0, Math.fma(_self02, _t54, Math.fma(_self00, _t43, -(_self01 * _t55))), Math.fma(Math.fma(_self02, _t56, Math.fma(_self00, _t46, -(_self01 * _t57))), _t62, -(Math.fma(_self12, _t56, Math.fma(_self10, _t46, -(_self11 * _t57))) * _t61)));
+        double _t83_inv = 1.0 / _t83;
+        dest.putDouble(destOffset + 0, (Math.fma(_winCoordsz, Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))), Math.fma(Math.fma(_self13, _t46, Math.fma(_self11, _t47, -(_self12 * _t48))), _t61, -(Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48))) * _t62))) - Math.fma(_self03, _t49, Math.fma(_self01, _t50, -(_self02 * _t51)))) * _t83_inv);
+        dest.putDouble(destOffset + 8, (Math.fma(_self03, _t53, Math.fma(_self00, _t50, -(_self02 * _t58))) + Math.fma(_t0, Math.fma(_self03, _t55, Math.fma(_self00, _t44, -(_self02 * _t59))), Math.fma(Math.fma(_self03, _t57, Math.fma(_self00, _t47, -(_self02 * _t60))), _t62, -(Math.fma(_self13, _t57, Math.fma(_self10, _t47, -(_self12 * _t60))) * _t61)))) * _t83_inv);
+        dest.putDouble(destOffset + 16, (Math.fma(_winCoordsz, Math.fma(_self03, _t54, Math.fma(_self00, _t45, -(_self01 * _t59))), Math.fma(Math.fma(_self13, _t56, Math.fma(_self10, _t48, -(_self11 * _t60))), _t61, -(Math.fma(_self03, _t56, Math.fma(_self00, _t48, -(_self01 * _t60))) * _t62))) - Math.fma(_self03, _t52, Math.fma(_self00, _t51, -(_self01 * _t58)))) * _t83_inv);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer unprojectInv_no(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsByteBuffer.unprojectInv_no_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsByteBuffer.unprojectInv_no_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.ByteBuffer unprojectInv_no_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Double4x4OpsKernelsAddress.unprojectInv_no_unsafe(_destBase, _srcBase, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer unprojectInv_no_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -19094,16 +19670,60 @@ public final class Double4x4OpsKernelsByteBuffer {
         return dest;
     }
 
-    public static java.nio.ByteBuffer unprojectInv_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+    public static java.nio.ByteBuffer unprojectInv_zo(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsByteBuffer.unprojectInv_zo_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsByteBuffer.unprojectInv_zo_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.ByteBuffer unprojectInv_zo_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Double4x4OpsKernelsAddress.unprojectInv_zo_unsafe(_destBase, _srcBase, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer unprojectInv_zo_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self20 = src.getDouble(srcOffset + 16);
+        double _self30 = src.getDouble(srcOffset + 24);
+        double _self01 = src.getDouble(srcOffset + 32);
+        double _self11 = src.getDouble(srcOffset + 40);
+        double _self21 = src.getDouble(srcOffset + 48);
+        double _self31 = src.getDouble(srcOffset + 56);
+        double _self02 = src.getDouble(srcOffset + 64);
+        double _self12 = src.getDouble(srcOffset + 72);
+        double _self22 = src.getDouble(srcOffset + 80);
+        double _self32 = src.getDouble(srcOffset + 88);
+        double _self03 = src.getDouble(srcOffset + 96);
+        double _self13 = src.getDouble(srcOffset + 104);
+        double _self23 = src.getDouble(srcOffset + 112);
+        double _self33 = src.getDouble(srcOffset + 120);
+        double _t7 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t8 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t10 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, Math.fma(_self32, winCoordsZ, _self33)));
+        double _t10_inv = 1.0 / _t10;
+        dest.putDouble(destOffset + 0, Math.fma(_self00, _t7, Math.fma(_self01, _t8, Math.fma(_self02, winCoordsZ, _self03))) * _t10_inv);
+        dest.putDouble(destOffset + 8, Math.fma(_self10, _t7, Math.fma(_self11, _t8, Math.fma(_self12, winCoordsZ, _self13))) * _t10_inv);
+        dest.putDouble(destOffset + 16, Math.fma(_self20, _t7, Math.fma(_self21, _t8, Math.fma(_self22, winCoordsZ, _self23))) * _t10_inv);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer unprojectInv_no(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsByteBuffer.unprojectInv_no_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsByteBuffer.unprojectInv_no_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.nio.ByteBuffer unprojectInv_no_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
         long _winCoordsBase = UnsafeOpsHolder.U.getLong(winCoords, UnsafeCopy.BB_ADDRESS_OFFSET) + winCoordsOffset;
         long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + viewportOffset;
-        Double4x4OpsKernelsAddress.unprojectInv_unsafe(_destBase, _srcBase, _winCoordsBase, _viewportBase);
+        Double4x4OpsKernelsAddress.unprojectInv_no_unsafe(_destBase, _srcBase, _winCoordsBase, _viewportBase);
         return dest;
     }
 
-    public static java.nio.ByteBuffer unprojectInv_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+    public static java.nio.ByteBuffer unprojectInv_no_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -19138,15 +19758,68 @@ public final class Double4x4OpsKernelsByteBuffer {
         return dest;
     }
 
-    public static java.nio.ByteBuffer unprojectInvRay_unsafe(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static java.nio.ByteBuffer unprojectInv_zo(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsByteBuffer.unprojectInv_zo_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsByteBuffer.unprojectInv_zo_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.nio.ByteBuffer unprojectInv_zo_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _winCoordsBase = UnsafeOpsHolder.U.getLong(winCoords, UnsafeCopy.BB_ADDRESS_OFFSET) + winCoordsOffset;
+        long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + viewportOffset;
+        Double4x4OpsKernelsAddress.unprojectInv_zo_unsafe(_destBase, _srcBase, _winCoordsBase, _viewportBase);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer unprojectInv_zo_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self20 = src.getDouble(srcOffset + 16);
+        double _self30 = src.getDouble(srcOffset + 24);
+        double _self01 = src.getDouble(srcOffset + 32);
+        double _self11 = src.getDouble(srcOffset + 40);
+        double _self21 = src.getDouble(srcOffset + 48);
+        double _self31 = src.getDouble(srcOffset + 56);
+        double _self02 = src.getDouble(srcOffset + 64);
+        double _self12 = src.getDouble(srcOffset + 72);
+        double _self22 = src.getDouble(srcOffset + 80);
+        double _self32 = src.getDouble(srcOffset + 88);
+        double _self03 = src.getDouble(srcOffset + 96);
+        double _self13 = src.getDouble(srcOffset + 104);
+        double _self23 = src.getDouble(srcOffset + 112);
+        double _self33 = src.getDouble(srcOffset + 120);
+        double _winCoordsx = winCoords.getDouble(winCoordsOffset + 0);
+        double _winCoordsy = winCoords.getDouble(winCoordsOffset + 8);
+        double _winCoordsz = winCoords.getDouble(winCoordsOffset + 16);
+        double _viewportx = viewport.getDouble(viewportOffset + 0);
+        double _viewporty = viewport.getDouble(viewportOffset + 8);
+        double _viewportz = viewport.getDouble(viewportOffset + 16);
+        double _viewportw = viewport.getDouble(viewportOffset + 24);
+        double _t7 = 2.0 * (_winCoordsx - _viewportx) / _viewportz - 1.0;
+        double _t8 = 2.0 * (_winCoordsy - _viewporty) / _viewportw - 1.0;
+        double _t10 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, Math.fma(_self32, _winCoordsz, _self33)));
+        double _t10_inv = 1.0 / _t10;
+        dest.putDouble(destOffset + 0, Math.fma(_self00, _t7, Math.fma(_self01, _t8, Math.fma(_self02, _winCoordsz, _self03))) * _t10_inv);
+        dest.putDouble(destOffset + 8, Math.fma(_self10, _t7, Math.fma(_self11, _t8, Math.fma(_self12, _winCoordsz, _self13))) * _t10_inv);
+        dest.putDouble(destOffset + 16, Math.fma(_self20, _t7, Math.fma(_self21, _t8, Math.fma(_self22, _winCoordsz, _self23))) * _t10_inv);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer unprojectInvRay_no(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsByteBuffer.unprojectInvRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsByteBuffer.unprojectInvRay_no_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.ByteBuffer unprojectInvRay_no_unsafe(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
         long _rayOriginBase = UnsafeOpsHolder.U.getLong(rayOrigin, UnsafeCopy.BB_ADDRESS_OFFSET) + rayOriginOffset;
         long _rayDirBase = UnsafeOpsHolder.U.getLong(rayDir, UnsafeCopy.BB_ADDRESS_OFFSET) + rayDirOffset;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
-        Double4x4OpsKernelsAddress.unprojectInvRay_unsafe(_rayOriginBase, _rayDirBase, _srcBase, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsAddress.unprojectInvRay_no_unsafe(_rayOriginBase, _rayDirBase, _srcBase, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
         return rayOrigin;
     }
 
-    public static java.nio.ByteBuffer unprojectInvRay_api(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static java.nio.ByteBuffer unprojectInvRay_no_api(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -19181,17 +19854,70 @@ public final class Double4x4OpsKernelsByteBuffer {
         return rayOrigin;
     }
 
-    public static java.nio.ByteBuffer unprojectInvRay_unsafe(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+    public static java.nio.ByteBuffer unprojectInvRay_zo(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsByteBuffer.unprojectInvRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsByteBuffer.unprojectInvRay_zo_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.ByteBuffer unprojectInvRay_zo_unsafe(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        long _rayOriginBase = UnsafeOpsHolder.U.getLong(rayOrigin, UnsafeCopy.BB_ADDRESS_OFFSET) + rayOriginOffset;
+        long _rayDirBase = UnsafeOpsHolder.U.getLong(rayDir, UnsafeCopy.BB_ADDRESS_OFFSET) + rayDirOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Double4x4OpsKernelsAddress.unprojectInvRay_zo_unsafe(_rayOriginBase, _rayDirBase, _srcBase, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return rayOrigin;
+    }
+
+    public static java.nio.ByteBuffer unprojectInvRay_zo_api(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self20 = src.getDouble(srcOffset + 16);
+        double _self30 = src.getDouble(srcOffset + 24);
+        double _self01 = src.getDouble(srcOffset + 32);
+        double _self11 = src.getDouble(srcOffset + 40);
+        double _self21 = src.getDouble(srcOffset + 48);
+        double _self31 = src.getDouble(srcOffset + 56);
+        double _self02 = src.getDouble(srcOffset + 64);
+        double _self12 = src.getDouble(srcOffset + 72);
+        double _self22 = src.getDouble(srcOffset + 80);
+        double _self32 = src.getDouble(srcOffset + 88);
+        double _self03 = src.getDouble(srcOffset + 96);
+        double _self13 = src.getDouble(srcOffset + 104);
+        double _self23 = src.getDouble(srcOffset + 112);
+        double _self33 = src.getDouble(srcOffset + 120);
+        double _t7 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t8 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t15 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33));
+        double _t15_inv = 1.0 / _t15;
+        double _t18 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33 + _self32));
+        double _t18_inv = 1.0 / _t18;
+        double _t19 = Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03)) * _t15_inv;
+        double _t20 = Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13)) * _t15_inv;
+        double _t21 = Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23)) * _t15_inv;
+        rayOrigin.putDouble(rayOriginOffset + 0, _t19);
+        rayOrigin.putDouble(rayOriginOffset + 8, _t20);
+        rayOrigin.putDouble(rayOriginOffset + 16, _t21);
+        rayDir.putDouble(rayDirOffset + 0, Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03 + _self02)) * _t18_inv - _t19);
+        rayDir.putDouble(rayDirOffset + 8, Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13 + _self12)) * _t18_inv - _t20);
+        rayDir.putDouble(rayDirOffset + 16, Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23 + _self22)) * _t18_inv - _t21);
+        return rayOrigin;
+    }
+
+    public static java.nio.ByteBuffer unprojectInvRay_no(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsByteBuffer.unprojectInvRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsByteBuffer.unprojectInvRay_no_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.nio.ByteBuffer unprojectInvRay_no_unsafe(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
         long _rayOriginBase = UnsafeOpsHolder.U.getLong(rayOrigin, UnsafeCopy.BB_ADDRESS_OFFSET) + rayOriginOffset;
         long _rayDirBase = UnsafeOpsHolder.U.getLong(rayDir, UnsafeCopy.BB_ADDRESS_OFFSET) + rayDirOffset;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
         long _winCoordsBase = UnsafeOpsHolder.U.getLong(winCoords, UnsafeCopy.BB_ADDRESS_OFFSET) + winCoordsOffset;
         long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + viewportOffset;
-        Double4x4OpsKernelsAddress.unprojectInvRay_unsafe(_rayOriginBase, _rayDirBase, _srcBase, _winCoordsBase, _viewportBase);
+        Double4x4OpsKernelsAddress.unprojectInvRay_no_unsafe(_rayOriginBase, _rayDirBase, _srcBase, _winCoordsBase, _viewportBase);
         return rayOrigin;
     }
 
-    public static java.nio.ByteBuffer unprojectInvRay_api(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+    public static java.nio.ByteBuffer unprojectInvRay_no_api(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -19232,15 +19958,76 @@ public final class Double4x4OpsKernelsByteBuffer {
         return rayOrigin;
     }
 
-    public static java.nio.ByteBuffer unprojectRay_unsafe(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static java.nio.ByteBuffer unprojectInvRay_zo(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsByteBuffer.unprojectInvRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsByteBuffer.unprojectInvRay_zo_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.nio.ByteBuffer unprojectInvRay_zo_unsafe(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
         long _rayOriginBase = UnsafeOpsHolder.U.getLong(rayOrigin, UnsafeCopy.BB_ADDRESS_OFFSET) + rayOriginOffset;
         long _rayDirBase = UnsafeOpsHolder.U.getLong(rayDir, UnsafeCopy.BB_ADDRESS_OFFSET) + rayDirOffset;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
-        Double4x4OpsKernelsAddress.unprojectRay_unsafe(_rayOriginBase, _rayDirBase, _srcBase, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        long _winCoordsBase = UnsafeOpsHolder.U.getLong(winCoords, UnsafeCopy.BB_ADDRESS_OFFSET) + winCoordsOffset;
+        long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + viewportOffset;
+        Double4x4OpsKernelsAddress.unprojectInvRay_zo_unsafe(_rayOriginBase, _rayDirBase, _srcBase, _winCoordsBase, _viewportBase);
         return rayOrigin;
     }
 
-    public static java.nio.ByteBuffer unprojectRay_api(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static java.nio.ByteBuffer unprojectInvRay_zo_api(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self20 = src.getDouble(srcOffset + 16);
+        double _self30 = src.getDouble(srcOffset + 24);
+        double _self01 = src.getDouble(srcOffset + 32);
+        double _self11 = src.getDouble(srcOffset + 40);
+        double _self21 = src.getDouble(srcOffset + 48);
+        double _self31 = src.getDouble(srcOffset + 56);
+        double _self02 = src.getDouble(srcOffset + 64);
+        double _self12 = src.getDouble(srcOffset + 72);
+        double _self22 = src.getDouble(srcOffset + 80);
+        double _self32 = src.getDouble(srcOffset + 88);
+        double _self03 = src.getDouble(srcOffset + 96);
+        double _self13 = src.getDouble(srcOffset + 104);
+        double _self23 = src.getDouble(srcOffset + 112);
+        double _self33 = src.getDouble(srcOffset + 120);
+        double _winCoordsx = winCoords.getDouble(winCoordsOffset + 0);
+        double _winCoordsy = winCoords.getDouble(winCoordsOffset + 8);
+        double _viewportx = viewport.getDouble(viewportOffset + 0);
+        double _viewporty = viewport.getDouble(viewportOffset + 8);
+        double _viewportz = viewport.getDouble(viewportOffset + 16);
+        double _viewportw = viewport.getDouble(viewportOffset + 24);
+        double _t7 = 2.0 * (_winCoordsx - _viewportx) / _viewportz - 1.0;
+        double _t8 = 2.0 * (_winCoordsy - _viewporty) / _viewportw - 1.0;
+        double _t15 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33));
+        double _t15_inv = 1.0 / _t15;
+        double _t18 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33 + _self32));
+        double _t18_inv = 1.0 / _t18;
+        double _t19 = Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03)) * _t15_inv;
+        double _t20 = Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13)) * _t15_inv;
+        double _t21 = Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23)) * _t15_inv;
+        rayOrigin.putDouble(rayOriginOffset + 0, _t19);
+        rayOrigin.putDouble(rayOriginOffset + 8, _t20);
+        rayOrigin.putDouble(rayOriginOffset + 16, _t21);
+        rayDir.putDouble(rayDirOffset + 0, Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03 + _self02)) * _t18_inv - _t19);
+        rayDir.putDouble(rayDirOffset + 8, Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13 + _self12)) * _t18_inv - _t20);
+        rayDir.putDouble(rayDirOffset + 16, Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23 + _self22)) * _t18_inv - _t21);
+        return rayOrigin;
+    }
+
+    public static java.nio.ByteBuffer unprojectRay_no(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsByteBuffer.unprojectRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsByteBuffer.unprojectRay_no_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.ByteBuffer unprojectRay_no_unsafe(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        long _rayOriginBase = UnsafeOpsHolder.U.getLong(rayOrigin, UnsafeCopy.BB_ADDRESS_OFFSET) + rayOriginOffset;
+        long _rayDirBase = UnsafeOpsHolder.U.getLong(rayDir, UnsafeCopy.BB_ADDRESS_OFFSET) + rayDirOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Double4x4OpsKernelsAddress.unprojectRay_no_unsafe(_rayOriginBase, _rayDirBase, _srcBase, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return rayOrigin;
+    }
+
+    public static java.nio.ByteBuffer unprojectRay_no_api(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -19307,17 +20094,99 @@ public final class Double4x4OpsKernelsByteBuffer {
         return rayOrigin;
     }
 
-    public static java.nio.ByteBuffer unprojectRay_unsafe(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+    public static java.nio.ByteBuffer unprojectRay_zo(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsByteBuffer.unprojectRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsByteBuffer.unprojectRay_zo_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.ByteBuffer unprojectRay_zo_unsafe(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        long _rayOriginBase = UnsafeOpsHolder.U.getLong(rayOrigin, UnsafeCopy.BB_ADDRESS_OFFSET) + rayOriginOffset;
+        long _rayDirBase = UnsafeOpsHolder.U.getLong(rayDir, UnsafeCopy.BB_ADDRESS_OFFSET) + rayDirOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Double4x4OpsKernelsAddress.unprojectRay_zo_unsafe(_rayOriginBase, _rayDirBase, _srcBase, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return rayOrigin;
+    }
+
+    public static java.nio.ByteBuffer unprojectRay_zo_api(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self20 = src.getDouble(srcOffset + 16);
+        double _self30 = src.getDouble(srcOffset + 24);
+        double _self01 = src.getDouble(srcOffset + 32);
+        double _self11 = src.getDouble(srcOffset + 40);
+        double _self21 = src.getDouble(srcOffset + 48);
+        double _self31 = src.getDouble(srcOffset + 56);
+        double _self02 = src.getDouble(srcOffset + 64);
+        double _self12 = src.getDouble(srcOffset + 72);
+        double _self22 = src.getDouble(srcOffset + 80);
+        double _self32 = src.getDouble(srcOffset + 88);
+        double _self03 = src.getDouble(srcOffset + 96);
+        double _self13 = src.getDouble(srcOffset + 104);
+        double _self23 = src.getDouble(srcOffset + 112);
+        double _self33 = src.getDouble(srcOffset + 120);
+        double _t0 = -_self00;
+        double _t43 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t44 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t45 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t46 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t47 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t48 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t49 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t50 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t51 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t52 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t53 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t54 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t55 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t56 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t57 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t58 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t59 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t60 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t61 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t62 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t92 = Math.fma(_self00, _t46, -(_self01 * _t50));
+        double _t95 = Math.fma(_self00, _t47, -(_self02 * _t53));
+        double _t102 = Math.fma(_self13, _t43, Math.fma(_self11, _t44, -(_self12 * _t45)));
+        double _t106 = Math.fma(_self02, _t51, Math.fma(_self00, _t43, -(_self01 * _t52)));
+        double _t109 = Math.fma(_self03, _t52, Math.fma(_self00, _t44, -(_self02 * _t54)));
+        double _t111 = Math.fma(_self13, _t51, Math.fma(_self10, _t45, -(_self11 * _t54)));
+        double _t119 = -(Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))) * _t62);
+        double _t120 = -(Math.fma(_self12, _t51, Math.fma(_self10, _t43, -(_self11 * _t52))) * _t61);
+        double _t121 = -(Math.fma(_self13, _t52, Math.fma(_self10, _t44, -(_self12 * _t54))) * _t61);
+        double _t122 = -(Math.fma(_self03, _t51, Math.fma(_self00, _t45, -(_self01 * _t54))) * _t62);
+        double _t132 = Math.fma(_self02, _t49, _t92) + Math.fma(_t106, _t62, _t120);
+        double _t132_inv = 1.0 / _t132;
+        double _t135 = _t92 + Math.fma(_self02, _t49, _t106 * _t62) + (Math.fma(_t0, _t57, _t120) + Math.fma(_self01, _t58, -(_self02 * _t59)));
+        double _t135_inv = 1.0 / _t135;
+        double _t136 = (Math.fma(_t102, _t61, _t119) - Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48)))) * _t132_inv;
+        double _t137 = (Math.fma(_self03, _t50, _t95) + Math.fma(_t109, _t62, _t121)) * _t132_inv;
+        double _t138 = (Math.fma(_t111, _t61, _t122) - Math.fma(_self03, _t49, Math.fma(_self00, _t48, -(_self01 * _t53)))) * _t132_inv;
+        rayOrigin.putDouble(rayOriginOffset + 0, _t136);
+        rayOrigin.putDouble(rayOriginOffset + 8, _t137);
+        rayOrigin.putDouble(rayOriginOffset + 16, _t138);
+        rayDir.putDouble(rayDirOffset + 0, (Math.fma(_self01, _t55, -(_self02 * _t56)) + Math.fma(_self03, _t57, _t102 * _t61) + (Math.fma(-_self01, _t47, _t119) + Math.fma(_self02, _t48, -(_self03 * _t46)))) * _t135_inv - _t136);
+        rayDir.putDouble(rayDirOffset + 8, (_t95 + Math.fma(_self03, _t50, _t109 * _t62) + (Math.fma(_t0, _t55, _t121) + Math.fma(_self02, _t60, -(_self03 * _t58)))) * _t135_inv - _t137);
+        rayDir.putDouble(rayDirOffset + 16, (Math.fma(_self00, _t56, -(_self01 * _t60)) + Math.fma(_self03, _t59, _t111 * _t61) + (Math.fma(_t0, _t48, _t122) + Math.fma(_self01, _t53, -(_self03 * _t49)))) * _t135_inv - _t138);
+        return rayOrigin;
+    }
+
+    public static java.nio.ByteBuffer unprojectRay_no(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsByteBuffer.unprojectRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsByteBuffer.unprojectRay_no_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.nio.ByteBuffer unprojectRay_no_unsafe(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
         long _rayOriginBase = UnsafeOpsHolder.U.getLong(rayOrigin, UnsafeCopy.BB_ADDRESS_OFFSET) + rayOriginOffset;
         long _rayDirBase = UnsafeOpsHolder.U.getLong(rayDir, UnsafeCopy.BB_ADDRESS_OFFSET) + rayDirOffset;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
         long _winCoordsBase = UnsafeOpsHolder.U.getLong(winCoords, UnsafeCopy.BB_ADDRESS_OFFSET) + winCoordsOffset;
         long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + viewportOffset;
-        Double4x4OpsKernelsAddress.unprojectRay_unsafe(_rayOriginBase, _rayDirBase, _srcBase, _winCoordsBase, _viewportBase);
+        Double4x4OpsKernelsAddress.unprojectRay_no_unsafe(_rayOriginBase, _rayDirBase, _srcBase, _winCoordsBase, _viewportBase);
         return rayOrigin;
     }
 
-    public static java.nio.ByteBuffer unprojectRay_api(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+    public static java.nio.ByteBuffer unprojectRay_no_api(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -19387,6 +20256,91 @@ public final class Double4x4OpsKernelsByteBuffer {
         rayDir.putDouble(rayDirOffset + 0, (Math.fma(_self01, _t48, -(_self02 * _t47)) + Math.fma(_self03, _t50, _t122 * _t62) + (Math.fma(_t0, _t49, _t136) + _t105)) * _t160_inv - _t164);
         rayDir.putDouble(rayDirOffset + 8, (Math.fma(_self00, _t49, _t95) + Math.fma(_self03, _t58, _t133) + (Math.fma(_t1, _t48, _t138) + Math.fma(_self02, _t59, -(_self03 * _t53)))) * _t160_inv - _t163);
         rayDir.putDouble(rayDirOffset + 16, (Math.fma(_self00, _t47, -(_self01 * _t59)) + Math.fma(_self03, _t54, _t128 * _t62) + (Math.fma(_t1, _t51, _t139) + _t117)) * _t160_inv - _t165);
+        return rayOrigin;
+    }
+
+    public static java.nio.ByteBuffer unprojectRay_zo(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsByteBuffer.unprojectRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsByteBuffer.unprojectRay_zo_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.nio.ByteBuffer unprojectRay_zo_unsafe(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+        long _rayOriginBase = UnsafeOpsHolder.U.getLong(rayOrigin, UnsafeCopy.BB_ADDRESS_OFFSET) + rayOriginOffset;
+        long _rayDirBase = UnsafeOpsHolder.U.getLong(rayDir, UnsafeCopy.BB_ADDRESS_OFFSET) + rayDirOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _winCoordsBase = UnsafeOpsHolder.U.getLong(winCoords, UnsafeCopy.BB_ADDRESS_OFFSET) + winCoordsOffset;
+        long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + viewportOffset;
+        Double4x4OpsKernelsAddress.unprojectRay_zo_unsafe(_rayOriginBase, _rayDirBase, _srcBase, _winCoordsBase, _viewportBase);
+        return rayOrigin;
+    }
+
+    public static java.nio.ByteBuffer unprojectRay_zo_api(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self20 = src.getDouble(srcOffset + 16);
+        double _self30 = src.getDouble(srcOffset + 24);
+        double _self01 = src.getDouble(srcOffset + 32);
+        double _self11 = src.getDouble(srcOffset + 40);
+        double _self21 = src.getDouble(srcOffset + 48);
+        double _self31 = src.getDouble(srcOffset + 56);
+        double _self02 = src.getDouble(srcOffset + 64);
+        double _self12 = src.getDouble(srcOffset + 72);
+        double _self22 = src.getDouble(srcOffset + 80);
+        double _self32 = src.getDouble(srcOffset + 88);
+        double _self03 = src.getDouble(srcOffset + 96);
+        double _self13 = src.getDouble(srcOffset + 104);
+        double _self23 = src.getDouble(srcOffset + 112);
+        double _self33 = src.getDouble(srcOffset + 120);
+        double _winCoordsx = winCoords.getDouble(winCoordsOffset + 0);
+        double _winCoordsy = winCoords.getDouble(winCoordsOffset + 8);
+        double _viewportx = viewport.getDouble(viewportOffset + 0);
+        double _viewporty = viewport.getDouble(viewportOffset + 8);
+        double _viewportz = viewport.getDouble(viewportOffset + 16);
+        double _viewportw = viewport.getDouble(viewportOffset + 24);
+        double _t0 = -_self00;
+        double _t43 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t44 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t45 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t46 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t47 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t48 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t49 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t50 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t51 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t52 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t53 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t54 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t55 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t56 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t57 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t58 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t59 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t60 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t61 = 2.0 * (_winCoordsx - _viewportx) / _viewportz - 1.0;
+        double _t62 = 2.0 * (_winCoordsy - _viewporty) / _viewportw - 1.0;
+        double _t92 = Math.fma(_self00, _t46, -(_self01 * _t50));
+        double _t95 = Math.fma(_self00, _t47, -(_self02 * _t53));
+        double _t102 = Math.fma(_self13, _t43, Math.fma(_self11, _t44, -(_self12 * _t45)));
+        double _t106 = Math.fma(_self02, _t51, Math.fma(_self00, _t43, -(_self01 * _t52)));
+        double _t109 = Math.fma(_self03, _t52, Math.fma(_self00, _t44, -(_self02 * _t54)));
+        double _t111 = Math.fma(_self13, _t51, Math.fma(_self10, _t45, -(_self11 * _t54)));
+        double _t119 = -(Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))) * _t62);
+        double _t120 = -(Math.fma(_self12, _t51, Math.fma(_self10, _t43, -(_self11 * _t52))) * _t61);
+        double _t121 = -(Math.fma(_self13, _t52, Math.fma(_self10, _t44, -(_self12 * _t54))) * _t61);
+        double _t122 = -(Math.fma(_self03, _t51, Math.fma(_self00, _t45, -(_self01 * _t54))) * _t62);
+        double _t132 = Math.fma(_self02, _t49, _t92) + Math.fma(_t106, _t62, _t120);
+        double _t132_inv = 1.0 / _t132;
+        double _t135 = _t92 + Math.fma(_self02, _t49, _t106 * _t62) + (Math.fma(_t0, _t57, _t120) + Math.fma(_self01, _t58, -(_self02 * _t59)));
+        double _t135_inv = 1.0 / _t135;
+        double _t136 = (Math.fma(_t102, _t61, _t119) - Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48)))) * _t132_inv;
+        double _t137 = (Math.fma(_self03, _t50, _t95) + Math.fma(_t109, _t62, _t121)) * _t132_inv;
+        double _t138 = (Math.fma(_t111, _t61, _t122) - Math.fma(_self03, _t49, Math.fma(_self00, _t48, -(_self01 * _t53)))) * _t132_inv;
+        rayOrigin.putDouble(rayOriginOffset + 0, _t136);
+        rayOrigin.putDouble(rayOriginOffset + 8, _t137);
+        rayOrigin.putDouble(rayOriginOffset + 16, _t138);
+        rayDir.putDouble(rayDirOffset + 0, (Math.fma(_self01, _t55, -(_self02 * _t56)) + Math.fma(_self03, _t57, _t102 * _t61) + (Math.fma(-_self01, _t47, _t119) + Math.fma(_self02, _t48, -(_self03 * _t46)))) * _t135_inv - _t136);
+        rayDir.putDouble(rayDirOffset + 8, (_t95 + Math.fma(_self03, _t50, _t109 * _t62) + (Math.fma(_t0, _t55, _t121) + Math.fma(_self02, _t60, -(_self03 * _t58)))) * _t135_inv - _t137);
+        rayDir.putDouble(rayDirOffset + 16, (Math.fma(_self00, _t56, -(_self01 * _t60)) + Math.fma(_self03, _t59, _t111 * _t61) + (Math.fma(_t0, _t48, _t122) + Math.fma(_self01, _t53, -(_self03 * _t49)))) * _t135_inv - _t138);
         return rayOrigin;
     }
 

@@ -640,8 +640,10 @@ public final class FloatOBBImpl implements FloatOBB {
 
 
     /**
-     * Transform this oriented bounding box by {@code m} (the axes are transformed without
-     * renormalization) and store the result in {@code dest}.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
+     * axis as a direction and renormalized, and each half-size is scaled by the length its
+     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
+     * shear is approximated) and store the result in {@code dest}.
      *
      * @param m the matrix
      * @param dest will hold the result
@@ -651,36 +653,47 @@ public final class FloatOBBImpl implements FloatOBB {
         float[] sd = this.data;
         float[] mData = ((Float3x4Impl) m).data;
         float[] dd = ((FloatOBBImpl) dest).data;
+        float _t18 = Math.fma(mData[2], sd[5], Math.fma(mData[0], sd[3], mData[1] * sd[4]));
+        float _t19 = Math.fma(mData[10], sd[5], Math.fma(mData[8], sd[3], mData[9] * sd[4]));
+        float _t20 = Math.fma(mData[6], sd[5], Math.fma(mData[4], sd[3], mData[5] * sd[4]));
+        float _t21 = Math.fma(mData[2], sd[8], Math.fma(mData[0], sd[6], mData[1] * sd[7]));
+        float _t22 = Math.fma(mData[10], sd[8], Math.fma(mData[8], sd[6], mData[9] * sd[7]));
+        float _t23 = Math.fma(mData[6], sd[8], Math.fma(mData[4], sd[6], mData[5] * sd[7]));
+        float _t24 = Math.fma(mData[2], sd[11], Math.fma(mData[0], sd[9], mData[1] * sd[10]));
+        float _t25 = Math.fma(mData[10], sd[11], Math.fma(mData[8], sd[9], mData[9] * sd[10]));
+        float _t26 = Math.fma(mData[6], sd[11], Math.fma(mData[4], sd[9], mData[5] * sd[10]));
+        float _t33 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        float _t34 = Math.fma(_t22, _t22, Math.fma(_t21, _t21, _t23 * _t23));
+        float _t35 = Math.fma(_t25, _t25, Math.fma(_t24, _t24, _t26 * _t26));
+        float _t36 = (1.0f / (float) Math.sqrt(_t33));
+        float _t37 = (1.0f / (float) Math.sqrt(_t34));
+        float _t38 = (1.0f / (float) Math.sqrt(_t35));
         float _buf0 = Math.fma(mData[2], sd[2], Math.fma(mData[0], sd[0], Math.fma(mData[1], sd[1], mData[3])));
         float _buf1 = Math.fma(mData[6], sd[2], Math.fma(mData[4], sd[0], Math.fma(mData[5], sd[1], mData[7])));
         dd[2] = Math.fma(mData[10], sd[2], Math.fma(mData[8], sd[0], Math.fma(mData[9], sd[1], mData[11])));
-        float _buf2 = Math.fma(mData[2], sd[5], Math.fma(mData[0], sd[3], mData[1] * sd[4]));
-        float _buf3 = Math.fma(mData[6], sd[5], Math.fma(mData[4], sd[3], mData[5] * sd[4]));
-        dd[5] = Math.fma(mData[10], sd[5], Math.fma(mData[8], sd[3], mData[9] * sd[4]));
-        float _buf4 = Math.fma(mData[2], sd[8], Math.fma(mData[0], sd[6], mData[1] * sd[7]));
-        float _buf5 = Math.fma(mData[6], sd[8], Math.fma(mData[4], sd[6], mData[5] * sd[7]));
-        dd[8] = Math.fma(mData[10], sd[8], Math.fma(mData[8], sd[6], mData[9] * sd[7]));
-        float _buf6 = Math.fma(mData[2], sd[11], Math.fma(mData[0], sd[9], mData[1] * sd[10]));
-        float _buf7 = Math.fma(mData[6], sd[11], Math.fma(mData[4], sd[9], mData[5] * sd[10]));
-        dd[11] = Math.fma(mData[10], sd[11], Math.fma(mData[8], sd[9], mData[9] * sd[10]));
-        dd[12] = sd[12];
-        dd[13] = sd[13];
-        dd[14] = sd[14];
+        dd[3] = _t18 * _t36;
+        dd[4] = _t20 * _t36;
+        dd[5] = _t19 * _t36;
+        dd[6] = _t21 * _t37;
+        dd[7] = _t23 * _t37;
+        dd[8] = _t22 * _t37;
+        dd[9] = _t24 * _t38;
+        dd[10] = _t26 * _t38;
+        dd[11] = _t25 * _t38;
+        dd[12] = sd[12] * (float) Math.sqrt(_t33);
+        dd[13] = sd[13] * (float) Math.sqrt(_t34);
+        dd[14] = sd[14] * (float) Math.sqrt(_t35);
         dd[0] = _buf0;
         dd[1] = _buf1;
-        dd[3] = _buf2;
-        dd[4] = _buf3;
-        dd[6] = _buf4;
-        dd[7] = _buf5;
-        dd[9] = _buf6;
-        dd[10] = _buf7;
         return dest;
     }
 
 
     /**
-     * Transform this oriented bounding box by {@code m} (the axes are transformed without
-     * renormalization) and store the result in {@code dest}.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
+     * axis as a direction and renormalized, and each half-size is scaled by the length its
+     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
+     * shear is approximated) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -693,36 +706,47 @@ public final class FloatOBBImpl implements FloatOBB {
         float[] sd = this.data;
         float[] mData = ((Float3x4Impl) m).data;
         double[] dd = ((DoubleOBBImpl) dest).data;
+        float _t18 = Math.fma(mData[2], sd[5], Math.fma(mData[0], sd[3], mData[1] * sd[4]));
+        float _t19 = Math.fma(mData[10], sd[5], Math.fma(mData[8], sd[3], mData[9] * sd[4]));
+        float _t20 = Math.fma(mData[6], sd[5], Math.fma(mData[4], sd[3], mData[5] * sd[4]));
+        float _t21 = Math.fma(mData[2], sd[8], Math.fma(mData[0], sd[6], mData[1] * sd[7]));
+        float _t22 = Math.fma(mData[10], sd[8], Math.fma(mData[8], sd[6], mData[9] * sd[7]));
+        float _t23 = Math.fma(mData[6], sd[8], Math.fma(mData[4], sd[6], mData[5] * sd[7]));
+        float _t24 = Math.fma(mData[2], sd[11], Math.fma(mData[0], sd[9], mData[1] * sd[10]));
+        float _t25 = Math.fma(mData[10], sd[11], Math.fma(mData[8], sd[9], mData[9] * sd[10]));
+        float _t26 = Math.fma(mData[6], sd[11], Math.fma(mData[4], sd[9], mData[5] * sd[10]));
+        float _t33 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        float _t34 = Math.fma(_t22, _t22, Math.fma(_t21, _t21, _t23 * _t23));
+        float _t35 = Math.fma(_t25, _t25, Math.fma(_t24, _t24, _t26 * _t26));
+        float _t36 = (1.0f / (float) Math.sqrt(_t33));
+        float _t37 = (1.0f / (float) Math.sqrt(_t34));
+        float _t38 = (1.0f / (float) Math.sqrt(_t35));
         float _buf0 = Math.fma(mData[2], sd[2], Math.fma(mData[0], sd[0], Math.fma(mData[1], sd[1], mData[3])));
         float _buf1 = Math.fma(mData[6], sd[2], Math.fma(mData[4], sd[0], Math.fma(mData[5], sd[1], mData[7])));
         dd[2] = Math.fma(mData[10], sd[2], Math.fma(mData[8], sd[0], Math.fma(mData[9], sd[1], mData[11])));
-        float _buf2 = Math.fma(mData[2], sd[5], Math.fma(mData[0], sd[3], mData[1] * sd[4]));
-        float _buf3 = Math.fma(mData[6], sd[5], Math.fma(mData[4], sd[3], mData[5] * sd[4]));
-        dd[5] = Math.fma(mData[10], sd[5], Math.fma(mData[8], sd[3], mData[9] * sd[4]));
-        float _buf4 = Math.fma(mData[2], sd[8], Math.fma(mData[0], sd[6], mData[1] * sd[7]));
-        float _buf5 = Math.fma(mData[6], sd[8], Math.fma(mData[4], sd[6], mData[5] * sd[7]));
-        dd[8] = Math.fma(mData[10], sd[8], Math.fma(mData[8], sd[6], mData[9] * sd[7]));
-        float _buf6 = Math.fma(mData[2], sd[11], Math.fma(mData[0], sd[9], mData[1] * sd[10]));
-        float _buf7 = Math.fma(mData[6], sd[11], Math.fma(mData[4], sd[9], mData[5] * sd[10]));
-        dd[11] = Math.fma(mData[10], sd[11], Math.fma(mData[8], sd[9], mData[9] * sd[10]));
-        dd[12] = sd[12];
-        dd[13] = sd[13];
-        dd[14] = sd[14];
+        dd[3] = _t18 * _t36;
+        dd[4] = _t20 * _t36;
+        dd[5] = _t19 * _t36;
+        dd[6] = _t21 * _t37;
+        dd[7] = _t23 * _t37;
+        dd[8] = _t22 * _t37;
+        dd[9] = _t24 * _t38;
+        dd[10] = _t26 * _t38;
+        dd[11] = _t25 * _t38;
+        dd[12] = sd[12] * (float) Math.sqrt(_t33);
+        dd[13] = sd[13] * (float) Math.sqrt(_t34);
+        dd[14] = sd[14] * (float) Math.sqrt(_t35);
         dd[0] = _buf0;
         dd[1] = _buf1;
-        dd[3] = _buf2;
-        dd[4] = _buf3;
-        dd[6] = _buf4;
-        dd[7] = _buf5;
-        dd[9] = _buf6;
-        dd[10] = _buf7;
         return dest;
     }
 
 
     /**
-     * Transform this oriented bounding box by {@code m} (the axes are transformed without
-     * renormalization) and store the result in {@code dest}.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
+     * axis as a direction and renormalized, and each half-size is scaled by the length its
+     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
+     * shear is approximated) and store the result in {@code dest}.
      * <p>
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
@@ -735,36 +759,47 @@ public final class FloatOBBImpl implements FloatOBB {
         float[] sd = this.data;
         float[] mData = ((Float4x4Impl) m).data;
         float[] dd = ((FloatOBBImpl) dest).data;
+        float _t18 = Math.fma(mData[8], sd[5], Math.fma(mData[0], sd[3], mData[4] * sd[4]));
+        float _t19 = Math.fma(mData[10], sd[5], Math.fma(mData[2], sd[3], mData[6] * sd[4]));
+        float _t20 = Math.fma(mData[9], sd[5], Math.fma(mData[1], sd[3], mData[5] * sd[4]));
+        float _t21 = Math.fma(mData[8], sd[8], Math.fma(mData[0], sd[6], mData[4] * sd[7]));
+        float _t22 = Math.fma(mData[10], sd[8], Math.fma(mData[2], sd[6], mData[6] * sd[7]));
+        float _t23 = Math.fma(mData[9], sd[8], Math.fma(mData[1], sd[6], mData[5] * sd[7]));
+        float _t24 = Math.fma(mData[8], sd[11], Math.fma(mData[0], sd[9], mData[4] * sd[10]));
+        float _t25 = Math.fma(mData[10], sd[11], Math.fma(mData[2], sd[9], mData[6] * sd[10]));
+        float _t26 = Math.fma(mData[9], sd[11], Math.fma(mData[1], sd[9], mData[5] * sd[10]));
+        float _t33 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        float _t34 = Math.fma(_t22, _t22, Math.fma(_t21, _t21, _t23 * _t23));
+        float _t35 = Math.fma(_t25, _t25, Math.fma(_t24, _t24, _t26 * _t26));
+        float _t36 = (1.0f / (float) Math.sqrt(_t33));
+        float _t37 = (1.0f / (float) Math.sqrt(_t34));
+        float _t38 = (1.0f / (float) Math.sqrt(_t35));
         float _buf0 = Math.fma(mData[8], sd[2], Math.fma(mData[0], sd[0], Math.fma(mData[4], sd[1], mData[12])));
         float _buf1 = Math.fma(mData[9], sd[2], Math.fma(mData[1], sd[0], Math.fma(mData[5], sd[1], mData[13])));
         dd[2] = Math.fma(mData[10], sd[2], Math.fma(mData[2], sd[0], Math.fma(mData[6], sd[1], mData[14])));
-        float _buf2 = Math.fma(mData[8], sd[5], Math.fma(mData[0], sd[3], mData[4] * sd[4]));
-        float _buf3 = Math.fma(mData[9], sd[5], Math.fma(mData[1], sd[3], mData[5] * sd[4]));
-        dd[5] = Math.fma(mData[10], sd[5], Math.fma(mData[2], sd[3], mData[6] * sd[4]));
-        float _buf4 = Math.fma(mData[8], sd[8], Math.fma(mData[0], sd[6], mData[4] * sd[7]));
-        float _buf5 = Math.fma(mData[9], sd[8], Math.fma(mData[1], sd[6], mData[5] * sd[7]));
-        dd[8] = Math.fma(mData[10], sd[8], Math.fma(mData[2], sd[6], mData[6] * sd[7]));
-        float _buf6 = Math.fma(mData[8], sd[11], Math.fma(mData[0], sd[9], mData[4] * sd[10]));
-        float _buf7 = Math.fma(mData[9], sd[11], Math.fma(mData[1], sd[9], mData[5] * sd[10]));
-        dd[11] = Math.fma(mData[10], sd[11], Math.fma(mData[2], sd[9], mData[6] * sd[10]));
-        dd[12] = sd[12];
-        dd[13] = sd[13];
-        dd[14] = sd[14];
+        dd[3] = _t18 * _t36;
+        dd[4] = _t20 * _t36;
+        dd[5] = _t19 * _t36;
+        dd[6] = _t21 * _t37;
+        dd[7] = _t23 * _t37;
+        dd[8] = _t22 * _t37;
+        dd[9] = _t24 * _t38;
+        dd[10] = _t26 * _t38;
+        dd[11] = _t25 * _t38;
+        dd[12] = sd[12] * (float) Math.sqrt(_t33);
+        dd[13] = sd[13] * (float) Math.sqrt(_t34);
+        dd[14] = sd[14] * (float) Math.sqrt(_t35);
         dd[0] = _buf0;
         dd[1] = _buf1;
-        dd[3] = _buf2;
-        dd[4] = _buf3;
-        dd[6] = _buf4;
-        dd[7] = _buf5;
-        dd[9] = _buf6;
-        dd[10] = _buf7;
         return dest;
     }
 
 
     /**
-     * Transform this oriented bounding box by {@code m} (the axes are transformed without
-     * renormalization) and store the result in {@code dest}.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
+     * axis as a direction and renormalized, and each half-size is scaled by the length its
+     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
+     * shear is approximated) and store the result in {@code dest}.
      * <p>
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
@@ -780,29 +815,38 @@ public final class FloatOBBImpl implements FloatOBB {
         float[] sd = this.data;
         float[] mData = ((Float4x4Impl) m).data;
         double[] dd = ((DoubleOBBImpl) dest).data;
+        float _t18 = Math.fma(mData[8], sd[5], Math.fma(mData[0], sd[3], mData[4] * sd[4]));
+        float _t19 = Math.fma(mData[10], sd[5], Math.fma(mData[2], sd[3], mData[6] * sd[4]));
+        float _t20 = Math.fma(mData[9], sd[5], Math.fma(mData[1], sd[3], mData[5] * sd[4]));
+        float _t21 = Math.fma(mData[8], sd[8], Math.fma(mData[0], sd[6], mData[4] * sd[7]));
+        float _t22 = Math.fma(mData[10], sd[8], Math.fma(mData[2], sd[6], mData[6] * sd[7]));
+        float _t23 = Math.fma(mData[9], sd[8], Math.fma(mData[1], sd[6], mData[5] * sd[7]));
+        float _t24 = Math.fma(mData[8], sd[11], Math.fma(mData[0], sd[9], mData[4] * sd[10]));
+        float _t25 = Math.fma(mData[10], sd[11], Math.fma(mData[2], sd[9], mData[6] * sd[10]));
+        float _t26 = Math.fma(mData[9], sd[11], Math.fma(mData[1], sd[9], mData[5] * sd[10]));
+        float _t33 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        float _t34 = Math.fma(_t22, _t22, Math.fma(_t21, _t21, _t23 * _t23));
+        float _t35 = Math.fma(_t25, _t25, Math.fma(_t24, _t24, _t26 * _t26));
+        float _t36 = (1.0f / (float) Math.sqrt(_t33));
+        float _t37 = (1.0f / (float) Math.sqrt(_t34));
+        float _t38 = (1.0f / (float) Math.sqrt(_t35));
         float _buf0 = Math.fma(mData[8], sd[2], Math.fma(mData[0], sd[0], Math.fma(mData[4], sd[1], mData[12])));
         float _buf1 = Math.fma(mData[9], sd[2], Math.fma(mData[1], sd[0], Math.fma(mData[5], sd[1], mData[13])));
         dd[2] = Math.fma(mData[10], sd[2], Math.fma(mData[2], sd[0], Math.fma(mData[6], sd[1], mData[14])));
-        float _buf2 = Math.fma(mData[8], sd[5], Math.fma(mData[0], sd[3], mData[4] * sd[4]));
-        float _buf3 = Math.fma(mData[9], sd[5], Math.fma(mData[1], sd[3], mData[5] * sd[4]));
-        dd[5] = Math.fma(mData[10], sd[5], Math.fma(mData[2], sd[3], mData[6] * sd[4]));
-        float _buf4 = Math.fma(mData[8], sd[8], Math.fma(mData[0], sd[6], mData[4] * sd[7]));
-        float _buf5 = Math.fma(mData[9], sd[8], Math.fma(mData[1], sd[6], mData[5] * sd[7]));
-        dd[8] = Math.fma(mData[10], sd[8], Math.fma(mData[2], sd[6], mData[6] * sd[7]));
-        float _buf6 = Math.fma(mData[8], sd[11], Math.fma(mData[0], sd[9], mData[4] * sd[10]));
-        float _buf7 = Math.fma(mData[9], sd[11], Math.fma(mData[1], sd[9], mData[5] * sd[10]));
-        dd[11] = Math.fma(mData[10], sd[11], Math.fma(mData[2], sd[9], mData[6] * sd[10]));
-        dd[12] = sd[12];
-        dd[13] = sd[13];
-        dd[14] = sd[14];
+        dd[3] = _t18 * _t36;
+        dd[4] = _t20 * _t36;
+        dd[5] = _t19 * _t36;
+        dd[6] = _t21 * _t37;
+        dd[7] = _t23 * _t37;
+        dd[8] = _t22 * _t37;
+        dd[9] = _t24 * _t38;
+        dd[10] = _t26 * _t38;
+        dd[11] = _t25 * _t38;
+        dd[12] = sd[12] * (float) Math.sqrt(_t33);
+        dd[13] = sd[13] * (float) Math.sqrt(_t34);
+        dd[14] = sd[14] * (float) Math.sqrt(_t35);
         dd[0] = _buf0;
         dd[1] = _buf1;
-        dd[3] = _buf2;
-        dd[4] = _buf3;
-        dd[6] = _buf4;
-        dd[7] = _buf5;
-        dd[9] = _buf6;
-        dd[10] = _buf7;
         return dest;
     }
 

@@ -3253,17 +3253,171 @@ public interface Float4x4 extends Float4x4R {
      * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
      * method): the near clip plane is replaced by the given clip plane in camera/view space, and
      * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
      *
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
+     * @param handedness the handedness of the coordinate system to map into
+     * @param depthRange the clip-space depth range the projection maps onto
      * @return this
      */
-    @Mutated default Float4x4 obliqueZ(Float4R plane) { return obliqueZ(plane, Joml.RETURN_NEW ? Joml.float4x4() : this); }
+    @Mutated default Float4x4 obliqueZ(Float4R plane, Handedness handedness, DepthRange depthRange) { return obliqueZ(plane, handedness, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
     /**
      * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
      * method): the near clip plane is replaced by the given clip plane in camera/view space, and
      * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     *
+     * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param y the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param z the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param handedness the handedness of the coordinate system to map into
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @return this
+     */
+    @Mutated default Float4x4 obliqueZ(float x, float y, float z, float w, Handedness handedness, DepthRange depthRange) { return obliqueZ(x, y, z, w, handedness, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     *
+     * @param plane the plane
+     * @param handedness the handedness of the coordinate system to map into
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @return this
+     */
+    @Mutated default Float4x4 obliqueZ(FloatPlaneR plane, Handedness handedness, DepthRange depthRange) { return obliqueZ(plane.a(), plane.b(), plane.c(), plane.d(), handedness, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     *
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @return this
+     */
+    @Mutated default Float4x4 obliqueZ(Float4R plane, DepthRange depthRange) { return obliqueZ(plane, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     *
+     * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param y the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param z the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @return this
+     */
+    @Mutated default Float4x4 obliqueZ(float x, float y, float z, float w, DepthRange depthRange) { return obliqueZ(x, y, z, w, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
+     * @param handedness the handedness of the coordinate system to map into
+     * @return this
+     */
+    @Mutated default Float4x4 obliqueZ(Float4R plane, Handedness handedness) { return obliqueZ(plane, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param y the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param z the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     * @param handedness the handedness of the coordinate system to map into
+     * @return this
+     */
+    @Mutated default Float4x4 obliqueZ(float x, float y, float z, float w, Handedness handedness) { return obliqueZ(x, y, z, w, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
+     * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
+     * @return this
+     */
+    @Mutated default Float4x4 obliqueZ(Float4R plane) { return obliqueZ(plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
+     * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
      *        the normal pointing into the visible half-space {@code (x, y, z, w)}
@@ -3275,17 +3429,58 @@ public interface Float4x4 extends Float4x4R {
      *        the normal pointing into the visible half-space {@code (x, y, z, w)}
      * @return this
      */
-    @Mutated default Float4x4 obliqueZ(float x, float y, float z, float w) { return obliqueZ(x, y, z, w, Joml.RETURN_NEW ? Joml.float4x4() : this); }
+    @Mutated default Float4x4 obliqueZ(float x, float y, float z, float w) { return obliqueZ(x, y, z, w, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
     /**
      * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
      * method): the near clip plane is replaced by the given clip plane in camera/view space, and
      * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     *
+     * @param plane the plane
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @return this
+     */
+    @Mutated default Float4x4 obliqueZ(FloatPlaneR plane, DepthRange depthRange) { return obliqueZ(plane, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param plane the plane
+     * @param handedness the handedness of the coordinate system to map into
+     * @return this
+     */
+    @Mutated default Float4x4 obliqueZ(FloatPlaneR plane, Handedness handedness) { return obliqueZ(plane, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
+     * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param plane the plane
      * @return this
      */
-    @Mutated default Float4x4 obliqueZ(FloatPlaneR plane) { return obliqueZ(plane.a(), plane.b(), plane.c(), plane.d(), Joml.RETURN_NEW ? Joml.float4x4() : this); }
+    @Mutated default Float4x4 obliqueZ(FloatPlaneR plane) { return obliqueZ(plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
     /**
      * Apply an orthographic projection transformation to this matrix.

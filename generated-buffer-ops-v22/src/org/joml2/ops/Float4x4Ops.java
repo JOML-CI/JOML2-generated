@@ -106,6 +106,10 @@ public final class Float4x4Ops {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -165,6 +169,10 @@ public final class Float4x4Ops {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -224,6 +232,10 @@ public final class Float4x4Ops {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -283,6 +295,10 @@ public final class Float4x4Ops {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -342,6 +358,10 @@ public final class Float4x4Ops {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -401,6 +421,10 @@ public final class Float4x4Ops {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
+     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
+     * rather than the angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -18589,7 +18613,120 @@ public final class Float4x4Ops {
      * method): the near clip plane is replaced by the given clip plane in camera/view space, and
      * the far plane is adjusted to preserve depth precision.
      * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the matrix starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param planeX the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeY the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeZ the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param handedness the handedness of the coordinate system to map into
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @return {@code dest}
+     */
+    public static float[] obliqueZ(float[] dest, int destOffset, float[] src, int srcOffset, float planeX, float planeY, float planeZ, float planeW, Handedness handedness, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsArray.obliqueZ_no(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, handedness); }
+            default -> { return Float4x4OpsKernelsArray.obliqueZ_zo(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, handedness); }
+        }
+    }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the matrix starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param planeX the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeY the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeZ the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @return {@code dest}
+     */
+    public static float[] obliqueZ(float[] dest, int destOffset, float[] src, int srcOffset, float planeX, float planeY, float planeZ, float planeW, DepthRange depthRange) { return obliqueZ(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, depthRange); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the matrix starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param planeX the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeY the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeZ the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
+     *        with the normal pointing into the visible half-space
+     *        {@code (planeX, planeY, planeZ, planeW)}
+     * @param handedness the handedness of the coordinate system to map into
+     * @return {@code dest}
+     */
+    public static float[] obliqueZ(float[] dest, int destOffset, float[] src, int srcOffset, float planeX, float planeY, float planeZ, float planeW, Handedness handedness) { return obliqueZ(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
+     * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -18609,72 +18746,84 @@ public final class Float4x4Ops {
      *        {@code (planeX, planeY, planeZ, planeW)}
      * @return {@code dest}
      */
-    public static float[] obliqueZ(float[] dest, int destOffset, float[] src, int srcOffset, float planeX, float planeY, float planeZ, float planeW) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self30 = src[srcOffset + 3];
-        float _self01 = src[srcOffset + 4];
-        float _self11 = src[srcOffset + 5];
-        float _self31 = src[srcOffset + 7];
-        float _self02 = src[srcOffset + 8];
-        float _self12 = src[srcOffset + 9];
-        float _self22 = src[srcOffset + 10];
-        float _self32 = src[srcOffset + 11];
-        float _self03 = src[srcOffset + 12];
-        float _self13 = src[srcOffset + 13];
-        float _self23 = src[srcOffset + 14];
-        float _self33 = src[srcOffset + 15];
-        float _t0 = 2.0f * _self23;
-        float _t15 = Math.fma(planeW, 1.0f + _self22, _self23 * (planeX * (_self02 + (planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f)) / _self00 + planeY * (_self12 + (planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f)) / _self11 - planeZ));
-        float _t15_inv = 1.0f / _t15;
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = planeX * _t0 * _t15_inv - _self30;
-        dest[destOffset + 3] = _self30;
-        dest[destOffset + 4] = _self01;
-        dest[destOffset + 5] = _self11;
-        dest[destOffset + 6] = planeY * _t0 * _t15_inv - _self31;
-        dest[destOffset + 7] = _self31;
-        dest[destOffset + 8] = _self02;
-        dest[destOffset + 9] = _self12;
-        dest[destOffset + 10] = planeZ * _t0 * _t15_inv - _self32;
-        dest[destOffset + 11] = _self32;
-        dest[destOffset + 12] = _self03;
-        dest[destOffset + 13] = _self13;
-        dest[destOffset + 14] = planeW * _t0 * _t15_inv - _self33;
-        dest[destOffset + 15] = _self33;
-        return dest;
+    public static float[] obliqueZ(float[] dest, int destOffset, float[] src, int srcOffset, float planeX, float planeY, float planeZ, float planeW) { return obliqueZ(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float, float, float, float, Handedness, DepthRange)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer obliqueZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float planeX, float planeY, float planeZ, float planeW, Handedness handedness, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsTypedBuffer.obliqueZ_no(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, handedness); }
+            default -> { return Float4x4OpsKernelsTypedBuffer.obliqueZ_zo(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, handedness); }
+        }
     }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float, float, float, float, DepthRange)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer obliqueZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float planeX, float planeY, float planeZ, float planeW, DepthRange depthRange) { return obliqueZ(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, depthRange); }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float, float, float, float, Handedness)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer obliqueZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float planeX, float planeY, float planeZ, float planeW, Handedness handedness) { return obliqueZ(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /** {@link #obliqueZ(float[], int, float[], int, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer obliqueZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float planeX, float planeY, float planeZ, float planeW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.obliqueZ_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
-        return Float4x4OpsKernelsTypedBuffer.obliqueZ_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    public static java.nio.FloatBuffer obliqueZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float planeX, float planeY, float planeZ, float planeW) { return obliqueZ(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float, float, float, float, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    public static java.nio.ByteBuffer obliqueZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float planeX, float planeY, float planeZ, float planeW, Handedness handedness, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsByteBuffer.obliqueZ_no(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, handedness); }
+            default -> { return Float4x4OpsKernelsByteBuffer.obliqueZ_zo(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, handedness); }
+        }
     }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float, float, float, float, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    public static java.nio.ByteBuffer obliqueZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float planeX, float planeY, float planeZ, float planeW, DepthRange depthRange) { return obliqueZ(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, depthRange); }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float, float, float, float, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    public static java.nio.ByteBuffer obliqueZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float planeX, float planeY, float planeZ, float planeW, Handedness handedness) { return obliqueZ(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /** {@link #obliqueZ(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
-    public static java.nio.ByteBuffer obliqueZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float planeX, float planeY, float planeZ, float planeW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.obliqueZ_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
-        return Float4x4OpsKernelsByteBuffer.obliqueZ_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    public static java.nio.ByteBuffer obliqueZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float planeX, float planeY, float planeZ, float planeW) { return obliqueZ(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float, float, float, float, Handedness, DepthRange)} on {@link java.lang.foreign.MemorySegment} storage. */
+    public static java.lang.foreign.MemorySegment obliqueZ(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW, Handedness handedness, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsSegment.obliqueZ_no(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, handedness); }
+            default -> { return Float4x4OpsKernelsSegment.obliqueZ_zo(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, handedness); }
+        }
     }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float, float, float, float, DepthRange)} on {@link java.lang.foreign.MemorySegment} storage. */
+    public static java.lang.foreign.MemorySegment obliqueZ(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW, DepthRange depthRange) { return obliqueZ(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, depthRange); }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float, float, float, float, Handedness)} on {@link java.lang.foreign.MemorySegment} storage. */
+    public static java.lang.foreign.MemorySegment obliqueZ(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW, Handedness handedness) { return obliqueZ(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /** {@link #obliqueZ(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
-    public static java.lang.foreign.MemorySegment obliqueZ(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.obliqueZ_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
-        return Float4x4OpsKernelsSegment.obliqueZ_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    public static java.lang.foreign.MemorySegment obliqueZ(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW) { return obliqueZ(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float, float, float, float, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long obliqueZ(long dest, long src, float planeX, float planeY, float planeZ, float planeW, Handedness handedness, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsAddress.obliqueZ_no(dest, src, planeX, planeY, planeZ, planeW, handedness); }
+            default -> { return Float4x4OpsKernelsAddress.obliqueZ_zo(dest, src, planeX, planeY, planeZ, planeW, handedness); }
+        }
     }
 
+    /** {@link #obliqueZ(float[], int, float[], int, float, float, float, float, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long obliqueZ(long dest, long src, float planeX, float planeY, float planeZ, float planeW, DepthRange depthRange) { return obliqueZ(dest, src, planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, depthRange); }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float, float, float, float, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long obliqueZ(long dest, long src, float planeX, float planeY, float planeZ, float planeW, Handedness handedness) { return obliqueZ(dest, src, planeX, planeY, planeZ, planeW, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
     /** {@link #obliqueZ(float[], int, float[], int, float, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long obliqueZ(long dest, long src, float planeX, float planeY, float planeZ, float planeW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4x4OpsKernelsAddress.obliqueZ_unsafe(dest, src, planeX, planeY, planeZ, planeW);
-        obliqueZ(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 64L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 64L), 0L, planeX, planeY, planeZ, planeW);
-        return dest;
-    }
+    public static long obliqueZ(long dest, long src, float planeX, float planeY, float planeZ, float planeW) { return obliqueZ(dest, src, planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
      * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
      * method): the near clip plane is replaced by the given clip plane in camera/view space, and
      * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
@@ -18685,73 +18834,159 @@ public final class Float4x4Ops {
      * @param plane the storage holding the clip plane {@code (a, b, c, d)} in camera space, with
      *        the normal pointing into the visible half-space
      * @param planeOffset the element index in {@code plane} at which the vector starts
+     * @param handedness the handedness of the coordinate system to map into
+     * @param depthRange the clip-space depth range the projection maps onto
      * @return {@code dest}
      */
-    public static float[] obliqueZ(float[] dest, int destOffset, float[] src, int srcOffset, float[] plane, int planeOffset) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self30 = src[srcOffset + 3];
-        float _self01 = src[srcOffset + 4];
-        float _self11 = src[srcOffset + 5];
-        float _self31 = src[srcOffset + 7];
-        float _self02 = src[srcOffset + 8];
-        float _self12 = src[srcOffset + 9];
-        float _self22 = src[srcOffset + 10];
-        float _self32 = src[srcOffset + 11];
-        float _self03 = src[srcOffset + 12];
-        float _self13 = src[srcOffset + 13];
-        float _self23 = src[srcOffset + 14];
-        float _self33 = src[srcOffset + 15];
-        float _planex = plane[planeOffset + 0];
-        float _planey = plane[planeOffset + 1];
-        float _planez = plane[planeOffset + 2];
-        float _planew = plane[planeOffset + 3];
-        float _t0 = 2.0f * _self23;
-        float _t15 = Math.fma(_planew, 1.0f + _self22, _self23 * (_planex * (_self02 + (_planex < 0.0f ? -1.0f : _planex > 0.0f ? 1.0f : 0.0f)) / _self00 + _planey * (_self12 + (_planey < 0.0f ? -1.0f : _planey > 0.0f ? 1.0f : 0.0f)) / _self11 - _planez));
-        float _t15_inv = 1.0f / _t15;
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _planex * _t0 * _t15_inv - _self30;
-        dest[destOffset + 3] = _self30;
-        dest[destOffset + 4] = _self01;
-        dest[destOffset + 5] = _self11;
-        dest[destOffset + 6] = _planey * _t0 * _t15_inv - _self31;
-        dest[destOffset + 7] = _self31;
-        dest[destOffset + 8] = _self02;
-        dest[destOffset + 9] = _self12;
-        dest[destOffset + 10] = _planez * _t0 * _t15_inv - _self32;
-        dest[destOffset + 11] = _self32;
-        dest[destOffset + 12] = _self03;
-        dest[destOffset + 13] = _self13;
-        dest[destOffset + 14] = _planew * _t0 * _t15_inv - _self33;
-        dest[destOffset + 15] = _self33;
-        return dest;
+    public static float[] obliqueZ(float[] dest, int destOffset, float[] src, int srcOffset, float[] plane, int planeOffset, Handedness handedness, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsArray.obliqueZ_no(dest, destOffset, src, srcOffset, plane, planeOffset, handedness); }
+            default -> { return Float4x4OpsKernelsArray.obliqueZ_zo(dest, destOffset, src, srcOffset, plane, planeOffset, handedness); }
+        }
     }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the matrix starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param plane the storage holding the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space
+     * @param planeOffset the element index in {@code plane} at which the vector starts
+     * @param depthRange the clip-space depth range the projection maps onto
+     * @return {@code dest}
+     */
+    public static float[] obliqueZ(float[] dest, int destOffset, float[] src, int srcOffset, float[] plane, int planeOffset, DepthRange depthRange) { return obliqueZ(dest, destOffset, src, srcOffset, plane, planeOffset, Handedness.RIGHT_HANDED, depthRange); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the matrix starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param plane the storage holding the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space
+     * @param planeOffset the element index in {@code plane} at which the vector starts
+     * @param handedness the handedness of the coordinate system to map into
+     * @return {@code dest}
+     */
+    public static float[] obliqueZ(float[] dest, int destOffset, float[] src, int srcOffset, float[] plane, int planeOffset, Handedness handedness) { return obliqueZ(dest, destOffset, src, srcOffset, plane, planeOffset, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /**
+     * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel
+     * method): the near clip plane is replaced by the given clip plane in camera/view space, and
+     * the far plane is adjusted to preserve depth precision.
+     * <p>
+     * The handedness and depth range must be the ones this perspective projection was built with:
+     * they decide where the near and far clip planes sit in clip space and which way the projective
+     * row points, which the closed-form solution depends on.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
+     * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the matrix starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param plane the storage holding the clip plane {@code (a, b, c, d)} in camera space, with
+     *        the normal pointing into the visible half-space
+     * @param planeOffset the element index in {@code plane} at which the vector starts
+     * @return {@code dest}
+     */
+    public static float[] obliqueZ(float[] dest, int destOffset, float[] src, int srcOffset, float[] plane, int planeOffset) { return obliqueZ(dest, destOffset, src, srcOffset, plane, planeOffset, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float[], int, Handedness, DepthRange)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer obliqueZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer plane, int planeOffset, Handedness handedness, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsTypedBuffer.obliqueZ_no(dest, destOffset, src, srcOffset, plane, planeOffset, handedness); }
+            default -> { return Float4x4OpsKernelsTypedBuffer.obliqueZ_zo(dest, destOffset, src, srcOffset, plane, planeOffset, handedness); }
+        }
+    }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float[], int, DepthRange)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer obliqueZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer plane, int planeOffset, DepthRange depthRange) { return obliqueZ(dest, destOffset, src, srcOffset, plane, planeOffset, Handedness.RIGHT_HANDED, depthRange); }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float[], int, Handedness)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer obliqueZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer plane, int planeOffset, Handedness handedness) { return obliqueZ(dest, destOffset, src, srcOffset, plane, planeOffset, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /** {@link #obliqueZ(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer obliqueZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer plane, int planeOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && plane.isDirect()) return Float4x4OpsKernelsTypedBuffer.obliqueZ_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
-        return Float4x4OpsKernelsTypedBuffer.obliqueZ_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    public static java.nio.FloatBuffer obliqueZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer plane, int planeOffset) { return obliqueZ(dest, destOffset, src, srcOffset, plane, planeOffset, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float[], int, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    public static java.nio.ByteBuffer obliqueZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset, Handedness handedness, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsByteBuffer.obliqueZ_no(dest, destOffset, src, srcOffset, plane, planeOffset, handedness); }
+            default -> { return Float4x4OpsKernelsByteBuffer.obliqueZ_zo(dest, destOffset, src, srcOffset, plane, planeOffset, handedness); }
+        }
     }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    public static java.nio.ByteBuffer obliqueZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset, DepthRange depthRange) { return obliqueZ(dest, destOffset, src, srcOffset, plane, planeOffset, Handedness.RIGHT_HANDED, depthRange); }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float[], int, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    public static java.nio.ByteBuffer obliqueZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset, Handedness handedness) { return obliqueZ(dest, destOffset, src, srcOffset, plane, planeOffset, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /** {@link #obliqueZ(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
-    public static java.nio.ByteBuffer obliqueZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && plane.isDirect()) return Float4x4OpsKernelsByteBuffer.obliqueZ_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
-        return Float4x4OpsKernelsByteBuffer.obliqueZ_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    public static java.nio.ByteBuffer obliqueZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset) { return obliqueZ(dest, destOffset, src, srcOffset, plane, planeOffset, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float[], int, Handedness, DepthRange)} on {@link java.lang.foreign.MemorySegment} storage. */
+    public static java.lang.foreign.MemorySegment obliqueZ(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset, Handedness handedness, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsSegment.obliqueZ_no(dest, destOffset, src, srcOffset, plane, planeOffset, handedness); }
+            default -> { return Float4x4OpsKernelsSegment.obliqueZ_zo(dest, destOffset, src, srcOffset, plane, planeOffset, handedness); }
+        }
     }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float[], int, DepthRange)} on {@link java.lang.foreign.MemorySegment} storage. */
+    public static java.lang.foreign.MemorySegment obliqueZ(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset, DepthRange depthRange) { return obliqueZ(dest, destOffset, src, srcOffset, plane, planeOffset, Handedness.RIGHT_HANDED, depthRange); }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float[], int, Handedness)} on {@link java.lang.foreign.MemorySegment} storage. */
+    public static java.lang.foreign.MemorySegment obliqueZ(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset, Handedness handedness) { return obliqueZ(dest, destOffset, src, srcOffset, plane, planeOffset, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /** {@link #obliqueZ(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
-    public static java.lang.foreign.MemorySegment obliqueZ(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && plane.isNative()) return Float4x4OpsKernelsSegment.obliqueZ_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
-        return Float4x4OpsKernelsSegment.obliqueZ_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    public static java.lang.foreign.MemorySegment obliqueZ(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) { return obliqueZ(dest, destOffset, src, srcOffset, plane, planeOffset, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float[], int, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long obliqueZ(long dest, long src, long plane, Handedness handedness, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsAddress.obliqueZ_no(dest, src, plane, handedness); }
+            default -> { return Float4x4OpsKernelsAddress.obliqueZ_zo(dest, src, plane, handedness); }
+        }
     }
 
+    /** {@link #obliqueZ(float[], int, float[], int, float[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long obliqueZ(long dest, long src, long plane, DepthRange depthRange) { return obliqueZ(dest, src, plane, Handedness.RIGHT_HANDED, depthRange); }
+
+    /** {@link #obliqueZ(float[], int, float[], int, float[], int, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long obliqueZ(long dest, long src, long plane, Handedness handedness) { return obliqueZ(dest, src, plane, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
     /** {@link #obliqueZ(float[], int, float[], int, float[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long obliqueZ(long dest, long src, long plane) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4x4OpsKernelsAddress.obliqueZ_unsafe(dest, src, plane);
-        obliqueZ(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 64L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 64L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(plane, 16L), 0L);
-        return dest;
-    }
+    public static long obliqueZ(long dest, long src, long plane) { return obliqueZ(dest, src, plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
      * Apply an orthographic projection transformation to this matrix and store the result in
@@ -21751,57 +21986,87 @@ public final class Float4x4Ops {
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportW the {@code w} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param depthRange the clip-space depth range the projection maps onto
      * @return {@code dest}
      */
-    public static float[] project(float[] dest, int destOffset, float[] src, int srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self20 = src[srcOffset + 2];
-        float _self30 = src[srcOffset + 3];
-        float _self01 = src[srcOffset + 4];
-        float _self11 = src[srcOffset + 5];
-        float _self21 = src[srcOffset + 6];
-        float _self31 = src[srcOffset + 7];
-        float _self02 = src[srcOffset + 8];
-        float _self12 = src[srcOffset + 9];
-        float _self22 = src[srcOffset + 10];
-        float _self32 = src[srcOffset + 11];
-        float _self03 = src[srcOffset + 12];
-        float _self13 = src[srcOffset + 13];
-        float _self23 = src[srcOffset + 14];
-        float _self33 = src[srcOffset + 15];
-        float _t2 = Math.fma(objX, _self30, Math.fma(objY, _self31, Math.fma(objZ, _self32, _self33)));
-        float _t2_inv = 1.0f / _t2;
-        dest[destOffset + 0] = Math.fma(0.5f, viewportZ * (1.0f + Math.fma(objX, _self00, Math.fma(objY, _self01, Math.fma(objZ, _self02, _self03))) * _t2_inv), viewportX);
-        dest[destOffset + 1] = Math.fma(0.5f, viewportW * (1.0f + Math.fma(objX, _self10, Math.fma(objY, _self11, Math.fma(objZ, _self12, _self13))) * _t2_inv), viewportY);
-        dest[destOffset + 2] = 0.5f * (1.0f + Math.fma(objX, _self20, Math.fma(objY, _self21, Math.fma(objZ, _self22, _self23))) * _t2_inv);
-        return dest;
+    public static float[] project(float[] dest, int destOffset, float[] src, int srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsArray.project_no(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsArray.project_zo(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW); }
+        }
+    }
+
+    /**
+     * Project the given position onto window coordinates using this matrix and the given viewport
+     * and store the result in {@code dest}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param objX the {@code x} component of the object-space position to project
+     *        {@code (objX, objY, objZ)}
+     * @param objY the {@code y} component of the object-space position to project
+     *        {@code (objX, objY, objZ)}
+     * @param objZ the {@code z} component of the object-space position to project
+     *        {@code (objX, objY, objZ)}
+     * @param viewportX the {@code x} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportY the {@code y} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportZ the {@code z} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportW the {@code w} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @return {@code dest}
+     */
+    public static float[] project(float[] dest, int destOffset, float[] src, int srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) { return project(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #project(float[], int, float[], int, float, float, float, float, float, float, float, DepthRange)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer project(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsTypedBuffer.project_no(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsTypedBuffer.project_zo(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #project(float[], int, float[], int, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer project(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.project_unsafe(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
-        return Float4x4OpsKernelsTypedBuffer.project_api(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+    public static java.nio.FloatBuffer project(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) { return project(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #project(float[], int, float[], int, float, float, float, float, float, float, float, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    public static java.nio.ByteBuffer project(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsByteBuffer.project_no(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsByteBuffer.project_zo(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #project(float[], int, float[], int, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
-    public static java.nio.ByteBuffer project(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.project_unsafe(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
-        return Float4x4OpsKernelsByteBuffer.project_api(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+    public static java.nio.ByteBuffer project(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) { return project(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #project(float[], int, float[], int, float, float, float, float, float, float, float, DepthRange)} on {@link java.lang.foreign.MemorySegment} storage. */
+    public static java.lang.foreign.MemorySegment project(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsSegment.project_no(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsSegment.project_zo(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #project(float[], int, float[], int, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
-    public static java.lang.foreign.MemorySegment project(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.project_unsafe(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
-        return Float4x4OpsKernelsSegment.project_api(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+    public static java.lang.foreign.MemorySegment project(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) { return project(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #project(float[], int, float[], int, float, float, float, float, float, float, float, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long project(long dest, long src, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsAddress.project_no(dest, src, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsAddress.project_zo(dest, src, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #project(float[], int, float[], int, float, float, float, float, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long project(long dest, long src, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4x4OpsKernelsAddress.project_unsafe(dest, src, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
-        project(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 64L), 0L, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
-        return dest;
-    }
+    public static long project(long dest, long src, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) { return project(dest, src, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
      * Project the given position onto window coordinates using this matrix and the given viewport
@@ -21815,64 +22080,77 @@ public final class Float4x4Ops {
      * @param objOffset the element index in {@code obj} at which the vector starts
      * @param viewport the storage holding the viewport {@code [x, y, width, height]}
      * @param viewportOffset the element index in {@code viewport} at which the vector starts
+     * @param depthRange the clip-space depth range the projection maps onto
      * @return {@code dest}
      */
-    public static float[] project(float[] dest, int destOffset, float[] src, int srcOffset, float[] obj, int objOffset, float[] viewport, int viewportOffset) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self20 = src[srcOffset + 2];
-        float _self30 = src[srcOffset + 3];
-        float _self01 = src[srcOffset + 4];
-        float _self11 = src[srcOffset + 5];
-        float _self21 = src[srcOffset + 6];
-        float _self31 = src[srcOffset + 7];
-        float _self02 = src[srcOffset + 8];
-        float _self12 = src[srcOffset + 9];
-        float _self22 = src[srcOffset + 10];
-        float _self32 = src[srcOffset + 11];
-        float _self03 = src[srcOffset + 12];
-        float _self13 = src[srcOffset + 13];
-        float _self23 = src[srcOffset + 14];
-        float _self33 = src[srcOffset + 15];
-        float _objx = obj[objOffset + 0];
-        float _objy = obj[objOffset + 1];
-        float _objz = obj[objOffset + 2];
-        float _viewportx = viewport[viewportOffset + 0];
-        float _viewporty = viewport[viewportOffset + 1];
-        float _viewportz = viewport[viewportOffset + 2];
-        float _viewportw = viewport[viewportOffset + 3];
-        float _t2 = Math.fma(_objx, _self30, Math.fma(_objy, _self31, Math.fma(_objz, _self32, _self33)));
-        float _t2_inv = 1.0f / _t2;
-        dest[destOffset + 0] = Math.fma(0.5f, _viewportz * (1.0f + Math.fma(_objx, _self00, Math.fma(_objy, _self01, Math.fma(_objz, _self02, _self03))) * _t2_inv), _viewportx);
-        dest[destOffset + 1] = Math.fma(0.5f, _viewportw * (1.0f + Math.fma(_objx, _self10, Math.fma(_objy, _self11, Math.fma(_objz, _self12, _self13))) * _t2_inv), _viewporty);
-        dest[destOffset + 2] = 0.5f * (1.0f + Math.fma(_objx, _self20, Math.fma(_objy, _self21, Math.fma(_objz, _self22, _self23))) * _t2_inv);
-        return dest;
+    public static float[] project(float[] dest, int destOffset, float[] src, int srcOffset, float[] obj, int objOffset, float[] viewport, int viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsArray.project_no(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsArray.project_zo(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset); }
+        }
+    }
+
+    /**
+     * Project the given position onto window coordinates using this matrix and the given viewport
+     * and store the result in {@code dest}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param obj the storage holding the object-space position to project
+     * @param objOffset the element index in {@code obj} at which the vector starts
+     * @param viewport the storage holding the viewport {@code [x, y, width, height]}
+     * @param viewportOffset the element index in {@code viewport} at which the vector starts
+     * @return {@code dest}
+     */
+    public static float[] project(float[] dest, int destOffset, float[] src, int srcOffset, float[] obj, int objOffset, float[] viewport, int viewportOffset) { return project(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #project(float[], int, float[], int, float[], int, float[], int, DepthRange)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer project(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer obj, int objOffset, java.nio.FloatBuffer viewport, int viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsTypedBuffer.project_no(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsTypedBuffer.project_zo(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset); }
+        }
     }
 
     /** {@link #project(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer project(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer obj, int objOffset, java.nio.FloatBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && obj.isDirect() && viewport.isDirect()) return Float4x4OpsKernelsTypedBuffer.project_unsafe(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
-        return Float4x4OpsKernelsTypedBuffer.project_api(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
+    public static java.nio.FloatBuffer project(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer obj, int objOffset, java.nio.FloatBuffer viewport, int viewportOffset) { return project(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #project(float[], int, float[], int, float[], int, float[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    public static java.nio.ByteBuffer project(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer obj, int objOffset, java.nio.ByteBuffer viewport, int viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsByteBuffer.project_no(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsByteBuffer.project_zo(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset); }
+        }
     }
 
     /** {@link #project(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
-    public static java.nio.ByteBuffer project(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer obj, int objOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && obj.isDirect() && viewport.isDirect()) return Float4x4OpsKernelsByteBuffer.project_unsafe(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
-        return Float4x4OpsKernelsByteBuffer.project_api(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
+    public static java.nio.ByteBuffer project(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer obj, int objOffset, java.nio.ByteBuffer viewport, int viewportOffset) { return project(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #project(float[], int, float[], int, float[], int, float[], int, DepthRange)} on {@link java.lang.foreign.MemorySegment} storage. */
+    public static java.lang.foreign.MemorySegment project(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment obj, long objOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsSegment.project_no(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsSegment.project_zo(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset); }
+        }
     }
 
     /** {@link #project(float[], int, float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
-    public static java.lang.foreign.MemorySegment project(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment obj, long objOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && obj.isNative() && viewport.isNative()) return Float4x4OpsKernelsSegment.project_unsafe(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
-        return Float4x4OpsKernelsSegment.project_api(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
+    public static java.lang.foreign.MemorySegment project(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment obj, long objOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) { return project(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #project(float[], int, float[], int, float[], int, float[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long project(long dest, long src, long obj, long viewport, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsAddress.project_no(dest, src, obj, viewport); }
+            default -> { return Float4x4OpsKernelsAddress.project_zo(dest, src, obj, viewport); }
+        }
     }
 
     /** {@link #project(float[], int, float[], int, float[], int, float[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long project(long dest, long src, long obj, long viewport) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4x4OpsKernelsAddress.project_unsafe(dest, src, obj, viewport);
-        project(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 64L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(obj, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(viewport, 16L), 0L);
-        return dest;
-    }
+    public static long project(long dest, long src, long obj, long viewport) { return project(dest, src, obj, viewport, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
      * Apply a reflection about the plane through the origin with the normal {@code normal} to this
@@ -25496,78 +25774,87 @@ public final class Float4x4Ops {
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportW the {@code w} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param depthRange the clip-space depth range the projection maps onto
      * @return {@code dest}
      */
-    public static float[] unproject(float[] dest, int destOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self20 = src[srcOffset + 2];
-        float _self30 = src[srcOffset + 3];
-        float _self01 = src[srcOffset + 4];
-        float _self11 = src[srcOffset + 5];
-        float _self21 = src[srcOffset + 6];
-        float _self31 = src[srcOffset + 7];
-        float _self02 = src[srcOffset + 8];
-        float _self12 = src[srcOffset + 9];
-        float _self22 = src[srcOffset + 10];
-        float _self32 = src[srcOffset + 11];
-        float _self03 = src[srcOffset + 12];
-        float _self13 = src[srcOffset + 13];
-        float _self23 = src[srcOffset + 14];
-        float _self33 = src[srcOffset + 15];
-        float _t23 = Math.fma(2.0f, winCoordsZ, -1.0f);
-        float _t43 = Math.fma(_self11, _self32, -(_self12 * _self31));
-        float _t44 = Math.fma(_self12, _self33, -(_self13 * _self32));
-        float _t45 = Math.fma(_self11, _self33, -(_self13 * _self31));
-        float _t46 = Math.fma(_self21, _self32, -(_self22 * _self31));
-        float _t47 = Math.fma(_self22, _self33, -(_self23 * _self32));
-        float _t48 = Math.fma(_self21, _self33, -(_self23 * _self31));
-        float _t49 = Math.fma(_self11, _self22, -(_self12 * _self21));
-        float _t50 = Math.fma(_self12, _self23, -(_self13 * _self22));
-        float _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
-        float _t52 = Math.fma(_self10, _self21, -(_self11 * _self20));
-        float _t53 = Math.fma(_self10, _self22, -(_self12 * _self20));
-        float _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
-        float _t55 = Math.fma(_self10, _self32, -(_self12 * _self30));
-        float _t56 = Math.fma(_self20, _self31, -(_self21 * _self30));
-        float _t57 = Math.fma(_self20, _self32, -(_self22 * _self30));
-        float _t58 = Math.fma(_self10, _self23, -(_self13 * _self20));
-        float _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
-        float _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
-        float _t61 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
-        float _t62 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
-        float _t84 = Math.fma(_self02, _t52, Math.fma(_self00, _t49, -(_self01 * _t53))) + Math.fma(-Math.fma(_self02, _t54, Math.fma(_self00, _t43, -(_self01 * _t55))), _t23, Math.fma(Math.fma(_self02, _t56, Math.fma(_self00, _t46, -(_self01 * _t57))), _t62, -(Math.fma(_self12, _t56, Math.fma(_self10, _t46, -(_self11 * _t57))) * _t61)));
-        float _t84_inv = 1.0f / _t84;
-        dest[destOffset + 0] = (Math.fma(Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))), _t23, Math.fma(Math.fma(_self13, _t46, Math.fma(_self11, _t47, -(_self12 * _t48))), _t61, -(Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48))) * _t62))) - Math.fma(_self03, _t49, Math.fma(_self01, _t50, -(_self02 * _t51)))) * _t84_inv;
-        dest[destOffset + 1] = (Math.fma(_self03, _t53, Math.fma(_self00, _t50, -(_self02 * _t58))) + Math.fma(-Math.fma(_self03, _t55, Math.fma(_self00, _t44, -(_self02 * _t59))), _t23, Math.fma(Math.fma(_self03, _t57, Math.fma(_self00, _t47, -(_self02 * _t60))), _t62, -(Math.fma(_self13, _t57, Math.fma(_self10, _t47, -(_self12 * _t60))) * _t61)))) * _t84_inv;
-        dest[destOffset + 2] = (Math.fma(Math.fma(_self03, _t54, Math.fma(_self00, _t45, -(_self01 * _t59))), _t23, Math.fma(Math.fma(_self13, _t56, Math.fma(_self10, _t48, -(_self11 * _t60))), _t61, -(Math.fma(_self03, _t56, Math.fma(_self00, _t48, -(_self01 * _t60))) * _t62))) - Math.fma(_self03, _t52, Math.fma(_self00, _t51, -(_self01 * _t58)))) * _t84_inv;
-        return dest;
+    public static float[] unproject(float[] dest, int destOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsArray.unproject_no(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsArray.unproject_zo(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+        }
+    }
+
+    /**
+     * Unproject the given window coordinates into object space using this matrix (which is inverted
+     * internally) and the given viewport and store the result in {@code dest}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
+     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
+     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
+     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     * @param viewportX the {@code x} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportY the {@code y} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportZ the {@code z} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportW the {@code w} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @return {@code dest}
+     */
+    public static float[] unproject(float[] dest, int destOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) { return unproject(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unproject(float[], int, float[], int, float, float, float, float, float, float, float, DepthRange)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer unproject(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsTypedBuffer.unproject_no(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsTypedBuffer.unproject_zo(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #unproject(float[], int, float[], int, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer unproject(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.unproject_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
-        return Float4x4OpsKernelsTypedBuffer.unproject_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+    public static java.nio.FloatBuffer unproject(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) { return unproject(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unproject(float[], int, float[], int, float, float, float, float, float, float, float, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    public static java.nio.ByteBuffer unproject(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsByteBuffer.unproject_no(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsByteBuffer.unproject_zo(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #unproject(float[], int, float[], int, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
-    public static java.nio.ByteBuffer unproject(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.unproject_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
-        return Float4x4OpsKernelsByteBuffer.unproject_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+    public static java.nio.ByteBuffer unproject(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) { return unproject(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unproject(float[], int, float[], int, float, float, float, float, float, float, float, DepthRange)} on {@link java.lang.foreign.MemorySegment} storage. */
+    public static java.lang.foreign.MemorySegment unproject(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsSegment.unproject_no(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsSegment.unproject_zo(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #unproject(float[], int, float[], int, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
-    public static java.lang.foreign.MemorySegment unproject(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.unproject_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
-        return Float4x4OpsKernelsSegment.unproject_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+    public static java.lang.foreign.MemorySegment unproject(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) { return unproject(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unproject(float[], int, float[], int, float, float, float, float, float, float, float, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long unproject(long dest, long src, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsAddress.unproject_no(dest, src, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsAddress.unproject_zo(dest, src, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #unproject(float[], int, float[], int, float, float, float, float, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long unproject(long dest, long src, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4x4OpsKernelsAddress.unproject_unsafe(dest, src, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
-        unproject(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 64L), 0L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
-        return dest;
-    }
+    public static long unproject(long dest, long src, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) { return unproject(dest, src, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
      * Unproject the given window coordinates into object space using this matrix (which is inverted
@@ -25582,85 +25869,78 @@ public final class Float4x4Ops {
      * @param winCoordsOffset the element index in {@code winCoords} at which the vector starts
      * @param viewport the storage holding the viewport {@code [x, y, width, height]}
      * @param viewportOffset the element index in {@code viewport} at which the vector starts
+     * @param depthRange the clip-space depth range the projection maps onto
      * @return {@code dest}
      */
-    public static float[] unproject(float[] dest, int destOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self20 = src[srcOffset + 2];
-        float _self30 = src[srcOffset + 3];
-        float _self01 = src[srcOffset + 4];
-        float _self11 = src[srcOffset + 5];
-        float _self21 = src[srcOffset + 6];
-        float _self31 = src[srcOffset + 7];
-        float _self02 = src[srcOffset + 8];
-        float _self12 = src[srcOffset + 9];
-        float _self22 = src[srcOffset + 10];
-        float _self32 = src[srcOffset + 11];
-        float _self03 = src[srcOffset + 12];
-        float _self13 = src[srcOffset + 13];
-        float _self23 = src[srcOffset + 14];
-        float _self33 = src[srcOffset + 15];
-        float _winCoordsx = winCoords[winCoordsOffset + 0];
-        float _winCoordsy = winCoords[winCoordsOffset + 1];
-        float _winCoordsz = winCoords[winCoordsOffset + 2];
-        float _viewportx = viewport[viewportOffset + 0];
-        float _viewporty = viewport[viewportOffset + 1];
-        float _viewportz = viewport[viewportOffset + 2];
-        float _viewportw = viewport[viewportOffset + 3];
-        float _t23 = Math.fma(2.0f, _winCoordsz, -1.0f);
-        float _t43 = Math.fma(_self11, _self32, -(_self12 * _self31));
-        float _t44 = Math.fma(_self12, _self33, -(_self13 * _self32));
-        float _t45 = Math.fma(_self11, _self33, -(_self13 * _self31));
-        float _t46 = Math.fma(_self21, _self32, -(_self22 * _self31));
-        float _t47 = Math.fma(_self22, _self33, -(_self23 * _self32));
-        float _t48 = Math.fma(_self21, _self33, -(_self23 * _self31));
-        float _t49 = Math.fma(_self11, _self22, -(_self12 * _self21));
-        float _t50 = Math.fma(_self12, _self23, -(_self13 * _self22));
-        float _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
-        float _t52 = Math.fma(_self10, _self21, -(_self11 * _self20));
-        float _t53 = Math.fma(_self10, _self22, -(_self12 * _self20));
-        float _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
-        float _t55 = Math.fma(_self10, _self32, -(_self12 * _self30));
-        float _t56 = Math.fma(_self20, _self31, -(_self21 * _self30));
-        float _t57 = Math.fma(_self20, _self32, -(_self22 * _self30));
-        float _t58 = Math.fma(_self10, _self23, -(_self13 * _self20));
-        float _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
-        float _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
-        float _t61 = 2.0f * (_winCoordsx - _viewportx) / _viewportz - 1.0f;
-        float _t62 = 2.0f * (_winCoordsy - _viewporty) / _viewportw - 1.0f;
-        float _t84 = Math.fma(_self02, _t52, Math.fma(_self00, _t49, -(_self01 * _t53))) + Math.fma(-Math.fma(_self02, _t54, Math.fma(_self00, _t43, -(_self01 * _t55))), _t23, Math.fma(Math.fma(_self02, _t56, Math.fma(_self00, _t46, -(_self01 * _t57))), _t62, -(Math.fma(_self12, _t56, Math.fma(_self10, _t46, -(_self11 * _t57))) * _t61)));
-        float _t84_inv = 1.0f / _t84;
-        dest[destOffset + 0] = (Math.fma(Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))), _t23, Math.fma(Math.fma(_self13, _t46, Math.fma(_self11, _t47, -(_self12 * _t48))), _t61, -(Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48))) * _t62))) - Math.fma(_self03, _t49, Math.fma(_self01, _t50, -(_self02 * _t51)))) * _t84_inv;
-        dest[destOffset + 1] = (Math.fma(_self03, _t53, Math.fma(_self00, _t50, -(_self02 * _t58))) + Math.fma(-Math.fma(_self03, _t55, Math.fma(_self00, _t44, -(_self02 * _t59))), _t23, Math.fma(Math.fma(_self03, _t57, Math.fma(_self00, _t47, -(_self02 * _t60))), _t62, -(Math.fma(_self13, _t57, Math.fma(_self10, _t47, -(_self12 * _t60))) * _t61)))) * _t84_inv;
-        dest[destOffset + 2] = (Math.fma(Math.fma(_self03, _t54, Math.fma(_self00, _t45, -(_self01 * _t59))), _t23, Math.fma(Math.fma(_self13, _t56, Math.fma(_self10, _t48, -(_self11 * _t60))), _t61, -(Math.fma(_self03, _t56, Math.fma(_self00, _t48, -(_self01 * _t60))) * _t62))) - Math.fma(_self03, _t52, Math.fma(_self00, _t51, -(_self01 * _t58)))) * _t84_inv;
-        return dest;
+    public static float[] unproject(float[] dest, int destOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsArray.unproject_no(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsArray.unproject_zo(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+        }
+    }
+
+    /**
+     * Unproject the given window coordinates into object space using this matrix (which is inverted
+     * internally) and the given viewport and store the result in {@code dest}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param winCoords the storage holding the window coordinates {@code (x, y, depth)} to
+     *        unproject
+     * @param winCoordsOffset the element index in {@code winCoords} at which the vector starts
+     * @param viewport the storage holding the viewport {@code [x, y, width, height]}
+     * @param viewportOffset the element index in {@code viewport} at which the vector starts
+     * @return {@code dest}
+     */
+    public static float[] unproject(float[] dest, int destOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset) { return unproject(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unproject(float[], int, float[], int, float[], int, float[], int, DepthRange)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer unproject(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer winCoords, int winCoordsOffset, java.nio.FloatBuffer viewport, int viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsTypedBuffer.unproject_no(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsTypedBuffer.unproject_zo(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+        }
     }
 
     /** {@link #unproject(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer unproject(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer winCoords, int winCoordsOffset, java.nio.FloatBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Float4x4OpsKernelsTypedBuffer.unproject_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
-        return Float4x4OpsKernelsTypedBuffer.unproject_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    public static java.nio.FloatBuffer unproject(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer winCoords, int winCoordsOffset, java.nio.FloatBuffer viewport, int viewportOffset) { return unproject(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unproject(float[], int, float[], int, float[], int, float[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    public static java.nio.ByteBuffer unproject(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsByteBuffer.unproject_no(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsByteBuffer.unproject_zo(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+        }
     }
 
     /** {@link #unproject(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
-    public static java.nio.ByteBuffer unproject(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Float4x4OpsKernelsByteBuffer.unproject_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
-        return Float4x4OpsKernelsByteBuffer.unproject_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    public static java.nio.ByteBuffer unproject(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) { return unproject(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unproject(float[], int, float[], int, float[], int, float[], int, DepthRange)} on {@link java.lang.foreign.MemorySegment} storage. */
+    public static java.lang.foreign.MemorySegment unproject(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsSegment.unproject_no(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsSegment.unproject_zo(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+        }
     }
 
     /** {@link #unproject(float[], int, float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
-    public static java.lang.foreign.MemorySegment unproject(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && winCoords.isNative() && viewport.isNative()) return Float4x4OpsKernelsSegment.unproject_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
-        return Float4x4OpsKernelsSegment.unproject_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    public static java.lang.foreign.MemorySegment unproject(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) { return unproject(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unproject(float[], int, float[], int, float[], int, float[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long unproject(long dest, long src, long winCoords, long viewport, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsAddress.unproject_no(dest, src, winCoords, viewport); }
+            default -> { return Float4x4OpsKernelsAddress.unproject_zo(dest, src, winCoords, viewport); }
+        }
     }
 
     /** {@link #unproject(float[], int, float[], int, float[], int, float[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long unproject(long dest, long src, long winCoords, long viewport) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4x4OpsKernelsAddress.unproject_unsafe(dest, src, winCoords, viewport);
-        unproject(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 64L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(winCoords, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(viewport, 16L), 0L);
-        return dest;
-    }
+    public static long unproject(long dest, long src, long winCoords, long viewport) { return unproject(dest, src, winCoords, viewport, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
      * Unproject the given window coordinates into object space using this matrix (which is assumed
@@ -25685,60 +25965,88 @@ public final class Float4x4Ops {
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportW the {@code w} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param depthRange the clip-space depth range the projection maps onto
      * @return {@code dest}
      */
-    public static float[] unprojectInv(float[] dest, int destOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self20 = src[srcOffset + 2];
-        float _self30 = src[srcOffset + 3];
-        float _self01 = src[srcOffset + 4];
-        float _self11 = src[srcOffset + 5];
-        float _self21 = src[srcOffset + 6];
-        float _self31 = src[srcOffset + 7];
-        float _self02 = src[srcOffset + 8];
-        float _self12 = src[srcOffset + 9];
-        float _self22 = src[srcOffset + 10];
-        float _self32 = src[srcOffset + 11];
-        float _self03 = src[srcOffset + 12];
-        float _self13 = src[srcOffset + 13];
-        float _self23 = src[srcOffset + 14];
-        float _self33 = src[srcOffset + 15];
-        float _t2 = Math.fma(2.0f, winCoordsZ, -1.0f);
-        float _t8 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
-        float _t9 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
-        float _t11 = Math.fma(_self30, _t8, Math.fma(_self31, _t9, Math.fma(_self32, _t2, _self33)));
-        float _t11_inv = 1.0f / _t11;
-        dest[destOffset + 0] = Math.fma(_self00, _t8, Math.fma(_self01, _t9, Math.fma(_self02, _t2, _self03))) * _t11_inv;
-        dest[destOffset + 1] = Math.fma(_self10, _t8, Math.fma(_self11, _t9, Math.fma(_self12, _t2, _self13))) * _t11_inv;
-        dest[destOffset + 2] = Math.fma(_self20, _t8, Math.fma(_self21, _t9, Math.fma(_self22, _t2, _self23))) * _t11_inv;
-        return dest;
+    public static float[] unprojectInv(float[] dest, int destOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsArray.unprojectInv_no(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsArray.unprojectInv_zo(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+        }
+    }
+
+    /**
+     * Unproject the given window coordinates into object space using this matrix (which is assumed
+     * to be the inverse of a projection-view matrix) and the given viewport and store the result in
+     * {@code dest}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
+     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
+     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
+     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     * @param viewportX the {@code x} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportY the {@code y} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportZ the {@code z} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportW the {@code w} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @return {@code dest}
+     */
+    public static float[] unprojectInv(float[] dest, int destOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) { return unprojectInv(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectInv(float[], int, float[], int, float, float, float, float, float, float, float, DepthRange)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer unprojectInv(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsTypedBuffer.unprojectInv_no(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsTypedBuffer.unprojectInv_zo(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #unprojectInv(float[], int, float[], int, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer unprojectInv(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.unprojectInv_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
-        return Float4x4OpsKernelsTypedBuffer.unprojectInv_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+    public static java.nio.FloatBuffer unprojectInv(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) { return unprojectInv(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectInv(float[], int, float[], int, float, float, float, float, float, float, float, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    public static java.nio.ByteBuffer unprojectInv(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsByteBuffer.unprojectInv_no(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsByteBuffer.unprojectInv_zo(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #unprojectInv(float[], int, float[], int, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
-    public static java.nio.ByteBuffer unprojectInv(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.unprojectInv_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
-        return Float4x4OpsKernelsByteBuffer.unprojectInv_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+    public static java.nio.ByteBuffer unprojectInv(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) { return unprojectInv(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectInv(float[], int, float[], int, float, float, float, float, float, float, float, DepthRange)} on {@link java.lang.foreign.MemorySegment} storage. */
+    public static java.lang.foreign.MemorySegment unprojectInv(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsSegment.unprojectInv_no(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsSegment.unprojectInv_zo(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #unprojectInv(float[], int, float[], int, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
-    public static java.lang.foreign.MemorySegment unprojectInv(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.unprojectInv_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
-        return Float4x4OpsKernelsSegment.unprojectInv_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+    public static java.lang.foreign.MemorySegment unprojectInv(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) { return unprojectInv(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectInv(float[], int, float[], int, float, float, float, float, float, float, float, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long unprojectInv(long dest, long src, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsAddress.unprojectInv_no(dest, src, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsAddress.unprojectInv_zo(dest, src, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #unprojectInv(float[], int, float[], int, float, float, float, float, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long unprojectInv(long dest, long src, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4x4OpsKernelsAddress.unprojectInv_unsafe(dest, src, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
-        unprojectInv(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 64L), 0L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
-        return dest;
-    }
+    public static long unprojectInv(long dest, long src, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) { return unprojectInv(dest, src, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
      * Unproject the given window coordinates into object space using this matrix (which is assumed
@@ -25754,67 +26062,79 @@ public final class Float4x4Ops {
      * @param winCoordsOffset the element index in {@code winCoords} at which the vector starts
      * @param viewport the storage holding the viewport {@code [x, y, width, height]}
      * @param viewportOffset the element index in {@code viewport} at which the vector starts
+     * @param depthRange the clip-space depth range the projection maps onto
      * @return {@code dest}
      */
-    public static float[] unprojectInv(float[] dest, int destOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self20 = src[srcOffset + 2];
-        float _self30 = src[srcOffset + 3];
-        float _self01 = src[srcOffset + 4];
-        float _self11 = src[srcOffset + 5];
-        float _self21 = src[srcOffset + 6];
-        float _self31 = src[srcOffset + 7];
-        float _self02 = src[srcOffset + 8];
-        float _self12 = src[srcOffset + 9];
-        float _self22 = src[srcOffset + 10];
-        float _self32 = src[srcOffset + 11];
-        float _self03 = src[srcOffset + 12];
-        float _self13 = src[srcOffset + 13];
-        float _self23 = src[srcOffset + 14];
-        float _self33 = src[srcOffset + 15];
-        float _winCoordsx = winCoords[winCoordsOffset + 0];
-        float _winCoordsy = winCoords[winCoordsOffset + 1];
-        float _winCoordsz = winCoords[winCoordsOffset + 2];
-        float _viewportx = viewport[viewportOffset + 0];
-        float _viewporty = viewport[viewportOffset + 1];
-        float _viewportz = viewport[viewportOffset + 2];
-        float _viewportw = viewport[viewportOffset + 3];
-        float _t2 = Math.fma(2.0f, _winCoordsz, -1.0f);
-        float _t8 = 2.0f * (_winCoordsx - _viewportx) / _viewportz - 1.0f;
-        float _t9 = 2.0f * (_winCoordsy - _viewporty) / _viewportw - 1.0f;
-        float _t11 = Math.fma(_self30, _t8, Math.fma(_self31, _t9, Math.fma(_self32, _t2, _self33)));
-        float _t11_inv = 1.0f / _t11;
-        dest[destOffset + 0] = Math.fma(_self00, _t8, Math.fma(_self01, _t9, Math.fma(_self02, _t2, _self03))) * _t11_inv;
-        dest[destOffset + 1] = Math.fma(_self10, _t8, Math.fma(_self11, _t9, Math.fma(_self12, _t2, _self13))) * _t11_inv;
-        dest[destOffset + 2] = Math.fma(_self20, _t8, Math.fma(_self21, _t9, Math.fma(_self22, _t2, _self23))) * _t11_inv;
-        return dest;
+    public static float[] unprojectInv(float[] dest, int destOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsArray.unprojectInv_no(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsArray.unprojectInv_zo(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+        }
+    }
+
+    /**
+     * Unproject the given window coordinates into object space using this matrix (which is assumed
+     * to be the inverse of a projection-view matrix) and the given viewport and store the result in
+     * {@code dest}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param winCoords the storage holding the window coordinates {@code (x, y, depth)} to
+     *        unproject
+     * @param winCoordsOffset the element index in {@code winCoords} at which the vector starts
+     * @param viewport the storage holding the viewport {@code [x, y, width, height]}
+     * @param viewportOffset the element index in {@code viewport} at which the vector starts
+     * @return {@code dest}
+     */
+    public static float[] unprojectInv(float[] dest, int destOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset) { return unprojectInv(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectInv(float[], int, float[], int, float[], int, float[], int, DepthRange)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer unprojectInv(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer winCoords, int winCoordsOffset, java.nio.FloatBuffer viewport, int viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsTypedBuffer.unprojectInv_no(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsTypedBuffer.unprojectInv_zo(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+        }
     }
 
     /** {@link #unprojectInv(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer unprojectInv(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer winCoords, int winCoordsOffset, java.nio.FloatBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Float4x4OpsKernelsTypedBuffer.unprojectInv_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
-        return Float4x4OpsKernelsTypedBuffer.unprojectInv_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    public static java.nio.FloatBuffer unprojectInv(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer winCoords, int winCoordsOffset, java.nio.FloatBuffer viewport, int viewportOffset) { return unprojectInv(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectInv(float[], int, float[], int, float[], int, float[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    public static java.nio.ByteBuffer unprojectInv(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsByteBuffer.unprojectInv_no(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsByteBuffer.unprojectInv_zo(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+        }
     }
 
     /** {@link #unprojectInv(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
-    public static java.nio.ByteBuffer unprojectInv(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Float4x4OpsKernelsByteBuffer.unprojectInv_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
-        return Float4x4OpsKernelsByteBuffer.unprojectInv_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    public static java.nio.ByteBuffer unprojectInv(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) { return unprojectInv(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectInv(float[], int, float[], int, float[], int, float[], int, DepthRange)} on {@link java.lang.foreign.MemorySegment} storage. */
+    public static java.lang.foreign.MemorySegment unprojectInv(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsSegment.unprojectInv_no(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsSegment.unprojectInv_zo(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+        }
     }
 
     /** {@link #unprojectInv(float[], int, float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
-    public static java.lang.foreign.MemorySegment unprojectInv(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && winCoords.isNative() && viewport.isNative()) return Float4x4OpsKernelsSegment.unprojectInv_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
-        return Float4x4OpsKernelsSegment.unprojectInv_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    public static java.lang.foreign.MemorySegment unprojectInv(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) { return unprojectInv(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectInv(float[], int, float[], int, float[], int, float[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long unprojectInv(long dest, long src, long winCoords, long viewport, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsAddress.unprojectInv_no(dest, src, winCoords, viewport); }
+            default -> { return Float4x4OpsKernelsAddress.unprojectInv_zo(dest, src, winCoords, viewport); }
+        }
     }
 
     /** {@link #unprojectInv(float[], int, float[], int, float[], int, float[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long unprojectInv(long dest, long src, long winCoords, long viewport) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4x4OpsKernelsAddress.unprojectInv_unsafe(dest, src, winCoords, viewport);
-        unprojectInv(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 64L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(winCoords, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(viewport, 16L), 0L);
-        return dest;
-    }
+    public static long unprojectInv(long dest, long src, long winCoords, long viewport) { return unprojectInv(dest, src, winCoords, viewport, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
@@ -25839,67 +26159,88 @@ public final class Float4x4Ops {
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportW the {@code w} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param depthRange the clip-space depth range the projection maps onto
      * @return {@code rayOrigin}
      */
-    public static float[] unprojectInvRay(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self20 = src[srcOffset + 2];
-        float _self30 = src[srcOffset + 3];
-        float _self01 = src[srcOffset + 4];
-        float _self11 = src[srcOffset + 5];
-        float _self21 = src[srcOffset + 6];
-        float _self31 = src[srcOffset + 7];
-        float _self02 = src[srcOffset + 8];
-        float _self12 = src[srcOffset + 9];
-        float _self22 = src[srcOffset + 10];
-        float _self32 = src[srcOffset + 11];
-        float _self03 = src[srcOffset + 12];
-        float _self13 = src[srcOffset + 13];
-        float _self23 = src[srcOffset + 14];
-        float _self33 = src[srcOffset + 15];
-        float _t11 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
-        float _t12 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
-        float _t19 = Math.fma(_self30, _t11, Math.fma(_self31, _t12, _self33 - _self32));
-        float _t19_inv = 1.0f / _t19;
-        float _t22 = Math.fma(_self30, _t11, Math.fma(_self31, _t12, _self33 + _self32));
-        float _t22_inv = 1.0f / _t22;
-        float _t23 = Math.fma(_self00, _t11, Math.fma(_self01, _t12, _self03 - _self02)) * _t19_inv;
-        float _t24 = Math.fma(_self10, _t11, Math.fma(_self11, _t12, _self13 - _self12)) * _t19_inv;
-        float _t25 = Math.fma(_self20, _t11, Math.fma(_self21, _t12, _self23 - _self22)) * _t19_inv;
-        rayOrigin[rayOriginOffset + 0] = _t23;
-        rayOrigin[rayOriginOffset + 1] = _t24;
-        rayOrigin[rayOriginOffset + 2] = _t25;
-        rayDir[rayDirOffset + 0] = Math.fma(_self00, _t11, Math.fma(_self01, _t12, _self03 + _self02)) * _t22_inv - _t23;
-        rayDir[rayDirOffset + 1] = Math.fma(_self10, _t11, Math.fma(_self11, _t12, _self13 + _self12)) * _t22_inv - _t24;
-        rayDir[rayDirOffset + 2] = Math.fma(_self20, _t11, Math.fma(_self21, _t12, _self23 + _self22)) * _t22_inv - _t25;
-        return rayOrigin;
+    public static float[] unprojectInvRay(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsArray.unprojectInvRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsArray.unprojectInvRay_zo(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+        }
+    }
+
+    /**
+     * Unproject the given window coordinates into a ray in object space using this matrix (which is
+     * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
+     * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param rayOrigin will hold the origin of the ray
+     * @param rayOriginOffset the element index in {@code rayOrigin} at which the matrix starts
+     * @param rayDir will hold the direction of the ray
+     * @param rayDirOffset the element index in {@code rayDir} at which the matrix starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
+     *        unproject {@code (winCoordsX, winCoordsY)}
+     * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y)} to
+     *        unproject {@code (winCoordsX, winCoordsY)}
+     * @param viewportX the {@code x} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportY the {@code y} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportZ the {@code z} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportW the {@code w} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @return {@code rayOrigin}
+     */
+    public static float[] unprojectInvRay(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) { return unprojectInvRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectInvRay(float[], int, float[], int, float[], int, float, float, float, float, float, float, DepthRange)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer unprojectInvRay(java.nio.FloatBuffer rayOrigin, int rayOriginOffset, java.nio.FloatBuffer rayDir, int rayDirOffset, java.nio.FloatBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsTypedBuffer.unprojectInvRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsTypedBuffer.unprojectInvRay_zo(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #unprojectInvRay(float[], int, float[], int, float[], int, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer unprojectInvRay(java.nio.FloatBuffer rayOrigin, int rayOriginOffset, java.nio.FloatBuffer rayDir, int rayDirOffset, java.nio.FloatBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.unprojectInvRay_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
-        return Float4x4OpsKernelsTypedBuffer.unprojectInvRay_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+    public static java.nio.FloatBuffer unprojectInvRay(java.nio.FloatBuffer rayOrigin, int rayOriginOffset, java.nio.FloatBuffer rayDir, int rayDirOffset, java.nio.FloatBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) { return unprojectInvRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectInvRay(float[], int, float[], int, float[], int, float, float, float, float, float, float, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    public static java.nio.ByteBuffer unprojectInvRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsByteBuffer.unprojectInvRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsByteBuffer.unprojectInvRay_zo(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #unprojectInvRay(float[], int, float[], int, float[], int, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
-    public static java.nio.ByteBuffer unprojectInvRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.unprojectInvRay_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
-        return Float4x4OpsKernelsByteBuffer.unprojectInvRay_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+    public static java.nio.ByteBuffer unprojectInvRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) { return unprojectInvRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectInvRay(float[], int, float[], int, float[], int, float, float, float, float, float, float, DepthRange)} on {@link java.lang.foreign.MemorySegment} storage. */
+    public static java.lang.foreign.MemorySegment unprojectInvRay(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsSegment.unprojectInvRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsSegment.unprojectInvRay_zo(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #unprojectInvRay(float[], int, float[], int, float[], int, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
-    public static java.lang.foreign.MemorySegment unprojectInvRay(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isNative() && !rayOrigin.isReadOnly() && rayDir.isNative() && !rayDir.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.unprojectInvRay_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
-        return Float4x4OpsKernelsSegment.unprojectInvRay_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+    public static java.lang.foreign.MemorySegment unprojectInvRay(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) { return unprojectInvRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectInvRay(float[], int, float[], int, float[], int, float, float, float, float, float, float, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long unprojectInvRay(long rayOrigin, long rayDir, long src, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsAddress.unprojectInvRay_no(rayOrigin, rayDir, src, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsAddress.unprojectInvRay_zo(rayOrigin, rayDir, src, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #unprojectInvRay(float[], int, float[], int, float[], int, float, float, float, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long unprojectInvRay(long rayOrigin, long rayDir, long src, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4x4OpsKernelsAddress.unprojectInvRay_unsafe(rayOrigin, rayDir, src, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
-        unprojectInvRay(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayOrigin, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayDir, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 64L), 0L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
-        return rayOrigin;
-    }
+    public static long unprojectInvRay(long rayOrigin, long rayDir, long src, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) { return unprojectInvRay(rayOrigin, rayDir, src, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
@@ -25916,73 +26257,80 @@ public final class Float4x4Ops {
      * @param winCoordsOffset the element index in {@code winCoords} at which the vector starts
      * @param viewport the storage holding the viewport {@code [x, y, width, height]}
      * @param viewportOffset the element index in {@code viewport} at which the vector starts
+     * @param depthRange the clip-space depth range the projection maps onto
      * @return {@code rayOrigin}
      */
-    public static float[] unprojectInvRay(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self20 = src[srcOffset + 2];
-        float _self30 = src[srcOffset + 3];
-        float _self01 = src[srcOffset + 4];
-        float _self11 = src[srcOffset + 5];
-        float _self21 = src[srcOffset + 6];
-        float _self31 = src[srcOffset + 7];
-        float _self02 = src[srcOffset + 8];
-        float _self12 = src[srcOffset + 9];
-        float _self22 = src[srcOffset + 10];
-        float _self32 = src[srcOffset + 11];
-        float _self03 = src[srcOffset + 12];
-        float _self13 = src[srcOffset + 13];
-        float _self23 = src[srcOffset + 14];
-        float _self33 = src[srcOffset + 15];
-        float _winCoordsx = winCoords[winCoordsOffset + 0];
-        float _winCoordsy = winCoords[winCoordsOffset + 1];
-        float _viewportx = viewport[viewportOffset + 0];
-        float _viewporty = viewport[viewportOffset + 1];
-        float _viewportz = viewport[viewportOffset + 2];
-        float _viewportw = viewport[viewportOffset + 3];
-        float _t11 = 2.0f * (_winCoordsx - _viewportx) / _viewportz - 1.0f;
-        float _t12 = 2.0f * (_winCoordsy - _viewporty) / _viewportw - 1.0f;
-        float _t19 = Math.fma(_self30, _t11, Math.fma(_self31, _t12, _self33 - _self32));
-        float _t19_inv = 1.0f / _t19;
-        float _t22 = Math.fma(_self30, _t11, Math.fma(_self31, _t12, _self33 + _self32));
-        float _t22_inv = 1.0f / _t22;
-        float _t23 = Math.fma(_self00, _t11, Math.fma(_self01, _t12, _self03 - _self02)) * _t19_inv;
-        float _t24 = Math.fma(_self10, _t11, Math.fma(_self11, _t12, _self13 - _self12)) * _t19_inv;
-        float _t25 = Math.fma(_self20, _t11, Math.fma(_self21, _t12, _self23 - _self22)) * _t19_inv;
-        rayOrigin[rayOriginOffset + 0] = _t23;
-        rayOrigin[rayOriginOffset + 1] = _t24;
-        rayOrigin[rayOriginOffset + 2] = _t25;
-        rayDir[rayDirOffset + 0] = Math.fma(_self00, _t11, Math.fma(_self01, _t12, _self03 + _self02)) * _t22_inv - _t23;
-        rayDir[rayDirOffset + 1] = Math.fma(_self10, _t11, Math.fma(_self11, _t12, _self13 + _self12)) * _t22_inv - _t24;
-        rayDir[rayDirOffset + 2] = Math.fma(_self20, _t11, Math.fma(_self21, _t12, _self23 + _self22)) * _t22_inv - _t25;
-        return rayOrigin;
+    public static float[] unprojectInvRay(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsArray.unprojectInvRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsArray.unprojectInvRay_zo(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+        }
+    }
+
+    /**
+     * Unproject the given window coordinates into a ray in object space using this matrix (which is
+     * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
+     * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param rayOrigin will hold the origin of the ray
+     * @param rayOriginOffset the element index in {@code rayOrigin} at which the matrix starts
+     * @param rayDir will hold the direction of the ray
+     * @param rayDirOffset the element index in {@code rayDir} at which the matrix starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param winCoords the storage holding the window coordinates {@code (x, y)} to unproject
+     * @param winCoordsOffset the element index in {@code winCoords} at which the vector starts
+     * @param viewport the storage holding the viewport {@code [x, y, width, height]}
+     * @param viewportOffset the element index in {@code viewport} at which the vector starts
+     * @return {@code rayOrigin}
+     */
+    public static float[] unprojectInvRay(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset) { return unprojectInvRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectInvRay(float[], int, float[], int, float[], int, float[], int, float[], int, DepthRange)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer unprojectInvRay(java.nio.FloatBuffer rayOrigin, int rayOriginOffset, java.nio.FloatBuffer rayDir, int rayDirOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer winCoords, int winCoordsOffset, java.nio.FloatBuffer viewport, int viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsTypedBuffer.unprojectInvRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsTypedBuffer.unprojectInvRay_zo(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+        }
     }
 
     /** {@link #unprojectInvRay(float[], int, float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer unprojectInvRay(java.nio.FloatBuffer rayOrigin, int rayOriginOffset, java.nio.FloatBuffer rayDir, int rayDirOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer winCoords, int winCoordsOffset, java.nio.FloatBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Float4x4OpsKernelsTypedBuffer.unprojectInvRay_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
-        return Float4x4OpsKernelsTypedBuffer.unprojectInvRay_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    public static java.nio.FloatBuffer unprojectInvRay(java.nio.FloatBuffer rayOrigin, int rayOriginOffset, java.nio.FloatBuffer rayDir, int rayDirOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer winCoords, int winCoordsOffset, java.nio.FloatBuffer viewport, int viewportOffset) { return unprojectInvRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectInvRay(float[], int, float[], int, float[], int, float[], int, float[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    public static java.nio.ByteBuffer unprojectInvRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsByteBuffer.unprojectInvRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsByteBuffer.unprojectInvRay_zo(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+        }
     }
 
     /** {@link #unprojectInvRay(float[], int, float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
-    public static java.nio.ByteBuffer unprojectInvRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Float4x4OpsKernelsByteBuffer.unprojectInvRay_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
-        return Float4x4OpsKernelsByteBuffer.unprojectInvRay_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    public static java.nio.ByteBuffer unprojectInvRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) { return unprojectInvRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectInvRay(float[], int, float[], int, float[], int, float[], int, float[], int, DepthRange)} on {@link java.lang.foreign.MemorySegment} storage. */
+    public static java.lang.foreign.MemorySegment unprojectInvRay(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsSegment.unprojectInvRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsSegment.unprojectInvRay_zo(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+        }
     }
 
     /** {@link #unprojectInvRay(float[], int, float[], int, float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
-    public static java.lang.foreign.MemorySegment unprojectInvRay(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isNative() && !rayOrigin.isReadOnly() && rayDir.isNative() && !rayDir.isReadOnly() && src.isNative() && winCoords.isNative() && viewport.isNative()) return Float4x4OpsKernelsSegment.unprojectInvRay_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
-        return Float4x4OpsKernelsSegment.unprojectInvRay_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    public static java.lang.foreign.MemorySegment unprojectInvRay(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) { return unprojectInvRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectInvRay(float[], int, float[], int, float[], int, float[], int, float[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long unprojectInvRay(long rayOrigin, long rayDir, long src, long winCoords, long viewport, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsAddress.unprojectInvRay_no(rayOrigin, rayDir, src, winCoords, viewport); }
+            default -> { return Float4x4OpsKernelsAddress.unprojectInvRay_zo(rayOrigin, rayDir, src, winCoords, viewport); }
+        }
     }
 
     /** {@link #unprojectInvRay(float[], int, float[], int, float[], int, float[], int, float[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long unprojectInvRay(long rayOrigin, long rayDir, long src, long winCoords, long viewport) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4x4OpsKernelsAddress.unprojectInvRay_unsafe(rayOrigin, rayDir, src, winCoords, viewport);
-        unprojectInvRay(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayOrigin, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayDir, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 64L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(winCoords, 8L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(viewport, 16L), 0L);
-        return rayOrigin;
-    }
+    public static long unprojectInvRay(long rayOrigin, long rayDir, long src, long winCoords, long viewport) { return unprojectInvRay(rayOrigin, rayDir, src, winCoords, viewport, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
@@ -26007,99 +26355,88 @@ public final class Float4x4Ops {
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportW the {@code w} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param depthRange the clip-space depth range the projection maps onto
      * @return {@code rayOrigin}
      */
-    public static float[] unprojectRay(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self20 = src[srcOffset + 2];
-        float _self30 = src[srcOffset + 3];
-        float _self01 = src[srcOffset + 4];
-        float _self11 = src[srcOffset + 5];
-        float _self21 = src[srcOffset + 6];
-        float _self31 = src[srcOffset + 7];
-        float _self02 = src[srcOffset + 8];
-        float _self12 = src[srcOffset + 9];
-        float _self22 = src[srcOffset + 10];
-        float _self32 = src[srcOffset + 11];
-        float _self03 = src[srcOffset + 12];
-        float _self13 = src[srcOffset + 13];
-        float _self23 = src[srcOffset + 14];
-        float _self33 = src[srcOffset + 15];
-        float _t0 = -_self01;
-        float _t1 = -_self00;
-        float _t44 = Math.fma(_self21, _self32, -(_self22 * _self31));
-        float _t45 = Math.fma(_self22, _self33, -(_self23 * _self32));
-        float _t46 = Math.fma(_self21, _self33, -(_self23 * _self31));
-        float _t47 = Math.fma(_self11, _self33, -(_self13 * _self31));
-        float _t48 = Math.fma(_self12, _self33, -(_self13 * _self32));
-        float _t49 = Math.fma(_self12, _self23, -(_self13 * _self22));
-        float _t50 = Math.fma(_self11, _self32, -(_self12 * _self31));
-        float _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
-        float _t52 = Math.fma(_self11, _self22, -(_self12 * _self21));
-        float _t53 = Math.fma(_self10, _self32, -(_self12 * _self30));
-        float _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
-        float _t55 = Math.fma(_self20, _self31, -(_self21 * _self30));
-        float _t56 = Math.fma(_self20, _self32, -(_self22 * _self30));
-        float _t57 = Math.fma(_self10, _self21, -(_self11 * _self20));
-        float _t58 = Math.fma(_self10, _self22, -(_self12 * _self20));
-        float _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
-        float _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
-        float _t61 = Math.fma(_self10, _self23, -(_self13 * _self20));
-        float _t62 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
-        float _t63 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
-        float _t91 = -(_self01 * _t58);
-        float _t95 = -(_self02 * _t61);
-        float _t105 = Math.fma(_self02, _t51, -(_self03 * _t52));
-        float _t117 = Math.fma(_self01, _t61, -(_self03 * _t57));
-        float _t122 = Math.fma(_self13, _t44, Math.fma(_self11, _t45, -(_self12 * _t46)));
-        float _t128 = Math.fma(_self13, _t55, Math.fma(_self10, _t46, -(_self11 * _t60)));
-        float _t131 = Math.fma(_self02, _t55, Math.fma(_self00, _t44, -(_self01 * _t56))) * _t63;
-        float _t133 = Math.fma(_self03, _t56, Math.fma(_self00, _t45, -(_self02 * _t60))) * _t63;
-        float _t136 = -(Math.fma(_self03, _t44, Math.fma(_self01, _t45, -(_self02 * _t46))) * _t63);
-        float _t137 = -(Math.fma(_self12, _t55, Math.fma(_self10, _t44, -(_self11 * _t56))) * _t62);
-        float _t138 = -(Math.fma(_self13, _t56, Math.fma(_self10, _t45, -(_self12 * _t60))) * _t62);
-        float _t139 = -(Math.fma(_self03, _t55, Math.fma(_self00, _t46, -(_self01 * _t60))) * _t63);
-        float _t158 = Math.fma(_self00, _t50, -(_self01 * _t53)) + Math.fma(_self02, _t54, _t131) + (Math.fma(_self00, _t52, _t137) + Math.fma(_self02, _t57, _t91));
-        float _t158_inv = 1.0f / _t158;
-        float _t160 = Math.fma(_self00, _t52, _t91) + Math.fma(_self02, _t57, _t131) + (Math.fma(_t1, _t50, _t137) + Math.fma(_self01, _t53, -(_self02 * _t54)));
-        float _t160_inv = 1.0f / _t160;
-        float _t163 = (Math.fma(_self00, _t48, -(_self02 * _t59)) + Math.fma(_self03, _t53, _t133) + (Math.fma(_self00, _t49, _t138) + Math.fma(_self03, _t58, _t95))) * _t158_inv;
-        float _t164 = (Math.fma(_t122, _t62, _t136) + Math.fma(_self02, _t47, -(_self01 * _t48)) + (Math.fma(_t0, _t49, -(_self03 * _t50)) + _t105)) * _t158_inv;
-        float _t165 = (Math.fma(_t128, _t62, _t139) + Math.fma(_self01, _t59, -(_self00 * _t47)) + (Math.fma(_t1, _t51, -(_self03 * _t54)) + _t117)) * _t158_inv;
-        rayOrigin[rayOriginOffset + 0] = _t164;
-        rayOrigin[rayOriginOffset + 1] = _t163;
-        rayOrigin[rayOriginOffset + 2] = _t165;
-        rayDir[rayDirOffset + 0] = (Math.fma(_self01, _t48, -(_self02 * _t47)) + Math.fma(_self03, _t50, _t122 * _t62) + (Math.fma(_t0, _t49, _t136) + _t105)) * _t160_inv - _t164;
-        rayDir[rayDirOffset + 1] = (Math.fma(_self00, _t49, _t95) + Math.fma(_self03, _t58, _t133) + (Math.fma(_t1, _t48, _t138) + Math.fma(_self02, _t59, -(_self03 * _t53)))) * _t160_inv - _t163;
-        rayDir[rayDirOffset + 2] = (Math.fma(_self00, _t47, -(_self01 * _t59)) + Math.fma(_self03, _t54, _t128 * _t62) + (Math.fma(_t1, _t51, _t139) + _t117)) * _t160_inv - _t165;
-        return rayOrigin;
+    public static float[] unprojectRay(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsArray.unprojectRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsArray.unprojectRay_zo(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+        }
+    }
+
+    /**
+     * Unproject the given window coordinates into a ray in object space using this matrix (which is
+     * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
+     * the ray direction in {@code rayDir}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param rayOrigin will hold the origin of the ray
+     * @param rayOriginOffset the element index in {@code rayOrigin} at which the matrix starts
+     * @param rayDir will hold the direction of the ray
+     * @param rayDirOffset the element index in {@code rayDir} at which the matrix starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
+     *        unproject {@code (winCoordsX, winCoordsY)}
+     * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y)} to
+     *        unproject {@code (winCoordsX, winCoordsY)}
+     * @param viewportX the {@code x} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportY the {@code y} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportZ the {@code z} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @param viewportW the {@code w} component of the vector
+     *        {@code (viewportX, viewportY, viewportZ, viewportW)}
+     * @return {@code rayOrigin}
+     */
+    public static float[] unprojectRay(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) { return unprojectRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectRay(float[], int, float[], int, float[], int, float, float, float, float, float, float, DepthRange)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer unprojectRay(java.nio.FloatBuffer rayOrigin, int rayOriginOffset, java.nio.FloatBuffer rayDir, int rayDirOffset, java.nio.FloatBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsTypedBuffer.unprojectRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsTypedBuffer.unprojectRay_zo(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #unprojectRay(float[], int, float[], int, float[], int, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer unprojectRay(java.nio.FloatBuffer rayOrigin, int rayOriginOffset, java.nio.FloatBuffer rayDir, int rayDirOffset, java.nio.FloatBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.unprojectRay_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
-        return Float4x4OpsKernelsTypedBuffer.unprojectRay_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+    public static java.nio.FloatBuffer unprojectRay(java.nio.FloatBuffer rayOrigin, int rayOriginOffset, java.nio.FloatBuffer rayDir, int rayDirOffset, java.nio.FloatBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) { return unprojectRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectRay(float[], int, float[], int, float[], int, float, float, float, float, float, float, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    public static java.nio.ByteBuffer unprojectRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsByteBuffer.unprojectRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsByteBuffer.unprojectRay_zo(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #unprojectRay(float[], int, float[], int, float[], int, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
-    public static java.nio.ByteBuffer unprojectRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.unprojectRay_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
-        return Float4x4OpsKernelsByteBuffer.unprojectRay_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+    public static java.nio.ByteBuffer unprojectRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) { return unprojectRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectRay(float[], int, float[], int, float[], int, float, float, float, float, float, float, DepthRange)} on {@link java.lang.foreign.MemorySegment} storage. */
+    public static java.lang.foreign.MemorySegment unprojectRay(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsSegment.unprojectRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsSegment.unprojectRay_zo(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #unprojectRay(float[], int, float[], int, float[], int, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
-    public static java.lang.foreign.MemorySegment unprojectRay(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isNative() && !rayOrigin.isReadOnly() && rayDir.isNative() && !rayDir.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.unprojectRay_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
-        return Float4x4OpsKernelsSegment.unprojectRay_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+    public static java.lang.foreign.MemorySegment unprojectRay(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) { return unprojectRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectRay(float[], int, float[], int, float[], int, float, float, float, float, float, float, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long unprojectRay(long rayOrigin, long rayDir, long src, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsAddress.unprojectRay_no(rayOrigin, rayDir, src, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+            default -> { return Float4x4OpsKernelsAddress.unprojectRay_zo(rayOrigin, rayDir, src, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
+        }
     }
 
     /** {@link #unprojectRay(float[], int, float[], int, float[], int, float, float, float, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long unprojectRay(long rayOrigin, long rayDir, long src, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4x4OpsKernelsAddress.unprojectRay_unsafe(rayOrigin, rayDir, src, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
-        unprojectRay(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayOrigin, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayDir, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 64L), 0L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
-        return rayOrigin;
-    }
+    public static long unprojectRay(long rayOrigin, long rayDir, long src, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) { return unprojectRay(rayOrigin, rayDir, src, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
@@ -26116,105 +26453,80 @@ public final class Float4x4Ops {
      * @param winCoordsOffset the element index in {@code winCoords} at which the vector starts
      * @param viewport the storage holding the viewport {@code [x, y, width, height]}
      * @param viewportOffset the element index in {@code viewport} at which the vector starts
+     * @param depthRange the clip-space depth range the projection maps onto
      * @return {@code rayOrigin}
      */
-    public static float[] unprojectRay(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self20 = src[srcOffset + 2];
-        float _self30 = src[srcOffset + 3];
-        float _self01 = src[srcOffset + 4];
-        float _self11 = src[srcOffset + 5];
-        float _self21 = src[srcOffset + 6];
-        float _self31 = src[srcOffset + 7];
-        float _self02 = src[srcOffset + 8];
-        float _self12 = src[srcOffset + 9];
-        float _self22 = src[srcOffset + 10];
-        float _self32 = src[srcOffset + 11];
-        float _self03 = src[srcOffset + 12];
-        float _self13 = src[srcOffset + 13];
-        float _self23 = src[srcOffset + 14];
-        float _self33 = src[srcOffset + 15];
-        float _winCoordsx = winCoords[winCoordsOffset + 0];
-        float _winCoordsy = winCoords[winCoordsOffset + 1];
-        float _viewportx = viewport[viewportOffset + 0];
-        float _viewporty = viewport[viewportOffset + 1];
-        float _viewportz = viewport[viewportOffset + 2];
-        float _viewportw = viewport[viewportOffset + 3];
-        float _t0 = -_self01;
-        float _t1 = -_self00;
-        float _t44 = Math.fma(_self21, _self32, -(_self22 * _self31));
-        float _t45 = Math.fma(_self22, _self33, -(_self23 * _self32));
-        float _t46 = Math.fma(_self21, _self33, -(_self23 * _self31));
-        float _t47 = Math.fma(_self11, _self33, -(_self13 * _self31));
-        float _t48 = Math.fma(_self12, _self33, -(_self13 * _self32));
-        float _t49 = Math.fma(_self12, _self23, -(_self13 * _self22));
-        float _t50 = Math.fma(_self11, _self32, -(_self12 * _self31));
-        float _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
-        float _t52 = Math.fma(_self11, _self22, -(_self12 * _self21));
-        float _t53 = Math.fma(_self10, _self32, -(_self12 * _self30));
-        float _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
-        float _t55 = Math.fma(_self20, _self31, -(_self21 * _self30));
-        float _t56 = Math.fma(_self20, _self32, -(_self22 * _self30));
-        float _t57 = Math.fma(_self10, _self21, -(_self11 * _self20));
-        float _t58 = Math.fma(_self10, _self22, -(_self12 * _self20));
-        float _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
-        float _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
-        float _t61 = Math.fma(_self10, _self23, -(_self13 * _self20));
-        float _t62 = 2.0f * (_winCoordsx - _viewportx) / _viewportz - 1.0f;
-        float _t63 = 2.0f * (_winCoordsy - _viewporty) / _viewportw - 1.0f;
-        float _t91 = -(_self01 * _t58);
-        float _t95 = -(_self02 * _t61);
-        float _t105 = Math.fma(_self02, _t51, -(_self03 * _t52));
-        float _t117 = Math.fma(_self01, _t61, -(_self03 * _t57));
-        float _t122 = Math.fma(_self13, _t44, Math.fma(_self11, _t45, -(_self12 * _t46)));
-        float _t128 = Math.fma(_self13, _t55, Math.fma(_self10, _t46, -(_self11 * _t60)));
-        float _t131 = Math.fma(_self02, _t55, Math.fma(_self00, _t44, -(_self01 * _t56))) * _t63;
-        float _t133 = Math.fma(_self03, _t56, Math.fma(_self00, _t45, -(_self02 * _t60))) * _t63;
-        float _t136 = -(Math.fma(_self03, _t44, Math.fma(_self01, _t45, -(_self02 * _t46))) * _t63);
-        float _t137 = -(Math.fma(_self12, _t55, Math.fma(_self10, _t44, -(_self11 * _t56))) * _t62);
-        float _t138 = -(Math.fma(_self13, _t56, Math.fma(_self10, _t45, -(_self12 * _t60))) * _t62);
-        float _t139 = -(Math.fma(_self03, _t55, Math.fma(_self00, _t46, -(_self01 * _t60))) * _t63);
-        float _t158 = Math.fma(_self00, _t50, -(_self01 * _t53)) + Math.fma(_self02, _t54, _t131) + (Math.fma(_self00, _t52, _t137) + Math.fma(_self02, _t57, _t91));
-        float _t158_inv = 1.0f / _t158;
-        float _t160 = Math.fma(_self00, _t52, _t91) + Math.fma(_self02, _t57, _t131) + (Math.fma(_t1, _t50, _t137) + Math.fma(_self01, _t53, -(_self02 * _t54)));
-        float _t160_inv = 1.0f / _t160;
-        float _t163 = (Math.fma(_self00, _t48, -(_self02 * _t59)) + Math.fma(_self03, _t53, _t133) + (Math.fma(_self00, _t49, _t138) + Math.fma(_self03, _t58, _t95))) * _t158_inv;
-        float _t164 = (Math.fma(_t122, _t62, _t136) + Math.fma(_self02, _t47, -(_self01 * _t48)) + (Math.fma(_t0, _t49, -(_self03 * _t50)) + _t105)) * _t158_inv;
-        float _t165 = (Math.fma(_t128, _t62, _t139) + Math.fma(_self01, _t59, -(_self00 * _t47)) + (Math.fma(_t1, _t51, -(_self03 * _t54)) + _t117)) * _t158_inv;
-        rayOrigin[rayOriginOffset + 0] = _t164;
-        rayOrigin[rayOriginOffset + 1] = _t163;
-        rayOrigin[rayOriginOffset + 2] = _t165;
-        rayDir[rayDirOffset + 0] = (Math.fma(_self01, _t48, -(_self02 * _t47)) + Math.fma(_self03, _t50, _t122 * _t62) + (Math.fma(_t0, _t49, _t136) + _t105)) * _t160_inv - _t164;
-        rayDir[rayDirOffset + 1] = (Math.fma(_self00, _t49, _t95) + Math.fma(_self03, _t58, _t133) + (Math.fma(_t1, _t48, _t138) + Math.fma(_self02, _t59, -(_self03 * _t53)))) * _t160_inv - _t163;
-        rayDir[rayDirOffset + 2] = (Math.fma(_self00, _t47, -(_self01 * _t59)) + Math.fma(_self03, _t54, _t128 * _t62) + (Math.fma(_t1, _t51, _t139) + _t117)) * _t160_inv - _t165;
-        return rayOrigin;
+    public static float[] unprojectRay(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsArray.unprojectRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsArray.unprojectRay_zo(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+        }
+    }
+
+    /**
+     * Unproject the given window coordinates into a ray in object space using this matrix (which is
+     * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
+     * the ray direction in {@code rayDir}.
+     * <p>
+     * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     *
+     * @param rayOrigin will hold the origin of the ray
+     * @param rayOriginOffset the element index in {@code rayOrigin} at which the matrix starts
+     * @param rayDir will hold the direction of the ray
+     * @param rayDirOffset the element index in {@code rayDir} at which the matrix starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param winCoords the storage holding the window coordinates {@code (x, y)} to unproject
+     * @param winCoordsOffset the element index in {@code winCoords} at which the vector starts
+     * @param viewport the storage holding the viewport {@code [x, y, width, height]}
+     * @param viewportOffset the element index in {@code viewport} at which the vector starts
+     * @return {@code rayOrigin}
+     */
+    public static float[] unprojectRay(float[] rayOrigin, int rayOriginOffset, float[] rayDir, int rayDirOffset, float[] src, int srcOffset, float[] winCoords, int winCoordsOffset, float[] viewport, int viewportOffset) { return unprojectRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectRay(float[], int, float[], int, float[], int, float[], int, float[], int, DepthRange)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer unprojectRay(java.nio.FloatBuffer rayOrigin, int rayOriginOffset, java.nio.FloatBuffer rayDir, int rayDirOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer winCoords, int winCoordsOffset, java.nio.FloatBuffer viewport, int viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsTypedBuffer.unprojectRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsTypedBuffer.unprojectRay_zo(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+        }
     }
 
     /** {@link #unprojectRay(float[], int, float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer unprojectRay(java.nio.FloatBuffer rayOrigin, int rayOriginOffset, java.nio.FloatBuffer rayDir, int rayDirOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer winCoords, int winCoordsOffset, java.nio.FloatBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Float4x4OpsKernelsTypedBuffer.unprojectRay_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
-        return Float4x4OpsKernelsTypedBuffer.unprojectRay_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    public static java.nio.FloatBuffer unprojectRay(java.nio.FloatBuffer rayOrigin, int rayOriginOffset, java.nio.FloatBuffer rayDir, int rayDirOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer winCoords, int winCoordsOffset, java.nio.FloatBuffer viewport, int viewportOffset) { return unprojectRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectRay(float[], int, float[], int, float[], int, float[], int, float[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    public static java.nio.ByteBuffer unprojectRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsByteBuffer.unprojectRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsByteBuffer.unprojectRay_zo(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+        }
     }
 
     /** {@link #unprojectRay(float[], int, float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
-    public static java.nio.ByteBuffer unprojectRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Float4x4OpsKernelsByteBuffer.unprojectRay_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
-        return Float4x4OpsKernelsByteBuffer.unprojectRay_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    public static java.nio.ByteBuffer unprojectRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) { return unprojectRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectRay(float[], int, float[], int, float[], int, float[], int, float[], int, DepthRange)} on {@link java.lang.foreign.MemorySegment} storage. */
+    public static java.lang.foreign.MemorySegment unprojectRay(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsSegment.unprojectRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+            default -> { return Float4x4OpsKernelsSegment.unprojectRay_zo(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
+        }
     }
 
     /** {@link #unprojectRay(float[], int, float[], int, float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
-    public static java.lang.foreign.MemorySegment unprojectRay(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isNative() && !rayOrigin.isReadOnly() && rayDir.isNative() && !rayDir.isReadOnly() && src.isNative() && winCoords.isNative() && viewport.isNative()) return Float4x4OpsKernelsSegment.unprojectRay_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
-        return Float4x4OpsKernelsSegment.unprojectRay_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    public static java.lang.foreign.MemorySegment unprojectRay(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) { return unprojectRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
+
+    /** {@link #unprojectRay(float[], int, float[], int, float[], int, float[], int, float[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long unprojectRay(long rayOrigin, long rayDir, long src, long winCoords, long viewport, DepthRange depthRange) {
+        switch (depthRange) {
+            case NEGATIVE_ONE_TO_ONE -> { return Float4x4OpsKernelsAddress.unprojectRay_no(rayOrigin, rayDir, src, winCoords, viewport); }
+            default -> { return Float4x4OpsKernelsAddress.unprojectRay_zo(rayOrigin, rayDir, src, winCoords, viewport); }
+        }
     }
 
     /** {@link #unprojectRay(float[], int, float[], int, float[], int, float[], int, float[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long unprojectRay(long rayOrigin, long rayDir, long src, long winCoords, long viewport) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4x4OpsKernelsAddress.unprojectRay_unsafe(rayOrigin, rayDir, src, winCoords, viewport);
-        unprojectRay(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayOrigin, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rayDir, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 64L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(winCoords, 8L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(viewport, 16L), 0L);
-        return rayOrigin;
-    }
+    public static long unprojectRay(long rayOrigin, long rayDir, long src, long winCoords, long viewport) { return unprojectRay(rayOrigin, rayDir, src, winCoords, viewport, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
      * Multiply this matrix by the given vector and store the result in {@code dest}.

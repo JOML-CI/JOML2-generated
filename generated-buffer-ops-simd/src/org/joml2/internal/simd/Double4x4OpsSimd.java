@@ -5562,7 +5562,22 @@ public final class Double4x4OpsSimd {
         return dest;
     }
 
-    public static double[] obliqueZ(double[] dest, int destOffset, double[] src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+    public static double[] obliqueZ_no_lh(double[] dest, int destOffset, double[] src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        double _self23 = src[srcOffset + 14];
+        double _t0 = 2.0 * _self23;
+        double _t15_inv = 1.0 / Math.fma(planeW, 1.0 - src[srcOffset + 10], _self23 * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - src[srcOffset + 8]) / src[srcOffset + 0] + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - src[srcOffset + 9]) / src[srcOffset + 5])));
+        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).withLane(2, planeX * _t0 * _t15_inv - src[srcOffset + 3]);
+        var _c1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).withLane(2, planeY * _t0 * _t15_inv - src[srcOffset + 7]);
+        var _c2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, planeZ * _t0 * _t15_inv - src[srcOffset + 11]);
+        var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, planeW * _t0 * _t15_inv - src[srcOffset + 15]);
+        _c0.intoArray(dest, destOffset);
+        _c1.intoArray(dest, destOffset + 4);
+        _c2.intoArray(dest, destOffset + 8);
+        _c3.intoArray(dest, destOffset + 12);
+        return dest;
+    }
+
+    public static double[] obliqueZ_no_rh(double[] dest, int destOffset, double[] src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
         double _self23 = src[srcOffset + 14];
         double _t0 = 2.0 * _self23;
         double _t15_inv = 1.0 / Math.fma(planeW, 1.0 + src[srcOffset + 10], _self23 * (planeX * (src[srcOffset + 8] + (planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0)) / src[srcOffset + 0] + planeY * (src[srcOffset + 9] + (planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0)) / src[srcOffset + 5] - planeZ));
@@ -5577,12 +5592,76 @@ public final class Double4x4OpsSimd {
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment obliqueZ(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double planeX, double planeY, double planeZ, double planeW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return obliqueZ_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
-        return obliqueZ_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    public static double[] obliqueZ_zo_lh(double[] dest, int destOffset, double[] src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        double _self23 = src[srcOffset + 14];
+        double _t14_inv = 1.0 / Math.fma(planeW, 1.0 - src[srcOffset + 10], _self23 * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - src[srcOffset + 8]) / src[srcOffset + 0] + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - src[srcOffset + 9]) / src[srcOffset + 5])));
+        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).withLane(2, planeX * _self23 * _t14_inv);
+        var _c1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).withLane(2, planeY * _self23 * _t14_inv);
+        var _c2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, planeZ * _self23 * _t14_inv);
+        var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, planeW * _self23 * _t14_inv);
+        _c0.intoArray(dest, destOffset);
+        _c1.intoArray(dest, destOffset + 4);
+        _c2.intoArray(dest, destOffset + 8);
+        _c3.intoArray(dest, destOffset + 12);
+        return dest;
     }
 
-    public static java.lang.foreign.MemorySegment obliqueZ_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+    public static double[] obliqueZ_zo_rh(double[] dest, int destOffset, double[] src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        double _self23 = src[srcOffset + 14];
+        double _t14_inv = 1.0 / Math.fma(planeW, 1.0 + src[srcOffset + 10], _self23 * (planeX * (src[srcOffset + 8] + (planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0)) / src[srcOffset + 0] + planeY * (src[srcOffset + 9] + (planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0)) / src[srcOffset + 5] - planeZ));
+        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).withLane(2, planeX * _self23 * _t14_inv);
+        var _c1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).withLane(2, planeY * _self23 * _t14_inv);
+        var _c2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, planeZ * _self23 * _t14_inv);
+        var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, planeW * _self23 * _t14_inv);
+        _c0.intoArray(dest, destOffset);
+        _c1.intoArray(dest, destOffset + 4);
+        _c2.intoArray(dest, destOffset + 8);
+        _c3.intoArray(dest, destOffset + 12);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_lh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return obliqueZ_no_lh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        return obliqueZ_no_lh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_lh_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        long _srcBase = src.address() + srcOffset;
+        double _self23 = UnsafeOpsHolder.U.getDouble(_srcBase + 112L);
+        double _t0 = 2.0 * _self23;
+        double _t15_inv = 1.0 / Math.fma(planeW, 1.0 - UnsafeOpsHolder.U.getDouble(_srcBase + 80L), _self23 * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - UnsafeOpsHolder.U.getDouble(_srcBase + 64L)) / UnsafeOpsHolder.U.getDouble(_srcBase + 0L) + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - UnsafeOpsHolder.U.getDouble(_srcBase + 72L)) / UnsafeOpsHolder.U.getDouble(_srcBase + 40L))));
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).withLane(2, planeX * _t0 * _t15_inv - UnsafeOpsHolder.U.getDouble(_srcBase + 24L));
+        var _c1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder()).withLane(2, planeY * _t0 * _t15_inv - UnsafeOpsHolder.U.getDouble(_srcBase + 56L));
+        var _c2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder()).withLane(2, planeZ * _t0 * _t15_inv - UnsafeOpsHolder.U.getDouble(_srcBase + 88L));
+        var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()).withLane(2, planeW * _t0 * _t15_inv - UnsafeOpsHolder.U.getDouble(_srcBase + 120L));
+        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        _c2.intoMemorySegment(dest, destOffset + 64L, java.nio.ByteOrder.nativeOrder());
+        _c3.intoMemorySegment(dest, destOffset + 96L, java.nio.ByteOrder.nativeOrder());
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
+        double _t0 = 2.0 * _self23;
+        double _t15_inv = 1.0 / Math.fma(planeW, 1.0 - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 80L), _self23 * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 64L)) / src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L) + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 72L)) / src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 40L))));
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).withLane(2, planeX * _t0 * _t15_inv - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L));
+        var _c1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder()).withLane(2, planeY * _t0 * _t15_inv - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 56L));
+        var _c2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder()).withLane(2, planeZ * _t0 * _t15_inv - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 88L));
+        var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()).withLane(2, planeW * _t0 * _t15_inv - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L));
+        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        _c2.intoMemorySegment(dest, destOffset + 64L, java.nio.ByteOrder.nativeOrder());
+        _c3.intoMemorySegment(dest, destOffset + 96L, java.nio.ByteOrder.nativeOrder());
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_rh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return obliqueZ_no_rh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        return obliqueZ_no_rh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_rh_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double planeX, double planeY, double planeZ, double planeW) {
         long _srcBase = src.address() + srcOffset;
         double _self23 = UnsafeOpsHolder.U.getDouble(_srcBase + 112L);
         double _t0 = 2.0 * _self23;
@@ -5598,7 +5677,7 @@ public final class Double4x4OpsSimd {
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment obliqueZ_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+    public static java.lang.foreign.MemorySegment obliqueZ_no_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double planeX, double planeY, double planeZ, double planeW) {
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _t0 = 2.0 * _self23;
         double _t15_inv = 1.0 / Math.fma(planeW, 1.0 + src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 80L), _self23 * (planeX * (src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 64L) + (planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0)) / src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L) + planeY * (src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 72L) + (planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0)) / src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 40L) - planeZ));
@@ -5613,7 +5692,94 @@ public final class Double4x4OpsSimd {
         return dest;
     }
 
-    public static double[] obliqueZ(double[] dest, int destOffset, double[] src, int srcOffset, double[] plane, int planeOffset) {
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_lh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return obliqueZ_zo_lh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        return obliqueZ_zo_lh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_lh_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        long _srcBase = src.address() + srcOffset;
+        double _self23 = UnsafeOpsHolder.U.getDouble(_srcBase + 112L);
+        double _t14_inv = 1.0 / Math.fma(planeW, 1.0 - UnsafeOpsHolder.U.getDouble(_srcBase + 80L), _self23 * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - UnsafeOpsHolder.U.getDouble(_srcBase + 64L)) / UnsafeOpsHolder.U.getDouble(_srcBase + 0L) + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - UnsafeOpsHolder.U.getDouble(_srcBase + 72L)) / UnsafeOpsHolder.U.getDouble(_srcBase + 40L))));
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).withLane(2, planeX * _self23 * _t14_inv);
+        var _c1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder()).withLane(2, planeY * _self23 * _t14_inv);
+        var _c2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder()).withLane(2, planeZ * _self23 * _t14_inv);
+        var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()).withLane(2, planeW * _self23 * _t14_inv);
+        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        _c2.intoMemorySegment(dest, destOffset + 64L, java.nio.ByteOrder.nativeOrder());
+        _c3.intoMemorySegment(dest, destOffset + 96L, java.nio.ByteOrder.nativeOrder());
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
+        double _t14_inv = 1.0 / Math.fma(planeW, 1.0 - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 80L), _self23 * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 64L)) / src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L) + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 72L)) / src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 40L))));
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).withLane(2, planeX * _self23 * _t14_inv);
+        var _c1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder()).withLane(2, planeY * _self23 * _t14_inv);
+        var _c2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder()).withLane(2, planeZ * _self23 * _t14_inv);
+        var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()).withLane(2, planeW * _self23 * _t14_inv);
+        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        _c2.intoMemorySegment(dest, destOffset + 64L, java.nio.ByteOrder.nativeOrder());
+        _c3.intoMemorySegment(dest, destOffset + 96L, java.nio.ByteOrder.nativeOrder());
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_rh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return obliqueZ_zo_rh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        return obliqueZ_zo_rh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_rh_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        long _srcBase = src.address() + srcOffset;
+        double _self23 = UnsafeOpsHolder.U.getDouble(_srcBase + 112L);
+        double _t14_inv = 1.0 / Math.fma(planeW, 1.0 + UnsafeOpsHolder.U.getDouble(_srcBase + 80L), _self23 * (planeX * (UnsafeOpsHolder.U.getDouble(_srcBase + 64L) + (planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0)) / UnsafeOpsHolder.U.getDouble(_srcBase + 0L) + planeY * (UnsafeOpsHolder.U.getDouble(_srcBase + 72L) + (planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0)) / UnsafeOpsHolder.U.getDouble(_srcBase + 40L) - planeZ));
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).withLane(2, planeX * _self23 * _t14_inv);
+        var _c1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder()).withLane(2, planeY * _self23 * _t14_inv);
+        var _c2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder()).withLane(2, planeZ * _self23 * _t14_inv);
+        var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()).withLane(2, planeW * _self23 * _t14_inv);
+        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        _c2.intoMemorySegment(dest, destOffset + 64L, java.nio.ByteOrder.nativeOrder());
+        _c3.intoMemorySegment(dest, destOffset + 96L, java.nio.ByteOrder.nativeOrder());
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
+        double _t14_inv = 1.0 / Math.fma(planeW, 1.0 + src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 80L), _self23 * (planeX * (src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 64L) + (planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0)) / src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L) + planeY * (src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 72L) + (planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0)) / src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 40L) - planeZ));
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).withLane(2, planeX * _self23 * _t14_inv);
+        var _c1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder()).withLane(2, planeY * _self23 * _t14_inv);
+        var _c2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder()).withLane(2, planeZ * _self23 * _t14_inv);
+        var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()).withLane(2, planeW * _self23 * _t14_inv);
+        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        _c2.intoMemorySegment(dest, destOffset + 64L, java.nio.ByteOrder.nativeOrder());
+        _c3.intoMemorySegment(dest, destOffset + 96L, java.nio.ByteOrder.nativeOrder());
+        return dest;
+    }
+
+    public static double[] obliqueZ_no_lh(double[] dest, int destOffset, double[] src, int srcOffset, double[] plane, int planeOffset) {
+        double _planex = plane[planeOffset + 0];
+        double _planey = plane[planeOffset + 1];
+        double _planez = plane[planeOffset + 2];
+        double _planew = plane[planeOffset + 3];
+        double _self23 = src[srcOffset + 14];
+        double _t0 = 2.0 * _self23;
+        double _t15_inv = 1.0 / Math.fma(_planew, 1.0 - src[srcOffset + 10], _self23 * (_planez + (_planex * ((_planex < 0.0 ? -1.0 : _planex > 0.0 ? 1.0 : 0.0) - src[srcOffset + 8]) / src[srcOffset + 0] + _planey * ((_planey < 0.0 ? -1.0 : _planey > 0.0 ? 1.0 : 0.0) - src[srcOffset + 9]) / src[srcOffset + 5])));
+        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).withLane(2, _planex * _t0 * _t15_inv - src[srcOffset + 3]);
+        var _c1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).withLane(2, _planey * _t0 * _t15_inv - src[srcOffset + 7]);
+        var _c2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, _planez * _t0 * _t15_inv - src[srcOffset + 11]);
+        var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, _planew * _t0 * _t15_inv - src[srcOffset + 15]);
+        _c0.intoArray(dest, destOffset);
+        _c1.intoArray(dest, destOffset + 4);
+        _c2.intoArray(dest, destOffset + 8);
+        _c3.intoArray(dest, destOffset + 12);
+        return dest;
+    }
+
+    public static double[] obliqueZ_no_rh(double[] dest, int destOffset, double[] src, int srcOffset, double[] plane, int planeOffset) {
         double _planex = plane[planeOffset + 0];
         double _planey = plane[planeOffset + 1];
         double _planez = plane[planeOffset + 2];
@@ -5632,12 +5798,93 @@ public final class Double4x4OpsSimd {
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment obliqueZ(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative() && plane.isNative()) return obliqueZ_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
-        return obliqueZ_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    public static double[] obliqueZ_zo_lh(double[] dest, int destOffset, double[] src, int srcOffset, double[] plane, int planeOffset) {
+        double _planex = plane[planeOffset + 0];
+        double _self23 = src[srcOffset + 14];
+        double _planey = plane[planeOffset + 1];
+        double _planez = plane[planeOffset + 2];
+        double _planew = plane[planeOffset + 3];
+        double _t14_inv = 1.0 / Math.fma(_planew, 1.0 - src[srcOffset + 10], _self23 * (_planez + (_planex * ((_planex < 0.0 ? -1.0 : _planex > 0.0 ? 1.0 : 0.0) - src[srcOffset + 8]) / src[srcOffset + 0] + _planey * ((_planey < 0.0 ? -1.0 : _planey > 0.0 ? 1.0 : 0.0) - src[srcOffset + 9]) / src[srcOffset + 5])));
+        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).withLane(2, _planex * _self23 * _t14_inv);
+        var _c1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).withLane(2, _planey * _self23 * _t14_inv);
+        var _c2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, _planez * _self23 * _t14_inv);
+        var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, _planew * _self23 * _t14_inv);
+        _c0.intoArray(dest, destOffset);
+        _c1.intoArray(dest, destOffset + 4);
+        _c2.intoArray(dest, destOffset + 8);
+        _c3.intoArray(dest, destOffset + 12);
+        return dest;
     }
 
-    public static java.lang.foreign.MemorySegment obliqueZ_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+    public static double[] obliqueZ_zo_rh(double[] dest, int destOffset, double[] src, int srcOffset, double[] plane, int planeOffset) {
+        double _planex = plane[planeOffset + 0];
+        double _self23 = src[srcOffset + 14];
+        double _planey = plane[planeOffset + 1];
+        double _planez = plane[planeOffset + 2];
+        double _planew = plane[planeOffset + 3];
+        double _t14_inv = 1.0 / Math.fma(_planew, 1.0 + src[srcOffset + 10], _self23 * (_planex * (src[srcOffset + 8] + (_planex < 0.0 ? -1.0 : _planex > 0.0 ? 1.0 : 0.0)) / src[srcOffset + 0] + _planey * (src[srcOffset + 9] + (_planey < 0.0 ? -1.0 : _planey > 0.0 ? 1.0 : 0.0)) / src[srcOffset + 5] - _planez));
+        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).withLane(2, _planex * _self23 * _t14_inv);
+        var _c1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).withLane(2, _planey * _self23 * _t14_inv);
+        var _c2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, _planez * _self23 * _t14_inv);
+        var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, _planew * _self23 * _t14_inv);
+        _c0.intoArray(dest, destOffset);
+        _c1.intoArray(dest, destOffset + 4);
+        _c2.intoArray(dest, destOffset + 8);
+        _c3.intoArray(dest, destOffset + 12);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_lh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative() && plane.isNative()) return obliqueZ_no_lh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        return obliqueZ_no_lh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_lh_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        long _srcBase = src.address() + srcOffset;
+        long _planeBase = plane.address() + planeOffset;
+        double _planex = UnsafeOpsHolder.U.getDouble(_planeBase + 0L);
+        double _planey = UnsafeOpsHolder.U.getDouble(_planeBase + 8L);
+        double _planez = UnsafeOpsHolder.U.getDouble(_planeBase + 16L);
+        double _planew = UnsafeOpsHolder.U.getDouble(_planeBase + 24L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(_srcBase + 112L);
+        double _t0 = 2.0 * _self23;
+        double _t15_inv = 1.0 / Math.fma(_planew, 1.0 - UnsafeOpsHolder.U.getDouble(_srcBase + 80L), _self23 * (_planez + (_planex * ((_planex < 0.0 ? -1.0 : _planex > 0.0 ? 1.0 : 0.0) - UnsafeOpsHolder.U.getDouble(_srcBase + 64L)) / UnsafeOpsHolder.U.getDouble(_srcBase + 0L) + _planey * ((_planey < 0.0 ? -1.0 : _planey > 0.0 ? 1.0 : 0.0) - UnsafeOpsHolder.U.getDouble(_srcBase + 72L)) / UnsafeOpsHolder.U.getDouble(_srcBase + 40L))));
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).withLane(2, _planex * _t0 * _t15_inv - UnsafeOpsHolder.U.getDouble(_srcBase + 24L));
+        var _c1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planey * _t0 * _t15_inv - UnsafeOpsHolder.U.getDouble(_srcBase + 56L));
+        var _c2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planez * _t0 * _t15_inv - UnsafeOpsHolder.U.getDouble(_srcBase + 88L));
+        var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planew * _t0 * _t15_inv - UnsafeOpsHolder.U.getDouble(_srcBase + 120L));
+        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        _c2.intoMemorySegment(dest, destOffset + 64L, java.nio.ByteOrder.nativeOrder());
+        _c3.intoMemorySegment(dest, destOffset + 96L, java.nio.ByteOrder.nativeOrder());
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        double _planex = plane.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, planeOffset + 0L);
+        double _planey = plane.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, planeOffset + 8L);
+        double _planez = plane.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, planeOffset + 16L);
+        double _planew = plane.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, planeOffset + 24L);
+        double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
+        double _t0 = 2.0 * _self23;
+        double _t15_inv = 1.0 / Math.fma(_planew, 1.0 - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 80L), _self23 * (_planez + (_planex * ((_planex < 0.0 ? -1.0 : _planex > 0.0 ? 1.0 : 0.0) - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 64L)) / src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L) + _planey * ((_planey < 0.0 ? -1.0 : _planey > 0.0 ? 1.0 : 0.0) - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 72L)) / src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 40L))));
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).withLane(2, _planex * _t0 * _t15_inv - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L));
+        var _c1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planey * _t0 * _t15_inv - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 56L));
+        var _c2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planez * _t0 * _t15_inv - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 88L));
+        var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planew * _t0 * _t15_inv - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L));
+        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        _c2.intoMemorySegment(dest, destOffset + 64L, java.nio.ByteOrder.nativeOrder());
+        _c3.intoMemorySegment(dest, destOffset + 96L, java.nio.ByteOrder.nativeOrder());
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_rh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative() && plane.isNative()) return obliqueZ_no_rh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        return obliqueZ_no_rh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_rh_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
         long _srcBase = src.address() + srcOffset;
         long _planeBase = plane.address() + planeOffset;
         double _planex = UnsafeOpsHolder.U.getDouble(_planeBase + 0L);
@@ -5658,7 +5905,7 @@ public final class Double4x4OpsSimd {
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment obliqueZ_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+    public static java.lang.foreign.MemorySegment obliqueZ_no_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
         double _planex = plane.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, planeOffset + 0L);
         double _planey = plane.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, planeOffset + 8L);
         double _planez = plane.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, planeOffset + 16L);
@@ -5670,6 +5917,92 @@ public final class Double4x4OpsSimd {
         var _c1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planey * _t0 * _t15_inv - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 56L));
         var _c2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planez * _t0 * _t15_inv - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 88L));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planew * _t0 * _t15_inv - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L));
+        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        _c2.intoMemorySegment(dest, destOffset + 64L, java.nio.ByteOrder.nativeOrder());
+        _c3.intoMemorySegment(dest, destOffset + 96L, java.nio.ByteOrder.nativeOrder());
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_lh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative() && plane.isNative()) return obliqueZ_zo_lh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        return obliqueZ_zo_lh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_lh_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        long _srcBase = src.address() + srcOffset;
+        long _planeBase = plane.address() + planeOffset;
+        double _planex = UnsafeOpsHolder.U.getDouble(_planeBase + 0L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(_srcBase + 112L);
+        double _planey = UnsafeOpsHolder.U.getDouble(_planeBase + 8L);
+        double _planez = UnsafeOpsHolder.U.getDouble(_planeBase + 16L);
+        double _planew = UnsafeOpsHolder.U.getDouble(_planeBase + 24L);
+        double _t14_inv = 1.0 / Math.fma(_planew, 1.0 - UnsafeOpsHolder.U.getDouble(_srcBase + 80L), _self23 * (_planez + (_planex * ((_planex < 0.0 ? -1.0 : _planex > 0.0 ? 1.0 : 0.0) - UnsafeOpsHolder.U.getDouble(_srcBase + 64L)) / UnsafeOpsHolder.U.getDouble(_srcBase + 0L) + _planey * ((_planey < 0.0 ? -1.0 : _planey > 0.0 ? 1.0 : 0.0) - UnsafeOpsHolder.U.getDouble(_srcBase + 72L)) / UnsafeOpsHolder.U.getDouble(_srcBase + 40L))));
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).withLane(2, _planex * _self23 * _t14_inv);
+        var _c1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planey * _self23 * _t14_inv);
+        var _c2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planez * _self23 * _t14_inv);
+        var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planew * _self23 * _t14_inv);
+        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        _c2.intoMemorySegment(dest, destOffset + 64L, java.nio.ByteOrder.nativeOrder());
+        _c3.intoMemorySegment(dest, destOffset + 96L, java.nio.ByteOrder.nativeOrder());
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        double _planex = plane.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, planeOffset + 0L);
+        double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
+        double _planey = plane.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, planeOffset + 8L);
+        double _planez = plane.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, planeOffset + 16L);
+        double _planew = plane.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, planeOffset + 24L);
+        double _t14_inv = 1.0 / Math.fma(_planew, 1.0 - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 80L), _self23 * (_planez + (_planex * ((_planex < 0.0 ? -1.0 : _planex > 0.0 ? 1.0 : 0.0) - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 64L)) / src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L) + _planey * ((_planey < 0.0 ? -1.0 : _planey > 0.0 ? 1.0 : 0.0) - src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 72L)) / src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 40L))));
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).withLane(2, _planex * _self23 * _t14_inv);
+        var _c1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planey * _self23 * _t14_inv);
+        var _c2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planez * _self23 * _t14_inv);
+        var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planew * _self23 * _t14_inv);
+        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        _c2.intoMemorySegment(dest, destOffset + 64L, java.nio.ByteOrder.nativeOrder());
+        _c3.intoMemorySegment(dest, destOffset + 96L, java.nio.ByteOrder.nativeOrder());
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_rh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative() && plane.isNative()) return obliqueZ_zo_rh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        return obliqueZ_zo_rh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_rh_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        long _srcBase = src.address() + srcOffset;
+        long _planeBase = plane.address() + planeOffset;
+        double _planex = UnsafeOpsHolder.U.getDouble(_planeBase + 0L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(_srcBase + 112L);
+        double _planey = UnsafeOpsHolder.U.getDouble(_planeBase + 8L);
+        double _planez = UnsafeOpsHolder.U.getDouble(_planeBase + 16L);
+        double _planew = UnsafeOpsHolder.U.getDouble(_planeBase + 24L);
+        double _t14_inv = 1.0 / Math.fma(_planew, 1.0 + UnsafeOpsHolder.U.getDouble(_srcBase + 80L), _self23 * (_planex * (UnsafeOpsHolder.U.getDouble(_srcBase + 64L) + (_planex < 0.0 ? -1.0 : _planex > 0.0 ? 1.0 : 0.0)) / UnsafeOpsHolder.U.getDouble(_srcBase + 0L) + _planey * (UnsafeOpsHolder.U.getDouble(_srcBase + 72L) + (_planey < 0.0 ? -1.0 : _planey > 0.0 ? 1.0 : 0.0)) / UnsafeOpsHolder.U.getDouble(_srcBase + 40L) - _planez));
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).withLane(2, _planex * _self23 * _t14_inv);
+        var _c1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planey * _self23 * _t14_inv);
+        var _c2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planez * _self23 * _t14_inv);
+        var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planew * _self23 * _t14_inv);
+        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        _c2.intoMemorySegment(dest, destOffset + 64L, java.nio.ByteOrder.nativeOrder());
+        _c3.intoMemorySegment(dest, destOffset + 96L, java.nio.ByteOrder.nativeOrder());
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        double _planex = plane.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, planeOffset + 0L);
+        double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
+        double _planey = plane.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, planeOffset + 8L);
+        double _planez = plane.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, planeOffset + 16L);
+        double _planew = plane.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, planeOffset + 24L);
+        double _t14_inv = 1.0 / Math.fma(_planew, 1.0 + src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 80L), _self23 * (_planex * (src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 64L) + (_planex < 0.0 ? -1.0 : _planex > 0.0 ? 1.0 : 0.0)) / src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L) + _planey * (src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 72L) + (_planey < 0.0 ? -1.0 : _planey > 0.0 ? 1.0 : 0.0)) / src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 40L) - _planez));
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).withLane(2, _planex * _self23 * _t14_inv);
+        var _c1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planey * _self23 * _t14_inv);
+        var _c2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planez * _self23 * _t14_inv);
+        var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()).withLane(2, _planew * _self23 * _t14_inv);
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
         _c2.intoMemorySegment(dest, destOffset + 64L, java.nio.ByteOrder.nativeOrder());

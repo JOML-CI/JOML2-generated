@@ -989,7 +989,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t12 = Math.abs(_t11);
         double _t14 = Math.sin(alpha * _t10);
         double _t16 = Math.sin(_t0 * _t10);
-        if (_t12 > 0.0) {
+        if (_t12 > 1.0E-6) {
             d.x = (this.x * _t16 + targetX * _t14) * _t11_inv;
             d.y = (this.y * _t16 + targetY * _t14) * _t11_inv;
             d.z = (this.z * _t16 + targetZ * _t14) * _t11_inv;
@@ -1155,7 +1155,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t58 = Math.sin(_t0 * _t46);
         double _t59 = Math.sin(_t0 * _t47);
         double _t92, _t94, _t96, _t98;
-        if (_t50 > 0.0) {
+        if (_t50 > 1.0E-6) {
             _t92 = (control0X * _t58 + control1X * _t54) * _t48_inv;
             _t94 = (control0Y * _t58 + control1Y * _t54) * _t48_inv;
             _t96 = (control0Z * _t58 + control1Z * _t54) * _t48_inv;
@@ -1167,7 +1167,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
             _t98 = t * control1W + control0W * _t0;
         }
         double _t93, _t95, _t97, _t99;
-        if (_t52 > 0.0) {
+        if (_t52 > 1.0E-6) {
             _t93 = (this.x * _t59 + targetX * _t55) * _t49_inv;
             _t95 = (this.y * _t59 + targetY * _t55) * _t49_inv;
             _t97 = (this.z * _t59 + targetZ * _t55) * _t49_inv;
@@ -1184,7 +1184,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t111 = Math.abs(_t110);
         double _t113 = Math.sin(_t26 * _t109);
         double _t115 = Math.sin(_t27 * _t109);
-        if (_t111 > 0.0) {
+        if (_t111 > 1.0E-6) {
             d.x = (_t115 * _t93 + _t113 * _t92) * _t110_inv;
             d.y = (_t115 * _t95 + _t113 * _t94) * _t110_inv;
             d.z = (_t115 * _t97 + _t113 * _t96) * _t110_inv;
@@ -1820,15 +1820,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 invNegativeX(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t10 = 2.0 * (this.x * this.y - this.z * this.w);
-        double _t11 = 2.0 * (this.x * this.z + this.y * this.w);
-        double _t12 = 1.0 - 2.0 * (this.y * this.y + this.z * this.z);
-        double _t17 = _t12 * _t12 + _t10 * _t10 + _t11 * _t11;
-        double _t18 = (1.0 / Math.sqrt(_t17));
-        if (_t17 > 0.0) {
-            d.x = -(_t12 * _t18);
-            d.y = -(_t10 * _t18);
-            d.z = -(_t11 * _t18);
+        double _t11 = 2.0 * (this.x * this.y - this.z * this.w);
+        double _t12 = 2.0 * (this.x * this.z + this.y * this.w);
+        double _t14 = this.x * this.x + this.w * this.w - this.y * this.y - this.z * this.z;
+        double _t19 = _t14 * _t14 + _t11 * _t11 + _t12 * _t12;
+        double _t20 = (1.0 / Math.sqrt(_t19));
+        if (_t19 > 0.0) {
+            d.x = -(_t14 * _t20);
+            d.y = -(_t11 * _t20);
+            d.z = -(_t12 * _t20);
         } else {
             d.x = -0.0;
             d.y = -0.0;
@@ -1847,15 +1847,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 invNegativeY(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t10 = 2.0 * (this.x * this.y + this.z * this.w);
-        double _t11 = 2.0 * (this.y * this.z - this.x * this.w);
-        double _t12 = 1.0 - 2.0 * (this.x * this.x + this.z * this.z);
-        double _t17 = _t12 * _t12 + _t10 * _t10 + _t11 * _t11;
-        double _t18 = (1.0 / Math.sqrt(_t17));
-        if (_t17 > 0.0) {
-            d.x = -(_t10 * _t18);
-            d.y = -(_t12 * _t18);
-            d.z = -(_t11 * _t18);
+        double _t11 = 2.0 * (this.x * this.y + this.z * this.w);
+        double _t12 = 2.0 * (this.y * this.z - this.x * this.w);
+        double _t14 = this.w * this.w - this.x * this.x + this.y * this.y - this.z * this.z;
+        double _t19 = _t14 * _t14 + _t11 * _t11 + _t12 * _t12;
+        double _t20 = (1.0 / Math.sqrt(_t19));
+        if (_t19 > 0.0) {
+            d.x = -(_t11 * _t20);
+            d.y = -(_t14 * _t20);
+            d.z = -(_t12 * _t20);
         } else {
             d.x = -0.0;
             d.y = -0.0;
@@ -1874,15 +1874,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 invNegativeZ(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t9 = 2.0 * (this.x * this.w + this.y * this.z);
-        double _t10 = 2.0 * (this.x * this.z - this.y * this.w);
-        double _t12 = 1.0 - 2.0 * (this.x * this.x + this.y * this.y);
-        double _t17 = _t9 * _t9 + _t10 * _t10 + _t12 * _t12;
-        double _t18 = (1.0 / Math.sqrt(_t17));
-        if (_t17 > 0.0) {
-            d.x = -(_t10 * _t18);
-            d.y = -(_t9 * _t18);
-            d.z = -(_t12 * _t18);
+        double _t11 = 2.0 * (this.x * this.w + this.y * this.z);
+        double _t12 = 2.0 * (this.x * this.z - this.y * this.w);
+        double _t14 = this.w * this.w - this.x * this.x - this.y * this.y + this.z * this.z;
+        double _t19 = _t11 * _t11 + _t12 * _t12 + _t14 * _t14;
+        double _t20 = (1.0 / Math.sqrt(_t19));
+        if (_t19 > 0.0) {
+            d.x = -(_t12 * _t20);
+            d.y = -(_t11 * _t20);
+            d.z = -(_t14 * _t20);
         } else {
             d.x = -0.0;
             d.y = -0.0;
@@ -2027,15 +2027,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 invPositiveX(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t10 = 2.0 * (this.x * this.y - this.z * this.w);
-        double _t11 = 2.0 * (this.x * this.z + this.y * this.w);
-        double _t12 = 1.0 - 2.0 * (this.y * this.y + this.z * this.z);
-        double _t17 = _t12 * _t12 + _t10 * _t10 + _t11 * _t11;
-        double _t18 = (1.0 / Math.sqrt(_t17));
-        if (_t17 > 0.0) {
-            d.x = _t12 * _t18;
-            d.y = _t10 * _t18;
-            d.z = _t11 * _t18;
+        double _t11 = 2.0 * (this.x * this.y - this.z * this.w);
+        double _t12 = 2.0 * (this.x * this.z + this.y * this.w);
+        double _t14 = this.x * this.x + this.w * this.w - this.y * this.y - this.z * this.z;
+        double _t19 = _t14 * _t14 + _t11 * _t11 + _t12 * _t12;
+        double _t20 = (1.0 / Math.sqrt(_t19));
+        if (_t19 > 0.0) {
+            d.x = _t14 * _t20;
+            d.y = _t11 * _t20;
+            d.z = _t12 * _t20;
         } else {
             d.x = 0.0;
             d.y = 0.0;
@@ -2054,15 +2054,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 invPositiveY(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t10 = 2.0 * (this.x * this.y + this.z * this.w);
-        double _t11 = 2.0 * (this.y * this.z - this.x * this.w);
-        double _t12 = 1.0 - 2.0 * (this.x * this.x + this.z * this.z);
-        double _t17 = _t12 * _t12 + _t10 * _t10 + _t11 * _t11;
-        double _t18 = (1.0 / Math.sqrt(_t17));
-        if (_t17 > 0.0) {
-            d.x = _t10 * _t18;
-            d.y = _t12 * _t18;
-            d.z = _t11 * _t18;
+        double _t11 = 2.0 * (this.x * this.y + this.z * this.w);
+        double _t12 = 2.0 * (this.y * this.z - this.x * this.w);
+        double _t14 = this.w * this.w - this.x * this.x + this.y * this.y - this.z * this.z;
+        double _t19 = _t14 * _t14 + _t11 * _t11 + _t12 * _t12;
+        double _t20 = (1.0 / Math.sqrt(_t19));
+        if (_t19 > 0.0) {
+            d.x = _t11 * _t20;
+            d.y = _t14 * _t20;
+            d.z = _t12 * _t20;
         } else {
             d.x = 0.0;
             d.y = 0.0;
@@ -2081,15 +2081,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 invPositiveZ(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t9 = 2.0 * (this.x * this.w + this.y * this.z);
-        double _t10 = 2.0 * (this.x * this.z - this.y * this.w);
-        double _t12 = 1.0 - 2.0 * (this.x * this.x + this.y * this.y);
-        double _t17 = _t9 * _t9 + _t10 * _t10 + _t12 * _t12;
-        double _t18 = (1.0 / Math.sqrt(_t17));
-        if (_t17 > 0.0) {
-            d.x = _t10 * _t18;
-            d.y = _t9 * _t18;
-            d.z = _t12 * _t18;
+        double _t11 = 2.0 * (this.x * this.w + this.y * this.z);
+        double _t12 = 2.0 * (this.x * this.z - this.y * this.w);
+        double _t14 = this.w * this.w - this.x * this.x - this.y * this.y + this.z * this.z;
+        double _t19 = _t11 * _t11 + _t12 * _t12 + _t14 * _t14;
+        double _t20 = (1.0 / Math.sqrt(_t19));
+        if (_t19 > 0.0) {
+            d.x = _t12 * _t20;
+            d.y = _t11 * _t20;
+            d.z = _t14 * _t20;
         } else {
             d.x = 0.0;
             d.y = 0.0;
@@ -2153,15 +2153,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 negativeX(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t10 = 2.0 * (this.x * this.y + this.z * this.w);
-        double _t11 = 2.0 * (this.x * this.z - this.y * this.w);
-        double _t12 = 1.0 - 2.0 * (this.y * this.y + this.z * this.z);
-        double _t17 = _t12 * _t12 + _t10 * _t10 + _t11 * _t11;
-        double _t18 = (1.0 / Math.sqrt(_t17));
-        if (_t17 > 0.0) {
-            d.x = -(_t12 * _t18);
-            d.y = -(_t10 * _t18);
-            d.z = -(_t11 * _t18);
+        double _t11 = 2.0 * (this.x * this.y + this.z * this.w);
+        double _t12 = 2.0 * (this.x * this.z - this.y * this.w);
+        double _t14 = this.x * this.x + this.w * this.w - this.y * this.y - this.z * this.z;
+        double _t19 = _t14 * _t14 + _t11 * _t11 + _t12 * _t12;
+        double _t20 = (1.0 / Math.sqrt(_t19));
+        if (_t19 > 0.0) {
+            d.x = -(_t14 * _t20);
+            d.y = -(_t11 * _t20);
+            d.z = -(_t12 * _t20);
         } else {
             d.x = -0.0;
             d.y = -0.0;
@@ -2180,15 +2180,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 negativeY(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t10 = 2.0 * (this.x * this.y - this.z * this.w);
-        double _t11 = 2.0 * (this.x * this.w + this.y * this.z);
-        double _t12 = 1.0 - 2.0 * (this.x * this.x + this.z * this.z);
-        double _t17 = _t12 * _t12 + _t10 * _t10 + _t11 * _t11;
-        double _t18 = (1.0 / Math.sqrt(_t17));
-        if (_t17 > 0.0) {
-            d.x = -(_t10 * _t18);
-            d.y = -(_t12 * _t18);
-            d.z = -(_t11 * _t18);
+        double _t11 = 2.0 * (this.x * this.y - this.z * this.w);
+        double _t12 = 2.0 * (this.x * this.w + this.y * this.z);
+        double _t14 = this.w * this.w - this.x * this.x + this.y * this.y - this.z * this.z;
+        double _t19 = _t14 * _t14 + _t11 * _t11 + _t12 * _t12;
+        double _t20 = (1.0 / Math.sqrt(_t19));
+        if (_t19 > 0.0) {
+            d.x = -(_t11 * _t20);
+            d.y = -(_t14 * _t20);
+            d.z = -(_t12 * _t20);
         } else {
             d.x = -0.0;
             d.y = -0.0;
@@ -2207,15 +2207,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 negativeZ(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t9 = 2.0 * (this.x * this.z + this.y * this.w);
-        double _t10 = 2.0 * (this.y * this.z - this.x * this.w);
-        double _t12 = 1.0 - 2.0 * (this.x * this.x + this.y * this.y);
-        double _t17 = _t9 * _t9 + _t10 * _t10 + _t12 * _t12;
-        double _t18 = (1.0 / Math.sqrt(_t17));
-        if (_t17 > 0.0) {
-            d.x = -(_t9 * _t18);
-            d.y = -(_t10 * _t18);
-            d.z = -(_t12 * _t18);
+        double _t11 = 2.0 * (this.x * this.z + this.y * this.w);
+        double _t12 = 2.0 * (this.y * this.z - this.x * this.w);
+        double _t14 = this.w * this.w - this.x * this.x - this.y * this.y + this.z * this.z;
+        double _t19 = _t11 * _t11 + _t12 * _t12 + _t14 * _t14;
+        double _t20 = (1.0 / Math.sqrt(_t19));
+        if (_t19 > 0.0) {
+            d.x = -(_t11 * _t20);
+            d.y = -(_t12 * _t20);
+            d.z = -(_t14 * _t20);
         } else {
             d.x = -0.0;
             d.y = -0.0;
@@ -2385,15 +2385,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 positiveX(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t10 = 2.0 * (this.x * this.y + this.z * this.w);
-        double _t11 = 2.0 * (this.x * this.z - this.y * this.w);
-        double _t12 = 1.0 - 2.0 * (this.y * this.y + this.z * this.z);
-        double _t17 = _t12 * _t12 + _t10 * _t10 + _t11 * _t11;
-        double _t18 = (1.0 / Math.sqrt(_t17));
-        if (_t17 > 0.0) {
-            d.x = _t12 * _t18;
-            d.y = _t10 * _t18;
-            d.z = _t11 * _t18;
+        double _t11 = 2.0 * (this.x * this.y + this.z * this.w);
+        double _t12 = 2.0 * (this.x * this.z - this.y * this.w);
+        double _t14 = this.x * this.x + this.w * this.w - this.y * this.y - this.z * this.z;
+        double _t19 = _t14 * _t14 + _t11 * _t11 + _t12 * _t12;
+        double _t20 = (1.0 / Math.sqrt(_t19));
+        if (_t19 > 0.0) {
+            d.x = _t14 * _t20;
+            d.y = _t11 * _t20;
+            d.z = _t12 * _t20;
         } else {
             d.x = 0.0;
             d.y = 0.0;
@@ -2412,15 +2412,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 positiveY(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t10 = 2.0 * (this.x * this.y - this.z * this.w);
-        double _t11 = 2.0 * (this.x * this.w + this.y * this.z);
-        double _t12 = 1.0 - 2.0 * (this.x * this.x + this.z * this.z);
-        double _t17 = _t12 * _t12 + _t10 * _t10 + _t11 * _t11;
-        double _t18 = (1.0 / Math.sqrt(_t17));
-        if (_t17 > 0.0) {
-            d.x = _t10 * _t18;
-            d.y = _t12 * _t18;
-            d.z = _t11 * _t18;
+        double _t11 = 2.0 * (this.x * this.y - this.z * this.w);
+        double _t12 = 2.0 * (this.x * this.w + this.y * this.z);
+        double _t14 = this.w * this.w - this.x * this.x + this.y * this.y - this.z * this.z;
+        double _t19 = _t14 * _t14 + _t11 * _t11 + _t12 * _t12;
+        double _t20 = (1.0 / Math.sqrt(_t19));
+        if (_t19 > 0.0) {
+            d.x = _t11 * _t20;
+            d.y = _t14 * _t20;
+            d.z = _t12 * _t20;
         } else {
             d.x = 0.0;
             d.y = 0.0;
@@ -2439,15 +2439,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 positiveZ(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t9 = 2.0 * (this.x * this.z + this.y * this.w);
-        double _t10 = 2.0 * (this.y * this.z - this.x * this.w);
-        double _t12 = 1.0 - 2.0 * (this.x * this.x + this.y * this.y);
-        double _t17 = _t9 * _t9 + _t10 * _t10 + _t12 * _t12;
-        double _t18 = (1.0 / Math.sqrt(_t17));
-        if (_t17 > 0.0) {
-            d.x = _t9 * _t18;
-            d.y = _t10 * _t18;
-            d.z = _t12 * _t18;
+        double _t11 = 2.0 * (this.x * this.z + this.y * this.w);
+        double _t12 = 2.0 * (this.y * this.z - this.x * this.w);
+        double _t14 = this.w * this.w - this.x * this.x - this.y * this.y + this.z * this.z;
+        double _t19 = _t11 * _t11 + _t12 * _t12 + _t14 * _t14;
+        double _t20 = (1.0 / Math.sqrt(_t19));
+        if (_t19 > 0.0) {
+            d.x = _t11 * _t20;
+            d.y = _t12 * _t20;
+            d.z = _t14 * _t20;
         } else {
             d.x = 0.0;
             d.y = 0.0;

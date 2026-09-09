@@ -884,7 +884,7 @@ public final class DoubleQuatOpsSimd {
         double _t8 = Math.sin(_t7);
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = DoubleVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW);
-        var _c0 = (Math.abs(_t8)  >  0.0 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -895,7 +895,7 @@ public final class DoubleQuatOpsSimd {
         double _t8 = Math.sin(_t7);
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = DoubleVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW);
-        var _c0 = (Math.abs(_t8)  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -917,7 +917,7 @@ public final class DoubleQuatOpsSimd {
         double _t8 = Math.sin(_t7);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW);
-        var _c0 = (Math.abs(_t8)  >  0.0 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -928,7 +928,7 @@ public final class DoubleQuatOpsSimd {
         double _t8 = Math.sin(_t7);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW);
-        var _c0 = (Math.abs(_t8)  >  0.0 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -945,7 +945,7 @@ public final class DoubleQuatOpsSimd {
         double _t8 = Math.sin(_t7);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW);
-        var _c0 = (Math.abs(_t8)  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -956,7 +956,7 @@ public final class DoubleQuatOpsSimd {
         double _t8 = Math.sin(_t7);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW);
-        var _c0 = (Math.abs(_t8)  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -972,7 +972,7 @@ public final class DoubleQuatOpsSimd {
         double _t8 = Math.sin(_t7);
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, target, targetOffset);
-        var _c0 = (Math.abs(_t8)  >  0.0 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -983,7 +983,7 @@ public final class DoubleQuatOpsSimd {
         double _t8 = Math.sin(_t7);
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, target, targetOffset);
-        var _c0 = (Math.abs(_t8)  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -1006,7 +1006,7 @@ public final class DoubleQuatOpsSimd {
         double _t8 = Math.sin(_t7);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, target, targetOffset, java.nio.ByteOrder.nativeOrder());
-        var _c0 = (Math.abs(_t8)  >  0.0 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1017,7 +1017,7 @@ public final class DoubleQuatOpsSimd {
         double _t8 = Math.sin(_t7);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, target, targetOffset, java.nio.ByteOrder.nativeOrder());
-        var _c0 = (Math.abs(_t8)  >  0.0 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1035,7 +1035,7 @@ public final class DoubleQuatOpsSimd {
         double _t8 = Math.sin(_t7);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, target, targetOffset, java.nio.ByteOrder.nativeOrder());
-        var _c0 = (Math.abs(_t8)  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1046,7 +1046,7 @@ public final class DoubleQuatOpsSimd {
         double _t8 = Math.sin(_t7);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, target, targetOffset, java.nio.ByteOrder.nativeOrder());
-        var _c0 = (Math.abs(_t8)  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }

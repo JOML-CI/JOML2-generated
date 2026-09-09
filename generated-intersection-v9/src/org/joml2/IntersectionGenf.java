@@ -1177,23 +1177,23 @@ public final class IntersectionGenf {
         }
         float _t26 = _t19 > _t20 ? _t19 : _t20 != _t20 ? _t19 : _t20;
         float _t27 = _t22 < _t23 ? _t22 : _t23 != _t23 ? _t22 : _t23;
-        float _t28 = _t18 > _t26 ? _t18 : _t26;
-        float _t29 = _t21 < _t27 ? _t21 : _t27;
-        float _t30 = _t29 > 1.0f ? 1.0f : 0.0f;
-        if ((_t20 > _t22 ? 0.0f : _t19 > _t23 ? 0.0f : _t20 > _t21 ? 0.0f : _t18 > _t23 ? 0.0f : _t28 <= _t29 ? _t28 <= 1.0f ? _t29 >= 0.0f ? 1.0f : 0.0f : 0.0f : 0.0f) != 0) {
-            if ((_t28 >= 0.0f ? _t30 : 0.0f) != 0) {
-                result.set(_t28, _t28);
+        float _t30 = _t18 > _t26 ? _t18 : _t26 != _t26 ? _t18 : _t26;
+        float _t31 = _t21 < _t27 ? _t21 : _t27 != _t27 ? _t21 : _t27;
+        float _t32 = _t31 > 1.0f ? 1.0f : 0.0f;
+        if ((_t20 > _t22 ? 0.0f : _t19 > _t23 ? 0.0f : _t20 > _t21 ? 0.0f : _t18 > _t23 ? 0.0f : _t30 <= _t31 ? _t30 <= 1.0f ? _t31 >= 0.0f ? 1.0f : 0.0f : 0.0f : 0.0f) != 0) {
+            if ((_t30 >= 0.0f ? _t32 : 0.0f) != 0) {
+                result.set(_t30, _t30);
                 return 1;
             }
-            if ((_t28 < 0.0f) && (_t29 <= 1.0f)) {
-                result.set(_t29, _t29);
+            if ((_t30 < 0.0f) && (_t31 <= 1.0f)) {
+                result.set(_t31, _t31);
                 return 1;
             }
-            if ((_t28 < 0.0f ? _t30 : 0.0f) != 0) {
-                result.set(_t28, _t29);
+            if ((_t30 < 0.0f ? _t32 : 0.0f) != 0) {
+                result.set(_t30, _t31);
                 return 3;
             }
-            result.set(_t28, _t29);
+            result.set(_t30, _t31);
             return 2;
         }
         return -1;
@@ -1734,10 +1734,10 @@ public final class IntersectionGenf {
         }
         float _t25 = _t17 > _t15 ? _t17 : (Float.isNaN(_t15) ? 1.0f : 0.0f) > 0.0f ? _t17 : _t15;
         float _t26 = _t16 < _t18 ? _t16 : (Float.isNaN(_t18) ? 1.0f : 0.0f) > 0.0f ? _t16 : _t18;
-        float _t27 = _t20 > _t25 ? _t20 : _t25;
-        float _t28 = _t19 < _t26 ? _t19 : _t26;
-        if ((_t15 > _t16 ? 0.0f : _t17 > _t18 ? 0.0f : _t15 > _t19 ? 0.0f : _t20 > _t18 ? 0.0f : _t27 < _t28 ? _t28 >= 0.0f ? 1.0f : 0.0f : 0.0f) != 0) {
-            result.set(_t27, _t28);
+        float _t31 = _t20 > _t25 ? _t20 : (Float.isNaN(_t25) ? 1.0f : 0.0f) > 0.0f ? _t20 : _t25;
+        float _t32 = _t19 < _t26 ? _t19 : (Float.isNaN(_t26) ? 1.0f : 0.0f) > 0.0f ? _t19 : _t26;
+        if ((_t15 > _t16 ? 0.0f : _t17 > _t18 ? 0.0f : _t15 > _t19 ? 0.0f : _t20 > _t18 ? 0.0f : _t31 < _t32 ? _t32 >= 0.0f ? 1.0f : 0.0f : 0.0f) != 0) {
+            result.set(_t31, _t32);
             return true;
         }
         return false;
@@ -2880,8 +2880,8 @@ public final class IntersectionGenf {
         float _t27 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, -radiusSquared));
         float _t28 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, -radiusSquared));
         float _t29 = Math.fma(_t4, _t4, Math.fma(_t5, _t5, -radiusSquared));
-        float _t38 = _t25 >= 0.0f ? _t25 < _t26 ? _t26 * _t29 <= _t25 * _t25 ? 1.0f : 0.0f : 0.0f : 0.0f;
-        float _t41 = _t23 > 0.0f ? _t23 <= _t24 ? _t24 * _t28 <= _t23 * _t23 ? 1.0f : _t38 : _t38 : _t38;
+        float _t38 = _t25 >= 0.0f ? _t25 <= _t26 ? _t26 * _t29 <= _t25 * _t25 ? 1.0f : 0.0f : 0.0f : 0.0f;
+        float _t41 = _t23 >= 0.0f ? _t23 <= _t24 ? _t24 * _t28 <= _t23 * _t23 ? 1.0f : _t38 : _t38 : _t38;
         float _t44 = _t21 >= 0.0f ? _t21 <= _t22 ? _t22 * _t27 <= _t21 * _t21 ? 1.0f : _t41 : _t41 : _t41;
         if (_t27 <= 0.0f) return true;
         if (_t28 <= 0.0f) return true;
@@ -3196,9 +3196,9 @@ public final class IntersectionGenf {
         }
         float _t23 = _t17 > _t15 ? _t17 : _t15 != _t15 ? _t17 : _t15;
         float _t24 = _t16 < _t18 ? _t16 : _t18 != _t18 ? _t16 : _t18;
-        float _t25 = _t20 > _t23 ? _t20 : _t23;
-        float _t26 = _t19 < _t24 ? _t19 : _t24;
-        return (_t15 > _t16 ? 0.0f : _t17 > _t18 ? 0.0f : _t15 > _t19 ? 0.0f : _t20 > _t18 ? 0.0f : _t25 < _t26 ? _t26 >= 0.0f ? _t25 <= 1.0f ? 1.0f : 0.0f : 0.0f : 0.0f) != 0;
+        float _t27 = _t20 > _t23 ? _t20 : _t23 != _t23 ? _t20 : _t23;
+        float _t28 = _t19 < _t24 ? _t19 : _t24 != _t24 ? _t19 : _t24;
+        return (_t15 > _t16 ? 0.0f : _t17 > _t18 ? 0.0f : _t15 > _t19 ? 0.0f : _t20 > _t18 ? 0.0f : _t27 < _t28 ? _t28 >= 0.0f ? _t27 <= 1.0f ? 1.0f : 0.0f : 0.0f : 0.0f) != 0;
     }
 
     /**
@@ -3896,8 +3896,8 @@ public final class IntersectionGenf {
         }
         float _t23 = _t17 > _t15 ? _t17 : _t15 != _t15 ? _t17 : _t15;
         float _t24 = _t16 < _t18 ? _t16 : _t18 != _t18 ? _t16 : _t18;
-        float _t25 = _t19 < _t24 ? _t19 : _t24;
-        return (_t15 > _t16 ? 0.0f : _t17 > _t18 ? 0.0f : _t15 > _t19 ? 0.0f : _t20 > _t18 ? 0.0f : (_t20 > _t23 ? _t20 : _t23) < _t25 ? _t25 >= 0.0f ? 1.0f : 0.0f : 0.0f) != 0;
+        float _t26 = _t19 < _t24 ? _t19 : _t24 != _t24 ? _t19 : _t24;
+        return (_t15 > _t16 ? 0.0f : _t17 > _t18 ? 0.0f : _t15 > _t19 ? 0.0f : _t20 > _t18 ? 0.0f : (_t20 > _t23 ? _t20 : _t23 != _t23 ? _t20 : _t23) < _t26 ? _t26 >= 0.0f ? 1.0f : 0.0f : 0.0f) != 0;
     }
 
     /**

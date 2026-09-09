@@ -13273,14 +13273,68 @@ public final class Float4x4OpsKernelsSegment {
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment obliqueZ_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW) {
+    public static java.lang.foreign.MemorySegment obliqueZ_no_lh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.obliqueZ_no_lh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        return Float4x4OpsKernelsSegment.obliqueZ_no_lh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_lh_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW) {
         long _destBase = dest.address() + destOffset;
         long _srcBase = src.address() + srcOffset;
-        Float4x4OpsKernelsAddress.obliqueZ_unsafe(_destBase, _srcBase, planeX, planeY, planeZ, planeW);
+        Float4x4OpsKernelsAddress.obliqueZ_no_lh_unsafe(_destBase, _srcBase, planeX, planeY, planeZ, planeW);
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment obliqueZ_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW) {
+    public static java.lang.foreign.MemorySegment obliqueZ_no_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self30 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self31 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 28L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _self32 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
+        float _self03 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 48L);
+        float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
+        float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
+        float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        float _t0 = 2.0f * _self23;
+        float _t15 = Math.fma(planeW, 1.0f - _self22, _self23 * (planeZ + (planeX * ((planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f) - _self02) / _self00 + planeY * ((planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f) - _self12) / _self11)));
+        float _t15_inv = 1.0f / _t15;
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _self00);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _self10);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, planeX * _t0 * _t15_inv - _self30);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _self30);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _self01);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, _self11);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, planeY * _t0 * _t15_inv - _self31);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, _self31);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, _self02);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, _self12);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, planeZ * _t0 * _t15_inv - _self32);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, _self32);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 48L, _self03);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 52L, _self13);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 56L, planeW * _t0 * _t15_inv - _self33);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 60L, _self33);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_rh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.obliqueZ_no_rh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        return Float4x4OpsKernelsSegment.obliqueZ_no_rh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_rh_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        Float4x4OpsKernelsAddress.obliqueZ_no_rh_unsafe(_destBase, _srcBase, planeX, planeY, planeZ, planeW);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW) {
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self30 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
@@ -13317,15 +13371,184 @@ public final class Float4x4OpsKernelsSegment {
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment obliqueZ_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+    public static java.lang.foreign.MemorySegment obliqueZ_no(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Float4x4OpsKernelsSegment.obliqueZ_no_lh(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW); }
+            default -> { return Float4x4OpsKernelsSegment.obliqueZ_no_rh(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW); }
+        }
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_lh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.obliqueZ_zo_lh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        return Float4x4OpsKernelsSegment.obliqueZ_zo_lh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_lh_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW) {
         long _destBase = dest.address() + destOffset;
         long _srcBase = src.address() + srcOffset;
-        long _planeBase = plane.address() + planeOffset;
-        Float4x4OpsKernelsAddress.obliqueZ_unsafe(_destBase, _srcBase, _planeBase);
+        Float4x4OpsKernelsAddress.obliqueZ_zo_lh_unsafe(_destBase, _srcBase, planeX, planeY, planeZ, planeW);
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment obliqueZ_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self30 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self31 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 28L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _self32 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
+        float _self03 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 48L);
+        float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
+        float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
+        float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        float _t14 = Math.fma(planeW, 1.0f - _self22, _self23 * (planeZ + (planeX * ((planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f) - _self02) / _self00 + planeY * ((planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f) - _self12) / _self11)));
+        float _t14_inv = 1.0f / _t14;
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _self00);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _self10);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, planeX * _self23 * _t14_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _self30);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _self01);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, _self11);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, planeY * _self23 * _t14_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, _self31);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, _self02);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, _self12);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, planeZ * _self23 * _t14_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, _self32);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 48L, _self03);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 52L, _self13);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 56L, planeW * _self23 * _t14_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 60L, _self33);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_rh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.obliqueZ_zo_rh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        return Float4x4OpsKernelsSegment.obliqueZ_zo_rh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_rh_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        Float4x4OpsKernelsAddress.obliqueZ_zo_rh_unsafe(_destBase, _srcBase, planeX, planeY, planeZ, planeW);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self30 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self31 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 28L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _self32 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
+        float _self03 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 48L);
+        float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
+        float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
+        float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        float _t14 = Math.fma(planeW, 1.0f + _self22, _self23 * (planeX * (_self02 + (planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f)) / _self00 + planeY * (_self12 + (planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f)) / _self11 - planeZ));
+        float _t14_inv = 1.0f / _t14;
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _self00);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _self10);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, planeX * _self23 * _t14_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _self30);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _self01);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, _self11);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, planeY * _self23 * _t14_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, _self31);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, _self02);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, _self12);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, planeZ * _self23 * _t14_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, _self32);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 48L, _self03);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 52L, _self13);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 56L, planeW * _self23 * _t14_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 60L, _self33);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float planeX, float planeY, float planeZ, float planeW, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Float4x4OpsKernelsSegment.obliqueZ_zo_lh(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW); }
+            default -> { return Float4x4OpsKernelsSegment.obliqueZ_zo_rh(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW); }
+        }
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_lh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && plane.isNative()) return Float4x4OpsKernelsSegment.obliqueZ_no_lh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        return Float4x4OpsKernelsSegment.obliqueZ_no_lh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_lh_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        long _planeBase = plane.address() + planeOffset;
+        Float4x4OpsKernelsAddress.obliqueZ_no_lh_unsafe(_destBase, _srcBase, _planeBase);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self30 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self31 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 28L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _self32 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
+        float _self03 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 48L);
+        float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
+        float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
+        float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        float _planex = plane.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, planeOffset + 0L);
+        float _planey = plane.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, planeOffset + 4L);
+        float _planez = plane.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, planeOffset + 8L);
+        float _planew = plane.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, planeOffset + 12L);
+        float _t0 = 2.0f * _self23;
+        float _t15 = Math.fma(_planew, 1.0f - _self22, _self23 * (_planez + (_planex * ((_planex < 0.0f ? -1.0f : _planex > 0.0f ? 1.0f : 0.0f) - _self02) / _self00 + _planey * ((_planey < 0.0f ? -1.0f : _planey > 0.0f ? 1.0f : 0.0f) - _self12) / _self11)));
+        float _t15_inv = 1.0f / _t15;
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _self00);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _self10);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _planex * _t0 * _t15_inv - _self30);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _self30);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _self01);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, _self11);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, _planey * _t0 * _t15_inv - _self31);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, _self31);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, _self02);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, _self12);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, _planez * _t0 * _t15_inv - _self32);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, _self32);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 48L, _self03);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 52L, _self13);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 56L, _planew * _t0 * _t15_inv - _self33);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 60L, _self33);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_rh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && plane.isNative()) return Float4x4OpsKernelsSegment.obliqueZ_no_rh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        return Float4x4OpsKernelsSegment.obliqueZ_no_rh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_rh_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        long _planeBase = plane.address() + planeOffset;
+        Float4x4OpsKernelsAddress.obliqueZ_no_rh_unsafe(_destBase, _srcBase, _planeBase);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self30 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
@@ -13364,6 +13587,126 @@ public final class Float4x4OpsKernelsSegment {
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 56L, _planew * _t0 * _t15_inv - _self33);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 60L, _self33);
         return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_no(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Float4x4OpsKernelsSegment.obliqueZ_no_lh(dest, destOffset, src, srcOffset, plane, planeOffset); }
+            default -> { return Float4x4OpsKernelsSegment.obliqueZ_no_rh(dest, destOffset, src, srcOffset, plane, planeOffset); }
+        }
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_lh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && plane.isNative()) return Float4x4OpsKernelsSegment.obliqueZ_zo_lh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        return Float4x4OpsKernelsSegment.obliqueZ_zo_lh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_lh_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        long _planeBase = plane.address() + planeOffset;
+        Float4x4OpsKernelsAddress.obliqueZ_zo_lh_unsafe(_destBase, _srcBase, _planeBase);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self30 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self31 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 28L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _self32 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
+        float _self03 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 48L);
+        float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
+        float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
+        float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        float _planex = plane.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, planeOffset + 0L);
+        float _planey = plane.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, planeOffset + 4L);
+        float _planez = plane.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, planeOffset + 8L);
+        float _planew = plane.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, planeOffset + 12L);
+        float _t14 = Math.fma(_planew, 1.0f - _self22, _self23 * (_planez + (_planex * ((_planex < 0.0f ? -1.0f : _planex > 0.0f ? 1.0f : 0.0f) - _self02) / _self00 + _planey * ((_planey < 0.0f ? -1.0f : _planey > 0.0f ? 1.0f : 0.0f) - _self12) / _self11)));
+        float _t14_inv = 1.0f / _t14;
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _self00);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _self10);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _planex * _self23 * _t14_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _self30);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _self01);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, _self11);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, _planey * _self23 * _t14_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, _self31);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, _self02);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, _self12);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, _planez * _self23 * _t14_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, _self32);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 48L, _self03);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 52L, _self13);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 56L, _planew * _self23 * _t14_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 60L, _self33);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_rh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && plane.isNative()) return Float4x4OpsKernelsSegment.obliqueZ_zo_rh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        return Float4x4OpsKernelsSegment.obliqueZ_zo_rh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_rh_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        long _planeBase = plane.address() + planeOffset;
+        Float4x4OpsKernelsAddress.obliqueZ_zo_rh_unsafe(_destBase, _srcBase, _planeBase);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self30 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self31 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 28L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _self32 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
+        float _self03 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 48L);
+        float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
+        float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
+        float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        float _planex = plane.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, planeOffset + 0L);
+        float _planey = plane.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, planeOffset + 4L);
+        float _planez = plane.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, planeOffset + 8L);
+        float _planew = plane.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, planeOffset + 12L);
+        float _t14 = Math.fma(_planew, 1.0f + _self22, _self23 * (_planex * (_self02 + (_planex < 0.0f ? -1.0f : _planex > 0.0f ? 1.0f : 0.0f)) / _self00 + _planey * (_self12 + (_planey < 0.0f ? -1.0f : _planey > 0.0f ? 1.0f : 0.0f)) / _self11 - _planez));
+        float _t14_inv = 1.0f / _t14;
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _self00);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _self10);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _planex * _self23 * _t14_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _self30);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _self01);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, _self11);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, _planey * _self23 * _t14_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, _self31);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, _self02);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, _self12);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, _planez * _self23 * _t14_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, _self32);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 48L, _self03);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 52L, _self13);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 56L, _planew * _self23 * _t14_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 60L, _self33);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment obliqueZ_zo(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment plane, long planeOffset, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Float4x4OpsKernelsSegment.obliqueZ_zo_lh(dest, destOffset, src, srcOffset, plane, planeOffset); }
+            default -> { return Float4x4OpsKernelsSegment.obliqueZ_zo_rh(dest, destOffset, src, srcOffset, plane, planeOffset); }
+        }
     }
 
     public static java.lang.foreign.MemorySegment ortho_no_lh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float left, float right, float bottom, float top, float zNear, float zFar) {
@@ -17090,14 +17433,19 @@ public final class Float4x4OpsKernelsSegment {
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment project_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+    public static java.lang.foreign.MemorySegment project_no(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.project_no_unsafe(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        return Float4x4OpsKernelsSegment.project_no_api(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.lang.foreign.MemorySegment project_no_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
         long _destBase = dest.address() + destOffset;
         long _srcBase = src.address() + srcOffset;
-        Float4x4OpsKernelsAddress.project_unsafe(_destBase, _srcBase, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        Float4x4OpsKernelsAddress.project_no_unsafe(_destBase, _srcBase, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment project_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+    public static java.lang.foreign.MemorySegment project_no_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -17122,16 +17470,58 @@ public final class Float4x4OpsKernelsSegment {
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment project_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment obj, long objOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+    public static java.lang.foreign.MemorySegment project_zo(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.project_zo_unsafe(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        return Float4x4OpsKernelsSegment.project_zo_api(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.lang.foreign.MemorySegment project_zo_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        Float4x4OpsKernelsAddress.project_zo_unsafe(_destBase, _srcBase, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment project_zo_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float objX, float objY, float objZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
+        float _self30 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 24L);
+        float _self31 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 28L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _self32 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
+        float _self03 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 48L);
+        float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
+        float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
+        float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        float _t2 = Math.fma(objX, _self30, Math.fma(objY, _self31, Math.fma(objZ, _self32, _self33)));
+        float _t2_inv = 1.0f / _t2;
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(0.5f, viewportZ * (1.0f + Math.fma(objX, _self00, Math.fma(objY, _self01, Math.fma(objZ, _self02, _self03))) * _t2_inv), viewportX));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(0.5f, viewportW * (1.0f + Math.fma(objX, _self10, Math.fma(objY, _self11, Math.fma(objZ, _self12, _self13))) * _t2_inv), viewportY));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, Math.fma(objX, _self20, Math.fma(objY, _self21, Math.fma(objZ, _self22, _self23))) * _t2_inv);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment project_no(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment obj, long objOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && obj.isNative() && viewport.isNative()) return Float4x4OpsKernelsSegment.project_no_unsafe(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
+        return Float4x4OpsKernelsSegment.project_no_api(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment project_no_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment obj, long objOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
         long _destBase = dest.address() + destOffset;
         long _srcBase = src.address() + srcOffset;
         long _objBase = obj.address() + objOffset;
         long _viewportBase = viewport.address() + viewportOffset;
-        Float4x4OpsKernelsAddress.project_unsafe(_destBase, _srcBase, _objBase, _viewportBase);
+        Float4x4OpsKernelsAddress.project_no_unsafe(_destBase, _srcBase, _objBase, _viewportBase);
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment project_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment obj, long objOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+    public static java.lang.foreign.MemorySegment project_no_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment obj, long objOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -17160,6 +17550,52 @@ public final class Float4x4OpsKernelsSegment {
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(0.5f, _viewportz * (1.0f + Math.fma(_objx, _self00, Math.fma(_objy, _self01, Math.fma(_objz, _self02, _self03))) * _t2_inv), _viewportx));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(0.5f, _viewportw * (1.0f + Math.fma(_objx, _self10, Math.fma(_objy, _self11, Math.fma(_objz, _self12, _self13))) * _t2_inv), _viewporty));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, 0.5f * (1.0f + Math.fma(_objx, _self20, Math.fma(_objy, _self21, Math.fma(_objz, _self22, _self23))) * _t2_inv));
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment project_zo(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment obj, long objOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && obj.isNative() && viewport.isNative()) return Float4x4OpsKernelsSegment.project_zo_unsafe(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
+        return Float4x4OpsKernelsSegment.project_zo_api(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment project_zo_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment obj, long objOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        long _objBase = obj.address() + objOffset;
+        long _viewportBase = viewport.address() + viewportOffset;
+        Float4x4OpsKernelsAddress.project_zo_unsafe(_destBase, _srcBase, _objBase, _viewportBase);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment project_zo_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment obj, long objOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
+        float _self30 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 24L);
+        float _self31 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 28L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _self32 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
+        float _self03 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 48L);
+        float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
+        float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
+        float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        float _objx = obj.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, objOffset + 0L);
+        float _objy = obj.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, objOffset + 4L);
+        float _objz = obj.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, objOffset + 8L);
+        float _viewportx = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 0L);
+        float _viewporty = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 4L);
+        float _viewportz = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 8L);
+        float _viewportw = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 12L);
+        float _t2 = Math.fma(_objx, _self30, Math.fma(_objy, _self31, Math.fma(_objz, _self32, _self33)));
+        float _t2_inv = 1.0f / _t2;
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(0.5f, _viewportz * (1.0f + Math.fma(_objx, _self00, Math.fma(_objy, _self01, Math.fma(_objz, _self02, _self03))) * _t2_inv), _viewportx));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(0.5f, _viewportw * (1.0f + Math.fma(_objx, _self10, Math.fma(_objy, _self11, Math.fma(_objz, _self12, _self13))) * _t2_inv), _viewporty));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, Math.fma(_objx, _self20, Math.fma(_objy, _self21, Math.fma(_objz, _self22, _self23))) * _t2_inv);
         return dest;
     }
 
@@ -18943,14 +19379,19 @@ public final class Float4x4OpsKernelsSegment {
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment unproject_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+    public static java.lang.foreign.MemorySegment unproject_no(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.unproject_no_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return Float4x4OpsKernelsSegment.unproject_no_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.lang.foreign.MemorySegment unproject_no_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
         long _destBase = dest.address() + destOffset;
         long _srcBase = src.address() + srcOffset;
-        Float4x4OpsKernelsAddress.unproject_unsafe(_destBase, _srcBase, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        Float4x4OpsKernelsAddress.unproject_no_unsafe(_destBase, _srcBase, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment unproject_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+    public static java.lang.foreign.MemorySegment unproject_no_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -18996,16 +19437,79 @@ public final class Float4x4OpsKernelsSegment {
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment unproject_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+    public static java.lang.foreign.MemorySegment unproject_zo(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.unproject_zo_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return Float4x4OpsKernelsSegment.unproject_zo_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.lang.foreign.MemorySegment unproject_zo_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        Float4x4OpsKernelsAddress.unproject_zo_unsafe(_destBase, _srcBase, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment unproject_zo_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
+        float _self30 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 24L);
+        float _self31 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 28L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _self32 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
+        float _self03 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 48L);
+        float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
+        float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
+        float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        float _t0 = -winCoordsZ;
+        float _t43 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        float _t44 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        float _t45 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        float _t46 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        float _t47 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        float _t48 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        float _t49 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t50 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        float _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        float _t52 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        float _t53 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        float _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        float _t55 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        float _t56 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        float _t57 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        float _t58 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        float _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        float _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        float _t61 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
+        float _t62 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        float _t83 = Math.fma(_self02, _t52, Math.fma(_self00, _t49, -(_self01 * _t53))) + Math.fma(_t0, Math.fma(_self02, _t54, Math.fma(_self00, _t43, -(_self01 * _t55))), Math.fma(Math.fma(_self02, _t56, Math.fma(_self00, _t46, -(_self01 * _t57))), _t62, -(Math.fma(_self12, _t56, Math.fma(_self10, _t46, -(_self11 * _t57))) * _t61)));
+        float _t83_inv = 1.0f / _t83;
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, (Math.fma(winCoordsZ, Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))), Math.fma(Math.fma(_self13, _t46, Math.fma(_self11, _t47, -(_self12 * _t48))), _t61, -(Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48))) * _t62))) - Math.fma(_self03, _t49, Math.fma(_self01, _t50, -(_self02 * _t51)))) * _t83_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, (Math.fma(_self03, _t53, Math.fma(_self00, _t50, -(_self02 * _t58))) + Math.fma(_t0, Math.fma(_self03, _t55, Math.fma(_self00, _t44, -(_self02 * _t59))), Math.fma(Math.fma(_self03, _t57, Math.fma(_self00, _t47, -(_self02 * _t60))), _t62, -(Math.fma(_self13, _t57, Math.fma(_self10, _t47, -(_self12 * _t60))) * _t61)))) * _t83_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, (Math.fma(winCoordsZ, Math.fma(_self03, _t54, Math.fma(_self00, _t45, -(_self01 * _t59))), Math.fma(Math.fma(_self13, _t56, Math.fma(_self10, _t48, -(_self11 * _t60))), _t61, -(Math.fma(_self03, _t56, Math.fma(_self00, _t48, -(_self01 * _t60))) * _t62))) - Math.fma(_self03, _t52, Math.fma(_self00, _t51, -(_self01 * _t58)))) * _t83_inv);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment unproject_no(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && winCoords.isNative() && viewport.isNative()) return Float4x4OpsKernelsSegment.unproject_no_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Float4x4OpsKernelsSegment.unproject_no_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment unproject_no_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
         long _destBase = dest.address() + destOffset;
         long _srcBase = src.address() + srcOffset;
         long _winCoordsBase = winCoords.address() + winCoordsOffset;
         long _viewportBase = viewport.address() + viewportOffset;
-        Float4x4OpsKernelsAddress.unproject_unsafe(_destBase, _srcBase, _winCoordsBase, _viewportBase);
+        Float4x4OpsKernelsAddress.unproject_no_unsafe(_destBase, _srcBase, _winCoordsBase, _viewportBase);
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment unproject_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+    public static java.lang.foreign.MemorySegment unproject_no_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -19058,14 +19562,86 @@ public final class Float4x4OpsKernelsSegment {
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment unprojectInv_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+    public static java.lang.foreign.MemorySegment unproject_zo(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && winCoords.isNative() && viewport.isNative()) return Float4x4OpsKernelsSegment.unproject_zo_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Float4x4OpsKernelsSegment.unproject_zo_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment unproject_zo_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
         long _destBase = dest.address() + destOffset;
         long _srcBase = src.address() + srcOffset;
-        Float4x4OpsKernelsAddress.unprojectInv_unsafe(_destBase, _srcBase, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        long _winCoordsBase = winCoords.address() + winCoordsOffset;
+        long _viewportBase = viewport.address() + viewportOffset;
+        Float4x4OpsKernelsAddress.unproject_zo_unsafe(_destBase, _srcBase, _winCoordsBase, _viewportBase);
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment unprojectInv_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+    public static java.lang.foreign.MemorySegment unproject_zo_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
+        float _self30 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 24L);
+        float _self31 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 28L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _self32 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
+        float _self03 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 48L);
+        float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
+        float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
+        float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        float _winCoordsx = winCoords.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, winCoordsOffset + 0L);
+        float _winCoordsy = winCoords.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, winCoordsOffset + 4L);
+        float _winCoordsz = winCoords.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, winCoordsOffset + 8L);
+        float _viewportx = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 0L);
+        float _viewporty = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 4L);
+        float _viewportz = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 8L);
+        float _viewportw = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 12L);
+        float _t0 = -_winCoordsz;
+        float _t43 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        float _t44 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        float _t45 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        float _t46 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        float _t47 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        float _t48 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        float _t49 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t50 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        float _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        float _t52 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        float _t53 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        float _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        float _t55 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        float _t56 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        float _t57 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        float _t58 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        float _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        float _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        float _t61 = 2.0f * (_winCoordsx - _viewportx) / _viewportz - 1.0f;
+        float _t62 = 2.0f * (_winCoordsy - _viewporty) / _viewportw - 1.0f;
+        float _t83 = Math.fma(_self02, _t52, Math.fma(_self00, _t49, -(_self01 * _t53))) + Math.fma(_t0, Math.fma(_self02, _t54, Math.fma(_self00, _t43, -(_self01 * _t55))), Math.fma(Math.fma(_self02, _t56, Math.fma(_self00, _t46, -(_self01 * _t57))), _t62, -(Math.fma(_self12, _t56, Math.fma(_self10, _t46, -(_self11 * _t57))) * _t61)));
+        float _t83_inv = 1.0f / _t83;
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, (Math.fma(_winCoordsz, Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))), Math.fma(Math.fma(_self13, _t46, Math.fma(_self11, _t47, -(_self12 * _t48))), _t61, -(Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48))) * _t62))) - Math.fma(_self03, _t49, Math.fma(_self01, _t50, -(_self02 * _t51)))) * _t83_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, (Math.fma(_self03, _t53, Math.fma(_self00, _t50, -(_self02 * _t58))) + Math.fma(_t0, Math.fma(_self03, _t55, Math.fma(_self00, _t44, -(_self02 * _t59))), Math.fma(Math.fma(_self03, _t57, Math.fma(_self00, _t47, -(_self02 * _t60))), _t62, -(Math.fma(_self13, _t57, Math.fma(_self10, _t47, -(_self12 * _t60))) * _t61)))) * _t83_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, (Math.fma(_winCoordsz, Math.fma(_self03, _t54, Math.fma(_self00, _t45, -(_self01 * _t59))), Math.fma(Math.fma(_self13, _t56, Math.fma(_self10, _t48, -(_self11 * _t60))), _t61, -(Math.fma(_self03, _t56, Math.fma(_self00, _t48, -(_self01 * _t60))) * _t62))) - Math.fma(_self03, _t52, Math.fma(_self00, _t51, -(_self01 * _t58)))) * _t83_inv);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectInv_no(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.unprojectInv_no_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return Float4x4OpsKernelsSegment.unprojectInv_no_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectInv_no_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        Float4x4OpsKernelsAddress.unprojectInv_no_unsafe(_destBase, _srcBase, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectInv_no_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -19093,16 +19669,60 @@ public final class Float4x4OpsKernelsSegment {
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment unprojectInv_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+    public static java.lang.foreign.MemorySegment unprojectInv_zo(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.unprojectInv_zo_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return Float4x4OpsKernelsSegment.unprojectInv_zo_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectInv_zo_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        Float4x4OpsKernelsAddress.unprojectInv_zo_unsafe(_destBase, _srcBase, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectInv_zo_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
+        float _self30 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 24L);
+        float _self31 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 28L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _self32 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
+        float _self03 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 48L);
+        float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
+        float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
+        float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        float _t7 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
+        float _t8 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        float _t10 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, Math.fma(_self32, winCoordsZ, _self33)));
+        float _t10_inv = 1.0f / _t10;
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_self00, _t7, Math.fma(_self01, _t8, Math.fma(_self02, winCoordsZ, _self03))) * _t10_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_self10, _t7, Math.fma(_self11, _t8, Math.fma(_self12, winCoordsZ, _self13))) * _t10_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, Math.fma(_self20, _t7, Math.fma(_self21, _t8, Math.fma(_self22, winCoordsZ, _self23))) * _t10_inv);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectInv_no(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && winCoords.isNative() && viewport.isNative()) return Float4x4OpsKernelsSegment.unprojectInv_no_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Float4x4OpsKernelsSegment.unprojectInv_no_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectInv_no_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
         long _destBase = dest.address() + destOffset;
         long _srcBase = src.address() + srcOffset;
         long _winCoordsBase = winCoords.address() + winCoordsOffset;
         long _viewportBase = viewport.address() + viewportOffset;
-        Float4x4OpsKernelsAddress.unprojectInv_unsafe(_destBase, _srcBase, _winCoordsBase, _viewportBase);
+        Float4x4OpsKernelsAddress.unprojectInv_no_unsafe(_destBase, _srcBase, _winCoordsBase, _viewportBase);
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment unprojectInv_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+    public static java.lang.foreign.MemorySegment unprojectInv_no_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -19137,15 +19757,68 @@ public final class Float4x4OpsKernelsSegment {
         return dest;
     }
 
-    public static java.lang.foreign.MemorySegment unprojectInvRay_unsafe(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
+    public static java.lang.foreign.MemorySegment unprojectInv_zo(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && winCoords.isNative() && viewport.isNative()) return Float4x4OpsKernelsSegment.unprojectInv_zo_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Float4x4OpsKernelsSegment.unprojectInv_zo_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectInv_zo_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        long _winCoordsBase = winCoords.address() + winCoordsOffset;
+        long _viewportBase = viewport.address() + viewportOffset;
+        Float4x4OpsKernelsAddress.unprojectInv_zo_unsafe(_destBase, _srcBase, _winCoordsBase, _viewportBase);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectInv_zo_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
+        float _self30 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 24L);
+        float _self31 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 28L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _self32 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
+        float _self03 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 48L);
+        float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
+        float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
+        float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        float _winCoordsx = winCoords.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, winCoordsOffset + 0L);
+        float _winCoordsy = winCoords.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, winCoordsOffset + 4L);
+        float _winCoordsz = winCoords.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, winCoordsOffset + 8L);
+        float _viewportx = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 0L);
+        float _viewporty = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 4L);
+        float _viewportz = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 8L);
+        float _viewportw = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 12L);
+        float _t7 = 2.0f * (_winCoordsx - _viewportx) / _viewportz - 1.0f;
+        float _t8 = 2.0f * (_winCoordsy - _viewporty) / _viewportw - 1.0f;
+        float _t10 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, Math.fma(_self32, _winCoordsz, _self33)));
+        float _t10_inv = 1.0f / _t10;
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_self00, _t7, Math.fma(_self01, _t8, Math.fma(_self02, _winCoordsz, _self03))) * _t10_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_self10, _t7, Math.fma(_self11, _t8, Math.fma(_self12, _winCoordsz, _self13))) * _t10_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, Math.fma(_self20, _t7, Math.fma(_self21, _t8, Math.fma(_self22, _winCoordsz, _self23))) * _t10_inv);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectInvRay_no(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isNative() && !rayOrigin.isReadOnly() && rayDir.isNative() && !rayDir.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.unprojectInvRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return Float4x4OpsKernelsSegment.unprojectInvRay_no_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectInvRay_no_unsafe(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
         long _rayOriginBase = rayOrigin.address() + rayOriginOffset;
         long _rayDirBase = rayDir.address() + rayDirOffset;
         long _srcBase = src.address() + srcOffset;
-        Float4x4OpsKernelsAddress.unprojectInvRay_unsafe(_rayOriginBase, _rayDirBase, _srcBase, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        Float4x4OpsKernelsAddress.unprojectInvRay_no_unsafe(_rayOriginBase, _rayDirBase, _srcBase, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
         return rayOrigin;
     }
 
-    public static java.lang.foreign.MemorySegment unprojectInvRay_api(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
+    public static java.lang.foreign.MemorySegment unprojectInvRay_no_api(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -19180,17 +19853,70 @@ public final class Float4x4OpsKernelsSegment {
         return rayOrigin;
     }
 
-    public static java.lang.foreign.MemorySegment unprojectInvRay_unsafe(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+    public static java.lang.foreign.MemorySegment unprojectInvRay_zo(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isNative() && !rayOrigin.isReadOnly() && rayDir.isNative() && !rayDir.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.unprojectInvRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return Float4x4OpsKernelsSegment.unprojectInvRay_zo_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectInvRay_zo_unsafe(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        long _rayOriginBase = rayOrigin.address() + rayOriginOffset;
+        long _rayDirBase = rayDir.address() + rayDirOffset;
+        long _srcBase = src.address() + srcOffset;
+        Float4x4OpsKernelsAddress.unprojectInvRay_zo_unsafe(_rayOriginBase, _rayDirBase, _srcBase, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return rayOrigin;
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectInvRay_zo_api(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
+        float _self30 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 24L);
+        float _self31 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 28L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _self32 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
+        float _self03 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 48L);
+        float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
+        float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
+        float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        float _t7 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
+        float _t8 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        float _t15 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33));
+        float _t15_inv = 1.0f / _t15;
+        float _t18 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33 + _self32));
+        float _t18_inv = 1.0f / _t18;
+        float _t19 = Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03)) * _t15_inv;
+        float _t20 = Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13)) * _t15_inv;
+        float _t21 = Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23)) * _t15_inv;
+        rayOrigin.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayOriginOffset + 0L, _t19);
+        rayOrigin.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayOriginOffset + 4L, _t20);
+        rayOrigin.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayOriginOffset + 8L, _t21);
+        rayDir.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayDirOffset + 0L, Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03 + _self02)) * _t18_inv - _t19);
+        rayDir.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayDirOffset + 4L, Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13 + _self12)) * _t18_inv - _t20);
+        rayDir.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayDirOffset + 8L, Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23 + _self22)) * _t18_inv - _t21);
+        return rayOrigin;
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectInvRay_no(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isNative() && !rayOrigin.isReadOnly() && rayDir.isNative() && !rayDir.isReadOnly() && src.isNative() && winCoords.isNative() && viewport.isNative()) return Float4x4OpsKernelsSegment.unprojectInvRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Float4x4OpsKernelsSegment.unprojectInvRay_no_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectInvRay_no_unsafe(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
         long _rayOriginBase = rayOrigin.address() + rayOriginOffset;
         long _rayDirBase = rayDir.address() + rayDirOffset;
         long _srcBase = src.address() + srcOffset;
         long _winCoordsBase = winCoords.address() + winCoordsOffset;
         long _viewportBase = viewport.address() + viewportOffset;
-        Float4x4OpsKernelsAddress.unprojectInvRay_unsafe(_rayOriginBase, _rayDirBase, _srcBase, _winCoordsBase, _viewportBase);
+        Float4x4OpsKernelsAddress.unprojectInvRay_no_unsafe(_rayOriginBase, _rayDirBase, _srcBase, _winCoordsBase, _viewportBase);
         return rayOrigin;
     }
 
-    public static java.lang.foreign.MemorySegment unprojectInvRay_api(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+    public static java.lang.foreign.MemorySegment unprojectInvRay_no_api(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -19231,15 +19957,76 @@ public final class Float4x4OpsKernelsSegment {
         return rayOrigin;
     }
 
-    public static java.lang.foreign.MemorySegment unprojectRay_unsafe(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
+    public static java.lang.foreign.MemorySegment unprojectInvRay_zo(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isNative() && !rayOrigin.isReadOnly() && rayDir.isNative() && !rayDir.isReadOnly() && src.isNative() && winCoords.isNative() && viewport.isNative()) return Float4x4OpsKernelsSegment.unprojectInvRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Float4x4OpsKernelsSegment.unprojectInvRay_zo_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectInvRay_zo_unsafe(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
         long _rayOriginBase = rayOrigin.address() + rayOriginOffset;
         long _rayDirBase = rayDir.address() + rayDirOffset;
         long _srcBase = src.address() + srcOffset;
-        Float4x4OpsKernelsAddress.unprojectRay_unsafe(_rayOriginBase, _rayDirBase, _srcBase, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        long _winCoordsBase = winCoords.address() + winCoordsOffset;
+        long _viewportBase = viewport.address() + viewportOffset;
+        Float4x4OpsKernelsAddress.unprojectInvRay_zo_unsafe(_rayOriginBase, _rayDirBase, _srcBase, _winCoordsBase, _viewportBase);
         return rayOrigin;
     }
 
-    public static java.lang.foreign.MemorySegment unprojectRay_api(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
+    public static java.lang.foreign.MemorySegment unprojectInvRay_zo_api(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
+        float _self30 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 24L);
+        float _self31 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 28L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _self32 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
+        float _self03 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 48L);
+        float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
+        float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
+        float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        float _winCoordsx = winCoords.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, winCoordsOffset + 0L);
+        float _winCoordsy = winCoords.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, winCoordsOffset + 4L);
+        float _viewportx = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 0L);
+        float _viewporty = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 4L);
+        float _viewportz = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 8L);
+        float _viewportw = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 12L);
+        float _t7 = 2.0f * (_winCoordsx - _viewportx) / _viewportz - 1.0f;
+        float _t8 = 2.0f * (_winCoordsy - _viewporty) / _viewportw - 1.0f;
+        float _t15 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33));
+        float _t15_inv = 1.0f / _t15;
+        float _t18 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33 + _self32));
+        float _t18_inv = 1.0f / _t18;
+        float _t19 = Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03)) * _t15_inv;
+        float _t20 = Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13)) * _t15_inv;
+        float _t21 = Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23)) * _t15_inv;
+        rayOrigin.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayOriginOffset + 0L, _t19);
+        rayOrigin.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayOriginOffset + 4L, _t20);
+        rayOrigin.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayOriginOffset + 8L, _t21);
+        rayDir.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayDirOffset + 0L, Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03 + _self02)) * _t18_inv - _t19);
+        rayDir.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayDirOffset + 4L, Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13 + _self12)) * _t18_inv - _t20);
+        rayDir.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayDirOffset + 8L, Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23 + _self22)) * _t18_inv - _t21);
+        return rayOrigin;
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectRay_no(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isNative() && !rayOrigin.isReadOnly() && rayDir.isNative() && !rayDir.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.unprojectRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return Float4x4OpsKernelsSegment.unprojectRay_no_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectRay_no_unsafe(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        long _rayOriginBase = rayOrigin.address() + rayOriginOffset;
+        long _rayDirBase = rayDir.address() + rayDirOffset;
+        long _srcBase = src.address() + srcOffset;
+        Float4x4OpsKernelsAddress.unprojectRay_no_unsafe(_rayOriginBase, _rayDirBase, _srcBase, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return rayOrigin;
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectRay_no_api(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -19306,17 +20093,99 @@ public final class Float4x4OpsKernelsSegment {
         return rayOrigin;
     }
 
-    public static java.lang.foreign.MemorySegment unprojectRay_unsafe(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+    public static java.lang.foreign.MemorySegment unprojectRay_zo(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isNative() && !rayOrigin.isReadOnly() && rayDir.isNative() && !rayDir.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.unprojectRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return Float4x4OpsKernelsSegment.unprojectRay_zo_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectRay_zo_unsafe(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        long _rayOriginBase = rayOrigin.address() + rayOriginOffset;
+        long _rayDirBase = rayDir.address() + rayDirOffset;
+        long _srcBase = src.address() + srcOffset;
+        Float4x4OpsKernelsAddress.unprojectRay_zo_unsafe(_rayOriginBase, _rayDirBase, _srcBase, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return rayOrigin;
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectRay_zo_api(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
+        float _self30 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 24L);
+        float _self31 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 28L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _self32 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
+        float _self03 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 48L);
+        float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
+        float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
+        float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        float _t0 = -_self00;
+        float _t43 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        float _t44 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        float _t45 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        float _t46 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t47 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        float _t48 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        float _t49 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        float _t50 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        float _t51 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        float _t52 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        float _t53 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        float _t54 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        float _t55 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        float _t56 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        float _t57 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        float _t58 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        float _t59 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        float _t60 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        float _t61 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
+        float _t62 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        float _t92 = Math.fma(_self00, _t46, -(_self01 * _t50));
+        float _t95 = Math.fma(_self00, _t47, -(_self02 * _t53));
+        float _t102 = Math.fma(_self13, _t43, Math.fma(_self11, _t44, -(_self12 * _t45)));
+        float _t106 = Math.fma(_self02, _t51, Math.fma(_self00, _t43, -(_self01 * _t52)));
+        float _t109 = Math.fma(_self03, _t52, Math.fma(_self00, _t44, -(_self02 * _t54)));
+        float _t111 = Math.fma(_self13, _t51, Math.fma(_self10, _t45, -(_self11 * _t54)));
+        float _t119 = -(Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))) * _t62);
+        float _t120 = -(Math.fma(_self12, _t51, Math.fma(_self10, _t43, -(_self11 * _t52))) * _t61);
+        float _t121 = -(Math.fma(_self13, _t52, Math.fma(_self10, _t44, -(_self12 * _t54))) * _t61);
+        float _t122 = -(Math.fma(_self03, _t51, Math.fma(_self00, _t45, -(_self01 * _t54))) * _t62);
+        float _t132 = Math.fma(_self02, _t49, _t92) + Math.fma(_t106, _t62, _t120);
+        float _t132_inv = 1.0f / _t132;
+        float _t135 = _t92 + Math.fma(_self02, _t49, _t106 * _t62) + (Math.fma(_t0, _t57, _t120) + Math.fma(_self01, _t58, -(_self02 * _t59)));
+        float _t135_inv = 1.0f / _t135;
+        float _t136 = (Math.fma(_t102, _t61, _t119) - Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48)))) * _t132_inv;
+        float _t137 = (Math.fma(_self03, _t50, _t95) + Math.fma(_t109, _t62, _t121)) * _t132_inv;
+        float _t138 = (Math.fma(_t111, _t61, _t122) - Math.fma(_self03, _t49, Math.fma(_self00, _t48, -(_self01 * _t53)))) * _t132_inv;
+        rayOrigin.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayOriginOffset + 0L, _t136);
+        rayOrigin.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayOriginOffset + 4L, _t137);
+        rayOrigin.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayOriginOffset + 8L, _t138);
+        rayDir.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayDirOffset + 0L, (Math.fma(_self01, _t55, -(_self02 * _t56)) + Math.fma(_self03, _t57, _t102 * _t61) + (Math.fma(-_self01, _t47, _t119) + Math.fma(_self02, _t48, -(_self03 * _t46)))) * _t135_inv - _t136);
+        rayDir.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayDirOffset + 4L, (_t95 + Math.fma(_self03, _t50, _t109 * _t62) + (Math.fma(_t0, _t55, _t121) + Math.fma(_self02, _t60, -(_self03 * _t58)))) * _t135_inv - _t137);
+        rayDir.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayDirOffset + 8L, (Math.fma(_self00, _t56, -(_self01 * _t60)) + Math.fma(_self03, _t59, _t111 * _t61) + (Math.fma(_t0, _t48, _t122) + Math.fma(_self01, _t53, -(_self03 * _t49)))) * _t135_inv - _t138);
+        return rayOrigin;
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectRay_no(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isNative() && !rayOrigin.isReadOnly() && rayDir.isNative() && !rayDir.isReadOnly() && src.isNative() && winCoords.isNative() && viewport.isNative()) return Float4x4OpsKernelsSegment.unprojectRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Float4x4OpsKernelsSegment.unprojectRay_no_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectRay_no_unsafe(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
         long _rayOriginBase = rayOrigin.address() + rayOriginOffset;
         long _rayDirBase = rayDir.address() + rayDirOffset;
         long _srcBase = src.address() + srcOffset;
         long _winCoordsBase = winCoords.address() + winCoordsOffset;
         long _viewportBase = viewport.address() + viewportOffset;
-        Float4x4OpsKernelsAddress.unprojectRay_unsafe(_rayOriginBase, _rayDirBase, _srcBase, _winCoordsBase, _viewportBase);
+        Float4x4OpsKernelsAddress.unprojectRay_no_unsafe(_rayOriginBase, _rayDirBase, _srcBase, _winCoordsBase, _viewportBase);
         return rayOrigin;
     }
 
-    public static java.lang.foreign.MemorySegment unprojectRay_api(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+    public static java.lang.foreign.MemorySegment unprojectRay_no_api(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -19386,6 +20255,91 @@ public final class Float4x4OpsKernelsSegment {
         rayDir.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayDirOffset + 0L, (Math.fma(_self01, _t48, -(_self02 * _t47)) + Math.fma(_self03, _t50, _t122 * _t62) + (Math.fma(_t0, _t49, _t136) + _t105)) * _t160_inv - _t164);
         rayDir.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayDirOffset + 4L, (Math.fma(_self00, _t49, _t95) + Math.fma(_self03, _t58, _t133) + (Math.fma(_t1, _t48, _t138) + Math.fma(_self02, _t59, -(_self03 * _t53)))) * _t160_inv - _t163);
         rayDir.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayDirOffset + 8L, (Math.fma(_self00, _t47, -(_self01 * _t59)) + Math.fma(_self03, _t54, _t128 * _t62) + (Math.fma(_t1, _t51, _t139) + _t117)) * _t160_inv - _t165);
+        return rayOrigin;
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectRay_zo(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isNative() && !rayOrigin.isReadOnly() && rayDir.isNative() && !rayDir.isReadOnly() && src.isNative() && winCoords.isNative() && viewport.isNative()) return Float4x4OpsKernelsSegment.unprojectRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Float4x4OpsKernelsSegment.unprojectRay_zo_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectRay_zo_unsafe(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+        long _rayOriginBase = rayOrigin.address() + rayOriginOffset;
+        long _rayDirBase = rayDir.address() + rayDirOffset;
+        long _srcBase = src.address() + srcOffset;
+        long _winCoordsBase = winCoords.address() + winCoordsOffset;
+        long _viewportBase = viewport.address() + viewportOffset;
+        Float4x4OpsKernelsAddress.unprojectRay_zo_unsafe(_rayOriginBase, _rayDirBase, _srcBase, _winCoordsBase, _viewportBase);
+        return rayOrigin;
+    }
+
+    public static java.lang.foreign.MemorySegment unprojectRay_zo_api(java.lang.foreign.MemorySegment rayOrigin, long rayOriginOffset, java.lang.foreign.MemorySegment rayDir, long rayDirOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment winCoords, long winCoordsOffset, java.lang.foreign.MemorySegment viewport, long viewportOffset) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
+        float _self30 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 24L);
+        float _self31 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 28L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _self32 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
+        float _self03 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 48L);
+        float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
+        float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
+        float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        float _winCoordsx = winCoords.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, winCoordsOffset + 0L);
+        float _winCoordsy = winCoords.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, winCoordsOffset + 4L);
+        float _viewportx = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 0L);
+        float _viewporty = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 4L);
+        float _viewportz = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 8L);
+        float _viewportw = viewport.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, viewportOffset + 12L);
+        float _t0 = -_self00;
+        float _t43 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        float _t44 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        float _t45 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        float _t46 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t47 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        float _t48 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        float _t49 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        float _t50 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        float _t51 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        float _t52 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        float _t53 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        float _t54 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        float _t55 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        float _t56 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        float _t57 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        float _t58 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        float _t59 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        float _t60 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        float _t61 = 2.0f * (_winCoordsx - _viewportx) / _viewportz - 1.0f;
+        float _t62 = 2.0f * (_winCoordsy - _viewporty) / _viewportw - 1.0f;
+        float _t92 = Math.fma(_self00, _t46, -(_self01 * _t50));
+        float _t95 = Math.fma(_self00, _t47, -(_self02 * _t53));
+        float _t102 = Math.fma(_self13, _t43, Math.fma(_self11, _t44, -(_self12 * _t45)));
+        float _t106 = Math.fma(_self02, _t51, Math.fma(_self00, _t43, -(_self01 * _t52)));
+        float _t109 = Math.fma(_self03, _t52, Math.fma(_self00, _t44, -(_self02 * _t54)));
+        float _t111 = Math.fma(_self13, _t51, Math.fma(_self10, _t45, -(_self11 * _t54)));
+        float _t119 = -(Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))) * _t62);
+        float _t120 = -(Math.fma(_self12, _t51, Math.fma(_self10, _t43, -(_self11 * _t52))) * _t61);
+        float _t121 = -(Math.fma(_self13, _t52, Math.fma(_self10, _t44, -(_self12 * _t54))) * _t61);
+        float _t122 = -(Math.fma(_self03, _t51, Math.fma(_self00, _t45, -(_self01 * _t54))) * _t62);
+        float _t132 = Math.fma(_self02, _t49, _t92) + Math.fma(_t106, _t62, _t120);
+        float _t132_inv = 1.0f / _t132;
+        float _t135 = _t92 + Math.fma(_self02, _t49, _t106 * _t62) + (Math.fma(_t0, _t57, _t120) + Math.fma(_self01, _t58, -(_self02 * _t59)));
+        float _t135_inv = 1.0f / _t135;
+        float _t136 = (Math.fma(_t102, _t61, _t119) - Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48)))) * _t132_inv;
+        float _t137 = (Math.fma(_self03, _t50, _t95) + Math.fma(_t109, _t62, _t121)) * _t132_inv;
+        float _t138 = (Math.fma(_t111, _t61, _t122) - Math.fma(_self03, _t49, Math.fma(_self00, _t48, -(_self01 * _t53)))) * _t132_inv;
+        rayOrigin.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayOriginOffset + 0L, _t136);
+        rayOrigin.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayOriginOffset + 4L, _t137);
+        rayOrigin.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayOriginOffset + 8L, _t138);
+        rayDir.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayDirOffset + 0L, (Math.fma(_self01, _t55, -(_self02 * _t56)) + Math.fma(_self03, _t57, _t102 * _t61) + (Math.fma(-_self01, _t47, _t119) + Math.fma(_self02, _t48, -(_self03 * _t46)))) * _t135_inv - _t136);
+        rayDir.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayDirOffset + 4L, (_t95 + Math.fma(_self03, _t50, _t109 * _t62) + (Math.fma(_t0, _t55, _t121) + Math.fma(_self02, _t60, -(_self03 * _t58)))) * _t135_inv - _t137);
+        rayDir.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rayDirOffset + 8L, (Math.fma(_self00, _t56, -(_self01 * _t60)) + Math.fma(_self03, _t59, _t111 * _t61) + (Math.fma(_t0, _t48, _t122) + Math.fma(_self01, _t53, -(_self03 * _t49)))) * _t135_inv - _t138);
         return rayOrigin;
     }
 

@@ -982,7 +982,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t9 = Math.abs(_t8);
         double _t11 = Math.sin(alpha * _t7);
         double _t13 = Math.sin(_t0 * _t7);
-        if (_t9 > 0.0) {
+        if (_t9 > 1.0E-6) {
             d.x = Math.fma(this.x, _t13, targetX * _t11) * _t8_inv;
             d.y = Math.fma(this.y, _t13, targetY * _t11) * _t8_inv;
             d.z = Math.fma(this.z, _t13, targetZ * _t11) * _t8_inv;
@@ -1149,7 +1149,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t45 = Math.sin(_t0 * _t33);
         double _t46 = Math.sin(_t0 * _t34);
         double _t71, _t73, _t75, _t77;
-        if (_t37 > 0.0) {
+        if (_t37 > 1.0E-6) {
             _t71 = Math.fma(control0W, _t45, control1W * _t41) * _t35_inv;
             _t73 = Math.fma(control0Z, _t45, control1Z * _t41) * _t35_inv;
             _t75 = Math.fma(control0X, _t45, control1X * _t41) * _t35_inv;
@@ -1161,7 +1161,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
             _t77 = Math.fma(t, control1Y, control0Y * _t0);
         }
         double _t72, _t74, _t76, _t78;
-        if (_t39 > 0.0) {
+        if (_t39 > 1.0E-6) {
             _t72 = Math.fma(this.w, _t46, targetW * _t42) * _t36_inv;
             _t74 = Math.fma(this.z, _t46, targetZ * _t42) * _t36_inv;
             _t76 = Math.fma(this.x, _t46, targetX * _t42) * _t36_inv;
@@ -1178,7 +1178,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t87 = Math.abs(_t86);
         double _t89 = Math.sin(_t13 * _t85);
         double _t91 = Math.sin(_t14 * _t85);
-        if (_t87 > 0.0) {
+        if (_t87 > 1.0E-6) {
             d.x = Math.fma(_t91, _t76, _t89 * _t75) * _t86_inv;
             d.y = Math.fma(_t91, _t78, _t89 * _t77) * _t86_inv;
             d.z = Math.fma(_t91, _t74, _t89 * _t73) * _t86_inv;
@@ -1799,15 +1799,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 invNegativeX(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t7 = 2.0 * Math.fma(this.x, this.z, this.y * this.w);
-        double _t8 = 2.0 * Math.fma(this.x, this.y, -(this.z * this.w));
-        double _t9 = Math.fma(-2.0, Math.fma(this.y, this.y, this.z * this.z), 1.0);
-        double _t12 = Math.fma(_t7, _t7, Math.fma(_t9, _t9, _t8 * _t8));
-        double _t13 = (1.0 / Math.sqrt(_t12));
-        if (_t12 > 0.0) {
-            d.x = -(_t9 * _t13);
-            d.y = -(_t8 * _t13);
-            d.z = -(_t7 * _t13);
+        double _t9 = 2.0 * Math.fma(this.x, this.z, this.y * this.w);
+        double _t10 = 2.0 * Math.fma(this.x, this.y, -(this.z * this.w));
+        double _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
+        double _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
+        double _t16 = (1.0 / Math.sqrt(_t15));
+        if (_t15 > 0.0) {
+            d.x = -(_t12 * _t16);
+            d.y = -(_t10 * _t16);
+            d.z = -(_t9 * _t16);
         } else {
             d.x = -0.0;
             d.y = -0.0;
@@ -1826,15 +1826,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 invNegativeY(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t7 = 2.0 * Math.fma(this.x, this.y, this.z * this.w);
-        double _t8 = 2.0 * Math.fma(this.y, this.z, -(this.x * this.w));
-        double _t9 = Math.fma(-2.0, Math.fma(this.x, this.x, this.z * this.z), 1.0);
-        double _t12 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t7 * _t7));
-        double _t13 = (1.0 / Math.sqrt(_t12));
-        if (_t12 > 0.0) {
-            d.x = -(_t7 * _t13);
-            d.y = -(_t9 * _t13);
-            d.z = -(_t8 * _t13);
+        double _t9 = 2.0 * Math.fma(this.x, this.y, this.z * this.w);
+        double _t10 = 2.0 * Math.fma(this.y, this.z, -(this.x * this.w));
+        double _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        double _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
+        double _t16 = (1.0 / Math.sqrt(_t15));
+        if (_t15 > 0.0) {
+            d.x = -(_t9 * _t16);
+            d.y = -(_t12 * _t16);
+            d.z = -(_t10 * _t16);
         } else {
             d.x = -0.0;
             d.y = -0.0;
@@ -1853,15 +1853,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 invNegativeZ(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t7 = 2.0 * Math.fma(this.x, this.w, this.y * this.z);
-        double _t8 = 2.0 * Math.fma(this.x, this.z, -(this.y * this.w));
-        double _t9 = Math.fma(-2.0, Math.fma(this.x, this.x, this.y * this.y), 1.0);
-        double _t12 = Math.fma(_t9, _t9, Math.fma(_t7, _t7, _t8 * _t8));
-        double _t13 = (1.0 / Math.sqrt(_t12));
-        if (_t12 > 0.0) {
-            d.x = -(_t8 * _t13);
-            d.y = -(_t7 * _t13);
-            d.z = -(_t9 * _t13);
+        double _t9 = 2.0 * Math.fma(this.x, this.w, this.y * this.z);
+        double _t10 = 2.0 * Math.fma(this.x, this.z, -(this.y * this.w));
+        double _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        double _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
+        double _t16 = (1.0 / Math.sqrt(_t15));
+        if (_t15 > 0.0) {
+            d.x = -(_t10 * _t16);
+            d.y = -(_t9 * _t16);
+            d.z = -(_t12 * _t16);
         } else {
             d.x = -0.0;
             d.y = -0.0;
@@ -2006,15 +2006,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 invPositiveX(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t7 = 2.0 * Math.fma(this.x, this.z, this.y * this.w);
-        double _t8 = 2.0 * Math.fma(this.x, this.y, -(this.z * this.w));
-        double _t9 = Math.fma(-2.0, Math.fma(this.y, this.y, this.z * this.z), 1.0);
-        double _t12 = Math.fma(_t7, _t7, Math.fma(_t9, _t9, _t8 * _t8));
-        double _t13 = (1.0 / Math.sqrt(_t12));
-        if (_t12 > 0.0) {
-            d.x = _t9 * _t13;
-            d.y = _t8 * _t13;
-            d.z = _t7 * _t13;
+        double _t9 = 2.0 * Math.fma(this.x, this.z, this.y * this.w);
+        double _t10 = 2.0 * Math.fma(this.x, this.y, -(this.z * this.w));
+        double _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
+        double _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
+        double _t16 = (1.0 / Math.sqrt(_t15));
+        if (_t15 > 0.0) {
+            d.x = _t12 * _t16;
+            d.y = _t10 * _t16;
+            d.z = _t9 * _t16;
         } else {
             d.x = 0.0;
             d.y = 0.0;
@@ -2033,15 +2033,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 invPositiveY(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t7 = 2.0 * Math.fma(this.x, this.y, this.z * this.w);
-        double _t8 = 2.0 * Math.fma(this.y, this.z, -(this.x * this.w));
-        double _t9 = Math.fma(-2.0, Math.fma(this.x, this.x, this.z * this.z), 1.0);
-        double _t12 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t7 * _t7));
-        double _t13 = (1.0 / Math.sqrt(_t12));
-        if (_t12 > 0.0) {
-            d.x = _t7 * _t13;
-            d.y = _t9 * _t13;
-            d.z = _t8 * _t13;
+        double _t9 = 2.0 * Math.fma(this.x, this.y, this.z * this.w);
+        double _t10 = 2.0 * Math.fma(this.y, this.z, -(this.x * this.w));
+        double _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        double _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
+        double _t16 = (1.0 / Math.sqrt(_t15));
+        if (_t15 > 0.0) {
+            d.x = _t9 * _t16;
+            d.y = _t12 * _t16;
+            d.z = _t10 * _t16;
         } else {
             d.x = 0.0;
             d.y = 0.0;
@@ -2060,15 +2060,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 invPositiveZ(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t7 = 2.0 * Math.fma(this.x, this.w, this.y * this.z);
-        double _t8 = 2.0 * Math.fma(this.x, this.z, -(this.y * this.w));
-        double _t9 = Math.fma(-2.0, Math.fma(this.x, this.x, this.y * this.y), 1.0);
-        double _t12 = Math.fma(_t9, _t9, Math.fma(_t7, _t7, _t8 * _t8));
-        double _t13 = (1.0 / Math.sqrt(_t12));
-        if (_t12 > 0.0) {
-            d.x = _t8 * _t13;
-            d.y = _t7 * _t13;
-            d.z = _t9 * _t13;
+        double _t9 = 2.0 * Math.fma(this.x, this.w, this.y * this.z);
+        double _t10 = 2.0 * Math.fma(this.x, this.z, -(this.y * this.w));
+        double _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        double _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
+        double _t16 = (1.0 / Math.sqrt(_t15));
+        if (_t15 > 0.0) {
+            d.x = _t10 * _t16;
+            d.y = _t9 * _t16;
+            d.z = _t12 * _t16;
         } else {
             d.x = 0.0;
             d.y = 0.0;
@@ -2132,15 +2132,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 negativeX(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t7 = 2.0 * Math.fma(this.x, this.y, this.z * this.w);
-        double _t8 = 2.0 * Math.fma(this.x, this.z, -(this.y * this.w));
-        double _t9 = Math.fma(-2.0, Math.fma(this.y, this.y, this.z * this.z), 1.0);
-        double _t12 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t7 * _t7));
-        double _t13 = (1.0 / Math.sqrt(_t12));
-        if (_t12 > 0.0) {
-            d.x = -(_t9 * _t13);
-            d.y = -(_t7 * _t13);
-            d.z = -(_t8 * _t13);
+        double _t9 = 2.0 * Math.fma(this.x, this.y, this.z * this.w);
+        double _t10 = 2.0 * Math.fma(this.x, this.z, -(this.y * this.w));
+        double _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
+        double _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
+        double _t16 = (1.0 / Math.sqrt(_t15));
+        if (_t15 > 0.0) {
+            d.x = -(_t12 * _t16);
+            d.y = -(_t9 * _t16);
+            d.z = -(_t10 * _t16);
         } else {
             d.x = -0.0;
             d.y = -0.0;
@@ -2159,15 +2159,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 negativeY(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t7 = 2.0 * Math.fma(this.x, this.w, this.y * this.z);
-        double _t8 = 2.0 * Math.fma(this.x, this.y, -(this.z * this.w));
-        double _t9 = Math.fma(-2.0, Math.fma(this.x, this.x, this.z * this.z), 1.0);
-        double _t12 = Math.fma(_t7, _t7, Math.fma(_t9, _t9, _t8 * _t8));
-        double _t13 = (1.0 / Math.sqrt(_t12));
-        if (_t12 > 0.0) {
-            d.x = -(_t8 * _t13);
-            d.y = -(_t9 * _t13);
-            d.z = -(_t7 * _t13);
+        double _t9 = 2.0 * Math.fma(this.x, this.w, this.y * this.z);
+        double _t10 = 2.0 * Math.fma(this.x, this.y, -(this.z * this.w));
+        double _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        double _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
+        double _t16 = (1.0 / Math.sqrt(_t15));
+        if (_t15 > 0.0) {
+            d.x = -(_t10 * _t16);
+            d.y = -(_t12 * _t16);
+            d.z = -(_t9 * _t16);
         } else {
             d.x = -0.0;
             d.y = -0.0;
@@ -2186,15 +2186,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 negativeZ(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t7 = 2.0 * Math.fma(this.x, this.z, this.y * this.w);
-        double _t8 = 2.0 * Math.fma(this.y, this.z, -(this.x * this.w));
-        double _t9 = Math.fma(-2.0, Math.fma(this.x, this.x, this.y * this.y), 1.0);
-        double _t12 = Math.fma(_t9, _t9, Math.fma(_t7, _t7, _t8 * _t8));
-        double _t13 = (1.0 / Math.sqrt(_t12));
-        if (_t12 > 0.0) {
-            d.x = -(_t7 * _t13);
-            d.y = -(_t8 * _t13);
-            d.z = -(_t9 * _t13);
+        double _t9 = 2.0 * Math.fma(this.x, this.z, this.y * this.w);
+        double _t10 = 2.0 * Math.fma(this.y, this.z, -(this.x * this.w));
+        double _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        double _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
+        double _t16 = (1.0 / Math.sqrt(_t15));
+        if (_t15 > 0.0) {
+            d.x = -(_t9 * _t16);
+            d.y = -(_t10 * _t16);
+            d.z = -(_t12 * _t16);
         } else {
             d.x = -0.0;
             d.y = -0.0;
@@ -2364,15 +2364,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 positiveX(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t7 = 2.0 * Math.fma(this.x, this.y, this.z * this.w);
-        double _t8 = 2.0 * Math.fma(this.x, this.z, -(this.y * this.w));
-        double _t9 = Math.fma(-2.0, Math.fma(this.y, this.y, this.z * this.z), 1.0);
-        double _t12 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t7 * _t7));
-        double _t13 = (1.0 / Math.sqrt(_t12));
-        if (_t12 > 0.0) {
-            d.x = _t9 * _t13;
-            d.y = _t7 * _t13;
-            d.z = _t8 * _t13;
+        double _t9 = 2.0 * Math.fma(this.x, this.y, this.z * this.w);
+        double _t10 = 2.0 * Math.fma(this.x, this.z, -(this.y * this.w));
+        double _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
+        double _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
+        double _t16 = (1.0 / Math.sqrt(_t15));
+        if (_t15 > 0.0) {
+            d.x = _t12 * _t16;
+            d.y = _t9 * _t16;
+            d.z = _t10 * _t16;
         } else {
             d.x = 0.0;
             d.y = 0.0;
@@ -2391,15 +2391,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 positiveY(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t7 = 2.0 * Math.fma(this.x, this.w, this.y * this.z);
-        double _t8 = 2.0 * Math.fma(this.x, this.y, -(this.z * this.w));
-        double _t9 = Math.fma(-2.0, Math.fma(this.x, this.x, this.z * this.z), 1.0);
-        double _t12 = Math.fma(_t7, _t7, Math.fma(_t9, _t9, _t8 * _t8));
-        double _t13 = (1.0 / Math.sqrt(_t12));
-        if (_t12 > 0.0) {
-            d.x = _t8 * _t13;
-            d.y = _t9 * _t13;
-            d.z = _t7 * _t13;
+        double _t9 = 2.0 * Math.fma(this.x, this.w, this.y * this.z);
+        double _t10 = 2.0 * Math.fma(this.x, this.y, -(this.z * this.w));
+        double _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        double _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
+        double _t16 = (1.0 / Math.sqrt(_t15));
+        if (_t15 > 0.0) {
+            d.x = _t10 * _t16;
+            d.y = _t12 * _t16;
+            d.z = _t9 * _t16;
         } else {
             d.x = 0.0;
             d.y = 0.0;
@@ -2418,15 +2418,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public Double3 positiveZ(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t7 = 2.0 * Math.fma(this.x, this.z, this.y * this.w);
-        double _t8 = 2.0 * Math.fma(this.y, this.z, -(this.x * this.w));
-        double _t9 = Math.fma(-2.0, Math.fma(this.x, this.x, this.y * this.y), 1.0);
-        double _t12 = Math.fma(_t9, _t9, Math.fma(_t7, _t7, _t8 * _t8));
-        double _t13 = (1.0 / Math.sqrt(_t12));
-        if (_t12 > 0.0) {
-            d.x = _t7 * _t13;
-            d.y = _t8 * _t13;
-            d.z = _t9 * _t13;
+        double _t9 = 2.0 * Math.fma(this.x, this.z, this.y * this.w);
+        double _t10 = 2.0 * Math.fma(this.y, this.z, -(this.x * this.w));
+        double _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
+        double _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
+        double _t16 = (1.0 / Math.sqrt(_t15));
+        if (_t15 > 0.0) {
+            d.x = _t9 * _t16;
+            d.y = _t10 * _t16;
+            d.z = _t12 * _t16;
         } else {
             d.x = 0.0;
             d.y = 0.0;

@@ -5176,37 +5176,204 @@ public final class Double4x4OpsKernelsTypedBuffer {
         return dest;
     }
 
-    public static java.nio.DoubleBuffer obliqueZ_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+    public static java.nio.DoubleBuffer obliqueZ_no_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_lh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_lh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_no_lh_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
-        Double4x4OpsKernelsAddress.obliqueZ_unsafe(_destBase, _srcBase, planeX, planeY, planeZ, planeW);
+        Double4x4OpsKernelsAddress.obliqueZ_no_lh_unsafe(_destBase, _srcBase, planeX, planeY, planeZ, planeW);
         return dest;
     }
 
-    public static java.nio.DoubleBuffer obliqueZ_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+    public static java.nio.DoubleBuffer obliqueZ_no_lh_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
         if (dest.hasArray() && src.hasArray()) {
-            Double4x4Ops.obliqueZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, planeX, planeY, planeZ, planeW);
+            Double4x4OpsKernelsArray.obliqueZ_no_lh(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, planeX, planeY, planeZ, planeW);
             return dest;
         }
-        Double4x4OpsKernelsSegment.obliqueZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, planeX, planeY, planeZ, planeW);
+        Double4x4OpsKernelsSegment.obliqueZ_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, planeX, planeY, planeZ, planeW);
         return dest;
     }
 
-    public static java.nio.DoubleBuffer obliqueZ_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset) {
+    public static java.nio.DoubleBuffer obliqueZ_no_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_rh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_rh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_no_rh_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        Double4x4OpsKernelsAddress.obliqueZ_no_rh_unsafe(_destBase, _srcBase, planeX, planeY, planeZ, planeW);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_no_rh_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        if (dest.hasArray() && src.hasArray()) {
+            Double4x4OpsKernelsArray.obliqueZ_no_rh(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, planeX, planeY, planeZ, planeW);
+            return dest;
+        }
+        Double4x4OpsKernelsSegment.obliqueZ_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, planeX, planeY, planeZ, planeW);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_no(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_lh(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW); }
+            default -> { return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_rh(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW); }
+        }
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_zo_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_lh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_lh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_zo_lh_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        Double4x4OpsKernelsAddress.obliqueZ_zo_lh_unsafe(_destBase, _srcBase, planeX, planeY, planeZ, planeW);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_zo_lh_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        if (dest.hasArray() && src.hasArray()) {
+            Double4x4OpsKernelsArray.obliqueZ_zo_lh(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, planeX, planeY, planeZ, planeW);
+            return dest;
+        }
+        Double4x4OpsKernelsSegment.obliqueZ_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, planeX, planeY, planeZ, planeW);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_zo_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_rh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_rh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_zo_rh_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        Double4x4OpsKernelsAddress.obliqueZ_zo_rh_unsafe(_destBase, _srcBase, planeX, planeY, planeZ, planeW);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_zo_rh_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
+        if (dest.hasArray() && src.hasArray()) {
+            Double4x4OpsKernelsArray.obliqueZ_zo_rh(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, planeX, planeY, planeZ, planeW);
+            return dest;
+        }
+        Double4x4OpsKernelsSegment.obliqueZ_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, planeX, planeY, planeZ, planeW);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_zo(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_lh(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW); }
+            default -> { return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_rh(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW); }
+        }
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_no_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && plane.isDirect()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_lh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_lh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_no_lh_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
         long _planeBase = UnsafeOpsHolder.U.getLong(plane, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) planeOffset * 8L;
-        Double4x4OpsKernelsAddress.obliqueZ_unsafe(_destBase, _srcBase, _planeBase);
+        Double4x4OpsKernelsAddress.obliqueZ_no_lh_unsafe(_destBase, _srcBase, _planeBase);
         return dest;
     }
 
-    public static java.nio.DoubleBuffer obliqueZ_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset) {
+    public static java.nio.DoubleBuffer obliqueZ_no_lh_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset) {
         if (dest.hasArray() && src.hasArray() && plane.hasArray()) {
-            Double4x4Ops.obliqueZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, plane.array(), plane.arrayOffset() + planeOffset);
+            Double4x4OpsKernelsArray.obliqueZ_no_lh(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, plane.array(), plane.arrayOffset() + planeOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.obliqueZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(plane.duplicate().position(0)), (long) planeOffset * 8L);
+        Double4x4OpsKernelsSegment.obliqueZ_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(plane.duplicate().position(0)), (long) planeOffset * 8L);
         return dest;
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_no_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && plane.isDirect()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_rh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_rh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_no_rh_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        long _planeBase = UnsafeOpsHolder.U.getLong(plane, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) planeOffset * 8L;
+        Double4x4OpsKernelsAddress.obliqueZ_no_rh_unsafe(_destBase, _srcBase, _planeBase);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_no_rh_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset) {
+        if (dest.hasArray() && src.hasArray() && plane.hasArray()) {
+            Double4x4OpsKernelsArray.obliqueZ_no_rh(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, plane.array(), plane.arrayOffset() + planeOffset);
+            return dest;
+        }
+        Double4x4OpsKernelsSegment.obliqueZ_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(plane.duplicate().position(0)), (long) planeOffset * 8L);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_no(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_lh(dest, destOffset, src, srcOffset, plane, planeOffset); }
+            default -> { return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_rh(dest, destOffset, src, srcOffset, plane, planeOffset); }
+        }
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_zo_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && plane.isDirect()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_lh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_lh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_zo_lh_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        long _planeBase = UnsafeOpsHolder.U.getLong(plane, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) planeOffset * 8L;
+        Double4x4OpsKernelsAddress.obliqueZ_zo_lh_unsafe(_destBase, _srcBase, _planeBase);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_zo_lh_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset) {
+        if (dest.hasArray() && src.hasArray() && plane.hasArray()) {
+            Double4x4OpsKernelsArray.obliqueZ_zo_lh(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, plane.array(), plane.arrayOffset() + planeOffset);
+            return dest;
+        }
+        Double4x4OpsKernelsSegment.obliqueZ_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(plane.duplicate().position(0)), (long) planeOffset * 8L);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_zo_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && plane.isDirect()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_rh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_rh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_zo_rh_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        long _planeBase = UnsafeOpsHolder.U.getLong(plane, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) planeOffset * 8L;
+        Double4x4OpsKernelsAddress.obliqueZ_zo_rh_unsafe(_destBase, _srcBase, _planeBase);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_zo_rh_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset) {
+        if (dest.hasArray() && src.hasArray() && plane.hasArray()) {
+            Double4x4OpsKernelsArray.obliqueZ_zo_rh(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, plane.array(), plane.arrayOffset() + planeOffset);
+            return dest;
+        }
+        Double4x4OpsKernelsSegment.obliqueZ_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(plane.duplicate().position(0)), (long) planeOffset * 8L);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer obliqueZ_zo(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset, Handedness handedness) {
+        switch (handedness) {
+            case LEFT_HANDED -> { return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_lh(dest, destOffset, src, srcOffset, plane, planeOffset); }
+            default -> { return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_rh(dest, destOffset, src, srcOffset, plane, planeOffset); }
+        }
     }
 
     public static java.nio.DoubleBuffer ortho_no_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar) {
@@ -6314,37 +6481,91 @@ public final class Double4x4OpsKernelsTypedBuffer {
         return dest;
     }
 
-    public static java.nio.DoubleBuffer project_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static java.nio.DoubleBuffer project_no(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.project_no_unsafe(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsTypedBuffer.project_no_api(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.DoubleBuffer project_no_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
-        Double4x4OpsKernelsAddress.project_unsafe(_destBase, _srcBase, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsAddress.project_no_unsafe(_destBase, _srcBase, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
         return dest;
     }
 
-    public static java.nio.DoubleBuffer project_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static java.nio.DoubleBuffer project_no_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
         if (dest.hasArray() && src.hasArray()) {
-            Double4x4Ops.project(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+            Double4x4OpsKernelsArray.project_no(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
             return dest;
         }
-        Double4x4OpsKernelsSegment.project_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsSegment.project_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
         return dest;
     }
 
-    public static java.nio.DoubleBuffer project_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer obj, int objOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+    public static java.nio.DoubleBuffer project_zo(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.project_zo_unsafe(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsTypedBuffer.project_zo_api(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.DoubleBuffer project_zo_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        Double4x4OpsKernelsAddress.project_zo_unsafe(_destBase, _srcBase, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer project_zo_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (dest.hasArray() && src.hasArray()) {
+            Double4x4OpsKernelsArray.project_zo(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+            return dest;
+        }
+        Double4x4OpsKernelsSegment.project_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer project_no(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer obj, int objOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && obj.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.project_no_unsafe(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsTypedBuffer.project_no_api(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
+    }
+
+    public static java.nio.DoubleBuffer project_no_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer obj, int objOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
         long _objBase = UnsafeOpsHolder.U.getLong(obj, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) objOffset * 8L;
         long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) viewportOffset * 8L;
-        Double4x4OpsKernelsAddress.project_unsafe(_destBase, _srcBase, _objBase, _viewportBase);
+        Double4x4OpsKernelsAddress.project_no_unsafe(_destBase, _srcBase, _objBase, _viewportBase);
         return dest;
     }
 
-    public static java.nio.DoubleBuffer project_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer obj, int objOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+    public static java.nio.DoubleBuffer project_no_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer obj, int objOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
         if (dest.hasArray() && src.hasArray() && obj.hasArray() && viewport.hasArray()) {
-            Double4x4Ops.project(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, obj.array(), obj.arrayOffset() + objOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
+            Double4x4OpsKernelsArray.project_no(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, obj.array(), obj.arrayOffset() + objOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.project_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(obj.duplicate().position(0)), (long) objOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        Double4x4OpsKernelsSegment.project_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(obj.duplicate().position(0)), (long) objOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer project_zo(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer obj, int objOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && obj.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.project_zo_unsafe(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsTypedBuffer.project_zo_api(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
+    }
+
+    public static java.nio.DoubleBuffer project_zo_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer obj, int objOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        long _objBase = UnsafeOpsHolder.U.getLong(obj, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) objOffset * 8L;
+        long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) viewportOffset * 8L;
+        Double4x4OpsKernelsAddress.project_zo_unsafe(_destBase, _srcBase, _objBase, _viewportBase);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer project_zo_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer obj, int objOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        if (dest.hasArray() && src.hasArray() && obj.hasArray() && viewport.hasArray()) {
+            Double4x4OpsKernelsArray.project_zo(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, obj.array(), obj.arrayOffset() + objOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
+            return dest;
+        }
+        Double4x4OpsKernelsSegment.project_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(obj.duplicate().position(0)), (long) objOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
         return dest;
     }
 
@@ -6876,143 +7097,363 @@ public final class Double4x4OpsKernelsTypedBuffer {
         return dest;
     }
 
-    public static java.nio.DoubleBuffer unproject_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static java.nio.DoubleBuffer unproject_no(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.unproject_no_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsTypedBuffer.unproject_no_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.DoubleBuffer unproject_no_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
-        Double4x4OpsKernelsAddress.unproject_unsafe(_destBase, _srcBase, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsAddress.unproject_no_unsafe(_destBase, _srcBase, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
         return dest;
     }
 
-    public static java.nio.DoubleBuffer unproject_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static java.nio.DoubleBuffer unproject_no_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
         if (dest.hasArray() && src.hasArray()) {
-            Double4x4Ops.unproject(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+            Double4x4OpsKernelsArray.unproject_no(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
             return dest;
         }
-        Double4x4OpsKernelsSegment.unproject_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsSegment.unproject_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
         return dest;
     }
 
-    public static java.nio.DoubleBuffer unproject_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+    public static java.nio.DoubleBuffer unproject_zo(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.unproject_zo_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsTypedBuffer.unproject_zo_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.DoubleBuffer unproject_zo_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
-        long _winCoordsBase = UnsafeOpsHolder.U.getLong(winCoords, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) winCoordsOffset * 8L;
-        long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) viewportOffset * 8L;
-        Double4x4OpsKernelsAddress.unproject_unsafe(_destBase, _srcBase, _winCoordsBase, _viewportBase);
+        Double4x4OpsKernelsAddress.unproject_zo_unsafe(_destBase, _srcBase, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
         return dest;
     }
 
-    public static java.nio.DoubleBuffer unproject_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
-        if (dest.hasArray() && src.hasArray() && winCoords.hasArray() && viewport.hasArray()) {
-            Double4x4Ops.unproject(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
-            return dest;
-        }
-        Double4x4OpsKernelsSegment.unproject_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
-        return dest;
-    }
-
-    public static java.nio.DoubleBuffer unprojectInv_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
-        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
-        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
-        Double4x4OpsKernelsAddress.unprojectInv_unsafe(_destBase, _srcBase, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
-        return dest;
-    }
-
-    public static java.nio.DoubleBuffer unprojectInv_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static java.nio.DoubleBuffer unproject_zo_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
         if (dest.hasArray() && src.hasArray()) {
-            Double4x4Ops.unprojectInv(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+            Double4x4OpsKernelsArray.unproject_zo(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
             return dest;
         }
-        Double4x4OpsKernelsSegment.unprojectInv_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsSegment.unproject_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
         return dest;
     }
 
-    public static java.nio.DoubleBuffer unprojectInv_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+    public static java.nio.DoubleBuffer unproject_no(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.unproject_no_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsTypedBuffer.unproject_no_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.nio.DoubleBuffer unproject_no_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
         long _winCoordsBase = UnsafeOpsHolder.U.getLong(winCoords, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) winCoordsOffset * 8L;
         long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) viewportOffset * 8L;
-        Double4x4OpsKernelsAddress.unprojectInv_unsafe(_destBase, _srcBase, _winCoordsBase, _viewportBase);
+        Double4x4OpsKernelsAddress.unproject_no_unsafe(_destBase, _srcBase, _winCoordsBase, _viewportBase);
         return dest;
     }
 
-    public static java.nio.DoubleBuffer unprojectInv_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+    public static java.nio.DoubleBuffer unproject_no_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
         if (dest.hasArray() && src.hasArray() && winCoords.hasArray() && viewport.hasArray()) {
-            Double4x4Ops.unprojectInv(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
+            Double4x4OpsKernelsArray.unproject_no(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.unprojectInv_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        Double4x4OpsKernelsSegment.unproject_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
         return dest;
     }
 
-    public static java.nio.DoubleBuffer unprojectInvRay_unsafe(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static java.nio.DoubleBuffer unproject_zo(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.unproject_zo_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsTypedBuffer.unproject_zo_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.nio.DoubleBuffer unproject_zo_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        long _winCoordsBase = UnsafeOpsHolder.U.getLong(winCoords, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) winCoordsOffset * 8L;
+        long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) viewportOffset * 8L;
+        Double4x4OpsKernelsAddress.unproject_zo_unsafe(_destBase, _srcBase, _winCoordsBase, _viewportBase);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer unproject_zo_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        if (dest.hasArray() && src.hasArray() && winCoords.hasArray() && viewport.hasArray()) {
+            Double4x4OpsKernelsArray.unproject_zo(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
+            return dest;
+        }
+        Double4x4OpsKernelsSegment.unproject_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer unprojectInv_no(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectInv_no_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsTypedBuffer.unprojectInv_no_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.DoubleBuffer unprojectInv_no_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        Double4x4OpsKernelsAddress.unprojectInv_no_unsafe(_destBase, _srcBase, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer unprojectInv_no_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (dest.hasArray() && src.hasArray()) {
+            Double4x4OpsKernelsArray.unprojectInv_no(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+            return dest;
+        }
+        Double4x4OpsKernelsSegment.unprojectInv_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer unprojectInv_zo(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectInv_zo_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsTypedBuffer.unprojectInv_zo_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.DoubleBuffer unprojectInv_zo_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        Double4x4OpsKernelsAddress.unprojectInv_zo_unsafe(_destBase, _srcBase, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer unprojectInv_zo_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (dest.hasArray() && src.hasArray()) {
+            Double4x4OpsKernelsArray.unprojectInv_zo(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+            return dest;
+        }
+        Double4x4OpsKernelsSegment.unprojectInv_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer unprojectInv_no(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectInv_no_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsTypedBuffer.unprojectInv_no_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.nio.DoubleBuffer unprojectInv_no_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        long _winCoordsBase = UnsafeOpsHolder.U.getLong(winCoords, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) winCoordsOffset * 8L;
+        long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) viewportOffset * 8L;
+        Double4x4OpsKernelsAddress.unprojectInv_no_unsafe(_destBase, _srcBase, _winCoordsBase, _viewportBase);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer unprojectInv_no_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        if (dest.hasArray() && src.hasArray() && winCoords.hasArray() && viewport.hasArray()) {
+            Double4x4OpsKernelsArray.unprojectInv_no(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
+            return dest;
+        }
+        Double4x4OpsKernelsSegment.unprojectInv_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer unprojectInv_zo(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectInv_zo_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsTypedBuffer.unprojectInv_zo_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.nio.DoubleBuffer unprojectInv_zo_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        long _winCoordsBase = UnsafeOpsHolder.U.getLong(winCoords, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) winCoordsOffset * 8L;
+        long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) viewportOffset * 8L;
+        Double4x4OpsKernelsAddress.unprojectInv_zo_unsafe(_destBase, _srcBase, _winCoordsBase, _viewportBase);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer unprojectInv_zo_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        if (dest.hasArray() && src.hasArray() && winCoords.hasArray() && viewport.hasArray()) {
+            Double4x4OpsKernelsArray.unprojectInv_zo(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
+            return dest;
+        }
+        Double4x4OpsKernelsSegment.unprojectInv_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer unprojectInvRay_no(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_no_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.DoubleBuffer unprojectInvRay_no_unsafe(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
         long _rayOriginBase = UnsafeOpsHolder.U.getLong(rayOrigin, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) rayOriginOffset * 8L;
         long _rayDirBase = UnsafeOpsHolder.U.getLong(rayDir, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) rayDirOffset * 8L;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
-        Double4x4OpsKernelsAddress.unprojectInvRay_unsafe(_rayOriginBase, _rayDirBase, _srcBase, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsAddress.unprojectInvRay_no_unsafe(_rayOriginBase, _rayDirBase, _srcBase, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
         return rayOrigin;
     }
 
-    public static java.nio.DoubleBuffer unprojectInvRay_api(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+    public static java.nio.DoubleBuffer unprojectInvRay_no_api(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
         if (rayOrigin.hasArray() && rayDir.hasArray() && src.hasArray()) {
-            Double4x4Ops.unprojectInvRay(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+            Double4x4OpsKernelsArray.unprojectInvRay_no(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
             return rayOrigin;
         }
-        Double4x4OpsKernelsSegment.unprojectInvRay_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        Double4x4OpsKernelsSegment.unprojectInvRay_no_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
         return rayOrigin;
     }
 
-    public static java.nio.DoubleBuffer unprojectInvRay_unsafe(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+    public static java.nio.DoubleBuffer unprojectInvRay_zo(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_zo_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.DoubleBuffer unprojectInvRay_zo_unsafe(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        long _rayOriginBase = UnsafeOpsHolder.U.getLong(rayOrigin, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) rayOriginOffset * 8L;
+        long _rayDirBase = UnsafeOpsHolder.U.getLong(rayDir, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) rayDirOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        Double4x4OpsKernelsAddress.unprojectInvRay_zo_unsafe(_rayOriginBase, _rayDirBase, _srcBase, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return rayOrigin;
+    }
+
+    public static java.nio.DoubleBuffer unprojectInvRay_zo_api(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (rayOrigin.hasArray() && rayDir.hasArray() && src.hasArray()) {
+            Double4x4OpsKernelsArray.unprojectInvRay_zo(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+            return rayOrigin;
+        }
+        Double4x4OpsKernelsSegment.unprojectInvRay_zo_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return rayOrigin;
+    }
+
+    public static java.nio.DoubleBuffer unprojectInvRay_no(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_no_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.nio.DoubleBuffer unprojectInvRay_no_unsafe(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
         long _rayOriginBase = UnsafeOpsHolder.U.getLong(rayOrigin, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) rayOriginOffset * 8L;
         long _rayDirBase = UnsafeOpsHolder.U.getLong(rayDir, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) rayDirOffset * 8L;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
         long _winCoordsBase = UnsafeOpsHolder.U.getLong(winCoords, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) winCoordsOffset * 8L;
         long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) viewportOffset * 8L;
-        Double4x4OpsKernelsAddress.unprojectInvRay_unsafe(_rayOriginBase, _rayDirBase, _srcBase, _winCoordsBase, _viewportBase);
+        Double4x4OpsKernelsAddress.unprojectInvRay_no_unsafe(_rayOriginBase, _rayDirBase, _srcBase, _winCoordsBase, _viewportBase);
         return rayOrigin;
     }
 
-    public static java.nio.DoubleBuffer unprojectInvRay_api(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+    public static java.nio.DoubleBuffer unprojectInvRay_no_api(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
         if (rayOrigin.hasArray() && rayDir.hasArray() && src.hasArray() && winCoords.hasArray() && viewport.hasArray()) {
-            Double4x4Ops.unprojectInvRay(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
+            Double4x4OpsKernelsArray.unprojectInvRay_no(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
             return rayOrigin;
         }
-        Double4x4OpsKernelsSegment.unprojectInvRay_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        Double4x4OpsKernelsSegment.unprojectInvRay_no_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
         return rayOrigin;
     }
 
-    public static java.nio.DoubleBuffer unprojectRay_unsafe(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
-        long _rayOriginBase = UnsafeOpsHolder.U.getLong(rayOrigin, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) rayOriginOffset * 8L;
-        long _rayDirBase = UnsafeOpsHolder.U.getLong(rayDir, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) rayDirOffset * 8L;
-        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
-        Double4x4OpsKernelsAddress.unprojectRay_unsafe(_rayOriginBase, _rayDirBase, _srcBase, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
-        return rayOrigin;
+    public static java.nio.DoubleBuffer unprojectInvRay_zo(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_zo_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
     }
 
-    public static java.nio.DoubleBuffer unprojectRay_api(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
-        if (rayOrigin.hasArray() && rayDir.hasArray() && src.hasArray()) {
-            Double4x4Ops.unprojectRay(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
-            return rayOrigin;
-        }
-        Double4x4OpsKernelsSegment.unprojectRay_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
-        return rayOrigin;
-    }
-
-    public static java.nio.DoubleBuffer unprojectRay_unsafe(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+    public static java.nio.DoubleBuffer unprojectInvRay_zo_unsafe(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
         long _rayOriginBase = UnsafeOpsHolder.U.getLong(rayOrigin, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) rayOriginOffset * 8L;
         long _rayDirBase = UnsafeOpsHolder.U.getLong(rayDir, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) rayDirOffset * 8L;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
         long _winCoordsBase = UnsafeOpsHolder.U.getLong(winCoords, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) winCoordsOffset * 8L;
         long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) viewportOffset * 8L;
-        Double4x4OpsKernelsAddress.unprojectRay_unsafe(_rayOriginBase, _rayDirBase, _srcBase, _winCoordsBase, _viewportBase);
+        Double4x4OpsKernelsAddress.unprojectInvRay_zo_unsafe(_rayOriginBase, _rayDirBase, _srcBase, _winCoordsBase, _viewportBase);
         return rayOrigin;
     }
 
-    public static java.nio.DoubleBuffer unprojectRay_api(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+    public static java.nio.DoubleBuffer unprojectInvRay_zo_api(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
         if (rayOrigin.hasArray() && rayDir.hasArray() && src.hasArray() && winCoords.hasArray() && viewport.hasArray()) {
-            Double4x4Ops.unprojectRay(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
+            Double4x4OpsKernelsArray.unprojectInvRay_zo(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
             return rayOrigin;
         }
-        Double4x4OpsKernelsSegment.unprojectRay_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        Double4x4OpsKernelsSegment.unprojectInvRay_zo_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        return rayOrigin;
+    }
+
+    public static java.nio.DoubleBuffer unprojectRay_no(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsTypedBuffer.unprojectRay_no_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.DoubleBuffer unprojectRay_no_unsafe(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        long _rayOriginBase = UnsafeOpsHolder.U.getLong(rayOrigin, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) rayOriginOffset * 8L;
+        long _rayDirBase = UnsafeOpsHolder.U.getLong(rayDir, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) rayDirOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        Double4x4OpsKernelsAddress.unprojectRay_no_unsafe(_rayOriginBase, _rayDirBase, _srcBase, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return rayOrigin;
+    }
+
+    public static java.nio.DoubleBuffer unprojectRay_no_api(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (rayOrigin.hasArray() && rayDir.hasArray() && src.hasArray()) {
+            Double4x4OpsKernelsArray.unprojectRay_no(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+            return rayOrigin;
+        }
+        Double4x4OpsKernelsSegment.unprojectRay_no_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return rayOrigin;
+    }
+
+    public static java.nio.DoubleBuffer unprojectRay_zo(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return Double4x4OpsKernelsTypedBuffer.unprojectRay_zo_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+    }
+
+    public static java.nio.DoubleBuffer unprojectRay_zo_unsafe(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        long _rayOriginBase = UnsafeOpsHolder.U.getLong(rayOrigin, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) rayOriginOffset * 8L;
+        long _rayDirBase = UnsafeOpsHolder.U.getLong(rayDir, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) rayDirOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        Double4x4OpsKernelsAddress.unprojectRay_zo_unsafe(_rayOriginBase, _rayDirBase, _srcBase, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return rayOrigin;
+    }
+
+    public static java.nio.DoubleBuffer unprojectRay_zo_api(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
+        if (rayOrigin.hasArray() && rayDir.hasArray() && src.hasArray()) {
+            Double4x4OpsKernelsArray.unprojectRay_zo(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+            return rayOrigin;
+        }
+        Double4x4OpsKernelsSegment.unprojectRay_zo_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        return rayOrigin;
+    }
+
+    public static java.nio.DoubleBuffer unprojectRay_no(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsTypedBuffer.unprojectRay_no_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.nio.DoubleBuffer unprojectRay_no_unsafe(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        long _rayOriginBase = UnsafeOpsHolder.U.getLong(rayOrigin, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) rayOriginOffset * 8L;
+        long _rayDirBase = UnsafeOpsHolder.U.getLong(rayDir, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) rayDirOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        long _winCoordsBase = UnsafeOpsHolder.U.getLong(winCoords, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) winCoordsOffset * 8L;
+        long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) viewportOffset * 8L;
+        Double4x4OpsKernelsAddress.unprojectRay_no_unsafe(_rayOriginBase, _rayDirBase, _srcBase, _winCoordsBase, _viewportBase);
+        return rayOrigin;
+    }
+
+    public static java.nio.DoubleBuffer unprojectRay_no_api(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        if (rayOrigin.hasArray() && rayDir.hasArray() && src.hasArray() && winCoords.hasArray() && viewport.hasArray()) {
+            Double4x4OpsKernelsArray.unprojectRay_no(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
+            return rayOrigin;
+        }
+        Double4x4OpsKernelsSegment.unprojectRay_no_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        return rayOrigin;
+    }
+
+    public static java.nio.DoubleBuffer unprojectRay_zo(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        return Double4x4OpsKernelsTypedBuffer.unprojectRay_zo_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+    }
+
+    public static java.nio.DoubleBuffer unprojectRay_zo_unsafe(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        long _rayOriginBase = UnsafeOpsHolder.U.getLong(rayOrigin, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) rayOriginOffset * 8L;
+        long _rayDirBase = UnsafeOpsHolder.U.getLong(rayDir, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) rayDirOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        long _winCoordsBase = UnsafeOpsHolder.U.getLong(winCoords, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) winCoordsOffset * 8L;
+        long _viewportBase = UnsafeOpsHolder.U.getLong(viewport, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) viewportOffset * 8L;
+        Double4x4OpsKernelsAddress.unprojectRay_zo_unsafe(_rayOriginBase, _rayDirBase, _srcBase, _winCoordsBase, _viewportBase);
+        return rayOrigin;
+    }
+
+    public static java.nio.DoubleBuffer unprojectRay_zo_api(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
+        if (rayOrigin.hasArray() && rayDir.hasArray() && src.hasArray() && winCoords.hasArray() && viewport.hasArray()) {
+            Double4x4OpsKernelsArray.unprojectRay_zo(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
+            return rayOrigin;
+        }
+        Double4x4OpsKernelsSegment.unprojectRay_zo_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
         return rayOrigin;
     }
 
