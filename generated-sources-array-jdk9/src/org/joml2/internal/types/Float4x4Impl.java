@@ -28434,6 +28434,9 @@ public class Float4x4Impl implements Float4x4 {
      * @return this
      */
     @Mutated public Float4x4 makeRotationAxis(float angle, float axisX, float axisY, float axisZ) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return makeRotationX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return makeRotationY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return makeRotationZ(axisZ * angle);
         float[] dd = this.data;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
@@ -67811,6 +67814,9 @@ public class Float4x4Impl implements Float4x4 {
      * @return dest
      */
     public Float4x4 preRotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated Float4x4 dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return preRotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return preRotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return preRotateZ(axisZ * angle, dest);
         int p = this.properties;
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preRotateAxis_identity(angle, axisX, axisY, axisZ, dest);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preRotateAxis_translation(angle, axisX, axisY, axisZ, dest);
@@ -67838,6 +67844,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     @Mutated public Float4x4 preRotateAxis(float angle, float axisX, float axisY, float axisZ) {
         if (Joml.RETURN_NEW) return preRotateAxis(angle, axisX, axisY, axisZ, Joml.float4x4());
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return preRotateX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return preRotateY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return preRotateZ(axisZ * angle);
         int p = this.properties;
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preRotateAxis_identity_self(angle, axisX, axisY, axisZ, this);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preRotateAxis_translation_self(angle, axisX, axisY, axisZ, this);
@@ -67868,6 +67877,9 @@ public class Float4x4Impl implements Float4x4 {
      * @return dest
      */
     public Double4x4 preRotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated Double4x4 dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return preRotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return preRotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return preRotateZ(axisZ * angle, dest);
         float[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         float _t0 = (float) Math.sin(angle);
@@ -72325,6 +72337,9 @@ public class Float4x4Impl implements Float4x4 {
      * @return dest
      */
     public Float4x4 rotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated Float4x4 dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         int p = this.properties;
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateAxis_identity(angle, axisX, axisY, axisZ, dest);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateAxis_translation(angle, axisX, axisY, axisZ, dest);
@@ -72352,6 +72367,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     @Mutated public Float4x4 rotateAxis(float angle, float axisX, float axisY, float axisZ) {
         if (Joml.RETURN_NEW) return rotateAxis(angle, axisX, axisY, axisZ, Joml.float4x4());
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle);
         int p = this.properties;
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateAxis_identity_self(angle, axisX, axisY, axisZ, this);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateAxis_translation_self(angle, axisX, axisY, axisZ, this);
@@ -72382,6 +72400,9 @@ public class Float4x4Impl implements Float4x4 {
      * @return dest
      */
     public Double4x4 rotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated Double4x4 dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         float[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         float _t0 = (float) Math.cos(angle);

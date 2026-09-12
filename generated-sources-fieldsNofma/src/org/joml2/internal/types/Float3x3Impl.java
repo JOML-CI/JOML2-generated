@@ -9485,6 +9485,9 @@ public class Float3x3Impl implements Float3x3 {
      * @return this
      */
     @Mutated public Float3x3 makeRotationAxis(float angle, float axisX, float axisY, float axisZ) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return makeRotationX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return makeRotationY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return makeRotationZ(axisZ * angle);
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
         float _t2 = 1.0f - _t0;
@@ -10803,6 +10806,9 @@ public class Float3x3Impl implements Float3x3 {
      * @return dest
      */
     public Float3x3 preRotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated Float3x3 dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return preRotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return preRotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return preRotateZ(axisZ * angle, dest);
         int p = this.properties;
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preRotateAxis_identity(angle, axisX, axisY, axisZ, dest);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preRotateAxis_translation(angle, axisX, axisY, axisZ, dest);
@@ -10830,6 +10836,9 @@ public class Float3x3Impl implements Float3x3 {
      */
     @Mutated public Float3x3 preRotateAxis(float angle, float axisX, float axisY, float axisZ) {
         if (Joml.RETURN_NEW) return preRotateAxis(angle, axisX, axisY, axisZ, Joml.float3x3());
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return preRotateX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return preRotateY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return preRotateZ(axisZ * angle);
         int p = this.properties;
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preRotateAxis_identity(angle, axisX, axisY, axisZ, this);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preRotateAxis_translation(angle, axisX, axisY, axisZ, this);
@@ -10860,6 +10869,9 @@ public class Float3x3Impl implements Float3x3 {
      * @return dest
      */
     public Double3x3 preRotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated Double3x3 dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return preRotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return preRotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return preRotateZ(axisZ * angle, dest);
         Double3x3Impl d = (Double3x3Impl) dest;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
@@ -13360,6 +13372,9 @@ public class Float3x3Impl implements Float3x3 {
      * @return dest
      */
     public Float3x3 rotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated Float3x3 dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         int p = this.properties;
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateAxis_identity(angle, axisX, axisY, axisZ, dest);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateAxis_translation(angle, axisX, axisY, axisZ, dest);
@@ -13387,6 +13402,9 @@ public class Float3x3Impl implements Float3x3 {
      */
     @Mutated public Float3x3 rotateAxis(float angle, float axisX, float axisY, float axisZ) {
         if (Joml.RETURN_NEW) return rotateAxis(angle, axisX, axisY, axisZ, Joml.float3x3());
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle);
         int p = this.properties;
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateAxis_identity(angle, axisX, axisY, axisZ, this);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateAxis_translation(angle, axisX, axisY, axisZ, this);
@@ -13417,6 +13435,9 @@ public class Float3x3Impl implements Float3x3 {
      * @return dest
      */
     public Double3x3 rotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated Double3x3 dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         Double3x3Impl d = (Double3x3Impl) dest;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);

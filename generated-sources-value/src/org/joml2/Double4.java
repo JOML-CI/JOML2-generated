@@ -2286,6 +2286,9 @@ public value record Double4(double x, double y, double z, double w) {
      * @return the resulting vector
      */
     public Double4 rotateAxis(double angle, double axisX, double axisY, double axisZ) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle);
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
         double _t2 = 1.0 - _t0;

@@ -2284,6 +2284,9 @@ public value record Float4(float x, float y, float z, float w) {
      * @return the resulting vector
      */
     public Float4 rotateAxis(float angle, float axisX, float axisY, float axisZ) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle);
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
         float _t2 = 1.0f - _t0;

@@ -3515,6 +3515,9 @@ public final class Double4Impl implements Double4 {
      * @return dest
      */
     public Double4 rotateAxis(double angle, Double3R axis, @Mutated Double4 dest) {
+        if (axis.y() == 0 && axis.z() == 0 && Math.abs(axis.x()) == 1) return rotateX(axis.x() * angle, dest);
+        if (axis.x() == 0 && axis.z() == 0 && Math.abs(axis.y()) == 1) return rotateY(axis.y() * angle, dest);
+        if (axis.x() == 0 && axis.y() == 0 && Math.abs(axis.z()) == 1) return rotateZ(axis.z() * angle, dest);
         double[] sd = this.data;
         double[] axisData = ((Double3Impl) axis).data;
         double[] dd = ((Double4Impl) dest).data;
@@ -3548,6 +3551,9 @@ public final class Double4Impl implements Double4 {
      * @return dest
      */
     public Double4 rotateAxis(double angle, double axisX, double axisY, double axisZ, @Mutated Double4 dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         double[] sd = this.data;
         double[] dd = ((Double4Impl) dest).data;
         double _t0 = Math.cos(angle);

@@ -3187,6 +3187,9 @@ public final class Double3Impl implements Double3 {
      * @return dest
      */
     public Double3 rotateAxis(double angle, double axisX, double axisY, double axisZ, @Mutated Double3 dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         double[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
         double _t0 = Math.cos(angle);

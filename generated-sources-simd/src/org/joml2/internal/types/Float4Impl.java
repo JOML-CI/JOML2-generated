@@ -6277,6 +6277,9 @@ public final class Float4Impl implements Float4 {
      * @return dest
      */
     public Float4 rotateAxis(float angle, Float3R axis, @Mutated Float4 dest) {
+        if (axis.y() == 0 && axis.z() == 0 && Math.abs(axis.x()) == 1) return rotateX(axis.x() * angle, dest);
+        if (axis.x() == 0 && axis.z() == 0 && Math.abs(axis.y()) == 1) return rotateY(axis.y() * angle, dest);
+        if (axis.x() == 0 && axis.y() == 0 && Math.abs(axis.z()) == 1) return rotateZ(axis.z() * angle, dest);
         float[] sd = this.data;
         float[] axisData = ((Float3Impl) axis).data;
         float[] dd = ((Float4Impl) dest).data;
@@ -6327,6 +6330,9 @@ public final class Float4Impl implements Float4 {
      * @return dest
      */
     public Float4 rotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated Float4 dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         float[] sd = this.data;
         float[] dd = ((Float4Impl) dest).data;
         float _t0 = (float) Math.cos(angle);
@@ -6362,6 +6368,9 @@ public final class Float4Impl implements Float4 {
      * @return dest
      */
     public Double4 rotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated Double4 dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         float[] sd = this.data;
         double[] dd = ((Double4Impl) dest).data;
         float _t0 = (float) Math.cos(angle);

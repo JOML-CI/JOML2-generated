@@ -2755,6 +2755,9 @@ public final class FloatTransformImpl implements FloatTransform {
      * @return this
      */
     @Mutated public FloatTransform makeRotationAxis(float angle, float axisX, float axisY, float axisZ) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return makeRotationX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return makeRotationY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return makeRotationZ(axisZ * angle);
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
         this.tX = 0.0f;
@@ -3345,6 +3348,9 @@ public final class FloatTransformImpl implements FloatTransform {
      * @return dest
      */
     public FloatTransform rotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated FloatTransform dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         FloatTransformImpl d = (FloatTransformImpl) dest;
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.cos(_t0);
@@ -3397,6 +3403,9 @@ public final class FloatTransformImpl implements FloatTransform {
      * @return dest
      */
     public DoubleTransform rotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated DoubleTransform dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.cos(_t0);

@@ -2408,6 +2408,9 @@ public final class FloatRigidImpl implements FloatRigid {
      * @return this
      */
     @Mutated public FloatRigid makeRotationAxis(float angle, float axisX, float axisY, float axisZ) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return makeRotationX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return makeRotationY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return makeRotationZ(axisZ * angle);
         float[] dd = this.data;
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
@@ -2878,6 +2881,9 @@ public final class FloatRigidImpl implements FloatRigid {
      * @return dest
      */
     public FloatRigid rotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated FloatRigid dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         float[] sd = this.data;
         float[] dd = ((FloatRigidImpl) dest).data;
         float _t0 = 0.5f * angle;
@@ -2922,6 +2928,9 @@ public final class FloatRigidImpl implements FloatRigid {
      * @return dest
      */
     public DoubleRigid rotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated DoubleRigid dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         float[] sd = this.data;
         double[] dd = ((DoubleRigidImpl) dest).data;
         float _t0 = 0.5f * angle;

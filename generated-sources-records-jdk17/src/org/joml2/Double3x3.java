@@ -4313,6 +4313,9 @@ public record Double3x3(double m00, double m01, double m02, double m10, double m
      * @return the resulting matrix
      */
     public static Double3x3 makeRotationAxis(double angle, double axisX, double axisY, double axisZ) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return makeRotationX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return makeRotationY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return makeRotationZ(axisZ * angle);
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
         double _t2 = 1.0 - _t0;
@@ -5002,6 +5005,9 @@ public record Double3x3(double m00, double m01, double m02, double m10, double m
      * @return the resulting matrix
      */
     public Double3x3 preRotateAxis(double angle, double axisX, double axisY, double axisZ) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return preRotateX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return preRotateY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return preRotateZ(axisZ * angle);
         int p = this.properties;
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preRotateAxis_identity(angle, axisX, axisY, axisZ);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preRotateAxis_translation(angle, axisX, axisY, axisZ);
@@ -5862,6 +5868,9 @@ public record Double3x3(double m00, double m01, double m02, double m10, double m
      * @return the resulting matrix
      */
     public Double3x3 rotateAxis(double angle, double axisX, double axisY, double axisZ) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle);
         int p = this.properties;
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateAxis_identity(angle, axisX, axisY, axisZ);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateAxis_translation(angle, axisX, axisY, axisZ);

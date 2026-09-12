@@ -1411,6 +1411,9 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
      * @return the resulting transform
      */
     public static DoubleTransform makeRotationAxis(double angle, double axisX, double axisY, double axisZ) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return makeRotationX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return makeRotationY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return makeRotationZ(axisZ * angle);
         double _t0 = 0.5 * angle;
         double _t1 = Math.sin(_t0);
         return new DoubleTransform(0.0, 0.0, 0.0, axisX * _t1, axisY * _t1, axisZ * _t1, Math.cos(_t0), 1.0, 1.0, 1.0);
@@ -1759,6 +1762,9 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
      * @return the resulting transform
      */
     public DoubleTransform rotateAxis(double angle, double axisX, double axisY, double axisZ) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle);
         double _t0 = 0.5 * angle;
         double _t1 = Math.cos(_t0);
         double _t2 = Math.sin(_t0);

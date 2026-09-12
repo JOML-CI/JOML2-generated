@@ -6109,6 +6109,9 @@ public final class Float3Impl implements Float3 {
      * @return dest
      */
     public Float3 rotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated Float3 dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         float[] sd = this.data;
         float[] dd = ((Float3Impl) dest).data;
         float _t0 = (float) Math.cos(angle);
@@ -6142,6 +6145,9 @@ public final class Float3Impl implements Float3 {
      * @return dest
      */
     public Double3 rotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated Double3 dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         float[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
         float _t0 = (float) Math.cos(angle);

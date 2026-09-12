@@ -2914,6 +2914,9 @@ public final class Double4Impl implements Double4 {
      * @return dest
      */
     public Double4 rotateAxis(double angle, double axisX, double axisY, double axisZ, @Mutated Double4 dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         Double4Impl d = (Double4Impl) dest;
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);

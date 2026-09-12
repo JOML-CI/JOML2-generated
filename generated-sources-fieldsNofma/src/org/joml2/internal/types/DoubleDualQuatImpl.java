@@ -2366,6 +2366,9 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * @return this
      */
     @Mutated public DoubleDualQuat makeRotationAxis(double angle, double axisX, double axisY, double axisZ) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return makeRotationX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return makeRotationY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return makeRotationZ(axisZ * angle);
         double _t0 = 0.5 * angle;
         double _t1 = Math.sin(_t0);
         this.rX = axisX * _t1;
@@ -2863,6 +2866,9 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * @return dest
      */
     public DoubleDualQuat rotateAxis(double angle, double axisX, double axisY, double axisZ, @Mutated DoubleDualQuat dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
         double _t0 = 0.5 * angle;
         double _t1 = Math.cos(_t0);

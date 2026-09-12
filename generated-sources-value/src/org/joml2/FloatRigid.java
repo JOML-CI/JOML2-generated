@@ -1250,6 +1250,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
      * @return the resulting rigid transform
      */
     public static FloatRigid makeRotationAxis(float angle, float axisX, float axisY, float axisZ) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return makeRotationX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return makeRotationY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return makeRotationZ(axisZ * angle);
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
         return new FloatRigid(0.0f, 0.0f, 0.0f, axisX * _t1, axisY * _t1, axisZ * _t1, (float) Math.cos(_t0));
@@ -1539,6 +1542,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
      * @return the resulting rigid transform
      */
     public FloatRigid rotateAxis(float angle, float axisX, float axisY, float axisZ) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle);
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.cos(_t0);
         float _t2 = (float) Math.sin(_t0);

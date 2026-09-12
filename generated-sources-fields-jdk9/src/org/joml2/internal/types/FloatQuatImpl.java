@@ -5600,6 +5600,9 @@ public final class FloatQuatImpl implements FloatQuat {
      * @return this
      */
     @Mutated public FloatQuat makeRotationAxis(float angle, float axisX, float axisY, float axisZ) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return makeRotationX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return makeRotationY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return makeRotationZ(axisZ * angle);
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
         this.x = axisX * _t1;
@@ -6263,6 +6266,9 @@ public final class FloatQuatImpl implements FloatQuat {
      * @return dest
      */
     public FloatQuat rotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated FloatQuat dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         FloatQuatImpl d = (FloatQuatImpl) dest;
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.cos(_t0);
@@ -6303,6 +6309,9 @@ public final class FloatQuatImpl implements FloatQuat {
      * @return dest
      */
     public DoubleQuat rotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated DoubleQuat dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.cos(_t0);

@@ -4159,6 +4159,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      * @return this
      */
     @Mutated public FloatDualQuat makeRotationAxis(float angle, float axisX, float axisY, float axisZ) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return makeRotationX(axisX * angle);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return makeRotationY(axisY * angle);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return makeRotationZ(axisZ * angle);
         float[] dd = this.data;
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
@@ -4758,6 +4761,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      * @return dest
      */
     public FloatDualQuat rotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated FloatDualQuat dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         float[] sd = this.data;
         float[] dd = ((FloatDualQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
@@ -4806,6 +4812,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      * @return dest
      */
     public DoubleDualQuat rotateAxis(float angle, float axisX, float axisY, float axisZ, @Mutated DoubleDualQuat dest) {
+        if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle, dest);
+        if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
+        if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         float[] sd = this.data;
         double[] dd = ((DoubleDualQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
