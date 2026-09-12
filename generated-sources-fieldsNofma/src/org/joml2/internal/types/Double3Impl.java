@@ -35,6 +35,18 @@ public final class Double3Impl implements Double3 {
     public Double3Impl() {
     }
 
+    public Double3Impl(double x, double y, double z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    public Double3Impl(Double3R src) {
+        this.x = src.x();
+        this.y = src.y();
+        this.z = src.z();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

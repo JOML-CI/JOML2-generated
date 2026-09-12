@@ -38,6 +38,18 @@ public final class Double2Impl implements Double2 {
         data = new double[2];
     }
 
+    public Double2Impl(double x, double y) {
+        double[] dd = this.data = new double[2];
+        dd[0] = x;
+        dd[1] = y;
+    }
+
+    public Double2Impl(Double2R src) {
+        double[] dd = this.data = new double[2];
+        dd[0] = src.x();
+        dd[1] = src.y();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

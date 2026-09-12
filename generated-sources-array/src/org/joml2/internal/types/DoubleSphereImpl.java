@@ -34,6 +34,22 @@ public final class DoubleSphereImpl implements DoubleSphere {
         data = new double[4];
     }
 
+    public DoubleSphereImpl(double x, double y, double z, double r) {
+        double[] dd = this.data = new double[4];
+        dd[0] = x;
+        dd[1] = y;
+        dd[2] = z;
+        dd[3] = r;
+    }
+
+    public DoubleSphereImpl(DoubleSphereR src) {
+        double[] dd = this.data = new double[4];
+        dd[0] = src.x();
+        dd[1] = src.y();
+        dd[2] = src.z();
+        dd[3] = src.r();
+    }
+
 
     /**
      * Set this sphere to the given values.

@@ -28,6 +28,16 @@ public final class Short2Impl implements Short2 {
     public Short2Impl() {
     }
 
+    public Short2Impl(short x, short y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public Short2Impl(Short2R src) {
+        this.x = src.x();
+        this.y = src.y();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

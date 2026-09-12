@@ -42,6 +42,28 @@ public class Double2x4Impl implements Double2x4 {
         m11 = 1;
     }
 
+    public Double2x4Impl(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13) {
+        this.m00 = m00;
+        this.m01 = m01;
+        this.m02 = m02;
+        this.m03 = m03;
+        this.m10 = m10;
+        this.m11 = m11;
+        this.m12 = m12;
+        this.m13 = m13;
+    }
+
+    public Double2x4Impl(Double2x4R src) {
+        this.m00 = src.m00();
+        this.m01 = src.m01();
+        this.m02 = src.m02();
+        this.m03 = src.m03();
+        this.m10 = src.m10();
+        this.m11 = src.m11();
+        this.m12 = src.m12();
+        this.m13 = src.m13();
+    }
+
 
     /**
      * Get the column at the given index of this matrix and store the result in {@code dest}.

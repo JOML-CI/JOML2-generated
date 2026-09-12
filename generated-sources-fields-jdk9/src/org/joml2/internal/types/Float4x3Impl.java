@@ -41,6 +41,36 @@ public class Float4x3Impl implements Float4x3 {
         m22 = 1;
     }
 
+    public Float4x3Impl(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22, float m30, float m31, float m32) {
+        this.m00 = m00;
+        this.m10 = m10;
+        this.m20 = m20;
+        this.m30 = m30;
+        this.m01 = m01;
+        this.m11 = m11;
+        this.m21 = m21;
+        this.m31 = m31;
+        this.m02 = m02;
+        this.m12 = m12;
+        this.m22 = m22;
+        this.m32 = m32;
+    }
+
+    public Float4x3Impl(Float4x3R src) {
+        this.m00 = src.m00();
+        this.m10 = src.m10();
+        this.m20 = src.m20();
+        this.m30 = src.m30();
+        this.m01 = src.m01();
+        this.m11 = src.m11();
+        this.m21 = src.m21();
+        this.m31 = src.m31();
+        this.m02 = src.m02();
+        this.m12 = src.m12();
+        this.m22 = src.m22();
+        this.m32 = src.m32();
+    }
+
 
     /**
      * Get the column at the given index of this matrix and store the result in {@code dest}.

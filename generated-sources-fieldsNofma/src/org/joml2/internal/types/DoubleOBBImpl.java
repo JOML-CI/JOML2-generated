@@ -50,6 +50,42 @@ public final class DoubleOBBImpl implements DoubleOBB {
         uZz = 1;
     }
 
+    public DoubleOBBImpl(double cX, double cY, double cZ, double uXx, double uXy, double uXz, double uYx, double uYy, double uYz, double uZx, double uZy, double uZz, double hsX, double hsY, double hsZ) {
+        this.cX = cX;
+        this.cY = cY;
+        this.cZ = cZ;
+        this.uXx = uXx;
+        this.uXy = uXy;
+        this.uXz = uXz;
+        this.uYx = uYx;
+        this.uYy = uYy;
+        this.uYz = uYz;
+        this.uZx = uZx;
+        this.uZy = uZy;
+        this.uZz = uZz;
+        this.hsX = hsX;
+        this.hsY = hsY;
+        this.hsZ = hsZ;
+    }
+
+    public DoubleOBBImpl(DoubleOBBR src) {
+        this.cX = src.cX();
+        this.cY = src.cY();
+        this.cZ = src.cZ();
+        this.uXx = src.uXx();
+        this.uXy = src.uXy();
+        this.uXz = src.uXz();
+        this.uYx = src.uYx();
+        this.uYy = src.uYy();
+        this.uYz = src.uYz();
+        this.uZx = src.uZx();
+        this.uZy = src.uZy();
+        this.uZz = src.uZz();
+        this.hsX = src.hsX();
+        this.hsY = src.hsY();
+        this.hsZ = src.hsZ();
+    }
+
 
     /**
      * Set this oriented bounding box to the given values.

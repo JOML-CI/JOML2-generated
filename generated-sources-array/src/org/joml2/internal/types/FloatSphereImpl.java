@@ -34,6 +34,22 @@ public final class FloatSphereImpl implements FloatSphere {
         data = new float[4];
     }
 
+    public FloatSphereImpl(float x, float y, float z, float r) {
+        float[] dd = this.data = new float[4];
+        dd[0] = x;
+        dd[1] = y;
+        dd[2] = z;
+        dd[3] = r;
+    }
+
+    public FloatSphereImpl(FloatSphereR src) {
+        float[] dd = this.data = new float[4];
+        dd[0] = src.x();
+        dd[1] = src.y();
+        dd[2] = src.z();
+        dd[3] = src.r();
+    }
+
 
     /**
      * Set this sphere to the given values.

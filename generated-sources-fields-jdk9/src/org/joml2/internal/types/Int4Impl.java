@@ -31,6 +31,20 @@ public final class Int4Impl implements Int4 {
         w = 1;
     }
 
+    public Int4Impl(int x, int y, int z, int w) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
+    }
+
+    public Int4Impl(Int4R src) {
+        this.x = src.x();
+        this.y = src.y();
+        this.z = src.z();
+        this.w = src.w();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

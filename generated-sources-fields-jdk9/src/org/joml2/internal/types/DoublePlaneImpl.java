@@ -30,6 +30,20 @@ public final class DoublePlaneImpl implements DoublePlane {
     public DoublePlaneImpl() {
     }
 
+    public DoublePlaneImpl(double a, double b, double c, double d) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        this.d = d;
+    }
+
+    public DoublePlaneImpl(DoublePlaneR src) {
+        this.a = src.a();
+        this.b = src.b();
+        this.c = src.c();
+        this.d = src.d();
+    }
+
 
     /**
      * Set this plane to the given values.

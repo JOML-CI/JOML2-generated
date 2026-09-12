@@ -31,6 +31,27 @@ public class Float4x3Impl implements Float4x3 {
         data[10] = 1;
     }
 
+    public Float4x3Impl(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22, float m30, float m31, float m32) {
+        float[] dd = this.data = new float[12];
+        dd[0] = m00;
+        dd[1] = m10;
+        dd[2] = m20;
+        dd[3] = m30;
+        dd[4] = m01;
+        dd[5] = m11;
+        dd[6] = m21;
+        dd[7] = m31;
+        dd[8] = m02;
+        dd[9] = m12;
+        dd[10] = m22;
+        dd[11] = m32;
+    }
+
+    public Float4x3Impl(Float4x3R src) {
+        Float4x3Impl s = (Float4x3Impl) src;
+        this.data = s.data.clone();
+    }
+
 
     /**
      * Get the column at the given index of this matrix and store the result in {@code dest}.

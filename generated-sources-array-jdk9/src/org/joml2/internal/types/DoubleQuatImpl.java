@@ -29,6 +29,22 @@ public final class DoubleQuatImpl implements DoubleQuat {
         data[3] = 1;
     }
 
+    public DoubleQuatImpl(double x, double y, double z, double w) {
+        double[] dd = this.data = new double[4];
+        dd[0] = x;
+        dd[1] = y;
+        dd[2] = z;
+        dd[3] = w;
+    }
+
+    public DoubleQuatImpl(DoubleQuatR src) {
+        double[] dd = this.data = new double[4];
+        dd[0] = src.x();
+        dd[1] = src.y();
+        dd[2] = src.z();
+        dd[3] = src.w();
+    }
+
 
     /**
      * Invert this quaternion and store the result in {@code dest}.

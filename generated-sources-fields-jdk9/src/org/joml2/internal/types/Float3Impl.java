@@ -29,6 +29,18 @@ public final class Float3Impl implements Float3 {
     public Float3Impl() {
     }
 
+    public Float3Impl(float x, float y, float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    public Float3Impl(Float3R src) {
+        this.x = src.x();
+        this.y = src.y();
+        this.z = src.z();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

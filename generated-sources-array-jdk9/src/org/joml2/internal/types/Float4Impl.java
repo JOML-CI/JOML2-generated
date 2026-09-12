@@ -29,6 +29,22 @@ public final class Float4Impl implements Float4 {
         data[3] = 1;
     }
 
+    public Float4Impl(float x, float y, float z, float w) {
+        float[] dd = this.data = new float[4];
+        dd[0] = x;
+        dd[1] = y;
+        dd[2] = z;
+        dd[3] = w;
+    }
+
+    public Float4Impl(Float4R src) {
+        float[] dd = this.data = new float[4];
+        dd[0] = src.x();
+        dd[1] = src.y();
+        dd[2] = src.z();
+        dd[3] = src.w();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

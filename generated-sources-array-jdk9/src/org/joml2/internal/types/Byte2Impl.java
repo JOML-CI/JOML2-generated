@@ -28,6 +28,18 @@ public final class Byte2Impl implements Byte2 {
         data = new byte[2];
     }
 
+    public Byte2Impl(byte x, byte y) {
+        byte[] dd = this.data = new byte[2];
+        dd[0] = x;
+        dd[1] = y;
+    }
+
+    public Byte2Impl(Byte2R src) {
+        byte[] dd = this.data = new byte[2];
+        dd[0] = src.x();
+        dd[1] = src.y();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

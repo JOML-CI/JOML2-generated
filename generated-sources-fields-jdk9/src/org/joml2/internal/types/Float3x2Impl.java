@@ -34,6 +34,24 @@ public class Float3x2Impl implements Float3x2 {
         m11 = 1;
     }
 
+    public Float3x2Impl(float m00, float m01, float m10, float m11, float m20, float m21) {
+        this.m00 = m00;
+        this.m10 = m10;
+        this.m20 = m20;
+        this.m01 = m01;
+        this.m11 = m11;
+        this.m21 = m21;
+    }
+
+    public Float3x2Impl(Float3x2R src) {
+        this.m00 = src.m00();
+        this.m10 = src.m10();
+        this.m20 = src.m20();
+        this.m01 = src.m01();
+        this.m11 = src.m11();
+        this.m21 = src.m21();
+    }
+
 
     /**
      * Get the column at the given index of this matrix and store the result in {@code dest}.

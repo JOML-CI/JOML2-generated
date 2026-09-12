@@ -39,6 +39,22 @@ public final class Short4Impl implements Short4 {
         data[3] = 1;
     }
 
+    public Short4Impl(short x, short y, short z, short w) {
+        short[] dd = this.data = new short[4];
+        dd[0] = x;
+        dd[1] = y;
+        dd[2] = z;
+        dd[3] = w;
+    }
+
+    public Short4Impl(Short4R src) {
+        short[] dd = this.data = new short[4];
+        dd[0] = src.x();
+        dd[1] = src.y();
+        dd[2] = src.z();
+        dd[3] = src.w();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

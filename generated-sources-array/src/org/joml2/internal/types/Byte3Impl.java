@@ -34,6 +34,20 @@ public final class Byte3Impl implements Byte3 {
         data = new byte[3];
     }
 
+    public Byte3Impl(byte x, byte y, byte z) {
+        byte[] dd = this.data = new byte[3];
+        dd[0] = x;
+        dd[1] = y;
+        dd[2] = z;
+    }
+
+    public Byte3Impl(Byte3R src) {
+        byte[] dd = this.data = new byte[3];
+        dd[0] = src.x();
+        dd[1] = src.y();
+        dd[2] = src.z();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

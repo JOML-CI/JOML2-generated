@@ -28,6 +28,32 @@ public final class DoubleTriangleImpl implements DoubleTriangle {
         data = new double[9];
     }
 
+    public DoubleTriangleImpl(double v0X, double v0Y, double v0Z, double v1X, double v1Y, double v1Z, double v2X, double v2Y, double v2Z) {
+        double[] dd = this.data = new double[9];
+        dd[0] = v0X;
+        dd[1] = v0Y;
+        dd[2] = v0Z;
+        dd[3] = v1X;
+        dd[4] = v1Y;
+        dd[5] = v1Z;
+        dd[6] = v2X;
+        dd[7] = v2Y;
+        dd[8] = v2Z;
+    }
+
+    public DoubleTriangleImpl(DoubleTriangleR src) {
+        double[] dd = this.data = new double[9];
+        dd[0] = src.v0X();
+        dd[1] = src.v0Y();
+        dd[2] = src.v0Z();
+        dd[3] = src.v1X();
+        dd[4] = src.v1Y();
+        dd[5] = src.v1Z();
+        dd[6] = src.v2X();
+        dd[7] = src.v2Y();
+        dd[8] = src.v2Z();
+    }
+
 
     /**
      * Set this triangle to the given values.

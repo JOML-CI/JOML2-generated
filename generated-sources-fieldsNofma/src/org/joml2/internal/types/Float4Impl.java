@@ -37,6 +37,20 @@ public final class Float4Impl implements Float4 {
         w = 1;
     }
 
+    public Float4Impl(float x, float y, float z, float w) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
+    }
+
+    public Float4Impl(Float4R src) {
+        this.x = src.x();
+        this.y = src.y();
+        this.z = src.z();
+        this.w = src.w();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

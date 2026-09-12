@@ -37,6 +37,20 @@ public final class Double4Impl implements Double4 {
         w = 1;
     }
 
+    public Double4Impl(double x, double y, double z, double w) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
+    }
+
+    public Double4Impl(Double4R src) {
+        this.x = src.x();
+        this.y = src.y();
+        this.z = src.z();
+        this.w = src.w();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

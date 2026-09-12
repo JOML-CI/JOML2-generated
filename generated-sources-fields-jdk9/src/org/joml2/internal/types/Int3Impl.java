@@ -29,6 +29,18 @@ public final class Int3Impl implements Int3 {
     public Int3Impl() {
     }
 
+    public Int3Impl(int x, int y, int z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    public Int3Impl(Int3R src) {
+        this.x = src.x();
+        this.y = src.y();
+        this.z = src.z();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

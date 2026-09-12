@@ -41,6 +41,44 @@ public final class FloatOBBImpl implements FloatOBB {
         data[11] = 1;
     }
 
+    public FloatOBBImpl(float cX, float cY, float cZ, float uXx, float uXy, float uXz, float uYx, float uYy, float uYz, float uZx, float uZy, float uZz, float hsX, float hsY, float hsZ) {
+        float[] dd = this.data = new float[15];
+        dd[0] = cX;
+        dd[1] = cY;
+        dd[2] = cZ;
+        dd[3] = uXx;
+        dd[4] = uXy;
+        dd[5] = uXz;
+        dd[6] = uYx;
+        dd[7] = uYy;
+        dd[8] = uYz;
+        dd[9] = uZx;
+        dd[10] = uZy;
+        dd[11] = uZz;
+        dd[12] = hsX;
+        dd[13] = hsY;
+        dd[14] = hsZ;
+    }
+
+    public FloatOBBImpl(FloatOBBR src) {
+        float[] dd = this.data = new float[15];
+        dd[0] = src.cX();
+        dd[1] = src.cY();
+        dd[2] = src.cZ();
+        dd[3] = src.uXx();
+        dd[4] = src.uXy();
+        dd[5] = src.uXz();
+        dd[6] = src.uYx();
+        dd[7] = src.uYy();
+        dd[8] = src.uYz();
+        dd[9] = src.uZx();
+        dd[10] = src.uZy();
+        dd[11] = src.uZz();
+        dd[12] = src.hsX();
+        dd[13] = src.hsY();
+        dd[14] = src.hsZ();
+    }
+
 
     /**
      * Set this oriented bounding box to the given values.

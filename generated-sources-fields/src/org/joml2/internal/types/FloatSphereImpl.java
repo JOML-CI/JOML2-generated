@@ -36,6 +36,20 @@ public final class FloatSphereImpl implements FloatSphere {
     public FloatSphereImpl() {
     }
 
+    public FloatSphereImpl(float x, float y, float z, float r) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.r = r;
+    }
+
+    public FloatSphereImpl(FloatSphereR src) {
+        this.x = src.x();
+        this.y = src.y();
+        this.z = src.z();
+        this.r = src.r();
+    }
+
 
     /**
      * Set this sphere to the given values.

@@ -42,6 +42,26 @@ public class Double2x3Impl implements Double2x3 {
         properties = Joml.BIT_IDENTITY;
     }
 
+    public Double2x3Impl(double m00, double m01, double m02, double m10, double m11, double m12) {
+        this.m00 = m00;
+        this.m10 = m10;
+        this.m01 = m01;
+        this.m11 = m11;
+        this.m02 = m02;
+        this.m12 = m12;
+        this.properties = determineProperties();
+    }
+
+    public Double2x3Impl(Double2x3R src) {
+        this.m00 = src.m00();
+        this.m10 = src.m10();
+        this.m01 = src.m01();
+        this.m11 = src.m11();
+        this.m02 = src.m02();
+        this.m12 = src.m12();
+        this.properties = ((Double2x3Impl) src).properties;
+    }
+
     /**
      * Numerically determine the structural properties of this matrix (identity, translation,
      * affinity) and return them as property bits.

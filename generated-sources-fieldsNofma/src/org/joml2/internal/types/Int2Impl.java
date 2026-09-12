@@ -34,6 +34,16 @@ public final class Int2Impl implements Int2 {
     public Int2Impl() {
     }
 
+    public Int2Impl(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public Int2Impl(Int2R src) {
+        this.x = src.x();
+        this.y = src.y();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

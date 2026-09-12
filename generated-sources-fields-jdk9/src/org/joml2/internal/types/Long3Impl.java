@@ -29,6 +29,18 @@ public final class Long3Impl implements Long3 {
     public Long3Impl() {
     }
 
+    public Long3Impl(long x, long y, long z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    public Long3Impl(Long3R src) {
+        this.x = src.x();
+        this.y = src.y();
+        this.z = src.z();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

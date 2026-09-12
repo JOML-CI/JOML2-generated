@@ -34,6 +34,16 @@ public final class Float2Impl implements Float2 {
     public Float2Impl() {
     }
 
+    public Float2Impl(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public Float2Impl(Float2R src) {
+        this.x = src.x();
+        this.y = src.y();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

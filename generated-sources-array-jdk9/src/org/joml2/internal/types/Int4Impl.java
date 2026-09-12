@@ -29,6 +29,22 @@ public final class Int4Impl implements Int4 {
         data[3] = 1;
     }
 
+    public Int4Impl(int x, int y, int z, int w) {
+        int[] dd = this.data = new int[4];
+        dd[0] = x;
+        dd[1] = y;
+        dd[2] = z;
+        dd[3] = w;
+    }
+
+    public Int4Impl(Int4R src) {
+        int[] dd = this.data = new int[4];
+        dd[0] = src.x();
+        dd[1] = src.y();
+        dd[2] = src.z();
+        dd[3] = src.w();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

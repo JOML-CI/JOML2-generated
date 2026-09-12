@@ -37,6 +37,20 @@ public final class Short4Impl implements Short4 {
         w = 1;
     }
 
+    public Short4Impl(short x, short y, short z, short w) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
+    }
+
+    public Short4Impl(Short4R src) {
+        this.x = src.x();
+        this.y = src.y();
+        this.z = src.z();
+        this.w = src.w();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

@@ -48,6 +48,46 @@ public class Float4x4Impl implements Float4x4 {
         properties = Joml.BIT_IDENTITY;
     }
 
+    public Float4x4Impl(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33) {
+        this.m00 = m00;
+        this.m10 = m10;
+        this.m20 = m20;
+        this.m30 = m30;
+        this.m01 = m01;
+        this.m11 = m11;
+        this.m21 = m21;
+        this.m31 = m31;
+        this.m02 = m02;
+        this.m12 = m12;
+        this.m22 = m22;
+        this.m32 = m32;
+        this.m03 = m03;
+        this.m13 = m13;
+        this.m23 = m23;
+        this.m33 = m33;
+        this.properties = determineProperties();
+    }
+
+    public Float4x4Impl(Float4x4R src) {
+        this.m00 = src.m00();
+        this.m10 = src.m10();
+        this.m20 = src.m20();
+        this.m30 = src.m30();
+        this.m01 = src.m01();
+        this.m11 = src.m11();
+        this.m21 = src.m21();
+        this.m31 = src.m31();
+        this.m02 = src.m02();
+        this.m12 = src.m12();
+        this.m22 = src.m22();
+        this.m32 = src.m32();
+        this.m03 = src.m03();
+        this.m13 = src.m13();
+        this.m23 = src.m23();
+        this.m33 = src.m33();
+        this.properties = ((Float4x4Impl) src).properties;
+    }
+
     /**
      * Numerically determine the structural properties of this matrix (identity, translation,
      * affinity) and return them as property bits.

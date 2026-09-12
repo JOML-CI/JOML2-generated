@@ -42,6 +42,22 @@ public final class IntRectImpl implements IntRect {
         data[3] = Integer.MIN_VALUE;
     }
 
+    public IntRectImpl(int minX, int minY, int maxX, int maxY) {
+        int[] dd = this.data = new int[4];
+        dd[0] = minX;
+        dd[1] = minY;
+        dd[2] = maxX;
+        dd[3] = maxY;
+    }
+
+    public IntRectImpl(IntRectR src) {
+        int[] dd = this.data = new int[4];
+        dd[0] = src.minX();
+        dd[1] = src.minY();
+        dd[2] = src.maxX();
+        dd[3] = src.maxY();
+    }
+
 
     /**
      * Add {@code other} to this rectangle and store the result in {@code dest}.

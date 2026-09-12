@@ -32,6 +32,22 @@ public final class FloatRectImpl implements FloatRect {
         data[3] = Float.NEGATIVE_INFINITY;
     }
 
+    public FloatRectImpl(float minX, float minY, float maxX, float maxY) {
+        float[] dd = this.data = new float[4];
+        dd[0] = minX;
+        dd[1] = minY;
+        dd[2] = maxX;
+        dd[3] = maxY;
+    }
+
+    public FloatRectImpl(FloatRectR src) {
+        float[] dd = this.data = new float[4];
+        dd[0] = src.minX();
+        dd[1] = src.minY();
+        dd[2] = src.maxX();
+        dd[3] = src.maxY();
+    }
+
 
     /**
      * Add {@code other} to this rectangle and store the result in {@code dest}.

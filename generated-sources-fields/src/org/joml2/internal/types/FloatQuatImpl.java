@@ -37,6 +37,20 @@ public final class FloatQuatImpl implements FloatQuat {
         w = 1;
     }
 
+    public FloatQuatImpl(float x, float y, float z, float w) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
+    }
+
+    public FloatQuatImpl(FloatQuatR src) {
+        this.x = src.x();
+        this.y = src.y();
+        this.z = src.z();
+        this.w = src.w();
+    }
+
 
     /**
      * Invert this quaternion and store the result in {@code dest}.

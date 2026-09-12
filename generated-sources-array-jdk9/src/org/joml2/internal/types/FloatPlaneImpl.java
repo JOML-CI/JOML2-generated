@@ -28,6 +28,22 @@ public final class FloatPlaneImpl implements FloatPlane {
         data = new float[4];
     }
 
+    public FloatPlaneImpl(float a, float b, float c, float d) {
+        float[] dd = this.data = new float[4];
+        dd[0] = a;
+        dd[1] = b;
+        dd[2] = c;
+        dd[3] = d;
+    }
+
+    public FloatPlaneImpl(FloatPlaneR src) {
+        float[] dd = this.data = new float[4];
+        dd[0] = src.a();
+        dd[1] = src.b();
+        dd[2] = src.c();
+        dd[3] = src.d();
+    }
+
 
     /**
      * Set this plane to the given values.

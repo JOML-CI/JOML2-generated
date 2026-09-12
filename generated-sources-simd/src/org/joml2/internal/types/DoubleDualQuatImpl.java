@@ -39,6 +39,30 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         data[3] = 1;
     }
 
+    public DoubleDualQuatImpl(double rX, double rY, double rZ, double rW, double dX, double dY, double dZ, double dW) {
+        double[] dd = this.data = new double[8];
+        dd[0] = rX;
+        dd[1] = rY;
+        dd[2] = rZ;
+        dd[3] = rW;
+        dd[4] = dX;
+        dd[5] = dY;
+        dd[6] = dZ;
+        dd[7] = dW;
+    }
+
+    public DoubleDualQuatImpl(DoubleDualQuatR src) {
+        double[] dd = this.data = new double[8];
+        dd[0] = src.rX();
+        dd[1] = src.rY();
+        dd[2] = src.rZ();
+        dd[3] = src.rW();
+        dd[4] = src.dX();
+        dd[5] = src.dY();
+        dd[6] = src.dZ();
+        dd[7] = src.dW();
+    }
+
 
     /**
      * Add {@code other} to this dual quaternion and store the result in {@code dest}.

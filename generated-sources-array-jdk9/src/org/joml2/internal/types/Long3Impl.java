@@ -28,6 +28,20 @@ public final class Long3Impl implements Long3 {
         data = new long[3];
     }
 
+    public Long3Impl(long x, long y, long z) {
+        long[] dd = this.data = new long[3];
+        dd[0] = x;
+        dd[1] = y;
+        dd[2] = z;
+    }
+
+    public Long3Impl(Long3R src) {
+        long[] dd = this.data = new long[3];
+        dd[0] = src.x();
+        dd[1] = src.y();
+        dd[2] = src.z();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

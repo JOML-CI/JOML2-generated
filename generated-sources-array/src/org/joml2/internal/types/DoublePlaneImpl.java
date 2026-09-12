@@ -34,6 +34,22 @@ public final class DoublePlaneImpl implements DoublePlane {
         data = new double[4];
     }
 
+    public DoublePlaneImpl(double a, double b, double c, double d) {
+        double[] dd = this.data = new double[4];
+        dd[0] = a;
+        dd[1] = b;
+        dd[2] = c;
+        dd[3] = d;
+    }
+
+    public DoublePlaneImpl(DoublePlaneR src) {
+        double[] dd = this.data = new double[4];
+        dd[0] = src.a();
+        dd[1] = src.b();
+        dd[2] = src.c();
+        dd[3] = src.d();
+    }
+
 
     /**
      * Set this plane to the given values.

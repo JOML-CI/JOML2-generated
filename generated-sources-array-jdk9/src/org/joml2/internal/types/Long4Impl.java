@@ -29,6 +29,22 @@ public final class Long4Impl implements Long4 {
         data[3] = 1;
     }
 
+    public Long4Impl(long x, long y, long z, long w) {
+        long[] dd = this.data = new long[4];
+        dd[0] = x;
+        dd[1] = y;
+        dd[2] = z;
+        dd[3] = w;
+    }
+
+    public Long4Impl(Long4R src) {
+        long[] dd = this.data = new long[4];
+        dd[0] = src.x();
+        dd[1] = src.y();
+        dd[2] = src.z();
+        dd[3] = src.w();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

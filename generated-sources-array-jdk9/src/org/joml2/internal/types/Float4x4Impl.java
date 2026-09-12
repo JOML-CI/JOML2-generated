@@ -34,6 +34,33 @@ public class Float4x4Impl implements Float4x4 {
         properties = Joml.BIT_IDENTITY;
     }
 
+    public Float4x4Impl(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33) {
+        float[] dd = this.data = new float[16];
+        dd[0] = m00;
+        dd[1] = m10;
+        dd[2] = m20;
+        dd[3] = m30;
+        dd[4] = m01;
+        dd[5] = m11;
+        dd[6] = m21;
+        dd[7] = m31;
+        dd[8] = m02;
+        dd[9] = m12;
+        dd[10] = m22;
+        dd[11] = m32;
+        dd[12] = m03;
+        dd[13] = m13;
+        dd[14] = m23;
+        dd[15] = m33;
+        this.properties = determineProperties();
+    }
+
+    public Float4x4Impl(Float4x4R src) {
+        Float4x4Impl s = (Float4x4Impl) src;
+        this.data = s.data.clone();
+        this.properties = s.properties;
+    }
+
     /**
      * Numerically determine the structural properties of this matrix (identity, translation,
      * affinity) and return them as property bits.

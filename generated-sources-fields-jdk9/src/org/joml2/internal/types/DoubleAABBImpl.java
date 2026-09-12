@@ -38,6 +38,24 @@ public final class DoubleAABBImpl implements DoubleAABB {
         maxZ = Double.NEGATIVE_INFINITY;
     }
 
+    public DoubleAABBImpl(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+        this.minX = minX;
+        this.minY = minY;
+        this.minZ = minZ;
+        this.maxX = maxX;
+        this.maxY = maxY;
+        this.maxZ = maxZ;
+    }
+
+    public DoubleAABBImpl(DoubleAABBR src) {
+        this.minX = src.minX();
+        this.minY = src.minY();
+        this.minZ = src.minZ();
+        this.maxX = src.maxX();
+        this.maxY = src.maxY();
+        this.maxZ = src.maxZ();
+    }
+
 
     /**
      * Set this axis-aligned bounding box to the given values.

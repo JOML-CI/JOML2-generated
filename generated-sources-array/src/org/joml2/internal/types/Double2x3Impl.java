@@ -38,6 +38,23 @@ public class Double2x3Impl implements Double2x3 {
         properties = Joml.BIT_IDENTITY;
     }
 
+    public Double2x3Impl(double m00, double m01, double m02, double m10, double m11, double m12) {
+        double[] dd = this.data = new double[6];
+        dd[0] = m00;
+        dd[1] = m10;
+        dd[2] = m01;
+        dd[3] = m11;
+        dd[4] = m02;
+        dd[5] = m12;
+        this.properties = determineProperties();
+    }
+
+    public Double2x3Impl(Double2x3R src) {
+        Double2x3Impl s = (Double2x3Impl) src;
+        this.data = s.data.clone();
+        this.properties = s.properties;
+    }
+
     /**
      * Numerically determine the structural properties of this matrix (identity, translation,
      * affinity) and return them as property bits.

@@ -41,6 +41,28 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         rW = 1;
     }
 
+    public FloatDualQuatImpl(float rX, float rY, float rZ, float rW, float dX, float dY, float dZ, float dW) {
+        this.rX = rX;
+        this.rY = rY;
+        this.rZ = rZ;
+        this.rW = rW;
+        this.dX = dX;
+        this.dY = dY;
+        this.dZ = dZ;
+        this.dW = dW;
+    }
+
+    public FloatDualQuatImpl(FloatDualQuatR src) {
+        this.rX = src.rX();
+        this.rY = src.rY();
+        this.rZ = src.rZ();
+        this.rW = src.rW();
+        this.dX = src.dX();
+        this.dY = src.dY();
+        this.dZ = src.dZ();
+        this.dW = src.dW();
+    }
+
 
     /**
      * Add {@code other} to this dual quaternion and store the result in {@code dest}.

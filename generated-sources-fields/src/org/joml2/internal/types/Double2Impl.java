@@ -34,6 +34,16 @@ public final class Double2Impl implements Double2 {
     public Double2Impl() {
     }
 
+    public Double2Impl(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public Double2Impl(Double2R src) {
+        this.x = src.x();
+        this.y = src.y();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

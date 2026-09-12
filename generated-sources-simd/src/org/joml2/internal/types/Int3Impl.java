@@ -38,6 +38,20 @@ public final class Int3Impl implements Int3 {
         data = new int[3];
     }
 
+    public Int3Impl(int x, int y, int z) {
+        int[] dd = this.data = new int[3];
+        dd[0] = x;
+        dd[1] = y;
+        dd[2] = z;
+    }
+
+    public Int3Impl(Int3R src) {
+        int[] dd = this.data = new int[3];
+        dd[0] = src.x();
+        dd[1] = src.y();
+        dd[2] = src.z();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

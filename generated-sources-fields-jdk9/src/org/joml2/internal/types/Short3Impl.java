@@ -29,6 +29,18 @@ public final class Short3Impl implements Short3 {
     public Short3Impl() {
     }
 
+    public Short3Impl(short x, short y, short z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    public Short3Impl(Short3R src) {
+        this.x = src.x();
+        this.y = src.y();
+        this.z = src.z();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

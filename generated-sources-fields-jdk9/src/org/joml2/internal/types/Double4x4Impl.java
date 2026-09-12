@@ -48,6 +48,46 @@ public class Double4x4Impl implements Double4x4 {
         properties = Joml.BIT_IDENTITY;
     }
 
+    public Double4x4Impl(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20, double m21, double m22, double m23, double m30, double m31, double m32, double m33) {
+        this.m00 = m00;
+        this.m10 = m10;
+        this.m20 = m20;
+        this.m30 = m30;
+        this.m01 = m01;
+        this.m11 = m11;
+        this.m21 = m21;
+        this.m31 = m31;
+        this.m02 = m02;
+        this.m12 = m12;
+        this.m22 = m22;
+        this.m32 = m32;
+        this.m03 = m03;
+        this.m13 = m13;
+        this.m23 = m23;
+        this.m33 = m33;
+        this.properties = determineProperties();
+    }
+
+    public Double4x4Impl(Double4x4R src) {
+        this.m00 = src.m00();
+        this.m10 = src.m10();
+        this.m20 = src.m20();
+        this.m30 = src.m30();
+        this.m01 = src.m01();
+        this.m11 = src.m11();
+        this.m21 = src.m21();
+        this.m31 = src.m31();
+        this.m02 = src.m02();
+        this.m12 = src.m12();
+        this.m22 = src.m22();
+        this.m32 = src.m32();
+        this.m03 = src.m03();
+        this.m13 = src.m13();
+        this.m23 = src.m23();
+        this.m33 = src.m33();
+        this.properties = ((Double4x4Impl) src).properties;
+    }
+
     /**
      * Numerically determine the structural properties of this matrix (identity, translation,
      * affinity) and return them as property bits.

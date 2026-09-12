@@ -38,6 +38,22 @@ public final class DoubleRectImpl implements DoubleRect {
         data[3] = Double.NEGATIVE_INFINITY;
     }
 
+    public DoubleRectImpl(double minX, double minY, double maxX, double maxY) {
+        double[] dd = this.data = new double[4];
+        dd[0] = minX;
+        dd[1] = minY;
+        dd[2] = maxX;
+        dd[3] = maxY;
+    }
+
+    public DoubleRectImpl(DoubleRectR src) {
+        double[] dd = this.data = new double[4];
+        dd[0] = src.minX();
+        dd[1] = src.minY();
+        dd[2] = src.maxX();
+        dd[3] = src.maxY();
+    }
+
 
     /**
      * Add {@code other} to this rectangle and store the result in {@code dest}.

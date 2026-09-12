@@ -47,6 +47,36 @@ public class Double4x3Impl implements Double4x3 {
         m22 = 1;
     }
 
+    public Double4x3Impl(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22, double m30, double m31, double m32) {
+        this.m00 = m00;
+        this.m10 = m10;
+        this.m20 = m20;
+        this.m30 = m30;
+        this.m01 = m01;
+        this.m11 = m11;
+        this.m21 = m21;
+        this.m31 = m31;
+        this.m02 = m02;
+        this.m12 = m12;
+        this.m22 = m22;
+        this.m32 = m32;
+    }
+
+    public Double4x3Impl(Double4x3R src) {
+        this.m00 = src.m00();
+        this.m10 = src.m10();
+        this.m20 = src.m20();
+        this.m30 = src.m30();
+        this.m01 = src.m01();
+        this.m11 = src.m11();
+        this.m21 = src.m21();
+        this.m31 = src.m31();
+        this.m02 = src.m02();
+        this.m12 = src.m12();
+        this.m22 = src.m22();
+        this.m32 = src.m32();
+    }
+
 
     /**
      * Get the column at the given index of this matrix and store the result in {@code dest}.

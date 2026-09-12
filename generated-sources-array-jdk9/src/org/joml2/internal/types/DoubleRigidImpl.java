@@ -29,6 +29,28 @@ public final class DoubleRigidImpl implements DoubleRigid {
         data[6] = 1;
     }
 
+    public DoubleRigidImpl(double tX, double tY, double tZ, double rX, double rY, double rZ, double rW) {
+        double[] dd = this.data = new double[7];
+        dd[0] = tX;
+        dd[1] = tY;
+        dd[2] = tZ;
+        dd[3] = rX;
+        dd[4] = rY;
+        dd[5] = rZ;
+        dd[6] = rW;
+    }
+
+    public DoubleRigidImpl(DoubleRigidR src) {
+        double[] dd = this.data = new double[7];
+        dd[0] = src.tX();
+        dd[1] = src.tY();
+        dd[2] = src.tZ();
+        dd[3] = src.rX();
+        dd[4] = src.rY();
+        dd[5] = src.rZ();
+        dd[6] = src.rW();
+    }
+
 
     /**
      * Set this rigid transform to the rotation of {@code angle} radians about the axis

@@ -34,6 +34,16 @@ public final class Long2Impl implements Long2 {
     public Long2Impl() {
     }
 
+    public Long2Impl(long x, long y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public Long2Impl(Long2R src) {
+        this.x = src.x();
+        this.y = src.y();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

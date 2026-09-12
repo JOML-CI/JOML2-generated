@@ -38,6 +38,34 @@ public final class FloatTransformImpl implements FloatTransform {
         data[9] = 1;
     }
 
+    public FloatTransformImpl(float tX, float tY, float tZ, float rX, float rY, float rZ, float rW, float sX, float sY, float sZ) {
+        float[] dd = this.data = new float[10];
+        dd[0] = tX;
+        dd[1] = tY;
+        dd[2] = tZ;
+        dd[3] = rX;
+        dd[4] = rY;
+        dd[5] = rZ;
+        dd[6] = rW;
+        dd[7] = sX;
+        dd[8] = sY;
+        dd[9] = sZ;
+    }
+
+    public FloatTransformImpl(FloatTransformR src) {
+        float[] dd = this.data = new float[10];
+        dd[0] = src.tX();
+        dd[1] = src.tY();
+        dd[2] = src.tZ();
+        dd[3] = src.rX();
+        dd[4] = src.rY();
+        dd[5] = src.rZ();
+        dd[6] = src.rW();
+        dd[7] = src.sX();
+        dd[8] = src.sY();
+        dd[9] = src.sZ();
+    }
+
 
     /**
      * Set this transform to the rotation of {@code angle} radians about the axis {@code axis},

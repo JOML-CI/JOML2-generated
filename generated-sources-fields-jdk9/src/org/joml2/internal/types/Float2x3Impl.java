@@ -36,6 +36,26 @@ public class Float2x3Impl implements Float2x3 {
         properties = Joml.BIT_IDENTITY;
     }
 
+    public Float2x3Impl(float m00, float m01, float m02, float m10, float m11, float m12) {
+        this.m00 = m00;
+        this.m10 = m10;
+        this.m01 = m01;
+        this.m11 = m11;
+        this.m02 = m02;
+        this.m12 = m12;
+        this.properties = determineProperties();
+    }
+
+    public Float2x3Impl(Float2x3R src) {
+        this.m00 = src.m00();
+        this.m10 = src.m10();
+        this.m01 = src.m01();
+        this.m11 = src.m11();
+        this.m02 = src.m02();
+        this.m12 = src.m12();
+        this.properties = ((Float2x3Impl) src).properties;
+    }
+
     /**
      * Numerically determine the structural properties of this matrix (identity, translation,
      * affinity) and return them as property bits.

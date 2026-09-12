@@ -30,6 +30,20 @@ public final class DoubleSphereImpl implements DoubleSphere {
     public DoubleSphereImpl() {
     }
 
+    public DoubleSphereImpl(double x, double y, double z, double r) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.r = r;
+    }
+
+    public DoubleSphereImpl(DoubleSphereR src) {
+        this.x = src.x();
+        this.y = src.y();
+        this.z = src.z();
+        this.r = src.r();
+    }
+
 
     /**
      * Set this sphere to the given values.

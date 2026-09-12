@@ -43,6 +43,26 @@ public class Double3x3Impl implements Double3x3 {
         properties = Joml.BIT_IDENTITY;
     }
 
+    public Double3x3Impl(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22) {
+        double[] dd = this.data = new double[9];
+        dd[0] = m00;
+        dd[1] = m10;
+        dd[2] = m20;
+        dd[3] = m01;
+        dd[4] = m11;
+        dd[5] = m21;
+        dd[6] = m02;
+        dd[7] = m12;
+        dd[8] = m22;
+        this.properties = determineProperties();
+    }
+
+    public Double3x3Impl(Double3x3R src) {
+        Double3x3Impl s = (Double3x3Impl) src;
+        this.data = s.data.clone();
+        this.properties = s.properties;
+    }
+
     /**
      * Numerically determine the structural properties of this matrix (identity, translation,
      * affinity) and return them as property bits.

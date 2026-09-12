@@ -30,6 +30,20 @@ public final class FloatPlaneImpl implements FloatPlane {
     public FloatPlaneImpl() {
     }
 
+    public FloatPlaneImpl(float a, float b, float c, float d) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        this.d = d;
+    }
+
+    public FloatPlaneImpl(FloatPlaneR src) {
+        this.a = src.a();
+        this.b = src.b();
+        this.c = src.c();
+        this.d = src.d();
+    }
+
 
     /**
      * Set this plane to the given values.

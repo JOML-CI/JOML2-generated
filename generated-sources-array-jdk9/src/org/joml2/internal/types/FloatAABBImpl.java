@@ -34,6 +34,26 @@ public final class FloatAABBImpl implements FloatAABB {
         data[5] = Float.NEGATIVE_INFINITY;
     }
 
+    public FloatAABBImpl(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
+        float[] dd = this.data = new float[6];
+        dd[0] = minX;
+        dd[1] = minY;
+        dd[2] = minZ;
+        dd[3] = maxX;
+        dd[4] = maxY;
+        dd[5] = maxZ;
+    }
+
+    public FloatAABBImpl(FloatAABBR src) {
+        float[] dd = this.data = new float[6];
+        dd[0] = src.minX();
+        dd[1] = src.minY();
+        dd[2] = src.minZ();
+        dd[3] = src.maxX();
+        dd[4] = src.maxY();
+        dd[5] = src.maxZ();
+    }
+
 
     /**
      * Set this axis-aligned bounding box to the given values.

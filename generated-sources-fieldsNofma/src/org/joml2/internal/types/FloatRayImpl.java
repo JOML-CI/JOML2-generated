@@ -38,6 +38,24 @@ public final class FloatRayImpl implements FloatRay {
     public FloatRayImpl() {
     }
 
+    public FloatRayImpl(float oX, float oY, float oZ, float dX, float dY, float dZ) {
+        this.oX = oX;
+        this.oY = oY;
+        this.oZ = oZ;
+        this.dX = dX;
+        this.dY = dY;
+        this.dZ = dZ;
+    }
+
+    public FloatRayImpl(FloatRayR src) {
+        this.oX = src.oX();
+        this.oY = src.oY();
+        this.oZ = src.oZ();
+        this.dX = src.dX();
+        this.dY = src.dY();
+        this.dZ = src.dZ();
+    }
+
 
     /**
      * Set this ray to the given values.

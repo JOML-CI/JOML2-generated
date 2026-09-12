@@ -40,6 +40,32 @@ public final class FloatTransformImpl implements FloatTransform {
         sZ = 1;
     }
 
+    public FloatTransformImpl(float tX, float tY, float tZ, float rX, float rY, float rZ, float rW, float sX, float sY, float sZ) {
+        this.tX = tX;
+        this.tY = tY;
+        this.tZ = tZ;
+        this.rX = rX;
+        this.rY = rY;
+        this.rZ = rZ;
+        this.rW = rW;
+        this.sX = sX;
+        this.sY = sY;
+        this.sZ = sZ;
+    }
+
+    public FloatTransformImpl(FloatTransformR src) {
+        this.tX = src.tX();
+        this.tY = src.tY();
+        this.tZ = src.tZ();
+        this.rX = src.rX();
+        this.rY = src.rY();
+        this.rZ = src.rZ();
+        this.rW = src.rW();
+        this.sX = src.sX();
+        this.sY = src.sY();
+        this.sZ = src.sZ();
+    }
+
 
     /**
      * Set this transform to the rotation of {@code angle} radians about the axis {@code axis},

@@ -34,6 +34,24 @@ public class Double3x2Impl implements Double3x2 {
         m11 = 1;
     }
 
+    public Double3x2Impl(double m00, double m01, double m10, double m11, double m20, double m21) {
+        this.m00 = m00;
+        this.m10 = m10;
+        this.m20 = m20;
+        this.m01 = m01;
+        this.m11 = m11;
+        this.m21 = m21;
+    }
+
+    public Double3x2Impl(Double3x2R src) {
+        this.m00 = src.m00();
+        this.m10 = src.m10();
+        this.m20 = src.m20();
+        this.m01 = src.m01();
+        this.m11 = src.m11();
+        this.m21 = src.m21();
+    }
+
 
     /**
      * Get the column at the given index of this matrix and store the result in {@code dest}.

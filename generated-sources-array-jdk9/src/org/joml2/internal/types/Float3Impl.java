@@ -28,6 +28,20 @@ public final class Float3Impl implements Float3 {
         data = new float[3];
     }
 
+    public Float3Impl(float x, float y, float z) {
+        float[] dd = this.data = new float[3];
+        dd[0] = x;
+        dd[1] = y;
+        dd[2] = z;
+    }
+
+    public Float3Impl(Float3R src) {
+        float[] dd = this.data = new float[3];
+        dd[0] = src.x();
+        dd[1] = src.y();
+        dd[2] = src.z();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

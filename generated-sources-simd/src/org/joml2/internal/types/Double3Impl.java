@@ -38,6 +38,20 @@ public final class Double3Impl implements Double3 {
         data = new double[3];
     }
 
+    public Double3Impl(double x, double y, double z) {
+        double[] dd = this.data = new double[3];
+        dd[0] = x;
+        dd[1] = y;
+        dd[2] = z;
+    }
+
+    public Double3Impl(Double3R src) {
+        double[] dd = this.data = new double[3];
+        dd[0] = src.x();
+        dd[1] = src.y();
+        dd[2] = src.z();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

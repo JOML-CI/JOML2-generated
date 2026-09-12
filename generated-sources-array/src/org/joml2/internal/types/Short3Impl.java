@@ -34,6 +34,20 @@ public final class Short3Impl implements Short3 {
         data = new short[3];
     }
 
+    public Short3Impl(short x, short y, short z) {
+        short[] dd = this.data = new short[3];
+        dd[0] = x;
+        dd[1] = y;
+        dd[2] = z;
+    }
+
+    public Short3Impl(Short3R src) {
+        short[] dd = this.data = new short[3];
+        dd[0] = src.x();
+        dd[1] = src.y();
+        dd[2] = src.z();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

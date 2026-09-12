@@ -34,6 +34,32 @@ public final class FloatTriangleImpl implements FloatTriangle {
         data = new float[9];
     }
 
+    public FloatTriangleImpl(float v0X, float v0Y, float v0Z, float v1X, float v1Y, float v1Z, float v2X, float v2Y, float v2Z) {
+        float[] dd = this.data = new float[9];
+        dd[0] = v0X;
+        dd[1] = v0Y;
+        dd[2] = v0Z;
+        dd[3] = v1X;
+        dd[4] = v1Y;
+        dd[5] = v1Z;
+        dd[6] = v2X;
+        dd[7] = v2Y;
+        dd[8] = v2Z;
+    }
+
+    public FloatTriangleImpl(FloatTriangleR src) {
+        float[] dd = this.data = new float[9];
+        dd[0] = src.v0X();
+        dd[1] = src.v0Y();
+        dd[2] = src.v0Z();
+        dd[3] = src.v1X();
+        dd[4] = src.v1Y();
+        dd[5] = src.v1Z();
+        dd[6] = src.v2X();
+        dd[7] = src.v2Y();
+        dd[8] = src.v2Z();
+    }
+
 
     /**
      * Set this triangle to the given values.

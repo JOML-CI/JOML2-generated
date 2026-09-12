@@ -40,6 +40,32 @@ public final class DoubleTransformImpl implements DoubleTransform {
         sZ = 1;
     }
 
+    public DoubleTransformImpl(double tX, double tY, double tZ, double rX, double rY, double rZ, double rW, double sX, double sY, double sZ) {
+        this.tX = tX;
+        this.tY = tY;
+        this.tZ = tZ;
+        this.rX = rX;
+        this.rY = rY;
+        this.rZ = rZ;
+        this.rW = rW;
+        this.sX = sX;
+        this.sY = sY;
+        this.sZ = sZ;
+    }
+
+    public DoubleTransformImpl(DoubleTransformR src) {
+        this.tX = src.tX();
+        this.tY = src.tY();
+        this.tZ = src.tZ();
+        this.rX = src.rX();
+        this.rY = src.rY();
+        this.rZ = src.rZ();
+        this.rW = src.rW();
+        this.sX = src.sX();
+        this.sY = src.sY();
+        this.sZ = src.sZ();
+    }
+
 
     /**
      * Set this transform to the rotation of {@code angle} radians about the axis {@code axis},

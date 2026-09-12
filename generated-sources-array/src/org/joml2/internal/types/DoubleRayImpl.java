@@ -34,6 +34,26 @@ public final class DoubleRayImpl implements DoubleRay {
         data = new double[6];
     }
 
+    public DoubleRayImpl(double oX, double oY, double oZ, double dX, double dY, double dZ) {
+        double[] dd = this.data = new double[6];
+        dd[0] = oX;
+        dd[1] = oY;
+        dd[2] = oZ;
+        dd[3] = dX;
+        dd[4] = dY;
+        dd[5] = dZ;
+    }
+
+    public DoubleRayImpl(DoubleRayR src) {
+        double[] dd = this.data = new double[6];
+        dd[0] = src.oX();
+        dd[1] = src.oY();
+        dd[2] = src.oZ();
+        dd[3] = src.dX();
+        dd[4] = src.dY();
+        dd[5] = src.dZ();
+    }
+
 
     /**
      * Set this ray to the given values.

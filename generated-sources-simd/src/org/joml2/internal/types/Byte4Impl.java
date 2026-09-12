@@ -39,6 +39,22 @@ public final class Byte4Impl implements Byte4 {
         data[3] = 1;
     }
 
+    public Byte4Impl(byte x, byte y, byte z, byte w) {
+        byte[] dd = this.data = new byte[4];
+        dd[0] = x;
+        dd[1] = y;
+        dd[2] = z;
+        dd[3] = w;
+    }
+
+    public Byte4Impl(Byte4R src) {
+        byte[] dd = this.data = new byte[4];
+        dd[0] = src.x();
+        dd[1] = src.y();
+        dd[2] = src.z();
+        dd[3] = src.w();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

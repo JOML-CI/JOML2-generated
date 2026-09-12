@@ -32,6 +32,21 @@ public class Float2x2Impl implements Float2x2 {
         properties = Joml.BIT_IDENTITY;
     }
 
+    public Float2x2Impl(float m00, float m01, float m10, float m11) {
+        float[] dd = this.data = new float[4];
+        dd[0] = m00;
+        dd[1] = m10;
+        dd[2] = m01;
+        dd[3] = m11;
+        this.properties = determineProperties();
+    }
+
+    public Float2x2Impl(Float2x2R src) {
+        Float2x2Impl s = (Float2x2Impl) src;
+        this.data = s.data.clone();
+        this.properties = s.properties;
+    }
+
     /**
      * Numerically determine the structural properties of this matrix (identity, translation,
      * affinity) and return them as property bits.

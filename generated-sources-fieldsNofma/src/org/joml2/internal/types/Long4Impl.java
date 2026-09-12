@@ -37,6 +37,20 @@ public final class Long4Impl implements Long4 {
         w = 1;
     }
 
+    public Long4Impl(long x, long y, long z, long w) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
+    }
+
+    public Long4Impl(Long4R src) {
+        this.x = src.x();
+        this.y = src.y();
+        this.z = src.z();
+        this.w = src.w();
+    }
+
 
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.

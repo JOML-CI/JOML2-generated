@@ -35,6 +35,28 @@ public final class FloatRigidImpl implements FloatRigid {
         data[6] = 1;
     }
 
+    public FloatRigidImpl(float tX, float tY, float tZ, float rX, float rY, float rZ, float rW) {
+        float[] dd = this.data = new float[7];
+        dd[0] = tX;
+        dd[1] = tY;
+        dd[2] = tZ;
+        dd[3] = rX;
+        dd[4] = rY;
+        dd[5] = rZ;
+        dd[6] = rW;
+    }
+
+    public FloatRigidImpl(FloatRigidR src) {
+        float[] dd = this.data = new float[7];
+        dd[0] = src.tX();
+        dd[1] = src.tY();
+        dd[2] = src.tZ();
+        dd[3] = src.rX();
+        dd[4] = src.rY();
+        dd[5] = src.rZ();
+        dd[6] = src.rW();
+    }
+
 
     /**
      * Set this rigid transform to the rotation of {@code angle} radians about the axis

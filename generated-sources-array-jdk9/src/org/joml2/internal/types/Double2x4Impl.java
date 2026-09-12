@@ -30,6 +30,23 @@ public class Double2x4Impl implements Double2x4 {
         data[5] = 1;
     }
 
+    public Double2x4Impl(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13) {
+        double[] dd = this.data = new double[8];
+        dd[0] = m00;
+        dd[1] = m01;
+        dd[2] = m02;
+        dd[3] = m03;
+        dd[4] = m10;
+        dd[5] = m11;
+        dd[6] = m12;
+        dd[7] = m13;
+    }
+
+    public Double2x4Impl(Double2x4R src) {
+        Double2x4Impl s = (Double2x4Impl) src;
+        this.data = s.data.clone();
+    }
+
 
     /**
      * Get the column at the given index of this matrix and store the result in {@code dest}.
