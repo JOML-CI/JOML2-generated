@@ -404,10 +404,7 @@ public final class FloatTransformImpl implements FloatTransform {
     public FloatTransform setScale(float sX, float sY, float sZ, @Mutated FloatTransform dest) {
         float[] sd = this.data;
         float[] dd = ((FloatTransformImpl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
+        FloatVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         dd[4] = sd[4];
         dd[5] = sd[5];
         dd[6] = sd[6];
@@ -458,10 +455,7 @@ public final class FloatTransformImpl implements FloatTransform {
     public FloatTransform setScale(float uniform, @Mutated FloatTransform dest) {
         float[] sd = this.data;
         float[] dd = ((FloatTransformImpl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
+        FloatVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         dd[4] = sd[4];
         dd[5] = sd[5];
         dd[6] = sd[6];
@@ -542,10 +536,7 @@ public final class FloatTransformImpl implements FloatTransform {
         dd[0] = tX;
         dd[1] = tY;
         dd[2] = tZ;
-        dd[3] = sd[3];
-        dd[4] = sd[4];
-        dd[5] = sd[5];
-        dd[6] = sd[6];
+        FloatVector.fromArray(COL_SPECIES, sd, 3).intoArray(dd, 3);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];
@@ -906,20 +897,14 @@ public final class FloatTransformImpl implements FloatTransform {
         float[] sd = this.data;
         float[] dd = ((FloatDualQuatImpl) dest).data;
         float _t0 = -sd[2];
-        float _buf0 = sd[3];
-        float _buf1 = sd[4];
-        float _buf2 = sd[5];
-        float _buf3 = sd[6];
-        float _buf4 = 0.5f * Math.fma(_t0, sd[4], Math.fma(sd[0], sd[6], sd[1] * sd[5]));
-        float _buf5 = 0.5f * Math.fma(sd[2], sd[3], Math.fma(sd[1], sd[6], -(sd[0] * sd[5])));
+        var _vcp0 = FloatVector.fromArray(COL_SPECIES, sd, 3);
+        float _buf0 = 0.5f * Math.fma(_t0, sd[4], Math.fma(sd[0], sd[6], sd[1] * sd[5]));
+        float _buf1 = 0.5f * Math.fma(sd[2], sd[3], Math.fma(sd[1], sd[6], -(sd[0] * sd[5])));
         dd[6] = 0.5f * Math.fma(sd[2], sd[6], Math.fma(sd[0], sd[4], -(sd[1] * sd[3])));
         dd[7] = 0.5f * Math.fma(_t0, sd[5], Math.fma(-sd[1], sd[4], -(sd[0] * sd[3])));
-        dd[0] = _buf0;
-        dd[1] = _buf1;
-        dd[2] = _buf2;
-        dd[3] = _buf3;
-        dd[4] = _buf4;
-        dd[5] = _buf5;
+        _vcp0.intoArray(dd, 0);
+        dd[4] = _buf0;
+        dd[5] = _buf1;
         return dest;
     }
 
@@ -1217,10 +1202,7 @@ public final class FloatTransformImpl implements FloatTransform {
     public FloatRigid toRigid(@Mutated FloatRigid dest) {
         float[] sd = this.data;
         float[] dd = ((FloatRigidImpl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
+        FloatVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         dd[4] = sd[4];
         dd[5] = sd[5];
         dd[6] = sd[6];
@@ -2711,10 +2693,7 @@ public final class FloatTransformImpl implements FloatTransform {
     public FloatQuat getRotation(@Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
-        dd[0] = sd[3];
-        dd[1] = sd[4];
-        dd[2] = sd[5];
-        dd[3] = sd[6];
+        FloatVector.fromArray(COL_SPECIES, sd, 3).intoArray(dd, 0);
         return dest;
     }
 
@@ -4553,10 +4532,7 @@ public final class FloatTransformImpl implements FloatTransform {
     public FloatTransform scale(float scaleX, float scaleY, float scaleZ, @Mutated FloatTransform dest) {
         float[] sd = this.data;
         float[] dd = ((FloatTransformImpl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
+        FloatVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         dd[4] = sd[4];
         dd[5] = sd[5];
         dd[6] = sd[6];
@@ -4615,10 +4591,7 @@ public final class FloatTransformImpl implements FloatTransform {
     public FloatTransform scale(float scale, @Mutated FloatTransform dest) {
         float[] sd = this.data;
         float[] dd = ((FloatTransformImpl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
+        FloatVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         dd[4] = sd[4];
         dd[5] = sd[5];
         dd[6] = sd[6];
@@ -4726,10 +4699,7 @@ public final class FloatTransformImpl implements FloatTransform {
         dd[0] = Math.fma(sd[4], _t12, Math.fma(-sd[5], _t13, Math.fma(sd[6], _t14, Math.fma(sd[7], translationX, sd[0]))));
         dd[1] = Math.fma(sd[5], _t14, Math.fma(-sd[3], _t12, Math.fma(sd[6], _t13, Math.fma(sd[8], translationY, sd[1]))));
         dd[2] = Math.fma(sd[3], _t13, Math.fma(-sd[4], _t14, Math.fma(sd[6], _t12, Math.fma(sd[9], translationZ, sd[2]))));
-        dd[3] = sd[3];
-        dd[4] = sd[4];
-        dd[5] = sd[5];
-        dd[6] = sd[6];
+        FloatVector.fromArray(COL_SPECIES, sd, 3).intoArray(dd, 3);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];

@@ -2148,10 +2148,7 @@ public class Double2x2Impl implements Double2x2 {
     @Mutated public Double2x2 set(Double2x2R v) {
         double[] dd = this.data;
         double[] vData = ((Double2x2Impl) v).data;
-        dd[0] = vData[0];
-        dd[1] = vData[1];
-        dd[2] = vData[2];
-        dd[3] = vData[3];
+        DoubleVector.fromArray(COL_SPECIES, vData, 0).intoArray(dd, 0);
         ((Double2x2Impl) this).properties = ((Double2x2Impl) v).properties;
         return this;
     }
@@ -2186,10 +2183,7 @@ public class Double2x2Impl implements Double2x2 {
     @Mutated public Double2x2 set(Double2x3R m) {
         double[] dd = this.data;
         double[] mData = ((Double2x3Impl) m).data;
-        dd[0] = mData[0];
-        dd[1] = mData[1];
-        dd[2] = mData[2];
-        dd[3] = mData[3];
+        DoubleVector.fromArray(COL_SPECIES, mData, 0).intoArray(dd, 0);
         ((Double2x2Impl) this).properties = determineProperties();
         return this;
     }
@@ -2289,13 +2283,10 @@ public class Double2x2Impl implements Double2x2 {
     private Double2x3 to2x3_general(@Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = sd[0];
-        double _buf0 = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
+        var _vcp0 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
         dd[4] = 0.0;
         dd[5] = 0.0;
-        dd[1] = _buf0;
+        _vcp0.intoArray(dd, 0);
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }

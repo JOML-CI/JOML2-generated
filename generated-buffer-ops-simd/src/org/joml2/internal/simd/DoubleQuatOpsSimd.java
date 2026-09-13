@@ -655,6 +655,42 @@ public final class DoubleQuatOpsSimd {
         return dest;
     }
 
+    public static double[] toDualQuat(double[] dest, int destOffset, double[] src, int srcOffset) {
+        var _vcp0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = 0.0;
+        dest[destOffset + 5] = 0.0;
+        dest[destOffset + 6] = 0.0;
+        dest[destOffset + 7] = 0.0;
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment toDualQuat(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return toDualQuat_unsafe(dest, destOffset, src, srcOffset);
+        return toDualQuat_api(dest, destOffset, src, srcOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment toDualQuat_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        long _destBase = dest.address() + destOffset;
+        var _vcp0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
+        _vcp0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        UnsafeOpsHolder.U.putDouble(_destBase + 32L, 0.0);
+        UnsafeOpsHolder.U.putDouble(_destBase + 40L, 0.0);
+        UnsafeOpsHolder.U.putDouble(_destBase + 48L, 0.0);
+        UnsafeOpsHolder.U.putDouble(_destBase + 56L, 0.0);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment toDualQuat_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        var _vcp0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
+        _vcp0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 32L, 0.0);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 40L, 0.0);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 48L, 0.0);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 56L, 0.0);
+        return dest;
+    }
+
     public static double[] makeZero(double[] dest, int destOffset) {
         var _c0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
         _c0.intoArray(dest, destOffset);

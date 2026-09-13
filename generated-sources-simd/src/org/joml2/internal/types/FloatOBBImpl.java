@@ -306,18 +306,9 @@ public final class FloatOBBImpl implements FloatOBB {
         dd[0] = cX;
         dd[1] = cY;
         dd[2] = cZ;
-        dd[3] = sd[3];
-        dd[4] = sd[4];
-        dd[5] = sd[5];
-        dd[6] = sd[6];
-        dd[7] = sd[7];
-        dd[8] = sd[8];
-        dd[9] = sd[9];
-        dd[10] = sd[10];
-        dd[11] = sd[11];
-        dd[12] = sd[12];
-        dd[13] = sd[13];
-        dd[14] = sd[14];
+        FloatVector.fromArray(COL_SPECIES, sd, 3).intoArray(dd, 3);
+        FloatVector.fromArray(COL_SPECIES, sd, 7).intoArray(dd, 7);
+        FloatVector.fromArray(COL_SPECIES, sd, 11).intoArray(dd, 11);
         return dest;
     }
 
@@ -399,18 +390,9 @@ public final class FloatOBBImpl implements FloatOBB {
     public FloatOBB setHalfSize(float hX, float hY, float hZ, @Mutated FloatOBB dest) {
         float[] sd = this.data;
         float[] dd = ((FloatOBBImpl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
-        dd[4] = sd[4];
-        dd[5] = sd[5];
-        dd[6] = sd[6];
-        dd[7] = sd[7];
-        dd[8] = sd[8];
-        dd[9] = sd[9];
-        dd[10] = sd[10];
-        dd[11] = sd[11];
+        FloatVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
+        FloatVector.fromArray(COL_SPECIES, sd, 4).intoArray(dd, 4);
+        FloatVector.fromArray(COL_SPECIES, sd, 8).intoArray(dd, 8);
         dd[12] = hX;
         dd[13] = hY;
         dd[14] = hZ;
@@ -922,18 +904,9 @@ public final class FloatOBBImpl implements FloatOBB {
         dd[0] = deltaX + sd[0];
         dd[1] = deltaY + sd[1];
         dd[2] = deltaZ + sd[2];
-        dd[3] = sd[3];
-        dd[4] = sd[4];
-        dd[5] = sd[5];
-        dd[6] = sd[6];
-        dd[7] = sd[7];
-        dd[8] = sd[8];
-        dd[9] = sd[9];
-        dd[10] = sd[10];
-        dd[11] = sd[11];
-        dd[12] = sd[12];
-        dd[13] = sd[13];
-        dd[14] = sd[14];
+        FloatVector.fromArray(COL_SPECIES, sd, 3).intoArray(dd, 3);
+        FloatVector.fromArray(COL_SPECIES, sd, 7).intoArray(dd, 7);
+        FloatVector.fromArray(COL_SPECIES, sd, 11).intoArray(dd, 11);
         return dest;
     }
 

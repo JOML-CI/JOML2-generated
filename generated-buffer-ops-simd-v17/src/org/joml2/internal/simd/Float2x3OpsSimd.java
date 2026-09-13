@@ -15,7 +15,102 @@ import org.joml2.internal.unsafe.*;
  */
 public final class Float2x3OpsSimd {
     private Float2x3OpsSimd() {}
+    private static final VectorSpecies<Float> SIMD_SPECIES = FloatVector.SPECIES_128;
     private static final int PREFERRED_LANES = FloatVector.SPECIES_PREFERRED.length();
+
+    public static float[] set(float[] dest, int destOffset, float[] v, int vOffset) {
+        float _v02 = v[vOffset + 4];
+        float _v12 = v[vOffset + 5];
+        var _vcp0 = FloatVector.fromArray(SIMD_SPECIES, v, vOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = _v02;
+        dest[destOffset + 5] = _v12;
+        return dest;
+    }
+
+    public static float[] setMat2x2(float[] dest, int destOffset, float[] m, int mOffset) {
+        var _vcp0 = FloatVector.fromArray(SIMD_SPECIES, m, mOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = 0.0f;
+        dest[destOffset + 5] = 0.0f;
+        return dest;
+    }
+
+    public static float[] withTranslation(float[] dest, int destOffset, float[] src, int srcOffset, float tX, float tY) {
+        var _vcp0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = tX;
+        dest[destOffset + 5] = tY;
+        return dest;
+    }
+
+    public static float[] withTranslation(float[] dest, int destOffset, float[] src, int srcOffset, float[] t, int tOffset) {
+        float _tx = t[tOffset + 0];
+        float _ty = t[tOffset + 1];
+        var _vcp0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = _tx;
+        dest[destOffset + 5] = _ty;
+        return dest;
+    }
+
+    public static float[] to2x2(float[] dest, int destOffset, float[] src, int srcOffset) {
+        var _vcp0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        _vcp0.intoArray(dest, destOffset);
+        return dest;
+    }
+
+    public static float[] preTranslate(float[] dest, int destOffset, float[] src, int srcOffset, float vX, float vY) {
+        float _self02 = src[srcOffset + 4];
+        float _self12 = src[srcOffset + 5];
+        var _vcp0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = _self02 + vX;
+        dest[destOffset + 5] = _self12 + vY;
+        return dest;
+    }
+
+    public static float[] preTranslate(float[] dest, int destOffset, float[] src, int srcOffset, float[] v, int vOffset) {
+        float _self02 = src[srcOffset + 4];
+        float _self12 = src[srcOffset + 5];
+        float _vx = v[vOffset + 0];
+        float _vy = v[vOffset + 1];
+        var _vcp0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = _self02 + _vx;
+        dest[destOffset + 5] = _self12 + _vy;
+        return dest;
+    }
+
+    public static float[] translate(float[] dest, int destOffset, float[] src, int srcOffset, float vX, float vY) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self01 = src[srcOffset + 2];
+        float _self11 = src[srcOffset + 3];
+        float _self02 = src[srcOffset + 4];
+        float _self12 = src[srcOffset + 5];
+        var _vcp0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = Math.fma(_self00, vX, Math.fma(_self01, vY, _self02));
+        dest[destOffset + 5] = Math.fma(_self10, vX, Math.fma(_self11, vY, _self12));
+        return dest;
+    }
+
+    public static float[] translate(float[] dest, int destOffset, float[] src, int srcOffset, float[] v, int vOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self01 = src[srcOffset + 2];
+        float _self11 = src[srcOffset + 3];
+        float _self02 = src[srcOffset + 4];
+        float _self12 = src[srcOffset + 5];
+        float _vx = v[vOffset + 0];
+        float _vy = v[vOffset + 1];
+        var _vcp0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = Math.fma(_self00, _vx, Math.fma(_self01, _vy, _self02));
+        dest[destOffset + 5] = Math.fma(_self10, _vx, Math.fma(_self11, _vy, _self12));
+        return dest;
+    }
 
     private static void copyArrArr(float[] dest, int destOffset, float[] src, int srcOffset, int n) {
         var _sp = FloatVector.SPECIES_PREFERRED;

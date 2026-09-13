@@ -232,6 +232,16 @@ public final class FloatQuatOpsSimd {
         return dest;
     }
 
+    public static float[] toDualQuat(float[] dest, int destOffset, float[] src, int srcOffset) {
+        var _vcp0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = 0.0f;
+        dest[destOffset + 5] = 0.0f;
+        dest[destOffset + 6] = 0.0f;
+        dest[destOffset + 7] = 0.0f;
+        return dest;
+    }
+
     public static float[] makeZero(float[] dest, int destOffset) {
         var _c0 = FloatVector.broadcast(SIMD_SPECIES, 0.0f);
         _c0.intoArray(dest, destOffset);

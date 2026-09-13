@@ -656,15 +656,8 @@ public final class Double2x2Ops {
      * @return {@code dest}
      */
     public static double[] set(double[] dest, int destOffset, double[] v, int vOffset) {
-        double _v00 = v[vOffset + 0];
-        double _v10 = v[vOffset + 1];
-        double _v01 = v[vOffset + 2];
-        double _v11 = v[vOffset + 3];
-        dest[destOffset + 0] = _v00;
-        dest[destOffset + 1] = _v10;
-        dest[destOffset + 2] = _v01;
-        dest[destOffset + 3] = _v11;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Double2x2OpsSimd.set(dest, destOffset, v, vOffset);
+        return Double2x2OpsKernelsArray.set_scalar(dest, destOffset, v, vOffset);
     }
 
     /** {@link #set(double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
@@ -696,15 +689,8 @@ public final class Double2x2Ops {
      * @return {@code dest}
      */
     public static double[] setMat2x3(double[] dest, int destOffset, double[] m, int mOffset) {
-        double _m00 = m[mOffset + 0];
-        double _m10 = m[mOffset + 1];
-        double _m01 = m[mOffset + 2];
-        double _m11 = m[mOffset + 3];
-        dest[destOffset + 0] = _m00;
-        dest[destOffset + 1] = _m10;
-        dest[destOffset + 2] = _m01;
-        dest[destOffset + 3] = _m11;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Double2x2OpsSimd.setMat2x3(dest, destOffset, m, mOffset);
+        return Double2x2OpsKernelsArray.setMat2x3_scalar(dest, destOffset, m, mOffset);
     }
 
     /** {@link #setMat2x3(double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
@@ -777,17 +763,8 @@ public final class Double2x2Ops {
      * @return {@code dest}
      */
     public static double[] to2x3(double[] dest, int destOffset, double[] src, int srcOffset) {
-        double _self00 = src[srcOffset + 0];
-        double _self10 = src[srcOffset + 1];
-        double _self01 = src[srcOffset + 2];
-        double _self11 = src[srcOffset + 3];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self01;
-        dest[destOffset + 3] = _self11;
-        dest[destOffset + 4] = 0.0;
-        dest[destOffset + 5] = 0.0;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Double2x2OpsSimd.to2x3(dest, destOffset, src, srcOffset);
+        return Double2x2OpsKernelsArray.to2x3_scalar(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #to2x3(double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */

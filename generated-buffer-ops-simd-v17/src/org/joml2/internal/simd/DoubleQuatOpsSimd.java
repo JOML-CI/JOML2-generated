@@ -232,6 +232,16 @@ public final class DoubleQuatOpsSimd {
         return dest;
     }
 
+    public static double[] toDualQuat(double[] dest, int destOffset, double[] src, int srcOffset) {
+        var _vcp0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = 0.0;
+        dest[destOffset + 5] = 0.0;
+        dest[destOffset + 6] = 0.0;
+        dest[destOffset + 7] = 0.0;
+        return dest;
+    }
+
     public static double[] makeZero(double[] dest, int destOffset) {
         var _c0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
         _c0.intoArray(dest, destOffset);

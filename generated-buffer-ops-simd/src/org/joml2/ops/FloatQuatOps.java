@@ -740,19 +740,8 @@ public final class FloatQuatOps {
      * @return {@code dest}
      */
     public static float[] toDualQuat(float[] dest, int destOffset, float[] src, int srcOffset) {
-        float _selfx = src[srcOffset + 0];
-        float _selfy = src[srcOffset + 1];
-        float _selfz = src[srcOffset + 2];
-        float _selfw = src[srcOffset + 3];
-        dest[destOffset + 0] = _selfx;
-        dest[destOffset + 1] = _selfy;
-        dest[destOffset + 2] = _selfz;
-        dest[destOffset + 3] = _selfw;
-        dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 0.0f;
-        dest[destOffset + 6] = 0.0f;
-        dest[destOffset + 7] = 0.0f;
-        return dest;
+        if (SimdSupport.VECTOR_API) return FloatQuatOpsSimd.toDualQuat(dest, destOffset, src, srcOffset);
+        return FloatQuatOpsKernelsArray.toDualQuat_scalar(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #toDualQuat(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -769,6 +758,7 @@ public final class FloatQuatOps {
 
     /** {@link #toDualQuat(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment toDualQuat(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        if (SimdSupport.VECTOR_API) return FloatQuatOpsSimd.toDualQuat(dest, destOffset, src, srcOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return FloatQuatOpsKernelsSegment.toDualQuat_unsafe(dest, destOffset, src, srcOffset);
         return FloatQuatOpsKernelsSegment.toDualQuat_api(dest, destOffset, src, srcOffset);
     }

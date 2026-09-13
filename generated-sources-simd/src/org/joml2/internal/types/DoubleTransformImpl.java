@@ -343,10 +343,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
     public DoubleTransform setScale(double sX, double sY, double sZ, @Mutated DoubleTransform dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleTransformImpl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
+        DoubleVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         dd[4] = sd[4];
         dd[5] = sd[5];
         dd[6] = sd[6];
@@ -367,10 +364,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
     public DoubleTransform setScale(double uniform, @Mutated DoubleTransform dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleTransformImpl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
+        DoubleVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         dd[4] = sd[4];
         dd[5] = sd[5];
         dd[6] = sd[6];
@@ -409,10 +403,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
         dd[0] = tX;
         dd[1] = tY;
         dd[2] = tZ;
-        dd[3] = sd[3];
-        dd[4] = sd[4];
-        dd[5] = sd[5];
-        dd[6] = sd[6];
+        DoubleVector.fromArray(COL_SPECIES, sd, 3).intoArray(dd, 3);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];
@@ -743,20 +734,14 @@ public final class DoubleTransformImpl implements DoubleTransform {
         double[] sd = this.data;
         double[] dd = ((DoubleDualQuatImpl) dest).data;
         double _t0 = -sd[2];
-        double _buf0 = sd[3];
-        double _buf1 = sd[4];
-        double _buf2 = sd[5];
-        double _buf3 = sd[6];
-        double _buf4 = 0.5 * Math.fma(_t0, sd[4], Math.fma(sd[0], sd[6], sd[1] * sd[5]));
-        double _buf5 = 0.5 * Math.fma(sd[2], sd[3], Math.fma(sd[1], sd[6], -(sd[0] * sd[5])));
+        var _vcp0 = DoubleVector.fromArray(COL_SPECIES, sd, 3);
+        double _buf0 = 0.5 * Math.fma(_t0, sd[4], Math.fma(sd[0], sd[6], sd[1] * sd[5]));
+        double _buf1 = 0.5 * Math.fma(sd[2], sd[3], Math.fma(sd[1], sd[6], -(sd[0] * sd[5])));
         dd[6] = 0.5 * Math.fma(sd[2], sd[6], Math.fma(sd[0], sd[4], -(sd[1] * sd[3])));
         dd[7] = 0.5 * Math.fma(_t0, sd[5], Math.fma(-sd[1], sd[4], -(sd[0] * sd[3])));
-        dd[0] = _buf0;
-        dd[1] = _buf1;
-        dd[2] = _buf2;
-        dd[3] = _buf3;
-        dd[4] = _buf4;
-        dd[5] = _buf5;
+        _vcp0.intoArray(dd, 0);
+        dd[4] = _buf0;
+        dd[5] = _buf1;
         return dest;
     }
 
@@ -902,10 +887,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
     public DoubleRigid toRigid(@Mutated DoubleRigid dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleRigidImpl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
+        DoubleVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         dd[4] = sd[4];
         dd[5] = sd[5];
         dd[6] = sd[6];
@@ -1683,10 +1665,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
     public DoubleQuat getRotation(@Mutated DoubleQuat dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
-        dd[0] = sd[3];
-        dd[1] = sd[4];
-        dd[2] = sd[5];
-        dd[3] = sd[6];
+        DoubleVector.fromArray(COL_SPECIES, sd, 3).intoArray(dd, 0);
         return dest;
     }
 
@@ -2786,10 +2765,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
     public DoubleTransform scale(double scaleX, double scaleY, double scaleZ, @Mutated DoubleTransform dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleTransformImpl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
+        DoubleVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         dd[4] = sd[4];
         dd[5] = sd[5];
         dd[6] = sd[6];
@@ -2814,10 +2790,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
     public DoubleTransform scale(double scale, @Mutated DoubleTransform dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleTransformImpl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
+        DoubleVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         dd[4] = sd[4];
         dd[5] = sd[5];
         dd[6] = sd[6];
@@ -2874,10 +2847,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
         dd[0] = Math.fma(sd[4], _t12, Math.fma(-sd[5], _t13, Math.fma(sd[6], _t14, Math.fma(sd[7], translationX, sd[0]))));
         dd[1] = Math.fma(sd[5], _t14, Math.fma(-sd[3], _t12, Math.fma(sd[6], _t13, Math.fma(sd[8], translationY, sd[1]))));
         dd[2] = Math.fma(sd[3], _t13, Math.fma(-sd[4], _t14, Math.fma(sd[6], _t12, Math.fma(sd[9], translationZ, sd[2]))));
-        dd[3] = sd[3];
-        dd[4] = sd[4];
-        dd[5] = sd[5];
-        dd[6] = sd[6];
+        DoubleVector.fromArray(COL_SPECIES, sd, 3).intoArray(dd, 3);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];

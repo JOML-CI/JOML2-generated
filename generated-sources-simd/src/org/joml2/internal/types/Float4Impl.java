@@ -7851,14 +7851,7 @@ public final class Float4Impl implements Float4 {
     public Float4 xyzw(@Mutated Float4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4Impl) dest).data;
-        float _v0 = sd[0];
-        float _v1 = sd[1];
-        float _v2 = sd[2];
-        float _v3 = sd[3];
-        dd[0] = _v0;
-        dd[1] = _v1;
-        dd[2] = _v2;
-        dd[3] = _v3;
+        FloatVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         return dest;
     }
 

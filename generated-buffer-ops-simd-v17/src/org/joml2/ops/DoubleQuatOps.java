@@ -643,19 +643,8 @@ public final class DoubleQuatOps {
      * @return {@code dest}
      */
     public static double[] toDualQuat(double[] dest, int destOffset, double[] src, int srcOffset) {
-        double _selfx = src[srcOffset + 0];
-        double _selfy = src[srcOffset + 1];
-        double _selfz = src[srcOffset + 2];
-        double _selfw = src[srcOffset + 3];
-        dest[destOffset + 0] = _selfx;
-        dest[destOffset + 1] = _selfy;
-        dest[destOffset + 2] = _selfz;
-        dest[destOffset + 3] = _selfw;
-        dest[destOffset + 4] = 0.0;
-        dest[destOffset + 5] = 0.0;
-        dest[destOffset + 6] = 0.0;
-        dest[destOffset + 7] = 0.0;
-        return dest;
+        if (SimdSupport.VECTOR_API) return DoubleQuatOpsSimd.toDualQuat(dest, destOffset, src, srcOffset);
+        return DoubleQuatOpsKernelsArray.toDualQuat_scalar(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #toDualQuat(double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */

@@ -2742,14 +2742,7 @@ public final class Long4Impl implements Long4 {
     public Long4 xyzw(@Mutated Long4 dest) {
         long[] sd = this.data;
         long[] dd = ((Long4Impl) dest).data;
-        long _v0 = sd[0];
-        long _v1 = sd[1];
-        long _v2 = sd[2];
-        long _v3 = sd[3];
-        dd[0] = _v0;
-        dd[1] = _v1;
-        dd[2] = _v2;
-        dd[3] = _v3;
+        LongVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         return dest;
     }
 

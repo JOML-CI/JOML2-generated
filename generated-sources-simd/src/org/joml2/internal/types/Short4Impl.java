@@ -6751,14 +6751,7 @@ public final class Short4Impl implements Short4 {
     public Short4 xyzw(@Mutated Short4 dest) {
         short[] sd = this.data;
         short[] dd = ((Short4Impl) dest).data;
-        short _v0 = sd[0];
-        short _v1 = sd[1];
-        short _v2 = sd[2];
-        short _v3 = sd[3];
-        dd[0] = _v0;
-        dd[1] = _v1;
-        dd[2] = _v2;
-        dd[3] = _v3;
+        ShortVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         return dest;
     }
 

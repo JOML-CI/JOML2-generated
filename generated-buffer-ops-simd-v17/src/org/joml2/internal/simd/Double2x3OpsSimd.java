@@ -15,7 +15,102 @@ import org.joml2.internal.unsafe.*;
  */
 public final class Double2x3OpsSimd {
     private Double2x3OpsSimd() {}
+    private static final VectorSpecies<Double> SIMD_SPECIES = DoubleVector.SPECIES_256;
     private static final int PREFERRED_LANES = DoubleVector.SPECIES_PREFERRED.length();
+
+    public static double[] set(double[] dest, int destOffset, double[] v, int vOffset) {
+        double _v02 = v[vOffset + 4];
+        double _v12 = v[vOffset + 5];
+        var _vcp0 = DoubleVector.fromArray(SIMD_SPECIES, v, vOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = _v02;
+        dest[destOffset + 5] = _v12;
+        return dest;
+    }
+
+    public static double[] setMat2x2(double[] dest, int destOffset, double[] m, int mOffset) {
+        var _vcp0 = DoubleVector.fromArray(SIMD_SPECIES, m, mOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = 0.0;
+        dest[destOffset + 5] = 0.0;
+        return dest;
+    }
+
+    public static double[] withTranslation(double[] dest, int destOffset, double[] src, int srcOffset, double tX, double tY) {
+        var _vcp0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = tX;
+        dest[destOffset + 5] = tY;
+        return dest;
+    }
+
+    public static double[] withTranslation(double[] dest, int destOffset, double[] src, int srcOffset, double[] t, int tOffset) {
+        double _tx = t[tOffset + 0];
+        double _ty = t[tOffset + 1];
+        var _vcp0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = _tx;
+        dest[destOffset + 5] = _ty;
+        return dest;
+    }
+
+    public static double[] to2x2(double[] dest, int destOffset, double[] src, int srcOffset) {
+        var _vcp0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        _vcp0.intoArray(dest, destOffset);
+        return dest;
+    }
+
+    public static double[] preTranslate(double[] dest, int destOffset, double[] src, int srcOffset, double vX, double vY) {
+        double _self02 = src[srcOffset + 4];
+        double _self12 = src[srcOffset + 5];
+        var _vcp0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = _self02 + vX;
+        dest[destOffset + 5] = _self12 + vY;
+        return dest;
+    }
+
+    public static double[] preTranslate(double[] dest, int destOffset, double[] src, int srcOffset, double[] v, int vOffset) {
+        double _self02 = src[srcOffset + 4];
+        double _self12 = src[srcOffset + 5];
+        double _vx = v[vOffset + 0];
+        double _vy = v[vOffset + 1];
+        var _vcp0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = _self02 + _vx;
+        dest[destOffset + 5] = _self12 + _vy;
+        return dest;
+    }
+
+    public static double[] translate(double[] dest, int destOffset, double[] src, int srcOffset, double vX, double vY) {
+        double _self00 = src[srcOffset + 0];
+        double _self10 = src[srcOffset + 1];
+        double _self01 = src[srcOffset + 2];
+        double _self11 = src[srcOffset + 3];
+        double _self02 = src[srcOffset + 4];
+        double _self12 = src[srcOffset + 5];
+        var _vcp0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = Math.fma(_self00, vX, Math.fma(_self01, vY, _self02));
+        dest[destOffset + 5] = Math.fma(_self10, vX, Math.fma(_self11, vY, _self12));
+        return dest;
+    }
+
+    public static double[] translate(double[] dest, int destOffset, double[] src, int srcOffset, double[] v, int vOffset) {
+        double _self00 = src[srcOffset + 0];
+        double _self10 = src[srcOffset + 1];
+        double _self01 = src[srcOffset + 2];
+        double _self11 = src[srcOffset + 3];
+        double _self02 = src[srcOffset + 4];
+        double _self12 = src[srcOffset + 5];
+        double _vx = v[vOffset + 0];
+        double _vy = v[vOffset + 1];
+        var _vcp0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = Math.fma(_self00, _vx, Math.fma(_self01, _vy, _self02));
+        dest[destOffset + 5] = Math.fma(_self10, _vx, Math.fma(_self11, _vy, _self12));
+        return dest;
+    }
 
     private static void copyArrArr(double[] dest, int destOffset, double[] src, int srcOffset, int n) {
         var _sp = DoubleVector.SPECIES_PREFERRED;

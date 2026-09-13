@@ -643,19 +643,8 @@ public final class FloatQuatOps {
      * @return {@code dest}
      */
     public static float[] toDualQuat(float[] dest, int destOffset, float[] src, int srcOffset) {
-        float _selfx = src[srcOffset + 0];
-        float _selfy = src[srcOffset + 1];
-        float _selfz = src[srcOffset + 2];
-        float _selfw = src[srcOffset + 3];
-        dest[destOffset + 0] = _selfx;
-        dest[destOffset + 1] = _selfy;
-        dest[destOffset + 2] = _selfz;
-        dest[destOffset + 3] = _selfw;
-        dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 0.0f;
-        dest[destOffset + 6] = 0.0f;
-        dest[destOffset + 7] = 0.0f;
-        return dest;
+        if (SimdSupport.VECTOR_API) return FloatQuatOpsSimd.toDualQuat(dest, destOffset, src, srcOffset);
+        return FloatQuatOpsKernelsArray.toDualQuat_scalar(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #toDualQuat(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */

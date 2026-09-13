@@ -4911,14 +4911,7 @@ public final class Double4Impl implements Double4 {
     public Double4 xyzw(@Mutated Double4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4Impl) dest).data;
-        double _v0 = sd[0];
-        double _v1 = sd[1];
-        double _v2 = sd[2];
-        double _v3 = sd[3];
-        dd[0] = _v0;
-        dd[1] = _v1;
-        dd[2] = _v2;
-        dd[3] = _v3;
+        DoubleVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         return dest;
     }
 

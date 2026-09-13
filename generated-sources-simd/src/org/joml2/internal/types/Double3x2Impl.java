@@ -268,10 +268,7 @@ public class Double3x2Impl implements Double3x2 {
     @Mutated public Double3x2 set(Double3x2R v) {
         double[] dd = this.data;
         double[] vData = ((Double3x2Impl) v).data;
-        dd[0] = vData[0];
-        dd[1] = vData[1];
-        dd[2] = vData[2];
-        dd[3] = vData[3];
+        DoubleVector.fromArray(COL_SPECIES, vData, 0).intoArray(dd, 0);
         dd[4] = vData[4];
         dd[5] = vData[5];
         return this;

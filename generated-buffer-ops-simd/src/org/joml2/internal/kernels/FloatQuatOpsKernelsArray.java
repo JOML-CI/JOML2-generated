@@ -236,6 +236,22 @@ public final class FloatQuatOpsKernelsArray {
         return dest;
     }
 
+    public static float[] toDualQuat_scalar(float[] dest, int destOffset, float[] src, int srcOffset) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _selfw = src[srcOffset + 3];
+        dest[destOffset + 0] = _selfx;
+        dest[destOffset + 1] = _selfy;
+        dest[destOffset + 2] = _selfz;
+        dest[destOffset + 3] = _selfw;
+        dest[destOffset + 4] = 0.0f;
+        dest[destOffset + 5] = 0.0f;
+        dest[destOffset + 6] = 0.0f;
+        dest[destOffset + 7] = 0.0f;
+        return dest;
+    }
+
     public static float[] makeZero_scalar(float[] dest, int destOffset) {
         dest[destOffset + 0] = 0.0f;
         dest[destOffset + 1] = 0.0f;

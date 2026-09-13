@@ -671,14 +671,8 @@ public final class Double2x3Ops {
      * @return {@code dest}
      */
     public static double[] set(double[] dest, int destOffset, double[] v, int vOffset) {
-        for (int _l = 0; _l < 3; _l++) {
-            int _lo = _l * 2;
-            double _ev0 = v[vOffset + _lo];
-            double _ev1 = v[vOffset + _lo + 1];
-            dest[destOffset + _lo] = _ev0;
-            dest[destOffset + _lo + 1] = _ev1;
-        }
-        return dest;
+        if (SimdSupport.VECTOR_API) return Double2x3OpsSimd.set(dest, destOffset, v, vOffset);
+        return Double2x3OpsKernelsArray.set_scalar(dest, destOffset, v, vOffset);
     }
 
     /** {@link #set(double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
@@ -695,6 +689,7 @@ public final class Double2x3Ops {
 
     /** {@link #set(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment set(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment v, long vOffset) {
+        if (SimdSupport.VECTOR_API) return Double2x3OpsSimd.set(dest, destOffset, v, vOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && v.isNative()) return Double2x3OpsKernelsSegment.set_unsafe(dest, destOffset, v, vOffset);
         return Double2x3OpsKernelsSegment.set_api(dest, destOffset, v, vOffset);
     }
@@ -717,17 +712,8 @@ public final class Double2x3Ops {
      * @return {@code dest}
      */
     public static double[] setMat2x2(double[] dest, int destOffset, double[] m, int mOffset) {
-        double _m00 = m[mOffset + 0];
-        double _m10 = m[mOffset + 1];
-        double _m01 = m[mOffset + 2];
-        double _m11 = m[mOffset + 3];
-        dest[destOffset + 0] = _m00;
-        dest[destOffset + 1] = _m10;
-        dest[destOffset + 2] = _m01;
-        dest[destOffset + 3] = _m11;
-        dest[destOffset + 4] = 0.0;
-        dest[destOffset + 5] = 0.0;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Double2x3OpsSimd.setMat2x2(dest, destOffset, m, mOffset);
+        return Double2x3OpsKernelsArray.setMat2x2_scalar(dest, destOffset, m, mOffset);
     }
 
     /** {@link #setMat2x2(double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
@@ -744,6 +730,7 @@ public final class Double2x3Ops {
 
     /** {@link #setMat2x2(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment setMat2x2(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment m, long mOffset) {
+        if (SimdSupport.VECTOR_API) return Double2x3OpsSimd.setMat2x2(dest, destOffset, m, mOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && m.isNative()) return Double2x3OpsKernelsSegment.setMat2x2_unsafe(dest, destOffset, m, mOffset);
         return Double2x3OpsKernelsSegment.setMat2x2_api(dest, destOffset, m, mOffset);
     }
@@ -819,17 +806,8 @@ public final class Double2x3Ops {
      * @return {@code dest}
      */
     public static double[] withTranslation(double[] dest, int destOffset, double[] src, int srcOffset, double tX, double tY) {
-        double _self00 = src[srcOffset + 0];
-        double _self10 = src[srcOffset + 1];
-        double _self01 = src[srcOffset + 2];
-        double _self11 = src[srcOffset + 3];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self01;
-        dest[destOffset + 3] = _self11;
-        dest[destOffset + 4] = tX;
-        dest[destOffset + 5] = tY;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Double2x3OpsSimd.withTranslation(dest, destOffset, src, srcOffset, tX, tY);
+        return Double2x3OpsKernelsArray.withTranslation_scalar(dest, destOffset, src, srcOffset, tX, tY);
     }
 
     /** {@link #withTranslation(double[], int, double[], int, double, double)} on {@link java.nio.DoubleBuffer} storage. */
@@ -846,6 +824,7 @@ public final class Double2x3Ops {
 
     /** {@link #withTranslation(double[], int, double[], int, double, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment withTranslation(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double tX, double tY) {
+        if (SimdSupport.VECTOR_API) return Double2x3OpsSimd.withTranslation(dest, destOffset, src, srcOffset, tX, tY);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x3OpsKernelsSegment.withTranslation_unsafe(dest, destOffset, src, srcOffset, tX, tY);
         return Double2x3OpsKernelsSegment.withTranslation_api(dest, destOffset, src, srcOffset, tX, tY);
     }
@@ -875,19 +854,8 @@ public final class Double2x3Ops {
      * @return {@code dest}
      */
     public static double[] withTranslation(double[] dest, int destOffset, double[] src, int srcOffset, double[] t, int tOffset) {
-        double _self00 = src[srcOffset + 0];
-        double _self10 = src[srcOffset + 1];
-        double _self01 = src[srcOffset + 2];
-        double _self11 = src[srcOffset + 3];
-        double _tx = t[tOffset + 0];
-        double _ty = t[tOffset + 1];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self01;
-        dest[destOffset + 3] = _self11;
-        dest[destOffset + 4] = _tx;
-        dest[destOffset + 5] = _ty;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Double2x3OpsSimd.withTranslation(dest, destOffset, src, srcOffset, t, tOffset);
+        return Double2x3OpsKernelsArray.withTranslation_scalar(dest, destOffset, src, srcOffset, t, tOffset);
     }
 
     /** {@link #withTranslation(double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
@@ -904,6 +872,7 @@ public final class Double2x3Ops {
 
     /** {@link #withTranslation(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment withTranslation(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment t, long tOffset) {
+        if (SimdSupport.VECTOR_API) return Double2x3OpsSimd.withTranslation(dest, destOffset, src, srcOffset, t, tOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && t.isNative()) return Double2x3OpsKernelsSegment.withTranslation_unsafe(dest, destOffset, src, srcOffset, t, tOffset);
         return Double2x3OpsKernelsSegment.withTranslation_api(dest, destOffset, src, srcOffset, t, tOffset);
     }
@@ -926,15 +895,8 @@ public final class Double2x3Ops {
      * @return {@code dest}
      */
     public static double[] to2x2(double[] dest, int destOffset, double[] src, int srcOffset) {
-        double _self00 = src[srcOffset + 0];
-        double _self10 = src[srcOffset + 1];
-        double _self01 = src[srcOffset + 2];
-        double _self11 = src[srcOffset + 3];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self01;
-        dest[destOffset + 3] = _self11;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Double2x3OpsSimd.to2x2(dest, destOffset, src, srcOffset);
+        return Double2x3OpsKernelsArray.to2x2_scalar(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #to2x2(double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
@@ -951,6 +913,7 @@ public final class Double2x3Ops {
 
     /** {@link #to2x2(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment to2x2(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        if (SimdSupport.VECTOR_API) return Double2x3OpsSimd.to2x2(dest, destOffset, src, srcOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x3OpsKernelsSegment.to2x2_unsafe(dest, destOffset, src, srcOffset);
         return Double2x3OpsKernelsSegment.to2x2_api(dest, destOffset, src, srcOffset);
     }
@@ -2400,19 +2363,8 @@ public final class Double2x3Ops {
      * @return {@code dest}
      */
     public static double[] preTranslate(double[] dest, int destOffset, double[] src, int srcOffset, double vX, double vY) {
-        double _self00 = src[srcOffset + 0];
-        double _self10 = src[srcOffset + 1];
-        double _self01 = src[srcOffset + 2];
-        double _self11 = src[srcOffset + 3];
-        double _self02 = src[srcOffset + 4];
-        double _self12 = src[srcOffset + 5];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self01;
-        dest[destOffset + 3] = _self11;
-        dest[destOffset + 4] = _self02 + vX;
-        dest[destOffset + 5] = _self12 + vY;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Double2x3OpsSimd.preTranslate(dest, destOffset, src, srcOffset, vX, vY);
+        return Double2x3OpsKernelsArray.preTranslate_scalar(dest, destOffset, src, srcOffset, vX, vY);
     }
 
     /** {@link #preTranslate(double[], int, double[], int, double, double)} on {@link java.nio.DoubleBuffer} storage. */
@@ -2429,6 +2381,7 @@ public final class Double2x3Ops {
 
     /** {@link #preTranslate(double[], int, double[], int, double, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment preTranslate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double vX, double vY) {
+        if (SimdSupport.VECTOR_API) return Double2x3OpsSimd.preTranslate(dest, destOffset, src, srcOffset, vX, vY);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x3OpsKernelsSegment.preTranslate_unsafe(dest, destOffset, src, srcOffset, vX, vY);
         return Double2x3OpsKernelsSegment.preTranslate_api(dest, destOffset, src, srcOffset, vX, vY);
     }
@@ -2457,21 +2410,8 @@ public final class Double2x3Ops {
      * @return {@code dest}
      */
     public static double[] preTranslate(double[] dest, int destOffset, double[] src, int srcOffset, double[] v, int vOffset) {
-        double _self00 = src[srcOffset + 0];
-        double _self10 = src[srcOffset + 1];
-        double _self01 = src[srcOffset + 2];
-        double _self11 = src[srcOffset + 3];
-        double _self02 = src[srcOffset + 4];
-        double _self12 = src[srcOffset + 5];
-        double _vx = v[vOffset + 0];
-        double _vy = v[vOffset + 1];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self01;
-        dest[destOffset + 3] = _self11;
-        dest[destOffset + 4] = _self02 + _vx;
-        dest[destOffset + 5] = _self12 + _vy;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Double2x3OpsSimd.preTranslate(dest, destOffset, src, srcOffset, v, vOffset);
+        return Double2x3OpsKernelsArray.preTranslate_scalar(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
     /** {@link #preTranslate(double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
@@ -2488,6 +2428,7 @@ public final class Double2x3Ops {
 
     /** {@link #preTranslate(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment preTranslate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment v, long vOffset) {
+        if (SimdSupport.VECTOR_API) return Double2x3OpsSimd.preTranslate(dest, destOffset, src, srcOffset, v, vOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && v.isNative()) return Double2x3OpsKernelsSegment.preTranslate_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Double2x3OpsKernelsSegment.preTranslate_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
@@ -3127,19 +3068,8 @@ public final class Double2x3Ops {
      * @return {@code dest}
      */
     public static double[] translate(double[] dest, int destOffset, double[] src, int srcOffset, double vX, double vY) {
-        double _self00 = src[srcOffset + 0];
-        double _self10 = src[srcOffset + 1];
-        double _self01 = src[srcOffset + 2];
-        double _self11 = src[srcOffset + 3];
-        double _self02 = src[srcOffset + 4];
-        double _self12 = src[srcOffset + 5];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self01;
-        dest[destOffset + 3] = _self11;
-        dest[destOffset + 4] = Math.fma(_self00, vX, Math.fma(_self01, vY, _self02));
-        dest[destOffset + 5] = Math.fma(_self10, vX, Math.fma(_self11, vY, _self12));
-        return dest;
+        if (SimdSupport.VECTOR_API) return Double2x3OpsSimd.translate(dest, destOffset, src, srcOffset, vX, vY);
+        return Double2x3OpsKernelsArray.translate_scalar(dest, destOffset, src, srcOffset, vX, vY);
     }
 
     /** {@link #translate(double[], int, double[], int, double, double)} on {@link java.nio.DoubleBuffer} storage. */
@@ -3156,6 +3086,7 @@ public final class Double2x3Ops {
 
     /** {@link #translate(double[], int, double[], int, double, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment translate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double vX, double vY) {
+        if (SimdSupport.VECTOR_API) return Double2x3OpsSimd.translate(dest, destOffset, src, srcOffset, vX, vY);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x3OpsKernelsSegment.translate_unsafe(dest, destOffset, src, srcOffset, vX, vY);
         return Double2x3OpsKernelsSegment.translate_api(dest, destOffset, src, srcOffset, vX, vY);
     }
@@ -3183,21 +3114,8 @@ public final class Double2x3Ops {
      * @return {@code dest}
      */
     public static double[] translate(double[] dest, int destOffset, double[] src, int srcOffset, double[] v, int vOffset) {
-        double _self00 = src[srcOffset + 0];
-        double _self10 = src[srcOffset + 1];
-        double _self01 = src[srcOffset + 2];
-        double _self11 = src[srcOffset + 3];
-        double _self02 = src[srcOffset + 4];
-        double _self12 = src[srcOffset + 5];
-        double _vx = v[vOffset + 0];
-        double _vy = v[vOffset + 1];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self01;
-        dest[destOffset + 3] = _self11;
-        dest[destOffset + 4] = Math.fma(_self00, _vx, Math.fma(_self01, _vy, _self02));
-        dest[destOffset + 5] = Math.fma(_self10, _vx, Math.fma(_self11, _vy, _self12));
-        return dest;
+        if (SimdSupport.VECTOR_API) return Double2x3OpsSimd.translate(dest, destOffset, src, srcOffset, v, vOffset);
+        return Double2x3OpsKernelsArray.translate_scalar(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
     /** {@link #translate(double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
@@ -3214,6 +3132,7 @@ public final class Double2x3Ops {
 
     /** {@link #translate(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment translate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment v, long vOffset) {
+        if (SimdSupport.VECTOR_API) return Double2x3OpsSimd.translate(dest, destOffset, src, srcOffset, v, vOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && v.isNative()) return Double2x3OpsKernelsSegment.translate_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Double2x3OpsKernelsSegment.translate_api(dest, destOffset, src, srcOffset, v, vOffset);
     }

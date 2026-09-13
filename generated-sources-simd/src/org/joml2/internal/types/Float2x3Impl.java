@@ -1828,10 +1828,7 @@ public class Float2x3Impl implements Float2x3 {
     @Mutated public Float2x3 set(Float2x3R v) {
         float[] dd = this.data;
         float[] vData = ((Float2x3Impl) v).data;
-        dd[0] = vData[0];
-        dd[1] = vData[1];
-        dd[2] = vData[2];
-        dd[3] = vData[3];
+        FloatVector.fromArray(COL_SPECIES, vData, 0).intoArray(dd, 0);
         dd[4] = vData[4];
         dd[5] = vData[5];
         ((Float2x3Impl) this).properties = ((Float2x3Impl) v).properties;
@@ -1873,10 +1870,7 @@ public class Float2x3Impl implements Float2x3 {
     @Mutated public Float2x3 set(Float2x2R m) {
         float[] dd = this.data;
         float[] mData = ((Float2x2Impl) m).data;
-        dd[0] = mData[0];
-        dd[1] = mData[1];
-        dd[2] = mData[2];
-        dd[3] = mData[3];
+        FloatVector.fromArray(COL_SPECIES, mData, 0).intoArray(dd, 0);
         dd[4] = 0.0f;
         dd[5] = 0.0f;
         ((Float2x3Impl) this).properties = determineProperties();
@@ -1997,10 +1991,7 @@ public class Float2x3Impl implements Float2x3 {
     private Float2x3 withTranslation_orthogonal(float tX, float tY, @Mutated Float2x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float2x3Impl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
+        FloatVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         dd[4] = tX;
         dd[5] = tY;
         ((Float2x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
@@ -2015,10 +2006,7 @@ public class Float2x3Impl implements Float2x3 {
     private Float2x3 withTranslation_general(float tX, float tY, @Mutated Float2x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float2x3Impl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
+        FloatVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         dd[4] = tX;
         dd[5] = tY;
         ((Float2x3Impl) dest).properties = Joml.BIT_AFFINE;
@@ -2139,10 +2127,7 @@ public class Float2x3Impl implements Float2x3 {
     private Float2x2 to2x2_general(@Mutated Float2x2 dest) {
         float[] sd = this.data;
         float[] dd = ((Float2x2Impl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
+        FloatVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         ((Float2x2Impl) dest).properties = 0;
         return dest;
     }
@@ -2584,10 +2569,7 @@ public class Float2x3Impl implements Float2x3 {
         float[] sd = this.data;
         float[] rightData = ((Float2x3Impl) right).data;
         float[] dd = ((Float2x3Impl) dest).data;
-        dd[0] = rightData[0];
-        dd[1] = rightData[1];
-        dd[2] = rightData[2];
-        dd[3] = rightData[3];
+        FloatVector.fromArray(COL_SPECIES, rightData, 0).intoArray(dd, 0);
         dd[4] = rightData[4] + sd[4];
         dd[5] = rightData[5] + sd[5];
         ((Float2x3Impl) dest).properties = Joml.BIT_TRANSLATION & ((Float2x3Impl) right).properties;
@@ -2646,17 +2628,11 @@ public class Float2x3Impl implements Float2x3 {
         float[] sd = this.data;
         float[] rightData = ((Float2x3Impl) right).data;
         float[] dd = ((Float2x3Impl) dest).data;
-        float _buf0 = sd[0];
-        float _buf1 = sd[1];
-        float _buf2 = sd[2];
-        float _buf3 = sd[3];
-        float _buf4 = Math.fma(rightData[4], sd[0], Math.fma(rightData[5], sd[2], sd[4]));
+        var _vcp0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        float _buf0 = Math.fma(rightData[4], sd[0], Math.fma(rightData[5], sd[2], sd[4]));
         dd[5] = Math.fma(rightData[4], sd[1], Math.fma(rightData[5], sd[3], sd[5]));
-        dd[0] = _buf0;
-        dd[1] = _buf1;
-        dd[2] = _buf2;
-        dd[3] = _buf3;
-        dd[4] = _buf4;
+        _vcp0.intoArray(dd, 0);
+        dd[4] = _buf0;
         ((Float2x3Impl) dest).properties = _props;
         return dest;
     }
@@ -2835,10 +2811,7 @@ public class Float2x3Impl implements Float2x3 {
         float[] sd = this.data;
         float[] rightData = ((Float2x2Impl) right).data;
         float[] dd = ((Float2x3Impl) dest).data;
-        dd[0] = rightData[0];
-        dd[1] = rightData[1];
-        dd[2] = rightData[2];
-        dd[3] = rightData[3];
+        FloatVector.fromArray(COL_SPECIES, rightData, 0).intoArray(dd, 0);
         dd[4] = 0.0f;
         dd[5] = 0.0f;
         ((Float2x3Impl) dest).properties = (((Float2x2Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_IDENTITY : Joml.BIT_AFFINE;
@@ -2854,10 +2827,7 @@ public class Float2x3Impl implements Float2x3 {
         float[] sd = this.data;
         float[] rightData = ((Float2x2Impl) right).data;
         float[] dd = ((Float2x3Impl) dest).data;
-        dd[0] = rightData[0];
-        dd[1] = rightData[1];
-        dd[2] = rightData[2];
-        dd[3] = rightData[3];
+        FloatVector.fromArray(COL_SPECIES, rightData, 0).intoArray(dd, 0);
         ((Float2x3Impl) dest).properties = (((Float2x2Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_IDENTITY : Joml.BIT_AFFINE;
         return dest;
     }
@@ -2871,10 +2841,7 @@ public class Float2x3Impl implements Float2x3 {
         float[] sd = this.data;
         float[] rightData = ((Float2x2Impl) right).data;
         float[] dd = ((Float2x3Impl) dest).data;
-        dd[0] = rightData[0];
-        dd[1] = rightData[1];
-        dd[2] = rightData[2];
-        dd[3] = rightData[3];
+        FloatVector.fromArray(COL_SPECIES, rightData, 0).intoArray(dd, 0);
         dd[4] = sd[4];
         dd[5] = sd[5];
         ((Float2x3Impl) dest).properties = (((Float2x2Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_TRANSLATION : Joml.BIT_AFFINE;
@@ -3264,17 +3231,11 @@ public class Float2x3Impl implements Float2x3 {
         float[] sd = this.data;
         float[] otherData = ((Float2x3Impl) other).data;
         float[] dd = ((Float2x3Impl) dest).data;
-        float _buf0 = otherData[0];
-        float _buf1 = otherData[1];
-        float _buf2 = otherData[2];
-        float _buf3 = otherData[3];
-        float _buf4 = Math.fma(otherData[0], sd[4], Math.fma(otherData[2], sd[5], otherData[4]));
+        var _vcp0 = FloatVector.fromArray(COL_SPECIES, otherData, 0);
+        float _buf0 = Math.fma(otherData[0], sd[4], Math.fma(otherData[2], sd[5], otherData[4]));
         dd[5] = Math.fma(otherData[1], sd[4], Math.fma(otherData[3], sd[5], otherData[5]));
-        dd[0] = _buf0;
-        dd[1] = _buf1;
-        dd[2] = _buf2;
-        dd[3] = _buf3;
-        dd[4] = _buf4;
+        _vcp0.intoArray(dd, 0);
+        dd[4] = _buf0;
         ((Float2x3Impl) dest).properties = Joml.BIT_TRANSLATION & ((Float2x3Impl) other).properties;
         return dest;
     }
@@ -3331,10 +3292,7 @@ public class Float2x3Impl implements Float2x3 {
         float[] sd = this.data;
         float[] otherData = ((Float2x3Impl) other).data;
         float[] dd = ((Float2x3Impl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
+        FloatVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         dd[4] = otherData[4] + sd[4];
         dd[5] = otherData[5] + sd[5];
         ((Float2x3Impl) dest).properties = _props;
@@ -3500,10 +3458,7 @@ public class Float2x3Impl implements Float2x3 {
         float[] sd = this.data;
         float[] otherData = ((Float2x2Impl) other).data;
         float[] dd = ((Float2x3Impl) dest).data;
-        dd[0] = otherData[0];
-        dd[1] = otherData[1];
-        dd[2] = otherData[2];
-        dd[3] = otherData[3];
+        FloatVector.fromArray(COL_SPECIES, otherData, 0).intoArray(dd, 0);
         dd[4] = 0.0f;
         dd[5] = 0.0f;
         ((Float2x3Impl) dest).properties = (((Float2x2Impl) other).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_IDENTITY : Joml.BIT_AFFINE;
@@ -3519,10 +3474,7 @@ public class Float2x3Impl implements Float2x3 {
         float[] sd = this.data;
         float[] otherData = ((Float2x2Impl) other).data;
         float[] dd = ((Float2x3Impl) dest).data;
-        dd[0] = otherData[0];
-        dd[1] = otherData[1];
-        dd[2] = otherData[2];
-        dd[3] = otherData[3];
+        FloatVector.fromArray(COL_SPECIES, otherData, 0).intoArray(dd, 0);
         ((Float2x3Impl) dest).properties = (((Float2x2Impl) other).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_IDENTITY : Joml.BIT_AFFINE;
         return dest;
     }
@@ -3536,10 +3488,7 @@ public class Float2x3Impl implements Float2x3 {
         float[] sd = this.data;
         float[] otherData = ((Float2x2Impl) other).data;
         float[] dd = ((Float2x3Impl) dest).data;
-        dd[0] = otherData[0];
-        dd[1] = otherData[1];
-        dd[2] = otherData[2];
-        dd[3] = otherData[3];
+        FloatVector.fromArray(COL_SPECIES, otherData, 0).intoArray(dd, 0);
         float _buf0 = Math.fma(otherData[0], sd[4], otherData[2] * sd[5]);
         dd[5] = Math.fma(otherData[1], sd[4], otherData[3] * sd[5]);
         dd[4] = _buf0;
@@ -3710,23 +3659,17 @@ public class Float2x3Impl implements Float2x3 {
         float[] sd = this.data;
         float[] otherData = ((Float3x3Impl) other).data;
         float[] dd = ((Float3x3Impl) dest).data;
-        float _buf0 = otherData[0];
-        float _buf1 = otherData[1];
-        float _buf2 = otherData[2];
-        float _buf3 = otherData[3];
-        float _buf4 = otherData[4];
-        float _buf5 = otherData[5];
-        float _buf6 = Math.fma(otherData[0], sd[4], Math.fma(otherData[3], sd[5], otherData[6]));
-        float _buf7 = Math.fma(otherData[1], sd[4], Math.fma(otherData[4], sd[5], otherData[7]));
+        var _vcp0 = FloatVector.fromArray(COL_SPECIES, otherData, 0);
+        float _buf0 = otherData[4];
+        float _buf1 = otherData[5];
+        float _buf2 = Math.fma(otherData[0], sd[4], Math.fma(otherData[3], sd[5], otherData[6]));
+        float _buf3 = Math.fma(otherData[1], sd[4], Math.fma(otherData[4], sd[5], otherData[7]));
         dd[8] = Math.fma(otherData[2], sd[4], Math.fma(otherData[5], sd[5], otherData[8]));
-        dd[0] = _buf0;
-        dd[1] = _buf1;
-        dd[2] = _buf2;
-        dd[3] = _buf3;
-        dd[4] = _buf4;
-        dd[5] = _buf5;
-        dd[6] = _buf6;
-        dd[7] = _buf7;
+        _vcp0.intoArray(dd, 0);
+        dd[4] = _buf0;
+        dd[5] = _buf1;
+        dd[6] = _buf2;
+        dd[7] = _buf3;
         ((Float3x3Impl) dest).properties = Joml.BIT_TRANSLATION & ((Float3x3Impl) other).properties;
         return dest;
     }
@@ -5334,10 +5277,7 @@ public class Float2x3Impl implements Float2x3 {
     private Float2x3 preTranslate_orthogonal(float vX, float vY, @Mutated Float2x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float2x3Impl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
+        FloatVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         dd[4] = sd[4] + vX;
         dd[5] = sd[5] + vY;
         ((Float2x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
@@ -5352,10 +5292,7 @@ public class Float2x3Impl implements Float2x3 {
     private Float2x3 preTranslate_general(float vX, float vY, @Mutated Float2x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float2x3Impl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
+        FloatVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         dd[4] = sd[4] + vX;
         dd[5] = sd[5] + vY;
         ((Float2x3Impl) dest).properties = Joml.BIT_AFFINE;
@@ -6688,16 +6625,10 @@ public class Float2x3Impl implements Float2x3 {
     private Float2x3 translate_orthogonal(float vX, float vY, @Mutated Float2x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float2x3Impl) dest).data;
-        float _buf0 = sd[0];
-        float _buf1 = sd[1];
-        float _buf2 = sd[2];
-        float _buf3 = sd[3];
+        var _vcp0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
         dd[4] = Math.fma(sd[0], vX, Math.fma(sd[2], vY, sd[4]));
         dd[5] = Math.fma(sd[1], vX, Math.fma(sd[3], vY, sd[5]));
-        dd[0] = _buf0;
-        dd[1] = _buf1;
-        dd[2] = _buf2;
-        dd[3] = _buf3;
+        _vcp0.intoArray(dd, 0);
         ((Float2x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -6710,16 +6641,10 @@ public class Float2x3Impl implements Float2x3 {
     private Float2x3 translate_general(float vX, float vY, @Mutated Float2x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float2x3Impl) dest).data;
-        float _buf0 = sd[0];
-        float _buf1 = sd[1];
-        float _buf2 = sd[2];
-        float _buf3 = sd[3];
+        var _vcp0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
         dd[4] = Math.fma(sd[0], vX, Math.fma(sd[2], vY, sd[4]));
         dd[5] = Math.fma(sd[1], vX, Math.fma(sd[3], vY, sd[5]));
-        dd[0] = _buf0;
-        dd[1] = _buf1;
-        dd[2] = _buf2;
-        dd[3] = _buf3;
+        _vcp0.intoArray(dd, 0);
         ((Float2x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }

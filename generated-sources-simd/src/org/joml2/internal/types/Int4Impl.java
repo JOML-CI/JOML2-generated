@@ -5354,14 +5354,7 @@ public final class Int4Impl implements Int4 {
     public Int4 xyzw(@Mutated Int4 dest) {
         int[] sd = this.data;
         int[] dd = ((Int4Impl) dest).data;
-        int _v0 = sd[0];
-        int _v1 = sd[1];
-        int _v2 = sd[2];
-        int _v3 = sd[3];
-        dd[0] = _v0;
-        dd[1] = _v1;
-        dd[2] = _v2;
-        dd[3] = _v3;
+        IntVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         return dest;
     }
 

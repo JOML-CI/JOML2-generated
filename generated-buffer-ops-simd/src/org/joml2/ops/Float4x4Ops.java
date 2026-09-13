@@ -3158,36 +3158,8 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] withTranslation(float[] dest, int destOffset, float[] src, int srcOffset, float tX, float tY, float tZ) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self20 = src[srcOffset + 2];
-        float _self30 = src[srcOffset + 3];
-        float _self01 = src[srcOffset + 4];
-        float _self11 = src[srcOffset + 5];
-        float _self21 = src[srcOffset + 6];
-        float _self31 = src[srcOffset + 7];
-        float _self02 = src[srcOffset + 8];
-        float _self12 = src[srcOffset + 9];
-        float _self22 = src[srcOffset + 10];
-        float _self32 = src[srcOffset + 11];
-        float _self33 = src[srcOffset + 15];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self20;
-        dest[destOffset + 3] = _self30;
-        dest[destOffset + 4] = _self01;
-        dest[destOffset + 5] = _self11;
-        dest[destOffset + 6] = _self21;
-        dest[destOffset + 7] = _self31;
-        dest[destOffset + 8] = _self02;
-        dest[destOffset + 9] = _self12;
-        dest[destOffset + 10] = _self22;
-        dest[destOffset + 11] = _self32;
-        dest[destOffset + 12] = tX;
-        dest[destOffset + 13] = tY;
-        dest[destOffset + 14] = tZ;
-        dest[destOffset + 15] = _self33;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.withTranslation(dest, destOffset, src, srcOffset, tX, tY, tZ);
+        return Float4x4OpsKernelsArray.withTranslation_scalar(dest, destOffset, src, srcOffset, tX, tY, tZ);
     }
 
     /** {@link #withTranslation(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
@@ -3204,6 +3176,7 @@ public final class Float4x4Ops {
 
     /** {@link #withTranslation(float[], int, float[], int, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment withTranslation(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float tX, float tY, float tZ) {
+        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.withTranslation(dest, destOffset, src, srcOffset, tX, tY, tZ);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.withTranslation_unsafe(dest, destOffset, src, srcOffset, tX, tY, tZ);
         return Float4x4OpsKernelsSegment.withTranslation_api(dest, destOffset, src, srcOffset, tX, tY, tZ);
     }
@@ -3233,39 +3206,8 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] withTranslation(float[] dest, int destOffset, float[] src, int srcOffset, float[] t, int tOffset) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self20 = src[srcOffset + 2];
-        float _self30 = src[srcOffset + 3];
-        float _self01 = src[srcOffset + 4];
-        float _self11 = src[srcOffset + 5];
-        float _self21 = src[srcOffset + 6];
-        float _self31 = src[srcOffset + 7];
-        float _self02 = src[srcOffset + 8];
-        float _self12 = src[srcOffset + 9];
-        float _self22 = src[srcOffset + 10];
-        float _self32 = src[srcOffset + 11];
-        float _self33 = src[srcOffset + 15];
-        float _tx = t[tOffset + 0];
-        float _ty = t[tOffset + 1];
-        float _tz = t[tOffset + 2];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self20;
-        dest[destOffset + 3] = _self30;
-        dest[destOffset + 4] = _self01;
-        dest[destOffset + 5] = _self11;
-        dest[destOffset + 6] = _self21;
-        dest[destOffset + 7] = _self31;
-        dest[destOffset + 8] = _self02;
-        dest[destOffset + 9] = _self12;
-        dest[destOffset + 10] = _self22;
-        dest[destOffset + 11] = _self32;
-        dest[destOffset + 12] = _tx;
-        dest[destOffset + 13] = _ty;
-        dest[destOffset + 14] = _tz;
-        dest[destOffset + 15] = _self33;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.withTranslation(dest, destOffset, src, srcOffset, t, tOffset);
+        return Float4x4OpsKernelsArray.withTranslation_scalar(dest, destOffset, src, srcOffset, t, tOffset);
     }
 
     /** {@link #withTranslation(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -3282,6 +3224,7 @@ public final class Float4x4Ops {
 
     /** {@link #withTranslation(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment withTranslation(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment t, long tOffset) {
+        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.withTranslation(dest, destOffset, src, srcOffset, t, tOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && t.isNative()) return Float4x4OpsKernelsSegment.withTranslation_unsafe(dest, destOffset, src, srcOffset, t, tOffset);
         return Float4x4OpsKernelsSegment.withTranslation_api(dest, destOffset, src, srcOffset, t, tOffset);
     }
@@ -6060,54 +6003,8 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] axonometricIsometric(float[] dest, int destOffset, float[] src, int srcOffset) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self20 = src[srcOffset + 2];
-        float _self30 = src[srcOffset + 3];
-        float _self01 = src[srcOffset + 4];
-        float _self11 = src[srcOffset + 5];
-        float _self21 = src[srcOffset + 6];
-        float _self31 = src[srcOffset + 7];
-        float _self02 = src[srcOffset + 8];
-        float _self12 = src[srcOffset + 9];
-        float _self22 = src[srcOffset + 10];
-        float _self32 = src[srcOffset + 11];
-        float _self03 = src[srcOffset + 12];
-        float _self13 = src[srcOffset + 13];
-        float _self23 = src[srcOffset + 14];
-        float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sqrt(3.0f);
-        float _t1 = (float) Math.sqrt(2.0f);
-        float _t2 = (float) Math.sqrt(6.0f);
-        float _t3 = _self02 * _t0;
-        float _t4 = _self00 * _t1;
-        float _t6 = _self12 * _t0;
-        float _t7 = _self10 * _t1;
-        float _t9 = _self22 * _t0;
-        float _t10 = _self20 * _t1;
-        float _t12 = _self32 * _t0;
-        float _t13 = _self30 * _t1;
-        float _t15 = 0.16666667f * _self01 * _t2;
-        float _t16 = 0.16666667f * _self11 * _t2;
-        float _t17 = 0.16666667f * _self21 * _t2;
-        float _t18 = 0.16666667f * _self31 * _t2;
-        dest[destOffset + 0] = Math.fma(-0.33333334f, _t3, Math.fma(0.5f, _t4, _t15));
-        dest[destOffset + 1] = Math.fma(-0.33333334f, _t6, Math.fma(0.5f, _t7, _t16));
-        dest[destOffset + 2] = Math.fma(-0.33333334f, _t9, Math.fma(0.5f, _t10, _t17));
-        dest[destOffset + 3] = Math.fma(-0.33333334f, _t12, Math.fma(0.5f, _t13, _t18));
-        dest[destOffset + 4] = 0.33333334f * Math.fma(_self01, _t2, _t3);
-        dest[destOffset + 5] = 0.33333334f * Math.fma(_self11, _t2, _t6);
-        dest[destOffset + 6] = 0.33333334f * Math.fma(_self21, _t2, _t9);
-        dest[destOffset + 7] = 0.33333334f * Math.fma(_self31, _t2, _t12);
-        dest[destOffset + 8] = Math.fma(0.33333334f, _t3, Math.fma(0.5f, _t4, -_t15));
-        dest[destOffset + 9] = Math.fma(0.33333334f, _t6, Math.fma(0.5f, _t7, -_t16));
-        dest[destOffset + 10] = Math.fma(0.33333334f, _t9, Math.fma(0.5f, _t10, -_t17));
-        dest[destOffset + 11] = Math.fma(0.33333334f, _t12, Math.fma(0.5f, _t13, -_t18));
-        dest[destOffset + 12] = _self03;
-        dest[destOffset + 13] = _self13;
-        dest[destOffset + 14] = _self23;
-        dest[destOffset + 15] = _self33;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.axonometricIsometric(dest, destOffset, src, srcOffset);
+        return Float4x4OpsKernelsArray.axonometricIsometric_scalar(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #axonometricIsometric(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -6124,6 +6021,7 @@ public final class Float4x4Ops {
 
     /** {@link #axonometricIsometric(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment axonometricIsometric(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.axonometricIsometric(dest, destOffset, src, srcOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.axonometricIsometric_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsSegment.axonometricIsometric_api(dest, destOffset, src, srcOffset);
     }

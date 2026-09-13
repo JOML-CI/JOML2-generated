@@ -15,7 +15,62 @@ import org.joml2.internal.unsafe.*;
  */
 public final class Double2x2OpsSimd {
     private Double2x2OpsSimd() {}
+    private static final VectorSpecies<Double> SIMD_SPECIES = DoubleVector.SPECIES_256;
     private static final int PREFERRED_LANES = DoubleVector.SPECIES_PREFERRED.length();
+
+    public static double[] set(double[] dest, int destOffset, double[] v, int vOffset) {
+        var _vcp0 = DoubleVector.fromArray(SIMD_SPECIES, v, vOffset);
+        _vcp0.intoArray(dest, destOffset);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment set(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment v, long vOffset) {
+        var _vcp0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, v, vOffset, java.nio.ByteOrder.nativeOrder());
+        _vcp0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        return dest;
+    }
+
+    public static double[] setMat2x3(double[] dest, int destOffset, double[] m, int mOffset) {
+        var _vcp0 = DoubleVector.fromArray(SIMD_SPECIES, m, mOffset);
+        _vcp0.intoArray(dest, destOffset);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment setMat2x3(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment m, long mOffset) {
+        var _vcp0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, m, mOffset, java.nio.ByteOrder.nativeOrder());
+        _vcp0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        return dest;
+    }
+
+    public static double[] to2x3(double[] dest, int destOffset, double[] src, int srcOffset) {
+        var _vcp0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = 0.0;
+        dest[destOffset + 5] = 0.0;
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment to2x3(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return to2x3_unsafe(dest, destOffset, src, srcOffset);
+        return to2x3_api(dest, destOffset, src, srcOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment to2x3_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        long _destBase = dest.address() + destOffset;
+        var _vcp0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
+        _vcp0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        UnsafeOpsHolder.U.putDouble(_destBase + 32L, 0.0);
+        UnsafeOpsHolder.U.putDouble(_destBase + 40L, 0.0);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment to2x3_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        var _vcp0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
+        _vcp0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 32L, 0.0);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 40L, 0.0);
+        return dest;
+    }
 
     private static void copyArrArr(double[] dest, int destOffset, double[] src, int srcOffset, int n) {
         var _sp = DoubleVector.SPECIES_PREFERRED;

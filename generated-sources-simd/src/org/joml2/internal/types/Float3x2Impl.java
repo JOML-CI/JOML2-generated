@@ -460,10 +460,7 @@ public class Float3x2Impl implements Float3x2 {
     @Mutated public Float3x2 set(Float3x2R v) {
         float[] dd = this.data;
         float[] vData = ((Float3x2Impl) v).data;
-        dd[0] = vData[0];
-        dd[1] = vData[1];
-        dd[2] = vData[2];
-        dd[3] = vData[3];
+        FloatVector.fromArray(COL_SPECIES, vData, 0).intoArray(dd, 0);
         dd[4] = vData[4];
         dd[5] = vData[5];
         return this;

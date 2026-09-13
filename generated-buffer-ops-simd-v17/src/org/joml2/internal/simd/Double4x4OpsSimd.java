@@ -215,6 +215,39 @@ public final class Double4x4OpsSimd {
         return dest;
     }
 
+    public static double[] withTranslation(double[] dest, int destOffset, double[] src, int srcOffset, double tX, double tY, double tZ) {
+        double _self33 = src[srcOffset + 15];
+        var _vcp0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        var _vcp1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
+        var _vcp2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
+        _vcp0.intoArray(dest, destOffset);
+        _vcp1.intoArray(dest, destOffset + 4);
+        _vcp2.intoArray(dest, destOffset + 8);
+        dest[destOffset + 12] = tX;
+        dest[destOffset + 13] = tY;
+        dest[destOffset + 14] = tZ;
+        dest[destOffset + 15] = _self33;
+        return dest;
+    }
+
+    public static double[] withTranslation(double[] dest, int destOffset, double[] src, int srcOffset, double[] t, int tOffset) {
+        double _self33 = src[srcOffset + 15];
+        double _tx = t[tOffset + 0];
+        double _ty = t[tOffset + 1];
+        double _tz = t[tOffset + 2];
+        var _vcp0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        var _vcp1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
+        var _vcp2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
+        _vcp0.intoArray(dest, destOffset);
+        _vcp1.intoArray(dest, destOffset + 4);
+        _vcp2.intoArray(dest, destOffset + 8);
+        dest[destOffset + 12] = _tx;
+        dest[destOffset + 13] = _ty;
+        dest[destOffset + 14] = _tz;
+        dest[destOffset + 15] = _self33;
+        return dest;
+    }
+
     public static double[] makeFromTransform(double[] dest, int destOffset, double tTX, double tTY, double tTZ, double tRX, double tRY, double tRZ, double tRW, double tSX, double tSY, double tSZ) {
         if (SimdSupport.USE_FMA) return makeFromTransform_fma(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
         return makeFromTransform_mulAdd(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
@@ -767,6 +800,51 @@ public final class Double4x4OpsSimd {
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
         _c3.intoArray(dest, destOffset + 12);
+        return dest;
+    }
+
+    public static double[] axonometricIsometric(double[] dest, int destOffset, double[] src, int srcOffset) {
+        double _self00 = src[srcOffset + 0];
+        double _self10 = src[srcOffset + 1];
+        double _self20 = src[srcOffset + 2];
+        double _self30 = src[srcOffset + 3];
+        double _self01 = src[srcOffset + 4];
+        double _self11 = src[srcOffset + 5];
+        double _self21 = src[srcOffset + 6];
+        double _self31 = src[srcOffset + 7];
+        double _self02 = src[srcOffset + 8];
+        double _self12 = src[srcOffset + 9];
+        double _self22 = src[srcOffset + 10];
+        double _self32 = src[srcOffset + 11];
+        var _vcp0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
+        double _t0 = Math.sqrt(3.0);
+        double _t1 = Math.sqrt(2.0);
+        double _t2 = Math.sqrt(6.0);
+        double _t3 = _self02 * _t0;
+        double _t4 = _self00 * _t1;
+        double _t6 = _self12 * _t0;
+        double _t7 = _self10 * _t1;
+        double _t9 = _self22 * _t0;
+        double _t10 = _self20 * _t1;
+        double _t12 = _self32 * _t0;
+        double _t13 = _self30 * _t1;
+        double _t15 = 0.16666666666666666 * _self01 * _t2;
+        double _t16 = 0.16666666666666666 * _self11 * _t2;
+        double _t17 = 0.16666666666666666 * _self21 * _t2;
+        double _t18 = 0.16666666666666666 * _self31 * _t2;
+        dest[destOffset + 0] = Math.fma(-0.3333333333333333, _t3, Math.fma(0.5, _t4, _t15));
+        dest[destOffset + 1] = Math.fma(-0.3333333333333333, _t6, Math.fma(0.5, _t7, _t16));
+        dest[destOffset + 2] = Math.fma(-0.3333333333333333, _t9, Math.fma(0.5, _t10, _t17));
+        dest[destOffset + 3] = Math.fma(-0.3333333333333333, _t12, Math.fma(0.5, _t13, _t18));
+        dest[destOffset + 4] = 0.3333333333333333 * Math.fma(_self01, _t2, _t3);
+        dest[destOffset + 5] = 0.3333333333333333 * Math.fma(_self11, _t2, _t6);
+        dest[destOffset + 6] = 0.3333333333333333 * Math.fma(_self21, _t2, _t9);
+        dest[destOffset + 7] = 0.3333333333333333 * Math.fma(_self31, _t2, _t12);
+        dest[destOffset + 8] = Math.fma(0.3333333333333333, _t3, Math.fma(0.5, _t4, -_t15));
+        dest[destOffset + 9] = Math.fma(0.3333333333333333, _t6, Math.fma(0.5, _t7, -_t16));
+        dest[destOffset + 10] = Math.fma(0.3333333333333333, _t9, Math.fma(0.5, _t10, -_t17));
+        dest[destOffset + 11] = Math.fma(0.3333333333333333, _t12, Math.fma(0.5, _t13, -_t18));
+        _vcp0.intoArray(dest, destOffset + 12);
         return dest;
     }
 

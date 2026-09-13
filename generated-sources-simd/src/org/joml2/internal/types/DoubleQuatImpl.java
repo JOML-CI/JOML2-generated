@@ -294,10 +294,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
     @Mutated public DoubleQuat makeFromDualQuat(DoubleDualQuatR dq) {
         double[] dd = this.data;
         double[] dqData = ((DoubleDualQuatImpl) dq).data;
-        dd[0] = dqData[0];
-        dd[1] = dqData[1];
-        dd[2] = dqData[2];
-        dd[3] = dqData[3];
+        DoubleVector.fromArray(COL_SPECIES, dqData, 0).intoArray(dd, 0);
         return this;
     }
 
@@ -513,10 +510,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
     public DoubleDualQuat toDualQuat(@Mutated DoubleDualQuat dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleDualQuatImpl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
+        DoubleVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         dd[4] = 0.0;
         dd[5] = 0.0;
         dd[6] = 0.0;

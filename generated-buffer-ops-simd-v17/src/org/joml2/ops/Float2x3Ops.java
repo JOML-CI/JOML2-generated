@@ -596,14 +596,8 @@ public final class Float2x3Ops {
      * @return {@code dest}
      */
     public static float[] set(float[] dest, int destOffset, float[] v, int vOffset) {
-        for (int _l = 0; _l < 3; _l++) {
-            int _lo = _l * 2;
-            float _ev0 = v[vOffset + _lo];
-            float _ev1 = v[vOffset + _lo + 1];
-            dest[destOffset + _lo] = _ev0;
-            dest[destOffset + _lo + 1] = _ev1;
-        }
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float2x3OpsSimd.set(dest, destOffset, v, vOffset);
+        return Float2x3OpsKernelsArray.set_scalar(dest, destOffset, v, vOffset);
     }
 
     /** {@link #set(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -636,17 +630,8 @@ public final class Float2x3Ops {
      * @return {@code dest}
      */
     public static float[] setMat2x2(float[] dest, int destOffset, float[] m, int mOffset) {
-        float _m00 = m[mOffset + 0];
-        float _m10 = m[mOffset + 1];
-        float _m01 = m[mOffset + 2];
-        float _m11 = m[mOffset + 3];
-        dest[destOffset + 0] = _m00;
-        dest[destOffset + 1] = _m10;
-        dest[destOffset + 2] = _m01;
-        dest[destOffset + 3] = _m11;
-        dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 0.0f;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float2x3OpsSimd.setMat2x2(dest, destOffset, m, mOffset);
+        return Float2x3OpsKernelsArray.setMat2x2_scalar(dest, destOffset, m, mOffset);
     }
 
     /** {@link #setMat2x2(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -726,17 +711,8 @@ public final class Float2x3Ops {
      * @return {@code dest}
      */
     public static float[] withTranslation(float[] dest, int destOffset, float[] src, int srcOffset, float tX, float tY) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self01 = src[srcOffset + 2];
-        float _self11 = src[srcOffset + 3];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self01;
-        dest[destOffset + 3] = _self11;
-        dest[destOffset + 4] = tX;
-        dest[destOffset + 5] = tY;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float2x3OpsSimd.withTranslation(dest, destOffset, src, srcOffset, tX, tY);
+        return Float2x3OpsKernelsArray.withTranslation_scalar(dest, destOffset, src, srcOffset, tX, tY);
     }
 
     /** {@link #withTranslation(float[], int, float[], int, float, float)} on {@link java.nio.FloatBuffer} storage. */
@@ -776,19 +752,8 @@ public final class Float2x3Ops {
      * @return {@code dest}
      */
     public static float[] withTranslation(float[] dest, int destOffset, float[] src, int srcOffset, float[] t, int tOffset) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self01 = src[srcOffset + 2];
-        float _self11 = src[srcOffset + 3];
-        float _tx = t[tOffset + 0];
-        float _ty = t[tOffset + 1];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self01;
-        dest[destOffset + 3] = _self11;
-        dest[destOffset + 4] = _tx;
-        dest[destOffset + 5] = _ty;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float2x3OpsSimd.withTranslation(dest, destOffset, src, srcOffset, t, tOffset);
+        return Float2x3OpsKernelsArray.withTranslation_scalar(dest, destOffset, src, srcOffset, t, tOffset);
     }
 
     /** {@link #withTranslation(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -821,15 +786,8 @@ public final class Float2x3Ops {
      * @return {@code dest}
      */
     public static float[] to2x2(float[] dest, int destOffset, float[] src, int srcOffset) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self01 = src[srcOffset + 2];
-        float _self11 = src[srcOffset + 3];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self01;
-        dest[destOffset + 3] = _self11;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float2x3OpsSimd.to2x2(dest, destOffset, src, srcOffset);
+        return Float2x3OpsKernelsArray.to2x2_scalar(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #to2x2(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -2133,19 +2091,8 @@ public final class Float2x3Ops {
      * @return {@code dest}
      */
     public static float[] preTranslate(float[] dest, int destOffset, float[] src, int srcOffset, float vX, float vY) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self01 = src[srcOffset + 2];
-        float _self11 = src[srcOffset + 3];
-        float _self02 = src[srcOffset + 4];
-        float _self12 = src[srcOffset + 5];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self01;
-        dest[destOffset + 3] = _self11;
-        dest[destOffset + 4] = _self02 + vX;
-        dest[destOffset + 5] = _self12 + vY;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float2x3OpsSimd.preTranslate(dest, destOffset, src, srcOffset, vX, vY);
+        return Float2x3OpsKernelsArray.preTranslate_scalar(dest, destOffset, src, srcOffset, vX, vY);
     }
 
     /** {@link #preTranslate(float[], int, float[], int, float, float)} on {@link java.nio.FloatBuffer} storage. */
@@ -2184,21 +2131,8 @@ public final class Float2x3Ops {
      * @return {@code dest}
      */
     public static float[] preTranslate(float[] dest, int destOffset, float[] src, int srcOffset, float[] v, int vOffset) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self01 = src[srcOffset + 2];
-        float _self11 = src[srcOffset + 3];
-        float _self02 = src[srcOffset + 4];
-        float _self12 = src[srcOffset + 5];
-        float _vx = v[vOffset + 0];
-        float _vy = v[vOffset + 1];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self01;
-        dest[destOffset + 3] = _self11;
-        dest[destOffset + 4] = _self02 + _vx;
-        dest[destOffset + 5] = _self12 + _vy;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float2x3OpsSimd.preTranslate(dest, destOffset, src, srcOffset, v, vOffset);
+        return Float2x3OpsKernelsArray.preTranslate_scalar(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
     /** {@link #preTranslate(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -2788,19 +2722,8 @@ public final class Float2x3Ops {
      * @return {@code dest}
      */
     public static float[] translate(float[] dest, int destOffset, float[] src, int srcOffset, float vX, float vY) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self01 = src[srcOffset + 2];
-        float _self11 = src[srcOffset + 3];
-        float _self02 = src[srcOffset + 4];
-        float _self12 = src[srcOffset + 5];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self01;
-        dest[destOffset + 3] = _self11;
-        dest[destOffset + 4] = Math.fma(_self00, vX, Math.fma(_self01, vY, _self02));
-        dest[destOffset + 5] = Math.fma(_self10, vX, Math.fma(_self11, vY, _self12));
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float2x3OpsSimd.translate(dest, destOffset, src, srcOffset, vX, vY);
+        return Float2x3OpsKernelsArray.translate_scalar(dest, destOffset, src, srcOffset, vX, vY);
     }
 
     /** {@link #translate(float[], int, float[], int, float, float)} on {@link java.nio.FloatBuffer} storage. */
@@ -2838,21 +2761,8 @@ public final class Float2x3Ops {
      * @return {@code dest}
      */
     public static float[] translate(float[] dest, int destOffset, float[] src, int srcOffset, float[] v, int vOffset) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self01 = src[srcOffset + 2];
-        float _self11 = src[srcOffset + 3];
-        float _self02 = src[srcOffset + 4];
-        float _self12 = src[srcOffset + 5];
-        float _vx = v[vOffset + 0];
-        float _vy = v[vOffset + 1];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self01;
-        dest[destOffset + 3] = _self11;
-        dest[destOffset + 4] = Math.fma(_self00, _vx, Math.fma(_self01, _vy, _self02));
-        dest[destOffset + 5] = Math.fma(_self10, _vx, Math.fma(_self11, _vy, _self12));
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float2x3OpsSimd.translate(dest, destOffset, src, srcOffset, v, vOffset);
+        return Float2x3OpsKernelsArray.translate_scalar(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
     /** {@link #translate(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */

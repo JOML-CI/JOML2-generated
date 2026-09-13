@@ -589,6 +589,120 @@ public final class Float4x4OpsSimd {
         return dest;
     }
 
+    public static float[] withTranslation(float[] dest, int destOffset, float[] src, int srcOffset, float tX, float tY, float tZ) {
+        float _self33 = src[srcOffset + 15];
+        var _vcp0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        var _vcp1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
+        var _vcp2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
+        _vcp0.intoArray(dest, destOffset);
+        _vcp1.intoArray(dest, destOffset + 4);
+        _vcp2.intoArray(dest, destOffset + 8);
+        dest[destOffset + 12] = tX;
+        dest[destOffset + 13] = tY;
+        dest[destOffset + 14] = tZ;
+        dest[destOffset + 15] = _self33;
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment withTranslation(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float tX, float tY, float tZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return withTranslation_unsafe(dest, destOffset, src, srcOffset, tX, tY, tZ);
+        return withTranslation_api(dest, destOffset, src, srcOffset, tX, tY, tZ);
+    }
+
+    public static java.lang.foreign.MemorySegment withTranslation_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float tX, float tY, float tZ) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        float _self33 = UnsafeOpsHolder.U.getFloat(_srcBase + 60L);
+        var _vcp0 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
+        var _vcp1 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 16L, java.nio.ByteOrder.nativeOrder());
+        var _vcp2 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        _vcp0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        _vcp1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
+        _vcp2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        UnsafeOpsHolder.U.putFloat(_destBase + 48L, tX);
+        UnsafeOpsHolder.U.putFloat(_destBase + 52L, tY);
+        UnsafeOpsHolder.U.putFloat(_destBase + 56L, tZ);
+        UnsafeOpsHolder.U.putFloat(_destBase + 60L, _self33);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment withTranslation_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float tX, float tY, float tZ) {
+        float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        var _vcp0 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
+        var _vcp1 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 16L, java.nio.ByteOrder.nativeOrder());
+        var _vcp2 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        _vcp0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        _vcp1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
+        _vcp2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 48L, tX);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 52L, tY);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 56L, tZ);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 60L, _self33);
+        return dest;
+    }
+
+    public static float[] withTranslation(float[] dest, int destOffset, float[] src, int srcOffset, float[] t, int tOffset) {
+        float _self33 = src[srcOffset + 15];
+        float _tx = t[tOffset + 0];
+        float _ty = t[tOffset + 1];
+        float _tz = t[tOffset + 2];
+        var _vcp0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        var _vcp1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
+        var _vcp2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
+        _vcp0.intoArray(dest, destOffset);
+        _vcp1.intoArray(dest, destOffset + 4);
+        _vcp2.intoArray(dest, destOffset + 8);
+        dest[destOffset + 12] = _tx;
+        dest[destOffset + 13] = _ty;
+        dest[destOffset + 14] = _tz;
+        dest[destOffset + 15] = _self33;
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment withTranslation(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment t, long tOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && t.isNative()) return withTranslation_unsafe(dest, destOffset, src, srcOffset, t, tOffset);
+        return withTranslation_api(dest, destOffset, src, srcOffset, t, tOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment withTranslation_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment t, long tOffset) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        long _tBase = t.address() + tOffset;
+        float _self33 = UnsafeOpsHolder.U.getFloat(_srcBase + 60L);
+        float _tx = UnsafeOpsHolder.U.getFloat(_tBase + 0L);
+        float _ty = UnsafeOpsHolder.U.getFloat(_tBase + 4L);
+        float _tz = UnsafeOpsHolder.U.getFloat(_tBase + 8L);
+        var _vcp0 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
+        var _vcp1 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 16L, java.nio.ByteOrder.nativeOrder());
+        var _vcp2 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        _vcp0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        _vcp1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
+        _vcp2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        UnsafeOpsHolder.U.putFloat(_destBase + 48L, _tx);
+        UnsafeOpsHolder.U.putFloat(_destBase + 52L, _ty);
+        UnsafeOpsHolder.U.putFloat(_destBase + 56L, _tz);
+        UnsafeOpsHolder.U.putFloat(_destBase + 60L, _self33);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment withTranslation_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment t, long tOffset) {
+        float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        float _tx = t.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, tOffset + 0L);
+        float _ty = t.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, tOffset + 4L);
+        float _tz = t.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, tOffset + 8L);
+        var _vcp0 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
+        var _vcp1 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 16L, java.nio.ByteOrder.nativeOrder());
+        var _vcp2 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        _vcp0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        _vcp1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
+        _vcp2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 48L, _tx);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 52L, _ty);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 56L, _tz);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 60L, _self33);
+        return dest;
+    }
+
     public static float[] makeFromTransform(float[] dest, int destOffset, float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
         if (SimdSupport.USE_FMA) return makeFromTransform_fma(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
         return makeFromTransform_mulAdd(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
@@ -2205,6 +2319,148 @@ public final class Float4x4OpsSimd {
         _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
         _c2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
         _c3.intoMemorySegment(dest, destOffset + 48L, java.nio.ByteOrder.nativeOrder());
+        return dest;
+    }
+
+    public static float[] axonometricIsometric(float[] dest, int destOffset, float[] src, int srcOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        var _vcp0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
+        float _t0 = (float) Math.sqrt(3.0f);
+        float _t1 = (float) Math.sqrt(2.0f);
+        float _t2 = (float) Math.sqrt(6.0f);
+        float _t3 = _self02 * _t0;
+        float _t4 = _self00 * _t1;
+        float _t6 = _self12 * _t0;
+        float _t7 = _self10 * _t1;
+        float _t9 = _self22 * _t0;
+        float _t10 = _self20 * _t1;
+        float _t12 = _self32 * _t0;
+        float _t13 = _self30 * _t1;
+        float _t15 = 0.16666667f * _self01 * _t2;
+        float _t16 = 0.16666667f * _self11 * _t2;
+        float _t17 = 0.16666667f * _self21 * _t2;
+        float _t18 = 0.16666667f * _self31 * _t2;
+        dest[destOffset + 0] = Math.fma(-0.33333334f, _t3, Math.fma(0.5f, _t4, _t15));
+        dest[destOffset + 1] = Math.fma(-0.33333334f, _t6, Math.fma(0.5f, _t7, _t16));
+        dest[destOffset + 2] = Math.fma(-0.33333334f, _t9, Math.fma(0.5f, _t10, _t17));
+        dest[destOffset + 3] = Math.fma(-0.33333334f, _t12, Math.fma(0.5f, _t13, _t18));
+        dest[destOffset + 4] = 0.33333334f * Math.fma(_self01, _t2, _t3);
+        dest[destOffset + 5] = 0.33333334f * Math.fma(_self11, _t2, _t6);
+        dest[destOffset + 6] = 0.33333334f * Math.fma(_self21, _t2, _t9);
+        dest[destOffset + 7] = 0.33333334f * Math.fma(_self31, _t2, _t12);
+        dest[destOffset + 8] = Math.fma(0.33333334f, _t3, Math.fma(0.5f, _t4, -_t15));
+        dest[destOffset + 9] = Math.fma(0.33333334f, _t6, Math.fma(0.5f, _t7, -_t16));
+        dest[destOffset + 10] = Math.fma(0.33333334f, _t9, Math.fma(0.5f, _t10, -_t17));
+        dest[destOffset + 11] = Math.fma(0.33333334f, _t12, Math.fma(0.5f, _t13, -_t18));
+        _vcp0.intoArray(dest, destOffset + 12);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment axonometricIsometric(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return axonometricIsometric_unsafe(dest, destOffset, src, srcOffset);
+        return axonometricIsometric_api(dest, destOffset, src, srcOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment axonometricIsometric_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        float _self00 = UnsafeOpsHolder.U.getFloat(_srcBase + 0L);
+        float _self10 = UnsafeOpsHolder.U.getFloat(_srcBase + 4L);
+        float _self20 = UnsafeOpsHolder.U.getFloat(_srcBase + 8L);
+        float _self30 = UnsafeOpsHolder.U.getFloat(_srcBase + 12L);
+        float _self01 = UnsafeOpsHolder.U.getFloat(_srcBase + 16L);
+        float _self11 = UnsafeOpsHolder.U.getFloat(_srcBase + 20L);
+        float _self21 = UnsafeOpsHolder.U.getFloat(_srcBase + 24L);
+        float _self31 = UnsafeOpsHolder.U.getFloat(_srcBase + 28L);
+        float _self02 = UnsafeOpsHolder.U.getFloat(_srcBase + 32L);
+        float _self12 = UnsafeOpsHolder.U.getFloat(_srcBase + 36L);
+        float _self22 = UnsafeOpsHolder.U.getFloat(_srcBase + 40L);
+        float _self32 = UnsafeOpsHolder.U.getFloat(_srcBase + 44L);
+        var _vcp0 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder());
+        float _t0 = (float) Math.sqrt(3.0f);
+        float _t1 = (float) Math.sqrt(2.0f);
+        float _t2 = (float) Math.sqrt(6.0f);
+        float _t3 = _self02 * _t0;
+        float _t4 = _self00 * _t1;
+        float _t6 = _self12 * _t0;
+        float _t7 = _self10 * _t1;
+        float _t9 = _self22 * _t0;
+        float _t10 = _self20 * _t1;
+        float _t12 = _self32 * _t0;
+        float _t13 = _self30 * _t1;
+        float _t15 = 0.16666667f * _self01 * _t2;
+        float _t16 = 0.16666667f * _self11 * _t2;
+        float _t17 = 0.16666667f * _self21 * _t2;
+        float _t18 = 0.16666667f * _self31 * _t2;
+        UnsafeOpsHolder.U.putFloat(_destBase + 0L, Math.fma(-0.33333334f, _t3, Math.fma(0.5f, _t4, _t15)));
+        UnsafeOpsHolder.U.putFloat(_destBase + 4L, Math.fma(-0.33333334f, _t6, Math.fma(0.5f, _t7, _t16)));
+        UnsafeOpsHolder.U.putFloat(_destBase + 8L, Math.fma(-0.33333334f, _t9, Math.fma(0.5f, _t10, _t17)));
+        UnsafeOpsHolder.U.putFloat(_destBase + 12L, Math.fma(-0.33333334f, _t12, Math.fma(0.5f, _t13, _t18)));
+        UnsafeOpsHolder.U.putFloat(_destBase + 16L, 0.33333334f * Math.fma(_self01, _t2, _t3));
+        UnsafeOpsHolder.U.putFloat(_destBase + 20L, 0.33333334f * Math.fma(_self11, _t2, _t6));
+        UnsafeOpsHolder.U.putFloat(_destBase + 24L, 0.33333334f * Math.fma(_self21, _t2, _t9));
+        UnsafeOpsHolder.U.putFloat(_destBase + 28L, 0.33333334f * Math.fma(_self31, _t2, _t12));
+        UnsafeOpsHolder.U.putFloat(_destBase + 32L, Math.fma(0.33333334f, _t3, Math.fma(0.5f, _t4, -_t15)));
+        UnsafeOpsHolder.U.putFloat(_destBase + 36L, Math.fma(0.33333334f, _t6, Math.fma(0.5f, _t7, -_t16)));
+        UnsafeOpsHolder.U.putFloat(_destBase + 40L, Math.fma(0.33333334f, _t9, Math.fma(0.5f, _t10, -_t17)));
+        UnsafeOpsHolder.U.putFloat(_destBase + 44L, Math.fma(0.33333334f, _t12, Math.fma(0.5f, _t13, -_t18)));
+        _vcp0.intoMemorySegment(dest, destOffset + 48L, java.nio.ByteOrder.nativeOrder());
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment axonometricIsometric_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
+        float _self30 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 24L);
+        float _self31 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 28L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _self32 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
+        var _vcp0 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder());
+        float _t0 = (float) Math.sqrt(3.0f);
+        float _t1 = (float) Math.sqrt(2.0f);
+        float _t2 = (float) Math.sqrt(6.0f);
+        float _t3 = _self02 * _t0;
+        float _t4 = _self00 * _t1;
+        float _t6 = _self12 * _t0;
+        float _t7 = _self10 * _t1;
+        float _t9 = _self22 * _t0;
+        float _t10 = _self20 * _t1;
+        float _t12 = _self32 * _t0;
+        float _t13 = _self30 * _t1;
+        float _t15 = 0.16666667f * _self01 * _t2;
+        float _t16 = 0.16666667f * _self11 * _t2;
+        float _t17 = 0.16666667f * _self21 * _t2;
+        float _t18 = 0.16666667f * _self31 * _t2;
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(-0.33333334f, _t3, Math.fma(0.5f, _t4, _t15)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(-0.33333334f, _t6, Math.fma(0.5f, _t7, _t16)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, Math.fma(-0.33333334f, _t9, Math.fma(0.5f, _t10, _t17)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, Math.fma(-0.33333334f, _t12, Math.fma(0.5f, _t13, _t18)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, 0.33333334f * Math.fma(_self01, _t2, _t3));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, 0.33333334f * Math.fma(_self11, _t2, _t6));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, 0.33333334f * Math.fma(_self21, _t2, _t9));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, 0.33333334f * Math.fma(_self31, _t2, _t12));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, Math.fma(0.33333334f, _t3, Math.fma(0.5f, _t4, -_t15)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, Math.fma(0.33333334f, _t6, Math.fma(0.5f, _t7, -_t16)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, Math.fma(0.33333334f, _t9, Math.fma(0.5f, _t10, -_t17)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, Math.fma(0.33333334f, _t12, Math.fma(0.5f, _t13, -_t18)));
+        _vcp0.intoMemorySegment(dest, destOffset + 48L, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
 

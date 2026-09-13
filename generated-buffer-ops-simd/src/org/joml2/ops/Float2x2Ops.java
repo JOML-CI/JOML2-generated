@@ -742,15 +742,8 @@ public final class Float2x2Ops {
      * @return {@code dest}
      */
     public static float[] set(float[] dest, int destOffset, float[] v, int vOffset) {
-        float _v00 = v[vOffset + 0];
-        float _v10 = v[vOffset + 1];
-        float _v01 = v[vOffset + 2];
-        float _v11 = v[vOffset + 3];
-        dest[destOffset + 0] = _v00;
-        dest[destOffset + 1] = _v10;
-        dest[destOffset + 2] = _v01;
-        dest[destOffset + 3] = _v11;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float2x2OpsSimd.set(dest, destOffset, v, vOffset);
+        return Float2x2OpsKernelsArray.set_scalar(dest, destOffset, v, vOffset);
     }
 
     /** {@link #set(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -767,6 +760,7 @@ public final class Float2x2Ops {
 
     /** {@link #set(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment set(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment v, long vOffset) {
+        if (SimdSupport.VECTOR_API) return Float2x2OpsSimd.set(dest, destOffset, v, vOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && v.isNative()) return Float2x2OpsKernelsSegment.set_unsafe(dest, destOffset, v, vOffset);
         return Float2x2OpsKernelsSegment.set_api(dest, destOffset, v, vOffset);
     }
@@ -788,15 +782,8 @@ public final class Float2x2Ops {
      * @return {@code dest}
      */
     public static float[] setMat2x3(float[] dest, int destOffset, float[] m, int mOffset) {
-        float _m00 = m[mOffset + 0];
-        float _m10 = m[mOffset + 1];
-        float _m01 = m[mOffset + 2];
-        float _m11 = m[mOffset + 3];
-        dest[destOffset + 0] = _m00;
-        dest[destOffset + 1] = _m10;
-        dest[destOffset + 2] = _m01;
-        dest[destOffset + 3] = _m11;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float2x2OpsSimd.setMat2x3(dest, destOffset, m, mOffset);
+        return Float2x2OpsKernelsArray.setMat2x3_scalar(dest, destOffset, m, mOffset);
     }
 
     /** {@link #setMat2x3(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -813,6 +800,7 @@ public final class Float2x2Ops {
 
     /** {@link #setMat2x3(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment setMat2x3(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment m, long mOffset) {
+        if (SimdSupport.VECTOR_API) return Float2x2OpsSimd.setMat2x3(dest, destOffset, m, mOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && m.isNative()) return Float2x2OpsKernelsSegment.setMat2x3_unsafe(dest, destOffset, m, mOffset);
         return Float2x2OpsKernelsSegment.setMat2x3_api(dest, destOffset, m, mOffset);
     }
@@ -881,17 +869,8 @@ public final class Float2x2Ops {
      * @return {@code dest}
      */
     public static float[] to2x3(float[] dest, int destOffset, float[] src, int srcOffset) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self01 = src[srcOffset + 2];
-        float _self11 = src[srcOffset + 3];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self01;
-        dest[destOffset + 3] = _self11;
-        dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 0.0f;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float2x2OpsSimd.to2x3(dest, destOffset, src, srcOffset);
+        return Float2x2OpsKernelsArray.to2x3_scalar(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #to2x3(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -908,6 +887,7 @@ public final class Float2x2Ops {
 
     /** {@link #to2x3(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment to2x3(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        if (SimdSupport.VECTOR_API) return Float2x2OpsSimd.to2x3(dest, destOffset, src, srcOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float2x2OpsKernelsSegment.to2x3_unsafe(dest, destOffset, src, srcOffset);
         return Float2x2OpsKernelsSegment.to2x3_api(dest, destOffset, src, srcOffset);
     }

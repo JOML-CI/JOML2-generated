@@ -473,10 +473,7 @@ public final class FloatQuatImpl implements FloatQuat {
     @Mutated public FloatQuat makeFromDualQuat(FloatDualQuatR dq) {
         float[] dd = this.data;
         float[] dqData = ((FloatDualQuatImpl) dq).data;
-        dd[0] = dqData[0];
-        dd[1] = dqData[1];
-        dd[2] = dqData[2];
-        dd[3] = dqData[3];
+        FloatVector.fromArray(COL_SPECIES, dqData, 0).intoArray(dd, 0);
         return this;
     }
 
@@ -692,10 +689,7 @@ public final class FloatQuatImpl implements FloatQuat {
     public FloatDualQuat toDualQuat(@Mutated FloatDualQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatDualQuatImpl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
+        FloatVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
         dd[4] = 0.0f;
         dd[5] = 0.0f;
         dd[6] = 0.0f;

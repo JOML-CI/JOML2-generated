@@ -1506,11 +1506,8 @@ public final class Float3x3Ops {
      * @return {@code dest}
      */
     public static float[] set(float[] dest, int destOffset, float[] v, int vOffset) {
-        for (int _i = 0; _i < 9; _i++) {
-            float _ev = v[vOffset + _i];
-            dest[destOffset + _i] = _ev;
-        }
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float3x3OpsSimd.set(dest, destOffset, v, vOffset);
+        return Float3x3OpsKernelsArray.set_scalar(dest, destOffset, v, vOffset);
     }
 
     /** {@link #set(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -1527,6 +1524,7 @@ public final class Float3x3Ops {
 
     /** {@link #set(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment set(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment v, long vOffset) {
+        if (SimdSupport.VECTOR_API) return Float3x3OpsSimd.set(dest, destOffset, v, vOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && v.isNative()) return Float3x3OpsKernelsSegment.set_unsafe(dest, destOffset, v, vOffset);
         return Float3x3OpsKernelsSegment.set_api(dest, destOffset, v, vOffset);
     }
@@ -1766,23 +1764,8 @@ public final class Float3x3Ops {
      * @return {@code dest}
      */
     public static float[] withTranslation(float[] dest, int destOffset, float[] src, int srcOffset, float tX, float tY) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self20 = src[srcOffset + 2];
-        float _self01 = src[srcOffset + 3];
-        float _self11 = src[srcOffset + 4];
-        float _self21 = src[srcOffset + 5];
-        float _self22 = src[srcOffset + 8];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self20;
-        dest[destOffset + 3] = _self01;
-        dest[destOffset + 4] = _self11;
-        dest[destOffset + 5] = _self21;
-        dest[destOffset + 6] = tX;
-        dest[destOffset + 7] = tY;
-        dest[destOffset + 8] = _self22;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float3x3OpsSimd.withTranslation(dest, destOffset, src, srcOffset, tX, tY);
+        return Float3x3OpsKernelsArray.withTranslation_scalar(dest, destOffset, src, srcOffset, tX, tY);
     }
 
     /** {@link #withTranslation(float[], int, float[], int, float, float)} on {@link java.nio.FloatBuffer} storage. */
@@ -1799,6 +1782,7 @@ public final class Float3x3Ops {
 
     /** {@link #withTranslation(float[], int, float[], int, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment withTranslation(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float tX, float tY) {
+        if (SimdSupport.VECTOR_API) return Float3x3OpsSimd.withTranslation(dest, destOffset, src, srcOffset, tX, tY);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3x3OpsKernelsSegment.withTranslation_unsafe(dest, destOffset, src, srcOffset, tX, tY);
         return Float3x3OpsKernelsSegment.withTranslation_api(dest, destOffset, src, srcOffset, tX, tY);
     }
@@ -1828,25 +1812,8 @@ public final class Float3x3Ops {
      * @return {@code dest}
      */
     public static float[] withTranslation(float[] dest, int destOffset, float[] src, int srcOffset, float[] t, int tOffset) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self20 = src[srcOffset + 2];
-        float _self01 = src[srcOffset + 3];
-        float _self11 = src[srcOffset + 4];
-        float _self21 = src[srcOffset + 5];
-        float _self22 = src[srcOffset + 8];
-        float _tx = t[tOffset + 0];
-        float _ty = t[tOffset + 1];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self20;
-        dest[destOffset + 3] = _self01;
-        dest[destOffset + 4] = _self11;
-        dest[destOffset + 5] = _self21;
-        dest[destOffset + 6] = _tx;
-        dest[destOffset + 7] = _ty;
-        dest[destOffset + 8] = _self22;
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float3x3OpsSimd.withTranslation(dest, destOffset, src, srcOffset, t, tOffset);
+        return Float3x3OpsKernelsArray.withTranslation_scalar(dest, destOffset, src, srcOffset, t, tOffset);
     }
 
     /** {@link #withTranslation(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -1863,6 +1830,7 @@ public final class Float3x3Ops {
 
     /** {@link #withTranslation(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment withTranslation(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment t, long tOffset) {
+        if (SimdSupport.VECTOR_API) return Float3x3OpsSimd.withTranslation(dest, destOffset, src, srcOffset, t, tOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && t.isNative()) return Float3x3OpsKernelsSegment.withTranslation_unsafe(dest, destOffset, src, srcOffset, t, tOffset);
         return Float3x3OpsKernelsSegment.withTranslation_api(dest, destOffset, src, srcOffset, t, tOffset);
     }
@@ -8456,25 +8424,8 @@ public final class Float3x3Ops {
      * @return {@code dest}
      */
     public static float[] translate(float[] dest, int destOffset, float[] src, int srcOffset, float vX, float vY) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self20 = src[srcOffset + 2];
-        float _self01 = src[srcOffset + 3];
-        float _self11 = src[srcOffset + 4];
-        float _self21 = src[srcOffset + 5];
-        float _self02 = src[srcOffset + 6];
-        float _self12 = src[srcOffset + 7];
-        float _self22 = src[srcOffset + 8];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self20;
-        dest[destOffset + 3] = _self01;
-        dest[destOffset + 4] = _self11;
-        dest[destOffset + 5] = _self21;
-        dest[destOffset + 6] = Math.fma(_self00, vX, Math.fma(_self01, vY, _self02));
-        dest[destOffset + 7] = Math.fma(_self10, vX, Math.fma(_self11, vY, _self12));
-        dest[destOffset + 8] = Math.fma(_self20, vX, Math.fma(_self21, vY, _self22));
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float3x3OpsSimd.translate(dest, destOffset, src, srcOffset, vX, vY);
+        return Float3x3OpsKernelsArray.translate_scalar(dest, destOffset, src, srcOffset, vX, vY);
     }
 
     /** {@link #translate(float[], int, float[], int, float, float)} on {@link java.nio.FloatBuffer} storage. */
@@ -8491,6 +8442,7 @@ public final class Float3x3Ops {
 
     /** {@link #translate(float[], int, float[], int, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment translate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float vX, float vY) {
+        if (SimdSupport.VECTOR_API) return Float3x3OpsSimd.translate(dest, destOffset, src, srcOffset, vX, vY);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3x3OpsKernelsSegment.translate_unsafe(dest, destOffset, src, srcOffset, vX, vY);
         return Float3x3OpsKernelsSegment.translate_api(dest, destOffset, src, srcOffset, vX, vY);
     }
@@ -8518,27 +8470,8 @@ public final class Float3x3Ops {
      * @return {@code dest}
      */
     public static float[] translate(float[] dest, int destOffset, float[] src, int srcOffset, float[] v, int vOffset) {
-        float _self00 = src[srcOffset + 0];
-        float _self10 = src[srcOffset + 1];
-        float _self20 = src[srcOffset + 2];
-        float _self01 = src[srcOffset + 3];
-        float _self11 = src[srcOffset + 4];
-        float _self21 = src[srcOffset + 5];
-        float _self02 = src[srcOffset + 6];
-        float _self12 = src[srcOffset + 7];
-        float _self22 = src[srcOffset + 8];
-        float _vx = v[vOffset + 0];
-        float _vy = v[vOffset + 1];
-        dest[destOffset + 0] = _self00;
-        dest[destOffset + 1] = _self10;
-        dest[destOffset + 2] = _self20;
-        dest[destOffset + 3] = _self01;
-        dest[destOffset + 4] = _self11;
-        dest[destOffset + 5] = _self21;
-        dest[destOffset + 6] = Math.fma(_self00, _vx, Math.fma(_self01, _vy, _self02));
-        dest[destOffset + 7] = Math.fma(_self10, _vx, Math.fma(_self11, _vy, _self12));
-        dest[destOffset + 8] = Math.fma(_self20, _vx, Math.fma(_self21, _vy, _self22));
-        return dest;
+        if (SimdSupport.VECTOR_API) return Float3x3OpsSimd.translate(dest, destOffset, src, srcOffset, v, vOffset);
+        return Float3x3OpsKernelsArray.translate_scalar(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
     /** {@link #translate(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -8555,6 +8488,7 @@ public final class Float3x3Ops {
 
     /** {@link #translate(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment translate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment v, long vOffset) {
+        if (SimdSupport.VECTOR_API) return Float3x3OpsSimd.translate(dest, destOffset, src, srcOffset, v, vOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && v.isNative()) return Float3x3OpsKernelsSegment.translate_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Float3x3OpsKernelsSegment.translate_api(dest, destOffset, src, srcOffset, v, vOffset);
     }

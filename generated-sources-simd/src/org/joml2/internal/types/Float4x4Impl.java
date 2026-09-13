@@ -7955,18 +7955,9 @@ public class Float4x4Impl implements Float4x4 {
     private Float4x4 withTranslation_identity_general(float tX, float tY, float tZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
-        dd[0] = sd[0];
-        dd[1] = sd[1];
-        dd[2] = sd[2];
-        dd[3] = sd[3];
-        dd[4] = sd[4];
-        dd[5] = sd[5];
-        dd[6] = sd[6];
-        dd[7] = sd[7];
-        dd[8] = sd[8];
-        dd[9] = sd[9];
-        dd[10] = sd[10];
-        dd[11] = sd[11];
+        FloatVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
+        FloatVector.fromArray(COL_SPECIES, sd, 4).intoArray(dd, 4);
+        FloatVector.fromArray(COL_SPECIES, sd, 8).intoArray(dd, 8);
         dd[12] = tX;
         dd[13] = tY;
         dd[14] = tZ;
@@ -17370,10 +17361,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[9] = Math.fma(0.33333334f, _t6, Math.fma(0.5f, _t7, -_t16));
         dd[10] = Math.fma(0.33333334f, _t9, Math.fma(0.5f, _t10, -_t17));
         dd[11] = Math.fma(0.33333334f, _t12, Math.fma(0.5f, _t13, -_t18));
-        dd[12] = sd[12];
-        dd[13] = sd[13];
-        dd[14] = sd[14];
-        dd[15] = sd[15];
+        FloatVector.fromArray(COL_SPECIES, sd, 12).intoArray(dd, 12);
         ((Float4x4Impl) dest).properties = _props;
         return dest;
     }

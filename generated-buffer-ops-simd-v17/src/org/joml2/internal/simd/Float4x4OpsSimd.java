@@ -215,6 +215,39 @@ public final class Float4x4OpsSimd {
         return dest;
     }
 
+    public static float[] withTranslation(float[] dest, int destOffset, float[] src, int srcOffset, float tX, float tY, float tZ) {
+        float _self33 = src[srcOffset + 15];
+        var _vcp0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        var _vcp1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
+        var _vcp2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
+        _vcp0.intoArray(dest, destOffset);
+        _vcp1.intoArray(dest, destOffset + 4);
+        _vcp2.intoArray(dest, destOffset + 8);
+        dest[destOffset + 12] = tX;
+        dest[destOffset + 13] = tY;
+        dest[destOffset + 14] = tZ;
+        dest[destOffset + 15] = _self33;
+        return dest;
+    }
+
+    public static float[] withTranslation(float[] dest, int destOffset, float[] src, int srcOffset, float[] t, int tOffset) {
+        float _self33 = src[srcOffset + 15];
+        float _tx = t[tOffset + 0];
+        float _ty = t[tOffset + 1];
+        float _tz = t[tOffset + 2];
+        var _vcp0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        var _vcp1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
+        var _vcp2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
+        _vcp0.intoArray(dest, destOffset);
+        _vcp1.intoArray(dest, destOffset + 4);
+        _vcp2.intoArray(dest, destOffset + 8);
+        dest[destOffset + 12] = _tx;
+        dest[destOffset + 13] = _ty;
+        dest[destOffset + 14] = _tz;
+        dest[destOffset + 15] = _self33;
+        return dest;
+    }
+
     public static float[] makeFromTransform(float[] dest, int destOffset, float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
         if (SimdSupport.USE_FMA) return makeFromTransform_fma(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
         return makeFromTransform_mulAdd(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
@@ -767,6 +800,51 @@ public final class Float4x4OpsSimd {
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
         _c3.intoArray(dest, destOffset + 12);
+        return dest;
+    }
+
+    public static float[] axonometricIsometric(float[] dest, int destOffset, float[] src, int srcOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self10 = src[srcOffset + 1];
+        float _self20 = src[srcOffset + 2];
+        float _self30 = src[srcOffset + 3];
+        float _self01 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self21 = src[srcOffset + 6];
+        float _self31 = src[srcOffset + 7];
+        float _self02 = src[srcOffset + 8];
+        float _self12 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _self32 = src[srcOffset + 11];
+        var _vcp0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
+        float _t0 = (float) Math.sqrt(3.0f);
+        float _t1 = (float) Math.sqrt(2.0f);
+        float _t2 = (float) Math.sqrt(6.0f);
+        float _t3 = _self02 * _t0;
+        float _t4 = _self00 * _t1;
+        float _t6 = _self12 * _t0;
+        float _t7 = _self10 * _t1;
+        float _t9 = _self22 * _t0;
+        float _t10 = _self20 * _t1;
+        float _t12 = _self32 * _t0;
+        float _t13 = _self30 * _t1;
+        float _t15 = 0.16666667f * _self01 * _t2;
+        float _t16 = 0.16666667f * _self11 * _t2;
+        float _t17 = 0.16666667f * _self21 * _t2;
+        float _t18 = 0.16666667f * _self31 * _t2;
+        dest[destOffset + 0] = Math.fma(-0.33333334f, _t3, Math.fma(0.5f, _t4, _t15));
+        dest[destOffset + 1] = Math.fma(-0.33333334f, _t6, Math.fma(0.5f, _t7, _t16));
+        dest[destOffset + 2] = Math.fma(-0.33333334f, _t9, Math.fma(0.5f, _t10, _t17));
+        dest[destOffset + 3] = Math.fma(-0.33333334f, _t12, Math.fma(0.5f, _t13, _t18));
+        dest[destOffset + 4] = 0.33333334f * Math.fma(_self01, _t2, _t3);
+        dest[destOffset + 5] = 0.33333334f * Math.fma(_self11, _t2, _t6);
+        dest[destOffset + 6] = 0.33333334f * Math.fma(_self21, _t2, _t9);
+        dest[destOffset + 7] = 0.33333334f * Math.fma(_self31, _t2, _t12);
+        dest[destOffset + 8] = Math.fma(0.33333334f, _t3, Math.fma(0.5f, _t4, -_t15));
+        dest[destOffset + 9] = Math.fma(0.33333334f, _t6, Math.fma(0.5f, _t7, -_t16));
+        dest[destOffset + 10] = Math.fma(0.33333334f, _t9, Math.fma(0.5f, _t10, -_t17));
+        dest[destOffset + 11] = Math.fma(0.33333334f, _t12, Math.fma(0.5f, _t13, -_t18));
+        _vcp0.intoArray(dest, destOffset + 12);
         return dest;
     }
 

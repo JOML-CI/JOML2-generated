@@ -15,7 +15,28 @@ import org.joml2.internal.unsafe.*;
  */
 public final class Float2x2OpsSimd {
     private Float2x2OpsSimd() {}
+    private static final VectorSpecies<Float> SIMD_SPECIES = FloatVector.SPECIES_128;
     private static final int PREFERRED_LANES = FloatVector.SPECIES_PREFERRED.length();
+
+    public static float[] set(float[] dest, int destOffset, float[] v, int vOffset) {
+        var _vcp0 = FloatVector.fromArray(SIMD_SPECIES, v, vOffset);
+        _vcp0.intoArray(dest, destOffset);
+        return dest;
+    }
+
+    public static float[] setMat2x3(float[] dest, int destOffset, float[] m, int mOffset) {
+        var _vcp0 = FloatVector.fromArray(SIMD_SPECIES, m, mOffset);
+        _vcp0.intoArray(dest, destOffset);
+        return dest;
+    }
+
+    public static float[] to2x3(float[] dest, int destOffset, float[] src, int srcOffset) {
+        var _vcp0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        _vcp0.intoArray(dest, destOffset);
+        dest[destOffset + 4] = 0.0f;
+        dest[destOffset + 5] = 0.0f;
+        return dest;
+    }
 
     private static void copyArrArr(float[] dest, int destOffset, float[] src, int srcOffset, int n) {
         var _sp = FloatVector.SPECIES_PREFERRED;
