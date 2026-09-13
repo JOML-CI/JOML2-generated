@@ -690,10 +690,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] sd = this.data;
         float[] dd = ((FloatDualQuatImpl) dest).data;
         FloatVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
-        dd[4] = 0.0f;
-        dd[5] = 0.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 4);
         return dest;
     }
 
@@ -747,10 +744,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf2 = 2.0f * Math.fma(sd[0], sd[2], _t2);
         dd[9] = 2.0f * Math.fma(sd[1], sd[2], -(sd[0] * sd[3]));
         dd[10] = Math.fma(-2.0f, Math.fma(sd[0], sd[0], sd[1] * sd[1]), 1.0f);
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_2.intoArray(dd, 11);
         dd[15] = 1.0f;
         dd[0] = _buf0;
         dd[4] = _buf1;
@@ -1345,10 +1339,7 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     @Mutated public FloatQuat makeIdentity() {
         float[] dd = this.data;
-        dd[0] = 0.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 1.0f;
+        VEC_1.intoArray(dd, 0);
         return this;
     }
 
@@ -6770,7 +6761,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
         float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).fma(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)), FloatVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(2, sd[1]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(1, sd[2]).withLane(3, sd[0]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_2));
+        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).fma(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)), FloatVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(2, sd[1]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(1, sd[2]).withLane(3, sd[0]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -6780,7 +6771,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
         float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0))).add(FloatVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(2, sd[1]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(1, sd[2]).withLane(3, sd[0]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_2));
+        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0))).add(FloatVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(2, sd[1]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(1, sd[2]).withLane(3, sd[0]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -6839,7 +6830,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
         float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).fma(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)), FloatVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(1, sd[3]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(2, sd[0]).withLane(3, sd[1]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
+        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).fma(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)), FloatVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(1, sd[3]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(2, sd[0]).withLane(3, sd[1]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -6849,7 +6840,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
         float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0))).add(FloatVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(1, sd[3]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(2, sd[0]).withLane(3, sd[1]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
+        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0))).add(FloatVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(1, sd[3]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(2, sd[0]).withLane(3, sd[1]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -6908,7 +6899,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
         float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).fma(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)), FloatVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[3]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(3, sd[2]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
+        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).fma(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)), FloatVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[3]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(3, sd[2]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_5));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -6918,7 +6909,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
         float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0))).add(FloatVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[3]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(3, sd[2]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
+        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0))).add(FloatVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[3]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(3, sd[2]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_5));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -7380,7 +7371,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
         float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).fma(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)), FloatVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(1, sd[2]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(2, sd[1]).withLane(3, sd[0]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
+        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).fma(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)), FloatVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(1, sd[2]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(2, sd[1]).withLane(3, sd[0]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -7390,7 +7381,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
         float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0))).add(FloatVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(1, sd[2]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(2, sd[1]).withLane(3, sd[0]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
+        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0))).add(FloatVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(1, sd[2]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(2, sd[1]).withLane(3, sd[0]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -7635,7 +7626,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
         float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).fma(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)), FloatVector.zero(COL_SPECIES).withLane(1, sd[3]).withLane(2, sd[0]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(3, sd[1]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
+        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).fma(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)), FloatVector.zero(COL_SPECIES).withLane(1, sd[3]).withLane(2, sd[0]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(3, sd[1]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_5));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -7645,7 +7636,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
         float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0))).add(FloatVector.zero(COL_SPECIES).withLane(1, sd[3]).withLane(2, sd[0]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(3, sd[1]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
+        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0))).add(FloatVector.zero(COL_SPECIES).withLane(1, sd[3]).withLane(2, sd[0]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(3, sd[1]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_5));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -7890,7 +7881,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
         float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).fma(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)), FloatVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(2, sd[3]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(3, sd[2]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_2));
+        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).fma(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)), FloatVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(2, sd[3]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(3, sd[2]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -7900,7 +7891,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
         float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0))).add(FloatVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(2, sd[3]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(3, sd[2]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_2));
+        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0))).add(FloatVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(2, sd[3]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(3, sd[2]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -8436,9 +8427,10 @@ public final class FloatQuatImpl implements FloatQuat {
 
     private static final VectorSpecies<Float> COL_SPECIES = FloatVector.SPECIES_128;
     private static final VectorMask<Float> MASK_0 = VectorMask.fromValues(COL_SPECIES, true, true, true, false);
-    private static final VectorMask<Float> MASK_2 = VectorMask.fromValues(COL_SPECIES, false, true, false, true);
-    private static final VectorMask<Float> MASK_3 = VectorMask.fromValues(COL_SPECIES, false, false, true, true);
-    private static final VectorMask<Float> MASK_4 = VectorMask.fromValues(COL_SPECIES, true, false, false, true);
+    private static final VectorMask<Float> MASK_3 = VectorMask.fromValues(COL_SPECIES, false, true, false, true);
+    private static final VectorMask<Float> MASK_4 = VectorMask.fromValues(COL_SPECIES, false, false, true, true);
+    private static final VectorMask<Float> MASK_5 = VectorMask.fromValues(COL_SPECIES, true, false, false, true);
     private static final FloatVector VEC_1 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 1.0f}, 0);
+    private static final FloatVector VEC_2 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 0.0f}, 0);
 
 }

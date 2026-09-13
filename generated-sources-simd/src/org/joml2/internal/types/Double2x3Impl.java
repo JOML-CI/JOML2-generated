@@ -358,10 +358,7 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 invert_translation(@Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 1.0;
+        VEC_1.intoArray(dd, 0);
         dd[4] = -sd[4];
         dd[5] = -sd[5];
         ((Double2x3Impl) dest).properties = Joml.BIT_TRANSLATION;
@@ -562,10 +559,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] otherData = ((Double2x3Impl) other).data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 1.0;
+        VEC_1.intoArray(dd, 0);
         dd[4] = -otherData[4];
         dd[5] = -otherData[5];
         ((Double2x3Impl) dest).properties = ((Double2x3Impl) other).properties;
@@ -581,10 +575,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] otherData = ((Double2x3Impl) other).data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 1.0;
+        VEC_1.intoArray(dd, 0);
         dd[4] = -sd[4];
         dd[5] = -sd[5];
         ((Double2x3Impl) dest).properties = Joml.BIT_TRANSLATION & ((Double2x3Impl) other).properties;
@@ -600,10 +591,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] otherData = ((Double2x3Impl) other).data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 1.0;
+        VEC_1.intoArray(dd, 0);
         dd[4] = -(otherData[4] + sd[4]);
         dd[5] = -(otherData[5] + sd[5]);
         ((Double2x3Impl) dest).properties = Joml.BIT_TRANSLATION & ((Double2x3Impl) other).properties;
@@ -833,7 +821,7 @@ public class Double2x3Impl implements Double2x3 {
     private Double3x2 transpose_identity(@Mutated Double3x2 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x2Impl) dest).data;
-        System.arraycopy(DATA_1, 0, dd, 0, 6);
+        System.arraycopy(DATA_2, 0, dd, 0, 6);
         return dest;
     }
 
@@ -957,7 +945,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] otherData = ((Double2x3Impl) other).data;
         double[] dd = ((Double2x3Impl) dest).data;
-        System.arraycopy(DATA_2, 0, dd, 0, 6);
+        System.arraycopy(DATA_3, 0, dd, 0, 6);
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE & ((Double2x3Impl) other).properties;
         return dest;
     }
@@ -971,10 +959,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] otherData = ((Double2x3Impl) other).data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = 2.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 2.0;
+        VEC_4.intoArray(dd, 0);
         dd[4] = otherData[4];
         dd[5] = otherData[5];
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE & ((Double2x3Impl) other).properties;
@@ -990,10 +975,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] otherData = ((Double2x3Impl) other).data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = 2.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 2.0;
+        VEC_4.intoArray(dd, 0);
         dd[4] = sd[4];
         dd[5] = sd[5];
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE & ((Double2x3Impl) other).properties;
@@ -1009,10 +991,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] otherData = ((Double2x3Impl) other).data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = 2.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 2.0;
+        VEC_4.intoArray(dd, 0);
         dd[4] = otherData[4] + sd[4];
         dd[5] = otherData[5] + sd[5];
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE & ((Double2x3Impl) other).properties;
@@ -1154,7 +1133,7 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 negate_identity(@Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        System.arraycopy(DATA_3, 0, dd, 0, 6);
+        System.arraycopy(DATA_5, 0, dd, 0, 6);
         ((Double2x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -1176,10 +1155,7 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 negate_translation(@Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = -1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = -1.0;
+        VEC_6.intoArray(dd, 0);
         dd[4] = -sd[4];
         dd[5] = -sd[5];
         ((Double2x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
@@ -1320,7 +1296,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] otherData = ((Double2x3Impl) other).data;
         double[] dd = ((Double2x3Impl) dest).data;
-        System.arraycopy(DATA_4, 0, dd, 0, 6);
+        System.arraycopy(DATA_7, 0, dd, 0, 6);
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE & ((Double2x3Impl) other).properties;
         return dest;
     }
@@ -1334,10 +1310,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] otherData = ((Double2x3Impl) other).data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = 0.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_8.intoArray(dd, 0);
         dd[4] = -otherData[4];
         dd[5] = -otherData[5];
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE & ((Double2x3Impl) other).properties;
@@ -1353,10 +1326,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] otherData = ((Double2x3Impl) other).data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = 0.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_8.intoArray(dd, 0);
         dd[4] = sd[4];
         dd[5] = sd[5];
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE & ((Double2x3Impl) other).properties;
@@ -1372,10 +1342,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] otherData = ((Double2x3Impl) other).data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = 0.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_8.intoArray(dd, 0);
         dd[4] = sd[4] - otherData[4];
         dd[5] = sd[5] - otherData[5];
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE & ((Double2x3Impl) other).properties;
@@ -1629,10 +1596,7 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 withTranslation_identity(double tX, double tY, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 1.0;
+        VEC_1.intoArray(dd, 0);
         dd[4] = tX;
         dd[5] = tY;
         ((Double2x3Impl) dest).properties = Joml.BIT_TRANSLATION;
@@ -1755,7 +1719,7 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x2 to2x2_identity(@Mutated Double2x2 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x2Impl) dest).data;
-        DoubleVector.fromArray(COL_SPECIES, DATA_5, 0).intoArray(dd, 0);
+        DoubleVector.fromArray(COL_SPECIES, DATA_9, 0).intoArray(dd, 0);
         ((Double2x2Impl) dest).properties = Joml.BIT_IDENTITY;
         return dest;
     }
@@ -1816,7 +1780,7 @@ public class Double2x3Impl implements Double2x3 {
     private Double3x3 to3x3_identity(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        System.arraycopy(DATA_6, 0, dd, 0, 9);
+        System.arraycopy(DATA_10, 0, dd, 0, 9);
         ((Double3x3Impl) dest).properties = Joml.BIT_IDENTITY;
         return dest;
     }
@@ -1829,10 +1793,7 @@ public class Double2x3Impl implements Double2x3 {
     private Double3x3 to3x3_translation(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_11.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = sd[4];
@@ -1950,10 +1911,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] otherData = ((Double2x3Impl) other).data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 1.0;
+        VEC_1.intoArray(dd, 0);
         dd[4] = t * otherData[4];
         dd[5] = t * otherData[5];
         ((Double2x3Impl) dest).properties = Joml.BIT_TRANSLATION & ((Double2x3Impl) other).properties;
@@ -1969,10 +1927,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] otherData = ((Double2x3Impl) other).data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 1.0;
+        VEC_1.intoArray(dd, 0);
         dd[4] = Math.fma(-t, sd[4], sd[4]);
         dd[5] = Math.fma(-t, sd[5], sd[5]);
         ((Double2x3Impl) dest).properties = Joml.BIT_TRANSLATION & ((Double2x3Impl) other).properties;
@@ -1988,10 +1943,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] otherData = ((Double2x3Impl) other).data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 1.0;
+        VEC_1.intoArray(dd, 0);
         dd[4] = Math.fma(t, otherData[4] - sd[4], sd[4]);
         dd[5] = Math.fma(t, otherData[5] - sd[5], sd[5]);
         ((Double2x3Impl) dest).properties = Joml.BIT_TRANSLATION & ((Double2x3Impl) other).properties;
@@ -2152,10 +2104,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] rightData = ((Double2x3Impl) right).data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 1.0;
+        VEC_1.intoArray(dd, 0);
         dd[4] = rightData[4] + sd[4];
         dd[5] = rightData[5] + sd[5];
         ((Double2x3Impl) dest).properties = Joml.BIT_TRANSLATION & ((Double2x3Impl) right).properties;
@@ -2500,10 +2449,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] rightData = ((Double3x3Impl) right).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_11.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = sd[4];
@@ -2522,10 +2468,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] rightData = ((Double3x3Impl) right).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_11.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = rightData[6] + sd[4];
@@ -2686,10 +2629,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] otherData = ((Double2x3Impl) other).data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 1.0;
+        VEC_1.intoArray(dd, 0);
         dd[4] = otherData[4] + sd[4];
         dd[5] = otherData[5] + sd[5];
         ((Double2x3Impl) dest).properties = Joml.BIT_TRANSLATION & ((Double2x3Impl) other).properties;
@@ -3034,10 +2974,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] otherData = ((Double3x3Impl) other).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_11.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = sd[4];
@@ -3056,10 +2993,7 @@ public class Double2x3Impl implements Double2x3 {
         double[] sd = this.data;
         double[] otherData = ((Double3x3Impl) other).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_11.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = otherData[6] + sd[4];
@@ -3233,10 +3167,7 @@ public class Double2x3Impl implements Double2x3 {
      */
     @Mutated public Double2x3 makeTranslation(double vX, double vY) {
         double[] dd = this.data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 1.0;
+        VEC_1.intoArray(dd, 0);
         dd[4] = vX;
         dd[5] = vY;
         ((Double2x3Impl) this).properties = Joml.BIT_TRANSLATION;
@@ -4194,10 +4125,7 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 preTranslate_identity(double vX, double vY, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 1.0;
+        VEC_1.intoArray(dd, 0);
         dd[4] = vX;
         dd[5] = vY;
         ((Double2x3Impl) dest).properties = Joml.BIT_TRANSLATION;
@@ -4226,10 +4154,7 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 preTranslate_translation(double vX, double vY, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 1.0;
+        VEC_1.intoArray(dd, 0);
         dd[4] = sd[4] + vX;
         dd[5] = sd[5] + vY;
         ((Double2x3Impl) dest).properties = Joml.BIT_TRANSLATION;
@@ -6421,12 +6346,17 @@ public class Double2x3Impl implements Double2x3 {
     }
 
     private static final VectorSpecies<Double> COL_SPECIES = DoubleVector.SPECIES_256;
+    private static final DoubleVector VEC_1 = DoubleVector.fromArray(COL_SPECIES, new double[]{1.0, 0.0, 0.0, 1.0}, 0);
+    private static final DoubleVector VEC_4 = DoubleVector.fromArray(COL_SPECIES, new double[]{2.0, 0.0, 0.0, 2.0}, 0);
+    private static final DoubleVector VEC_6 = DoubleVector.fromArray(COL_SPECIES, new double[]{-1.0, 0.0, 0.0, -1.0}, 0);
+    private static final DoubleVector VEC_8 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 0.0, 0.0, 0.0}, 0);
+    private static final DoubleVector VEC_11 = DoubleVector.fromArray(COL_SPECIES, new double[]{1.0, 0.0, 0.0, 0.0}, 0);
     private static final double[] DATA_0 = new double[] {1.0, 0.0, 0.0, 1.0, 0.0, 0.0};
-    private static final double[] DATA_1 = new double[] {1.0, 0.0, 0.0, 0.0, 1.0, 0.0};
-    private static final double[] DATA_2 = new double[] {2.0, 0.0, 0.0, 2.0, 0.0, 0.0};
-    private static final double[] DATA_3 = new double[] {-1.0, 0.0, 0.0, -1.0, 0.0, 0.0};
-    private static final double[] DATA_4 = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-    private static final double[] DATA_5 = new double[] {1.0, 0.0, 0.0, 1.0};
-    private static final double[] DATA_6 = new double[] {1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0};
+    private static final double[] DATA_2 = new double[] {1.0, 0.0, 0.0, 0.0, 1.0, 0.0};
+    private static final double[] DATA_3 = new double[] {2.0, 0.0, 0.0, 2.0, 0.0, 0.0};
+    private static final double[] DATA_5 = new double[] {-1.0, 0.0, 0.0, -1.0, 0.0, 0.0};
+    private static final double[] DATA_7 = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+    private static final double[] DATA_9 = new double[] {1.0, 0.0, 0.0, 1.0};
+    private static final double[] DATA_10 = new double[] {1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0};
 
 }

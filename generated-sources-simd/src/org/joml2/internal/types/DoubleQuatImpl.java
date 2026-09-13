@@ -511,10 +511,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] sd = this.data;
         double[] dd = ((DoubleDualQuatImpl) dest).data;
         DoubleVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
-        dd[4] = 0.0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
+        VEC_2.intoArray(dd, 4);
         return dest;
     }
 
@@ -543,10 +540,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _buf2 = 2.0 * Math.fma(sd[0], sd[2], _t2);
         dd[9] = 2.0 * Math.fma(sd[1], sd[2], -(sd[0] * sd[3]));
         dd[10] = Math.fma(-2.0, Math.fma(sd[0], sd[0], sd[1] * sd[1]), 1.0);
-        dd[11] = 0.0;
-        dd[12] = 0.0;
-        dd[13] = 0.0;
-        dd[14] = 0.0;
+        VEC_2.intoArray(dd, 11);
         dd[15] = 1.0;
         dd[0] = _buf0;
         dd[4] = _buf1;
@@ -820,10 +814,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     @Mutated public DoubleQuat makeIdentity() {
         double[] dd = this.data;
-        dd[0] = 0.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 1.0;
+        VEC_1.intoArray(dd, 0);
         return this;
     }
 
@@ -4023,7 +4014,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 0.5 * angle;
         double _t2 = Math.sin(_t0);
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).fma(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0)), DoubleVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(2, sd[1]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(1, sd[2]).withLane(3, sd[0]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_2));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).fma(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0)), DoubleVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(2, sd[1]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(1, sd[2]).withLane(3, sd[0]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -4033,7 +4024,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 0.5 * angle;
         double _t2 = Math.sin(_t0);
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0))).add(DoubleVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(2, sd[1]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(1, sd[2]).withLane(3, sd[0]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_2));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0))).add(DoubleVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(2, sd[1]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(1, sd[2]).withLane(3, sd[0]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -4061,7 +4052,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 0.5 * angle;
         double _t2 = Math.sin(_t0);
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).fma(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0)), DoubleVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(1, sd[3]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(2, sd[0]).withLane(3, sd[1]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).fma(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0)), DoubleVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(1, sd[3]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(2, sd[0]).withLane(3, sd[1]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -4071,7 +4062,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 0.5 * angle;
         double _t2 = Math.sin(_t0);
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0))).add(DoubleVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(1, sd[3]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(2, sd[0]).withLane(3, sd[1]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0))).add(DoubleVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(1, sd[3]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(2, sd[0]).withLane(3, sd[1]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -4099,7 +4090,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 0.5 * angle;
         double _t2 = Math.sin(_t0);
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).fma(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0)), DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[3]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(3, sd[2]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).fma(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0)), DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[3]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(3, sd[2]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_5));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -4109,7 +4100,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 0.5 * angle;
         double _t2 = Math.sin(_t0);
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0))).add(DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[3]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(3, sd[2]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0))).add(DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[3]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(3, sd[2]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_5));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -4366,7 +4357,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 0.5 * angle;
         double _t2 = Math.sin(_t0);
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).fma(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0)), DoubleVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(1, sd[2]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(2, sd[1]).withLane(3, sd[0]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).fma(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0)), DoubleVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(1, sd[2]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(2, sd[1]).withLane(3, sd[0]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -4376,7 +4367,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 0.5 * angle;
         double _t2 = Math.sin(_t0);
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0))).add(DoubleVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(1, sd[2]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(2, sd[1]).withLane(3, sd[0]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0))).add(DoubleVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(1, sd[2]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(2, sd[1]).withLane(3, sd[0]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -4494,7 +4485,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 0.5 * angle;
         double _t2 = Math.sin(_t0);
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).fma(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0)), DoubleVector.zero(COL_SPECIES).withLane(1, sd[3]).withLane(2, sd[0]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(3, sd[1]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).fma(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0)), DoubleVector.zero(COL_SPECIES).withLane(1, sd[3]).withLane(2, sd[0]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(3, sd[1]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_5));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -4504,7 +4495,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 0.5 * angle;
         double _t2 = Math.sin(_t0);
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0))).add(DoubleVector.zero(COL_SPECIES).withLane(1, sd[3]).withLane(2, sd[0]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(3, sd[1]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0))).add(DoubleVector.zero(COL_SPECIES).withLane(1, sd[3]).withLane(2, sd[0]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(3, sd[1]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_5));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -4622,7 +4613,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 0.5 * angle;
         double _t2 = Math.sin(_t0);
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).fma(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0)), DoubleVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(2, sd[3]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(3, sd[2]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_2));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).fma(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0)), DoubleVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(2, sd[3]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(3, sd[2]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -4632,7 +4623,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 0.5 * angle;
         double _t2 = Math.sin(_t0);
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0))).add(DoubleVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(2, sd[3]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(3, sd[2]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_2));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.cos(_t0))).add(DoubleVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(2, sd[3]).mul(DoubleVector.broadcast(COL_SPECIES, _t2)).blend(DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(3, sd[2]).mul(DoubleVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -4954,9 +4945,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
 
     private static final VectorSpecies<Double> COL_SPECIES = DoubleVector.SPECIES_256;
     private static final VectorMask<Double> MASK_0 = VectorMask.fromValues(COL_SPECIES, true, true, true, false);
-    private static final VectorMask<Double> MASK_2 = VectorMask.fromValues(COL_SPECIES, false, true, false, true);
-    private static final VectorMask<Double> MASK_3 = VectorMask.fromValues(COL_SPECIES, false, false, true, true);
-    private static final VectorMask<Double> MASK_4 = VectorMask.fromValues(COL_SPECIES, true, false, false, true);
+    private static final VectorMask<Double> MASK_3 = VectorMask.fromValues(COL_SPECIES, false, true, false, true);
+    private static final VectorMask<Double> MASK_4 = VectorMask.fromValues(COL_SPECIES, false, false, true, true);
+    private static final VectorMask<Double> MASK_5 = VectorMask.fromValues(COL_SPECIES, true, false, false, true);
     private static final DoubleVector VEC_1 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 0.0, 0.0, 1.0}, 0);
+    private static final DoubleVector VEC_2 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 0.0, 0.0, 0.0}, 0);
 
 }

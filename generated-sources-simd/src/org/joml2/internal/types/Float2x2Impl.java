@@ -2667,10 +2667,7 @@ public class Float2x2Impl implements Float2x2 {
         dd[1] = 0.0f;
         dd[2] = 0.0f;
         dd[3] = sd[2];
-        dd[4] = 1.0f;
-        dd[5] = 0.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_6.intoArray(dd, 4);
         dd[8] = 1.0f;
         ((Float3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -2688,10 +2685,7 @@ public class Float2x2Impl implements Float2x2 {
         dd[1] = 0.0f;
         dd[2] = 0.0f;
         dd[3] = sd[2];
-        dd[4] = 1.0f;
-        dd[5] = 0.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_6.intoArray(dd, 4);
         dd[8] = 1.0f;
         ((Float3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -2710,10 +2704,7 @@ public class Float2x2Impl implements Float2x2 {
         dd[2] = 0.0f;
         dd[3] = sd[2];
         dd[4] = sd[3];
-        dd[5] = 0.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 1.0f;
+        VEC_7.intoArray(dd, 5);
         dd[1] = _buf0;
         ((Float3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -5662,6 +5653,8 @@ public class Float2x2Impl implements Float2x2 {
     }
 
     private static final VectorSpecies<Float> COL_SPECIES = FloatVector.SPECIES_128;
+    private static final FloatVector VEC_6 = FloatVector.fromArray(COL_SPECIES, new float[]{1.0f, 0.0f, 0.0f, 0.0f}, 0);
+    private static final FloatVector VEC_7 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 1.0f}, 0);
     private static final float[] DATA_0 = new float[] {1.0f, 0.0f, 0.0f, 1.0f};
     private static final float[] DATA_1 = new float[] {2.0f, 0.0f, 0.0f, 2.0f};
     private static final float[] DATA_2 = new float[] {-1.0f, 0.0f, 0.0f, -1.0f};

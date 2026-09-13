@@ -448,14 +448,8 @@ public final class FloatOBBImpl implements FloatOBB {
         dd[0] = sd[0];
         dd[1] = sd[1];
         dd[2] = sd[2];
-        dd[3] = 1.0f;
-        dd[4] = 0.0f;
-        dd[5] = 0.0f;
-        dd[6] = 0.0f;
-        dd[7] = 1.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = 0.0f;
+        VEC_0.intoArray(dd, 3);
+        VEC_0.intoArray(dd, 7);
         dd[11] = 1.0f;
         dd[12] = sd[12];
         dd[13] = sd[13];
@@ -644,7 +638,7 @@ public final class FloatOBBImpl implements FloatOBB {
      */
     @Mutated public FloatOBB makeIdentity() {
         float[] dd = this.data;
-        System.arraycopy(DATA_0, 0, dd, 0, 15);
+        System.arraycopy(DATA_1, 0, dd, 0, 15);
         return this;
     }
 
@@ -1638,6 +1632,7 @@ public final class FloatOBBImpl implements FloatOBB {
     }
 
     private static final VectorSpecies<Float> COL_SPECIES = FloatVector.SPECIES_128;
-    private static final float[] DATA_0 = new float[] {0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f};
+    private static final FloatVector VEC_0 = FloatVector.fromArray(COL_SPECIES, new float[]{1.0f, 0.0f, 0.0f, 0.0f}, 0);
+    private static final float[] DATA_1 = new float[] {0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f};
 
 }

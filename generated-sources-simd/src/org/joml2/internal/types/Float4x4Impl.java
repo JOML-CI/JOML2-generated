@@ -816,10 +816,7 @@ public class Float4x4Impl implements Float4x4 {
     private FloatQuat getNormalizedRotation_identity(@Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
-        dd[0] = 0.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 1.0f;
+        VEC_0.intoArray(dd, 0);
         return dest;
     }
 
@@ -3501,10 +3498,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[9] = 0.0f;
         dd[10] = 1.0f;
         dd[11] = -sd[14];
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
-        dd[15] = 1.0f;
+        VEC_0.intoArray(dd, 12);
         ((Float4x4Impl) dest).properties = 0;
         return dest;
     }
@@ -3792,18 +3786,9 @@ public class Float4x4Impl implements Float4x4 {
     private Float4x4 invert_translation(@Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
-        dd[0] = 1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 1.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = 1.0f;
-        dd[11] = 0.0f;
+        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 4);
+        VEC_4.intoArray(dd, 8);
         dd[12] = -sd[12];
         dd[13] = -sd[13];
         dd[14] = -sd[14];
@@ -3930,12 +3915,12 @@ public class Float4x4Impl implements Float4x4 {
         var _col2 = _sv0.fma(VEC_0, _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(0, sd[9]).withLane(1, sd[1]).withLane(2, sd[5]), _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, sd[5]).withLane(1, sd[9]).withLane(2, sd[1])).neg()).mul(_sv1));
         var _sv4 = FloatVector.broadcast(COL_SPECIES, sd[12]);
         var _sv5 = FloatVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_2);
+        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_5);
         var _sv7 = FloatVector.broadcast(COL_SPECIES, _t15);
         var _sv8 = FloatVector.broadcast(COL_SPECIES, sd[8]);
         var _sv9 = FloatVector.broadcast(COL_SPECIES, _t16);
-        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t17), MASK_2);
-        var _col3 = _sv4.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t14), _sv6.fma(_sv7, _sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13), _sv6.fma(_sv7.withLane(2, _t16), _sv8.withLane(2, sd[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_3);
+        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t17), MASK_5);
+        var _col3 = _sv4.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t14), _sv6.fma(_sv7, _sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13), _sv6.fma(_sv7.withLane(2, _t16), _sv8.withLane(2, sd[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -3963,12 +3948,12 @@ public class Float4x4Impl implements Float4x4 {
         var _col2 = _sv0.mul(VEC_0).add(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(0, sd[9]).withLane(1, sd[1]).withLane(2, sd[5])).add(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, sd[5]).withLane(1, sd[9]).withLane(2, sd[1])).neg()).mul(_sv1));
         var _sv4 = FloatVector.broadcast(COL_SPECIES, sd[12]);
         var _sv5 = FloatVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_2);
+        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_5);
         var _sv7 = FloatVector.broadcast(COL_SPECIES, _t15);
         var _sv8 = FloatVector.broadcast(COL_SPECIES, sd[8]);
         var _sv9 = FloatVector.broadcast(COL_SPECIES, _t16);
-        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t17), MASK_2);
-        var _col3 = _sv4.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t14)).add(_sv6.mul(_sv7).add(_sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13)).add(_sv6.mul(_sv7.withLane(2, _t16)).add(_sv8.withLane(2, sd[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_3);
+        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t17), MASK_5);
+        var _col3 = _sv4.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t14)).add(_sv6.mul(_sv7).add(_sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13)).add(_sv6.mul(_sv7.withLane(2, _t16)).add(_sv8.withLane(2, sd[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4024,16 +4009,16 @@ public class Float4x4Impl implements Float4x4 {
         float _t75_inv = 1.0f / Math.fma(-sd[12], _t68, Math.fma(sd[8], _t69, Math.fma(sd[0], _t67, -(sd[4] * _t70))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t75_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, -_t75_inv);
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t68).mul(_sv1), MASK_4);
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t68).mul(_sv1), MASK_7);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, sd[12]);
         var _sv3 = _sv2.withLane(3, sd[8]);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_5);
+        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_8);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, sd[8]);
-        var _sv7 = _sv6.blend(_sv4, MASK_6);
-        var _col1 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_3);
-        var _col2 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_4);
-        var _col3 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_3);
+        var _sv7 = _sv6.blend(_sv4, MASK_9);
+        var _col1 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4070,16 +4055,16 @@ public class Float4x4Impl implements Float4x4 {
         float _t75_inv = 1.0f / Math.fma(-sd[12], _t68, Math.fma(sd[8], _t69, Math.fma(sd[0], _t67, -(sd[4] * _t70))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t75_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, -_t75_inv);
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t68).mul(_sv1), MASK_4);
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t68).mul(_sv1), MASK_7);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, sd[12]);
         var _sv3 = _sv2.withLane(3, sd[8]);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_5);
+        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_8);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, sd[8]);
-        var _sv7 = _sv6.blend(_sv4, MASK_6);
-        var _col1 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_3);
-        var _col2 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_4);
-        var _col3 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_3);
+        var _sv7 = _sv6.blend(_sv4, MASK_9);
+        var _col1 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4236,16 +4221,16 @@ public class Float4x4Impl implements Float4x4 {
         float _t139_inv = 1.0f / Math.fma(-_t57, _t132, Math.fma(_t61, _t133, Math.fma(_t62, _t131, -(_t63 * _t134))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t139_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, -_t139_inv);
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t131).withLane(2, _t133).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t134).withLane(3, _t132).mul(_sv1), MASK_4);
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t131).withLane(2, _t133).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t134).withLane(3, _t132).mul(_sv1), MASK_7);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t57);
         var _sv3 = _sv2.withLane(3, _t61);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, _t63);
-        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t62), MASK_5);
+        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t62), MASK_8);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, _t61);
-        var _sv7 = _sv6.blend(_sv4, MASK_6);
-        var _col1 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t105).withLane(3, _t104), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t101), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t101).withLane(2, _t104), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t102).withLane(2, _t103), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t103).withLane(2, _t106)).neg())).mul(_sv1), MASK_3);
-        var _col2 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t117), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t108).withLane(2, _t109), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t109).withLane(2, _t114)).neg())).mul(_sv0).blend(_sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t113).withLane(3, _t117), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t107), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t114).withLane(3, _t113)).neg())).mul(_sv1), MASK_4);
-        var _col3 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t115).withLane(3, _t118), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t111).withLane(3, _t110), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t116).withLane(3, _t115)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t110).withLane(2, _t118), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t111).withLane(2, _t112), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t112).withLane(2, _t116)).neg())).mul(_sv1), MASK_3);
+        var _sv7 = _sv6.blend(_sv4, MASK_9);
+        var _col1 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t105).withLane(3, _t104), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t101), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t101).withLane(2, _t104), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t102).withLane(2, _t103), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t103).withLane(2, _t106)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t117), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t108).withLane(2, _t109), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t109).withLane(2, _t114)).neg())).mul(_sv0).blend(_sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t113).withLane(3, _t117), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t107), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t114).withLane(3, _t113)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t115).withLane(3, _t118), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t111).withLane(3, _t110), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t116).withLane(3, _t115)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t110).withLane(2, _t118), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t111).withLane(2, _t112), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t112).withLane(2, _t116)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4299,16 +4284,16 @@ public class Float4x4Impl implements Float4x4 {
         float _t139_inv = 1.0f / Math.fma(-_t57, _t132, Math.fma(_t61, _t133, Math.fma(_t62, _t131, -(_t63 * _t134))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t139_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, -_t139_inv);
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t131).withLane(2, _t133).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t134).withLane(3, _t132).mul(_sv1), MASK_4);
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t131).withLane(2, _t133).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t134).withLane(3, _t132).mul(_sv1), MASK_7);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t57);
         var _sv3 = _sv2.withLane(3, _t61);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, _t63);
-        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t62), MASK_5);
+        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t62), MASK_8);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, _t61);
-        var _sv7 = _sv6.blend(_sv4, MASK_6);
-        var _col1 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t105).withLane(3, _t104)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t101)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t101).withLane(2, _t104)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t102).withLane(2, _t103)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t103).withLane(2, _t106)).neg())).mul(_sv1), MASK_3);
-        var _col2 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t117)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t108).withLane(2, _t109)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t109).withLane(2, _t114)).neg())).mul(_sv0).blend(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t113).withLane(3, _t117)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t107)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t114).withLane(3, _t113)).neg())).mul(_sv1), MASK_4);
-        var _col3 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t115).withLane(3, _t118)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t111).withLane(3, _t110)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t116).withLane(3, _t115)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t110).withLane(2, _t118)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t111).withLane(2, _t112)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t112).withLane(2, _t116)).neg())).mul(_sv1), MASK_3);
+        var _sv7 = _sv6.blend(_sv4, MASK_9);
+        var _col1 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t105).withLane(3, _t104)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t101)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t101).withLane(2, _t104)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t102).withLane(2, _t103)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t103).withLane(2, _t106)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t117)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t108).withLane(2, _t109)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t109).withLane(2, _t114)).neg())).mul(_sv0).blend(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t113).withLane(3, _t117)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t107)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t114).withLane(3, _t113)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t115).withLane(3, _t118)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t111).withLane(3, _t110)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t116).withLane(3, _t115)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t110).withLane(2, _t118)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t111).withLane(2, _t112)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t112).withLane(2, _t116)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4356,16 +4341,16 @@ public class Float4x4Impl implements Float4x4 {
         float _t75_inv = 1.0f / Math.fma(-otherData[12], _t68, Math.fma(otherData[8], _t69, Math.fma(otherData[0], _t67, -(otherData[4] * _t70))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t75_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, -_t75_inv);
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t68).mul(_sv1), MASK_4);
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t68).mul(_sv1), MASK_7);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, otherData[12]);
         var _sv3 = _sv2.withLane(3, otherData[8]);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, otherData[4]);
-        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, otherData[0]), MASK_5);
+        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, otherData[0]), MASK_8);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, otherData[8]);
-        var _sv7 = _sv6.blend(_sv4, MASK_6);
-        var _col1 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_3);
-        var _col2 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_4);
-        var _col3 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_3);
+        var _sv7 = _sv6.blend(_sv4, MASK_9);
+        var _col1 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4403,16 +4388,16 @@ public class Float4x4Impl implements Float4x4 {
         float _t75_inv = 1.0f / Math.fma(-otherData[12], _t68, Math.fma(otherData[8], _t69, Math.fma(otherData[0], _t67, -(otherData[4] * _t70))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t75_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, -_t75_inv);
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t68).mul(_sv1), MASK_4);
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t68).mul(_sv1), MASK_7);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, otherData[12]);
         var _sv3 = _sv2.withLane(3, otherData[8]);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, otherData[4]);
-        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, otherData[0]), MASK_5);
+        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, otherData[0]), MASK_8);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, otherData[8]);
-        var _sv7 = _sv6.blend(_sv4, MASK_6);
-        var _col1 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_3);
-        var _col2 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_4);
-        var _col3 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_3);
+        var _sv7 = _sv6.blend(_sv4, MASK_9);
+        var _col1 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4472,16 +4457,16 @@ public class Float4x4Impl implements Float4x4 {
         float _t87_inv = 1.0f / Math.fma(-_t6, _t80, Math.fma(_t9, _t81, Math.fma(_t10, _t79, -(_t11 * _t82))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t87_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, -_t87_inv);
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t79).withLane(2, _t81).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t82).withLane(3, _t80).mul(_sv1), MASK_4);
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t79).withLane(2, _t81).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t82).withLane(3, _t80).mul(_sv1), MASK_7);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t6);
         var _sv3 = _sv2.withLane(3, _t9);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, _t11);
-        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t10), MASK_5);
+        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t10), MASK_8);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, _t9);
-        var _sv7 = _sv6.blend(_sv4, MASK_6);
-        var _col1 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t53).withLane(3, _t52), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t54).withLane(3, _t53)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t49).withLane(2, _t52), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t50).withLane(2, _t51), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t51).withLane(2, _t54)).neg())).mul(_sv1), MASK_3);
-        var _col2 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t55).withLane(2, _t60), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t56).withLane(2, _t57), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t57).withLane(2, _t59)).neg())).mul(_sv0).blend(_sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t58).withLane(3, _t60), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t56).withLane(3, _t55), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t59).withLane(3, _t58)).neg())).mul(_sv1), MASK_4);
-        var _col3 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t72).withLane(3, _t74), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t69), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t73).withLane(3, _t72)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t69).withLane(2, _t74), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t70).withLane(2, _t71), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t71).withLane(2, _t73)).neg())).mul(_sv1), MASK_3);
+        var _sv7 = _sv6.blend(_sv4, MASK_9);
+        var _col1 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t53).withLane(3, _t52), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t54).withLane(3, _t53)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t49).withLane(2, _t52), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t50).withLane(2, _t51), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t51).withLane(2, _t54)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t55).withLane(2, _t60), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t56).withLane(2, _t57), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t57).withLane(2, _t59)).neg())).mul(_sv0).blend(_sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t58).withLane(3, _t60), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t56).withLane(3, _t55), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t59).withLane(3, _t58)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t72).withLane(3, _t74), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t69), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t73).withLane(3, _t72)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t69).withLane(2, _t74), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t70).withLane(2, _t71), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t71).withLane(2, _t73)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4531,16 +4516,16 @@ public class Float4x4Impl implements Float4x4 {
         float _t87_inv = 1.0f / Math.fma(-_t6, _t80, Math.fma(_t9, _t81, Math.fma(_t10, _t79, -(_t11 * _t82))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t87_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, -_t87_inv);
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t79).withLane(2, _t81).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t82).withLane(3, _t80).mul(_sv1), MASK_4);
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t79).withLane(2, _t81).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t82).withLane(3, _t80).mul(_sv1), MASK_7);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t6);
         var _sv3 = _sv2.withLane(3, _t9);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, _t11);
-        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t10), MASK_5);
+        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t10), MASK_8);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, _t9);
-        var _sv7 = _sv6.blend(_sv4, MASK_6);
-        var _col1 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t53).withLane(3, _t52)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t54).withLane(3, _t53)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t49).withLane(2, _t52)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t50).withLane(2, _t51)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t51).withLane(2, _t54)).neg())).mul(_sv1), MASK_3);
-        var _col2 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t55).withLane(2, _t60)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t56).withLane(2, _t57)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t57).withLane(2, _t59)).neg())).mul(_sv0).blend(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t58).withLane(3, _t60)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t56).withLane(3, _t55)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t59).withLane(3, _t58)).neg())).mul(_sv1), MASK_4);
-        var _col3 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t72).withLane(3, _t74)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t69)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t73).withLane(3, _t72)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t69).withLane(2, _t74)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t70).withLane(2, _t71)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t71).withLane(2, _t73)).neg())).mul(_sv1), MASK_3);
+        var _sv7 = _sv6.blend(_sv4, MASK_9);
+        var _col1 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t53).withLane(3, _t52)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t54).withLane(3, _t53)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t49).withLane(2, _t52)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t50).withLane(2, _t51)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t51).withLane(2, _t54)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t55).withLane(2, _t60)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t56).withLane(2, _t57)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t57).withLane(2, _t59)).neg())).mul(_sv0).blend(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t58).withLane(3, _t60)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t56).withLane(3, _t55)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t59).withLane(3, _t58)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t72).withLane(3, _t74)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t69)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t73).withLane(3, _t72)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t69).withLane(2, _t74)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t70).withLane(2, _t71)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t71).withLane(2, _t73)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4600,16 +4585,16 @@ public class Float4x4Impl implements Float4x4 {
         float _t123_inv = 1.0f / Math.fma(-_t42, _t116, Math.fma(_t45, _t117, Math.fma(_t46, _t115, -(_t47 * _t118))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t123_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, -_t123_inv);
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t115).withLane(2, _t117).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t118).withLane(3, _t116).mul(_sv1), MASK_4);
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t115).withLane(2, _t117).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t118).withLane(3, _t116).mul(_sv1), MASK_7);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t42);
         var _sv3 = _sv2.withLane(3, _t45);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, _t47);
-        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t46), MASK_5);
+        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t46), MASK_8);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, _t45);
-        var _sv7 = _sv6.blend(_sv4, MASK_6);
-        var _col1 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t89).withLane(3, _t88), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t86).withLane(3, _t85), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t90).withLane(3, _t89)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t85).withLane(2, _t88), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t86).withLane(2, _t87), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87).withLane(2, _t90)).neg())).mul(_sv1), MASK_3);
-        var _col2 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t91).withLane(2, _t96), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t92).withLane(2, _t93), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93).withLane(2, _t95)).neg())).mul(_sv0).blend(_sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t94).withLane(3, _t96), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t92).withLane(3, _t91), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t95).withLane(3, _t94)).neg())).mul(_sv1), MASK_4);
-        var _col3 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t110), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t109).withLane(3, _t108)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t105).withLane(2, _t110), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t106).withLane(2, _t107), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t109)).neg())).mul(_sv1), MASK_3);
+        var _sv7 = _sv6.blend(_sv4, MASK_9);
+        var _col1 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t89).withLane(3, _t88), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t86).withLane(3, _t85), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t90).withLane(3, _t89)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t85).withLane(2, _t88), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t86).withLane(2, _t87), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87).withLane(2, _t90)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t91).withLane(2, _t96), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t92).withLane(2, _t93), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93).withLane(2, _t95)).neg())).mul(_sv0).blend(_sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t94).withLane(3, _t96), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t92).withLane(3, _t91), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t95).withLane(3, _t94)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t110), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t109).withLane(3, _t108)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t105).withLane(2, _t110), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t106).withLane(2, _t107), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t109)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4659,16 +4644,16 @@ public class Float4x4Impl implements Float4x4 {
         float _t123_inv = 1.0f / Math.fma(-_t42, _t116, Math.fma(_t45, _t117, Math.fma(_t46, _t115, -(_t47 * _t118))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t123_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, -_t123_inv);
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t115).withLane(2, _t117).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t118).withLane(3, _t116).mul(_sv1), MASK_4);
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t115).withLane(2, _t117).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t118).withLane(3, _t116).mul(_sv1), MASK_7);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t42);
         var _sv3 = _sv2.withLane(3, _t45);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, _t47);
-        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t46), MASK_5);
+        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t46), MASK_8);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, _t45);
-        var _sv7 = _sv6.blend(_sv4, MASK_6);
-        var _col1 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t89).withLane(3, _t88)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t86).withLane(3, _t85)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t90).withLane(3, _t89)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t85).withLane(2, _t88)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t86).withLane(2, _t87)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87).withLane(2, _t90)).neg())).mul(_sv1), MASK_3);
-        var _col2 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t91).withLane(2, _t96)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t92).withLane(2, _t93)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93).withLane(2, _t95)).neg())).mul(_sv0).blend(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t94).withLane(3, _t96)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t92).withLane(3, _t91)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t95).withLane(3, _t94)).neg())).mul(_sv1), MASK_4);
-        var _col3 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t110)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t109).withLane(3, _t108)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t105).withLane(2, _t110)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t106).withLane(2, _t107)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t109)).neg())).mul(_sv1), MASK_3);
+        var _sv7 = _sv6.blend(_sv4, MASK_9);
+        var _col1 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t89).withLane(3, _t88)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t86).withLane(3, _t85)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t90).withLane(3, _t89)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t85).withLane(2, _t88)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t86).withLane(2, _t87)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87).withLane(2, _t90)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t91).withLane(2, _t96)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t92).withLane(2, _t93)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93).withLane(2, _t95)).neg())).mul(_sv0).blend(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t94).withLane(3, _t96)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t92).withLane(3, _t91)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t95).withLane(3, _t94)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t110)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t109).withLane(3, _t108)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t105).withLane(2, _t110)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t106).withLane(2, _t107)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t109)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4710,18 +4695,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
-        dd[0] = 1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 1.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = 1.0f;
-        dd[11] = 0.0f;
+        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 4);
+        VEC_4.intoArray(dd, 8);
         dd[12] = -otherData[12];
         dd[13] = -otherData[13];
         dd[14] = -otherData[14];
@@ -4760,12 +4736,12 @@ public class Float4x4Impl implements Float4x4 {
         var _col2 = _sv0.fma(VEC_0, _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(0, otherData[9]).withLane(1, otherData[1]).withLane(2, otherData[5]), _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, otherData[5]).withLane(1, otherData[9]).withLane(2, otherData[1])).neg()).mul(_sv1));
         var _sv4 = FloatVector.broadcast(COL_SPECIES, otherData[12]);
         var _sv5 = FloatVector.broadcast(COL_SPECIES, otherData[4]);
-        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, otherData[0]), MASK_2);
+        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, otherData[0]), MASK_5);
         var _sv7 = FloatVector.broadcast(COL_SPECIES, _t15);
         var _sv8 = FloatVector.broadcast(COL_SPECIES, otherData[8]);
         var _sv9 = FloatVector.broadcast(COL_SPECIES, _t16);
-        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t17), MASK_2);
-        var _col3 = _sv4.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t14), _sv6.fma(_sv7, _sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13), _sv6.fma(_sv7.withLane(2, _t16), _sv8.withLane(2, otherData[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_3);
+        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t17), MASK_5);
+        var _col3 = _sv4.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t14), _sv6.fma(_sv7, _sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13), _sv6.fma(_sv7.withLane(2, _t16), _sv8.withLane(2, otherData[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4794,12 +4770,12 @@ public class Float4x4Impl implements Float4x4 {
         var _col2 = _sv0.mul(VEC_0).add(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(0, otherData[9]).withLane(1, otherData[1]).withLane(2, otherData[5])).add(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, otherData[5]).withLane(1, otherData[9]).withLane(2, otherData[1])).neg()).mul(_sv1));
         var _sv4 = FloatVector.broadcast(COL_SPECIES, otherData[12]);
         var _sv5 = FloatVector.broadcast(COL_SPECIES, otherData[4]);
-        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, otherData[0]), MASK_2);
+        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, otherData[0]), MASK_5);
         var _sv7 = FloatVector.broadcast(COL_SPECIES, _t15);
         var _sv8 = FloatVector.broadcast(COL_SPECIES, otherData[8]);
         var _sv9 = FloatVector.broadcast(COL_SPECIES, _t16);
-        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t17), MASK_2);
-        var _col3 = _sv4.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t14)).add(_sv6.mul(_sv7).add(_sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13)).add(_sv6.mul(_sv7.withLane(2, _t16)).add(_sv8.withLane(2, otherData[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_3);
+        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t17), MASK_5);
+        var _col3 = _sv4.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t14)).add(_sv6.mul(_sv7).add(_sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13)).add(_sv6.mul(_sv7.withLane(2, _t16)).add(_sv8.withLane(2, otherData[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4817,18 +4793,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
-        dd[0] = 1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 1.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = 1.0f;
-        dd[11] = 0.0f;
+        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 4);
+        VEC_4.intoArray(dd, 8);
         dd[12] = -sd[12];
         dd[13] = -sd[13];
         dd[14] = -sd[14];
@@ -4846,18 +4813,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
-        dd[0] = 1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 1.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = 1.0f;
-        dd[11] = 0.0f;
+        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 4);
+        VEC_4.intoArray(dd, 8);
         dd[12] = -(otherData[12] + sd[12]);
         dd[13] = -(otherData[13] + sd[13]);
         dd[14] = -(otherData[14] + sd[14]);
@@ -4899,12 +4857,12 @@ public class Float4x4Impl implements Float4x4 {
         var _col2 = _sv0.fma(VEC_0, _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(0, otherData[9]).withLane(1, otherData[1]).withLane(2, otherData[5]), _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, otherData[5]).withLane(1, otherData[9]).withLane(2, otherData[1])).neg()).mul(_sv1));
         var _sv4 = FloatVector.broadcast(COL_SPECIES, _t3);
         var _sv5 = FloatVector.broadcast(COL_SPECIES, otherData[4]);
-        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, otherData[0]), MASK_2);
+        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, otherData[0]), MASK_5);
         var _sv7 = FloatVector.broadcast(COL_SPECIES, _t20);
         var _sv8 = FloatVector.broadcast(COL_SPECIES, otherData[8]);
         var _sv9 = FloatVector.broadcast(COL_SPECIES, _t21);
-        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t22), MASK_2);
-        var _col3 = _sv4.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t17), _sv6.fma(_sv7, _sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t15).withLane(2, _t16), _sv6.fma(_sv7.withLane(2, _t21), _sv8.withLane(2, otherData[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_3);
+        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t22), MASK_5);
+        var _col3 = _sv4.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t17), _sv6.fma(_sv7, _sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t15).withLane(2, _t16), _sv6.fma(_sv7.withLane(2, _t21), _sv8.withLane(2, otherData[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4936,12 +4894,12 @@ public class Float4x4Impl implements Float4x4 {
         var _col2 = _sv0.mul(VEC_0).add(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(0, otherData[9]).withLane(1, otherData[1]).withLane(2, otherData[5])).add(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, otherData[5]).withLane(1, otherData[9]).withLane(2, otherData[1])).neg()).mul(_sv1));
         var _sv4 = FloatVector.broadcast(COL_SPECIES, _t3);
         var _sv5 = FloatVector.broadcast(COL_SPECIES, otherData[4]);
-        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, otherData[0]), MASK_2);
+        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, otherData[0]), MASK_5);
         var _sv7 = FloatVector.broadcast(COL_SPECIES, _t20);
         var _sv8 = FloatVector.broadcast(COL_SPECIES, otherData[8]);
         var _sv9 = FloatVector.broadcast(COL_SPECIES, _t21);
-        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t22), MASK_2);
-        var _col3 = _sv4.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t17)).add(_sv6.mul(_sv7).add(_sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t15).withLane(2, _t16)).add(_sv6.mul(_sv7.withLane(2, _t21)).add(_sv8.withLane(2, otherData[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_3);
+        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t22), MASK_5);
+        var _col3 = _sv4.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t17)).add(_sv6.mul(_sv7).add(_sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t15).withLane(2, _t16)).add(_sv6.mul(_sv7.withLane(2, _t21)).add(_sv8.withLane(2, otherData[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -5070,12 +5028,12 @@ public class Float4x4Impl implements Float4x4 {
         var _col2 = _sv0.fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t32).withLane(1, _t29).withLane(2, _t31).fma(FloatVector.zero(COL_SPECIES).withLane(0, _t27).withLane(1, _t28).withLane(2, _t24), FloatVector.zero(COL_SPECIES).withLane(0, _t24).withLane(1, _t31).withLane(2, _t29).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t28).withLane(1, _t27).withLane(2, _t32)).neg()).mul(_sv1));
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t33);
         var _sv3 = FloatVector.broadcast(COL_SPECIES, _t32);
-        var _sv4 = _sv3.blend(FloatVector.broadcast(COL_SPECIES, _t31), MASK_2);
+        var _sv4 = _sv3.blend(FloatVector.broadcast(COL_SPECIES, _t31), MASK_5);
         var _sv5 = FloatVector.broadcast(COL_SPECIES, _t51);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, _t28);
         var _sv7 = FloatVector.broadcast(COL_SPECIES, _t52);
-        var _sv8 = _sv7.blend(FloatVector.broadcast(COL_SPECIES, _t53), MASK_2);
-        var _col3 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t50), _sv4.fma(_sv5, _sv6.mul(_sv8).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t49), _sv4.fma(_sv5.withLane(2, _t52), _sv6.withLane(2, _t32).mul(_sv8).neg())).mul(_sv1).neg(), MASK_3);
+        var _sv8 = _sv7.blend(FloatVector.broadcast(COL_SPECIES, _t53), MASK_5);
+        var _col3 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t50), _sv4.fma(_sv5, _sv6.mul(_sv8).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t49), _sv4.fma(_sv5.withLane(2, _t52), _sv6.withLane(2, _t32).mul(_sv8).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -5114,12 +5072,12 @@ public class Float4x4Impl implements Float4x4 {
         var _col2 = _sv0.mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t32).withLane(1, _t29).withLane(2, _t31).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t27).withLane(1, _t28).withLane(2, _t24)).add(FloatVector.zero(COL_SPECIES).withLane(0, _t24).withLane(1, _t31).withLane(2, _t29).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t28).withLane(1, _t27).withLane(2, _t32)).neg()).mul(_sv1));
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t33);
         var _sv3 = FloatVector.broadcast(COL_SPECIES, _t32);
-        var _sv4 = _sv3.blend(FloatVector.broadcast(COL_SPECIES, _t31), MASK_2);
+        var _sv4 = _sv3.blend(FloatVector.broadcast(COL_SPECIES, _t31), MASK_5);
         var _sv5 = FloatVector.broadcast(COL_SPECIES, _t51);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, _t28);
         var _sv7 = FloatVector.broadcast(COL_SPECIES, _t52);
-        var _sv8 = _sv7.blend(FloatVector.broadcast(COL_SPECIES, _t53), MASK_2);
-        var _col3 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t50)).add(_sv4.mul(_sv5).add(_sv6.mul(_sv8).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t49)).add(_sv4.mul(_sv5.withLane(2, _t52)).add(_sv6.withLane(2, _t32).mul(_sv8).neg())).mul(_sv1).neg(), MASK_3);
+        var _sv8 = _sv7.blend(FloatVector.broadcast(COL_SPECIES, _t53), MASK_5);
+        var _col3 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t50)).add(_sv4.mul(_sv5).add(_sv6.mul(_sv8).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t49)).add(_sv4.mul(_sv5.withLane(2, _t52)).add(_sv6.withLane(2, _t32).mul(_sv8).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -5158,12 +5116,12 @@ public class Float4x4Impl implements Float4x4 {
         var _col2 = _sv0.fma(VEC_0, _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(0, sd[9]).withLane(1, sd[1]).withLane(2, sd[5]), _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, sd[5]).withLane(1, sd[9]).withLane(2, sd[1])).neg()).mul(_sv1));
         var _sv4 = FloatVector.broadcast(COL_SPECIES, sd[12]);
         var _sv5 = FloatVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_2);
+        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_5);
         var _sv7 = FloatVector.broadcast(COL_SPECIES, _t15);
         var _sv8 = FloatVector.broadcast(COL_SPECIES, sd[8]);
         var _sv9 = FloatVector.broadcast(COL_SPECIES, _t16);
-        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t17), MASK_2);
-        var _col3 = _sv4.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t14), _sv6.fma(_sv7, _sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13), _sv6.fma(_sv7.withLane(2, _t16), _sv8.withLane(2, sd[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_3);
+        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t17), MASK_5);
+        var _col3 = _sv4.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t14), _sv6.fma(_sv7, _sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13), _sv6.fma(_sv7.withLane(2, _t16), _sv8.withLane(2, sd[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -5192,12 +5150,12 @@ public class Float4x4Impl implements Float4x4 {
         var _col2 = _sv0.mul(VEC_0).add(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(0, sd[9]).withLane(1, sd[1]).withLane(2, sd[5])).add(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, sd[5]).withLane(1, sd[9]).withLane(2, sd[1])).neg()).mul(_sv1));
         var _sv4 = FloatVector.broadcast(COL_SPECIES, sd[12]);
         var _sv5 = FloatVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_2);
+        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_5);
         var _sv7 = FloatVector.broadcast(COL_SPECIES, _t15);
         var _sv8 = FloatVector.broadcast(COL_SPECIES, sd[8]);
         var _sv9 = FloatVector.broadcast(COL_SPECIES, _t16);
-        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t17), MASK_2);
-        var _col3 = _sv4.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t14)).add(_sv6.mul(_sv7).add(_sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13)).add(_sv6.mul(_sv7.withLane(2, _t16)).add(_sv8.withLane(2, sd[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_3);
+        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t17), MASK_5);
+        var _col3 = _sv4.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t14)).add(_sv6.mul(_sv7).add(_sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13)).add(_sv6.mul(_sv7.withLane(2, _t16)).add(_sv8.withLane(2, sd[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -5239,12 +5197,12 @@ public class Float4x4Impl implements Float4x4 {
         var _col2 = _sv0.fma(VEC_0, _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(0, sd[9]).withLane(1, sd[1]).withLane(2, sd[5]), _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, sd[5]).withLane(1, sd[9]).withLane(2, sd[1])).neg()).mul(_sv1));
         var _sv4 = FloatVector.broadcast(COL_SPECIES, _t17);
         var _sv5 = FloatVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_2);
+        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_5);
         var _sv7 = FloatVector.broadcast(COL_SPECIES, _t27);
         var _sv8 = FloatVector.broadcast(COL_SPECIES, sd[8]);
         var _sv9 = FloatVector.broadcast(COL_SPECIES, _t28);
-        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t29), MASK_2);
-        var _col3 = _sv4.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t11), _sv6.fma(_sv7, _sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t9).withLane(2, _t10), _sv6.fma(_sv7.withLane(2, _t28), _sv8.withLane(2, sd[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_3);
+        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t29), MASK_5);
+        var _col3 = _sv4.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t11), _sv6.fma(_sv7, _sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t9).withLane(2, _t10), _sv6.fma(_sv7.withLane(2, _t28), _sv8.withLane(2, sd[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -5276,12 +5234,12 @@ public class Float4x4Impl implements Float4x4 {
         var _col2 = _sv0.mul(VEC_0).add(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(0, sd[9]).withLane(1, sd[1]).withLane(2, sd[5])).add(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, sd[5]).withLane(1, sd[9]).withLane(2, sd[1])).neg()).mul(_sv1));
         var _sv4 = FloatVector.broadcast(COL_SPECIES, _t17);
         var _sv5 = FloatVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_2);
+        var _sv6 = _sv5.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_5);
         var _sv7 = FloatVector.broadcast(COL_SPECIES, _t27);
         var _sv8 = FloatVector.broadcast(COL_SPECIES, sd[8]);
         var _sv9 = FloatVector.broadcast(COL_SPECIES, _t28);
-        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t29), MASK_2);
-        var _col3 = _sv4.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t11)).add(_sv6.mul(_sv7).add(_sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t9).withLane(2, _t10)).add(_sv6.mul(_sv7.withLane(2, _t28)).add(_sv8.withLane(2, sd[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_3);
+        var _sv10 = _sv9.blend(FloatVector.broadcast(COL_SPECIES, _t29), MASK_5);
+        var _col3 = _sv4.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t11)).add(_sv6.mul(_sv7).add(_sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0f).blend(_sv4.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t9).withLane(2, _t10)).add(_sv6.mul(_sv7.withLane(2, _t28)).add(_sv8.withLane(2, sd[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -5329,16 +5287,16 @@ public class Float4x4Impl implements Float4x4 {
         float _t75_inv = 1.0f / Math.fma(-sd[12], _t68, Math.fma(sd[8], _t69, Math.fma(sd[0], _t67, -(sd[4] * _t70))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t75_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, -_t75_inv);
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t68).mul(_sv1), MASK_4);
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t68).mul(_sv1), MASK_7);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, sd[12]);
         var _sv3 = _sv2.withLane(3, sd[8]);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_5);
+        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_8);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, sd[8]);
-        var _sv7 = _sv6.blend(_sv4, MASK_6);
-        var _col1 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_3);
-        var _col2 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_4);
-        var _col3 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_3);
+        var _sv7 = _sv6.blend(_sv4, MASK_9);
+        var _col1 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -5376,16 +5334,16 @@ public class Float4x4Impl implements Float4x4 {
         float _t75_inv = 1.0f / Math.fma(-sd[12], _t68, Math.fma(sd[8], _t69, Math.fma(sd[0], _t67, -(sd[4] * _t70))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t75_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, -_t75_inv);
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t68).mul(_sv1), MASK_4);
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t68).mul(_sv1), MASK_7);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, sd[12]);
         var _sv3 = _sv2.withLane(3, sd[8]);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_5);
+        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_8);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, sd[8]);
-        var _sv7 = _sv6.blend(_sv4, MASK_6);
-        var _col1 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_3);
-        var _col2 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_4);
-        var _col3 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_3);
+        var _sv7 = _sv6.blend(_sv4, MASK_9);
+        var _col1 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -5437,16 +5395,16 @@ public class Float4x4Impl implements Float4x4 {
         float _t87_inv = 1.0f / Math.fma(-_t40, _t70, Math.fma(sd[8], _t81, Math.fma(sd[0], _t80, -(sd[4] * _t82))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t87_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, -_t87_inv);
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t80).withLane(2, _t81).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t82).withLane(3, _t70).mul(_sv1), MASK_4);
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t80).withLane(2, _t81).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t82).withLane(3, _t70).mul(_sv1), MASK_7);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t40);
         var _sv3 = _sv2.withLane(3, sd[8]);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_5);
+        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_8);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, sd[8]);
-        var _sv7 = _sv6.blend(_sv4, MASK_6);
-        var _col1 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t24).withLane(3, _t23), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t61).withLane(3, _t22), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t63).withLane(3, _t24)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t22).withLane(2, _t23), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t61).withLane(2, _t62), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t62).withLane(2, _t63)).neg())).mul(_sv1), MASK_3);
-        var _col2 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t25).withLane(2, _t29), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t64).withLane(2, _t65), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t65).withLane(2, _t68)).neg())).mul(_sv0).blend(_sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t27).withLane(3, _t29), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t64).withLane(3, _t25), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t68).withLane(3, _t27)).neg())).mul(_sv1), MASK_4);
-        var _col3 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t28).withLane(3, _t30), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t66).withLane(3, _t26), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t69).withLane(3, _t28)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t26).withLane(2, _t30), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t66).withLane(2, _t67), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69)).neg())).mul(_sv1), MASK_3);
+        var _sv7 = _sv6.blend(_sv4, MASK_9);
+        var _col1 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t24).withLane(3, _t23), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t61).withLane(3, _t22), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t63).withLane(3, _t24)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t22).withLane(2, _t23), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t61).withLane(2, _t62), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t62).withLane(2, _t63)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t25).withLane(2, _t29), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t64).withLane(2, _t65), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t65).withLane(2, _t68)).neg())).mul(_sv0).blend(_sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t27).withLane(3, _t29), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t64).withLane(3, _t25), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t68).withLane(3, _t27)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t28).withLane(3, _t30), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t66).withLane(3, _t26), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t69).withLane(3, _t28)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t26).withLane(2, _t30), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t66).withLane(2, _t67), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -5488,16 +5446,16 @@ public class Float4x4Impl implements Float4x4 {
         float _t87_inv = 1.0f / Math.fma(-_t40, _t70, Math.fma(sd[8], _t81, Math.fma(sd[0], _t80, -(sd[4] * _t82))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t87_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, -_t87_inv);
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t80).withLane(2, _t81).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t82).withLane(3, _t70).mul(_sv1), MASK_4);
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t80).withLane(2, _t81).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t82).withLane(3, _t70).mul(_sv1), MASK_7);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t40);
         var _sv3 = _sv2.withLane(3, sd[8]);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_5);
+        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, sd[0]), MASK_8);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, sd[8]);
-        var _sv7 = _sv6.blend(_sv4, MASK_6);
-        var _col1 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t24).withLane(3, _t23)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t61).withLane(3, _t22)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t63).withLane(3, _t24)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t22).withLane(2, _t23)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t61).withLane(2, _t62)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t62).withLane(2, _t63)).neg())).mul(_sv1), MASK_3);
-        var _col2 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t25).withLane(2, _t29)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t64).withLane(2, _t65)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t65).withLane(2, _t68)).neg())).mul(_sv0).blend(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t27).withLane(3, _t29)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t64).withLane(3, _t25)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t68).withLane(3, _t27)).neg())).mul(_sv1), MASK_4);
-        var _col3 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t28).withLane(3, _t30)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t66).withLane(3, _t26)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t69).withLane(3, _t28)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t26).withLane(2, _t30)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t66).withLane(2, _t67)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69)).neg())).mul(_sv1), MASK_3);
+        var _sv7 = _sv6.blend(_sv4, MASK_9);
+        var _col1 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t24).withLane(3, _t23)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t61).withLane(3, _t22)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t63).withLane(3, _t24)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t22).withLane(2, _t23)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t61).withLane(2, _t62)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t62).withLane(2, _t63)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t25).withLane(2, _t29)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t64).withLane(2, _t65)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t65).withLane(2, _t68)).neg())).mul(_sv0).blend(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t27).withLane(3, _t29)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t64).withLane(3, _t25)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t68).withLane(3, _t27)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t28).withLane(3, _t30)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t66).withLane(3, _t26)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t69).withLane(3, _t28)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t26).withLane(2, _t30)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t66).withLane(2, _t67)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -5561,16 +5519,16 @@ public class Float4x4Impl implements Float4x4 {
         float _t123_inv = 1.0f / Math.fma(-_t47, _t115, Math.fma(_t41, _t117, Math.fma(_t42, _t116, -(_t43 * _t118))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t123_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, -_t123_inv);
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t116).withLane(2, _t117).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t118).withLane(3, _t115).mul(_sv1), MASK_4);
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t116).withLane(2, _t117).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t118).withLane(3, _t115).mul(_sv1), MASK_7);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t47);
         var _sv3 = _sv2.withLane(3, _t41);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, _t43);
-        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t42), MASK_5);
+        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t42), MASK_8);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, _t41);
-        var _sv7 = _sv6.blend(_sv4, MASK_6);
-        var _col1 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t87).withLane(3, _t86), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t94).withLane(3, _t85), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t96).withLane(3, _t87)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t85).withLane(2, _t86), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t94).withLane(2, _t95), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t95).withLane(2, _t96)).neg())).mul(_sv1), MASK_3);
-        var _col2 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t88).withLane(2, _t92), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t97).withLane(2, _t98), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t98).withLane(2, _t101)).neg())).mul(_sv0).blend(_sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t90).withLane(3, _t92), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t97).withLane(3, _t88), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t101).withLane(3, _t90)).neg())).mul(_sv1), MASK_4);
-        var _col3 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t91).withLane(3, _t93), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t99).withLane(3, _t89), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t91)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t89).withLane(2, _t93), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t99).withLane(2, _t100), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t100).withLane(2, _t102)).neg())).mul(_sv1), MASK_3);
+        var _sv7 = _sv6.blend(_sv4, MASK_9);
+        var _col1 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t87).withLane(3, _t86), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t94).withLane(3, _t85), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t96).withLane(3, _t87)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t85).withLane(2, _t86), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t94).withLane(2, _t95), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t95).withLane(2, _t96)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t88).withLane(2, _t92), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t97).withLane(2, _t98), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t98).withLane(2, _t101)).neg())).mul(_sv0).blend(_sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t90).withLane(3, _t92), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t97).withLane(3, _t88), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t101).withLane(3, _t90)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t91).withLane(3, _t93), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t99).withLane(3, _t89), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t91)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t89).withLane(2, _t93), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t99).withLane(2, _t100), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t100).withLane(2, _t102)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -5624,16 +5582,16 @@ public class Float4x4Impl implements Float4x4 {
         float _t123_inv = 1.0f / Math.fma(-_t47, _t115, Math.fma(_t41, _t117, Math.fma(_t42, _t116, -(_t43 * _t118))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t123_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, -_t123_inv);
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t116).withLane(2, _t117).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t118).withLane(3, _t115).mul(_sv1), MASK_4);
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t116).withLane(2, _t117).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t118).withLane(3, _t115).mul(_sv1), MASK_7);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t47);
         var _sv3 = _sv2.withLane(3, _t41);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, _t43);
-        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t42), MASK_5);
+        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t42), MASK_8);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, _t41);
-        var _sv7 = _sv6.blend(_sv4, MASK_6);
-        var _col1 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t87).withLane(3, _t86)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t94).withLane(3, _t85)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t96).withLane(3, _t87)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t85).withLane(2, _t86)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t94).withLane(2, _t95)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t95).withLane(2, _t96)).neg())).mul(_sv1), MASK_3);
-        var _col2 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t88).withLane(2, _t92)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t97).withLane(2, _t98)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t98).withLane(2, _t101)).neg())).mul(_sv0).blend(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t90).withLane(3, _t92)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t97).withLane(3, _t88)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t101).withLane(3, _t90)).neg())).mul(_sv1), MASK_4);
-        var _col3 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t91).withLane(3, _t93)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t99).withLane(3, _t89)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t91)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t89).withLane(2, _t93)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t99).withLane(2, _t100)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t100).withLane(2, _t102)).neg())).mul(_sv1), MASK_3);
+        var _sv7 = _sv6.blend(_sv4, MASK_9);
+        var _col1 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t87).withLane(3, _t86)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t94).withLane(3, _t85)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t96).withLane(3, _t87)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t85).withLane(2, _t86)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t94).withLane(2, _t95)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t95).withLane(2, _t96)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t88).withLane(2, _t92)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t97).withLane(2, _t98)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t98).withLane(2, _t101)).neg())).mul(_sv0).blend(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t90).withLane(3, _t92)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t97).withLane(3, _t88)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t101).withLane(3, _t90)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t91).withLane(3, _t93)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t99).withLane(3, _t89)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t91)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t89).withLane(2, _t93)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t99).withLane(2, _t100)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t100).withLane(2, _t102)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -5841,16 +5799,16 @@ public class Float4x4Impl implements Float4x4 {
         float _t139_inv = 1.0f / Math.fma(-_t57, _t132, Math.fma(_t61, _t133, Math.fma(_t62, _t131, -(_t63 * _t134))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t139_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, -_t139_inv);
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t131).withLane(2, _t133).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t134).withLane(3, _t132).mul(_sv1), MASK_4);
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t131).withLane(2, _t133).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t134).withLane(3, _t132).mul(_sv1), MASK_7);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t57);
         var _sv3 = _sv2.withLane(3, _t61);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, _t63);
-        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t62), MASK_5);
+        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t62), MASK_8);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, _t61);
-        var _sv7 = _sv6.blend(_sv4, MASK_6);
-        var _col1 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t105).withLane(3, _t104), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t101), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t101).withLane(2, _t104), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t102).withLane(2, _t103), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t103).withLane(2, _t106)).neg())).mul(_sv1), MASK_3);
-        var _col2 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t117), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t108).withLane(2, _t109), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t109).withLane(2, _t114)).neg())).mul(_sv0).blend(_sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t113).withLane(3, _t117), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t107), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t114).withLane(3, _t113)).neg())).mul(_sv1), MASK_4);
-        var _col3 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t115).withLane(3, _t118), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t111).withLane(3, _t110), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t116).withLane(3, _t115)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t110).withLane(2, _t118), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t111).withLane(2, _t112), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t112).withLane(2, _t116)).neg())).mul(_sv1), MASK_3);
+        var _sv7 = _sv6.blend(_sv4, MASK_9);
+        var _col1 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t105).withLane(3, _t104), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t101), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t101).withLane(2, _t104), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t102).withLane(2, _t103), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t103).withLane(2, _t106)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t117), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t108).withLane(2, _t109), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t109).withLane(2, _t114)).neg())).mul(_sv0).blend(_sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t113).withLane(3, _t117), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t107), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t114).withLane(3, _t113)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t115).withLane(3, _t118), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(1, _t111).withLane(3, _t110), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t116).withLane(3, _t115)).neg())).mul(_sv0).blend(_sv2.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t110).withLane(2, _t118), _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _t111).withLane(2, _t112), _sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t112).withLane(2, _t116)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -5903,16 +5861,16 @@ public class Float4x4Impl implements Float4x4 {
         float _t139_inv = 1.0f / Math.fma(-_t57, _t132, Math.fma(_t61, _t133, Math.fma(_t62, _t131, -(_t63 * _t134))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t139_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, -_t139_inv);
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t131).withLane(2, _t133).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t134).withLane(3, _t132).mul(_sv1), MASK_4);
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t131).withLane(2, _t133).mul(_sv0).blend(FloatVector.zero(COL_SPECIES).withLane(1, _t134).withLane(3, _t132).mul(_sv1), MASK_7);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t57);
         var _sv3 = _sv2.withLane(3, _t61);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, _t63);
-        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t62), MASK_5);
+        var _sv5 = _sv4.blend(FloatVector.broadcast(COL_SPECIES, _t62), MASK_8);
         var _sv6 = FloatVector.broadcast(COL_SPECIES, _t61);
-        var _sv7 = _sv6.blend(_sv4, MASK_6);
-        var _col1 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t105).withLane(3, _t104)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t101)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t101).withLane(2, _t104)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t102).withLane(2, _t103)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t103).withLane(2, _t106)).neg())).mul(_sv1), MASK_3);
-        var _col2 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t117)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t108).withLane(2, _t109)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t109).withLane(2, _t114)).neg())).mul(_sv0).blend(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t113).withLane(3, _t117)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t107)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t114).withLane(3, _t113)).neg())).mul(_sv1), MASK_4);
-        var _col3 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t115).withLane(3, _t118)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t111).withLane(3, _t110)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t116).withLane(3, _t115)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t110).withLane(2, _t118)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t111).withLane(2, _t112)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t112).withLane(2, _t116)).neg())).mul(_sv1), MASK_3);
+        var _sv7 = _sv6.blend(_sv4, MASK_9);
+        var _col1 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t105).withLane(3, _t104)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t101)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t101).withLane(2, _t104)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t102).withLane(2, _t103)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t103).withLane(2, _t106)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t117)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t108).withLane(2, _t109)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t109).withLane(2, _t114)).neg())).mul(_sv0).blend(_sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t113).withLane(3, _t117)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t107)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t114).withLane(3, _t113)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t115).withLane(3, _t118)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t111).withLane(3, _t110)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(1, _t116).withLane(3, _t115)).neg())).mul(_sv0).blend(_sv2.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t110).withLane(2, _t118)).add(_sv5.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t111).withLane(2, _t112)).add(_sv7.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t112).withLane(2, _t116)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -6081,6 +6039,86 @@ public class Float4x4Impl implements Float4x4 {
     private Float4x4 normal_affine(@Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
+        float _t12 = Math.fma(sd[5], sd[10], -(sd[9] * sd[6]));
+        float _t13 = Math.fma(sd[1], sd[6], -(sd[5] * sd[2]));
+        float _t14 = Math.fma(sd[1], sd[10], -(sd[9] * sd[2]));
+        float _t15 = Math.fma(sd[9], sd[14], -(sd[13] * sd[10]));
+        float _t16 = Math.fma(sd[5], sd[14], -(sd[13] * sd[6]));
+        float _t17 = Math.fma(sd[1], sd[14], -(sd[13] * sd[2]));
+        float _t21 = Math.fma(sd[8], _t13, Math.fma(sd[0], _t12, -(sd[4] * _t14)));
+        float _t21_inv = 1.0f / _t21;
+        float _buf0 = _t12 * _t21_inv;
+        float _buf1 = Math.fma(sd[8], sd[6], -(sd[4] * sd[10])) * _t21_inv;
+        float _buf2 = Math.fma(sd[4], sd[9], -(sd[8] * sd[5])) * _t21_inv;
+        dd[3] = -(Math.fma(sd[12], _t12, Math.fma(sd[4], _t15, -(sd[8] * _t16))) * _t21_inv);
+        float _buf3 = Math.fma(sd[9], sd[2], -(sd[1] * sd[10])) * _t21_inv;
+        float _buf4 = Math.fma(sd[0], sd[10], -(sd[8] * sd[2])) * _t21_inv;
+        float _buf5 = Math.fma(sd[8], sd[1], -(sd[0] * sd[9])) * _t21_inv;
+        dd[7] = Math.fma(sd[12], _t14, Math.fma(sd[0], _t15, -(sd[8] * _t17))) * _t21_inv;
+        dd[8] = _t13 * _t21_inv;
+        dd[9] = Math.fma(sd[4], sd[2], -(sd[0] * sd[6])) * _t21_inv;
+        dd[10] = Math.fma(sd[0], sd[5], -(sd[4] * sd[1])) * _t21_inv;
+        dd[11] = -(Math.fma(sd[12], _t13, Math.fma(sd[0], _t16, -(sd[4] * _t17))) * _t21_inv);
+        VEC_0.intoArray(dd, 12);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        dd[4] = _buf3;
+        dd[5] = _buf4;
+        dd[6] = _buf5;
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code normal}, specialized by runtime matrix properties;
+     * reached only through the public {@code normal} dispatcher.
+     */
+    private Float4x4 normal_affine_self(@Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t12 = Math.fma(sd[5], sd[10], -(sd[9] * sd[6]));
+        float _t13 = Math.fma(sd[1], sd[6], -(sd[5] * sd[2]));
+        float _t14 = Math.fma(sd[1], sd[10], -(sd[9] * sd[2]));
+        float _t15 = Math.fma(sd[9], sd[14], -(sd[13] * sd[10]));
+        float _t16 = Math.fma(sd[5], sd[14], -(sd[13] * sd[6]));
+        float _t17 = Math.fma(sd[1], sd[14], -(sd[13] * sd[2]));
+        float _t21 = Math.fma(sd[8], _t13, Math.fma(sd[0], _t12, -(sd[4] * _t14)));
+        float _t21_inv = 1.0f / _t21;
+        float _buf0 = _t12 * _t21_inv;
+        float _buf1 = Math.fma(sd[8], sd[6], -(sd[4] * sd[10])) * _t21_inv;
+        float _buf2 = Math.fma(sd[4], sd[9], -(sd[8] * sd[5])) * _t21_inv;
+        dd[3] = -(Math.fma(sd[12], _t12, Math.fma(sd[4], _t15, -(sd[8] * _t16))) * _t21_inv);
+        float _buf3 = Math.fma(sd[9], sd[2], -(sd[1] * sd[10])) * _t21_inv;
+        float _buf4 = Math.fma(sd[0], sd[10], -(sd[8] * sd[2])) * _t21_inv;
+        float _buf5 = Math.fma(sd[8], sd[1], -(sd[0] * sd[9])) * _t21_inv;
+        dd[7] = Math.fma(sd[12], _t14, Math.fma(sd[0], _t15, -(sd[8] * _t17))) * _t21_inv;
+        dd[8] = _t13 * _t21_inv;
+        dd[9] = Math.fma(sd[4], sd[2], -(sd[0] * sd[6])) * _t21_inv;
+        dd[10] = Math.fma(sd[0], sd[5], -(sd[4] * sd[1])) * _t21_inv;
+        dd[11] = -(Math.fma(sd[12], _t13, Math.fma(sd[0], _t16, -(sd[4] * _t17))) * _t21_inv);
+        dd[12] = 0.0f;
+        dd[13] = 0.0f;
+        dd[14] = 0.0f;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        dd[4] = _buf3;
+        dd[5] = _buf4;
+        dd[6] = _buf5;
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code normal}, specialized by runtime matrix properties; reached only
+     * through the public {@code normal} dispatcher.
+     */
+    private Float4x4 normal_general(@Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
         float _t37 = Math.fma(sd[6], sd[11], -(sd[10] * sd[7]));
         float _t38 = Math.fma(sd[10], sd[15], -(sd[14] * sd[11]));
         float _t39 = Math.fma(sd[6], sd[15], -(sd[14] * sd[7]));
@@ -6130,15 +6168,6 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
-     * Private body of {@code normal}, specialized by runtime matrix properties; reached only
-     * through the public {@code normal} dispatcher.
-     */
-    private Float4x4 normal_general(@Mutated Float4x4 dest) {
-        return normal_affine(dest);
-    }
-
-
-    /**
      * Compute the normal matrix of this matrix, i.e. the transpose of its inverse and store the
      * result in {@code dest}.
      *
@@ -6166,7 +6195,7 @@ public class Float4x4Impl implements Float4x4 {
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return normal_identity_self(this);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return normal_translation_self(this);
         if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return normal_orthogonal_self(this);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return normal_affine(this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return normal_affine_self(this);
         return normal_general(this);
     }
 
@@ -6268,22 +6297,95 @@ public class Float4x4Impl implements Float4x4 {
     private Float4x4 transpose_translation(@Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 4);
-        var _sv2 = _sv0.rearrange(SHUF_7).blend(_sv1.rearrange(SHUF_7), MASK_4);
-        var _sv3 = FloatVector.fromArray(COL_SPECIES, sd, 8);
-        var _sv4 = FloatVector.fromArray(COL_SPECIES, sd, 12);
-        var _sv5 = _sv3.rearrange(SHUF_7).blend(_sv4.rearrange(SHUF_7), MASK_4);
-        var _col0 = _sv2.blend(_sv5.rearrange(SHUF_8), MASK_6);
-        var _col1 = _sv2.rearrange(SHUF_9).blend(_sv5, MASK_6);
-        var _sv6 = _sv0.rearrange(SHUF_10).blend(_sv1.rearrange(SHUF_10), MASK_4);
-        var _sv7 = _sv3.rearrange(SHUF_10).blend(_sv4.rearrange(SHUF_10), MASK_4);
-        var _col2 = _sv6.blend(_sv7.rearrange(SHUF_8), MASK_6);
-        var _col3 = _sv6.rearrange(SHUF_9).blend(_sv7, MASK_6);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
+        dd[0] = 1.0f;
+        dd[1] = 0.0f;
+        dd[2] = 0.0f;
+        dd[3] = sd[12];
+        dd[4] = 0.0f;
+        dd[5] = 1.0f;
+        dd[6] = 0.0f;
+        dd[7] = sd[13];
+        dd[8] = 0.0f;
+        dd[9] = 0.0f;
+        dd[10] = 1.0f;
+        dd[11] = sd[14];
+        VEC_0.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code transpose}, specialized by runtime matrix
+     * properties; reached only through the public {@code transpose} dispatcher.
+     */
+    private Float4x4 transpose_translation_self(@Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        dd[3] = sd[12];
+        dd[7] = sd[13];
+        dd[11] = sd[14];
+        dd[12] = 0.0f;
+        dd[13] = 0.0f;
+        dd[14] = 0.0f;
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code transpose}, specialized by runtime matrix properties; reached only
+     * through the public {@code transpose} dispatcher.
+     */
+    private Float4x4 transpose_orthogonal(@Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        dd[0] = sd[0];
+        float _buf0 = sd[4];
+        float _buf1 = sd[8];
+        dd[3] = sd[12];
+        dd[4] = sd[1];
+        dd[5] = sd[5];
+        float _buf2 = sd[9];
+        dd[7] = sd[13];
+        dd[8] = sd[2];
+        dd[9] = sd[6];
+        dd[10] = sd[10];
+        dd[11] = sd[14];
+        VEC_0.intoArray(dd, 12);
+        dd[1] = _buf0;
+        dd[2] = _buf1;
+        dd[6] = _buf2;
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code transpose}, specialized by runtime matrix
+     * properties; reached only through the public {@code transpose} dispatcher.
+     */
+    private Float4x4 transpose_orthogonal_self(@Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        dd[0] = sd[0];
+        float _buf0 = sd[4];
+        float _buf1 = sd[8];
+        dd[3] = sd[12];
+        dd[4] = sd[1];
+        dd[5] = sd[5];
+        float _buf2 = sd[9];
+        dd[7] = sd[13];
+        dd[8] = sd[2];
+        dd[9] = sd[6];
+        dd[10] = sd[10];
+        dd[11] = sd[14];
+        dd[12] = 0.0f;
+        dd[13] = 0.0f;
+        dd[14] = 0.0f;
+        dd[1] = _buf0;
+        dd[2] = _buf1;
+        dd[6] = _buf2;
         ((Float4x4Impl) dest).properties = 0;
         return dest;
     }
@@ -6294,7 +6396,26 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code transpose} dispatcher.
      */
     private Float4x4 transpose_general(@Mutated Float4x4 dest) {
-        return transpose_translation(dest);
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 4);
+        var _sv2 = _sv0.rearrange(SHUF_10).blend(_sv1.rearrange(SHUF_10), MASK_7);
+        var _sv3 = FloatVector.fromArray(COL_SPECIES, sd, 8);
+        var _sv4 = FloatVector.fromArray(COL_SPECIES, sd, 12);
+        var _sv5 = _sv3.rearrange(SHUF_10).blend(_sv4.rearrange(SHUF_10), MASK_7);
+        var _col0 = _sv2.blend(_sv5.rearrange(SHUF_11), MASK_9);
+        var _col1 = _sv2.rearrange(SHUF_12).blend(_sv5, MASK_9);
+        var _sv6 = _sv0.rearrange(SHUF_13).blend(_sv1.rearrange(SHUF_13), MASK_7);
+        var _sv7 = _sv3.rearrange(SHUF_13).blend(_sv4.rearrange(SHUF_13), MASK_7);
+        var _col2 = _sv6.blend(_sv7.rearrange(SHUF_11), MASK_9);
+        var _col3 = _sv6.rearrange(SHUF_12).blend(_sv7, MASK_9);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
     }
 
 
@@ -6307,7 +6428,8 @@ public class Float4x4Impl implements Float4x4 {
     public Float4x4 transpose(@Mutated Float4x4 dest) {
         int p = this.properties;
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return transpose_identity(dest);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return transpose_translation(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return transpose_translation(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return transpose_orthogonal(dest);
         return transpose_general(dest);
     }
 
@@ -6321,7 +6443,8 @@ public class Float4x4Impl implements Float4x4 {
         if (Joml.RETURN_NEW) return transpose(Joml.float4x4());
         int p = this.properties;
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return transpose_identity_self(this);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return transpose_translation(this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return transpose_translation_self(this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return transpose_orthogonal_self(this);
         return transpose_general(this);
     }
 
@@ -6401,9 +6524,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 1.0f);
-        var _col0 = _sv0.fma(VEC_11, FloatVector.fromArray(COL_SPECIES, otherData, 0));
-        var _col1 = _sv0.fma(VEC_12, FloatVector.fromArray(COL_SPECIES, otherData, 4));
-        var _col2 = _sv0.fma(VEC_13, FloatVector.fromArray(COL_SPECIES, otherData, 8));
+        var _col0 = _sv0.fma(VEC_2, FloatVector.fromArray(COL_SPECIES, otherData, 0));
+        var _col1 = _sv0.fma(VEC_3, FloatVector.fromArray(COL_SPECIES, otherData, 4));
+        var _col2 = _sv0.fma(VEC_4, FloatVector.fromArray(COL_SPECIES, otherData, 8));
         var _col3 = _sv0.fma(VEC_0, FloatVector.fromArray(COL_SPECIES, otherData, 12));
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
@@ -6418,9 +6541,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 1.0f);
-        var _col0 = _sv0.mul(VEC_11).add(FloatVector.fromArray(COL_SPECIES, otherData, 0));
-        var _col1 = _sv0.mul(VEC_12).add(FloatVector.fromArray(COL_SPECIES, otherData, 4));
-        var _col2 = _sv0.mul(VEC_13).add(FloatVector.fromArray(COL_SPECIES, otherData, 8));
+        var _col0 = _sv0.mul(VEC_2).add(FloatVector.fromArray(COL_SPECIES, otherData, 0));
+        var _col1 = _sv0.mul(VEC_3).add(FloatVector.fromArray(COL_SPECIES, otherData, 4));
+        var _col2 = _sv0.mul(VEC_4).add(FloatVector.fromArray(COL_SPECIES, otherData, 8));
         var _col3 = _sv0.mul(VEC_0).add(FloatVector.fromArray(COL_SPECIES, otherData, 12));
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
@@ -6445,9 +6568,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 1.0f);
-        var _col0 = _sv0.fma(VEC_11, FloatVector.fromArray(COL_SPECIES, otherData, 0));
-        var _col1 = _sv0.fma(VEC_12, FloatVector.fromArray(COL_SPECIES, otherData, 4));
-        var _col2 = _sv0.fma(VEC_13, FloatVector.fromArray(COL_SPECIES, otherData, 8));
+        var _col0 = _sv0.fma(VEC_2, FloatVector.fromArray(COL_SPECIES, otherData, 0));
+        var _col1 = _sv0.fma(VEC_3, FloatVector.fromArray(COL_SPECIES, otherData, 4));
+        var _col2 = _sv0.fma(VEC_4, FloatVector.fromArray(COL_SPECIES, otherData, 8));
         var _col3 = FloatVector.fromArray(COL_SPECIES, otherData, 12).withLane(3, 1.0f).add(FloatVector.fromArray(COL_SPECIES, sd, 12).withLane(3, otherData[15]));
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
@@ -6462,9 +6585,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 1.0f);
-        var _col0 = _sv0.mul(VEC_11).add(FloatVector.fromArray(COL_SPECIES, otherData, 0));
-        var _col1 = _sv0.mul(VEC_12).add(FloatVector.fromArray(COL_SPECIES, otherData, 4));
-        var _col2 = _sv0.mul(VEC_13).add(FloatVector.fromArray(COL_SPECIES, otherData, 8));
+        var _col0 = _sv0.mul(VEC_2).add(FloatVector.fromArray(COL_SPECIES, otherData, 0));
+        var _col1 = _sv0.mul(VEC_3).add(FloatVector.fromArray(COL_SPECIES, otherData, 4));
+        var _col2 = _sv0.mul(VEC_4).add(FloatVector.fromArray(COL_SPECIES, otherData, 8));
         var _col3 = FloatVector.fromArray(COL_SPECIES, otherData, 12).withLane(3, 1.0f).add(FloatVector.fromArray(COL_SPECIES, sd, 12).withLane(3, otherData[15]));
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
@@ -6507,18 +6630,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
-        dd[0] = 2.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 2.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = 2.0f;
-        dd[11] = 0.0f;
+        VEC_15.intoArray(dd, 0);
+        VEC_16.intoArray(dd, 4);
+        VEC_17.intoArray(dd, 8);
         dd[12] = otherData[12];
         dd[13] = otherData[13];
         dd[14] = otherData[14];
@@ -6565,18 +6679,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
-        dd[0] = 2.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 2.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = 2.0f;
-        dd[11] = 0.0f;
+        VEC_15.intoArray(dd, 0);
+        VEC_16.intoArray(dd, 4);
+        VEC_17.intoArray(dd, 8);
         dd[12] = sd[12];
         dd[13] = sd[13];
         dd[14] = sd[14];
@@ -6594,18 +6699,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
-        dd[0] = 2.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 2.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = 2.0f;
-        dd[11] = 0.0f;
+        VEC_15.intoArray(dd, 0);
+        VEC_16.intoArray(dd, 4);
+        VEC_17.intoArray(dd, 8);
         dd[12] = otherData[12] + sd[12];
         dd[13] = otherData[13] + sd[13];
         dd[14] = otherData[14] + sd[14];
@@ -6687,9 +6783,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 1.0f);
-        var _col0 = _sv0.fma(VEC_11, FloatVector.fromArray(COL_SPECIES, sd, 0));
-        var _col1 = _sv0.fma(VEC_12, FloatVector.fromArray(COL_SPECIES, sd, 4));
-        var _col2 = _sv0.fma(VEC_13, FloatVector.fromArray(COL_SPECIES, sd, 8));
+        var _col0 = _sv0.fma(VEC_2, FloatVector.fromArray(COL_SPECIES, sd, 0));
+        var _col1 = _sv0.fma(VEC_3, FloatVector.fromArray(COL_SPECIES, sd, 4));
+        var _col2 = _sv0.fma(VEC_4, FloatVector.fromArray(COL_SPECIES, sd, 8));
         var _col3 = _sv0.fma(VEC_0, FloatVector.fromArray(COL_SPECIES, sd, 12));
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
@@ -6704,9 +6800,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 1.0f);
-        var _col0 = _sv0.mul(VEC_11).add(FloatVector.fromArray(COL_SPECIES, sd, 0));
-        var _col1 = _sv0.mul(VEC_12).add(FloatVector.fromArray(COL_SPECIES, sd, 4));
-        var _col2 = _sv0.mul(VEC_13).add(FloatVector.fromArray(COL_SPECIES, sd, 8));
+        var _col0 = _sv0.mul(VEC_2).add(FloatVector.fromArray(COL_SPECIES, sd, 0));
+        var _col1 = _sv0.mul(VEC_3).add(FloatVector.fromArray(COL_SPECIES, sd, 4));
+        var _col2 = _sv0.mul(VEC_4).add(FloatVector.fromArray(COL_SPECIES, sd, 8));
         var _col3 = _sv0.mul(VEC_0).add(FloatVector.fromArray(COL_SPECIES, sd, 12));
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
@@ -6731,9 +6827,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 1.0f);
-        var _col0 = _sv0.fma(VEC_11, FloatVector.fromArray(COL_SPECIES, sd, 0));
-        var _col1 = _sv0.fma(VEC_12, FloatVector.fromArray(COL_SPECIES, sd, 4));
-        var _col2 = _sv0.fma(VEC_13, FloatVector.fromArray(COL_SPECIES, sd, 8));
+        var _col0 = _sv0.fma(VEC_2, FloatVector.fromArray(COL_SPECIES, sd, 0));
+        var _col1 = _sv0.fma(VEC_3, FloatVector.fromArray(COL_SPECIES, sd, 4));
+        var _col2 = _sv0.fma(VEC_4, FloatVector.fromArray(COL_SPECIES, sd, 8));
         var _col3 = FloatVector.fromArray(COL_SPECIES, otherData, 12).withLane(3, 1.0f).add(FloatVector.fromArray(COL_SPECIES, sd, 12));
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
@@ -6748,9 +6844,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 1.0f);
-        var _col0 = _sv0.mul(VEC_11).add(FloatVector.fromArray(COL_SPECIES, sd, 0));
-        var _col1 = _sv0.mul(VEC_12).add(FloatVector.fromArray(COL_SPECIES, sd, 4));
-        var _col2 = _sv0.mul(VEC_13).add(FloatVector.fromArray(COL_SPECIES, sd, 8));
+        var _col0 = _sv0.mul(VEC_2).add(FloatVector.fromArray(COL_SPECIES, sd, 0));
+        var _col1 = _sv0.mul(VEC_3).add(FloatVector.fromArray(COL_SPECIES, sd, 4));
+        var _col2 = _sv0.mul(VEC_4).add(FloatVector.fromArray(COL_SPECIES, sd, 8));
         var _col3 = FloatVector.fromArray(COL_SPECIES, otherData, 12).withLane(3, 1.0f).add(FloatVector.fromArray(COL_SPECIES, sd, 12));
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
@@ -6957,15 +7053,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_15, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_18, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_15, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_15, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_18, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_18, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_15, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_15, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_15, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_15, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_18, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_18, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_18, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_18, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = 0;
         return dest;
@@ -6988,18 +7084,9 @@ public class Float4x4Impl implements Float4x4 {
     private Float4x4 negate_translation(@Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
-        dd[0] = -1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = -1.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = -1.0f;
-        dd[11] = 0.0f;
+        VEC_19.intoArray(dd, 0);
+        VEC_20.intoArray(dd, 4);
+        VEC_21.intoArray(dd, 8);
         dd[12] = -sd[12];
         dd[13] = -sd[13];
         dd[14] = -sd[14];
@@ -7036,13 +7123,13 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _col0 = _sv0.withLane(3, 0.0f).blend(_sv0.neg(), MASK_16);
+        var _col0 = _sv0.withLane(3, 0.0f).blend(_sv0.neg(), MASK_22);
         var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 4);
-        var _col1 = _sv1.withLane(3, 0.0f).blend(_sv1.neg(), MASK_16);
+        var _col1 = _sv1.withLane(3, 0.0f).blend(_sv1.neg(), MASK_22);
         var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 8);
-        var _col2 = _sv2.withLane(3, 0.0f).blend(_sv2.neg(), MASK_16);
+        var _col2 = _sv2.withLane(3, 0.0f).blend(_sv2.neg(), MASK_22);
         var _sv3 = FloatVector.fromArray(COL_SPECIES, sd, 12);
-        var _col3 = _sv3.withLane(3, -1.0f).blend(_sv3.neg(), MASK_16);
+        var _col3 = _sv3.withLane(3, -1.0f).blend(_sv3.neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -7060,13 +7147,13 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _col0 = _sv0.lanewise(VectorOperators.NEG, MASK_16);
+        var _col0 = _sv0.lanewise(VectorOperators.NEG, MASK_22);
         var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 4);
-        var _col1 = _sv1.lanewise(VectorOperators.NEG, MASK_16);
+        var _col1 = _sv1.lanewise(VectorOperators.NEG, MASK_22);
         var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 8);
-        var _col2 = _sv2.lanewise(VectorOperators.NEG, MASK_16);
+        var _col2 = _sv2.lanewise(VectorOperators.NEG, MASK_22);
         var _sv3 = FloatVector.fromArray(COL_SPECIES, sd, 12);
-        var _col3 = _sv3.withLane(3, -1.0f).blend(_sv3.neg(), MASK_16);
+        var _col3 = _sv3.withLane(3, -1.0f).blend(_sv3.neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -7195,9 +7282,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 1.0f);
-        var _col0 = _sv0.fma(VEC_11, FloatVector.fromArray(COL_SPECIES, otherData, 0).neg());
-        var _col1 = _sv0.fma(VEC_12, FloatVector.fromArray(COL_SPECIES, otherData, 4).neg());
-        var _col2 = _sv0.fma(VEC_13, FloatVector.fromArray(COL_SPECIES, otherData, 8).neg());
+        var _col0 = _sv0.fma(VEC_2, FloatVector.fromArray(COL_SPECIES, otherData, 0).neg());
+        var _col1 = _sv0.fma(VEC_3, FloatVector.fromArray(COL_SPECIES, otherData, 4).neg());
+        var _col2 = _sv0.fma(VEC_4, FloatVector.fromArray(COL_SPECIES, otherData, 8).neg());
         var _col3 = _sv0.fma(VEC_0, FloatVector.fromArray(COL_SPECIES, otherData, 12).neg());
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
@@ -7212,9 +7299,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 1.0f);
-        var _col0 = _sv0.mul(VEC_11).add(FloatVector.fromArray(COL_SPECIES, otherData, 0).neg());
-        var _col1 = _sv0.mul(VEC_12).add(FloatVector.fromArray(COL_SPECIES, otherData, 4).neg());
-        var _col2 = _sv0.mul(VEC_13).add(FloatVector.fromArray(COL_SPECIES, otherData, 8).neg());
+        var _col0 = _sv0.mul(VEC_2).add(FloatVector.fromArray(COL_SPECIES, otherData, 0).neg());
+        var _col1 = _sv0.mul(VEC_3).add(FloatVector.fromArray(COL_SPECIES, otherData, 4).neg());
+        var _col2 = _sv0.mul(VEC_4).add(FloatVector.fromArray(COL_SPECIES, otherData, 8).neg());
         var _col3 = _sv0.mul(VEC_0).add(FloatVector.fromArray(COL_SPECIES, otherData, 12).neg());
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
@@ -7239,9 +7326,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 1.0f);
-        var _col0 = _sv0.fma(VEC_11, FloatVector.fromArray(COL_SPECIES, otherData, 0).neg());
-        var _col1 = _sv0.fma(VEC_12, FloatVector.fromArray(COL_SPECIES, otherData, 4).neg());
-        var _col2 = _sv0.fma(VEC_13, FloatVector.fromArray(COL_SPECIES, otherData, 8).neg());
+        var _col0 = _sv0.fma(VEC_2, FloatVector.fromArray(COL_SPECIES, otherData, 0).neg());
+        var _col1 = _sv0.fma(VEC_3, FloatVector.fromArray(COL_SPECIES, otherData, 4).neg());
+        var _col2 = _sv0.fma(VEC_4, FloatVector.fromArray(COL_SPECIES, otherData, 8).neg());
         var _col3 = FloatVector.fromArray(COL_SPECIES, sd, 12).withLane(3, 1.0f).sub(FloatVector.fromArray(COL_SPECIES, otherData, 12));
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
@@ -7256,9 +7343,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 1.0f);
-        var _col0 = _sv0.mul(VEC_11).add(FloatVector.fromArray(COL_SPECIES, otherData, 0).neg());
-        var _col1 = _sv0.mul(VEC_12).add(FloatVector.fromArray(COL_SPECIES, otherData, 4).neg());
-        var _col2 = _sv0.mul(VEC_13).add(FloatVector.fromArray(COL_SPECIES, otherData, 8).neg());
+        var _col0 = _sv0.mul(VEC_2).add(FloatVector.fromArray(COL_SPECIES, otherData, 0).neg());
+        var _col1 = _sv0.mul(VEC_3).add(FloatVector.fromArray(COL_SPECIES, otherData, 4).neg());
+        var _col2 = _sv0.mul(VEC_4).add(FloatVector.fromArray(COL_SPECIES, otherData, 8).neg());
         var _col3 = FloatVector.fromArray(COL_SPECIES, sd, 12).withLane(3, 1.0f).sub(FloatVector.fromArray(COL_SPECIES, otherData, 12));
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
@@ -7278,15 +7365,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_17, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_23, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_17, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_17, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_23, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_23, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_17, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_17, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_17, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_17, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_23, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_23, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_23, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_23, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = 0;
         return dest;
@@ -7306,7 +7393,7 @@ public class Float4x4Impl implements Float4x4 {
         var _col1 = _sv0;
         var _col2 = _sv0;
         var _sv1 = FloatVector.fromArray(COL_SPECIES, otherData, 12);
-        var _col3 = _sv1.withLane(3, 0.0f).blend(_sv1.neg(), MASK_16);
+        var _col3 = _sv1.withLane(3, 0.0f).blend(_sv1.neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -7853,10 +7940,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = mData[6];
         dd[9] = mData[7];
         dd[10] = mData[8];
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = determineProperties();
         return this;
@@ -8274,7 +8358,7 @@ public class Float4x4Impl implements Float4x4 {
     private Float3x3 to3x3_identity(@Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
-        System.arraycopy(DATA_18, 0, dd, 0, 9);
+        System.arraycopy(DATA_25, 0, dd, 0, 9);
         ((Float3x3Impl) dest).properties = Joml.BIT_IDENTITY;
         return dest;
     }
@@ -8375,9 +8459,9 @@ public class Float4x4Impl implements Float4x4 {
     private Float3x4 to3x4_identity(@Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        FloatVector.fromArray(COL_SPECIES, DATA_19, 0).intoArray(dd, 0);
-        FloatVector.fromArray(COL_SPECIES, DATA_19, 4).intoArray(dd, 4);
-        FloatVector.fromArray(COL_SPECIES, DATA_19, 8).intoArray(dd, 8);
+        FloatVector.fromArray(COL_SPECIES, DATA_26, 0).intoArray(dd, 0);
+        FloatVector.fromArray(COL_SPECIES, DATA_26, 4).intoArray(dd, 4);
+        FloatVector.fromArray(COL_SPECIES, DATA_26, 8).intoArray(dd, 8);
         ((Float3x4Impl) dest).properties = Joml.BIT_IDENTITY;
         return dest;
     }
@@ -8460,10 +8544,10 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((FloatDualQuatImpl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_20, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_27, 0).intoArray(dd, 0);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_20, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_20, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_27, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_27, 4).intoArray(dd, 4);
         }
         return dest;
     }
@@ -8476,15 +8560,11 @@ public class Float4x4Impl implements Float4x4 {
     private FloatDualQuat toDualQuat_translation(@Mutated FloatDualQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatDualQuatImpl) dest).data;
-        dd[0] = 0.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        float _buf0 = 1.0f;
         dd[4] = 0.5f * sd[12];
         dd[5] = 0.5f * sd[13];
         dd[6] = 0.5f * sd[14];
         dd[7] = 0.0f;
-        dd[3] = _buf0;
+        VEC_0.intoArray(dd, 0);
         return dest;
     }
 
@@ -8655,7 +8735,7 @@ public class Float4x4Impl implements Float4x4 {
     private FloatRigid toRigid_identity(@Mutated FloatRigid dest) {
         float[] sd = this.data;
         float[] dd = ((FloatRigidImpl) dest).data;
-        System.arraycopy(DATA_21, 0, dd, 0, 7);
+        System.arraycopy(DATA_28, 0, dd, 0, 7);
         return dest;
     }
 
@@ -8670,10 +8750,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[0] = sd[12];
         dd[1] = sd[13];
         dd[2] = sd[14];
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 0.0f;
-        dd[6] = 1.0f;
+        VEC_0.intoArray(dd, 3);
         return dest;
     }
 
@@ -8870,7 +8947,7 @@ public class Float4x4Impl implements Float4x4 {
     private FloatTransform toTransform_identity(@Mutated FloatTransform dest) {
         float[] sd = this.data;
         float[] dd = ((FloatTransformImpl) dest).data;
-        System.arraycopy(DATA_22, 0, dd, 0, 10);
+        System.arraycopy(DATA_29, 0, dd, 0, 10);
         return dest;
     }
 
@@ -8885,10 +8962,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[0] = sd[12];
         dd[1] = sd[13];
         dd[2] = sd[14];
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 0.0f;
-        dd[6] = 1.0f;
+        VEC_0.intoArray(dd, 3);
         dd[7] = 1.0f;
         dd[8] = 1.0f;
         dd[9] = 1.0f;
@@ -9867,7 +9941,7 @@ public class Float4x4Impl implements Float4x4 {
     private FloatAABB frustumAabb_no_identity(@Mutated FloatAABB dest) {
         float[] sd = this.data;
         float[] dd = ((FloatAABBImpl) dest).data;
-        System.arraycopy(DATA_23, 0, dd, 0, 6);
+        System.arraycopy(DATA_30, 0, dd, 0, 6);
         return dest;
     }
 
@@ -10304,7 +10378,7 @@ public class Float4x4Impl implements Float4x4 {
     private FloatAABB frustumAabb_zo_identity(@Mutated FloatAABB dest) {
         float[] sd = this.data;
         float[] dd = ((FloatAABBImpl) dest).data;
-        System.arraycopy(DATA_24, 0, dd, 0, 6);
+        System.arraycopy(DATA_31, 0, dd, 0, 6);
         return dest;
     }
 
@@ -13547,6 +13621,147 @@ public class Float4x4Impl implements Float4x4 {
      * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
      * the public {@code mul} dispatcher.
      */
+    private Float4x4 mul_translation(Float4x4R right, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return mul_translation_fma(right, dest);
+        return mul_translation_mulAdd(right, dest);
+    }
+
+    private Float4x4 mul_translation_fma(Float4x4R right, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] rightData = ((Float4x4Impl) right).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, rightData[3]);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 12);
+        var _col0 = _sv0.fma(_sv1, FloatVector.fromArray(COL_SPECIES, rightData, 0)).withLane(3, rightData[3]);
+        var _sv2 = FloatVector.broadcast(COL_SPECIES, rightData[7]);
+        var _col1 = _sv2.fma(_sv1, FloatVector.fromArray(COL_SPECIES, rightData, 4)).withLane(3, rightData[7]);
+        var _sv3 = FloatVector.broadcast(COL_SPECIES, rightData[11]);
+        var _col2 = _sv3.fma(_sv1, FloatVector.fromArray(COL_SPECIES, rightData, 8)).withLane(3, rightData[11]);
+        var _sv4 = FloatVector.broadcast(COL_SPECIES, rightData[15]);
+        var _col3 = _sv4.fma(_sv1, FloatVector.fromArray(COL_SPECIES, rightData, 12)).withLane(3, rightData[15]);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = Joml.BIT_TRANSLATION & ((Float4x4Impl) right).properties;
+        return dest;
+    }
+
+    private Float4x4 mul_translation_mulAdd(Float4x4R right, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] rightData = ((Float4x4Impl) right).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, rightData[3]);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 12);
+        var _col0 = _sv0.mul(_sv1).add(FloatVector.fromArray(COL_SPECIES, rightData, 0)).withLane(3, rightData[3]);
+        var _sv2 = FloatVector.broadcast(COL_SPECIES, rightData[7]);
+        var _col1 = _sv2.mul(_sv1).add(FloatVector.fromArray(COL_SPECIES, rightData, 4)).withLane(3, rightData[7]);
+        var _sv3 = FloatVector.broadcast(COL_SPECIES, rightData[11]);
+        var _col2 = _sv3.mul(_sv1).add(FloatVector.fromArray(COL_SPECIES, rightData, 8)).withLane(3, rightData[11]);
+        var _sv4 = FloatVector.broadcast(COL_SPECIES, rightData[15]);
+        var _col3 = _sv4.mul(_sv1).add(FloatVector.fromArray(COL_SPECIES, rightData, 12)).withLane(3, rightData[15]);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = Joml.BIT_TRANSLATION & ((Float4x4Impl) right).properties;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Float4x4 mul_translation_translation(Float4x4R right, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] rightData = ((Float4x4Impl) right).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 4);
+        VEC_4.intoArray(dd, 8);
+        dd[12] = rightData[12] + sd[12];
+        dd[13] = rightData[13] + sd[13];
+        dd[14] = rightData[14] + sd[14];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_TRANSLATION & ((Float4x4Impl) right).properties;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Float4x4 mul_translation_affine(Float4x4R right, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] rightData = ((Float4x4Impl) right).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _col0 = FloatVector.fromArray(COL_SPECIES, rightData, 0).withLane(3, 0.0f);
+        var _col1 = FloatVector.fromArray(COL_SPECIES, rightData, 4).withLane(3, 0.0f);
+        var _col2 = FloatVector.fromArray(COL_SPECIES, rightData, 8).withLane(3, 0.0f);
+        var _col3 = FloatVector.fromArray(COL_SPECIES, rightData, 12).add(FloatVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0f);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = Joml.BIT_TRANSLATION & ((Float4x4Impl) right).properties;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Float4x4 mul_orthogonal_translation(Float4x4R right, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return mul_orthogonal_translation_fma(right, dest, _props);
+        return mul_orthogonal_translation_mulAdd(right, dest, _props);
+    }
+
+    private Float4x4 mul_orthogonal_translation_fma(Float4x4R right, @Mutated Float4x4 dest, int _props) {
+        float[] sd = this.data;
+        float[] rightData = ((Float4x4Impl) right).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _col0 = _sv0.withLane(3, 0.0f);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 4);
+        var _col1 = _sv1.withLane(3, 0.0f);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 8);
+        var _col2 = _sv2.withLane(3, 0.0f);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, rightData[12]).fma(_sv0, FloatVector.broadcast(COL_SPECIES, rightData[13]).fma(_sv1, FloatVector.broadcast(COL_SPECIES, rightData[14]).fma(_sv2, FloatVector.fromArray(COL_SPECIES, sd, 12)))).withLane(3, 1.0f);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = _props;
+        return dest;
+    }
+
+    private Float4x4 mul_orthogonal_translation_mulAdd(Float4x4R right, @Mutated Float4x4 dest, int _props) {
+        float[] sd = this.data;
+        float[] rightData = ((Float4x4Impl) right).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _col0 = _sv0.withLane(3, 0.0f);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 4);
+        var _col1 = _sv1.withLane(3, 0.0f);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 8);
+        var _col2 = _sv2.withLane(3, 0.0f);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, rightData[12]).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, rightData[13]).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, rightData[14]).mul(_sv2).add(FloatVector.fromArray(COL_SPECIES, sd, 12)))).withLane(3, 1.0f);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = _props;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
     private Float4x4 mul_general_translation(Float4x4R right, @Mutated Float4x4 dest) {
         if (SimdMath.USE_FMA) return mul_general_translation_fma(right, dest);
         return mul_general_translation_mulAdd(right, dest);
@@ -13655,10 +13870,15 @@ public class Float4x4Impl implements Float4x4 {
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return dest.set(right);
         int q = ((Float4x4Impl) right).properties;
         if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return dest.set(this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_translation_translation(right, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_translation_affine(right, dest);
+            return mul_translation(right, dest);
+        }
         if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
-            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_general(right, dest, ((p & (Joml.UNIQUE_TRANSLATION | Joml.UNIQUE_ORTHOGONAL)) | Joml.BIT_AFFINE) & q);
-            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_general(right, dest, ((p & (Joml.UNIQUE_TRANSLATION | Joml.UNIQUE_ORTHOGONAL)) | Joml.BIT_AFFINE) & q);
-            return mul_general(right, dest, ((p & (Joml.UNIQUE_TRANSLATION | Joml.UNIQUE_ORTHOGONAL)) | Joml.BIT_AFFINE) & q);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_orthogonal_translation(right, dest, ((p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE) & q);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_general(right, dest, ((p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE) & q);
+            return mul_general(right, dest, ((p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE) & q);
         }
         if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_general_translation(right, dest);
         if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_general_affine(right, dest);
@@ -13682,10 +13902,15 @@ public class Float4x4Impl implements Float4x4 {
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return this.set(right);
         int q = ((Float4x4Impl) right).properties;
         if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return this;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_translation_translation(right, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_translation_affine(right, this);
+            return mul_translation(right, this);
+        }
         if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
-            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_general(right, this, ((p & (Joml.UNIQUE_TRANSLATION | Joml.UNIQUE_ORTHOGONAL)) | Joml.BIT_AFFINE) & q);
-            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_general(right, this, ((p & (Joml.UNIQUE_TRANSLATION | Joml.UNIQUE_ORTHOGONAL)) | Joml.BIT_AFFINE) & q);
-            return mul_general(right, this, ((p & (Joml.UNIQUE_TRANSLATION | Joml.UNIQUE_ORTHOGONAL)) | Joml.BIT_AFFINE) & q);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_orthogonal_translation(right, this, ((p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE) & q);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_general(right, this, ((p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE) & q);
+            return mul_general(right, this, ((p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE) & q);
         }
         if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_general_translation(right, this);
         if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_general_affine(right, this);
@@ -14508,44 +14733,44 @@ public class Float4x4Impl implements Float4x4 {
      * the public {@code mul} dispatcher.
      */
     private Float4x4 mul_identity(Float3x3R right, @Mutated Float4x4 dest) {
-        if (SimdMath.USE_FMA) return mul_identity_fma(right, dest);
-        return mul_identity_mulAdd(right, dest);
-    }
-
-    private Float4x4 mul_identity_fma(Float3x3R right, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] rightData = ((Float3x3Impl) right).data;
         float[] dd = ((Float4x4Impl) dest).data;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, rightData[2]).fma(_sv0, FloatVector.broadcast(COL_SPECIES, rightData[0]).fma(_sv1, FloatVector.broadcast(COL_SPECIES, rightData[1]).mul(_sv2)));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, rightData[5]).fma(_sv0, FloatVector.broadcast(COL_SPECIES, rightData[3]).fma(_sv1, FloatVector.broadcast(COL_SPECIES, rightData[4]).mul(_sv2)));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, rightData[8]).fma(_sv0, FloatVector.broadcast(COL_SPECIES, rightData[6]).fma(_sv1, FloatVector.broadcast(COL_SPECIES, rightData[7]).mul(_sv2)));
-        var _col3 = FloatVector.fromArray(COL_SPECIES, sd, 12);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
+        dd[0] = rightData[0];
+        dd[1] = rightData[1];
+        dd[2] = rightData[2];
+        dd[3] = 0.0f;
+        dd[4] = rightData[3];
+        dd[5] = rightData[4];
+        dd[6] = rightData[5];
+        dd[7] = 0.0f;
+        dd[8] = rightData[6];
+        dd[9] = rightData[7];
+        dd[10] = rightData[8];
+        VEC_24.intoArray(dd, 11);
+        dd[15] = 1.0f;
         ((Float4x4Impl) dest).properties = (((Float3x3Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_IDENTITY : Joml.BIT_AFFINE;
         return dest;
     }
 
-    private Float4x4 mul_identity_mulAdd(Float3x3R right, @Mutated Float4x4 dest) {
+
+    /**
+     * Private in-place self-form body of {@code mul}, specialized by runtime matrix properties;
+     * reached only through the public {@code mul} dispatcher.
+     */
+    private Float4x4 mul_identity_self(Float3x3R right, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] rightData = ((Float3x3Impl) right).data;
         float[] dd = ((Float4x4Impl) dest).data;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, rightData[2]).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, rightData[0]).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, rightData[1]).mul(_sv2)));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, rightData[5]).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, rightData[3]).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, rightData[4]).mul(_sv2)));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, rightData[8]).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, rightData[6]).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, rightData[7]).mul(_sv2)));
-        var _col3 = FloatVector.fromArray(COL_SPECIES, sd, 12);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
+        dd[0] = rightData[0];
+        dd[1] = rightData[1];
+        dd[2] = rightData[2];
+        dd[4] = rightData[3];
+        dd[5] = rightData[4];
+        dd[6] = rightData[5];
+        dd[8] = rightData[6];
+        dd[9] = rightData[7];
+        dd[10] = rightData[8];
         ((Float4x4Impl) dest).properties = (((Float3x3Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_IDENTITY : Joml.BIT_AFFINE;
         return dest;
     }
@@ -14556,44 +14781,50 @@ public class Float4x4Impl implements Float4x4 {
      * the public {@code mul} dispatcher.
      */
     private Float4x4 mul_translation(Float3x3R right, @Mutated Float4x4 dest) {
-        if (SimdMath.USE_FMA) return mul_translation_fma(right, dest);
-        return mul_translation_mulAdd(right, dest);
-    }
-
-    private Float4x4 mul_translation_fma(Float3x3R right, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] rightData = ((Float3x3Impl) right).data;
         float[] dd = ((Float4x4Impl) dest).data;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, rightData[2]).fma(_sv0, FloatVector.broadcast(COL_SPECIES, rightData[0]).fma(_sv1, FloatVector.broadcast(COL_SPECIES, rightData[1]).mul(_sv2)));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, rightData[5]).fma(_sv0, FloatVector.broadcast(COL_SPECIES, rightData[3]).fma(_sv1, FloatVector.broadcast(COL_SPECIES, rightData[4]).mul(_sv2)));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, rightData[8]).fma(_sv0, FloatVector.broadcast(COL_SPECIES, rightData[6]).fma(_sv1, FloatVector.broadcast(COL_SPECIES, rightData[7]).mul(_sv2)));
-        var _col3 = FloatVector.fromArray(COL_SPECIES, sd, 12);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
+        dd[0] = rightData[0];
+        dd[1] = rightData[1];
+        dd[2] = rightData[2];
+        dd[3] = 0.0f;
+        dd[4] = rightData[3];
+        dd[5] = rightData[4];
+        dd[6] = rightData[5];
+        dd[7] = 0.0f;
+        dd[8] = rightData[6];
+        dd[9] = rightData[7];
+        dd[10] = rightData[8];
+        dd[11] = 0.0f;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        dd[15] = 1.0f;
         ((Float4x4Impl) dest).properties = (((Float3x3Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_TRANSLATION : Joml.BIT_AFFINE;
         return dest;
     }
 
-    private Float4x4 mul_translation_mulAdd(Float3x3R right, @Mutated Float4x4 dest) {
+
+    /**
+     * Private in-place self-form body of {@code mul}, specialized by runtime matrix properties;
+     * reached only through the public {@code mul} dispatcher.
+     */
+    private Float4x4 mul_translation_self(Float3x3R right, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] rightData = ((Float3x3Impl) right).data;
         float[] dd = ((Float4x4Impl) dest).data;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, rightData[2]).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, rightData[0]).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, rightData[1]).mul(_sv2)));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, rightData[5]).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, rightData[3]).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, rightData[4]).mul(_sv2)));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, rightData[8]).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, rightData[6]).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, rightData[7]).mul(_sv2)));
-        var _col3 = FloatVector.fromArray(COL_SPECIES, sd, 12);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
+        dd[0] = rightData[0];
+        dd[1] = rightData[1];
+        dd[2] = rightData[2];
+        dd[4] = rightData[3];
+        dd[5] = rightData[4];
+        dd[6] = rightData[5];
+        dd[8] = rightData[6];
+        dd[9] = rightData[7];
+        dd[10] = rightData[8];
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
         ((Float4x4Impl) dest).properties = (((Float3x3Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_TRANSLATION : Joml.BIT_AFFINE;
         return dest;
     }
@@ -14783,8 +15014,8 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated public Float4x4 mul(Float3x3R right) {
         if (Joml.RETURN_NEW) return mul(right, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return mul_identity(right, this);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_translation(right, this);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return mul_identity_self(right, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_translation_self(right, this);
         if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return mul_orthogonal(right, this);
         if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_affine(right, this);
         return mul_general(right, this);
@@ -14893,6 +15124,152 @@ public class Float4x4Impl implements Float4x4 {
      * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
      * the public {@code mul} dispatcher.
      */
+    private Float4x4 mul_identity(Float3x4R right, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] rightData = ((Float3x4Impl) right).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        dd[0] = rightData[0];
+        dd[1] = rightData[4];
+        dd[2] = rightData[8];
+        dd[3] = 0.0f;
+        dd[4] = rightData[1];
+        dd[5] = rightData[5];
+        dd[6] = rightData[9];
+        dd[7] = 0.0f;
+        dd[8] = rightData[2];
+        dd[9] = rightData[6];
+        dd[10] = rightData[10];
+        dd[11] = 0.0f;
+        dd[12] = rightData[3];
+        dd[13] = rightData[7];
+        dd[14] = rightData[11];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = ((Float3x4Impl) right).properties;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Float4x4 mul_translation(Float3x4R right, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] rightData = ((Float3x4Impl) right).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        dd[0] = rightData[0];
+        dd[1] = rightData[4];
+        dd[2] = rightData[8];
+        dd[3] = 0.0f;
+        dd[4] = rightData[1];
+        dd[5] = rightData[5];
+        dd[6] = rightData[9];
+        dd[7] = 0.0f;
+        dd[8] = rightData[2];
+        dd[9] = rightData[6];
+        dd[10] = rightData[10];
+        dd[11] = 0.0f;
+        dd[12] = rightData[3] + sd[12];
+        dd[13] = rightData[7] + sd[13];
+        dd[14] = rightData[11] + sd[14];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_TRANSLATION & ((Float3x4Impl) right).properties;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Float4x4 mul_identity_translation(Float3x4R right, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] rightData = ((Float3x4Impl) right).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 4);
+        VEC_4.intoArray(dd, 8);
+        dd[12] = rightData[3];
+        dd[13] = rightData[7];
+        dd[14] = rightData[11];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = ((Float3x4Impl) right).properties;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Float4x4 mul_translation_translation(Float3x4R right, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] rightData = ((Float3x4Impl) right).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 4);
+        VEC_4.intoArray(dd, 8);
+        dd[12] = rightData[3] + sd[12];
+        dd[13] = rightData[7] + sd[13];
+        dd[14] = rightData[11] + sd[14];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_TRANSLATION & ((Float3x4Impl) right).properties;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Float4x4 mul_orthogonal_translation(Float3x4R right, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return mul_orthogonal_translation_fma(right, dest, _props);
+        return mul_orthogonal_translation_mulAdd(right, dest, _props);
+    }
+
+    private Float4x4 mul_orthogonal_translation_fma(Float3x4R right, @Mutated Float4x4 dest, int _props) {
+        float[] sd = this.data;
+        float[] rightData = ((Float3x4Impl) right).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _col0 = _sv0.withLane(3, 0.0f);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 4);
+        var _col1 = _sv1.withLane(3, 0.0f);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 8);
+        var _col2 = _sv2.withLane(3, 0.0f);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, rightData[3]).fma(_sv0, FloatVector.broadcast(COL_SPECIES, rightData[7]).fma(_sv1, FloatVector.broadcast(COL_SPECIES, rightData[11]).fma(_sv2, FloatVector.fromArray(COL_SPECIES, sd, 12)))).withLane(3, 1.0f);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = _props;
+        return dest;
+    }
+
+    private Float4x4 mul_orthogonal_translation_mulAdd(Float3x4R right, @Mutated Float4x4 dest, int _props) {
+        float[] sd = this.data;
+        float[] rightData = ((Float3x4Impl) right).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _col0 = _sv0.withLane(3, 0.0f);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 4);
+        var _col1 = _sv1.withLane(3, 0.0f);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 8);
+        var _col2 = _sv2.withLane(3, 0.0f);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, rightData[3]).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, rightData[7]).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, rightData[11]).mul(_sv2).add(FloatVector.fromArray(COL_SPECIES, sd, 12)))).withLane(3, 1.0f);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = _props;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
     private Float4x4 mul_general_translation(Float3x4R right, @Mutated Float4x4 dest) {
         if (SimdMath.USE_FMA) return mul_general_translation_fma(right, dest);
         return mul_general_translation_mulAdd(right, dest);
@@ -14955,9 +15332,17 @@ public class Float4x4Impl implements Float4x4 {
         int p = this.properties;
         int q = ((Float3x4Impl) right).properties;
         if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return dest.set(this);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_identity_translation(right, dest);
+            return mul_identity(right, dest);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_translation_translation(right, dest);
+            return mul_translation(right, dest);
+        }
         if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
-            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_general(right, dest, ((p & (Joml.UNIQUE_IDENTITY | Joml.UNIQUE_TRANSLATION | Joml.UNIQUE_ORTHOGONAL)) | Joml.BIT_AFFINE) & q);
-            return mul_general(right, dest, ((p & (Joml.UNIQUE_IDENTITY | Joml.UNIQUE_TRANSLATION | Joml.UNIQUE_ORTHOGONAL)) | Joml.BIT_AFFINE) & q);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_orthogonal_translation(right, dest, ((p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE) & q);
+            return mul_general(right, dest, ((p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE) & q);
         }
         if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_general_translation(right, dest);
         return mul_general(right, dest, 0);
@@ -14982,9 +15367,17 @@ public class Float4x4Impl implements Float4x4 {
         int p = this.properties;
         int q = ((Float3x4Impl) right).properties;
         if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return this;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_identity_translation(right, this);
+            return mul_identity(right, this);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_translation_translation(right, this);
+            return mul_translation(right, this);
+        }
         if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
-            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_general(right, this, ((p & (Joml.UNIQUE_IDENTITY | Joml.UNIQUE_TRANSLATION | Joml.UNIQUE_ORTHOGONAL)) | Joml.BIT_AFFINE) & q);
-            return mul_general(right, this, ((p & (Joml.UNIQUE_IDENTITY | Joml.UNIQUE_TRANSLATION | Joml.UNIQUE_ORTHOGONAL)) | Joml.BIT_AFFINE) & q);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_orthogonal_translation(right, this, ((p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE) & q);
+            return mul_general(right, this, ((p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE) & q);
         }
         if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_general_translation(right, this);
         return mul_general(right, this, 0);
@@ -15192,6 +15585,147 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Float4x4 preMul_translation_translation(Float4x4R other, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float4x4Impl) other).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 4);
+        VEC_4.intoArray(dd, 8);
+        dd[12] = otherData[12] + sd[12];
+        dd[13] = otherData[13] + sd[13];
+        dd[14] = otherData[14] + sd[14];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_TRANSLATION & ((Float4x4Impl) other).properties;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Float4x4 preMul_translation_affine(Float4x4R other, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return preMul_translation_affine_fma(other, dest);
+        return preMul_translation_affine_mulAdd(other, dest);
+    }
+
+    private Float4x4 preMul_translation_affine_fma(Float4x4R other, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float4x4Impl) other).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, otherData, 0);
+        var _col0 = _sv0.withLane(3, 0.0f);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, otherData, 4);
+        var _col1 = _sv1.withLane(3, 0.0f);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, otherData, 8);
+        var _col2 = _sv2.withLane(3, 0.0f);
+        var _col3 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, sd[12]), _sv1.fma(FloatVector.broadcast(COL_SPECIES, sd[13]), _sv2.fma(FloatVector.broadcast(COL_SPECIES, sd[14]), FloatVector.fromArray(COL_SPECIES, otherData, 12)))).withLane(3, 1.0f);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = Joml.BIT_TRANSLATION & ((Float4x4Impl) other).properties;
+        return dest;
+    }
+
+    private Float4x4 preMul_translation_affine_mulAdd(Float4x4R other, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float4x4Impl) other).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, otherData, 0);
+        var _col0 = _sv0.withLane(3, 0.0f);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, otherData, 4);
+        var _col1 = _sv1.withLane(3, 0.0f);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, otherData, 8);
+        var _col2 = _sv2.withLane(3, 0.0f);
+        var _col3 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, sd[12])).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, sd[13])).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, sd[14])).add(FloatVector.fromArray(COL_SPECIES, otherData, 12)))).withLane(3, 1.0f);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = Joml.BIT_TRANSLATION & ((Float4x4Impl) other).properties;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Float4x4 preMul_orthogonal_translation(Float4x4R other, @Mutated Float4x4 dest, int _props) {
+        float[] sd = this.data;
+        float[] otherData = ((Float4x4Impl) other).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).withLane(3, 0.0f);
+        var _col1 = FloatVector.fromArray(COL_SPECIES, sd, 4).withLane(3, 0.0f);
+        var _col2 = FloatVector.fromArray(COL_SPECIES, sd, 8).withLane(3, 0.0f);
+        var _col3 = FloatVector.fromArray(COL_SPECIES, otherData, 12).add(FloatVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0f);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = _props;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Float4x4 preMul_general_translation(Float4x4R other, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return preMul_general_translation_fma(other, dest);
+        return preMul_general_translation_mulAdd(other, dest);
+    }
+
+    private Float4x4 preMul_general_translation_fma(Float4x4R other, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float4x4Impl) other).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, otherData, 12);
+        var _sv1 = FloatVector.broadcast(COL_SPECIES, sd[3]);
+        var _col0 = _sv0.fma(_sv1, FloatVector.fromArray(COL_SPECIES, sd, 0)).withLane(3, sd[3]);
+        var _sv2 = FloatVector.broadcast(COL_SPECIES, sd[7]);
+        var _col1 = _sv0.fma(_sv2, FloatVector.fromArray(COL_SPECIES, sd, 4)).withLane(3, sd[7]);
+        var _sv3 = FloatVector.broadcast(COL_SPECIES, sd[11]);
+        var _col2 = _sv0.fma(_sv3, FloatVector.fromArray(COL_SPECIES, sd, 8)).withLane(3, sd[11]);
+        var _sv4 = FloatVector.broadcast(COL_SPECIES, sd[15]);
+        var _col3 = _sv0.fma(_sv4, FloatVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, sd[15]);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+    private Float4x4 preMul_general_translation_mulAdd(Float4x4R other, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float4x4Impl) other).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, otherData, 12);
+        var _sv1 = FloatVector.broadcast(COL_SPECIES, sd[3]);
+        var _col0 = _sv0.mul(_sv1).add(FloatVector.fromArray(COL_SPECIES, sd, 0)).withLane(3, sd[3]);
+        var _sv2 = FloatVector.broadcast(COL_SPECIES, sd[7]);
+        var _col1 = _sv0.mul(_sv2).add(FloatVector.fromArray(COL_SPECIES, sd, 4)).withLane(3, sd[7]);
+        var _sv3 = FloatVector.broadcast(COL_SPECIES, sd[11]);
+        var _col2 = _sv0.mul(_sv3).add(FloatVector.fromArray(COL_SPECIES, sd, 8)).withLane(3, sd[11]);
+        var _sv4 = FloatVector.broadcast(COL_SPECIES, sd[15]);
+        var _col3 = _sv0.mul(_sv4).add(FloatVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, sd[15]);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
      * Pre-multiply the transformation {@code other} onto this matrix and store the result in
      * {@code dest}.
      * <p>
@@ -15209,16 +15743,16 @@ public class Float4x4Impl implements Float4x4 {
         int q = ((Float4x4Impl) other).properties;
         if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return dest.set(this);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
-            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_general(other, dest, Joml.BIT_TRANSLATION & q);
-            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preMul_general(other, dest, Joml.BIT_TRANSLATION & q);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_translation_translation(other, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preMul_translation_affine(other, dest);
             return preMul_translation(other, dest);
         }
         if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
-            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_general(other, dest, ((p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE) & q);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_orthogonal_translation(other, dest, ((p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE) & q);
             if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preMul_general(other, dest, ((p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE) & q);
             return preMul_orthogonal(other, dest, ((p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE) & q);
         }
-        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_general(other, dest, 0);
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_general_translation(other, dest);
         if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preMul_general(other, dest, 0);
         return preMul_general(other, dest, 0);
     }
@@ -15241,16 +15775,16 @@ public class Float4x4Impl implements Float4x4 {
         int q = ((Float4x4Impl) other).properties;
         if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return this;
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
-            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_general(other, this, Joml.BIT_TRANSLATION & q);
-            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preMul_general(other, this, Joml.BIT_TRANSLATION & q);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_translation_translation(other, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preMul_translation_affine(other, this);
             return preMul_translation(other, this);
         }
         if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
-            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_general(other, this, ((p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE) & q);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_orthogonal_translation(other, this, ((p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE) & q);
             if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preMul_general(other, this, ((p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE) & q);
             return preMul_orthogonal(other, this, ((p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE) & q);
         }
-        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_general(other, this, 0);
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_general_translation(other, this);
         if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preMul_general(other, this, 0);
         return preMul_general(other, this, 0);
     }
@@ -15423,14 +15957,8 @@ public class Float4x4Impl implements Float4x4 {
         dd[3] = 0.0f;
         dd[4] = otherData[2];
         dd[5] = otherData[3];
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = 1.0f;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
+        VEC_24.intoArray(dd, 6);
+        VEC_2.intoArray(dd, 10);
         dd[14] = 0.0f;
         dd[15] = 1.0f;
         ((Float4x4Impl) dest).properties = (((Float2x2Impl) other).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_IDENTITY : Joml.BIT_AFFINE;
@@ -15469,10 +15997,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[3] = 0.0f;
         dd[4] = otherData[2];
         dd[5] = otherData[3];
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 1.0f;
         dd[11] = 0.0f;
         float _buf0 = Math.fma(otherData[0], sd[12], otherData[2] * sd[13]);
@@ -15775,10 +16300,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[7] = 0.0f;
         dd[8] = otherData[4];
         dd[9] = otherData[5];
-        dd[10] = 1.0f;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
+        VEC_2.intoArray(dd, 10);
         dd[14] = 0.0f;
         dd[15] = 1.0f;
         ((Float4x4Impl) dest).properties = (((Float2x3Impl) other).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_IDENTITY : Joml.BIT_AFFINE;
@@ -16128,10 +16650,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = otherData[6];
         dd[9] = otherData[7];
         dd[10] = otherData[8];
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) dest).properties = (((Float3x3Impl) other).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_IDENTITY : Joml.BIT_AFFINE;
         return dest;
@@ -16635,18 +17154,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] otherData = ((Float3x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
-        dd[0] = 1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 1.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = 1.0f;
-        dd[11] = 0.0f;
+        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 4);
+        VEC_4.intoArray(dd, 8);
         dd[12] = otherData[3];
         dd[13] = otherData[7];
         dd[14] = otherData[11];
@@ -16664,18 +17174,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] otherData = ((Float3x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
-        dd[0] = 1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 1.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = 1.0f;
-        dd[11] = 0.0f;
+        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 4);
+        VEC_4.intoArray(dd, 8);
         dd[12] = otherData[3] + sd[12];
         dd[13] = otherData[7] + sd[13];
         dd[14] = otherData[11] + sd[14];
@@ -16992,12 +17493,12 @@ public class Float4x4Impl implements Float4x4 {
      * Private body of {@code arcball}, specialized by runtime matrix properties; reached only
      * through the public {@code arcball} dispatcher.
      */
-    private Float4x4 arcball_identity_affine_general(float radius, float centerX, float centerY, float centerZ, float angleX, float angleY, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return arcball_identity_affine_general_fma(radius, centerX, centerY, centerZ, angleX, angleY, dest, _props);
-        return arcball_identity_affine_general_mulAdd(radius, centerX, centerY, centerZ, angleX, angleY, dest, _props);
+    private Float4x4 arcball_orthogonal_affine_general(float radius, float centerX, float centerY, float centerZ, float angleX, float angleY, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return arcball_orthogonal_affine_general_fma(radius, centerX, centerY, centerZ, angleX, angleY, dest, _props);
+        return arcball_orthogonal_affine_general_mulAdd(radius, centerX, centerY, centerZ, angleX, angleY, dest, _props);
     }
 
-    private Float4x4 arcball_identity_affine_general_fma(float radius, float centerX, float centerY, float centerZ, float angleX, float angleY, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 arcball_orthogonal_affine_general_fma(float radius, float centerX, float centerY, float centerZ, float angleX, float angleY, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -17025,7 +17526,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 arcball_identity_affine_general_mulAdd(float radius, float centerX, float centerY, float centerZ, float angleX, float angleY, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 arcball_orthogonal_affine_general_mulAdd(float radius, float centerX, float centerY, float centerZ, float angleX, float angleY, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -17055,6 +17556,150 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
+     * Private body of {@code arcball}, specialized by runtime matrix properties; reached only
+     * through the public {@code arcball} dispatcher.
+     */
+    private Float4x4 arcball_identity(float radius, float centerX, float centerY, float centerZ, float angleX, float angleY, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.sin(angleY);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cos(angleX);
+        float _t4 = -centerZ;
+        float _t5 = -centerY;
+        float _t6 = _t2 * _t1;
+        float _t7 = _t2 * _t0;
+        float _t8 = _t1 * _t3;
+        float _t9 = _t3 * _t0;
+        dd[0] = _t0;
+        dd[1] = _t6;
+        dd[2] = -_t8;
+        dd[3] = 0.0f;
+        dd[4] = 0.0f;
+        dd[5] = _t3;
+        dd[6] = _t2;
+        dd[7] = 0.0f;
+        dd[8] = _t1;
+        dd[9] = -_t7;
+        dd[10] = _t9;
+        dd[11] = 0.0f;
+        dd[12] = Math.fma(_t4, _t1, -(centerX * _t0));
+        dd[13] = Math.fma(centerZ, _t7, Math.fma(_t5, _t3, -(centerX * _t6)));
+        dd[14] = Math.fma(centerX, _t8, Math.fma(_t5, _t2, Math.fma(_t4, _t9, -radius)));
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code arcball}, specialized by runtime matrix properties;
+     * reached only through the public {@code arcball} dispatcher.
+     */
+    private Float4x4 arcball_identity_self(float radius, float centerX, float centerY, float centerZ, float angleX, float angleY, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.sin(angleY);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cos(angleX);
+        float _t4 = -centerZ;
+        float _t5 = -centerY;
+        float _t6 = _t2 * _t1;
+        float _t7 = _t2 * _t0;
+        float _t8 = _t1 * _t3;
+        float _t9 = _t3 * _t0;
+        dd[0] = _t0;
+        dd[1] = _t6;
+        dd[2] = -_t8;
+        dd[5] = _t3;
+        dd[6] = _t2;
+        dd[8] = _t1;
+        dd[9] = -_t7;
+        dd[10] = _t9;
+        dd[12] = Math.fma(_t4, _t1, -(centerX * _t0));
+        dd[13] = Math.fma(centerZ, _t7, Math.fma(_t5, _t3, -(centerX * _t6)));
+        dd[14] = Math.fma(centerX, _t8, Math.fma(_t5, _t2, Math.fma(_t4, _t9, -radius)));
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code arcball}, specialized by runtime matrix properties; reached only
+     * through the public {@code arcball} dispatcher.
+     */
+    private Float4x4 arcball_translation(float radius, float centerX, float centerY, float centerZ, float angleX, float angleY, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.sin(angleY);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cos(angleX);
+        float _t4 = -centerX;
+        float _t5 = -centerZ;
+        float _t6 = -centerY;
+        float _t7 = _t2 * _t1;
+        float _t8 = _t2 * _t0;
+        float _t9 = _t1 * _t3;
+        float _t10 = _t3 * _t0;
+        dd[0] = _t0;
+        dd[1] = _t7;
+        dd[2] = -_t9;
+        dd[3] = 0.0f;
+        dd[4] = 0.0f;
+        dd[5] = _t3;
+        dd[6] = _t2;
+        dd[7] = 0.0f;
+        dd[8] = _t1;
+        dd[9] = -_t8;
+        dd[10] = _t10;
+        dd[11] = 0.0f;
+        dd[12] = Math.fma(_t4, _t0, Math.fma(_t5, _t1, sd[12]));
+        dd[13] = Math.fma(_t4, _t7, Math.fma(_t6, _t3, Math.fma(centerZ, _t8, sd[13])));
+        dd[14] = Math.fma(centerX, _t9, Math.fma(_t6, _t2, Math.fma(_t5, _t10, sd[14] - radius)));
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code arcball}, specialized by runtime matrix properties;
+     * reached only through the public {@code arcball} dispatcher.
+     */
+    private Float4x4 arcball_translation_self(float radius, float centerX, float centerY, float centerZ, float angleX, float angleY, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.sin(angleY);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cos(angleX);
+        float _t4 = -centerX;
+        float _t5 = -centerZ;
+        float _t6 = -centerY;
+        float _t7 = _t2 * _t1;
+        float _t8 = _t2 * _t0;
+        float _t9 = _t1 * _t3;
+        float _t10 = _t3 * _t0;
+        dd[0] = _t0;
+        dd[1] = _t7;
+        dd[2] = -_t9;
+        dd[5] = _t3;
+        dd[6] = _t2;
+        dd[8] = _t1;
+        dd[9] = -_t8;
+        dd[10] = _t10;
+        dd[12] = Math.fma(_t4, _t0, Math.fma(_t5, _t1, sd[12]));
+        dd[13] = Math.fma(_t4, _t7, Math.fma(_t6, _t3, Math.fma(centerZ, _t8, sd[13])));
+        dd[14] = Math.fma(centerX, _t9, Math.fma(_t6, _t2, Math.fma(_t5, _t10, sd[14] - radius)));
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
      * Apply an arcball view transformation about the given center to this matrix and store the
      * result in {@code dest}.
      * <p>
@@ -17073,7 +17718,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     public Float4x4 arcball(float radius, float centerX, float centerY, float centerZ, float angleX, float angleY, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return arcball_identity_affine_general(radius, centerX, centerY, centerZ, angleX, angleY, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return arcball_identity(radius, centerX, centerY, centerZ, angleX, angleY, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return arcball_translation(radius, centerX, centerY, centerZ, angleX, angleY, dest);
+        return arcball_orthogonal_affine_general(radius, centerX, centerY, centerZ, angleX, angleY, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -17095,8 +17742,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated public Float4x4 arcball(float radius, float centerX, float centerY, float centerZ, float angleX, float angleY) {
         if (Joml.RETURN_NEW) return arcball(radius, centerX, centerY, centerZ, angleX, angleY, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return arcball_identity_affine_general(radius, centerX, centerY, centerZ, angleX, angleY, this, (p & Joml.BIT_ORTHOGONAL) | 0);
-        return arcball_identity_affine_general(radius, centerX, centerY, centerZ, angleX, angleY, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return arcball_identity_self(radius, centerX, centerY, centerZ, angleX, angleY, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return arcball_translation_self(radius, centerX, centerY, centerZ, angleX, angleY, this);
+        return arcball_orthogonal_affine_general(radius, centerX, centerY, centerZ, angleX, angleY, this, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -17389,10 +18037,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = _t3;
         dd[9] = -_t4;
         dd[10] = _t5;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -17900,11 +18545,83 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_no_lh_identity(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
-        if (SimdMath.USE_FMA) return frustum_no_lh_identity_fma(left, right, bottom, top, zNear, zFar, dest);
-        return frustum_no_lh_identity_mulAdd(left, right, bottom, top, zNear, zFar, dest);
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = 2.0f * zNear;
+        float _t1_inv = 1.0f / (right - left);
+        float _t2_inv = 1.0f / (top - bottom);
+        float _t3_inv = 1.0f / (zNear - zFar);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
+        var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, -((left + right) * _t1_inv)).withLane(1, -((bottom + top) * _t2_inv)).withLane(2, zFar == Float.POSITIVE_INFINITY ? 1.0f : zNear == Float.POSITIVE_INFINITY ? -1.0f : -((zFar + zNear) * _t3_inv)).withLane(3, 1.0f);
+        var _col3 = _sv0.withLane(2, zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? 2.0f * zFar : 2.0f * zFar * zNear * _t3_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
     }
 
-    private Float4x4 frustum_no_lh_identity_fma(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+
+    /**
+     * Private in-place self-form body of {@code frustum} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.LEFT_HANDED}, specialized by
+     * runtime matrix properties; reached only through the public {@code frustum} dispatcher.
+     */
+    private Float4x4 frustum_no_lh_identity_self(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        return frustum_no_lh_identity(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+
+    /**
+     * Private body of {@code frustum} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code frustum} dispatcher.
+     */
+    private Float4x4 frustum_no_lh_translation(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = 2.0f * zNear;
+        float _t1_inv = 1.0f / (right - left);
+        float _t2_inv = 1.0f / (top - bottom);
+        float _t3_inv = 1.0f / (zNear - zFar);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
+        var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, sd[12] - (left + right) * _t1_inv).withLane(1, sd[13] - (bottom + top) * _t2_inv).withLane(2, sd[14] + (zFar == Float.POSITIVE_INFINITY ? 1.0f : zNear == Float.POSITIVE_INFINITY ? -1.0f : -((zFar + zNear) * _t3_inv))).withLane(3, 1.0f);
+        var _col3 = _sv0.withLane(2, zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? 2.0f * zFar : 2.0f * zFar * zNear * _t3_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code frustum} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.LEFT_HANDED}, specialized by
+     * runtime matrix properties; reached only through the public {@code frustum} dispatcher.
+     */
+    private Float4x4 frustum_no_lh_translation_self(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        return frustum_no_lh_translation(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+
+    /**
+     * Private body of {@code frustum} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code frustum} dispatcher.
+     */
+    private Float4x4 frustum_no_lh_orthogonal(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return frustum_no_lh_orthogonal_fma(left, right, bottom, top, zNear, zFar, dest);
+        return frustum_no_lh_orthogonal_mulAdd(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+    private Float4x4 frustum_no_lh_orthogonal_fma(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = 2.0f * zNear;
@@ -17929,7 +18646,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 frustum_no_lh_identity_mulAdd(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+    private Float4x4 frustum_no_lh_orthogonal_mulAdd(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = 2.0f * zNear;
@@ -17961,7 +18678,7 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_no_lh_general(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
-        return frustum_no_lh_identity(left, right, bottom, top, zNear, zFar, dest);
+        return frustum_no_lh_orthogonal(left, right, bottom, top, zNear, zFar, dest);
     }
 
 
@@ -17971,7 +18688,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 frustum_no_lh(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return frustum_no_lh_identity(left, right, bottom, top, zNear, zFar, dest);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return frustum_no_lh_identity(left, right, bottom, top, zNear, zFar, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return frustum_no_lh_translation(left, right, bottom, top, zNear, zFar, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return frustum_no_lh_orthogonal(left, right, bottom, top, zNear, zFar, dest);
         return frustum_no_lh_general(left, right, bottom, top, zNear, zFar, dest);
     }
 
@@ -17983,7 +18702,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 frustum_no_lh(float left, float right, float bottom, float top, float zNear, float zFar) {
         if (Joml.RETURN_NEW) return frustum_no_lh(left, right, bottom, top, zNear, zFar, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return frustum_no_lh_identity(left, right, bottom, top, zNear, zFar, this);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return frustum_no_lh_identity_self(left, right, bottom, top, zNear, zFar, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return frustum_no_lh_translation_self(left, right, bottom, top, zNear, zFar, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return frustum_no_lh_orthogonal(left, right, bottom, top, zNear, zFar, this);
         return frustum_no_lh_general(left, right, bottom, top, zNear, zFar, this);
     }
 
@@ -18056,11 +18777,83 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_no_rh_identity(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
-        if (SimdMath.USE_FMA) return frustum_no_rh_identity_fma(left, right, bottom, top, zNear, zFar, dest);
-        return frustum_no_rh_identity_mulAdd(left, right, bottom, top, zNear, zFar, dest);
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = 2.0f * zNear;
+        float _t1_inv = 1.0f / (right - left);
+        float _t2_inv = 1.0f / (top - bottom);
+        float _t3_inv = 1.0f / (zNear - zFar);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
+        var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, (left + right) * _t1_inv).withLane(1, (bottom + top) * _t2_inv).withLane(2, zFar == Float.POSITIVE_INFINITY ? -1.0f : zNear == Float.POSITIVE_INFINITY ? 1.0f : (zFar + zNear) * _t3_inv).withLane(3, -1.0f);
+        var _col3 = _sv0.withLane(2, zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? 2.0f * zFar : 2.0f * zFar * zNear * _t3_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
     }
 
-    private Float4x4 frustum_no_rh_identity_fma(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+
+    /**
+     * Private in-place self-form body of {@code frustum} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.RIGHT_HANDED}, specialized by
+     * runtime matrix properties; reached only through the public {@code frustum} dispatcher.
+     */
+    private Float4x4 frustum_no_rh_identity_self(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        return frustum_no_rh_identity(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+
+    /**
+     * Private body of {@code frustum} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code frustum} dispatcher.
+     */
+    private Float4x4 frustum_no_rh_translation(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = 2.0f * zNear;
+        float _t1_inv = 1.0f / (right - left);
+        float _t2_inv = 1.0f / (top - bottom);
+        float _t3_inv = 1.0f / (zNear - zFar);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
+        var _col2 = FloatVector.broadcast(COL_SPECIES, left + right).withLane(1, bottom + top).mul(FloatVector.broadcast(COL_SPECIES, _t1_inv).withLane(1, _t2_inv)).withLane(2, zFar == Float.POSITIVE_INFINITY ? -1.0f : zNear == Float.POSITIVE_INFINITY ? 1.0f : (zFar + zNear) * _t3_inv).sub(FloatVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, -1.0f);
+        var _col3 = _sv0.withLane(2, zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? 2.0f * zFar : 2.0f * zFar * zNear * _t3_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code frustum} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.RIGHT_HANDED}, specialized by
+     * runtime matrix properties; reached only through the public {@code frustum} dispatcher.
+     */
+    private Float4x4 frustum_no_rh_translation_self(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        return frustum_no_rh_translation(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+
+    /**
+     * Private body of {@code frustum} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code frustum} dispatcher.
+     */
+    private Float4x4 frustum_no_rh_orthogonal(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return frustum_no_rh_orthogonal_fma(left, right, bottom, top, zNear, zFar, dest);
+        return frustum_no_rh_orthogonal_mulAdd(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+    private Float4x4 frustum_no_rh_orthogonal_fma(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = 2.0f * zNear;
@@ -18085,7 +18878,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 frustum_no_rh_identity_mulAdd(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+    private Float4x4 frustum_no_rh_orthogonal_mulAdd(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = 2.0f * zNear;
@@ -18117,7 +18910,7 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_no_rh_general(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
-        return frustum_no_rh_identity(left, right, bottom, top, zNear, zFar, dest);
+        return frustum_no_rh_orthogonal(left, right, bottom, top, zNear, zFar, dest);
     }
 
 
@@ -18127,7 +18920,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 frustum_no_rh(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return frustum_no_rh_identity(left, right, bottom, top, zNear, zFar, dest);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return frustum_no_rh_identity(left, right, bottom, top, zNear, zFar, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return frustum_no_rh_translation(left, right, bottom, top, zNear, zFar, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return frustum_no_rh_orthogonal(left, right, bottom, top, zNear, zFar, dest);
         return frustum_no_rh_general(left, right, bottom, top, zNear, zFar, dest);
     }
 
@@ -18139,7 +18934,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 frustum_no_rh(float left, float right, float bottom, float top, float zNear, float zFar) {
         if (Joml.RETURN_NEW) return frustum_no_rh(left, right, bottom, top, zNear, zFar, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return frustum_no_rh_identity(left, right, bottom, top, zNear, zFar, this);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return frustum_no_rh_identity_self(left, right, bottom, top, zNear, zFar, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return frustum_no_rh_translation_self(left, right, bottom, top, zNear, zFar, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return frustum_no_rh_orthogonal(left, right, bottom, top, zNear, zFar, this);
         return frustum_no_rh_general(left, right, bottom, top, zNear, zFar, this);
     }
 
@@ -18248,11 +19045,83 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_zo_lh_identity(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
-        if (SimdMath.USE_FMA) return frustum_zo_lh_identity_fma(left, right, bottom, top, zNear, zFar, dest);
-        return frustum_zo_lh_identity_mulAdd(left, right, bottom, top, zNear, zFar, dest);
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = 2.0f * zNear;
+        float _t1_inv = 1.0f / (right - left);
+        float _t2_inv = 1.0f / (top - bottom);
+        float _t3_inv = 1.0f / (zNear - zFar);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
+        var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, -((left + right) * _t1_inv)).withLane(1, -((bottom + top) * _t2_inv)).withLane(2, zFar == Float.POSITIVE_INFINITY ? 1.0f : zNear == Float.POSITIVE_INFINITY ? 0.0f : -(zFar * _t3_inv)).withLane(3, 1.0f);
+        var _col3 = _sv0.withLane(2, zFar == Float.POSITIVE_INFINITY ? -zNear : zNear == Float.POSITIVE_INFINITY ? zFar : zFar * zNear * _t3_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
     }
 
-    private Float4x4 frustum_zo_lh_identity_fma(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+
+    /**
+     * Private in-place self-form body of {@code frustum} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code frustum} dispatcher.
+     */
+    private Float4x4 frustum_zo_lh_identity_self(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        return frustum_zo_lh_identity(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+
+    /**
+     * Private body of {@code frustum} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code frustum} dispatcher.
+     */
+    private Float4x4 frustum_zo_lh_translation(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = 2.0f * zNear;
+        float _t1_inv = 1.0f / (right - left);
+        float _t2_inv = 1.0f / (top - bottom);
+        float _t3_inv = 1.0f / (zNear - zFar);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
+        var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, sd[12] - (left + right) * _t1_inv).withLane(1, sd[13] - (bottom + top) * _t2_inv).withLane(2, sd[14] + (zFar == Float.POSITIVE_INFINITY ? 1.0f : zNear == Float.POSITIVE_INFINITY ? 0.0f : -(zFar * _t3_inv))).withLane(3, 1.0f);
+        var _col3 = _sv0.withLane(2, zFar == Float.POSITIVE_INFINITY ? -zNear : zNear == Float.POSITIVE_INFINITY ? zFar : zFar * zNear * _t3_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code frustum} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code frustum} dispatcher.
+     */
+    private Float4x4 frustum_zo_lh_translation_self(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        return frustum_zo_lh_translation(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+
+    /**
+     * Private body of {@code frustum} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code frustum} dispatcher.
+     */
+    private Float4x4 frustum_zo_lh_orthogonal(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return frustum_zo_lh_orthogonal_fma(left, right, bottom, top, zNear, zFar, dest);
+        return frustum_zo_lh_orthogonal_mulAdd(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+    private Float4x4 frustum_zo_lh_orthogonal_fma(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = 2.0f * zNear;
@@ -18277,7 +19146,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 frustum_zo_lh_identity_mulAdd(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+    private Float4x4 frustum_zo_lh_orthogonal_mulAdd(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = 2.0f * zNear;
@@ -18309,7 +19178,7 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_zo_lh_general(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
-        return frustum_zo_lh_identity(left, right, bottom, top, zNear, zFar, dest);
+        return frustum_zo_lh_orthogonal(left, right, bottom, top, zNear, zFar, dest);
     }
 
 
@@ -18319,7 +19188,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 frustum_zo_lh(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return frustum_zo_lh_identity(left, right, bottom, top, zNear, zFar, dest);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return frustum_zo_lh_identity(left, right, bottom, top, zNear, zFar, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return frustum_zo_lh_translation(left, right, bottom, top, zNear, zFar, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return frustum_zo_lh_orthogonal(left, right, bottom, top, zNear, zFar, dest);
         return frustum_zo_lh_general(left, right, bottom, top, zNear, zFar, dest);
     }
 
@@ -18331,7 +19202,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 frustum_zo_lh(float left, float right, float bottom, float top, float zNear, float zFar) {
         if (Joml.RETURN_NEW) return frustum_zo_lh(left, right, bottom, top, zNear, zFar, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return frustum_zo_lh_identity(left, right, bottom, top, zNear, zFar, this);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return frustum_zo_lh_identity_self(left, right, bottom, top, zNear, zFar, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return frustum_zo_lh_translation_self(left, right, bottom, top, zNear, zFar, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return frustum_zo_lh_orthogonal(left, right, bottom, top, zNear, zFar, this);
         return frustum_zo_lh_general(left, right, bottom, top, zNear, zFar, this);
     }
 
@@ -18404,11 +19277,83 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_zo_rh_identity(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
-        if (SimdMath.USE_FMA) return frustum_zo_rh_identity_fma(left, right, bottom, top, zNear, zFar, dest);
-        return frustum_zo_rh_identity_mulAdd(left, right, bottom, top, zNear, zFar, dest);
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = 2.0f * zNear;
+        float _t1_inv = 1.0f / (right - left);
+        float _t2_inv = 1.0f / (top - bottom);
+        float _t3_inv = 1.0f / (zNear - zFar);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
+        var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, (left + right) * _t1_inv).withLane(1, (bottom + top) * _t2_inv).withLane(2, zFar == Float.POSITIVE_INFINITY ? -1.0f : zNear == Float.POSITIVE_INFINITY ? 0.0f : zFar * _t3_inv).withLane(3, -1.0f);
+        var _col3 = _sv0.withLane(2, zFar == Float.POSITIVE_INFINITY ? -zNear : zNear == Float.POSITIVE_INFINITY ? zFar : zFar * zNear * _t3_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
     }
 
-    private Float4x4 frustum_zo_rh_identity_fma(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+
+    /**
+     * Private in-place self-form body of {@code frustum} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code frustum} dispatcher.
+     */
+    private Float4x4 frustum_zo_rh_identity_self(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        return frustum_zo_rh_identity(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+
+    /**
+     * Private body of {@code frustum} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code frustum} dispatcher.
+     */
+    private Float4x4 frustum_zo_rh_translation(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = 2.0f * zNear;
+        float _t1_inv = 1.0f / (right - left);
+        float _t2_inv = 1.0f / (top - bottom);
+        float _t3_inv = 1.0f / (zNear - zFar);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
+        var _col2 = FloatVector.broadcast(COL_SPECIES, left + right).withLane(1, bottom + top).mul(FloatVector.broadcast(COL_SPECIES, _t1_inv).withLane(1, _t2_inv)).withLane(2, zFar == Float.POSITIVE_INFINITY ? -1.0f : zNear == Float.POSITIVE_INFINITY ? 0.0f : zFar * _t3_inv).sub(FloatVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, -1.0f);
+        var _col3 = _sv0.withLane(2, zFar == Float.POSITIVE_INFINITY ? -zNear : zNear == Float.POSITIVE_INFINITY ? zFar : zFar * zNear * _t3_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code frustum} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code frustum} dispatcher.
+     */
+    private Float4x4 frustum_zo_rh_translation_self(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        return frustum_zo_rh_translation(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+
+    /**
+     * Private body of {@code frustum} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code frustum} dispatcher.
+     */
+    private Float4x4 frustum_zo_rh_orthogonal(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return frustum_zo_rh_orthogonal_fma(left, right, bottom, top, zNear, zFar, dest);
+        return frustum_zo_rh_orthogonal_mulAdd(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+    private Float4x4 frustum_zo_rh_orthogonal_fma(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = 2.0f * zNear;
@@ -18433,7 +19378,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 frustum_zo_rh_identity_mulAdd(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+    private Float4x4 frustum_zo_rh_orthogonal_mulAdd(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = 2.0f * zNear;
@@ -18465,7 +19410,7 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_zo_rh_general(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
-        return frustum_zo_rh_identity(left, right, bottom, top, zNear, zFar, dest);
+        return frustum_zo_rh_orthogonal(left, right, bottom, top, zNear, zFar, dest);
     }
 
 
@@ -18475,7 +19420,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 frustum_zo_rh(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return frustum_zo_rh_identity(left, right, bottom, top, zNear, zFar, dest);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return frustum_zo_rh_identity(left, right, bottom, top, zNear, zFar, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return frustum_zo_rh_translation(left, right, bottom, top, zNear, zFar, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return frustum_zo_rh_orthogonal(left, right, bottom, top, zNear, zFar, dest);
         return frustum_zo_rh_general(left, right, bottom, top, zNear, zFar, dest);
     }
 
@@ -18487,7 +19434,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 frustum_zo_rh(float left, float right, float bottom, float top, float zNear, float zFar) {
         if (Joml.RETURN_NEW) return frustum_zo_rh(left, right, bottom, top, zNear, zFar, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return frustum_zo_rh_identity(left, right, bottom, top, zNear, zFar, this);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return frustum_zo_rh_identity_self(left, right, bottom, top, zNear, zFar, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return frustum_zo_rh_translation_self(left, right, bottom, top, zNear, zFar, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return frustum_zo_rh_orthogonal(left, right, bottom, top, zNear, zFar, this);
         return frustum_zo_rh_general(left, right, bottom, top, zNear, zFar, this);
     }
 
@@ -19025,12 +19974,12 @@ public class Float4x4Impl implements Float4x4 {
      * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
      * through the public {@code lookAlong} dispatcher.
      */
-    private Float4x4 lookAlong_identity_affine_general(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return lookAlong_identity_affine_general_fma(dirX, dirY, dirZ, upX, upY, upZ, dest, _props);
-        return lookAlong_identity_affine_general_mulAdd(dirX, dirY, dirZ, upX, upY, upZ, dest, _props);
+    private Float4x4 lookAlong_orthogonal_affine_general(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return lookAlong_orthogonal_affine_general_fma(dirX, dirY, dirZ, upX, upY, upZ, dest, _props);
+        return lookAlong_orthogonal_affine_general_mulAdd(dirX, dirY, dirZ, upX, upY, upZ, dest, _props);
     }
 
-    private Float4x4 lookAlong_identity_affine_general_fma(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 lookAlong_orthogonal_affine_general_fma(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
@@ -19061,7 +20010,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 lookAlong_identity_affine_general_mulAdd(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 lookAlong_orthogonal_affine_general_mulAdd(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
@@ -19094,6 +20043,212 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
+     * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
+     * through the public {@code lookAlong} dispatcher.
+     */
+    private Float4x4 lookAlong_identity(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9;
+        if (_t2 > 0.0f) {
+            _t7 = dirY * _t3;
+            _t8 = dirX * _t3;
+            _t9 = dirZ * _t3;
+        } else {
+            _t7 = 0.0f;
+            _t8 = 0.0f;
+            _t9 = 0.0f;
+        }
+        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
+        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
+        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
+        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
+        float _t22 = (1.0f / (float) Math.sqrt(_t21));
+        float _t26, _t27, _t28;
+        if (_t21 > 0.0f) {
+            _t26 = _t17 * _t22;
+            _t27 = _t16 * _t22;
+            _t28 = _t18 * _t22;
+        } else {
+            _t26 = 0.0f;
+            _t27 = 0.0f;
+            _t28 = 0.0f;
+        }
+        dd[0] = _t26;
+        dd[1] = _t28;
+        dd[2] = _t27;
+        dd[3] = 0.0f;
+        dd[4] = Math.fma(_t7, _t27, -(_t9 * _t28));
+        dd[5] = Math.fma(_t9, _t26, -(_t8 * _t27));
+        dd[6] = Math.fma(_t8, _t28, -(_t7 * _t26));
+        dd[7] = 0.0f;
+        dd[8] = _t8;
+        dd[9] = _t7;
+        dd[10] = _t9;
+        VEC_24.intoArray(dd, 11);
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code lookAlong}, specialized by runtime matrix
+     * properties; reached only through the public {@code lookAlong} dispatcher.
+     */
+    private Float4x4 lookAlong_identity_self(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9;
+        if (_t2 > 0.0f) {
+            _t7 = dirY * _t3;
+            _t8 = dirX * _t3;
+            _t9 = dirZ * _t3;
+        } else {
+            _t7 = 0.0f;
+            _t8 = 0.0f;
+            _t9 = 0.0f;
+        }
+        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
+        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
+        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
+        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
+        float _t22 = (1.0f / (float) Math.sqrt(_t21));
+        float _t26, _t27, _t28;
+        if (_t21 > 0.0f) {
+            _t26 = _t17 * _t22;
+            _t27 = _t16 * _t22;
+            _t28 = _t18 * _t22;
+        } else {
+            _t26 = 0.0f;
+            _t27 = 0.0f;
+            _t28 = 0.0f;
+        }
+        dd[0] = _t26;
+        dd[1] = _t28;
+        dd[2] = _t27;
+        dd[4] = Math.fma(_t7, _t27, -(_t9 * _t28));
+        dd[5] = Math.fma(_t9, _t26, -(_t8 * _t27));
+        dd[6] = Math.fma(_t8, _t28, -(_t7 * _t26));
+        dd[8] = _t8;
+        dd[9] = _t7;
+        dd[10] = _t9;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
+     * through the public {@code lookAlong} dispatcher.
+     */
+    private Float4x4 lookAlong_translation(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9;
+        if (_t2 > 0.0f) {
+            _t7 = dirY * _t3;
+            _t8 = dirX * _t3;
+            _t9 = dirZ * _t3;
+        } else {
+            _t7 = 0.0f;
+            _t8 = 0.0f;
+            _t9 = 0.0f;
+        }
+        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
+        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
+        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
+        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
+        float _t22 = (1.0f / (float) Math.sqrt(_t21));
+        float _t26, _t27, _t28;
+        if (_t21 > 0.0f) {
+            _t26 = _t17 * _t22;
+            _t27 = _t16 * _t22;
+            _t28 = _t18 * _t22;
+        } else {
+            _t26 = 0.0f;
+            _t27 = 0.0f;
+            _t28 = 0.0f;
+        }
+        dd[0] = _t26;
+        dd[1] = _t28;
+        dd[2] = _t27;
+        dd[3] = 0.0f;
+        dd[4] = Math.fma(_t7, _t27, -(_t9 * _t28));
+        dd[5] = Math.fma(_t9, _t26, -(_t8 * _t27));
+        dd[6] = Math.fma(_t8, _t28, -(_t7 * _t26));
+        dd[7] = 0.0f;
+        dd[8] = _t8;
+        dd[9] = _t7;
+        dd[10] = _t9;
+        dd[11] = 0.0f;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code lookAlong}, specialized by runtime matrix
+     * properties; reached only through the public {@code lookAlong} dispatcher.
+     */
+    private Float4x4 lookAlong_translation_self(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9;
+        if (_t2 > 0.0f) {
+            _t7 = dirY * _t3;
+            _t8 = dirX * _t3;
+            _t9 = dirZ * _t3;
+        } else {
+            _t7 = 0.0f;
+            _t8 = 0.0f;
+            _t9 = 0.0f;
+        }
+        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
+        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
+        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
+        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
+        float _t22 = (1.0f / (float) Math.sqrt(_t21));
+        float _t26, _t27, _t28;
+        if (_t21 > 0.0f) {
+            _t26 = _t17 * _t22;
+            _t27 = _t16 * _t22;
+            _t28 = _t18 * _t22;
+        } else {
+            _t26 = 0.0f;
+            _t27 = 0.0f;
+            _t28 = 0.0f;
+        }
+        dd[0] = _t26;
+        dd[1] = _t28;
+        dd[2] = _t27;
+        dd[4] = Math.fma(_t7, _t27, -(_t9 * _t28));
+        dd[5] = Math.fma(_t9, _t26, -(_t8 * _t27));
+        dd[6] = Math.fma(_t8, _t28, -(_t7 * _t26));
+        dd[8] = _t8;
+        dd[9] = _t7;
+        dd[10] = _t9;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
      * Apply a rotation transformation that makes {@code +z} point along ({@code dirX},
      * {@code dirY}, {@code dirZ}) to this matrix and store the result in {@code dest}.
      * <p>
@@ -19112,7 +20267,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     public Float4x4 lookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return lookAlong_identity_affine_general(dirX, dirY, dirZ, upX, upY, upZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAlong_identity(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAlong_translation(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        return lookAlong_orthogonal_affine_general(dirX, dirY, dirZ, upX, upY, upZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -19135,8 +20292,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated public Float4x4 lookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
         if (Joml.RETURN_NEW) return lookAlong(dirX, dirY, dirZ, upX, upY, upZ, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return lookAlong_identity_affine_general(dirX, dirY, dirZ, upX, upY, upZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
-        return lookAlong_identity_affine_general(dirX, dirY, dirZ, upX, upY, upZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAlong_identity_self(dirX, dirY, dirZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAlong_translation_self(dirX, dirY, dirZ, upX, upY, upZ, this);
+        return lookAlong_orthogonal_affine_general(dirX, dirY, dirZ, upX, upY, upZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -19253,12 +20411,12 @@ public class Float4x4Impl implements Float4x4 {
      * Private body of {@code lookAt} for {@code Handedness.LEFT_HANDED}, specialized by runtime
      * matrix properties; reached only through the public {@code lookAt} dispatcher.
      */
-    private Float4x4 lookAt_lh_identity_affine_general(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return lookAt_lh_identity_affine_general_fma(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest, _props);
-        return lookAt_lh_identity_affine_general_mulAdd(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest, _props);
+    private Float4x4 lookAt_lh_orthogonal_affine_general(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return lookAt_lh_orthogonal_affine_general_fma(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest, _props);
+        return lookAt_lh_orthogonal_affine_general_mulAdd(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest, _props);
     }
 
-    private Float4x4 lookAt_lh_identity_affine_general_fma(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 lookAt_lh_orthogonal_affine_general_fma(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = centerZ - eyeZ;
@@ -19295,7 +20453,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 lookAt_lh_identity_affine_general_mulAdd(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 lookAt_lh_orthogonal_affine_general_mulAdd(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = centerZ - eyeZ;
@@ -19334,12 +20492,258 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
+     * Private body of {@code lookAt} for {@code Handedness.LEFT_HANDED}, specialized by runtime
+     * matrix properties; reached only through the public {@code lookAt} dispatcher.
+     */
+    private Float4x4 lookAt_lh_identity(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = centerZ - eyeZ;
+        float _t1 = centerX - eyeX;
+        float _t2 = centerY - eyeY;
+        float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
+        float _t6 = (1.0f / (float) Math.sqrt(_t5));
+        float _t10, _t11, _t12;
+        if (_t5 > 0.0f) {
+            _t10 = _t2 * _t6;
+            _t11 = _t1 * _t6;
+            _t12 = _t0 * _t6;
+        } else {
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 0.0f;
+        }
+        float _t19 = Math.fma(upX, _t10, -(upY * _t11));
+        float _t20 = Math.fma(upY, _t12, -(upZ * _t10));
+        float _t21 = Math.fma(upZ, _t11, -(upX * _t12));
+        float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
+        float _t25 = (1.0f / (float) Math.sqrt(_t24));
+        float _t29, _t30, _t31;
+        if (_t24 > 0.0f) {
+            _t29 = _t20 * _t25;
+            _t30 = _t21 * _t25;
+            _t31 = _t19 * _t25;
+        } else {
+            _t29 = 0.0f;
+            _t30 = 0.0f;
+            _t31 = 0.0f;
+        }
+        float _t38 = Math.fma(_t10, _t31, -(_t12 * _t30));
+        float _t39 = Math.fma(_t12, _t29, -(_t11 * _t31));
+        float _t40 = Math.fma(_t11, _t30, -(_t10 * _t29));
+        dd[0] = _t29;
+        dd[1] = _t38;
+        dd[2] = _t11;
+        dd[3] = 0.0f;
+        dd[4] = _t30;
+        dd[5] = _t39;
+        dd[6] = _t10;
+        dd[7] = 0.0f;
+        dd[8] = _t31;
+        dd[9] = _t40;
+        dd[10] = _t12;
+        dd[11] = 0.0f;
+        dd[12] = -Math.fma(eyeZ, _t31, Math.fma(eyeX, _t29, eyeY * _t30));
+        dd[13] = -Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
+        dd[14] = -Math.fma(eyeZ, _t12, Math.fma(eyeX, _t11, eyeY * _t10));
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code lookAt} for {@code Handedness.LEFT_HANDED},
+     * specialized by runtime matrix properties; reached only through the public {@code lookAt}
+     * dispatcher.
+     */
+    private Float4x4 lookAt_lh_identity_self(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = centerZ - eyeZ;
+        float _t1 = centerX - eyeX;
+        float _t2 = centerY - eyeY;
+        float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
+        float _t6 = (1.0f / (float) Math.sqrt(_t5));
+        float _t10, _t11, _t12;
+        if (_t5 > 0.0f) {
+            _t10 = _t2 * _t6;
+            _t11 = _t1 * _t6;
+            _t12 = _t0 * _t6;
+        } else {
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 0.0f;
+        }
+        float _t19 = Math.fma(upX, _t10, -(upY * _t11));
+        float _t20 = Math.fma(upY, _t12, -(upZ * _t10));
+        float _t21 = Math.fma(upZ, _t11, -(upX * _t12));
+        float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
+        float _t25 = (1.0f / (float) Math.sqrt(_t24));
+        float _t29, _t30, _t31;
+        if (_t24 > 0.0f) {
+            _t29 = _t20 * _t25;
+            _t30 = _t21 * _t25;
+            _t31 = _t19 * _t25;
+        } else {
+            _t29 = 0.0f;
+            _t30 = 0.0f;
+            _t31 = 0.0f;
+        }
+        float _t38 = Math.fma(_t10, _t31, -(_t12 * _t30));
+        float _t39 = Math.fma(_t12, _t29, -(_t11 * _t31));
+        float _t40 = Math.fma(_t11, _t30, -(_t10 * _t29));
+        dd[0] = _t29;
+        dd[1] = _t38;
+        dd[2] = _t11;
+        dd[4] = _t30;
+        dd[5] = _t39;
+        dd[6] = _t10;
+        dd[8] = _t31;
+        dd[9] = _t40;
+        dd[10] = _t12;
+        dd[12] = -Math.fma(eyeZ, _t31, Math.fma(eyeX, _t29, eyeY * _t30));
+        dd[13] = -Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
+        dd[14] = -Math.fma(eyeZ, _t12, Math.fma(eyeX, _t11, eyeY * _t10));
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code lookAt} for {@code Handedness.LEFT_HANDED}, specialized by runtime
+     * matrix properties; reached only through the public {@code lookAt} dispatcher.
+     */
+    private Float4x4 lookAt_lh_translation(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = -eyeX;
+        float _t1 = -eyeY;
+        float _t2 = -eyeZ;
+        float _t3 = centerZ - eyeZ;
+        float _t4 = centerX - eyeX;
+        float _t5 = centerY - eyeY;
+        float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        float _t9 = (1.0f / (float) Math.sqrt(_t8));
+        float _t13, _t14, _t15;
+        if (_t8 > 0.0f) {
+            _t13 = _t5 * _t9;
+            _t14 = _t4 * _t9;
+            _t15 = _t3 * _t9;
+        } else {
+            _t13 = 0.0f;
+            _t14 = 0.0f;
+            _t15 = 0.0f;
+        }
+        float _t22 = Math.fma(upX, _t13, -(upY * _t14));
+        float _t23 = Math.fma(upY, _t15, -(upZ * _t13));
+        float _t24 = Math.fma(upZ, _t14, -(upX * _t15));
+        float _t27 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24));
+        float _t28 = (1.0f / (float) Math.sqrt(_t27));
+        float _t32, _t33, _t34;
+        if (_t27 > 0.0f) {
+            _t32 = _t23 * _t28;
+            _t33 = _t24 * _t28;
+            _t34 = _t22 * _t28;
+        } else {
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+            _t34 = 0.0f;
+        }
+        float _t41 = Math.fma(_t13, _t34, -(_t15 * _t33));
+        float _t42 = Math.fma(_t15, _t32, -(_t14 * _t34));
+        float _t43 = Math.fma(_t14, _t33, -(_t13 * _t32));
+        dd[0] = _t32;
+        dd[1] = _t41;
+        dd[2] = _t14;
+        dd[3] = 0.0f;
+        dd[4] = _t33;
+        dd[5] = _t42;
+        dd[6] = _t13;
+        dd[7] = 0.0f;
+        dd[8] = _t34;
+        dd[9] = _t43;
+        dd[10] = _t15;
+        dd[11] = 0.0f;
+        dd[12] = Math.fma(_t0, _t32, Math.fma(_t1, _t33, Math.fma(_t2, _t34, sd[12])));
+        dd[13] = Math.fma(_t0, _t41, Math.fma(_t1, _t42, Math.fma(_t2, _t43, sd[13])));
+        dd[14] = Math.fma(_t0, _t14, Math.fma(_t1, _t13, Math.fma(_t2, _t15, sd[14])));
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code lookAt} for {@code Handedness.LEFT_HANDED},
+     * specialized by runtime matrix properties; reached only through the public {@code lookAt}
+     * dispatcher.
+     */
+    private Float4x4 lookAt_lh_translation_self(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = -eyeX;
+        float _t1 = -eyeY;
+        float _t2 = -eyeZ;
+        float _t3 = centerZ - eyeZ;
+        float _t4 = centerX - eyeX;
+        float _t5 = centerY - eyeY;
+        float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        float _t9 = (1.0f / (float) Math.sqrt(_t8));
+        float _t13, _t14, _t15;
+        if (_t8 > 0.0f) {
+            _t13 = _t5 * _t9;
+            _t14 = _t4 * _t9;
+            _t15 = _t3 * _t9;
+        } else {
+            _t13 = 0.0f;
+            _t14 = 0.0f;
+            _t15 = 0.0f;
+        }
+        float _t22 = Math.fma(upX, _t13, -(upY * _t14));
+        float _t23 = Math.fma(upY, _t15, -(upZ * _t13));
+        float _t24 = Math.fma(upZ, _t14, -(upX * _t15));
+        float _t27 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24));
+        float _t28 = (1.0f / (float) Math.sqrt(_t27));
+        float _t32, _t33, _t34;
+        if (_t27 > 0.0f) {
+            _t32 = _t23 * _t28;
+            _t33 = _t24 * _t28;
+            _t34 = _t22 * _t28;
+        } else {
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+            _t34 = 0.0f;
+        }
+        float _t41 = Math.fma(_t13, _t34, -(_t15 * _t33));
+        float _t42 = Math.fma(_t15, _t32, -(_t14 * _t34));
+        float _t43 = Math.fma(_t14, _t33, -(_t13 * _t32));
+        dd[0] = _t32;
+        dd[1] = _t41;
+        dd[2] = _t14;
+        dd[4] = _t33;
+        dd[5] = _t42;
+        dd[6] = _t13;
+        dd[8] = _t34;
+        dd[9] = _t43;
+        dd[10] = _t15;
+        dd[12] = Math.fma(_t0, _t32, Math.fma(_t1, _t33, Math.fma(_t2, _t34, sd[12])));
+        dd[13] = Math.fma(_t0, _t41, Math.fma(_t1, _t42, Math.fma(_t2, _t43, sd[13])));
+        dd[14] = Math.fma(_t0, _t14, Math.fma(_t1, _t13, Math.fma(_t2, _t15, sd[14])));
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
      * Private body of {@code lookAt} for {@code Handedness.LEFT_HANDED}; reached only through the
      * public {@code lookAt} dispatcher.
      */
     private Float4x4 lookAt_lh(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return lookAt_lh_identity_affine_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAt_lh_identity(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAt_lh_translation(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        return lookAt_lh_orthogonal_affine_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -19350,8 +20754,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 lookAt_lh(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ) {
         if (Joml.RETURN_NEW) return lookAt_lh(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return lookAt_lh_identity_affine_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
-        return lookAt_lh_identity_affine_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAt_lh_identity_self(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAt_lh_translation_self(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+        return lookAt_lh_orthogonal_affine_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -19462,12 +20867,12 @@ public class Float4x4Impl implements Float4x4 {
      * Private body of {@code lookAt} for {@code Handedness.RIGHT_HANDED}, specialized by runtime
      * matrix properties; reached only through the public {@code lookAt} dispatcher.
      */
-    private Float4x4 lookAt_rh_identity_affine_general(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return lookAt_rh_identity_affine_general_fma(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest, _props);
-        return lookAt_rh_identity_affine_general_mulAdd(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest, _props);
+    private Float4x4 lookAt_rh_orthogonal_affine_general(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return lookAt_rh_orthogonal_affine_general_fma(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest, _props);
+        return lookAt_rh_orthogonal_affine_general_mulAdd(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest, _props);
     }
 
-    private Float4x4 lookAt_rh_identity_affine_general_fma(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 lookAt_rh_orthogonal_affine_general_fma(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = -sd[8];
@@ -19508,7 +20913,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 lookAt_rh_identity_affine_general_mulAdd(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 lookAt_rh_orthogonal_affine_general_mulAdd(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = -sd[8];
@@ -19551,12 +20956,258 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
+     * Private body of {@code lookAt} for {@code Handedness.RIGHT_HANDED}, specialized by runtime
+     * matrix properties; reached only through the public {@code lookAt} dispatcher.
+     */
+    private Float4x4 lookAt_rh_identity(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = centerZ - eyeZ;
+        float _t1 = centerX - eyeX;
+        float _t2 = centerY - eyeY;
+        float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
+        float _t6 = (1.0f / (float) Math.sqrt(_t5));
+        float _t10, _t11, _t12;
+        if (_t5 > 0.0f) {
+            _t10 = _t1 * _t6;
+            _t11 = _t2 * _t6;
+            _t12 = _t0 * _t6;
+        } else {
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 0.0f;
+        }
+        float _t19 = Math.fma(upY, _t10, -(upX * _t11));
+        float _t20 = Math.fma(upX, _t12, -(upZ * _t10));
+        float _t21 = Math.fma(upZ, _t11, -(upY * _t12));
+        float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
+        float _t25 = (1.0f / (float) Math.sqrt(_t24));
+        float _t29, _t30, _t31;
+        if (_t24 > 0.0f) {
+            _t29 = _t21 * _t25;
+            _t30 = _t20 * _t25;
+            _t31 = _t19 * _t25;
+        } else {
+            _t29 = 0.0f;
+            _t30 = 0.0f;
+            _t31 = 0.0f;
+        }
+        float _t38 = Math.fma(_t12, _t30, -(_t11 * _t31));
+        float _t39 = Math.fma(_t10, _t31, -(_t12 * _t29));
+        float _t40 = Math.fma(_t11, _t29, -(_t10 * _t30));
+        dd[0] = _t29;
+        dd[1] = _t38;
+        dd[2] = -_t10;
+        dd[3] = 0.0f;
+        dd[4] = _t30;
+        dd[5] = _t39;
+        dd[6] = -_t11;
+        dd[7] = 0.0f;
+        dd[8] = _t31;
+        dd[9] = _t40;
+        dd[10] = -_t12;
+        dd[11] = 0.0f;
+        dd[12] = -Math.fma(eyeZ, _t31, Math.fma(eyeX, _t29, eyeY * _t30));
+        dd[13] = -Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
+        dd[14] = Math.fma(eyeZ, _t12, Math.fma(eyeX, _t10, eyeY * _t11));
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code lookAt} for {@code Handedness.RIGHT_HANDED},
+     * specialized by runtime matrix properties; reached only through the public {@code lookAt}
+     * dispatcher.
+     */
+    private Float4x4 lookAt_rh_identity_self(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = centerZ - eyeZ;
+        float _t1 = centerX - eyeX;
+        float _t2 = centerY - eyeY;
+        float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
+        float _t6 = (1.0f / (float) Math.sqrt(_t5));
+        float _t10, _t11, _t12;
+        if (_t5 > 0.0f) {
+            _t10 = _t1 * _t6;
+            _t11 = _t2 * _t6;
+            _t12 = _t0 * _t6;
+        } else {
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 0.0f;
+        }
+        float _t19 = Math.fma(upY, _t10, -(upX * _t11));
+        float _t20 = Math.fma(upX, _t12, -(upZ * _t10));
+        float _t21 = Math.fma(upZ, _t11, -(upY * _t12));
+        float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
+        float _t25 = (1.0f / (float) Math.sqrt(_t24));
+        float _t29, _t30, _t31;
+        if (_t24 > 0.0f) {
+            _t29 = _t21 * _t25;
+            _t30 = _t20 * _t25;
+            _t31 = _t19 * _t25;
+        } else {
+            _t29 = 0.0f;
+            _t30 = 0.0f;
+            _t31 = 0.0f;
+        }
+        float _t38 = Math.fma(_t12, _t30, -(_t11 * _t31));
+        float _t39 = Math.fma(_t10, _t31, -(_t12 * _t29));
+        float _t40 = Math.fma(_t11, _t29, -(_t10 * _t30));
+        dd[0] = _t29;
+        dd[1] = _t38;
+        dd[2] = -_t10;
+        dd[4] = _t30;
+        dd[5] = _t39;
+        dd[6] = -_t11;
+        dd[8] = _t31;
+        dd[9] = _t40;
+        dd[10] = -_t12;
+        dd[12] = -Math.fma(eyeZ, _t31, Math.fma(eyeX, _t29, eyeY * _t30));
+        dd[13] = -Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
+        dd[14] = Math.fma(eyeZ, _t12, Math.fma(eyeX, _t10, eyeY * _t11));
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code lookAt} for {@code Handedness.RIGHT_HANDED}, specialized by runtime
+     * matrix properties; reached only through the public {@code lookAt} dispatcher.
+     */
+    private Float4x4 lookAt_rh_translation(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = -eyeX;
+        float _t1 = -eyeY;
+        float _t2 = -eyeZ;
+        float _t3 = centerZ - eyeZ;
+        float _t4 = centerX - eyeX;
+        float _t5 = centerY - eyeY;
+        float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        float _t9 = (1.0f / (float) Math.sqrt(_t8));
+        float _t13, _t14, _t15;
+        if (_t8 > 0.0f) {
+            _t13 = _t4 * _t9;
+            _t14 = _t5 * _t9;
+            _t15 = _t3 * _t9;
+        } else {
+            _t13 = 0.0f;
+            _t14 = 0.0f;
+            _t15 = 0.0f;
+        }
+        float _t22 = Math.fma(upY, _t13, -(upX * _t14));
+        float _t23 = Math.fma(upX, _t15, -(upZ * _t13));
+        float _t24 = Math.fma(upZ, _t14, -(upY * _t15));
+        float _t27 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24));
+        float _t28 = (1.0f / (float) Math.sqrt(_t27));
+        float _t32, _t33, _t34;
+        if (_t27 > 0.0f) {
+            _t32 = _t24 * _t28;
+            _t33 = _t23 * _t28;
+            _t34 = _t22 * _t28;
+        } else {
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+            _t34 = 0.0f;
+        }
+        float _t41 = Math.fma(_t15, _t33, -(_t14 * _t34));
+        float _t42 = Math.fma(_t13, _t34, -(_t15 * _t32));
+        float _t43 = Math.fma(_t14, _t32, -(_t13 * _t33));
+        dd[0] = _t32;
+        dd[1] = _t41;
+        dd[2] = -_t13;
+        dd[3] = 0.0f;
+        dd[4] = _t33;
+        dd[5] = _t42;
+        dd[6] = -_t14;
+        dd[7] = 0.0f;
+        dd[8] = _t34;
+        dd[9] = _t43;
+        dd[10] = -_t15;
+        dd[11] = 0.0f;
+        dd[12] = Math.fma(_t0, _t32, Math.fma(_t1, _t33, Math.fma(_t2, _t34, sd[12])));
+        dd[13] = Math.fma(_t0, _t41, Math.fma(_t1, _t42, Math.fma(_t2, _t43, sd[13])));
+        dd[14] = Math.fma(eyeX, _t13, Math.fma(eyeY, _t14, Math.fma(eyeZ, _t15, sd[14])));
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code lookAt} for {@code Handedness.RIGHT_HANDED},
+     * specialized by runtime matrix properties; reached only through the public {@code lookAt}
+     * dispatcher.
+     */
+    private Float4x4 lookAt_rh_translation_self(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = -eyeX;
+        float _t1 = -eyeY;
+        float _t2 = -eyeZ;
+        float _t3 = centerZ - eyeZ;
+        float _t4 = centerX - eyeX;
+        float _t5 = centerY - eyeY;
+        float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        float _t9 = (1.0f / (float) Math.sqrt(_t8));
+        float _t13, _t14, _t15;
+        if (_t8 > 0.0f) {
+            _t13 = _t4 * _t9;
+            _t14 = _t5 * _t9;
+            _t15 = _t3 * _t9;
+        } else {
+            _t13 = 0.0f;
+            _t14 = 0.0f;
+            _t15 = 0.0f;
+        }
+        float _t22 = Math.fma(upY, _t13, -(upX * _t14));
+        float _t23 = Math.fma(upX, _t15, -(upZ * _t13));
+        float _t24 = Math.fma(upZ, _t14, -(upY * _t15));
+        float _t27 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24));
+        float _t28 = (1.0f / (float) Math.sqrt(_t27));
+        float _t32, _t33, _t34;
+        if (_t27 > 0.0f) {
+            _t32 = _t24 * _t28;
+            _t33 = _t23 * _t28;
+            _t34 = _t22 * _t28;
+        } else {
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+            _t34 = 0.0f;
+        }
+        float _t41 = Math.fma(_t15, _t33, -(_t14 * _t34));
+        float _t42 = Math.fma(_t13, _t34, -(_t15 * _t32));
+        float _t43 = Math.fma(_t14, _t32, -(_t13 * _t33));
+        dd[0] = _t32;
+        dd[1] = _t41;
+        dd[2] = -_t13;
+        dd[4] = _t33;
+        dd[5] = _t42;
+        dd[6] = -_t14;
+        dd[8] = _t34;
+        dd[9] = _t43;
+        dd[10] = -_t15;
+        dd[12] = Math.fma(_t0, _t32, Math.fma(_t1, _t33, Math.fma(_t2, _t34, sd[12])));
+        dd[13] = Math.fma(_t0, _t41, Math.fma(_t1, _t42, Math.fma(_t2, _t43, sd[13])));
+        dd[14] = Math.fma(eyeX, _t13, Math.fma(eyeY, _t14, Math.fma(eyeZ, _t15, sd[14])));
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
      * Private body of {@code lookAt} for {@code Handedness.RIGHT_HANDED}; reached only through the
      * public {@code lookAt} dispatcher.
      */
     private Float4x4 lookAt_rh(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return lookAt_rh_identity_affine_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAt_rh_identity(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAt_rh_translation(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        return lookAt_rh_orthogonal_affine_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -19567,8 +21218,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 lookAt_rh(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ) {
         if (Joml.RETURN_NEW) return lookAt_rh(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return lookAt_rh_identity_affine_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
-        return lookAt_rh_identity_affine_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAt_rh_identity_self(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAt_rh_translation_self(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+        return lookAt_rh_orthogonal_affine_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -20037,10 +21689,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = _t3;
         dd[9] = -_t6;
         dd[10] = _t7;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -20070,10 +21719,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = _t3;
         dd[9] = -_t4;
         dd[10] = _t5;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -20105,10 +21751,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = _t1;
         dd[9] = -(_t2 * _t0);
         dd[10] = _t3 * _t0;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -20426,7 +22069,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t2_inv = 1.0f / (top - bottom);
         float _t3_inv = 1.0f / (zNear - zFar);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, -((left + right) * _t1_inv)).withLane(1, -((bottom + top) * _t2_inv)).withLane(2, zFar == Float.POSITIVE_INFINITY ? 1.0f : zNear == Float.POSITIVE_INFINITY ? -1.0f : -((zFar + zNear) * _t3_inv)).withLane(3, 1.0f);
         var _col3 = _sv0.withLane(2, zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? 2.0f * zFar : 2.0f * zFar * zNear * _t3_inv);
@@ -20451,7 +22094,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t2_inv = 1.0f / (top - bottom);
         float _t3_inv = 1.0f / (zNear - zFar);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, (left + right) * _t1_inv).withLane(1, (bottom + top) * _t2_inv).withLane(2, zFar == Float.POSITIVE_INFINITY ? -1.0f : zNear == Float.POSITIVE_INFINITY ? 1.0f : (zFar + zNear) * _t3_inv).withLane(3, -1.0f);
         var _col3 = _sv0.withLane(2, zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? 2.0f * zFar : 2.0f * zFar * zNear * _t3_inv);
@@ -20488,7 +22131,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t2_inv = 1.0f / (top - bottom);
         float _t3_inv = 1.0f / (zNear - zFar);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, -((left + right) * _t1_inv)).withLane(1, -((bottom + top) * _t2_inv)).withLane(2, zFar == Float.POSITIVE_INFINITY ? 1.0f : zNear == Float.POSITIVE_INFINITY ? 0.0f : -(zFar * _t3_inv)).withLane(3, 1.0f);
         var _col3 = _sv0.withLane(2, zFar == Float.POSITIVE_INFINITY ? -zNear : zNear == Float.POSITIVE_INFINITY ? zFar : zFar * zNear * _t3_inv);
@@ -20513,7 +22156,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t2_inv = 1.0f / (top - bottom);
         float _t3_inv = 1.0f / (zNear - zFar);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, (left + right) * _t1_inv).withLane(1, (bottom + top) * _t2_inv).withLane(2, zFar == Float.POSITIVE_INFINITY ? -1.0f : zNear == Float.POSITIVE_INFINITY ? 0.0f : zFar * _t3_inv).withLane(3, -1.0f);
         var _col3 = _sv0.withLane(2, zFar == Float.POSITIVE_INFINITY ? -zNear : zNear == Float.POSITIVE_INFINITY ? zFar : zFar * zNear * _t3_inv);
@@ -20885,174 +22528,6 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated public Float4x4 makeMappingXYnZ() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_25, 0).intoArray(dd, 0);
-        } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_25, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_25, 8).intoArray(dd, 8);
-        } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_25, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_25, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_25, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_25, 12).intoArray(dd, 12);
-        }
-        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
-        return this;
-    }
-
-
-    /**
-     * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+x, +z, +y)}.
-     *
-     * @return this
-     */
-    @Mutated public Float4x4 makeMappingXZY() {
-        float[] dd = this.data;
-        if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_26, 0).intoArray(dd, 0);
-        } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_26, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_26, 8).intoArray(dd, 8);
-        } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_26, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_26, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_26, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_26, 12).intoArray(dd, 12);
-        }
-        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
-        return this;
-    }
-
-
-    /**
-     * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+x, +z, -y)}.
-     *
-     * @return this
-     */
-    @Mutated public Float4x4 makeMappingXZnY() {
-        float[] dd = this.data;
-        if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_27, 0).intoArray(dd, 0);
-        } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_27, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_27, 8).intoArray(dd, 8);
-        } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_27, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_27, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_27, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_27, 12).intoArray(dd, 12);
-        }
-        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
-        return this;
-    }
-
-
-    /**
-     * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+x, -y, +z)}.
-     *
-     * @return this
-     */
-    @Mutated public Float4x4 makeMappingXnYZ() {
-        float[] dd = this.data;
-        if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_28, 0).intoArray(dd, 0);
-        } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_28, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_28, 8).intoArray(dd, 8);
-        } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_28, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_28, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_28, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_28, 12).intoArray(dd, 12);
-        }
-        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
-        return this;
-    }
-
-
-    /**
-     * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+x, -y, -z)}.
-     *
-     * @return this
-     */
-    @Mutated public Float4x4 makeMappingXnYnZ() {
-        float[] dd = this.data;
-        if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_29, 0).intoArray(dd, 0);
-        } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_29, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_29, 8).intoArray(dd, 8);
-        } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_29, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_29, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_29, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_29, 12).intoArray(dd, 12);
-        }
-        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
-        return this;
-    }
-
-
-    /**
-     * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+x, -z, +y)}.
-     *
-     * @return this
-     */
-    @Mutated public Float4x4 makeMappingXnZY() {
-        float[] dd = this.data;
-        if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_30, 0).intoArray(dd, 0);
-        } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_30, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_30, 8).intoArray(dd, 8);
-        } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_30, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_30, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_30, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_30, 12).intoArray(dd, 12);
-        }
-        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
-        return this;
-    }
-
-
-    /**
-     * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+x, -z, -y)}.
-     *
-     * @return this
-     */
-    @Mutated public Float4x4 makeMappingXnZnY() {
-        float[] dd = this.data;
-        if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_31, 0).intoArray(dd, 0);
-        } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_31, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_31, 8).intoArray(dd, 8);
-        } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_31, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_31, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_31, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_31, 12).intoArray(dd, 12);
-        }
-        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
-        return this;
-    }
-
-
-    /**
-     * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+y, +x, +z)}.
-     *
-     * @return this
-     */
-    @Mutated public Float4x4 makeMappingYXZ() {
-        float[] dd = this.data;
-        if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_32, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
             FloatVector.fromArray(FloatVector.SPECIES_256, DATA_32, 0).intoArray(dd, 0);
@@ -21070,11 +22545,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+y, +x, -z)}.
+     * {@code (+x, +z, +y)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingYXnZ() {
+    @Mutated public Float4x4 makeMappingXZY() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_33, 0).intoArray(dd, 0);
@@ -21087,18 +22562,18 @@ public class Float4x4Impl implements Float4x4 {
             FloatVector.fromArray(COL_SPECIES, DATA_33, 8).intoArray(dd, 8);
             FloatVector.fromArray(COL_SPECIES, DATA_33, 12).intoArray(dd, 12);
         }
-        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
+        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
         return this;
     }
 
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+y, +z, +x)}.
+     * {@code (+x, +z, -y)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingYZX() {
+    @Mutated public Float4x4 makeMappingXZnY() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_34, 0).intoArray(dd, 0);
@@ -21118,11 +22593,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+y, +z, -x)}.
+     * {@code (+x, -y, +z)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingYZnX() {
+    @Mutated public Float4x4 makeMappingXnYZ() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_35, 0).intoArray(dd, 0);
@@ -21142,11 +22617,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+y, -x, +z)}.
+     * {@code (+x, -y, -z)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingYnXZ() {
+    @Mutated public Float4x4 makeMappingXnYnZ() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_36, 0).intoArray(dd, 0);
@@ -21166,11 +22641,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+y, -x, -z)}.
+     * {@code (+x, -z, +y)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingYnXnZ() {
+    @Mutated public Float4x4 makeMappingXnZY() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_37, 0).intoArray(dd, 0);
@@ -21183,18 +22658,18 @@ public class Float4x4Impl implements Float4x4 {
             FloatVector.fromArray(COL_SPECIES, DATA_37, 8).intoArray(dd, 8);
             FloatVector.fromArray(COL_SPECIES, DATA_37, 12).intoArray(dd, 12);
         }
-        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
+        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
     }
 
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+y, -z, +x)}.
+     * {@code (+x, -z, -y)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingYnZX() {
+    @Mutated public Float4x4 makeMappingXnZnY() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_38, 0).intoArray(dd, 0);
@@ -21214,11 +22689,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+y, -z, -x)}.
+     * {@code (+y, +x, +z)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingYnZnX() {
+    @Mutated public Float4x4 makeMappingYXZ() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_39, 0).intoArray(dd, 0);
@@ -21231,18 +22706,18 @@ public class Float4x4Impl implements Float4x4 {
             FloatVector.fromArray(COL_SPECIES, DATA_39, 8).intoArray(dd, 8);
             FloatVector.fromArray(COL_SPECIES, DATA_39, 12).intoArray(dd, 12);
         }
-        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
+        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
         return this;
     }
 
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+z, +x, +y)}.
+     * {@code (+y, +x, -z)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingZXY() {
+    @Mutated public Float4x4 makeMappingYXnZ() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_40, 0).intoArray(dd, 0);
@@ -21262,11 +22737,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+z, +x, -y)}.
+     * {@code (+y, +z, +x)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingZXnY() {
+    @Mutated public Float4x4 makeMappingYZX() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_41, 0).intoArray(dd, 0);
@@ -21279,18 +22754,18 @@ public class Float4x4Impl implements Float4x4 {
             FloatVector.fromArray(COL_SPECIES, DATA_41, 8).intoArray(dd, 8);
             FloatVector.fromArray(COL_SPECIES, DATA_41, 12).intoArray(dd, 12);
         }
-        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
+        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
     }
 
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+z, +y, +x)}.
+     * {@code (+y, +z, -x)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingZYX() {
+    @Mutated public Float4x4 makeMappingYZnX() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_42, 0).intoArray(dd, 0);
@@ -21310,11 +22785,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+z, +y, -x)}.
+     * {@code (+y, -x, +z)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingZYnX() {
+    @Mutated public Float4x4 makeMappingYnXZ() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_43, 0).intoArray(dd, 0);
@@ -21334,11 +22809,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+z, -x, +y)}.
+     * {@code (+y, -x, -z)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingZnXY() {
+    @Mutated public Float4x4 makeMappingYnXnZ() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_44, 0).intoArray(dd, 0);
@@ -21358,11 +22833,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+z, -x, -y)}.
+     * {@code (+y, -z, +x)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingZnXnY() {
+    @Mutated public Float4x4 makeMappingYnZX() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_45, 0).intoArray(dd, 0);
@@ -21375,18 +22850,18 @@ public class Float4x4Impl implements Float4x4 {
             FloatVector.fromArray(COL_SPECIES, DATA_45, 8).intoArray(dd, 8);
             FloatVector.fromArray(COL_SPECIES, DATA_45, 12).intoArray(dd, 12);
         }
-        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
+        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
         return this;
     }
 
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+z, -y, +x)}.
+     * {@code (+y, -z, -x)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingZnYX() {
+    @Mutated public Float4x4 makeMappingYnZnX() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_46, 0).intoArray(dd, 0);
@@ -21406,11 +22881,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (+z, -y, -x)}.
+     * {@code (+z, +x, +y)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingZnYnX() {
+    @Mutated public Float4x4 makeMappingZXY() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_47, 0).intoArray(dd, 0);
@@ -21423,18 +22898,18 @@ public class Float4x4Impl implements Float4x4 {
             FloatVector.fromArray(COL_SPECIES, DATA_47, 8).intoArray(dd, 8);
             FloatVector.fromArray(COL_SPECIES, DATA_47, 12).intoArray(dd, 12);
         }
-        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
+        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
     }
 
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-x, +y, +z)}.
+     * {@code (+z, +x, -y)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnXYZ() {
+    @Mutated public Float4x4 makeMappingZXnY() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_48, 0).intoArray(dd, 0);
@@ -21454,11 +22929,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-x, +y, -z)}.
+     * {@code (+z, +y, +x)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnXYnZ() {
+    @Mutated public Float4x4 makeMappingZYX() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_49, 0).intoArray(dd, 0);
@@ -21471,18 +22946,18 @@ public class Float4x4Impl implements Float4x4 {
             FloatVector.fromArray(COL_SPECIES, DATA_49, 8).intoArray(dd, 8);
             FloatVector.fromArray(COL_SPECIES, DATA_49, 12).intoArray(dd, 12);
         }
-        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
+        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
         return this;
     }
 
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-x, +z, +y)}.
+     * {@code (+z, +y, -x)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnXZY() {
+    @Mutated public Float4x4 makeMappingZYnX() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_50, 0).intoArray(dd, 0);
@@ -21502,11 +22977,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-x, +z, -y)}.
+     * {@code (+z, -x, +y)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnXZnY() {
+    @Mutated public Float4x4 makeMappingZnXY() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_51, 0).intoArray(dd, 0);
@@ -21526,11 +23001,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-x, -y, +z)}.
+     * {@code (+z, -x, -y)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnXnYZ() {
+    @Mutated public Float4x4 makeMappingZnXnY() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_52, 0).intoArray(dd, 0);
@@ -21550,11 +23025,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-x, -y, -z)}.
+     * {@code (+z, -y, +x)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnXnYnZ() {
+    @Mutated public Float4x4 makeMappingZnYX() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_53, 0).intoArray(dd, 0);
@@ -21567,18 +23042,18 @@ public class Float4x4Impl implements Float4x4 {
             FloatVector.fromArray(COL_SPECIES, DATA_53, 8).intoArray(dd, 8);
             FloatVector.fromArray(COL_SPECIES, DATA_53, 12).intoArray(dd, 12);
         }
-        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
+        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
     }
 
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-x, -z, +y)}.
+     * {@code (+z, -y, -x)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnXnZY() {
+    @Mutated public Float4x4 makeMappingZnYnX() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_54, 0).intoArray(dd, 0);
@@ -21598,11 +23073,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-x, -z, -y)}.
+     * {@code (-x, +y, +z)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnXnZnY() {
+    @Mutated public Float4x4 makeMappingnXYZ() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_55, 0).intoArray(dd, 0);
@@ -21615,18 +23090,18 @@ public class Float4x4Impl implements Float4x4 {
             FloatVector.fromArray(COL_SPECIES, DATA_55, 8).intoArray(dd, 8);
             FloatVector.fromArray(COL_SPECIES, DATA_55, 12).intoArray(dd, 12);
         }
-        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
+        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
         return this;
     }
 
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-y, +x, +z)}.
+     * {@code (-x, +y, -z)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnYXZ() {
+    @Mutated public Float4x4 makeMappingnXYnZ() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_56, 0).intoArray(dd, 0);
@@ -21646,11 +23121,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-y, +x, -z)}.
+     * {@code (-x, +z, +y)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnYXnZ() {
+    @Mutated public Float4x4 makeMappingnXZY() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_57, 0).intoArray(dd, 0);
@@ -21663,18 +23138,18 @@ public class Float4x4Impl implements Float4x4 {
             FloatVector.fromArray(COL_SPECIES, DATA_57, 8).intoArray(dd, 8);
             FloatVector.fromArray(COL_SPECIES, DATA_57, 12).intoArray(dd, 12);
         }
-        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
+        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
     }
 
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-y, +z, +x)}.
+     * {@code (-x, +z, -y)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnYZX() {
+    @Mutated public Float4x4 makeMappingnXZnY() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_58, 0).intoArray(dd, 0);
@@ -21694,11 +23169,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-y, +z, -x)}.
+     * {@code (-x, -y, +z)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnYZnX() {
+    @Mutated public Float4x4 makeMappingnXnYZ() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_59, 0).intoArray(dd, 0);
@@ -21718,11 +23193,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-y, -x, +z)}.
+     * {@code (-x, -y, -z)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnYnXZ() {
+    @Mutated public Float4x4 makeMappingnXnYnZ() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_60, 0).intoArray(dd, 0);
@@ -21742,11 +23217,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-y, -x, -z)}.
+     * {@code (-x, -z, +y)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnYnXnZ() {
+    @Mutated public Float4x4 makeMappingnXnZY() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_61, 0).intoArray(dd, 0);
@@ -21759,18 +23234,18 @@ public class Float4x4Impl implements Float4x4 {
             FloatVector.fromArray(COL_SPECIES, DATA_61, 8).intoArray(dd, 8);
             FloatVector.fromArray(COL_SPECIES, DATA_61, 12).intoArray(dd, 12);
         }
-        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
+        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
         return this;
     }
 
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-y, -z, +x)}.
+     * {@code (-x, -z, -y)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnYnZX() {
+    @Mutated public Float4x4 makeMappingnXnZnY() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_62, 0).intoArray(dd, 0);
@@ -21790,11 +23265,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-y, -z, -x)}.
+     * {@code (-y, +x, +z)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnYnZnX() {
+    @Mutated public Float4x4 makeMappingnYXZ() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_63, 0).intoArray(dd, 0);
@@ -21807,18 +23282,18 @@ public class Float4x4Impl implements Float4x4 {
             FloatVector.fromArray(COL_SPECIES, DATA_63, 8).intoArray(dd, 8);
             FloatVector.fromArray(COL_SPECIES, DATA_63, 12).intoArray(dd, 12);
         }
-        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
+        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
     }
 
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-z, +x, +y)}.
+     * {@code (-y, +x, -z)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnZXY() {
+    @Mutated public Float4x4 makeMappingnYXnZ() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_64, 0).intoArray(dd, 0);
@@ -21838,11 +23313,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-z, +x, -y)}.
+     * {@code (-y, +z, +x)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnZXnY() {
+    @Mutated public Float4x4 makeMappingnYZX() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_65, 0).intoArray(dd, 0);
@@ -21855,18 +23330,18 @@ public class Float4x4Impl implements Float4x4 {
             FloatVector.fromArray(COL_SPECIES, DATA_65, 8).intoArray(dd, 8);
             FloatVector.fromArray(COL_SPECIES, DATA_65, 12).intoArray(dd, 12);
         }
-        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
+        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
         return this;
     }
 
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-z, +y, +x)}.
+     * {@code (-y, +z, -x)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnZYX() {
+    @Mutated public Float4x4 makeMappingnYZnX() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_66, 0).intoArray(dd, 0);
@@ -21886,11 +23361,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-z, +y, -x)}.
+     * {@code (-y, -x, +z)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnZYnX() {
+    @Mutated public Float4x4 makeMappingnYnXZ() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_67, 0).intoArray(dd, 0);
@@ -21910,11 +23385,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-z, -x, +y)}.
+     * {@code (-y, -x, -z)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnZnXY() {
+    @Mutated public Float4x4 makeMappingnYnXnZ() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_68, 0).intoArray(dd, 0);
@@ -21934,11 +23409,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-z, -x, -y)}.
+     * {@code (-y, -z, +x)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnZnXnY() {
+    @Mutated public Float4x4 makeMappingnYnZX() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_69, 0).intoArray(dd, 0);
@@ -21951,18 +23426,18 @@ public class Float4x4Impl implements Float4x4 {
             FloatVector.fromArray(COL_SPECIES, DATA_69, 8).intoArray(dd, 8);
             FloatVector.fromArray(COL_SPECIES, DATA_69, 12).intoArray(dd, 12);
         }
-        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
+        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
     }
 
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-z, -y, +x)}.
+     * {@code (-y, -z, -x)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnZnYX() {
+    @Mutated public Float4x4 makeMappingnYnZnX() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_70, 0).intoArray(dd, 0);
@@ -21982,11 +23457,11 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
-     * {@code (-z, -y, -x)}.
+     * {@code (-z, +x, +y)}.
      *
      * @return this
      */
-    @Mutated public Float4x4 makeMappingnZnYnX() {
+    @Mutated public Float4x4 makeMappingnZXY() {
         float[] dd = this.data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
             FloatVector.fromArray(FloatVector.SPECIES_512, DATA_71, 0).intoArray(dd, 0);
@@ -21998,6 +23473,174 @@ public class Float4x4Impl implements Float4x4 {
             FloatVector.fromArray(COL_SPECIES, DATA_71, 4).intoArray(dd, 4);
             FloatVector.fromArray(COL_SPECIES, DATA_71, 8).intoArray(dd, 8);
             FloatVector.fromArray(COL_SPECIES, DATA_71, 12).intoArray(dd, 12);
+        }
+        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
+     * {@code (-z, +x, -y)}.
+     *
+     * @return this
+     */
+    @Mutated public Float4x4 makeMappingnZXnY() {
+        float[] dd = this.data;
+        if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_72, 0).intoArray(dd, 0);
+        } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_72, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_72, 8).intoArray(dd, 8);
+        } else {
+            FloatVector.fromArray(COL_SPECIES, DATA_72, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_72, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_72, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_72, 12).intoArray(dd, 12);
+        }
+        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
+     * {@code (-z, +y, +x)}.
+     *
+     * @return this
+     */
+    @Mutated public Float4x4 makeMappingnZYX() {
+        float[] dd = this.data;
+        if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_73, 0).intoArray(dd, 0);
+        } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_73, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_73, 8).intoArray(dd, 8);
+        } else {
+            FloatVector.fromArray(COL_SPECIES, DATA_73, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_73, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_73, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_73, 12).intoArray(dd, 12);
+        }
+        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
+     * {@code (-z, +y, -x)}.
+     *
+     * @return this
+     */
+    @Mutated public Float4x4 makeMappingnZYnX() {
+        float[] dd = this.data;
+        if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_74, 0).intoArray(dd, 0);
+        } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_74, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_74, 8).intoArray(dd, 8);
+        } else {
+            FloatVector.fromArray(COL_SPECIES, DATA_74, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_74, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_74, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_74, 12).intoArray(dd, 12);
+        }
+        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
+     * {@code (-z, -x, +y)}.
+     *
+     * @return this
+     */
+    @Mutated public Float4x4 makeMappingnZnXY() {
+        float[] dd = this.data;
+        if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_75, 0).intoArray(dd, 0);
+        } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_75, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_75, 8).intoArray(dd, 8);
+        } else {
+            FloatVector.fromArray(COL_SPECIES, DATA_75, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_75, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_75, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_75, 12).intoArray(dd, 12);
+        }
+        ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
+     * {@code (-z, -x, -y)}.
+     *
+     * @return this
+     */
+    @Mutated public Float4x4 makeMappingnZnXnY() {
+        float[] dd = this.data;
+        if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_76, 0).intoArray(dd, 0);
+        } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_76, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_76, 8).intoArray(dd, 8);
+        } else {
+            FloatVector.fromArray(COL_SPECIES, DATA_76, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_76, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_76, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_76, 12).intoArray(dd, 12);
+        }
+        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
+     * {@code (-z, -y, +x)}.
+     *
+     * @return this
+     */
+    @Mutated public Float4x4 makeMappingnZnYX() {
+        float[] dd = this.data;
+        if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_77, 0).intoArray(dd, 0);
+        } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_77, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_77, 8).intoArray(dd, 8);
+        } else {
+            FloatVector.fromArray(COL_SPECIES, DATA_77, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_77, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_77, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_77, 12).intoArray(dd, 12);
+        }
+        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a transformation that maps the axes {@code (x, y, z)} to
+     * {@code (-z, -y, -x)}.
+     *
+     * @return this
+     */
+    @Mutated public Float4x4 makeMappingnZnYnX() {
+        float[] dd = this.data;
+        if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_78, 0).intoArray(dd, 0);
+        } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_78, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_78, 8).intoArray(dd, 8);
+        } else {
+            FloatVector.fromArray(COL_SPECIES, DATA_78, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_78, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_78, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_78, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -22013,20 +23656,11 @@ public class Float4x4Impl implements Float4x4 {
      */
     @Mutated public Float4x4 makeObliqueCabinet(float angle) {
         float[] dd = this.data;
-        dd[0] = 1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 1.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 4);
         dd[8] = -(0.5f * (float) Math.cos(angle));
         dd[9] = -(0.5f * (float) Math.sin(angle));
-        dd[10] = 1.0f;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
+        VEC_2.intoArray(dd, 10);
         dd[14] = 0.0f;
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
@@ -22043,20 +23677,11 @@ public class Float4x4Impl implements Float4x4 {
      */
     @Mutated public Float4x4 makeObliqueCavalier(float angle) {
         float[] dd = this.data;
-        dd[0] = 1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 1.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 4);
         dd[8] = -(float) Math.cos(angle);
         dd[9] = -(float) Math.sin(angle);
-        dd[10] = 1.0f;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
+        VEC_2.intoArray(dd, 10);
         dd[14] = 0.0f;
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
@@ -22073,20 +23698,11 @@ public class Float4x4Impl implements Float4x4 {
      */
     @Mutated public Float4x4 makeObliqueMilitary(float angle) {
         float[] dd = this.data;
-        dd[0] = 1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
+        VEC_2.intoArray(dd, 0);
         dd[4] = (float) Math.cos(angle);
         dd[5] = (float) Math.sin(angle);
-        dd[6] = -1.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 1.0f;
-        dd[10] = 0.0f;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
+        VEC_79.intoArray(dd, 6);
+        VEC_24.intoArray(dd, 10);
         dd[14] = 0.0f;
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
@@ -22107,15 +23723,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t2 = zFar - zNear;
         float _t2_inv = 1.0f / _t2;
         dd[0] = 2.0f * _t0_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t1_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t2_inv;
         dd[11] = 0.0f;
         dd[12] = -((left + right) * _t0_inv);
@@ -22141,15 +23751,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t2 = zFar - zNear;
         float _t2_inv = 1.0f / _t2;
         dd[0] = 2.0f * _t0_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t1_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = -2.0f * _t2_inv;
         dd[11] = 0.0f;
         dd[12] = -((left + right) * _t0_inv);
@@ -22188,12 +23792,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t1_inv = 1.0f / (top - bottom);
         float _t2_inv = 1.0f / (zFar - zNear);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t0_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t0_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t1_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t2_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, left);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, right);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, bottom).add(_sv2.withLane(1, top)).withLane(2, zNear).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, bottom).add(_sv2.withLane(1, top)).withLane(2, zNear).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -22208,12 +23812,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t1_inv = 1.0f / (top - bottom);
         float _t2_inv = 1.0f / (zFar - zNear);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t0_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t0_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t1_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t2_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, left);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, right);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, bottom).add(_sv2.withLane(1, top)).withLane(2, zNear).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, bottom).add(_sv2.withLane(1, top)).withLane(2, zNear).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -22239,12 +23843,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t1_inv = 1.0f / (top - bottom);
         float _t2_inv = 1.0f / (zFar - zNear);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t0_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t0_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t1_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t2_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, left);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, right);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, bottom).add(_sv2.withLane(1, top)).withLane(2, zNear).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, bottom).add(_sv2.withLane(1, top)).withLane(2, zNear).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -22259,12 +23863,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t1_inv = 1.0f / (top - bottom);
         float _t2_inv = 1.0f / (zFar - zNear);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t0_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t0_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t1_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t2_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, left);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, right);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, bottom).add(_sv2.withLane(1, top)).withLane(2, zNear).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, bottom).add(_sv2.withLane(1, top)).withLane(2, zNear).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -22386,15 +23990,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
         dd[0] = 2.0f * _t0_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t1_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 1.0f;
         dd[11] = 0.0f;
         dd[12] = -((left + right) * _t0_inv);
@@ -22418,15 +24016,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
         dd[0] = 2.0f * _t0_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t1_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = -1.0f;
         dd[11] = 0.0f;
         dd[12] = -((left + right) * _t0_inv);
@@ -22462,15 +24054,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
         dd[0] = 2.0f * _t0_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t1_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 0.5f;
         dd[11] = 0.0f;
         dd[12] = -((left + right) * _t0_inv);
@@ -22494,15 +24080,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
         dd[0] = 2.0f * _t0_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t1_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = -0.5f;
         dd[11] = 0.0f;
         dd[12] = -((left + right) * _t0_inv);
@@ -22616,7 +24196,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t1_inv = 1.0f / (near - far);
         float _t2 = (float) Math.tan(0.5f * fovy);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 1.0f / (aspect * _t2)).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 1.0f / (aspect * _t2)).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 1.0f / _t2);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(2, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t1_inv)).withLane(3, 1.0f);
         var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t1_inv);
@@ -22639,7 +24219,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t1_inv = 1.0f / (near - far);
         float _t2 = (float) Math.tan(0.5f * fovy);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 1.0f / (aspect * _t2)).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 1.0f / (aspect * _t2)).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 1.0f / _t2);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(2, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t1_inv).withLane(3, -1.0f);
         var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t1_inv);
@@ -22674,7 +24254,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t1_inv = 1.0f / (near - far);
         float _t2 = (float) Math.tan(0.5f * fovy);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 1.0f / (aspect * _t2)).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 1.0f / (aspect * _t2)).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 1.0f / _t2);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(2, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t1_inv)).withLane(3, 1.0f);
         var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t1_inv);
@@ -22697,7 +24277,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t1_inv = 1.0f / (near - far);
         float _t2 = (float) Math.tan(0.5f * fovy);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 1.0f / (aspect * _t2)).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 1.0f / (aspect * _t2)).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 1.0f / _t2);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(2, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t1_inv).withLane(3, -1.0f);
         var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t1_inv);
@@ -22831,7 +24411,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f / (aspect * _t3)).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f / (aspect * _t3)).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t3_inv);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(1, -((_t0 + _t1) * _t3_inv)).withLane(2, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t2_inv)).withLane(3, 1.0f);
         var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t2_inv);
@@ -22857,7 +24437,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f / (aspect * _t3)).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f / (aspect * _t3)).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t3_inv);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(1, (_t0 + _t1) * _t3_inv).withLane(2, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t2_inv).withLane(3, -1.0f);
         var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t2_inv);
@@ -22895,7 +24475,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f / (aspect * _t3)).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f / (aspect * _t3)).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t3_inv);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(1, -((_t0 + _t1) * _t3_inv)).withLane(2, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t2_inv)).withLane(3, 1.0f);
         var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv);
@@ -22921,7 +24501,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f / (aspect * _t3)).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f / (aspect * _t3)).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t3_inv);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(1, (_t0 + _t1) * _t3_inv).withLane(2, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t2_inv).withLane(3, -1.0f);
         var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv);
@@ -23061,7 +24641,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t5_inv = 1.0f / (_t0 - _t1);
         float _t6_inv = 1.0f / (_t2 - _t3);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t5_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t5_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t6_inv);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, -((_t1 + _t0) * _t5_inv)).withLane(1, -((_t3 + _t2) * _t6_inv)).withLane(2, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t4_inv)).withLane(3, 1.0f);
         var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t4_inv);
@@ -23089,7 +24669,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t5_inv = 1.0f / (_t0 - _t1);
         float _t6_inv = 1.0f / (_t2 - _t3);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t5_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t5_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t6_inv);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, (_t1 + _t0) * _t5_inv).withLane(1, (_t3 + _t2) * _t6_inv).withLane(2, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t4_inv).withLane(3, -1.0f);
         var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t4_inv);
@@ -23130,7 +24710,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t5_inv = 1.0f / (_t0 - _t1);
         float _t6_inv = 1.0f / (_t2 - _t3);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t5_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t5_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t6_inv);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, -((_t1 + _t0) * _t5_inv)).withLane(1, -((_t3 + _t2) * _t6_inv)).withLane(2, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t4_inv)).withLane(3, 1.0f);
         var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv);
@@ -23158,7 +24738,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t5_inv = 1.0f / (_t0 - _t1);
         float _t6_inv = 1.0f / (_t2 - _t3);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t5_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t5_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t6_inv);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, (_t1 + _t0) * _t5_inv).withLane(1, (_t3 + _t2) * _t6_inv).withLane(2, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t4_inv).withLane(3, -1.0f);
         var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv);
@@ -23358,7 +24938,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t123_inv = 1.0f / (_t117 + (_t89 + Math.fma(_t1, _t65, -(pX * _t64)) + (Math.fma(eyeX, _t64, -(pZ * _t66)) + Math.fma(eyeY, _t65, eyeZ * _t66))));
         float _t125_inv = 1.0f / (_t122 + (_t114 + Math.fma(_t1, _t92, -(pX * _t91)) + (Math.fma(eyeX, _t91, -(pZ * _t93)) + Math.fma(eyeY, _t92, eyeZ * _t93))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, _t42 * _t123_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _t42 * _t123_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t42 * _t125_inv);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, -((_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv)).withLane(1, -((_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv)).withLane(2, _t41 == Float.POSITIVE_INFINITY ? 1.0f : _t40 == Float.POSITIVE_INFINITY ? -1.0f : -(Math.fma(_t27, _t34, _t41) * _t53_inv)).withLane(3, 1.0f);
         var _col3 = _sv0.withLane(2, _t41 == Float.POSITIVE_INFINITY ? -_t42 : _t40 == Float.POSITIVE_INFINITY ? 2.0f * _t41 : 2.0f * _t41 * _t40 * _t53_inv);
@@ -23434,7 +25014,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t123_inv = 1.0f / (_t117 + (_t89 + Math.fma(_t1, _t65, -(pX * _t64)) + (Math.fma(eyeX, _t64, -(pZ * _t66)) + Math.fma(eyeY, _t65, eyeZ * _t66))));
         float _t125_inv = 1.0f / (_t122 + (_t114 + Math.fma(_t1, _t92, -(pX * _t91)) + (Math.fma(eyeX, _t91, -(pZ * _t93)) + Math.fma(eyeY, _t92, eyeZ * _t93))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, _t42 * _t123_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _t42 * _t123_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t42 * _t125_inv);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, (_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv).withLane(1, (_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv).withLane(2, _t41 == Float.POSITIVE_INFINITY ? -1.0f : _t40 == Float.POSITIVE_INFINITY ? 1.0f : Math.fma(_t27, _t34, _t41) * _t53_inv).withLane(3, -1.0f);
         var _col3 = _sv0.withLane(2, _t41 == Float.POSITIVE_INFINITY ? -_t42 : _t40 == Float.POSITIVE_INFINITY ? 2.0f * _t41 : 2.0f * _t41 * _t40 * _t53_inv);
@@ -23536,7 +25116,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t123_inv = 1.0f / (_t117 + (_t89 + Math.fma(_t1, _t65, -(pX * _t64)) + (Math.fma(eyeX, _t64, -(pZ * _t66)) + Math.fma(eyeY, _t65, eyeZ * _t66))));
         float _t125_inv = 1.0f / (_t122 + (_t114 + Math.fma(_t1, _t92, -(pX * _t91)) + (Math.fma(eyeX, _t91, -(pZ * _t93)) + Math.fma(eyeY, _t92, eyeZ * _t93))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, _t42 * _t123_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _t42 * _t123_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t42 * _t125_inv);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, -((_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv)).withLane(1, -((_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv)).withLane(2, _t41 == Float.POSITIVE_INFINITY ? 1.0f : _t40 == Float.POSITIVE_INFINITY ? 0.0f : -(_t41 * _t53_inv)).withLane(3, 1.0f);
         var _col3 = _sv0.withLane(2, _t41 == Float.POSITIVE_INFINITY ? -_t40 : _t40 == Float.POSITIVE_INFINITY ? _t41 : _t41 * _t40 * _t53_inv);
@@ -23612,7 +25192,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t123_inv = 1.0f / (_t117 + (_t89 + Math.fma(_t1, _t65, -(pX * _t64)) + (Math.fma(eyeX, _t64, -(pZ * _t66)) + Math.fma(eyeY, _t65, eyeZ * _t66))));
         float _t125_inv = 1.0f / (_t122 + (_t114 + Math.fma(_t1, _t92, -(pX * _t91)) + (Math.fma(eyeX, _t91, -(pZ * _t93)) + Math.fma(eyeY, _t92, eyeZ * _t93))));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, _t42 * _t123_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _t42 * _t123_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t42 * _t125_inv);
         var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, (_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv).withLane(1, (_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv).withLane(2, _t41 == Float.POSITIVE_INFINITY ? -1.0f : _t40 == Float.POSITIVE_INFINITY ? 0.0f : _t41 * _t53_inv).withLane(3, -1.0f);
         var _col3 = _sv0.withLane(2, _t41 == Float.POSITIVE_INFINITY ? -_t40 : _t40 == Float.POSITIVE_INFINITY ? _t41 : _t41 * _t40 * _t53_inv);
@@ -24129,15 +25709,9 @@ public class Float4x4Impl implements Float4x4 {
         float _rcp0 = 1.0f / deltaX;
         float _rcp1 = 1.0f / deltaY;
         dd[0] = vpW * _rcp0;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = vpH * _rcp1;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 1.0f;
         dd[11] = 0.0f;
         dd[12] = Math.fma(-2.0f, centerX - vpX, vpW) * _rcp0;
@@ -24189,10 +25763,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = _t7;
         dd[9] = _t8;
         dd[10] = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
         return this;
@@ -24246,10 +25817,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = Math.fma(axisY, _t1, _t2 * _t4);
         dd[9] = Math.fma(_t2, _t5, -(axisX * _t1));
         dd[10] = Math.fma(_t2, axisZ * axisZ, _t0);
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -24320,10 +25888,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = _t8;
         dd[9] = _t7;
         dd[10] = _t9;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -24371,10 +25936,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = 2.0f * Math.fma(qX, qZ, _t2);
         dd[9] = 2.0f * Math.fma(qY, qZ, -(qX * qW));
         dd[10] = Math.fma(-2.0f, Math.fma(qX, qX, qY * qY), 1.0f);
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -24391,10 +25953,7 @@ public class Float4x4Impl implements Float4x4 {
         float[] dd = this.data;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        dd[0] = 1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 0.0f;
         dd[5] = _t0;
         dd[6] = _t1;
@@ -24402,10 +25961,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = 0.0f;
         dd[9] = -_t1;
         dd[10] = _t0;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -24443,10 +25999,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = _t3;
         dd[9] = -(_t4 * _t0);
         dd[10] = _t5 * _t0;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -24484,10 +26037,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = _t3 * _t1;
         dd[9] = Math.fma(_t6, _t3, -(_t5 * _t0));
         dd[10] = Math.fma(_t7, _t3, _t4 * _t0);
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -24507,18 +26057,12 @@ public class Float4x4Impl implements Float4x4 {
         dd[0] = _t0;
         dd[1] = 0.0f;
         dd[2] = -_t1;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 1.0f;
-        dd[6] = 0.0f;
+        VEC_4.intoArray(dd, 3);
         dd[7] = 0.0f;
         dd[8] = _t1;
         dd[9] = 0.0f;
         dd[10] = _t0;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -24556,10 +26100,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = _t1 * _t5;
         dd[9] = -_t0;
         dd[10] = _t5 * _t3;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -24597,10 +26138,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = Math.fma(_t6, _t2, _t3 * _t5);
         dd[9] = -(_t2 * _t1);
         dd[10] = Math.fma(_t5, _t0, -(_t7 * _t2));
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -24623,14 +26161,8 @@ public class Float4x4Impl implements Float4x4 {
         dd[3] = 0.0f;
         dd[4] = -_t1;
         dd[5] = _t0;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = 1.0f;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
+        VEC_24.intoArray(dd, 6);
+        VEC_2.intoArray(dd, 10);
         dd[14] = 0.0f;
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
@@ -24669,10 +26201,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = Math.fma(_t6, _t0, _t4 * _t1);
         dd[9] = Math.fma(_t4, _t3, -(_t7 * _t0));
         dd[10] = _t5 * _t0;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -24710,10 +26239,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = Math.fma(_t6, _t5, _t3 * _t4);
         dd[9] = Math.fma(_t7, _t5, -(_t3 * _t1));
         dd[10] = _t5 * _t0;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -24743,7 +26269,7 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated public Float4x4 makeScaling(float vX, float vY, float vZ) {
         float[] dd = this.data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, vX).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, vX).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, vY);
         var _col2 = _sv0.withLane(2, vZ);
         var _col3 = FloatVector.zero(COL_SPECIES).withLane(3, 1.0f);
@@ -24766,7 +26292,7 @@ public class Float4x4Impl implements Float4x4 {
         float[] dd = this.data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, s);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = _sv0.blend(_sv1, MASK_5);
+        var _col0 = _sv0.blend(_sv1, MASK_8);
         var _col1 = _sv1.withLane(1, s);
         var _col2 = _sv1.withLane(2, s);
         var _col3 = FloatVector.zero(COL_SPECIES).withLane(3, 1.0f);
@@ -24820,11 +26346,11 @@ public class Float4x4Impl implements Float4x4 {
         var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, Math.fma(-lightX, planeX, _t4)).withLane(1, -(lightY * planeX)).withLane(2, -(lightZ * planeX)).withLane(3, -(lightW * planeX));
         var _sv0 = FloatVector.zero(COL_SPECIES);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, planeY);
-        var _col1 = _sv0.mul(_sv1).withLane(1, Math.fma(-lightY, planeY, _t4)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(2, lightZ).withLane(3, lightW).mul(_sv1).neg(), MASK_72);
+        var _col1 = _sv0.mul(_sv1).withLane(1, Math.fma(-lightY, planeY, _t4)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(2, lightZ).withLane(3, lightW).mul(_sv1).neg(), MASK_80);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, planeZ);
-        var _col2 = _sv0.mul(_sv2).withLane(2, Math.fma(-lightZ, planeZ, _t4)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(3, lightW).mul(_sv2).neg(), MASK_73);
+        var _col2 = _sv0.mul(_sv2).withLane(2, Math.fma(-lightZ, planeZ, _t4)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(3, lightW).mul(_sv2).neg(), MASK_81);
         var _sv3 = FloatVector.broadcast(COL_SPECIES, planeW);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, Math.fma(-lightW, planeW, _t4)).fma(VEC_0, _sv0.mul(_sv3)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(2, lightZ).mul(_sv3).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, Math.fma(-lightW, planeW, _t4)).fma(VEC_0, _sv0.mul(_sv3)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(2, lightZ).mul(_sv3).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -24839,11 +26365,11 @@ public class Float4x4Impl implements Float4x4 {
         var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, Math.fma(-lightX, planeX, _t4)).withLane(1, -(lightY * planeX)).withLane(2, -(lightZ * planeX)).withLane(3, -(lightW * planeX));
         var _sv0 = FloatVector.zero(COL_SPECIES);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, planeY);
-        var _col1 = _sv0.mul(_sv1).withLane(1, Math.fma(-lightY, planeY, _t4)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(2, lightZ).withLane(3, lightW).mul(_sv1).neg(), MASK_72);
+        var _col1 = _sv0.mul(_sv1).withLane(1, Math.fma(-lightY, planeY, _t4)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(2, lightZ).withLane(3, lightW).mul(_sv1).neg(), MASK_80);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, planeZ);
-        var _col2 = _sv0.mul(_sv2).withLane(2, Math.fma(-lightZ, planeZ, _t4)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(3, lightW).mul(_sv2).neg(), MASK_73);
+        var _col2 = _sv0.mul(_sv2).withLane(2, Math.fma(-lightZ, planeZ, _t4)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(3, lightW).mul(_sv2).neg(), MASK_81);
         var _sv3 = FloatVector.broadcast(COL_SPECIES, planeW);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, Math.fma(-lightW, planeW, _t4)).mul(VEC_0).add(_sv0.mul(_sv3)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(2, lightZ).mul(_sv3).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, Math.fma(-lightW, planeW, _t4)).mul(VEC_0).add(_sv0.mul(_sv3)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(2, lightZ).mul(_sv3).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -24876,10 +26402,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[7] = 0.0f;
         dd[8] = xz;
         dd[9] = yz;
-        dd[10] = 1.0f;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
+        VEC_2.intoArray(dd, 10);
         dd[14] = 0.0f;
         dd[15] = 1.0f;
         ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
@@ -24899,15 +26422,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated public Float4x4 makeTile(float x, float y, float w, float h) {
         float[] dd = this.data;
         dd[0] = w;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = h;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 1.0f;
         dd[11] = 0.0f;
         dd[12] = Math.fma(-2.0f, x, w - 1.0f);
@@ -24941,18 +26458,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     @Mutated public Float4x4 makeTranslation(float vX, float vY, float vZ) {
         float[] dd = this.data;
-        dd[0] = 1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 1.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = 1.0f;
-        dd[11] = 0.0f;
+        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 4);
+        VEC_4.intoArray(dd, 8);
         dd[12] = vX;
         dd[13] = vY;
         dd[14] = vZ;
@@ -25026,10 +26534,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[5] = _t61 * _t3 * _t52_inv;
         dd[6] = 0.0f;
         dd[7] = _t54;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = 1.0f;
-        dd[11] = 0.0f;
+        VEC_4.intoArray(dd, 8);
         dd[12] = 2.0f * Math.fma(p0Y, _t5, Math.fma(_t0, _t3, _t30)) * _t41_inv - _t58;
         dd[13] = _t61 * _t50 * _t52_inv - _t60;
         dd[14] = 0.0f;
@@ -25180,15 +26685,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_25, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_32, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_25, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_25, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_32, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_32, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_25, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_25, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_25, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_25, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_32, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_32, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_32, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_32, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -25306,15 +26811,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_26, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_33, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_26, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_26, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_33, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_33, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_26, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_26, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_26, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_26, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_33, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_33, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_33, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_33, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -25436,15 +26941,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_27, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_34, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_27, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_27, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_34, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_34, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_27, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_27, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_27, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_27, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_34, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_34, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_34, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_34, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -25567,15 +27072,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_28, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_35, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_28, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_28, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_35, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_35, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_28, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_28, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_28, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_28, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_35, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_35, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_35, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_35, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -25693,15 +27198,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_29, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_36, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_29, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_29, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_36, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_36, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_29, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_29, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_29, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_29, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_36, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_36, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_36, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_36, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -25820,15 +27325,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_30, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_37, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_30, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_30, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_37, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_37, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_30, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_30, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_30, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_30, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_37, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_37, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_37, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_37, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -25951,15 +27456,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_31, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_38, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_31, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_31, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_38, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_38, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_31, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_31, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_31, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_31, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_38, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_38, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_38, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_38, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -26081,15 +27586,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_32, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_39, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_32, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_32, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_39, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_39, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_32, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_32, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_32, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_32, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_39, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_39, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_39, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_39, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -26211,15 +27716,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_33, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_40, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_33, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_33, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_40, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_40, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_33, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_33, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_33, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_33, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_40, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_40, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_40, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_40, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -26342,15 +27847,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_34, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_41, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_34, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_34, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_41, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_41, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_34, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_34, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_34, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_34, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_41, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_41, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_41, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_41, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -26473,15 +27978,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_35, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_42, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_35, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_35, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_42, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_42, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_35, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_35, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_35, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_35, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_42, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_42, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_42, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_42, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -26603,15 +28108,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_36, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_43, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_36, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_36, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_43, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_43, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_36, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_36, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_36, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_36, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_43, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_43, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_43, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_43, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -26734,15 +28239,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_37, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_44, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_37, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_37, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_44, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_44, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_37, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_37, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_37, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_37, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_44, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_44, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_44, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_44, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -26864,15 +28369,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_38, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_45, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_38, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_38, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_45, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_45, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_38, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_38, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_38, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_38, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_45, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_45, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_45, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_45, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -26994,15 +28499,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_39, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_46, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_39, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_39, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_46, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_46, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_39, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_39, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_39, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_39, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_46, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_46, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_46, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_46, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -27125,15 +28630,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_40, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_47, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_40, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_40, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_47, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_47, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_40, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_40, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_40, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_40, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_47, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_47, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_47, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_47, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -27260,15 +28765,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_41, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_48, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_41, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_41, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_48, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_48, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_41, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_41, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_41, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_41, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_48, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_48, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_48, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_48, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -27394,15 +28899,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_42, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_49, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_42, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_42, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_49, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_49, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_42, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_42, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_42, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_42, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_49, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_49, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_49, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_49, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -27524,15 +29029,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_43, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_50, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_43, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_43, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_50, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_50, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_43, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_43, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_43, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_43, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_50, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_50, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_50, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_50, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -27655,15 +29160,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_44, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_51, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_44, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_44, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_51, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_51, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_44, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_44, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_44, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_44, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_51, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_51, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_51, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_51, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -27789,15 +29294,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_45, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_52, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_45, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_45, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_52, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_52, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_45, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_45, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_45, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_45, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_52, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_52, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_52, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_52, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -27924,15 +29429,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_46, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_53, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_46, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_46, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_53, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_53, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_46, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_46, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_46, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_46, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_53, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_53, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_53, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_53, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -28055,15 +29560,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_47, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_54, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_47, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_47, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_54, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_54, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_47, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_47, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_47, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_47, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_54, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_54, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_54, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_54, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -28185,15 +29690,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_48, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_55, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_48, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_48, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_55, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_55, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_48, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_48, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_48, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_48, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_55, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_55, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_55, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_55, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -28311,15 +29816,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_49, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_56, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_49, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_49, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_56, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_56, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_49, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_49, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_49, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_49, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_56, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_56, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_56, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_56, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -28438,15 +29943,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_50, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_57, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_50, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_50, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_57, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_57, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_50, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_50, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_50, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_50, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_57, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_57, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_57, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_57, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -28569,15 +30074,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_51, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_58, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_51, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_51, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_58, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_58, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_51, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_51, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_51, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_51, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_58, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_58, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_58, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_58, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -28699,15 +30204,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_52, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_59, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_52, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_52, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_59, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_59, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_52, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_52, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_52, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_52, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_59, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_59, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_59, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_59, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -28826,15 +30331,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_53, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_60, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_53, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_53, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_60, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_60, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_53, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_53, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_53, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_53, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_60, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_60, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_60, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_60, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -28952,15 +30457,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_54, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_61, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_54, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_54, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_61, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_61, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_54, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_54, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_54, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_54, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_61, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_61, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_61, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_61, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -29082,15 +30587,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_55, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_62, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_55, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_55, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_62, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_62, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_55, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_55, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_55, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_55, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_62, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_62, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_62, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_62, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -29213,15 +30718,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_56, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_63, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_56, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_56, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_63, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_63, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_56, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_56, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_56, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_56, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_63, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_63, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_63, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_63, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -29344,15 +30849,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_57, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_64, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_57, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_57, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_64, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_64, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_57, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_57, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_57, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_57, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_64, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_64, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_64, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_64, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -29474,15 +30979,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_58, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_65, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_58, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_58, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_65, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_65, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_58, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_58, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_58, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_58, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_65, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_65, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_65, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_65, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -29604,15 +31109,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_59, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_66, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_59, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_59, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_66, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_66, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_59, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_59, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_59, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_59, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_66, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_66, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_66, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_66, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -29735,15 +31240,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_60, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_67, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_60, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_60, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_67, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_67, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_60, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_60, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_60, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_60, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_67, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_67, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_67, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_67, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -29865,15 +31370,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_61, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_68, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_61, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_61, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_68, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_68, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_61, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_61, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_61, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_61, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_68, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_68, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_68, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_68, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -29996,15 +31501,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_62, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_69, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_62, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_62, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_69, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_69, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_62, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_62, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_62, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_62, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_69, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_69, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_69, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_69, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -30127,15 +31632,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_63, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_70, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_63, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_63, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_70, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_70, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_63, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_63, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_63, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_63, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_70, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_70, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_70, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_70, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -30257,15 +31762,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_64, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_71, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_64, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_64, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_71, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_71, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_64, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_64, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_64, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_64, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_71, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_71, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_71, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_71, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -30391,15 +31896,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_65, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_72, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_65, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_65, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_72, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_72, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_65, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_65, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_65, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_65, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_72, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_72, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_72, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_72, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -30526,15 +32031,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_66, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_73, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_66, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_66, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_73, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_73, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_66, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_66, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_66, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_66, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_73, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_73, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_73, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_73, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -30657,15 +32162,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_67, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_74, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_67, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_67, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_74, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_74, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_67, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_67, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_67, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_67, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_74, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_74, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_74, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_74, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -30787,15 +32292,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_68, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_75, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_68, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_68, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_75, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_75, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_68, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_68, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_68, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_68, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_75, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_75, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_75, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_75, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -30922,15 +32427,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_69, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_76, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_69, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_69, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_76, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_76, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_69, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_69, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_69, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_69, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_76, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_76, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_76, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_76, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -31056,15 +32561,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_70, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_77, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_70, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_70, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_77, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_77, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_70, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_70, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_70, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_70, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_77, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_77, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_77, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_77, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -31186,15 +32691,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_71, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_78, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_71, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_71, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_78, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_78, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_71, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_71, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_71, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_71, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_78, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_78, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_78, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_78, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -31980,15 +33485,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_74, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_82, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_74, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_74, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_82, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_82, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_74, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_74, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_74, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_74, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_82, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_82, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_82, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_82, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -32552,15 +34057,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_75, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_83, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_75, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_75, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_83, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_83, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_75, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_75, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_75, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_75, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_83, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_83, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_83, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_83, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -33727,12 +35232,12 @@ public class Float4x4Impl implements Float4x4 {
      * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
      * through the public {@code ortho} dispatcher.
      */
-    private Float4x4 ortho_no_lh_identity_general(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return ortho_no_lh_identity_general_fma(left, right, bottom, top, zNear, zFar, dest, _props);
-        return ortho_no_lh_identity_general_mulAdd(left, right, bottom, top, zNear, zFar, dest, _props);
+    private Float4x4 ortho_no_lh_orthogonal_general(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return ortho_no_lh_orthogonal_general_fma(left, right, bottom, top, zNear, zFar, dest, _props);
+        return ortho_no_lh_orthogonal_general_mulAdd(left, right, bottom, top, zNear, zFar, dest, _props);
     }
 
-    private Float4x4 ortho_no_lh_identity_general_fma(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 ortho_no_lh_orthogonal_general_fma(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0_inv = 1.0f / (right - left);
@@ -33756,7 +35261,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 ortho_no_lh_identity_general_mulAdd(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 ortho_no_lh_orthogonal_general_mulAdd(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0_inv = 1.0f / (right - left);
@@ -33783,11 +35288,126 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Private body of {@code ortho} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho} dispatcher.
+     */
+    private Float4x4 ortho_no_lh_identity(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        float _t2 = zFar - zNear;
+        float _t2_inv = 1.0f / _t2;
+        dd[0] = 2.0f * _t0_inv;
+        VEC_24.intoArray(dd, 1);
+        dd[5] = 2.0f * _t1_inv;
+        VEC_24.intoArray(dd, 6);
+        dd[10] = 2.0f * _t2_inv;
+        dd[11] = 0.0f;
+        dd[12] = -((left + right) * _t0_inv);
+        dd[13] = -((bottom + top) * _t1_inv);
+        dd[14] = -((zFar + zNear) * _t2_inv);
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code ortho} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho} dispatcher.
+     */
+    private Float4x4 ortho_no_lh_identity_self(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        float _t2 = zFar - zNear;
+        float _t2_inv = 1.0f / _t2;
+        dd[0] = 2.0f * _t0_inv;
+        dd[5] = 2.0f * _t1_inv;
+        dd[10] = 2.0f * _t2_inv;
+        dd[12] = -((left + right) * _t0_inv);
+        dd[13] = -((bottom + top) * _t1_inv);
+        dd[14] = -((zFar + zNear) * _t2_inv);
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code ortho} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho} dispatcher.
+     */
+    private Float4x4 ortho_no_lh_translation(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return ortho_no_lh_translation_fma(left, right, bottom, top, zNear, zFar, dest);
+        return ortho_no_lh_translation_mulAdd(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+    private Float4x4 ortho_no_lh_translation_fma(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0_inv = 1.0f / (right - left);
+        float _t1_inv = 1.0f / (top - bottom);
+        float _t2_inv = 1.0f / (zFar - zNear);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t0_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t1_inv);
+        var _col2 = _sv0.withLane(2, 2.0f * _t2_inv);
+        var _col3 = FloatVector.zero(COL_SPECIES).withLane(0, left).withLane(1, bottom).withLane(2, zFar).add(FloatVector.zero(COL_SPECIES).withLane(0, right).withLane(1, top).withLane(2, zNear)).neg().fma(FloatVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv), FloatVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0f);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+    private Float4x4 ortho_no_lh_translation_mulAdd(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0_inv = 1.0f / (right - left);
+        float _t1_inv = 1.0f / (top - bottom);
+        float _t2_inv = 1.0f / (zFar - zNear);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t0_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t1_inv);
+        var _col2 = _sv0.withLane(2, 2.0f * _t2_inv);
+        var _col3 = FloatVector.zero(COL_SPECIES).withLane(0, left).withLane(1, bottom).withLane(2, zFar).add(FloatVector.zero(COL_SPECIES).withLane(0, right).withLane(1, top).withLane(2, zNear)).neg().mul(FloatVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).add(FloatVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0f);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code ortho} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho} dispatcher.
+     */
+    private Float4x4 ortho_no_lh_translation_self(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        return ortho_no_lh_translation(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+
+    /**
+     * Private body of {@code ortho} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
      * {@code Handedness.LEFT_HANDED}; reached only through the public {@code ortho} dispatcher.
      */
     private Float4x4 ortho_no_lh(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return ortho_no_lh_identity_general(left, right, bottom, top, zNear, zFar, dest, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho_no_lh_identity(left, right, bottom, top, zNear, zFar, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho_no_lh_translation(left, right, bottom, top, zNear, zFar, dest);
+        return ortho_no_lh_orthogonal_general(left, right, bottom, top, zNear, zFar, dest, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -33798,7 +35418,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 ortho_no_lh(float left, float right, float bottom, float top, float zNear, float zFar) {
         if (Joml.RETURN_NEW) return ortho_no_lh(left, right, bottom, top, zNear, zFar, Joml.float4x4());
         int p = this.properties;
-        return ortho_no_lh_identity_general(left, right, bottom, top, zNear, zFar, this, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho_no_lh_identity_self(left, right, bottom, top, zNear, zFar, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho_no_lh_translation_self(left, right, bottom, top, zNear, zFar, this);
+        return ortho_no_lh_orthogonal_general(left, right, bottom, top, zNear, zFar, this, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -33856,12 +35478,12 @@ public class Float4x4Impl implements Float4x4 {
      * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
      * through the public {@code ortho} dispatcher.
      */
-    private Float4x4 ortho_no_rh_identity_general(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return ortho_no_rh_identity_general_fma(left, right, bottom, top, zNear, zFar, dest, _props);
-        return ortho_no_rh_identity_general_mulAdd(left, right, bottom, top, zNear, zFar, dest, _props);
+    private Float4x4 ortho_no_rh_orthogonal_general(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return ortho_no_rh_orthogonal_general_fma(left, right, bottom, top, zNear, zFar, dest, _props);
+        return ortho_no_rh_orthogonal_general_mulAdd(left, right, bottom, top, zNear, zFar, dest, _props);
     }
 
-    private Float4x4 ortho_no_rh_identity_general_fma(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 ortho_no_rh_orthogonal_general_fma(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0_inv = 1.0f / (right - left);
@@ -33885,7 +35507,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 ortho_no_rh_identity_general_mulAdd(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 ortho_no_rh_orthogonal_general_mulAdd(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0_inv = 1.0f / (right - left);
@@ -33912,11 +35534,126 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Private body of {@code ortho} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho} dispatcher.
+     */
+    private Float4x4 ortho_no_rh_identity(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        float _t2 = zFar - zNear;
+        float _t2_inv = 1.0f / _t2;
+        dd[0] = 2.0f * _t0_inv;
+        VEC_24.intoArray(dd, 1);
+        dd[5] = 2.0f * _t1_inv;
+        VEC_24.intoArray(dd, 6);
+        dd[10] = -2.0f * _t2_inv;
+        dd[11] = 0.0f;
+        dd[12] = -((left + right) * _t0_inv);
+        dd[13] = -((bottom + top) * _t1_inv);
+        dd[14] = -((zFar + zNear) * _t2_inv);
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code ortho} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho} dispatcher.
+     */
+    private Float4x4 ortho_no_rh_identity_self(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        float _t2 = zFar - zNear;
+        float _t2_inv = 1.0f / _t2;
+        dd[0] = 2.0f * _t0_inv;
+        dd[5] = 2.0f * _t1_inv;
+        dd[10] = -2.0f * _t2_inv;
+        dd[12] = -((left + right) * _t0_inv);
+        dd[13] = -((bottom + top) * _t1_inv);
+        dd[14] = -((zFar + zNear) * _t2_inv);
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code ortho} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho} dispatcher.
+     */
+    private Float4x4 ortho_no_rh_translation(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return ortho_no_rh_translation_fma(left, right, bottom, top, zNear, zFar, dest);
+        return ortho_no_rh_translation_mulAdd(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+    private Float4x4 ortho_no_rh_translation_fma(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0_inv = 1.0f / (right - left);
+        float _t1_inv = 1.0f / (top - bottom);
+        float _t2_inv = 1.0f / (zFar - zNear);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t0_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t1_inv);
+        var _col2 = _sv0.withLane(2, -2.0f * _t2_inv);
+        var _col3 = FloatVector.zero(COL_SPECIES).withLane(0, left).withLane(1, bottom).withLane(2, zFar).add(FloatVector.zero(COL_SPECIES).withLane(0, right).withLane(1, top).withLane(2, zNear)).neg().fma(FloatVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv), FloatVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0f);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+    private Float4x4 ortho_no_rh_translation_mulAdd(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0_inv = 1.0f / (right - left);
+        float _t1_inv = 1.0f / (top - bottom);
+        float _t2_inv = 1.0f / (zFar - zNear);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t0_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t1_inv);
+        var _col2 = _sv0.withLane(2, -2.0f * _t2_inv);
+        var _col3 = FloatVector.zero(COL_SPECIES).withLane(0, left).withLane(1, bottom).withLane(2, zFar).add(FloatVector.zero(COL_SPECIES).withLane(0, right).withLane(1, top).withLane(2, zNear)).neg().mul(FloatVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).add(FloatVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0f);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code ortho} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho} dispatcher.
+     */
+    private Float4x4 ortho_no_rh_translation_self(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        return ortho_no_rh_translation(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+
+    /**
+     * Private body of {@code ortho} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
      * {@code Handedness.RIGHT_HANDED}; reached only through the public {@code ortho} dispatcher.
      */
     private Float4x4 ortho_no_rh(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return ortho_no_rh_identity_general(left, right, bottom, top, zNear, zFar, dest, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho_no_rh_identity(left, right, bottom, top, zNear, zFar, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho_no_rh_translation(left, right, bottom, top, zNear, zFar, dest);
+        return ortho_no_rh_orthogonal_general(left, right, bottom, top, zNear, zFar, dest, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -33927,7 +35664,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 ortho_no_rh(float left, float right, float bottom, float top, float zNear, float zFar) {
         if (Joml.RETURN_NEW) return ortho_no_rh(left, right, bottom, top, zNear, zFar, Joml.float4x4());
         int p = this.properties;
-        return ortho_no_rh_identity_general(left, right, bottom, top, zNear, zFar, this, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho_no_rh_identity_self(left, right, bottom, top, zNear, zFar, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho_no_rh_translation_self(left, right, bottom, top, zNear, zFar, this);
+        return ortho_no_rh_orthogonal_general(left, right, bottom, top, zNear, zFar, this, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -34077,10 +35816,71 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Private body of {@code ortho} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho} dispatcher.
+     */
+    private Float4x4 ortho_zo_lh_translation(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return ortho_zo_lh_translation_fma(left, right, bottom, top, zNear, zFar, dest);
+        return ortho_zo_lh_translation_mulAdd(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+    private Float4x4 ortho_zo_lh_translation_fma(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0_inv = 1.0f / (right - left);
+        float _t1_inv = 1.0f / (top - bottom);
+        float _t2_inv = 1.0f / (zFar - zNear);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t0_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t1_inv);
+        var _col2 = _sv0.withLane(2, 1.0f * _t2_inv);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, left).withLane(1, bottom).add(FloatVector.broadcast(COL_SPECIES, right).withLane(1, top)).withLane(2, zNear).neg().fma(FloatVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv), FloatVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0f);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+    private Float4x4 ortho_zo_lh_translation_mulAdd(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0_inv = 1.0f / (right - left);
+        float _t1_inv = 1.0f / (top - bottom);
+        float _t2_inv = 1.0f / (zFar - zNear);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t0_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t1_inv);
+        var _col2 = _sv0.withLane(2, 1.0f * _t2_inv);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, left).withLane(1, bottom).add(FloatVector.broadcast(COL_SPECIES, right).withLane(1, top)).withLane(2, zNear).neg().mul(FloatVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).add(FloatVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0f);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code ortho} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho} dispatcher.
+     */
+    private Float4x4 ortho_zo_lh_translation_self(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        return ortho_zo_lh_translation(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+
+    /**
+     * Private body of {@code ortho} for {@code DepthRange.ZERO_TO_ONE},
      * {@code Handedness.LEFT_HANDED}; reached only through the public {@code ortho} dispatcher.
      */
     private Float4x4 ortho_zo_lh(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
         int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho_zo_lh_identity_general(left, right, bottom, top, zNear, zFar, dest, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho_zo_lh_translation(left, right, bottom, top, zNear, zFar, dest);
         return ortho_zo_lh_identity_general(left, right, bottom, top, zNear, zFar, dest, (p & Joml.BIT_AFFINE) | 0);
     }
 
@@ -34092,6 +35892,8 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 ortho_zo_lh(float left, float right, float bottom, float top, float zNear, float zFar) {
         if (Joml.RETURN_NEW) return ortho_zo_lh(left, right, bottom, top, zNear, zFar, Joml.float4x4());
         int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho_zo_lh_identity_general(left, right, bottom, top, zNear, zFar, this, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho_zo_lh_translation_self(left, right, bottom, top, zNear, zFar, this);
         return ortho_zo_lh_identity_general(left, right, bottom, top, zNear, zFar, this, (p & Joml.BIT_AFFINE) | 0);
     }
 
@@ -34203,10 +36005,71 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Private body of {@code ortho} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho} dispatcher.
+     */
+    private Float4x4 ortho_zo_rh_translation(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return ortho_zo_rh_translation_fma(left, right, bottom, top, zNear, zFar, dest);
+        return ortho_zo_rh_translation_mulAdd(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+    private Float4x4 ortho_zo_rh_translation_fma(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0_inv = 1.0f / (right - left);
+        float _t1_inv = 1.0f / (top - bottom);
+        float _t2_inv = 1.0f / (zFar - zNear);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t0_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t1_inv);
+        var _col2 = _sv0.withLane(2, -1.0f * _t2_inv);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, left).withLane(1, bottom).add(FloatVector.broadcast(COL_SPECIES, right).withLane(1, top)).withLane(2, zNear).neg().fma(FloatVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv), FloatVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0f);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+    private Float4x4 ortho_zo_rh_translation_mulAdd(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0_inv = 1.0f / (right - left);
+        float _t1_inv = 1.0f / (top - bottom);
+        float _t2_inv = 1.0f / (zFar - zNear);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t0_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t1_inv);
+        var _col2 = _sv0.withLane(2, -1.0f * _t2_inv);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, left).withLane(1, bottom).add(FloatVector.broadcast(COL_SPECIES, right).withLane(1, top)).withLane(2, zNear).neg().mul(FloatVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).add(FloatVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0f);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code ortho} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho} dispatcher.
+     */
+    private Float4x4 ortho_zo_rh_translation_self(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
+        return ortho_zo_rh_translation(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+
+    /**
+     * Private body of {@code ortho} for {@code DepthRange.ZERO_TO_ONE},
      * {@code Handedness.RIGHT_HANDED}; reached only through the public {@code ortho} dispatcher.
      */
     private Float4x4 ortho_zo_rh(float left, float right, float bottom, float top, float zNear, float zFar, @Mutated Float4x4 dest) {
         int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho_zo_rh_identity_general(left, right, bottom, top, zNear, zFar, dest, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho_zo_rh_translation(left, right, bottom, top, zNear, zFar, dest);
         return ortho_zo_rh_identity_general(left, right, bottom, top, zNear, zFar, dest, (p & Joml.BIT_AFFINE) | 0);
     }
 
@@ -34218,6 +36081,8 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 ortho_zo_rh(float left, float right, float bottom, float top, float zNear, float zFar) {
         if (Joml.RETURN_NEW) return ortho_zo_rh(left, right, bottom, top, zNear, zFar, Joml.float4x4());
         int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho_zo_rh_identity_general(left, right, bottom, top, zNear, zFar, this, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho_zo_rh_translation_self(left, right, bottom, top, zNear, zFar, this);
         return ortho_zo_rh_identity_general(left, right, bottom, top, zNear, zFar, this, (p & Joml.BIT_AFFINE) | 0);
     }
 
@@ -34651,12 +36516,12 @@ public class Float4x4Impl implements Float4x4 {
      * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
      * through the public {@code ortho2D} dispatcher.
      */
-    private Float4x4 ortho2D_no_lh_identity_general(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return ortho2D_no_lh_identity_general_fma(left, right, bottom, top, dest, _props);
-        return ortho2D_no_lh_identity_general_mulAdd(left, right, bottom, top, dest, _props);
+    private Float4x4 ortho2D_no_lh_orthogonal_general(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return ortho2D_no_lh_orthogonal_general_fma(left, right, bottom, top, dest, _props);
+        return ortho2D_no_lh_orthogonal_general_mulAdd(left, right, bottom, top, dest, _props);
     }
 
-    private Float4x4 ortho2D_no_lh_identity_general_fma(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 ortho2D_no_lh_orthogonal_general_fma(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0_inv = 1.0f / (right - left);
@@ -34677,7 +36542,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 ortho2D_no_lh_identity_general_mulAdd(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 ortho2D_no_lh_orthogonal_general_mulAdd(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0_inv = 1.0f / (right - left);
@@ -34701,11 +36566,110 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Private body of {@code ortho2D} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho2D} dispatcher.
+     */
+    private Float4x4 ortho2D_no_lh_identity(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        dd[0] = 2.0f * _t0_inv;
+        VEC_24.intoArray(dd, 1);
+        dd[5] = 2.0f * _t1_inv;
+        VEC_24.intoArray(dd, 6);
+        dd[10] = 1.0f;
+        dd[11] = 0.0f;
+        dd[12] = -((left + right) * _t0_inv);
+        dd[13] = -((bottom + top) * _t1_inv);
+        dd[14] = 0.0f;
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code ortho2D} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.LEFT_HANDED}, specialized by
+     * runtime matrix properties; reached only through the public {@code ortho2D} dispatcher.
+     */
+    private Float4x4 ortho2D_no_lh_identity_self(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        dd[0] = 2.0f * _t0_inv;
+        dd[5] = 2.0f * _t1_inv;
+        dd[12] = -((left + right) * _t0_inv);
+        dd[13] = -((bottom + top) * _t1_inv);
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code ortho2D} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho2D} dispatcher.
+     */
+    private Float4x4 ortho2D_no_lh_translation(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        dd[0] = 2.0f * _t0_inv;
+        VEC_24.intoArray(dd, 1);
+        dd[5] = 2.0f * _t1_inv;
+        VEC_24.intoArray(dd, 6);
+        dd[10] = 1.0f;
+        dd[11] = 0.0f;
+        dd[12] = sd[12] - (left + right) * _t0_inv;
+        dd[13] = sd[13] - (bottom + top) * _t1_inv;
+        dd[14] = sd[14];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code ortho2D} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.LEFT_HANDED}, specialized by
+     * runtime matrix properties; reached only through the public {@code ortho2D} dispatcher.
+     */
+    private Float4x4 ortho2D_no_lh_translation_self(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        dd[0] = 2.0f * _t0_inv;
+        dd[5] = 2.0f * _t1_inv;
+        dd[12] = sd[12] - (left + right) * _t0_inv;
+        dd[13] = sd[13] - (bottom + top) * _t1_inv;
+        dd[14] = sd[14];
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code ortho2D} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
      * {@code Handedness.LEFT_HANDED}; reached only through the public {@code ortho2D} dispatcher.
      */
     private Float4x4 ortho2D_no_lh(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return ortho2D_no_lh_identity_general(left, right, bottom, top, dest, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho2D_no_lh_identity(left, right, bottom, top, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho2D_no_lh_translation(left, right, bottom, top, dest);
+        return ortho2D_no_lh_orthogonal_general(left, right, bottom, top, dest, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -34716,7 +36680,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 ortho2D_no_lh(float left, float right, float bottom, float top) {
         if (Joml.RETURN_NEW) return ortho2D_no_lh(left, right, bottom, top, Joml.float4x4());
         int p = this.properties;
-        return ortho2D_no_lh_identity_general(left, right, bottom, top, this, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho2D_no_lh_identity_self(left, right, bottom, top, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho2D_no_lh_translation_self(left, right, bottom, top, this);
+        return ortho2D_no_lh_orthogonal_general(left, right, bottom, top, this, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -34767,12 +36733,12 @@ public class Float4x4Impl implements Float4x4 {
      * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
      * through the public {@code ortho2D} dispatcher.
      */
-    private Float4x4 ortho2D_no_rh_identity_general(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return ortho2D_no_rh_identity_general_fma(left, right, bottom, top, dest, _props);
-        return ortho2D_no_rh_identity_general_mulAdd(left, right, bottom, top, dest, _props);
+    private Float4x4 ortho2D_no_rh_orthogonal_general(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return ortho2D_no_rh_orthogonal_general_fma(left, right, bottom, top, dest, _props);
+        return ortho2D_no_rh_orthogonal_general_mulAdd(left, right, bottom, top, dest, _props);
     }
 
-    private Float4x4 ortho2D_no_rh_identity_general_fma(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 ortho2D_no_rh_orthogonal_general_fma(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0_inv = 1.0f / (right - left);
@@ -34793,7 +36759,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 ortho2D_no_rh_identity_general_mulAdd(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 ortho2D_no_rh_orthogonal_general_mulAdd(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0_inv = 1.0f / (right - left);
@@ -34817,11 +36783,112 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Private body of {@code ortho2D} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho2D} dispatcher.
+     */
+    private Float4x4 ortho2D_no_rh_identity(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        dd[0] = 2.0f * _t0_inv;
+        VEC_24.intoArray(dd, 1);
+        dd[5] = 2.0f * _t1_inv;
+        VEC_24.intoArray(dd, 6);
+        dd[10] = -1.0f;
+        dd[11] = 0.0f;
+        dd[12] = -((left + right) * _t0_inv);
+        dd[13] = -((bottom + top) * _t1_inv);
+        dd[14] = 0.0f;
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code ortho2D} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.RIGHT_HANDED}, specialized by
+     * runtime matrix properties; reached only through the public {@code ortho2D} dispatcher.
+     */
+    private Float4x4 ortho2D_no_rh_identity_self(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        dd[0] = 2.0f * _t0_inv;
+        dd[5] = 2.0f * _t1_inv;
+        dd[10] = -1.0f;
+        dd[12] = -((left + right) * _t0_inv);
+        dd[13] = -((bottom + top) * _t1_inv);
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code ortho2D} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho2D} dispatcher.
+     */
+    private Float4x4 ortho2D_no_rh_translation(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        dd[0] = 2.0f * _t0_inv;
+        VEC_24.intoArray(dd, 1);
+        dd[5] = 2.0f * _t1_inv;
+        VEC_24.intoArray(dd, 6);
+        dd[10] = -1.0f;
+        dd[11] = 0.0f;
+        dd[12] = sd[12] - (left + right) * _t0_inv;
+        dd[13] = sd[13] - (bottom + top) * _t1_inv;
+        dd[14] = sd[14];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code ortho2D} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.RIGHT_HANDED}, specialized by
+     * runtime matrix properties; reached only through the public {@code ortho2D} dispatcher.
+     */
+    private Float4x4 ortho2D_no_rh_translation_self(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        dd[0] = 2.0f * _t0_inv;
+        dd[5] = 2.0f * _t1_inv;
+        dd[10] = -1.0f;
+        dd[12] = sd[12] - (left + right) * _t0_inv;
+        dd[13] = sd[13] - (bottom + top) * _t1_inv;
+        dd[14] = sd[14];
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code ortho2D} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
      * {@code Handedness.RIGHT_HANDED}; reached only through the public {@code ortho2D} dispatcher.
      */
     private Float4x4 ortho2D_no_rh(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return ortho2D_no_rh_identity_general(left, right, bottom, top, dest, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho2D_no_rh_identity(left, right, bottom, top, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho2D_no_rh_translation(left, right, bottom, top, dest);
+        return ortho2D_no_rh_orthogonal_general(left, right, bottom, top, dest, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -34832,7 +36899,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 ortho2D_no_rh(float left, float right, float bottom, float top) {
         if (Joml.RETURN_NEW) return ortho2D_no_rh(left, right, bottom, top, Joml.float4x4());
         int p = this.properties;
-        return ortho2D_no_rh_identity_general(left, right, bottom, top, this, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho2D_no_rh_identity_self(left, right, bottom, top, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho2D_no_rh_translation_self(left, right, bottom, top, this);
+        return ortho2D_no_rh_orthogonal_general(left, right, bottom, top, this, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -34919,12 +36988,12 @@ public class Float4x4Impl implements Float4x4 {
      * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
      * through the public {@code ortho2D} dispatcher.
      */
-    private Float4x4 ortho2D_zo_lh_identity_general(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return ortho2D_zo_lh_identity_general_fma(left, right, bottom, top, dest, _props);
-        return ortho2D_zo_lh_identity_general_mulAdd(left, right, bottom, top, dest, _props);
+    private Float4x4 ortho2D_zo_lh_orthogonal_general(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return ortho2D_zo_lh_orthogonal_general_fma(left, right, bottom, top, dest, _props);
+        return ortho2D_zo_lh_orthogonal_general_mulAdd(left, right, bottom, top, dest, _props);
     }
 
-    private Float4x4 ortho2D_zo_lh_identity_general_fma(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 ortho2D_zo_lh_orthogonal_general_fma(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0_inv = 1.0f / (right - left);
@@ -34948,7 +37017,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 ortho2D_zo_lh_identity_general_mulAdd(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 ortho2D_zo_lh_orthogonal_general_mulAdd(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0_inv = 1.0f / (right - left);
@@ -34975,11 +37044,113 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Private body of {@code ortho2D} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho2D} dispatcher.
+     */
+    private Float4x4 ortho2D_zo_lh_identity(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        dd[0] = 2.0f * _t0_inv;
+        VEC_24.intoArray(dd, 1);
+        dd[5] = 2.0f * _t1_inv;
+        VEC_24.intoArray(dd, 6);
+        dd[10] = 0.5f;
+        dd[11] = 0.0f;
+        dd[12] = -((left + right) * _t0_inv);
+        dd[13] = -((bottom + top) * _t1_inv);
+        dd[14] = 0.5f;
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code ortho2D} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho2D} dispatcher.
+     */
+    private Float4x4 ortho2D_zo_lh_identity_self(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        dd[0] = 2.0f * _t0_inv;
+        dd[5] = 2.0f * _t1_inv;
+        dd[10] = 0.5f;
+        dd[12] = -((left + right) * _t0_inv);
+        dd[13] = -((bottom + top) * _t1_inv);
+        dd[14] = 0.5f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code ortho2D} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho2D} dispatcher.
+     */
+    private Float4x4 ortho2D_zo_lh_translation(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        dd[0] = 2.0f * _t0_inv;
+        VEC_24.intoArray(dd, 1);
+        dd[5] = 2.0f * _t1_inv;
+        VEC_24.intoArray(dd, 6);
+        dd[10] = 0.5f;
+        dd[11] = 0.0f;
+        dd[12] = sd[12] - (left + right) * _t0_inv;
+        dd[13] = sd[13] - (bottom + top) * _t1_inv;
+        dd[14] = 0.5f + sd[14];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code ortho2D} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho2D} dispatcher.
+     */
+    private Float4x4 ortho2D_zo_lh_translation_self(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        dd[0] = 2.0f * _t0_inv;
+        dd[5] = 2.0f * _t1_inv;
+        dd[10] = 0.5f;
+        dd[12] = sd[12] - (left + right) * _t0_inv;
+        dd[13] = sd[13] - (bottom + top) * _t1_inv;
+        dd[14] = 0.5f + sd[14];
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code ortho2D} for {@code DepthRange.ZERO_TO_ONE},
      * {@code Handedness.LEFT_HANDED}; reached only through the public {@code ortho2D} dispatcher.
      */
     private Float4x4 ortho2D_zo_lh(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return ortho2D_zo_lh_identity_general(left, right, bottom, top, dest, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho2D_zo_lh_identity(left, right, bottom, top, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho2D_zo_lh_translation(left, right, bottom, top, dest);
+        return ortho2D_zo_lh_orthogonal_general(left, right, bottom, top, dest, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -34990,7 +37161,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 ortho2D_zo_lh(float left, float right, float bottom, float top) {
         if (Joml.RETURN_NEW) return ortho2D_zo_lh(left, right, bottom, top, Joml.float4x4());
         int p = this.properties;
-        return ortho2D_zo_lh_identity_general(left, right, bottom, top, this, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho2D_zo_lh_identity_self(left, right, bottom, top, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho2D_zo_lh_translation_self(left, right, bottom, top, this);
+        return ortho2D_zo_lh_orthogonal_general(left, right, bottom, top, this, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -35045,12 +37218,12 @@ public class Float4x4Impl implements Float4x4 {
      * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
      * through the public {@code ortho2D} dispatcher.
      */
-    private Float4x4 ortho2D_zo_rh_identity_general(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return ortho2D_zo_rh_identity_general_fma(left, right, bottom, top, dest, _props);
-        return ortho2D_zo_rh_identity_general_mulAdd(left, right, bottom, top, dest, _props);
+    private Float4x4 ortho2D_zo_rh_orthogonal_general(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return ortho2D_zo_rh_orthogonal_general_fma(left, right, bottom, top, dest, _props);
+        return ortho2D_zo_rh_orthogonal_general_mulAdd(left, right, bottom, top, dest, _props);
     }
 
-    private Float4x4 ortho2D_zo_rh_identity_general_fma(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 ortho2D_zo_rh_orthogonal_general_fma(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0_inv = 1.0f / (right - left);
@@ -35073,7 +37246,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 ortho2D_zo_rh_identity_general_mulAdd(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 ortho2D_zo_rh_orthogonal_general_mulAdd(float left, float right, float bottom, float top, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0_inv = 1.0f / (right - left);
@@ -35099,11 +37272,113 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Private body of {@code ortho2D} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho2D} dispatcher.
+     */
+    private Float4x4 ortho2D_zo_rh_identity(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        dd[0] = 2.0f * _t0_inv;
+        VEC_24.intoArray(dd, 1);
+        dd[5] = 2.0f * _t1_inv;
+        VEC_24.intoArray(dd, 6);
+        dd[10] = -0.5f;
+        dd[11] = 0.0f;
+        dd[12] = -((left + right) * _t0_inv);
+        dd[13] = -((bottom + top) * _t1_inv);
+        dd[14] = 0.5f;
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code ortho2D} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho2D} dispatcher.
+     */
+    private Float4x4 ortho2D_zo_rh_identity_self(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        dd[0] = 2.0f * _t0_inv;
+        dd[5] = 2.0f * _t1_inv;
+        dd[10] = -0.5f;
+        dd[12] = -((left + right) * _t0_inv);
+        dd[13] = -((bottom + top) * _t1_inv);
+        dd[14] = 0.5f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code ortho2D} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho2D} dispatcher.
+     */
+    private Float4x4 ortho2D_zo_rh_translation(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        dd[0] = 2.0f * _t0_inv;
+        VEC_24.intoArray(dd, 1);
+        dd[5] = 2.0f * _t1_inv;
+        VEC_24.intoArray(dd, 6);
+        dd[10] = -0.5f;
+        dd[11] = 0.0f;
+        dd[12] = sd[12] - (left + right) * _t0_inv;
+        dd[13] = sd[13] - (bottom + top) * _t1_inv;
+        dd[14] = 0.5f + sd[14];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code ortho2D} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho2D} dispatcher.
+     */
+    private Float4x4 ortho2D_zo_rh_translation_self(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = right - left;
+        float _t0_inv = 1.0f / _t0;
+        float _t1 = top - bottom;
+        float _t1_inv = 1.0f / _t1;
+        dd[0] = 2.0f * _t0_inv;
+        dd[5] = 2.0f * _t1_inv;
+        dd[10] = -0.5f;
+        dd[12] = sd[12] - (left + right) * _t0_inv;
+        dd[13] = sd[13] - (bottom + top) * _t1_inv;
+        dd[14] = 0.5f + sd[14];
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code ortho2D} for {@code DepthRange.ZERO_TO_ONE},
      * {@code Handedness.RIGHT_HANDED}; reached only through the public {@code ortho2D} dispatcher.
      */
     private Float4x4 ortho2D_zo_rh(float left, float right, float bottom, float top, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return ortho2D_zo_rh_identity_general(left, right, bottom, top, dest, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho2D_zo_rh_identity(left, right, bottom, top, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho2D_zo_rh_translation(left, right, bottom, top, dest);
+        return ortho2D_zo_rh_orthogonal_general(left, right, bottom, top, dest, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -35114,7 +37389,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 ortho2D_zo_rh(float left, float right, float bottom, float top) {
         if (Joml.RETURN_NEW) return ortho2D_zo_rh(left, right, bottom, top, Joml.float4x4());
         int p = this.properties;
-        return ortho2D_zo_rh_identity_general(left, right, bottom, top, this, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho2D_zo_rh_identity_self(left, right, bottom, top, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho2D_zo_rh_translation_self(left, right, bottom, top, this);
+        return ortho2D_zo_rh_orthogonal_general(left, right, bottom, top, this, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -35618,15 +37895,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t248 = _t244 - _t245;
         float _t248_inv = 1.0f / _t248;
         dd[0] = 2.0f * _t246_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t247_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t248_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t241 + _t240) * _t246_inv);
@@ -35696,15 +37967,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t107 = _t103 - _t104;
         float _t107_inv = 1.0f / _t107;
         dd[0] = 2.0f * _t105_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t106_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t107_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t100 + _t99) * _t105_inv);
@@ -35786,15 +38051,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t92 = _t88 - _t89;
         float _t92_inv = 1.0f / _t92;
         dd[0] = 2.0f * _t90_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t91_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t92_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t85 + _t84) * _t90_inv);
@@ -35888,15 +38147,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t179 = _t175 - _t176;
         float _t179_inv = 1.0f / _t179;
         dd[0] = 2.0f * _t177_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t178_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t179_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t172 + _t171) * _t177_inv);
@@ -35961,15 +38214,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t42 = _t38 - _t39;
         float _t42_inv = 1.0f / _t42;
         dd[0] = 2.0f * _t42_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t41_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t40_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t39 + _t38) * _t42_inv);
@@ -36009,15 +38256,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t42 = _t38 - _t39;
         float _t42_inv = 1.0f / _t42;
         dd[0] = 2.0f * _t42_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t41_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t40_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t39 + _t38) * _t42_inv);
@@ -36057,15 +38298,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t48 = _t44 - _t45;
         float _t48_inv = 1.0f / _t48;
         dd[0] = 2.0f * _t48_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t47_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t46_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t45 + _t44) * _t48_inv);
@@ -36135,15 +38370,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t107 = _t103 - _t104;
         float _t107_inv = 1.0f / _t107;
         dd[0] = 2.0f * _t105_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t106_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t107_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t100 + _t99) * _t105_inv);
@@ -36213,15 +38442,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t131 = _t127 - _t128;
         float _t131_inv = 1.0f / _t131;
         dd[0] = 2.0f * _t129_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t130_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t131_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t124 + _t123) * _t129_inv);
@@ -36311,15 +38534,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t152 = _t148 - _t149;
         float _t152_inv = 1.0f / _t152;
         dd[0] = 2.0f * _t150_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t151_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t152_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t145 + _t144) * _t150_inv);
@@ -36409,15 +38626,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t176 = _t172 - _t173;
         float _t176_inv = 1.0f / _t176;
         dd[0] = 2.0f * _t174_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t175_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t176_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t169 + _t168) * _t174_inv);
@@ -36715,12 +38926,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t247_inv = 1.0f / (_t242 - _t243);
         float _t248_inv = 1.0f / (_t244 - _t245);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t246_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t246_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t247_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t248_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t241);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t240);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t243).add(_sv2.withLane(1, _t242)).withLane(2, -_t245 - _t244).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t246_inv).withLane(1, _t247_inv).withLane(2, _t248_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t243).add(_sv2.withLane(1, _t242)).withLane(2, -_t245 - _t244).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t246_inv).withLane(1, _t247_inv).withLane(2, _t248_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36815,12 +39026,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t247_inv = 1.0f / (_t242 - _t243);
         float _t248_inv = 1.0f / (_t244 - _t245);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t246_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t246_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t247_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t248_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t241);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t240);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t243).add(_sv2.withLane(1, _t242)).withLane(2, -_t245 - _t244).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t246_inv).withLane(1, _t247_inv).withLane(2, _t248_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t243).add(_sv2.withLane(1, _t242)).withLane(2, -_t245 - _t244).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t246_inv).withLane(1, _t247_inv).withLane(2, _t248_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36890,12 +39101,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t106_inv = 1.0f / (_t101 - _t102);
         float _t107_inv = 1.0f / (_t103 - _t104);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t105_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t105_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t106_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t107_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t100);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t99);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t102).add(_sv2.withLane(1, _t101)).withLane(2, -_t104 - _t103).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t105_inv).withLane(1, _t106_inv).withLane(2, _t107_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t102).add(_sv2.withLane(1, _t101)).withLane(2, -_t104 - _t103).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t105_inv).withLane(1, _t106_inv).withLane(2, _t107_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36954,12 +39165,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t106_inv = 1.0f / (_t101 - _t102);
         float _t107_inv = 1.0f / (_t103 - _t104);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t105_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t105_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t106_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t107_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t100);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t99);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t102).add(_sv2.withLane(1, _t101)).withLane(2, -_t104 - _t103).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t105_inv).withLane(1, _t106_inv).withLane(2, _t107_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t102).add(_sv2.withLane(1, _t101)).withLane(2, -_t104 - _t103).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t105_inv).withLane(1, _t106_inv).withLane(2, _t107_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37041,12 +39252,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t91_inv = 1.0f / (_t86 - _t87);
         float _t92_inv = 1.0f / (_t88 - _t89);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t91_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t92_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37117,12 +39328,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t91_inv = 1.0f / (_t86 - _t87);
         float _t92_inv = 1.0f / (_t88 - _t89);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t91_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t92_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37216,12 +39427,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t178_inv = 1.0f / (_t173 - _t174);
         float _t179_inv = 1.0f / (_t175 - _t176);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t177_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t177_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t178_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t179_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t172);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t171);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t174).add(_sv2.withLane(1, _t173)).withLane(2, -_t176 - _t175).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t177_inv).withLane(1, _t178_inv).withLane(2, _t179_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t174).add(_sv2.withLane(1, _t173)).withLane(2, -_t176 - _t175).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t177_inv).withLane(1, _t178_inv).withLane(2, _t179_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37304,12 +39515,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t178_inv = 1.0f / (_t173 - _t174);
         float _t179_inv = 1.0f / (_t175 - _t176);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t177_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t177_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t178_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t179_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t172);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t171);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t174).add(_sv2.withLane(1, _t173)).withLane(2, -_t176 - _t175).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t177_inv).withLane(1, _t178_inv).withLane(2, _t179_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t174).add(_sv2.withLane(1, _t173)).withLane(2, -_t176 - _t175).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t177_inv).withLane(1, _t178_inv).withLane(2, _t179_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37329,15 +39540,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] viewData = ((Float4x4Impl) view).data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_25, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_32, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_25, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_25, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_32, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_32, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_25, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_25, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_25, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_25, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_32, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_32, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_32, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_32, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Float4x4Impl) view).properties;
         return dest;
@@ -37374,12 +39585,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t41_inv = 1.0f / (_t36 - _t37);
         float _t42_inv = 1.0f / (_t38 - _t39);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t41_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t40_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37408,12 +39619,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t41_inv = 1.0f / (_t36 - _t37);
         float _t42_inv = 1.0f / (_t38 - _t39);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t41_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t40_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37453,12 +39664,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t41_inv = 1.0f / (_t36 - _t37);
         float _t42_inv = 1.0f / (_t38 - _t39);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t41_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t40_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37487,12 +39698,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t41_inv = 1.0f / (_t36 - _t37);
         float _t42_inv = 1.0f / (_t38 - _t39);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t41_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t40_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37532,12 +39743,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t47_inv = 1.0f / (_t42 - _t43);
         float _t48_inv = 1.0f / (_t44 - _t45);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t48_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t48_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t47_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t46_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t45);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t44);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, -_t35 - _t34).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, -_t35 - _t34).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37566,12 +39777,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t47_inv = 1.0f / (_t42 - _t43);
         float _t48_inv = 1.0f / (_t44 - _t45);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t48_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t48_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t47_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t46_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t45);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t44);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, -_t35 - _t34).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, -_t35 - _t34).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37641,12 +39852,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t106_inv = 1.0f / (_t101 - _t102);
         float _t107_inv = 1.0f / (_t103 - _t104);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t105_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t105_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t106_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t107_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t100);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t99);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t102).add(_sv2.withLane(1, _t101)).withLane(2, -_t104 - _t103).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t105_inv).withLane(1, _t106_inv).withLane(2, _t107_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t102).add(_sv2.withLane(1, _t101)).withLane(2, -_t104 - _t103).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t105_inv).withLane(1, _t106_inv).withLane(2, _t107_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37705,12 +39916,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t106_inv = 1.0f / (_t101 - _t102);
         float _t107_inv = 1.0f / (_t103 - _t104);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t105_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t105_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t106_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t107_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t100);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t99);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t102).add(_sv2.withLane(1, _t101)).withLane(2, -_t104 - _t103).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t105_inv).withLane(1, _t106_inv).withLane(2, _t107_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t102).add(_sv2.withLane(1, _t101)).withLane(2, -_t104 - _t103).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t105_inv).withLane(1, _t106_inv).withLane(2, _t107_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37780,12 +39991,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t130_inv = 1.0f / (_t125 - _t126);
         float _t131_inv = 1.0f / (_t127 - _t128);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t129_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t129_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t130_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t131_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t124);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t123);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t126).add(_sv2.withLane(1, _t125)).withLane(2, -_t128 - _t127).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t129_inv).withLane(1, _t130_inv).withLane(2, _t131_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t126).add(_sv2.withLane(1, _t125)).withLane(2, -_t128 - _t127).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t129_inv).withLane(1, _t130_inv).withLane(2, _t131_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37844,12 +40055,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t130_inv = 1.0f / (_t125 - _t126);
         float _t131_inv = 1.0f / (_t127 - _t128);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t129_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t129_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t130_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t131_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t124);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t123);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t126).add(_sv2.withLane(1, _t125)).withLane(2, -_t128 - _t127).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t129_inv).withLane(1, _t130_inv).withLane(2, _t131_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t126).add(_sv2.withLane(1, _t125)).withLane(2, -_t128 - _t127).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t129_inv).withLane(1, _t130_inv).withLane(2, _t131_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37931,12 +40142,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t151_inv = 1.0f / (_t146 - _t147);
         float _t152_inv = 1.0f / (_t148 - _t149);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t150_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t150_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t151_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t152_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t145);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t144);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, -_t149 - _t148).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, -_t149 - _t148).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -38007,12 +40218,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t151_inv = 1.0f / (_t146 - _t147);
         float _t152_inv = 1.0f / (_t148 - _t149);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t150_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t150_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t151_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t152_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t145);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t144);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, -_t149 - _t148).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, -_t149 - _t148).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -38094,12 +40305,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t175_inv = 1.0f / (_t170 - _t171);
         float _t176_inv = 1.0f / (_t172 - _t173);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t174_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t174_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t175_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t176_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t169);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t168);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t171).add(_sv2.withLane(1, _t170)).withLane(2, -_t173 - _t172).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t174_inv).withLane(1, _t175_inv).withLane(2, _t176_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t171).add(_sv2.withLane(1, _t170)).withLane(2, -_t173 - _t172).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t174_inv).withLane(1, _t175_inv).withLane(2, _t176_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -38170,12 +40381,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t175_inv = 1.0f / (_t170 - _t171);
         float _t176_inv = 1.0f / (_t172 - _t173);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t174_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t174_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t175_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t176_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t169);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t168);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t171).add(_sv2.withLane(1, _t170)).withLane(2, -_t173 - _t172).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t174_inv).withLane(1, _t175_inv).withLane(2, _t176_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t171).add(_sv2.withLane(1, _t170)).withLane(2, -_t173 - _t172).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t174_inv).withLane(1, _t175_inv).withLane(2, _t176_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -38509,12 +40720,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t231_inv = 1.0f / (_t226 - _t227);
         float _t232_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181) - _t229);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t230_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t230_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t231_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t232_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t225);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t224);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).withLane(2, _t229).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv).withLane(2, _t232_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).withLane(2, _t229).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv).withLane(2, _t232_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -38608,12 +40819,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t231_inv = 1.0f / (_t226 - _t227);
         float _t232_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181) - _t229);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t230_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t230_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t231_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t232_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t225);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t224);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).withLane(2, _t229).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv).withLane(2, _t232_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).withLane(2, _t229).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv).withLane(2, _t232_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -38682,12 +40893,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t94_inv = 1.0f / (_t89 - _t90);
         float _t95_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47) - _t92);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t93_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t93_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t94_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t95_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).withLane(2, _t92).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv).withLane(2, _t95_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).withLane(2, _t92).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv).withLane(2, _t95_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -38745,12 +40956,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t94_inv = 1.0f / (_t89 - _t90);
         float _t95_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47) - _t92);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t93_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t93_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t94_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t95_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).withLane(2, _t92).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv).withLane(2, _t95_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).withLane(2, _t92).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv).withLane(2, _t95_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -38830,12 +41041,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t90_inv = 1.0f / (_t85 - _t86);
         float _t91_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t31, _t32), _t33), _t34), _t43), _t44), _t45), _t46) - _t88);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t89_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t89_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t90_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t91_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t84);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t83);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).withLane(2, _t88).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv).withLane(2, _t91_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).withLane(2, _t88).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv).withLane(2, _t91_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -38904,12 +41115,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t90_inv = 1.0f / (_t85 - _t86);
         float _t91_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t31, _t32), _t33), _t34), _t43), _t44), _t45), _t46) - _t88);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t89_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t89_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t90_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t91_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t84);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t83);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).withLane(2, _t88).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv).withLane(2, _t91_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).withLane(2, _t88).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv).withLane(2, _t91_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39002,12 +41213,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t166_inv = 1.0f / (_t161 - _t162);
         float _t167_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t110, _t105), _t106), _t107), _t122), _t117), _t118), _t119) - _t164);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t165_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t165_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t166_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t167_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t160);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t159);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).withLane(2, _t164).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv).withLane(2, _t167_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).withLane(2, _t164).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv).withLane(2, _t167_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39089,12 +41300,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t166_inv = 1.0f / (_t161 - _t162);
         float _t167_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t110, _t105), _t106), _t107), _t122), _t117), _t118), _t119) - _t164);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t165_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t165_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t166_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t167_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t160);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t159);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).withLane(2, _t164).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv).withLane(2, _t167_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).withLane(2, _t164).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv).withLane(2, _t167_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39142,12 +41353,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t40_inv = 1.0f / (_t35 - _t36);
         float _t41_inv = 1.0f / (_t37 - _t38);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t41_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t41_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t40_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t39_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).withLane(2, _t24).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv).withLane(2, _t39_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).withLane(2, _t24).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv).withLane(2, _t39_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39174,12 +41385,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t40_inv = 1.0f / (_t35 - _t36);
         float _t41_inv = 1.0f / (_t37 - _t38);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t41_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t41_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t40_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t39_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).withLane(2, _t24).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv).withLane(2, _t39_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).withLane(2, _t24).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv).withLane(2, _t39_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39217,12 +41428,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t40_inv = 1.0f / (_t35 - _t36);
         float _t41_inv = 1.0f / (_t37 - _t38);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t41_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t41_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t40_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t39_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).withLane(2, _t24).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv).withLane(2, _t39_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).withLane(2, _t24).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv).withLane(2, _t39_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39249,12 +41460,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t40_inv = 1.0f / (_t35 - _t36);
         float _t41_inv = 1.0f / (_t37 - _t38);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t41_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t41_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t40_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t39_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).withLane(2, _t24).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv).withLane(2, _t39_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).withLane(2, _t24).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv).withLane(2, _t39_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39293,12 +41504,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t46_inv = 1.0f / (_t41 - _t42);
         float _t47_inv = 1.0f / (_t43 - _t44);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t47_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t47_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t46_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t45_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t44);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t43);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).withLane(2, _t30).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv).withLane(2, _t45_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).withLane(2, _t30).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv).withLane(2, _t45_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39326,12 +41537,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t46_inv = 1.0f / (_t41 - _t42);
         float _t47_inv = 1.0f / (_t43 - _t44);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t47_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t47_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t46_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t45_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t44);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t43);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).withLane(2, _t30).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv).withLane(2, _t45_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).withLane(2, _t30).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv).withLane(2, _t45_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39400,12 +41611,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t94_inv = 1.0f / (_t89 - _t90);
         float _t95_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47) - _t92);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t93_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t93_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t94_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t95_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).withLane(2, _t92).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv).withLane(2, _t95_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).withLane(2, _t92).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv).withLane(2, _t95_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39463,12 +41674,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t94_inv = 1.0f / (_t89 - _t90);
         float _t95_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47) - _t92);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t93_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t93_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t94_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t95_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).withLane(2, _t92).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv).withLane(2, _t95_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).withLane(2, _t92).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv).withLane(2, _t95_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39537,12 +41748,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t118_inv = 1.0f / (_t113 - _t114);
         float _t119_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t61, _t51), _t52), _t53), _t74), _t69), _t70), _t71) - _t116);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t117_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t117_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t118_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t119_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t112);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t111);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).withLane(2, _t116).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv).withLane(2, _t119_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).withLane(2, _t116).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv).withLane(2, _t119_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39600,12 +41811,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t118_inv = 1.0f / (_t113 - _t114);
         float _t119_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t61, _t51), _t52), _t53), _t74), _t69), _t70), _t71) - _t116);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t117_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t117_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t118_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t119_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t112);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t111);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).withLane(2, _t116).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv).withLane(2, _t119_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).withLane(2, _t116).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv).withLane(2, _t119_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39686,12 +41897,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t135_inv = 1.0f / (_t130 - _t131);
         float _t136_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t79, _t74), _t75), _t76), _t91), _t86), _t87), _t88) - _t133);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t134_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t134_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t135_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t136_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t129);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t128);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).withLane(2, _t133).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv).withLane(2, _t136_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).withLane(2, _t133).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv).withLane(2, _t136_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39761,12 +41972,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t135_inv = 1.0f / (_t130 - _t131);
         float _t136_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t79, _t74), _t75), _t76), _t91), _t86), _t87), _t88) - _t133);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t134_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t134_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t135_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t136_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t129);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t128);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).withLane(2, _t133).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv).withLane(2, _t136_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).withLane(2, _t133).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv).withLane(2, _t136_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39847,12 +42058,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t159_inv = 1.0f / (_t154 - _t155);
         float _t160_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t91, _t86), _t87), _t88), _t115), _t110), _t111), _t112) - _t157);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t158_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t158_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t159_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t160_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t153);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t152);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).withLane(2, _t157).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv).withLane(2, _t160_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).withLane(2, _t157).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv).withLane(2, _t160_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39922,12 +42133,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t159_inv = 1.0f / (_t154 - _t155);
         float _t160_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t91, _t86), _t87), _t88), _t115), _t110), _t111), _t112) - _t157);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t158_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t158_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t159_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t160_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t153);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t152);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).withLane(2, _t157).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv).withLane(2, _t160_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).withLane(2, _t157).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv).withLane(2, _t160_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40221,12 +42432,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t231_inv = 1.0f / (_t226 - _t227);
         float _t232_inv = 1.0f / (_t228 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t230_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t230_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t231_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t232_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t225);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t224);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t228).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t232_inv))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t228).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t232_inv))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40320,12 +42531,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t231_inv = 1.0f / (_t226 - _t227);
         float _t232_inv = 1.0f / (_t228 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t230_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t230_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t231_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t232_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t225);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t224);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t228).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t232_inv))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t228).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t232_inv))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40394,12 +42605,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t94_inv = 1.0f / (_t89 - _t90);
         float _t95_inv = 1.0f / (_t91 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t93_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t93_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t94_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t95_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t91).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t91).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40457,12 +42668,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t94_inv = 1.0f / (_t89 - _t90);
         float _t95_inv = 1.0f / (_t91 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t93_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t93_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t94_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t95_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t91).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t91).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40542,12 +42753,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t90_inv = 1.0f / (_t85 - _t86);
         float _t91_inv = 1.0f / (_t87 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t31, _t32), _t33), _t34), _t43), _t44), _t45), _t46));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t89_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t89_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t90_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t91_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t84);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t83);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t87).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t91_inv))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t87).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t91_inv))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40616,12 +42827,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t90_inv = 1.0f / (_t85 - _t86);
         float _t91_inv = 1.0f / (_t87 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t31, _t32), _t33), _t34), _t43), _t44), _t45), _t46));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t89_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t89_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t90_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t91_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t84);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t83);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t87).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t91_inv))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t87).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t91_inv))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40714,12 +42925,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t166_inv = 1.0f / (_t161 - _t162);
         float _t167_inv = 1.0f / (_t163 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t110, _t105), _t106), _t107), _t122), _t117), _t118), _t119));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t165_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t165_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t166_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t167_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t160);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t159);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t163).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t167_inv))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t163).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t167_inv))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40801,12 +43012,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t166_inv = 1.0f / (_t161 - _t162);
         float _t167_inv = 1.0f / (_t163 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t110, _t105), _t106), _t107), _t122), _t117), _t118), _t119));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t165_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t165_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t166_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t167_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t160);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t159);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t163).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t167_inv))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t163).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t167_inv))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40826,15 +43037,15 @@ public class Float4x4Impl implements Float4x4 {
         float[] viewData = ((Float4x4Impl) view).data;
         float[] dd = ((Float4x4Impl) dest).data;
         if (FloatVector.SPECIES_PREFERRED.length() >= 16) {
-            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_77, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_512, DATA_85, 0).intoArray(dd, 0);
         } else if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_77, 0).intoArray(dd, 0);
-            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_77, 8).intoArray(dd, 8);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_85, 0).intoArray(dd, 0);
+            FloatVector.fromArray(FloatVector.SPECIES_256, DATA_85, 8).intoArray(dd, 8);
         } else {
-            FloatVector.fromArray(COL_SPECIES, DATA_77, 0).intoArray(dd, 0);
-            FloatVector.fromArray(COL_SPECIES, DATA_77, 4).intoArray(dd, 4);
-            FloatVector.fromArray(COL_SPECIES, DATA_77, 8).intoArray(dd, 8);
-            FloatVector.fromArray(COL_SPECIES, DATA_77, 12).intoArray(dd, 12);
+            FloatVector.fromArray(COL_SPECIES, DATA_85, 0).intoArray(dd, 0);
+            FloatVector.fromArray(COL_SPECIES, DATA_85, 4).intoArray(dd, 4);
+            FloatVector.fromArray(COL_SPECIES, DATA_85, 8).intoArray(dd, 8);
+            FloatVector.fromArray(COL_SPECIES, DATA_85, 12).intoArray(dd, 12);
         }
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Float4x4Impl) view).properties;
         return dest;
@@ -40869,12 +43080,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t40_inv = 1.0f / (_t35 - _t36);
         float _t41_inv = 1.0f / (_t37 - _t38);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t41_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t41_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t40_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t39_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t23).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t23).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40901,12 +43112,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t40_inv = 1.0f / (_t35 - _t36);
         float _t41_inv = 1.0f / (_t37 - _t38);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t41_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t41_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t40_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t39_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t23).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t23).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40944,12 +43155,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t40_inv = 1.0f / (_t35 - _t36);
         float _t41_inv = 1.0f / (_t37 - _t38);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t41_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t41_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t40_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t39_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t23).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t23).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40976,12 +43187,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t40_inv = 1.0f / (_t35 - _t36);
         float _t41_inv = 1.0f / (_t37 - _t38);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t41_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t41_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t40_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t39_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t23).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t23).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -41020,12 +43231,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t46_inv = 1.0f / (_t41 - _t42);
         float _t47_inv = 1.0f / (_t43 - _t44);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t47_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t47_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t46_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t45_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t44);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t43);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t29).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t45_inv))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t29).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t45_inv))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -41053,12 +43264,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t46_inv = 1.0f / (_t41 - _t42);
         float _t47_inv = 1.0f / (_t43 - _t44);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t47_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t47_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t46_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t45_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t44);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t43);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t29).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t45_inv))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t29).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t45_inv))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -41127,12 +43338,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t94_inv = 1.0f / (_t89 - _t90);
         float _t95_inv = 1.0f / (_t91 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t93_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t93_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t94_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t95_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t91).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t91).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -41190,12 +43401,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t94_inv = 1.0f / (_t89 - _t90);
         float _t95_inv = 1.0f / (_t91 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t93_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t93_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t94_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t95_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t91).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t91).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -41264,12 +43475,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t118_inv = 1.0f / (_t113 - _t114);
         float _t119_inv = 1.0f / (_t115 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t61, _t51), _t52), _t53), _t74), _t69), _t70), _t71));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t117_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t117_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t118_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t119_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t112);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t111);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t115).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t119_inv))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t115).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t119_inv))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -41327,12 +43538,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t118_inv = 1.0f / (_t113 - _t114);
         float _t119_inv = 1.0f / (_t115 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t61, _t51), _t52), _t53), _t74), _t69), _t70), _t71));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t117_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t117_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t118_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t119_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t112);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t111);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t115).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t119_inv))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t115).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t119_inv))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -41413,12 +43624,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t135_inv = 1.0f / (_t130 - _t131);
         float _t136_inv = 1.0f / (_t132 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t79, _t74), _t75), _t76), _t91), _t86), _t87), _t88));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t134_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t134_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t135_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t136_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t129);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t128);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t132).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t136_inv))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t132).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t136_inv))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -41488,12 +43699,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t135_inv = 1.0f / (_t130 - _t131);
         float _t136_inv = 1.0f / (_t132 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t79, _t74), _t75), _t76), _t91), _t86), _t87), _t88));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t134_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t134_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t135_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t136_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t129);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t128);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t132).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t136_inv))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t132).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t136_inv))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -41574,12 +43785,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t159_inv = 1.0f / (_t154 - _t155);
         float _t160_inv = 1.0f / (_t156 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t91, _t86), _t87), _t88), _t115), _t110), _t111), _t112));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t158_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t158_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t159_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t160_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t153);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t152);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t156).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t160_inv))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t156).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t160_inv))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -41649,12 +43860,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t159_inv = 1.0f / (_t154 - _t155);
         float _t160_inv = 1.0f / (_t156 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t91, _t86), _t87), _t88), _t115), _t110), _t111), _t112));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t158_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t158_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t159_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t160_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t153);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t152);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t156).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t160_inv))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t156).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t160_inv))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -42346,15 +44557,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t224 = _t220 - _t221;
         float _t224_inv = 1.0f / _t224;
         dd[0] = 2.0f * _t222_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t223_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t224_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t217 + _t216) * _t222_inv);
@@ -42427,15 +44632,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t89 = _t85 - _t86;
         float _t89_inv = 1.0f / _t89;
         dd[0] = 2.0f * _t87_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t88_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t89_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t82 + _t81) * _t87_inv);
@@ -42517,15 +44716,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t92 = _t88 - _t89;
         float _t92_inv = 1.0f / _t92;
         dd[0] = 2.0f * _t90_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t91_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t92_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t85 + _t84) * _t90_inv);
@@ -42622,15 +44815,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t161 = _t157 - _t158;
         float _t161_inv = 1.0f / _t161;
         dd[0] = 2.0f * _t159_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t160_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t161_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t154 + _t153) * _t159_inv);
@@ -42655,14 +44842,8 @@ public class Float4x4Impl implements Float4x4 {
         float _t7 = Math.min(Math.min(Math.min(Math.min(minZ, maxZ), maxZ), maxZ), maxZ);
         float _t8 = _t6 - _t7;
         float _t8_inv = 1.0f / _t8;
-        dd[0] = 1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 1.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 4);
         dd[8] = 0.0f;
         dd[9] = 0.0f;
         dd[10] = 2.0f * _t8_inv;
@@ -42704,15 +44885,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t42 = _t38 - _t39;
         float _t42_inv = 1.0f / _t42;
         dd[0] = 2.0f * _t42_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t41_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t40_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t39 + _t38) * _t42_inv);
@@ -42752,15 +44927,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t42 = _t38 - _t39;
         float _t42_inv = 1.0f / _t42;
         dd[0] = 2.0f * _t42_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t41_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t40_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t39 + _t38) * _t42_inv);
@@ -42800,15 +44969,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t48 = _t44 - _t45;
         float _t48_inv = 1.0f / _t48;
         dd[0] = 2.0f * _t48_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t47_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t46_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t45 + _t44) * _t48_inv);
@@ -42881,15 +45044,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t89 = _t85 - _t86;
         float _t89_inv = 1.0f / _t89;
         dd[0] = 2.0f * _t87_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t88_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t89_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t82 + _t81) * _t87_inv);
@@ -42965,15 +45122,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t92 = _t88 - _t89;
         float _t92_inv = 1.0f / _t92;
         dd[0] = 2.0f * _t90_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t91_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t92_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t85 + _t84) * _t90_inv);
@@ -43067,15 +45218,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t128 = _t124 - _t125;
         float _t128_inv = 1.0f / _t128;
         dd[0] = 2.0f * _t126_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t127_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t128_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t121 + _t120) * _t126_inv);
@@ -43169,15 +45314,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t152 = _t148 - _t149;
         float _t152_inv = 1.0f / _t152;
         dd[0] = 2.0f * _t150_inv;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = 2.0f * _t151_inv;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 2.0f * _t152_inv;
         dd[11] = 0.0f;
         dd[12] = -((_t145 + _t144) * _t150_inv);
@@ -43483,12 +45622,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t223_inv = 1.0f / (_t218 - _t219);
         float _t224_inv = 1.0f / (_t220 - _t221);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t222_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t222_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t223_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t224_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t217);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t216);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).withLane(2, -_t221 - _t220).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv).withLane(2, _t224_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).withLane(2, -_t221 - _t220).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv).withLane(2, _t224_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -43587,12 +45726,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t223_inv = 1.0f / (_t218 - _t219);
         float _t224_inv = 1.0f / (_t220 - _t221);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t222_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t222_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t223_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t224_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t217);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t216);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).withLane(2, -_t221 - _t220).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv).withLane(2, _t224_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).withLane(2, -_t221 - _t220).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv).withLane(2, _t224_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -43665,12 +45804,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t88_inv = 1.0f / (_t83 - _t84);
         float _t89_inv = 1.0f / (_t85 - _t86);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t88_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t89_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, -_t86 - _t85).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, -_t86 - _t85).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -43732,12 +45871,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t88_inv = 1.0f / (_t83 - _t84);
         float _t89_inv = 1.0f / (_t85 - _t86);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t88_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t89_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, -_t86 - _t85).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, -_t86 - _t85).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -43819,12 +45958,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t91_inv = 1.0f / (_t86 - _t87);
         float _t92_inv = 1.0f / (_t88 - _t89);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t91_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t92_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -43895,12 +46034,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t91_inv = 1.0f / (_t86 - _t87);
         float _t92_inv = 1.0f / (_t88 - _t89);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t91_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t92_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -43997,12 +46136,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t160_inv = 1.0f / (_t155 - _t156);
         float _t161_inv = 1.0f / (_t157 - _t158);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t159_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t159_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t160_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t161_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t154);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t153);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).withLane(2, -_t158 - _t157).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv).withLane(2, _t161_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).withLane(2, -_t158 - _t157).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv).withLane(2, _t161_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -44088,12 +46227,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t160_inv = 1.0f / (_t155 - _t156);
         float _t161_inv = 1.0f / (_t157 - _t158);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t159_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t159_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t160_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t161_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t154);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t153);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).withLane(2, -_t158 - _t157).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv).withLane(2, _t161_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).withLane(2, -_t158 - _t157).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv).withLane(2, _t161_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -44116,14 +46255,8 @@ public class Float4x4Impl implements Float4x4 {
         float _t7 = Math.min(Math.min(Math.min(Math.min(minZ, maxZ), maxZ), maxZ), maxZ);
         float _t8 = _t6 - _t7;
         float _t8_inv = 1.0f / _t8;
-        dd[0] = 1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 1.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 4);
         dd[8] = 0.0f;
         dd[9] = 0.0f;
         dd[10] = -2.0f * _t8_inv;
@@ -44167,12 +46300,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t41_inv = 1.0f / (_t36 - _t37);
         float _t42_inv = 1.0f / (_t38 - _t39);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t41_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t40_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -44201,12 +46334,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t41_inv = 1.0f / (_t36 - _t37);
         float _t42_inv = 1.0f / (_t38 - _t39);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t41_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t40_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -44246,12 +46379,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t41_inv = 1.0f / (_t36 - _t37);
         float _t42_inv = 1.0f / (_t38 - _t39);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t41_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t40_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -44280,12 +46413,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t41_inv = 1.0f / (_t36 - _t37);
         float _t42_inv = 1.0f / (_t38 - _t39);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t41_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t40_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -44325,12 +46458,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t47_inv = 1.0f / (_t42 - _t43);
         float _t48_inv = 1.0f / (_t44 - _t45);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t48_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t48_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t47_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t46_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t45);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t44);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, -_t35 - _t34).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, -_t35 - _t34).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -44359,12 +46492,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t47_inv = 1.0f / (_t42 - _t43);
         float _t48_inv = 1.0f / (_t44 - _t45);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t48_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t48_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t47_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t46_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t45);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t44);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, -_t35 - _t34).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, -_t35 - _t34).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -44437,12 +46570,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t88_inv = 1.0f / (_t83 - _t84);
         float _t89_inv = 1.0f / (_t85 - _t86);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t88_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t89_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, -_t86 - _t85).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, -_t86 - _t85).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -44504,12 +46637,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t88_inv = 1.0f / (_t83 - _t84);
         float _t89_inv = 1.0f / (_t85 - _t86);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t88_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t89_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, -_t86 - _t85).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, -_t86 - _t85).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -44585,12 +46718,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t91_inv = 1.0f / (_t86 - _t87);
         float _t92_inv = 1.0f / (_t88 - _t89);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t91_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t92_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -44655,12 +46788,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t91_inv = 1.0f / (_t86 - _t87);
         float _t92_inv = 1.0f / (_t88 - _t89);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t91_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t92_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -44746,12 +46879,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t127_inv = 1.0f / (_t122 - _t123);
         float _t128_inv = 1.0f / (_t124 - _t125);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t126_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t126_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t127_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t128_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t121);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t120);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).withLane(2, -_t125 - _t124).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv).withLane(2, _t128_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).withLane(2, -_t125 - _t124).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv).withLane(2, _t128_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -44826,12 +46959,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t127_inv = 1.0f / (_t122 - _t123);
         float _t128_inv = 1.0f / (_t124 - _t125);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t126_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t126_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t127_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t128_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t121);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t120);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).withLane(2, -_t125 - _t124).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv).withLane(2, _t128_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).withLane(2, -_t125 - _t124).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv).withLane(2, _t128_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -44917,12 +47050,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t151_inv = 1.0f / (_t146 - _t147);
         float _t152_inv = 1.0f / (_t148 - _t149);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t150_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t150_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t151_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t152_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t145);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t144);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, -_t149 - _t148).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, -_t149 - _t148).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -44997,12 +47130,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t151_inv = 1.0f / (_t146 - _t147);
         float _t152_inv = 1.0f / (_t148 - _t149);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t150_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t150_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t151_inv);
         var _col2 = _sv0.withLane(2, -2.0f * _t152_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t145);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t144);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, -_t149 - _t148).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, -_t149 - _t148).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -45344,12 +47477,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t223_inv = 1.0f / (_t218 - _t219);
         float _t224_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179) - _t221);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t222_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t222_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t223_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t224_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t217);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t216);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).withLane(2, _t221).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv).withLane(2, _t224_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).withLane(2, _t221).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv).withLane(2, _t224_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -45447,12 +47580,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t223_inv = 1.0f / (_t218 - _t219);
         float _t224_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179) - _t221);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t222_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t222_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t223_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t224_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t217);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t216);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).withLane(2, _t221).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv).withLane(2, _t224_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).withLane(2, _t221).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv).withLane(2, _t224_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -45524,12 +47657,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t88_inv = 1.0f / (_t83 - _t84);
         float _t89_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44) - _t86);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t88_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t89_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, _t86).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, _t86).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -45590,12 +47723,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t88_inv = 1.0f / (_t83 - _t84);
         float _t89_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44) - _t86);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t88_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t89_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, _t86).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, _t86).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -45676,12 +47809,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t91_inv = 1.0f / (_t86 - _t87);
         float _t92_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47) - _t89);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t91_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t92_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, _t89).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, _t89).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -45751,12 +47884,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t91_inv = 1.0f / (_t86 - _t87);
         float _t92_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47) - _t89);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t91_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t92_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, _t89).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, _t89).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -45852,12 +47985,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t160_inv = 1.0f / (_t155 - _t156);
         float _t161_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t109, _t110), _t111), _t112), _t113), _t114), _t115), _t116) - _t158);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t159_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t159_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t160_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t161_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t154);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t153);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).withLane(2, _t158).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv).withLane(2, _t161_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).withLane(2, _t158).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv).withLane(2, _t161_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -45942,12 +48075,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t160_inv = 1.0f / (_t155 - _t156);
         float _t161_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t109, _t110), _t111), _t112), _t113), _t114), _t115), _t116) - _t158);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t159_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t159_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t160_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t161_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t154);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t153);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).withLane(2, _t158).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv).withLane(2, _t161_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).withLane(2, _t158).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv).withLane(2, _t161_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -45969,14 +48102,8 @@ public class Float4x4Impl implements Float4x4 {
         float _t7 = Math.min(Math.min(Math.min(Math.min(minZ, maxZ), maxZ), maxZ), maxZ);
         float _t8 = Math.max(Math.max(Math.max(Math.max(minZ, maxZ), maxZ), maxZ), maxZ) - _t7;
         float _t8_inv = 1.0f / _t8;
-        dd[0] = 1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 1.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 4);
         dd[8] = 0.0f;
         dd[9] = 0.0f;
         dd[10] = 1.0f * _t8_inv;
@@ -46019,12 +48146,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t41_inv = 1.0f / (_t36 - _t37);
         float _t42_inv = 1.0f / (_t38 - _t39);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t41_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t40_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, _t29).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, _t29).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -46052,12 +48179,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t41_inv = 1.0f / (_t36 - _t37);
         float _t42_inv = 1.0f / (_t38 - _t39);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t41_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t40_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, _t29).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, _t29).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -46096,12 +48223,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t41_inv = 1.0f / (_t36 - _t37);
         float _t42_inv = 1.0f / (_t38 - _t39);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t41_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t40_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, _t29).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, _t29).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -46129,12 +48256,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t41_inv = 1.0f / (_t36 - _t37);
         float _t42_inv = 1.0f / (_t38 - _t39);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t41_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t40_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, _t29).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, _t29).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -46173,12 +48300,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t47_inv = 1.0f / (_t42 - _t43);
         float _t48_inv = 1.0f / (_t44 - _t45);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t48_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t48_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t47_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t46_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t45);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t44);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, _t35).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, _t35).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -46206,12 +48333,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t47_inv = 1.0f / (_t42 - _t43);
         float _t48_inv = 1.0f / (_t44 - _t45);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t48_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t48_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t47_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t46_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t45);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t44);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, _t35).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, _t35).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -46283,12 +48410,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t88_inv = 1.0f / (_t83 - _t84);
         float _t89_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44) - _t86);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t88_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t89_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, _t86).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, _t86).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -46349,12 +48476,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t88_inv = 1.0f / (_t83 - _t84);
         float _t89_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44) - _t86);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t88_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t89_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, _t86).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, _t86).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -46429,12 +48556,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t91_inv = 1.0f / (_t86 - _t87);
         float _t92_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47) - _t89);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t91_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t92_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, _t89).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, _t89).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -46498,12 +48625,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t91_inv = 1.0f / (_t86 - _t87);
         float _t92_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47) - _t89);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t91_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t92_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, _t89).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, _t89).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -46588,12 +48715,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t127_inv = 1.0f / (_t122 - _t123);
         float _t128_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83) - _t125);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t126_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t126_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t127_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t128_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t121);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t120);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).withLane(2, _t125).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv).withLane(2, _t128_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).withLane(2, _t125).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv).withLane(2, _t128_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -46667,12 +48794,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t127_inv = 1.0f / (_t122 - _t123);
         float _t128_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83) - _t125);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t126_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t126_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t127_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t128_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t121);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t120);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).withLane(2, _t125).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv).withLane(2, _t128_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).withLane(2, _t125).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv).withLane(2, _t128_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -46757,12 +48884,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t151_inv = 1.0f / (_t146 - _t147);
         float _t152_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107) - _t149);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t150_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t150_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t151_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t152_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t145);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t144);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, _t149).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, _t149).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -46836,12 +48963,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t151_inv = 1.0f / (_t146 - _t147);
         float _t152_inv = 1.0f / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107) - _t149);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t150_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t150_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t151_inv);
         var _col2 = _sv0.withLane(2, 1.0f * _t152_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t145);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t144);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, _t149).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).mul(FloatVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, _t149).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -47143,12 +49270,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t223_inv = 1.0f / (_t218 - _t219);
         float _t224_inv = 1.0f / (_t220 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t222_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t222_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t223_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t224_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t217);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t216);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t220).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t224_inv))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t220).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t224_inv))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -47246,12 +49373,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t223_inv = 1.0f / (_t218 - _t219);
         float _t224_inv = 1.0f / (_t220 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t222_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t222_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t223_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t224_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t217);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t216);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t220).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t224_inv))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t220).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t224_inv))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -47323,12 +49450,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t88_inv = 1.0f / (_t83 - _t84);
         float _t89_inv = 1.0f / (_t85 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t88_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t89_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t85).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t85).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -47389,12 +49516,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t88_inv = 1.0f / (_t83 - _t84);
         float _t89_inv = 1.0f / (_t85 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t88_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t89_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t85).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t85).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -47475,12 +49602,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t91_inv = 1.0f / (_t86 - _t87);
         float _t92_inv = 1.0f / (_t88 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t91_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t92_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t88).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t88).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -47550,12 +49677,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t91_inv = 1.0f / (_t86 - _t87);
         float _t92_inv = 1.0f / (_t88 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t91_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t92_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t88).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t88).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -47651,12 +49778,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t160_inv = 1.0f / (_t155 - _t156);
         float _t161_inv = 1.0f / (_t157 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t109, _t110), _t111), _t112), _t113), _t114), _t115), _t116));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t159_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t159_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t160_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t161_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t154);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t153);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t157).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t161_inv))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t157).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t161_inv))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -47741,12 +49868,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t160_inv = 1.0f / (_t155 - _t156);
         float _t161_inv = 1.0f / (_t157 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t109, _t110), _t111), _t112), _t113), _t114), _t115), _t116));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t159_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t159_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t160_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t161_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t154);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t153);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t157).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t161_inv))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t157).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t161_inv))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -47768,14 +49895,8 @@ public class Float4x4Impl implements Float4x4 {
         float _t6 = Math.max(Math.max(Math.max(Math.max(minZ, maxZ), maxZ), maxZ), maxZ);
         float _t8 = _t6 - Math.min(Math.min(Math.min(Math.min(minZ, maxZ), maxZ), maxZ), maxZ);
         float _t8_inv = 1.0f / _t8;
-        dd[0] = 1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 1.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 4);
         dd[8] = 0.0f;
         dd[9] = 0.0f;
         dd[10] = -1.0f * _t8_inv;
@@ -47818,12 +49939,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t41_inv = 1.0f / (_t36 - _t37);
         float _t42_inv = 1.0f / (_t38 - _t39);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t41_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t40_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t28).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t28).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -47851,12 +49972,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t41_inv = 1.0f / (_t36 - _t37);
         float _t42_inv = 1.0f / (_t38 - _t39);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t41_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t40_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t28).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t28).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -47895,12 +50016,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t41_inv = 1.0f / (_t36 - _t37);
         float _t42_inv = 1.0f / (_t38 - _t39);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t41_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t40_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t28).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t28).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -47928,12 +50049,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t41_inv = 1.0f / (_t36 - _t37);
         float _t42_inv = 1.0f / (_t38 - _t39);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t41_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t40_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t28).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t28).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -47972,12 +50093,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t47_inv = 1.0f / (_t42 - _t43);
         float _t48_inv = 1.0f / (_t44 - _t45);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t48_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t48_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t47_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t46_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t45);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t44);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t34).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t46_inv))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t34).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t46_inv))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -48005,12 +50126,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t47_inv = 1.0f / (_t42 - _t43);
         float _t48_inv = 1.0f / (_t44 - _t45);
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t48_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t48_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t47_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t46_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t45);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t44);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t34).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t46_inv))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t34).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t46_inv))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -48082,12 +50203,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t88_inv = 1.0f / (_t83 - _t84);
         float _t89_inv = 1.0f / (_t85 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t88_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t89_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t85).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t85).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -48148,12 +50269,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t88_inv = 1.0f / (_t83 - _t84);
         float _t89_inv = 1.0f / (_t85 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t88_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t89_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t85).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t85).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -48228,12 +50349,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t91_inv = 1.0f / (_t86 - _t87);
         float _t92_inv = 1.0f / (_t88 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t91_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t92_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t88).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t88).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -48297,12 +50418,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t91_inv = 1.0f / (_t86 - _t87);
         float _t92_inv = 1.0f / (_t88 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t91_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t92_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t88).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t88).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -48387,12 +50508,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t127_inv = 1.0f / (_t122 - _t123);
         float _t128_inv = 1.0f / (_t124 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t126_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t126_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t127_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t128_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t121);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t120);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t124).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t128_inv))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t124).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t128_inv))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -48466,12 +50587,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t127_inv = 1.0f / (_t122 - _t123);
         float _t128_inv = 1.0f / (_t124 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t126_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t126_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t127_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t128_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t121);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t120);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t124).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t128_inv))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t124).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t128_inv))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -48556,12 +50677,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t151_inv = 1.0f / (_t146 - _t147);
         float _t152_inv = 1.0f / (_t148 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t150_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t150_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t151_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t152_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t145);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t144);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t148).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t152_inv))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t148).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t152_inv))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -48635,12 +50756,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t151_inv = 1.0f / (_t146 - _t147);
         float _t152_inv = 1.0f / (_t148 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107));
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t150_inv).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t150_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, 2.0f * _t151_inv);
         var _col2 = _sv0.withLane(2, -1.0f * _t152_inv);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, _t145);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, _t144);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t148).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t152_inv))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv)).neg(), MASK_76);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t148).mul(FloatVector.zero(COL_SPECIES).withLane(2, _t152_inv))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv)).neg(), MASK_84);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -50313,11 +52434,87 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code perspectiveFovRange} dispatcher.
      */
     private Float4x4 perspectiveFovRange_no_rh_identity(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
-        if (SimdMath.USE_FMA) return perspectiveFovRange_no_rh_identity_fma(angleMin, angleMax, aspect, near, far, dest);
-        return perspectiveFovRange_no_rh_identity_mulAdd(angleMin, angleMax, aspect, near, far, dest);
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
+        float _t2_inv = 1.0f / (near - far);
+        float _t3 = _t0 - _t1;
+        float _t3_inv = 1.0f / _t3;
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f / (aspect * _t3)).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t3_inv);
+        var _col2 = FloatVector.zero(COL_SPECIES).withLane(1, (_t0 + _t1) * _t3_inv).withLane(2, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t2_inv).withLane(3, -1.0f);
+        var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t2_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
     }
 
-    private Float4x4 perspectiveFovRange_no_rh_identity_fma(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
+
+    /**
+     * Private in-place self-form body of {@code perspectiveFovRange} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.RIGHT_HANDED}, specialized by
+     * runtime matrix properties; reached only through the public {@code perspectiveFovRange}
+     * dispatcher.
+     */
+    private Float4x4 perspectiveFovRange_no_rh_identity_self(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
+        return perspectiveFovRange_no_rh_identity(angleMin, angleMax, aspect, near, far, dest);
+    }
+
+
+    /**
+     * Private body of {@code perspectiveFovRange} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code perspectiveFovRange} dispatcher.
+     */
+    private Float4x4 perspectiveFovRange_no_rh_translation(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
+        float _t2_inv = 1.0f / (near - far);
+        float _t3 = _t0 - _t1;
+        float _t3_inv = 1.0f / _t3;
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f / (aspect * _t3)).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t3_inv);
+        var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, -sd[12]).withLane(1, (_t0 + _t1) * _t3_inv - sd[13]).withLane(2, (far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t2_inv) - sd[14]).withLane(3, -1.0f);
+        var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t2_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code perspectiveFovRange} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.RIGHT_HANDED}, specialized by
+     * runtime matrix properties; reached only through the public {@code perspectiveFovRange}
+     * dispatcher.
+     */
+    private Float4x4 perspectiveFovRange_no_rh_translation_self(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
+        return perspectiveFovRange_no_rh_translation(angleMin, angleMax, aspect, near, far, dest);
+    }
+
+
+    /**
+     * Private body of {@code perspectiveFovRange} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code perspectiveFovRange} dispatcher.
+     */
+    private Float4x4 perspectiveFovRange_no_rh_orthogonal(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return perspectiveFovRange_no_rh_orthogonal_fma(angleMin, angleMax, aspect, near, far, dest);
+        return perspectiveFovRange_no_rh_orthogonal_mulAdd(angleMin, angleMax, aspect, near, far, dest);
+    }
+
+    private Float4x4 perspectiveFovRange_no_rh_orthogonal_fma(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.tan(angleMax);
@@ -50341,7 +52538,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 perspectiveFovRange_no_rh_identity_mulAdd(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
+    private Float4x4 perspectiveFovRange_no_rh_orthogonal_mulAdd(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.tan(angleMax);
@@ -50372,7 +52569,7 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code perspectiveFovRange} dispatcher.
      */
     private Float4x4 perspectiveFovRange_no_rh_general(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
-        return perspectiveFovRange_no_rh_identity(angleMin, angleMax, aspect, near, far, dest);
+        return perspectiveFovRange_no_rh_orthogonal(angleMin, angleMax, aspect, near, far, dest);
     }
 
 
@@ -50383,7 +52580,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 perspectiveFovRange_no_rh(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveFovRange_no_rh_identity(angleMin, angleMax, aspect, near, far, dest);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return perspectiveFovRange_no_rh_identity(angleMin, angleMax, aspect, near, far, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return perspectiveFovRange_no_rh_translation(angleMin, angleMax, aspect, near, far, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveFovRange_no_rh_orthogonal(angleMin, angleMax, aspect, near, far, dest);
         return perspectiveFovRange_no_rh_general(angleMin, angleMax, aspect, near, far, dest);
     }
 
@@ -50396,7 +52595,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 perspectiveFovRange_no_rh(float angleMin, float angleMax, float aspect, float near, float far) {
         if (Joml.RETURN_NEW) return perspectiveFovRange_no_rh(angleMin, angleMax, aspect, near, far, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveFovRange_no_rh_identity(angleMin, angleMax, aspect, near, far, this);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return perspectiveFovRange_no_rh_identity_self(angleMin, angleMax, aspect, near, far, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return perspectiveFovRange_no_rh_translation_self(angleMin, angleMax, aspect, near, far, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveFovRange_no_rh_orthogonal(angleMin, angleMax, aspect, near, far, this);
         return perspectiveFovRange_no_rh_general(angleMin, angleMax, aspect, near, far, this);
     }
 
@@ -50655,11 +52856,85 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code perspectiveFovRange} dispatcher.
      */
     private Float4x4 perspectiveFovRange_zo_rh_identity(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
-        if (SimdMath.USE_FMA) return perspectiveFovRange_zo_rh_identity_fma(angleMin, angleMax, aspect, near, far, dest);
-        return perspectiveFovRange_zo_rh_identity_mulAdd(angleMin, angleMax, aspect, near, far, dest);
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
+        float _t2_inv = 1.0f / (near - far);
+        float _t3 = _t0 - _t1;
+        float _t3_inv = 1.0f / _t3;
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f / (aspect * _t3)).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t3_inv);
+        var _col2 = FloatVector.zero(COL_SPECIES).withLane(1, (_t0 + _t1) * _t3_inv).withLane(2, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t2_inv).withLane(3, -1.0f);
+        var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
     }
 
-    private Float4x4 perspectiveFovRange_zo_rh_identity_fma(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
+
+    /**
+     * Private in-place self-form body of {@code perspectiveFovRange} for
+     * {@code DepthRange.ZERO_TO_ONE}, {@code Handedness.RIGHT_HANDED}, specialized by runtime
+     * matrix properties; reached only through the public {@code perspectiveFovRange} dispatcher.
+     */
+    private Float4x4 perspectiveFovRange_zo_rh_identity_self(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
+        return perspectiveFovRange_zo_rh_identity(angleMin, angleMax, aspect, near, far, dest);
+    }
+
+
+    /**
+     * Private body of {@code perspectiveFovRange} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code perspectiveFovRange} dispatcher.
+     */
+    private Float4x4 perspectiveFovRange_zo_rh_translation(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
+        float _t2_inv = 1.0f / (near - far);
+        float _t3 = _t0 - _t1;
+        float _t3_inv = 1.0f / _t3;
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f / (aspect * _t3)).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t3_inv);
+        var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, -sd[12]).withLane(1, (_t0 + _t1) * _t3_inv - sd[13]).withLane(2, (far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t2_inv) - sd[14]).withLane(3, -1.0f);
+        var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code perspectiveFovRange} for
+     * {@code DepthRange.ZERO_TO_ONE}, {@code Handedness.RIGHT_HANDED}, specialized by runtime
+     * matrix properties; reached only through the public {@code perspectiveFovRange} dispatcher.
+     */
+    private Float4x4 perspectiveFovRange_zo_rh_translation_self(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
+        return perspectiveFovRange_zo_rh_translation(angleMin, angleMax, aspect, near, far, dest);
+    }
+
+
+    /**
+     * Private body of {@code perspectiveFovRange} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code perspectiveFovRange} dispatcher.
+     */
+    private Float4x4 perspectiveFovRange_zo_rh_orthogonal(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return perspectiveFovRange_zo_rh_orthogonal_fma(angleMin, angleMax, aspect, near, far, dest);
+        return perspectiveFovRange_zo_rh_orthogonal_mulAdd(angleMin, angleMax, aspect, near, far, dest);
+    }
+
+    private Float4x4 perspectiveFovRange_zo_rh_orthogonal_fma(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.tan(angleMax);
@@ -50683,7 +52958,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 perspectiveFovRange_zo_rh_identity_mulAdd(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
+    private Float4x4 perspectiveFovRange_zo_rh_orthogonal_mulAdd(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.tan(angleMax);
@@ -50714,7 +52989,7 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code perspectiveFovRange} dispatcher.
      */
     private Float4x4 perspectiveFovRange_zo_rh_general(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
-        return perspectiveFovRange_zo_rh_identity(angleMin, angleMax, aspect, near, far, dest);
+        return perspectiveFovRange_zo_rh_orthogonal(angleMin, angleMax, aspect, near, far, dest);
     }
 
 
@@ -50725,7 +53000,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 perspectiveFovRange_zo_rh(float angleMin, float angleMax, float aspect, float near, float far, @Mutated Float4x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveFovRange_zo_rh_identity(angleMin, angleMax, aspect, near, far, dest);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return perspectiveFovRange_zo_rh_identity(angleMin, angleMax, aspect, near, far, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return perspectiveFovRange_zo_rh_translation(angleMin, angleMax, aspect, near, far, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveFovRange_zo_rh_orthogonal(angleMin, angleMax, aspect, near, far, dest);
         return perspectiveFovRange_zo_rh_general(angleMin, angleMax, aspect, near, far, dest);
     }
 
@@ -50738,7 +53015,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 perspectiveFovRange_zo_rh(float angleMin, float angleMax, float aspect, float near, float far) {
         if (Joml.RETURN_NEW) return perspectiveFovRange_zo_rh(angleMin, angleMax, aspect, near, far, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveFovRange_zo_rh_identity(angleMin, angleMax, aspect, near, far, this);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return perspectiveFovRange_zo_rh_identity_self(angleMin, angleMax, aspect, near, far, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return perspectiveFovRange_zo_rh_translation_self(angleMin, angleMax, aspect, near, far, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveFovRange_zo_rh_orthogonal(angleMin, angleMax, aspect, near, far, this);
         return perspectiveFovRange_zo_rh_general(angleMin, angleMax, aspect, near, far, this);
     }
 
@@ -51900,11 +54179,91 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code perspectiveOffCenterFov} dispatcher.
      */
     private Float4x4 perspectiveOffCenterFov_no_lh_identity(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
-        if (SimdMath.USE_FMA) return perspectiveOffCenterFov_no_lh_identity_fma(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
-        return perspectiveOffCenterFov_no_lh_identity_mulAdd(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
+        float _t4_inv = 1.0f / (near - far);
+        float _t5_inv = 1.0f / (_t0 - _t1);
+        float _t6_inv = 1.0f / (_t2 - _t3);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t5_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t6_inv);
+        var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, -((_t1 + _t0) * _t5_inv)).withLane(1, -((_t3 + _t2) * _t6_inv)).withLane(2, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t4_inv)).withLane(3, 1.0f);
+        var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t4_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
     }
 
-    private Float4x4 perspectiveOffCenterFov_no_lh_identity_fma(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+
+    /**
+     * Private in-place self-form body of {@code perspectiveOffCenterFov} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.LEFT_HANDED}, specialized by
+     * runtime matrix properties; reached only through the public {@code perspectiveOffCenterFov}
+     * dispatcher.
+     */
+    private Float4x4 perspectiveOffCenterFov_no_lh_identity_self(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+        return perspectiveOffCenterFov_no_lh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+    }
+
+
+    /**
+     * Private body of {@code perspectiveOffCenterFov} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code perspectiveOffCenterFov} dispatcher.
+     */
+    private Float4x4 perspectiveOffCenterFov_no_lh_translation(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
+        float _t4_inv = 1.0f / (near - far);
+        float _t5_inv = 1.0f / (_t0 - _t1);
+        float _t6_inv = 1.0f / (_t2 - _t3);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t5_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t6_inv);
+        var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, sd[12] - (_t1 + _t0) * _t5_inv).withLane(1, sd[13] - (_t3 + _t2) * _t6_inv).withLane(2, sd[14] + (far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t4_inv))).withLane(3, 1.0f);
+        var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t4_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code perspectiveOffCenterFov} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.LEFT_HANDED}, specialized by
+     * runtime matrix properties; reached only through the public {@code perspectiveOffCenterFov}
+     * dispatcher.
+     */
+    private Float4x4 perspectiveOffCenterFov_no_lh_translation_self(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+        return perspectiveOffCenterFov_no_lh_translation(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+    }
+
+
+    /**
+     * Private body of {@code perspectiveOffCenterFov} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code perspectiveOffCenterFov} dispatcher.
+     */
+    private Float4x4 perspectiveOffCenterFov_no_lh_orthogonal(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return perspectiveOffCenterFov_no_lh_orthogonal_fma(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        return perspectiveOffCenterFov_no_lh_orthogonal_mulAdd(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+    }
+
+    private Float4x4 perspectiveOffCenterFov_no_lh_orthogonal_fma(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.tan(angleRight);
@@ -51932,7 +54291,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 perspectiveOffCenterFov_no_lh_identity_mulAdd(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+    private Float4x4 perspectiveOffCenterFov_no_lh_orthogonal_mulAdd(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.tan(angleRight);
@@ -51967,7 +54326,7 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code perspectiveOffCenterFov} dispatcher.
      */
     private Float4x4 perspectiveOffCenterFov_no_lh_general(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
-        return perspectiveOffCenterFov_no_lh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        return perspectiveOffCenterFov_no_lh_orthogonal(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
     }
 
 
@@ -51978,7 +54337,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 perspectiveOffCenterFov_no_lh(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveOffCenterFov_no_lh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return perspectiveOffCenterFov_no_lh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return perspectiveOffCenterFov_no_lh_translation(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveOffCenterFov_no_lh_orthogonal(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
         return perspectiveOffCenterFov_no_lh_general(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
     }
 
@@ -51991,7 +54352,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 perspectiveOffCenterFov_no_lh(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
         if (Joml.RETURN_NEW) return perspectiveOffCenterFov_no_lh(angleLeft, angleRight, angleDown, angleUp, near, far, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveOffCenterFov_no_lh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, this);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return perspectiveOffCenterFov_no_lh_identity_self(angleLeft, angleRight, angleDown, angleUp, near, far, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return perspectiveOffCenterFov_no_lh_translation_self(angleLeft, angleRight, angleDown, angleUp, near, far, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveOffCenterFov_no_lh_orthogonal(angleLeft, angleRight, angleDown, angleUp, near, far, this);
         return perspectiveOffCenterFov_no_lh_general(angleLeft, angleRight, angleDown, angleUp, near, far, this);
     }
 
@@ -52068,11 +54431,91 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code perspectiveOffCenterFov} dispatcher.
      */
     private Float4x4 perspectiveOffCenterFov_no_rh_identity(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
-        if (SimdMath.USE_FMA) return perspectiveOffCenterFov_no_rh_identity_fma(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
-        return perspectiveOffCenterFov_no_rh_identity_mulAdd(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
+        float _t4_inv = 1.0f / (near - far);
+        float _t5_inv = 1.0f / (_t0 - _t1);
+        float _t6_inv = 1.0f / (_t2 - _t3);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t5_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t6_inv);
+        var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, (_t1 + _t0) * _t5_inv).withLane(1, (_t3 + _t2) * _t6_inv).withLane(2, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t4_inv).withLane(3, -1.0f);
+        var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t4_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
     }
 
-    private Float4x4 perspectiveOffCenterFov_no_rh_identity_fma(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+
+    /**
+     * Private in-place self-form body of {@code perspectiveOffCenterFov} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.RIGHT_HANDED}, specialized by
+     * runtime matrix properties; reached only through the public {@code perspectiveOffCenterFov}
+     * dispatcher.
+     */
+    private Float4x4 perspectiveOffCenterFov_no_rh_identity_self(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+        return perspectiveOffCenterFov_no_rh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+    }
+
+
+    /**
+     * Private body of {@code perspectiveOffCenterFov} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code perspectiveOffCenterFov} dispatcher.
+     */
+    private Float4x4 perspectiveOffCenterFov_no_rh_translation(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
+        float _t4_inv = 1.0f / (near - far);
+        float _t5_inv = 1.0f / (_t0 - _t1);
+        float _t6_inv = 1.0f / (_t2 - _t3);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t5_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t6_inv);
+        var _col2 = FloatVector.broadcast(COL_SPECIES, _t1 + _t0).withLane(1, _t3 + _t2).mul(FloatVector.broadcast(COL_SPECIES, _t5_inv).withLane(1, _t6_inv)).withLane(2, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t4_inv).sub(FloatVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, -1.0f);
+        var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t4_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code perspectiveOffCenterFov} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.RIGHT_HANDED}, specialized by
+     * runtime matrix properties; reached only through the public {@code perspectiveOffCenterFov}
+     * dispatcher.
+     */
+    private Float4x4 perspectiveOffCenterFov_no_rh_translation_self(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+        return perspectiveOffCenterFov_no_rh_translation(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+    }
+
+
+    /**
+     * Private body of {@code perspectiveOffCenterFov} for {@code DepthRange.NEGATIVE_ONE_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code perspectiveOffCenterFov} dispatcher.
+     */
+    private Float4x4 perspectiveOffCenterFov_no_rh_orthogonal(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return perspectiveOffCenterFov_no_rh_orthogonal_fma(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        return perspectiveOffCenterFov_no_rh_orthogonal_mulAdd(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+    }
+
+    private Float4x4 perspectiveOffCenterFov_no_rh_orthogonal_fma(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.tan(angleRight);
@@ -52100,7 +54543,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 perspectiveOffCenterFov_no_rh_identity_mulAdd(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+    private Float4x4 perspectiveOffCenterFov_no_rh_orthogonal_mulAdd(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.tan(angleRight);
@@ -52135,7 +54578,7 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code perspectiveOffCenterFov} dispatcher.
      */
     private Float4x4 perspectiveOffCenterFov_no_rh_general(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
-        return perspectiveOffCenterFov_no_rh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        return perspectiveOffCenterFov_no_rh_orthogonal(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
     }
 
 
@@ -52146,7 +54589,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 perspectiveOffCenterFov_no_rh(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveOffCenterFov_no_rh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return perspectiveOffCenterFov_no_rh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return perspectiveOffCenterFov_no_rh_translation(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveOffCenterFov_no_rh_orthogonal(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
         return perspectiveOffCenterFov_no_rh_general(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
     }
 
@@ -52159,7 +54604,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 perspectiveOffCenterFov_no_rh(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
         if (Joml.RETURN_NEW) return perspectiveOffCenterFov_no_rh(angleLeft, angleRight, angleDown, angleUp, near, far, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveOffCenterFov_no_rh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, this);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return perspectiveOffCenterFov_no_rh_identity_self(angleLeft, angleRight, angleDown, angleUp, near, far, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return perspectiveOffCenterFov_no_rh_translation_self(angleLeft, angleRight, angleDown, angleUp, near, far, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveOffCenterFov_no_rh_orthogonal(angleLeft, angleRight, angleDown, angleUp, near, far, this);
         return perspectiveOffCenterFov_no_rh_general(angleLeft, angleRight, angleDown, angleUp, near, far, this);
     }
 
@@ -52272,11 +54719,89 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code perspectiveOffCenterFov} dispatcher.
      */
     private Float4x4 perspectiveOffCenterFov_zo_lh_identity(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
-        if (SimdMath.USE_FMA) return perspectiveOffCenterFov_zo_lh_identity_fma(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
-        return perspectiveOffCenterFov_zo_lh_identity_mulAdd(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
+        float _t4_inv = 1.0f / (near - far);
+        float _t5_inv = 1.0f / (_t0 - _t1);
+        float _t6_inv = 1.0f / (_t2 - _t3);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t5_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t6_inv);
+        var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, -((_t1 + _t0) * _t5_inv)).withLane(1, -((_t3 + _t2) * _t6_inv)).withLane(2, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t4_inv)).withLane(3, 1.0f);
+        var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
     }
 
-    private Float4x4 perspectiveOffCenterFov_zo_lh_identity_fma(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+
+    /**
+     * Private in-place self-form body of {@code perspectiveOffCenterFov} for
+     * {@code DepthRange.ZERO_TO_ONE}, {@code Handedness.LEFT_HANDED}, specialized by runtime matrix
+     * properties; reached only through the public {@code perspectiveOffCenterFov} dispatcher.
+     */
+    private Float4x4 perspectiveOffCenterFov_zo_lh_identity_self(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+        return perspectiveOffCenterFov_zo_lh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+    }
+
+
+    /**
+     * Private body of {@code perspectiveOffCenterFov} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code perspectiveOffCenterFov} dispatcher.
+     */
+    private Float4x4 perspectiveOffCenterFov_zo_lh_translation(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
+        float _t4_inv = 1.0f / (near - far);
+        float _t5_inv = 1.0f / (_t0 - _t1);
+        float _t6_inv = 1.0f / (_t2 - _t3);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t5_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t6_inv);
+        var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, sd[12] - (_t1 + _t0) * _t5_inv).withLane(1, sd[13] - (_t3 + _t2) * _t6_inv).withLane(2, sd[14] + (far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t4_inv))).withLane(3, 1.0f);
+        var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code perspectiveOffCenterFov} for
+     * {@code DepthRange.ZERO_TO_ONE}, {@code Handedness.LEFT_HANDED}, specialized by runtime matrix
+     * properties; reached only through the public {@code perspectiveOffCenterFov} dispatcher.
+     */
+    private Float4x4 perspectiveOffCenterFov_zo_lh_translation_self(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+        return perspectiveOffCenterFov_zo_lh_translation(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+    }
+
+
+    /**
+     * Private body of {@code perspectiveOffCenterFov} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code perspectiveOffCenterFov} dispatcher.
+     */
+    private Float4x4 perspectiveOffCenterFov_zo_lh_orthogonal(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return perspectiveOffCenterFov_zo_lh_orthogonal_fma(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        return perspectiveOffCenterFov_zo_lh_orthogonal_mulAdd(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+    }
+
+    private Float4x4 perspectiveOffCenterFov_zo_lh_orthogonal_fma(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.tan(angleRight);
@@ -52304,7 +54829,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 perspectiveOffCenterFov_zo_lh_identity_mulAdd(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+    private Float4x4 perspectiveOffCenterFov_zo_lh_orthogonal_mulAdd(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.tan(angleRight);
@@ -52339,7 +54864,7 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code perspectiveOffCenterFov} dispatcher.
      */
     private Float4x4 perspectiveOffCenterFov_zo_lh_general(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
-        return perspectiveOffCenterFov_zo_lh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        return perspectiveOffCenterFov_zo_lh_orthogonal(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
     }
 
 
@@ -52350,7 +54875,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 perspectiveOffCenterFov_zo_lh(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveOffCenterFov_zo_lh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return perspectiveOffCenterFov_zo_lh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return perspectiveOffCenterFov_zo_lh_translation(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveOffCenterFov_zo_lh_orthogonal(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
         return perspectiveOffCenterFov_zo_lh_general(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
     }
 
@@ -52363,7 +54890,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 perspectiveOffCenterFov_zo_lh(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
         if (Joml.RETURN_NEW) return perspectiveOffCenterFov_zo_lh(angleLeft, angleRight, angleDown, angleUp, near, far, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveOffCenterFov_zo_lh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, this);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return perspectiveOffCenterFov_zo_lh_identity_self(angleLeft, angleRight, angleDown, angleUp, near, far, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return perspectiveOffCenterFov_zo_lh_translation_self(angleLeft, angleRight, angleDown, angleUp, near, far, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveOffCenterFov_zo_lh_orthogonal(angleLeft, angleRight, angleDown, angleUp, near, far, this);
         return perspectiveOffCenterFov_zo_lh_general(angleLeft, angleRight, angleDown, angleUp, near, far, this);
     }
 
@@ -52440,11 +54969,91 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code perspectiveOffCenterFov} dispatcher.
      */
     private Float4x4 perspectiveOffCenterFov_zo_rh_identity(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
-        if (SimdMath.USE_FMA) return perspectiveOffCenterFov_zo_rh_identity_fma(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
-        return perspectiveOffCenterFov_zo_rh_identity_mulAdd(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
+        float _t4_inv = 1.0f / (near - far);
+        float _t5_inv = 1.0f / (_t0 - _t1);
+        float _t6_inv = 1.0f / (_t2 - _t3);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t5_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t6_inv);
+        var _col2 = FloatVector.zero(COL_SPECIES).withLane(0, (_t1 + _t0) * _t5_inv).withLane(1, (_t3 + _t2) * _t6_inv).withLane(2, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t4_inv).withLane(3, -1.0f);
+        var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
     }
 
-    private Float4x4 perspectiveOffCenterFov_zo_rh_identity_fma(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+
+    /**
+     * Private in-place self-form body of {@code perspectiveOffCenterFov} for
+     * {@code DepthRange.ZERO_TO_ONE}, {@code Handedness.RIGHT_HANDED}, specialized by runtime
+     * matrix properties; reached only through the public {@code perspectiveOffCenterFov}
+     * dispatcher.
+     */
+    private Float4x4 perspectiveOffCenterFov_zo_rh_identity_self(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+        return perspectiveOffCenterFov_zo_rh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+    }
+
+
+    /**
+     * Private body of {@code perspectiveOffCenterFov} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code perspectiveOffCenterFov} dispatcher.
+     */
+    private Float4x4 perspectiveOffCenterFov_zo_rh_translation(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
+        float _t4_inv = 1.0f / (near - far);
+        float _t5_inv = 1.0f / (_t0 - _t1);
+        float _t6_inv = 1.0f / (_t2 - _t3);
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 2.0f * _t5_inv).blend(_sv0, MASK_8);
+        var _col1 = _sv0.withLane(1, 2.0f * _t6_inv);
+        var _col2 = FloatVector.broadcast(COL_SPECIES, _t1 + _t0).withLane(1, _t3 + _t2).mul(FloatVector.broadcast(COL_SPECIES, _t5_inv).withLane(1, _t6_inv)).withLane(2, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t4_inv).sub(FloatVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, -1.0f);
+        var _col3 = _sv0.withLane(2, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code perspectiveOffCenterFov} for
+     * {@code DepthRange.ZERO_TO_ONE}, {@code Handedness.RIGHT_HANDED}, specialized by runtime
+     * matrix properties; reached only through the public {@code perspectiveOffCenterFov}
+     * dispatcher.
+     */
+    private Float4x4 perspectiveOffCenterFov_zo_rh_translation_self(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+        return perspectiveOffCenterFov_zo_rh_translation(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+    }
+
+
+    /**
+     * Private body of {@code perspectiveOffCenterFov} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code perspectiveOffCenterFov} dispatcher.
+     */
+    private Float4x4 perspectiveOffCenterFov_zo_rh_orthogonal(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return perspectiveOffCenterFov_zo_rh_orthogonal_fma(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        return perspectiveOffCenterFov_zo_rh_orthogonal_mulAdd(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+    }
+
+    private Float4x4 perspectiveOffCenterFov_zo_rh_orthogonal_fma(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.tan(angleRight);
@@ -52472,7 +55081,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 perspectiveOffCenterFov_zo_rh_identity_mulAdd(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
+    private Float4x4 perspectiveOffCenterFov_zo_rh_orthogonal_mulAdd(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.tan(angleRight);
@@ -52507,7 +55116,7 @@ public class Float4x4Impl implements Float4x4 {
      * through the public {@code perspectiveOffCenterFov} dispatcher.
      */
     private Float4x4 perspectiveOffCenterFov_zo_rh_general(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
-        return perspectiveOffCenterFov_zo_rh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        return perspectiveOffCenterFov_zo_rh_orthogonal(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
     }
 
 
@@ -52518,7 +55127,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 perspectiveOffCenterFov_zo_rh(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, @Mutated Float4x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveOffCenterFov_zo_rh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return perspectiveOffCenterFov_zo_rh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return perspectiveOffCenterFov_zo_rh_translation(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveOffCenterFov_zo_rh_orthogonal(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
         return perspectiveOffCenterFov_zo_rh_general(angleLeft, angleRight, angleDown, angleUp, near, far, dest);
     }
 
@@ -52531,7 +55142,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated private Float4x4 perspectiveOffCenterFov_zo_rh(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
         if (Joml.RETURN_NEW) return perspectiveOffCenterFov_zo_rh(angleLeft, angleRight, angleDown, angleUp, near, far, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveOffCenterFov_zo_rh_identity(angleLeft, angleRight, angleDown, angleUp, near, far, this);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return perspectiveOffCenterFov_zo_rh_identity_self(angleLeft, angleRight, angleDown, angleUp, near, far, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return perspectiveOffCenterFov_zo_rh_translation_self(angleLeft, angleRight, angleDown, angleUp, near, far, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return perspectiveOffCenterFov_zo_rh_orthogonal(angleLeft, angleRight, angleDown, angleUp, near, far, this);
         return perspectiveOffCenterFov_zo_rh_general(angleLeft, angleRight, angleDown, angleUp, near, far, this);
     }
 
@@ -53046,12 +55659,12 @@ public class Float4x4Impl implements Float4x4 {
      * Private body of {@code pickMatrix}, specialized by runtime matrix properties; reached only
      * through the public {@code pickMatrix} dispatcher.
      */
-    private Float4x4 pickMatrix_identity_general(float centerX, float centerY, float deltaX, float deltaY, float vpX, float vpY, float vpW, float vpH, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return pickMatrix_identity_general_fma(centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH, dest, _props);
-        return pickMatrix_identity_general_mulAdd(centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH, dest, _props);
+    private Float4x4 pickMatrix_orthogonal_general(float centerX, float centerY, float deltaX, float deltaY, float vpX, float vpY, float vpW, float vpH, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return pickMatrix_orthogonal_general_fma(centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH, dest, _props);
+        return pickMatrix_orthogonal_general_mulAdd(centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH, dest, _props);
     }
 
-    private Float4x4 pickMatrix_identity_general_fma(float centerX, float centerY, float deltaX, float deltaY, float vpX, float vpY, float vpW, float vpH, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 pickMatrix_orthogonal_general_fma(float centerX, float centerY, float deltaX, float deltaY, float vpX, float vpY, float vpW, float vpH, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _rcp0 = 1.0f / deltaX;
@@ -53072,7 +55685,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 pickMatrix_identity_general_mulAdd(float centerX, float centerY, float deltaX, float deltaY, float vpX, float vpY, float vpW, float vpH, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 pickMatrix_orthogonal_general_mulAdd(float centerX, float centerY, float deltaX, float deltaY, float vpX, float vpY, float vpW, float vpH, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _rcp0 = 1.0f / deltaX;
@@ -53090,6 +55703,91 @@ public class Float4x4Impl implements Float4x4 {
         _col2.intoArray(dd, 8);
         _col3.intoArray(dd, 12);
         ((Float4x4Impl) dest).properties = _props;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code pickMatrix}, specialized by runtime matrix properties; reached only
+     * through the public {@code pickMatrix} dispatcher.
+     */
+    private Float4x4 pickMatrix_identity(float centerX, float centerY, float deltaX, float deltaY, float vpX, float vpY, float vpW, float vpH, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _rcp0 = 1.0f / deltaX;
+        float _rcp1 = 1.0f / deltaY;
+        dd[0] = vpW * _rcp0;
+        VEC_24.intoArray(dd, 1);
+        dd[5] = vpH * _rcp1;
+        VEC_24.intoArray(dd, 6);
+        dd[10] = 1.0f;
+        dd[11] = 0.0f;
+        dd[12] = Math.fma(-2.0f, centerX - vpX, vpW) * _rcp0;
+        dd[13] = Math.fma(-2.0f, centerY - vpY, vpH) * _rcp1;
+        dd[14] = 0.0f;
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code pickMatrix}, specialized by runtime matrix
+     * properties; reached only through the public {@code pickMatrix} dispatcher.
+     */
+    private Float4x4 pickMatrix_identity_self(float centerX, float centerY, float deltaX, float deltaY, float vpX, float vpY, float vpW, float vpH, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _rcp0 = 1.0f / deltaX;
+        float _rcp1 = 1.0f / deltaY;
+        dd[0] = vpW * _rcp0;
+        dd[5] = vpH * _rcp1;
+        dd[12] = Math.fma(-2.0f, centerX - vpX, vpW) * _rcp0;
+        dd[13] = Math.fma(-2.0f, centerY - vpY, vpH) * _rcp1;
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code pickMatrix}, specialized by runtime matrix properties; reached only
+     * through the public {@code pickMatrix} dispatcher.
+     */
+    private Float4x4 pickMatrix_translation(float centerX, float centerY, float deltaX, float deltaY, float vpX, float vpY, float vpW, float vpH, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _rcp0 = 1.0f / deltaX;
+        float _rcp1 = 1.0f / deltaY;
+        dd[0] = vpW * _rcp0;
+        VEC_24.intoArray(dd, 1);
+        dd[5] = vpH * _rcp1;
+        VEC_24.intoArray(dd, 6);
+        dd[10] = 1.0f;
+        dd[11] = 0.0f;
+        dd[12] = sd[12] + Math.fma(-2.0f, centerX - vpX, vpW) * _rcp0;
+        dd[13] = sd[13] + Math.fma(-2.0f, centerY - vpY, vpH) * _rcp1;
+        dd[14] = sd[14];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code pickMatrix}, specialized by runtime matrix
+     * properties; reached only through the public {@code pickMatrix} dispatcher.
+     */
+    private Float4x4 pickMatrix_translation_self(float centerX, float centerY, float deltaX, float deltaY, float vpX, float vpY, float vpW, float vpH, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _rcp0 = 1.0f / deltaX;
+        float _rcp1 = 1.0f / deltaY;
+        dd[0] = vpW * _rcp0;
+        dd[5] = vpH * _rcp1;
+        dd[12] = sd[12] + Math.fma(-2.0f, centerX - vpX, vpW) * _rcp0;
+        dd[13] = sd[13] + Math.fma(-2.0f, centerY - vpY, vpH) * _rcp1;
+        dd[14] = sd[14];
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
 
@@ -53115,7 +55813,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     public Float4x4 pickMatrix(float centerX, float centerY, float deltaX, float deltaY, float vpX, float vpY, float vpW, float vpH, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return pickMatrix_identity_general(centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH, dest, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return pickMatrix_identity(centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return pickMatrix_translation(centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH, dest);
+        return pickMatrix_orthogonal_general(centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH, dest, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -53140,7 +55840,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated public Float4x4 pickMatrix(float centerX, float centerY, float deltaX, float deltaY, float vpX, float vpY, float vpW, float vpH) {
         if (Joml.RETURN_NEW) return pickMatrix(centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH, Joml.float4x4());
         int p = this.properties;
-        return pickMatrix_identity_general(centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH, this, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return pickMatrix_identity_self(centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return pickMatrix_translation_self(centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH, this);
+        return pickMatrix_orthogonal_general(centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH, this, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -53920,10 +56622,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = Math.fma(axisY, _t1, _t2 * _t4);
         dd[9] = Math.fma(_t2, _t5, -(axisX * _t1));
         dd[10] = Math.fma(_t2, axisZ * axisZ, _t0);
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -54390,10 +57089,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = 2.0f * Math.fma(qX, qZ, _t2);
         dd[9] = 2.0f * Math.fma(qY, qZ, -(qX * qW));
         dd[10] = Math.fma(-2.0f, Math.fma(qX, qX, qY * qY), 1.0f);
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -54747,10 +57443,7 @@ public class Float4x4Impl implements Float4x4 {
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        dd[0] = 1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 0.0f;
         dd[5] = _t0;
         dd[6] = _t1;
@@ -54758,10 +57451,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[8] = 0.0f;
         dd[9] = -_t1;
         dd[10] = _t0;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -54795,10 +57485,7 @@ public class Float4x4Impl implements Float4x4 {
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        dd[0] = 1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 0.0f;
         dd[5] = _t0;
         dd[6] = _t1;
@@ -55035,18 +57722,12 @@ public class Float4x4Impl implements Float4x4 {
         dd[0] = _t0;
         dd[1] = 0.0f;
         dd[2] = -_t1;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 1.0f;
-        dd[6] = 0.0f;
+        VEC_4.intoArray(dd, 3);
         dd[7] = 0.0f;
         dd[8] = _t1;
         dd[9] = 0.0f;
         dd[10] = _t0;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
-        dd[14] = 0.0f;
+        VEC_24.intoArray(dd, 11);
         dd[15] = 1.0f;
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -55083,10 +57764,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[0] = _t0;
         dd[1] = 0.0f;
         dd[2] = -_t1;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 1.0f;
-        dd[6] = 0.0f;
+        VEC_4.intoArray(dd, 3);
         dd[7] = 0.0f;
         dd[8] = _t1;
         dd[9] = 0.0f;
@@ -55323,14 +58001,8 @@ public class Float4x4Impl implements Float4x4 {
         dd[3] = 0.0f;
         dd[4] = -_t1;
         dd[5] = _t0;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = 1.0f;
-        dd[11] = 0.0f;
-        dd[12] = 0.0f;
-        dd[13] = 0.0f;
+        VEC_24.intoArray(dd, 6);
+        VEC_2.intoArray(dd, 10);
         dd[14] = 0.0f;
         dd[15] = 1.0f;
         ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
@@ -55371,10 +58043,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[3] = 0.0f;
         dd[4] = -_t1;
         dd[5] = _t0;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = 1.0f;
         dd[11] = 0.0f;
         float _buf0 = Math.fma(sd[12], _t0, -(sd[13] * _t1));
@@ -55587,7 +58256,7 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, vX).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, vX).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, vY);
         var _col2 = _sv0.withLane(2, vZ);
         var _col3 = FloatVector.zero(COL_SPECIES).withLane(3, 1.0f);
@@ -55622,7 +58291,7 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, vX).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, vX).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, vY);
         var _col2 = _sv0.withLane(2, vZ);
         var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).fma(VEC_0, FloatVector.fromArray(COL_SPECIES, sd, 12).mul(FloatVector.zero(COL_SPECIES).withLane(0, vX).withLane(1, vY).withLane(2, vZ)));
@@ -55638,7 +58307,7 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, vX).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, vX).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, vY);
         var _col2 = _sv0.withLane(2, vZ);
         var _col3 = FloatVector.broadcast(COL_SPECIES, 1.0f).mul(VEC_0).add(FloatVector.fromArray(COL_SPECIES, sd, 12).mul(FloatVector.zero(COL_SPECIES).withLane(0, vX).withLane(1, vY).withLane(2, vZ)));
@@ -55871,7 +58540,7 @@ public class Float4x4Impl implements Float4x4 {
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, s);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = _sv0.blend(_sv1, MASK_5);
+        var _col0 = _sv0.blend(_sv1, MASK_8);
         var _col1 = _sv1.withLane(1, s);
         var _col2 = _sv1.withLane(2, s);
         var _col3 = _sv0.mul(FloatVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0f);
@@ -56070,7 +58739,7 @@ public class Float4x4Impl implements Float4x4 {
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, s);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = _sv0.blend(_sv1, MASK_5);
+        var _col0 = _sv0.blend(_sv1, MASK_8);
         var _col1 = _sv1.withLane(1, s);
         var _col2 = _sv1.withLane(2, s);
         var _sv2 = FloatVector.zero(COL_SPECIES).withLane(0, pivotX).withLane(1, pivotY).withLane(2, pivotZ);
@@ -56088,7 +58757,7 @@ public class Float4x4Impl implements Float4x4 {
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, s);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = _sv0.blend(_sv1, MASK_5);
+        var _col0 = _sv0.blend(_sv1, MASK_8);
         var _col1 = _sv1.withLane(1, s);
         var _col2 = _sv1.withLane(2, s);
         var _sv2 = FloatVector.zero(COL_SPECIES).withLane(0, pivotX).withLane(1, pivotY).withLane(2, pivotZ);
@@ -56125,7 +58794,7 @@ public class Float4x4Impl implements Float4x4 {
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, s);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = _sv0.blend(_sv1, MASK_5);
+        var _col0 = _sv0.blend(_sv1, MASK_8);
         var _col1 = _sv1.withLane(1, s);
         var _col2 = _sv1.withLane(2, s);
         var _sv2 = FloatVector.zero(COL_SPECIES).withLane(0, pivotX).withLane(1, pivotY).withLane(2, pivotZ);
@@ -56143,7 +58812,7 @@ public class Float4x4Impl implements Float4x4 {
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, s);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = _sv0.blend(_sv1, MASK_5);
+        var _col0 = _sv0.blend(_sv1, MASK_8);
         var _col1 = _sv1.withLane(1, s);
         var _col2 = _sv1.withLane(2, s);
         var _sv2 = FloatVector.zero(COL_SPECIES).withLane(0, pivotX).withLane(1, pivotY).withLane(2, pivotZ);
@@ -56438,7 +59107,7 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, sX).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, sX).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, sY);
         var _col2 = _sv0.withLane(2, sZ);
         var _sv1 = FloatVector.zero(COL_SPECIES).withLane(0, pivotX).withLane(1, pivotY).withLane(2, pivotZ);
@@ -56455,7 +59124,7 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, sX).blend(_sv0, MASK_5);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, sX).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, sY);
         var _col2 = _sv0.withLane(2, sZ);
         var _sv1 = FloatVector.zero(COL_SPECIES).withLane(0, pivotX).withLane(1, pivotY).withLane(2, pivotZ);
@@ -56486,15 +59155,9 @@ public class Float4x4Impl implements Float4x4 {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         dd[0] = sX;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
+        VEC_24.intoArray(dd, 1);
         dd[5] = sY;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
+        VEC_24.intoArray(dd, 6);
         dd[10] = sZ;
         dd[11] = 0.0f;
         dd[12] = Math.fma(-pivotX, sX, Math.fma(sX, sd[12], pivotX));
@@ -56807,18 +59470,9 @@ public class Float4x4Impl implements Float4x4 {
     private Float4x4 preTranslate_identity(float vX, float vY, float vZ, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
-        dd[0] = 1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 1.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = 1.0f;
-        dd[11] = 0.0f;
+        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 4);
+        VEC_4.intoArray(dd, 8);
         dd[12] = vX;
         dd[13] = vY;
         dd[14] = vZ;
@@ -56850,18 +59504,9 @@ public class Float4x4Impl implements Float4x4 {
     private Float4x4 preTranslate_translation(float vX, float vY, float vZ, @Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
-        dd[0] = 1.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 1.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = 1.0f;
-        dd[11] = 0.0f;
+        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 4);
+        VEC_4.intoArray(dd, 8);
         dd[12] = sd[12] + vX;
         dd[13] = sd[13] + vY;
         dd[14] = sd[14] + vZ;
@@ -57477,12 +60122,12 @@ public class Float4x4Impl implements Float4x4 {
      * Private body of {@code reflect}, specialized by runtime matrix properties; reached only
      * through the public {@code reflect} dispatcher.
      */
-    private Float4x4 reflect_identity_general(float normalX, float normalY, float normalZ, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return reflect_identity_general_fma(normalX, normalY, normalZ, dest, _props);
-        return reflect_identity_general_mulAdd(normalX, normalY, normalZ, dest, _props);
+    private Float4x4 reflect_orthogonal_general(float normalX, float normalY, float normalZ, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return reflect_orthogonal_general_fma(normalX, normalY, normalZ, dest, _props);
+        return reflect_orthogonal_general_mulAdd(normalX, normalY, normalZ, dest, _props);
     }
 
-    private Float4x4 reflect_identity_general_fma(float normalX, float normalY, float normalZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 reflect_orthogonal_general_fma(float normalX, float normalY, float normalZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = -sd[8];
@@ -57508,7 +60153,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 reflect_identity_general_mulAdd(float normalX, float normalY, float normalZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 reflect_orthogonal_general_mulAdd(float normalX, float normalY, float normalZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = -sd[8];
@@ -57536,6 +60181,116 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
+     * Private body of {@code reflect}, specialized by runtime matrix properties; reached only
+     * through the public {@code reflect} dispatcher.
+     */
+    private Float4x4 reflect_identity(float normalX, float normalY, float normalZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t6 = -(2.0f * normalX * normalY);
+        float _t7 = -(2.0f * normalX * normalZ);
+        float _t8 = -(2.0f * normalY * normalZ);
+        dd[0] = Math.fma(-2.0f, normalX * normalX, 1.0f);
+        dd[1] = _t6;
+        dd[2] = _t7;
+        dd[3] = 0.0f;
+        dd[4] = _t6;
+        dd[5] = Math.fma(-2.0f, normalY * normalY, 1.0f);
+        dd[6] = _t8;
+        dd[7] = 0.0f;
+        dd[8] = _t7;
+        dd[9] = _t8;
+        dd[10] = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
+        VEC_24.intoArray(dd, 11);
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code reflect}, specialized by runtime matrix properties;
+     * reached only through the public {@code reflect} dispatcher.
+     */
+    private Float4x4 reflect_identity_self(float normalX, float normalY, float normalZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t6 = -(2.0f * normalX * normalY);
+        float _t7 = -(2.0f * normalX * normalZ);
+        float _t8 = -(2.0f * normalY * normalZ);
+        dd[0] = Math.fma(-2.0f, normalX * normalX, 1.0f);
+        dd[1] = _t6;
+        dd[2] = _t7;
+        dd[4] = _t6;
+        dd[5] = Math.fma(-2.0f, normalY * normalY, 1.0f);
+        dd[6] = _t8;
+        dd[8] = _t7;
+        dd[9] = _t8;
+        dd[10] = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code reflect}, specialized by runtime matrix properties; reached only
+     * through the public {@code reflect} dispatcher.
+     */
+    private Float4x4 reflect_translation(float normalX, float normalY, float normalZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t6 = -(2.0f * normalX * normalY);
+        float _t7 = -(2.0f * normalX * normalZ);
+        float _t8 = -(2.0f * normalY * normalZ);
+        dd[0] = Math.fma(-2.0f, normalX * normalX, 1.0f);
+        dd[1] = _t6;
+        dd[2] = _t7;
+        dd[3] = 0.0f;
+        dd[4] = _t6;
+        dd[5] = Math.fma(-2.0f, normalY * normalY, 1.0f);
+        dd[6] = _t8;
+        dd[7] = 0.0f;
+        dd[8] = _t7;
+        dd[9] = _t8;
+        dd[10] = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
+        dd[11] = 0.0f;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code reflect}, specialized by runtime matrix properties;
+     * reached only through the public {@code reflect} dispatcher.
+     */
+    private Float4x4 reflect_translation_self(float normalX, float normalY, float normalZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t6 = -(2.0f * normalX * normalY);
+        float _t7 = -(2.0f * normalX * normalZ);
+        float _t8 = -(2.0f * normalY * normalZ);
+        dd[0] = Math.fma(-2.0f, normalX * normalX, 1.0f);
+        dd[1] = _t6;
+        dd[2] = _t7;
+        dd[4] = _t6;
+        dd[5] = Math.fma(-2.0f, normalY * normalY, 1.0f);
+        dd[6] = _t8;
+        dd[8] = _t7;
+        dd[9] = _t8;
+        dd[10] = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
      * Apply a reflection about the plane through the origin with the normal ({@code normalX},
      * {@code normalY}, {@code normalZ}) to this matrix and store the result in {@code dest}.
      * <p>
@@ -57554,7 +60309,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     public Float4x4 reflect(float normalX, float normalY, float normalZ, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return reflect_identity_general(normalX, normalY, normalZ, dest, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return reflect_identity(normalX, normalY, normalZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return reflect_translation(normalX, normalY, normalZ, dest);
+        return reflect_orthogonal_general(normalX, normalY, normalZ, dest, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -57577,7 +60334,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated public Float4x4 reflect(float normalX, float normalY, float normalZ) {
         if (Joml.RETURN_NEW) return reflect(normalX, normalY, normalZ, Joml.float4x4());
         int p = this.properties;
-        return reflect_identity_general(normalX, normalY, normalZ, this, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return reflect_identity_self(normalX, normalY, normalZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return reflect_translation_self(normalX, normalY, normalZ, this);
+        return reflect_orthogonal_general(normalX, normalY, normalZ, this, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -57714,12 +60473,12 @@ public class Float4x4Impl implements Float4x4 {
      * Private body of {@code rotateAround}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateAround} dispatcher.
      */
-    private Float4x4 rotateAround_identity_affine_general(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return rotateAround_identity_affine_general_fma(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, dest, _props);
-        return rotateAround_identity_affine_general_mulAdd(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, dest, _props);
+    private Float4x4 rotateAround_orthogonal_affine_general(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return rotateAround_orthogonal_affine_general_fma(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, dest, _props);
+        return rotateAround_orthogonal_affine_general_mulAdd(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, dest, _props);
     }
 
-    private Float4x4 rotateAround_identity_affine_general_fma(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 rotateAround_orthogonal_affine_general_fma(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = -pivotZ;
@@ -57750,7 +60509,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 rotateAround_identity_affine_general_mulAdd(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 rotateAround_orthogonal_affine_general_mulAdd(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = -pivotZ;
@@ -57778,6 +60537,106 @@ public class Float4x4Impl implements Float4x4 {
         _col2.intoArray(dd, 8);
         _col3.intoArray(dd, 12);
         ((Float4x4Impl) dest).properties = _props;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code rotateAround}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateAround} dispatcher.
+     */
+    private Float4x4 rotateAround_identity(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest) {
+        return preRotateAround_identity(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, dest);
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateAround} dispatcher.
+     */
+    private Float4x4 rotateAround_identity_self(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest) {
+        return preRotateAround_identity_self(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, dest);
+    }
+
+
+    /**
+     * Private body of {@code rotateAround}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateAround} dispatcher.
+     */
+    private Float4x4 rotateAround_translation(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = -pivotY;
+        float _t1 = -pivotZ;
+        float _t2 = -pivotX;
+        float _t3 = rotZ * rotZ;
+        float _t4 = rotZ * rotW;
+        float _t5 = rotY * rotW;
+        float _t12 = Math.fma(rotY, rotY, _t3);
+        float _t15 = Math.fma(rotX, rotX, _t3);
+        float _t17 = Math.fma(rotX, rotX, rotY * rotY);
+        float _t21 = 2.0f * Math.fma(rotX, rotZ, _t5);
+        float _t22 = 2.0f * Math.fma(rotX, rotY, _t4);
+        float _t23 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
+        float _t24 = 2.0f * Math.fma(rotX, rotY, -_t4);
+        float _t25 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
+        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t5);
+        dd[0] = Math.fma(-2.0f, _t12, 1.0f);
+        dd[1] = _t22;
+        dd[2] = _t26;
+        dd[3] = 0.0f;
+        dd[4] = _t24;
+        dd[5] = Math.fma(-2.0f, _t15, 1.0f);
+        dd[6] = _t23;
+        dd[7] = 0.0f;
+        dd[8] = _t21;
+        dd[9] = _t25;
+        dd[10] = Math.fma(-2.0f, _t17, 1.0f);
+        dd[11] = 0.0f;
+        dd[12] = Math.fma(pivotX, 2.0f * _t12, Math.fma(_t0, _t24, Math.fma(_t1, _t21, sd[12])));
+        dd[13] = Math.fma(pivotY, 2.0f * _t15, Math.fma(_t2, _t22, Math.fma(_t1, _t25, sd[13])));
+        dd[14] = Math.fma(pivotZ, 2.0f * _t17, Math.fma(_t2, _t26, Math.fma(_t0, _t23, sd[14])));
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateAround} dispatcher.
+     */
+    private Float4x4 rotateAround_translation_self(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = -pivotY;
+        float _t1 = -pivotZ;
+        float _t2 = -pivotX;
+        float _t3 = rotZ * rotZ;
+        float _t4 = rotZ * rotW;
+        float _t5 = rotY * rotW;
+        float _t12 = Math.fma(rotY, rotY, _t3);
+        float _t15 = Math.fma(rotX, rotX, _t3);
+        float _t17 = Math.fma(rotX, rotX, rotY * rotY);
+        float _t21 = 2.0f * Math.fma(rotX, rotZ, _t5);
+        float _t22 = 2.0f * Math.fma(rotX, rotY, _t4);
+        float _t23 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
+        float _t24 = 2.0f * Math.fma(rotX, rotY, -_t4);
+        float _t25 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
+        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t5);
+        dd[0] = Math.fma(-2.0f, _t12, 1.0f);
+        dd[1] = _t22;
+        dd[2] = _t26;
+        dd[4] = _t24;
+        dd[5] = Math.fma(-2.0f, _t15, 1.0f);
+        dd[6] = _t23;
+        dd[8] = _t21;
+        dd[9] = _t25;
+        dd[10] = Math.fma(-2.0f, _t17, 1.0f);
+        dd[12] = Math.fma(pivotX, 2.0f * _t12, Math.fma(_t0, _t24, Math.fma(_t1, _t21, sd[12])));
+        dd[13] = Math.fma(pivotY, 2.0f * _t15, Math.fma(_t2, _t22, Math.fma(_t1, _t25, sd[13])));
+        dd[14] = Math.fma(pivotZ, 2.0f * _t17, Math.fma(_t2, _t26, Math.fma(_t0, _t23, sd[14])));
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
 
@@ -57811,7 +60670,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     public Float4x4 rotateAround(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return rotateAround_identity_affine_general(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateAround_identity(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateAround_translation(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, dest);
+        return rotateAround_orthogonal_affine_general(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -57843,8 +60704,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated public Float4x4 rotateAround(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
         if (Joml.RETURN_NEW) return rotateAround(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateAround_identity_affine_general(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
-        return rotateAround_identity_affine_general(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateAround_identity_self(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateAround_translation_self(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, this);
+        return rotateAround_orthogonal_affine_general(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -57992,12 +60854,12 @@ public class Float4x4Impl implements Float4x4 {
      * Private body of {@code rotateAxis}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateAxis} dispatcher.
      */
-    private Float4x4 rotateAxis_identity_affine_general(float angle, float axisX, float axisY, float axisZ, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return rotateAxis_identity_affine_general_fma(angle, axisX, axisY, axisZ, dest, _props);
-        return rotateAxis_identity_affine_general_mulAdd(angle, axisX, axisY, axisZ, dest, _props);
+    private Float4x4 rotateAxis_orthogonal_affine_general(float angle, float axisX, float axisY, float axisZ, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return rotateAxis_orthogonal_affine_general_fma(angle, axisX, axisY, axisZ, dest, _props);
+        return rotateAxis_orthogonal_affine_general_mulAdd(angle, axisX, axisY, axisZ, dest, _props);
     }
 
-    private Float4x4 rotateAxis_identity_affine_general_fma(float angle, float axisX, float axisY, float axisZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 rotateAxis_orthogonal_affine_general_fma(float angle, float axisX, float axisY, float axisZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.cos(angle);
@@ -58021,7 +60883,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 rotateAxis_identity_affine_general_mulAdd(float angle, float axisX, float axisY, float axisZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 rotateAxis_orthogonal_affine_general_mulAdd(float angle, float axisX, float axisY, float axisZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.cos(angle);
@@ -58042,6 +60904,88 @@ public class Float4x4Impl implements Float4x4 {
         _col2.intoArray(dd, 8);
         _col3.intoArray(dd, 12);
         ((Float4x4Impl) dest).properties = _props;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code rotateAxis}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateAxis} dispatcher.
+     */
+    private Float4x4 rotateAxis_identity(float angle, float axisX, float axisY, float axisZ, @Mutated Float4x4 dest) {
+        return preRotateAxis_identity(angle, axisX, axisY, axisZ, dest);
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateAxis}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateAxis} dispatcher.
+     */
+    private Float4x4 rotateAxis_identity_self(float angle, float axisX, float axisY, float axisZ, @Mutated Float4x4 dest) {
+        return preRotateAxis_identity_self(angle, axisX, axisY, axisZ, dest);
+    }
+
+
+    /**
+     * Private body of {@code rotateAxis}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateAxis} dispatcher.
+     */
+    private Float4x4 rotateAxis_translation(float angle, float axisX, float axisY, float axisZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angle);
+        float _t1 = (float) Math.sin(angle);
+        float _t2 = 1.0f - _t0;
+        float _t3 = axisX * axisY;
+        float _t4 = axisX * axisZ;
+        float _t5 = axisY * axisZ;
+        dd[0] = Math.fma(_t2, axisX * axisX, _t0);
+        dd[1] = Math.fma(axisZ, _t1, _t2 * _t3);
+        dd[2] = Math.fma(_t2, _t4, -(axisY * _t1));
+        dd[3] = 0.0f;
+        dd[4] = Math.fma(_t2, _t3, -(axisZ * _t1));
+        dd[5] = Math.fma(_t2, axisY * axisY, _t0);
+        dd[6] = Math.fma(axisX, _t1, _t2 * _t5);
+        dd[7] = 0.0f;
+        dd[8] = Math.fma(axisY, _t1, _t2 * _t4);
+        dd[9] = Math.fma(_t2, _t5, -(axisX * _t1));
+        dd[10] = Math.fma(_t2, axisZ * axisZ, _t0);
+        dd[11] = 0.0f;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateAxis}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateAxis} dispatcher.
+     */
+    private Float4x4 rotateAxis_translation_self(float angle, float axisX, float axisY, float axisZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angle);
+        float _t1 = (float) Math.sin(angle);
+        float _t2 = 1.0f - _t0;
+        float _t3 = axisX * axisY;
+        float _t4 = axisX * axisZ;
+        float _t5 = axisY * axisZ;
+        dd[0] = Math.fma(_t2, axisX * axisX, _t0);
+        dd[1] = Math.fma(axisZ, _t1, _t2 * _t3);
+        dd[2] = Math.fma(_t2, _t4, -(axisY * _t1));
+        dd[4] = Math.fma(_t2, _t3, -(axisZ * _t1));
+        dd[5] = Math.fma(_t2, axisY * axisY, _t0);
+        dd[6] = Math.fma(axisX, _t1, _t2 * _t5);
+        dd[8] = Math.fma(axisY, _t1, _t2 * _t4);
+        dd[9] = Math.fma(_t2, _t5, -(axisX * _t1));
+        dd[10] = Math.fma(_t2, axisZ * axisZ, _t0);
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
 
@@ -58069,7 +61013,9 @@ public class Float4x4Impl implements Float4x4 {
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         int p = this.properties;
-        return rotateAxis_identity_affine_general(angle, axisX, axisY, axisZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateAxis_identity(angle, axisX, axisY, axisZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateAxis_translation(angle, axisX, axisY, axisZ, dest);
+        return rotateAxis_orthogonal_affine_general(angle, axisX, axisY, axisZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -58096,8 +61042,9 @@ public class Float4x4Impl implements Float4x4 {
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle);
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateAxis_identity_affine_general(angle, axisX, axisY, axisZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
-        return rotateAxis_identity_affine_general(angle, axisX, axisY, axisZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateAxis_identity_self(angle, axisX, axisY, axisZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateAxis_translation_self(angle, axisX, axisY, axisZ, this);
+        return rotateAxis_orthogonal_affine_general(angle, axisX, axisY, axisZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -58228,12 +61175,12 @@ public class Float4x4Impl implements Float4x4 {
      * Private body of {@code rotateQuat}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateQuat} dispatcher.
      */
-    private Float4x4 rotateQuat_identity_affine_general(float qX, float qY, float qZ, float qW, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return rotateQuat_identity_affine_general_fma(qX, qY, qZ, qW, dest, _props);
-        return rotateQuat_identity_affine_general_mulAdd(qX, qY, qZ, qW, dest, _props);
+    private Float4x4 rotateQuat_orthogonal_affine_general(float qX, float qY, float qZ, float qW, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return rotateQuat_orthogonal_affine_general_fma(qX, qY, qZ, qW, dest, _props);
+        return rotateQuat_orthogonal_affine_general_mulAdd(qX, qY, qZ, qW, dest, _props);
     }
 
-    private Float4x4 rotateQuat_identity_affine_general_fma(float qX, float qY, float qZ, float qW, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 rotateQuat_orthogonal_affine_general_fma(float qX, float qY, float qZ, float qW, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = qY * qW;
@@ -58254,7 +61201,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 rotateQuat_identity_affine_general_mulAdd(float qX, float qY, float qZ, float qW, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 rotateQuat_orthogonal_affine_general_mulAdd(float qX, float qY, float qZ, float qW, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = qY * qW;
@@ -58272,6 +61219,82 @@ public class Float4x4Impl implements Float4x4 {
         _col2.intoArray(dd, 8);
         _col3.intoArray(dd, 12);
         ((Float4x4Impl) dest).properties = _props;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code rotateQuat}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateQuat} dispatcher.
+     */
+    private Float4x4 rotateQuat_identity(float qX, float qY, float qZ, float qW, @Mutated Float4x4 dest) {
+        return preRotateQuat_identity(qX, qY, qZ, qW, dest);
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateQuat}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateQuat} dispatcher.
+     */
+    private Float4x4 rotateQuat_identity_self(float qX, float qY, float qZ, float qW, @Mutated Float4x4 dest) {
+        return preRotateQuat_identity_self(qX, qY, qZ, qW, dest);
+    }
+
+
+    /**
+     * Private body of {@code rotateQuat}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateQuat} dispatcher.
+     */
+    private Float4x4 rotateQuat_translation(float qX, float qY, float qZ, float qW, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = qZ * qZ;
+        float _t1 = qZ * qW;
+        float _t2 = qY * qW;
+        dd[0] = Math.fma(-2.0f, Math.fma(qY, qY, _t0), 1.0f);
+        dd[1] = 2.0f * Math.fma(qX, qY, _t1);
+        dd[2] = 2.0f * Math.fma(qX, qZ, -_t2);
+        dd[3] = 0.0f;
+        dd[4] = 2.0f * Math.fma(qX, qY, -_t1);
+        dd[5] = Math.fma(-2.0f, Math.fma(qX, qX, _t0), 1.0f);
+        dd[6] = 2.0f * Math.fma(qX, qW, qY * qZ);
+        dd[7] = 0.0f;
+        dd[8] = 2.0f * Math.fma(qX, qZ, _t2);
+        dd[9] = 2.0f * Math.fma(qY, qZ, -(qX * qW));
+        dd[10] = Math.fma(-2.0f, Math.fma(qX, qX, qY * qY), 1.0f);
+        dd[11] = 0.0f;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateQuat}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateQuat} dispatcher.
+     */
+    private Float4x4 rotateQuat_translation_self(float qX, float qY, float qZ, float qW, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = qZ * qZ;
+        float _t1 = qZ * qW;
+        float _t2 = qY * qW;
+        dd[0] = Math.fma(-2.0f, Math.fma(qY, qY, _t0), 1.0f);
+        dd[1] = 2.0f * Math.fma(qX, qY, _t1);
+        dd[2] = 2.0f * Math.fma(qX, qZ, -_t2);
+        dd[4] = 2.0f * Math.fma(qX, qY, -_t1);
+        dd[5] = Math.fma(-2.0f, Math.fma(qX, qX, _t0), 1.0f);
+        dd[6] = 2.0f * Math.fma(qX, qW, qY * qZ);
+        dd[8] = 2.0f * Math.fma(qX, qZ, _t2);
+        dd[9] = 2.0f * Math.fma(qY, qZ, -(qX * qW));
+        dd[10] = Math.fma(-2.0f, Math.fma(qX, qX, qY * qY), 1.0f);
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
 
@@ -58297,7 +61320,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     public Float4x4 rotateQuat(float qX, float qY, float qZ, float qW, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return rotateQuat_identity_affine_general(qX, qY, qZ, qW, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateQuat_identity(qX, qY, qZ, qW, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateQuat_translation(qX, qY, qZ, qW, dest);
+        return rotateQuat_orthogonal_affine_general(qX, qY, qZ, qW, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -58322,8 +61347,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated public Float4x4 rotateQuat(float qX, float qY, float qZ, float qW) {
         if (Joml.RETURN_NEW) return rotateQuat(qX, qY, qZ, qW, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateQuat_identity_affine_general(qX, qY, qZ, qW, this, (p & Joml.BIT_ORTHOGONAL) | 0);
-        return rotateQuat_identity_affine_general(qX, qY, qZ, qW, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateQuat_identity_self(qX, qY, qZ, qW, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateQuat_translation_self(qX, qY, qZ, qW, this);
+        return rotateQuat_orthogonal_affine_general(qX, qY, qZ, qW, this, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -58675,12 +61701,12 @@ public class Float4x4Impl implements Float4x4 {
      * Private body of {@code rotateXYZ}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateXYZ} dispatcher.
      */
-    private Float4x4 rotateXYZ_identity_affine_general(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return rotateXYZ_identity_affine_general_fma(angleX, angleY, angleZ, dest, _props);
-        return rotateXYZ_identity_affine_general_mulAdd(angleX, angleY, angleZ, dest, _props);
+    private Float4x4 rotateXYZ_orthogonal_affine_general(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return rotateXYZ_orthogonal_affine_general_fma(angleX, angleY, angleZ, dest, _props);
+        return rotateXYZ_orthogonal_affine_general_mulAdd(angleX, angleY, angleZ, dest, _props);
     }
 
-    private Float4x4 rotateXYZ_identity_affine_general_fma(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 rotateXYZ_orthogonal_affine_general_fma(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleX);
@@ -58706,7 +61732,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 rotateXYZ_identity_affine_general_mulAdd(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 rotateXYZ_orthogonal_affine_general_mulAdd(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleX);
@@ -58734,6 +61760,136 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
+     * Private body of {@code rotateXYZ}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateXYZ} dispatcher.
+     */
+    private Float4x4 rotateXYZ_identity(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleZ);
+        float _t3 = (float) Math.sin(angleY);
+        float _t4 = (float) Math.sin(angleX);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t4 * _t3;
+        float _t7 = _t3 * _t5;
+        dd[0] = _t0 * _t1;
+        dd[1] = Math.fma(_t6, _t1, _t2 * _t5);
+        dd[2] = Math.fma(_t4, _t2, -(_t7 * _t1));
+        dd[3] = 0.0f;
+        dd[4] = -(_t2 * _t0);
+        dd[5] = Math.fma(_t5, _t1, -(_t6 * _t2));
+        dd[6] = Math.fma(_t7, _t2, _t4 * _t1);
+        dd[7] = 0.0f;
+        dd[8] = _t3;
+        dd[9] = -(_t4 * _t0);
+        dd[10] = _t5 * _t0;
+        VEC_24.intoArray(dd, 11);
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateXYZ}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateXYZ} dispatcher.
+     */
+    private Float4x4 rotateXYZ_identity_self(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleZ);
+        float _t3 = (float) Math.sin(angleY);
+        float _t4 = (float) Math.sin(angleX);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t4 * _t3;
+        float _t7 = _t3 * _t5;
+        dd[0] = _t0 * _t1;
+        dd[1] = Math.fma(_t6, _t1, _t2 * _t5);
+        dd[2] = Math.fma(_t4, _t2, -(_t7 * _t1));
+        dd[4] = -(_t2 * _t0);
+        dd[5] = Math.fma(_t5, _t1, -(_t6 * _t2));
+        dd[6] = Math.fma(_t7, _t2, _t4 * _t1);
+        dd[8] = _t3;
+        dd[9] = -(_t4 * _t0);
+        dd[10] = _t5 * _t0;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code rotateXYZ}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateXYZ} dispatcher.
+     */
+    private Float4x4 rotateXYZ_translation(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleZ);
+        float _t3 = (float) Math.sin(angleY);
+        float _t4 = (float) Math.sin(angleX);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t4 * _t3;
+        float _t7 = _t3 * _t5;
+        dd[0] = _t0 * _t1;
+        dd[1] = Math.fma(_t6, _t1, _t2 * _t5);
+        dd[2] = Math.fma(_t4, _t2, -(_t7 * _t1));
+        dd[3] = 0.0f;
+        dd[4] = -(_t2 * _t0);
+        dd[5] = Math.fma(_t5, _t1, -(_t6 * _t2));
+        dd[6] = Math.fma(_t7, _t2, _t4 * _t1);
+        dd[7] = 0.0f;
+        dd[8] = _t3;
+        dd[9] = -(_t4 * _t0);
+        dd[10] = _t5 * _t0;
+        dd[11] = 0.0f;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateXYZ}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateXYZ} dispatcher.
+     */
+    private Float4x4 rotateXYZ_translation_self(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleZ);
+        float _t3 = (float) Math.sin(angleY);
+        float _t4 = (float) Math.sin(angleX);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t4 * _t3;
+        float _t7 = _t3 * _t5;
+        dd[0] = _t0 * _t1;
+        dd[1] = Math.fma(_t6, _t1, _t2 * _t5);
+        dd[2] = Math.fma(_t4, _t2, -(_t7 * _t1));
+        dd[4] = -(_t2 * _t0);
+        dd[5] = Math.fma(_t5, _t1, -(_t6 * _t2));
+        dd[6] = Math.fma(_t7, _t2, _t4 * _t1);
+        dd[8] = _t3;
+        dd[9] = -(_t4 * _t0);
+        dd[10] = _t5 * _t0;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
      * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
      * about the Z axis first, then Y, then X), to this matrix and store the result in {@code dest}.
@@ -58750,7 +61906,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     public Float4x4 rotateXYZ(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return rotateXYZ_identity_affine_general(angleX, angleY, angleZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXYZ_identity(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXYZ_translation(angleX, angleY, angleZ, dest);
+        return rotateXYZ_orthogonal_affine_general(angleX, angleY, angleZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -58771,8 +61929,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated public Float4x4 rotateXYZ(float angleX, float angleY, float angleZ) {
         if (Joml.RETURN_NEW) return rotateXYZ(angleX, angleY, angleZ, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateXYZ_identity_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
-        return rotateXYZ_identity_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXYZ_identity_self(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXYZ_translation_self(angleX, angleY, angleZ, this);
+        return rotateXYZ_orthogonal_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -58846,12 +62005,12 @@ public class Float4x4Impl implements Float4x4 {
      * Private body of {@code rotateXZY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateXZY} dispatcher.
      */
-    private Float4x4 rotateXZY_identity_affine_general(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return rotateXZY_identity_affine_general_fma(angleX, angleY, angleZ, dest, _props);
-        return rotateXZY_identity_affine_general_mulAdd(angleX, angleY, angleZ, dest, _props);
+    private Float4x4 rotateXZY_orthogonal_affine_general(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return rotateXZY_orthogonal_affine_general_fma(angleX, angleY, angleZ, dest, _props);
+        return rotateXZY_orthogonal_affine_general_mulAdd(angleX, angleY, angleZ, dest, _props);
     }
 
-    private Float4x4 rotateXZY_identity_affine_general_fma(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 rotateXZY_orthogonal_affine_general_fma(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleX);
@@ -58877,7 +62036,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 rotateXZY_identity_affine_general_mulAdd(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 rotateXZY_orthogonal_affine_general_mulAdd(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleX);
@@ -58905,6 +62064,136 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
+     * Private body of {@code rotateXZY}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateXZY} dispatcher.
+     */
+    private Float4x4 rotateXZY_identity(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleZ);
+        float _t3 = (float) Math.sin(angleY);
+        float _t4 = (float) Math.cos(angleX);
+        float _t5 = (float) Math.sin(angleX);
+        float _t6 = _t2 * _t4;
+        float _t7 = _t5 * _t2;
+        dd[0] = _t0 * _t1;
+        dd[1] = Math.fma(_t6, _t0, _t5 * _t3);
+        dd[2] = Math.fma(_t7, _t0, -(_t3 * _t4));
+        dd[3] = 0.0f;
+        dd[4] = -_t2;
+        dd[5] = _t4 * _t1;
+        dd[6] = _t5 * _t1;
+        dd[7] = 0.0f;
+        dd[8] = _t3 * _t1;
+        dd[9] = Math.fma(_t6, _t3, -(_t5 * _t0));
+        dd[10] = Math.fma(_t7, _t3, _t4 * _t0);
+        VEC_24.intoArray(dd, 11);
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateXZY}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateXZY} dispatcher.
+     */
+    private Float4x4 rotateXZY_identity_self(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleZ);
+        float _t3 = (float) Math.sin(angleY);
+        float _t4 = (float) Math.cos(angleX);
+        float _t5 = (float) Math.sin(angleX);
+        float _t6 = _t2 * _t4;
+        float _t7 = _t5 * _t2;
+        dd[0] = _t0 * _t1;
+        dd[1] = Math.fma(_t6, _t0, _t5 * _t3);
+        dd[2] = Math.fma(_t7, _t0, -(_t3 * _t4));
+        dd[4] = -_t2;
+        dd[5] = _t4 * _t1;
+        dd[6] = _t5 * _t1;
+        dd[8] = _t3 * _t1;
+        dd[9] = Math.fma(_t6, _t3, -(_t5 * _t0));
+        dd[10] = Math.fma(_t7, _t3, _t4 * _t0);
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code rotateXZY}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateXZY} dispatcher.
+     */
+    private Float4x4 rotateXZY_translation(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleZ);
+        float _t3 = (float) Math.sin(angleY);
+        float _t4 = (float) Math.cos(angleX);
+        float _t5 = (float) Math.sin(angleX);
+        float _t6 = _t2 * _t4;
+        float _t7 = _t5 * _t2;
+        dd[0] = _t0 * _t1;
+        dd[1] = Math.fma(_t6, _t0, _t5 * _t3);
+        dd[2] = Math.fma(_t7, _t0, -(_t3 * _t4));
+        dd[3] = 0.0f;
+        dd[4] = -_t2;
+        dd[5] = _t4 * _t1;
+        dd[6] = _t5 * _t1;
+        dd[7] = 0.0f;
+        dd[8] = _t3 * _t1;
+        dd[9] = Math.fma(_t6, _t3, -(_t5 * _t0));
+        dd[10] = Math.fma(_t7, _t3, _t4 * _t0);
+        dd[11] = 0.0f;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateXZY}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateXZY} dispatcher.
+     */
+    private Float4x4 rotateXZY_translation_self(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleZ);
+        float _t3 = (float) Math.sin(angleY);
+        float _t4 = (float) Math.cos(angleX);
+        float _t5 = (float) Math.sin(angleX);
+        float _t6 = _t2 * _t4;
+        float _t7 = _t5 * _t2;
+        dd[0] = _t0 * _t1;
+        dd[1] = Math.fma(_t6, _t0, _t5 * _t3);
+        dd[2] = Math.fma(_t7, _t0, -(_t3 * _t4));
+        dd[4] = -_t2;
+        dd[5] = _t4 * _t1;
+        dd[6] = _t5 * _t1;
+        dd[8] = _t3 * _t1;
+        dd[9] = Math.fma(_t6, _t3, -(_t5 * _t0));
+        dd[10] = Math.fma(_t7, _t3, _t4 * _t0);
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
      * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
      * about the Y axis first, then Z, then X), to this matrix and store the result in {@code dest}.
@@ -58921,7 +62210,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     public Float4x4 rotateXZY(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return rotateXZY_identity_affine_general(angleX, angleY, angleZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXZY_identity(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXZY_translation(angleX, angleY, angleZ, dest);
+        return rotateXZY_orthogonal_affine_general(angleX, angleY, angleZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -58942,8 +62233,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated public Float4x4 rotateXZY(float angleX, float angleY, float angleZ) {
         if (Joml.RETURN_NEW) return rotateXZY(angleX, angleY, angleZ, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateXZY_identity_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
-        return rotateXZY_identity_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXZY_identity_self(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXZY_translation_self(angleX, angleY, angleZ, this);
+        return rotateXZY_orthogonal_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -59442,12 +62734,12 @@ public class Float4x4Impl implements Float4x4 {
      * Private body of {@code rotateYXZ}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYXZ} dispatcher.
      */
-    private Float4x4 rotateYXZ_identity_affine_general(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return rotateYXZ_identity_affine_general_fma(angleX, angleY, angleZ, dest, _props);
-        return rotateYXZ_identity_affine_general_mulAdd(angleX, angleY, angleZ, dest, _props);
+    private Float4x4 rotateYXZ_orthogonal_affine_general(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return rotateYXZ_orthogonal_affine_general_fma(angleX, angleY, angleZ, dest, _props);
+        return rotateYXZ_orthogonal_affine_general_mulAdd(angleX, angleY, angleZ, dest, _props);
     }
 
-    private Float4x4 rotateYXZ_identity_affine_general_fma(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 rotateYXZ_orthogonal_affine_general_fma(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleX);
@@ -59473,7 +62765,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 rotateYXZ_identity_affine_general_mulAdd(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 rotateYXZ_orthogonal_affine_general_mulAdd(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleX);
@@ -59501,6 +62793,136 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
+     * Private body of {@code rotateYXZ}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateYXZ} dispatcher.
+     */
+    private Float4x4 rotateYXZ_identity(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleY);
+        float _t2 = (float) Math.sin(angleZ);
+        float _t3 = (float) Math.cos(angleY);
+        float _t4 = (float) Math.cos(angleZ);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t0 * _t1;
+        float _t7 = _t0 * _t3;
+        dd[0] = Math.fma(_t6, _t2, _t3 * _t4);
+        dd[1] = _t2 * _t5;
+        dd[2] = Math.fma(_t7, _t2, -(_t1 * _t4));
+        dd[3] = 0.0f;
+        dd[4] = Math.fma(_t6, _t4, -(_t2 * _t3));
+        dd[5] = _t5 * _t4;
+        dd[6] = Math.fma(_t7, _t4, _t1 * _t2);
+        dd[7] = 0.0f;
+        dd[8] = _t1 * _t5;
+        dd[9] = -_t0;
+        dd[10] = _t5 * _t3;
+        VEC_24.intoArray(dd, 11);
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateYXZ}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateYXZ} dispatcher.
+     */
+    private Float4x4 rotateYXZ_identity_self(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleY);
+        float _t2 = (float) Math.sin(angleZ);
+        float _t3 = (float) Math.cos(angleY);
+        float _t4 = (float) Math.cos(angleZ);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t0 * _t1;
+        float _t7 = _t0 * _t3;
+        dd[0] = Math.fma(_t6, _t2, _t3 * _t4);
+        dd[1] = _t2 * _t5;
+        dd[2] = Math.fma(_t7, _t2, -(_t1 * _t4));
+        dd[4] = Math.fma(_t6, _t4, -(_t2 * _t3));
+        dd[5] = _t5 * _t4;
+        dd[6] = Math.fma(_t7, _t4, _t1 * _t2);
+        dd[8] = _t1 * _t5;
+        dd[9] = -_t0;
+        dd[10] = _t5 * _t3;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code rotateYXZ}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateYXZ} dispatcher.
+     */
+    private Float4x4 rotateYXZ_translation(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleY);
+        float _t2 = (float) Math.sin(angleZ);
+        float _t3 = (float) Math.cos(angleY);
+        float _t4 = (float) Math.cos(angleZ);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t0 * _t1;
+        float _t7 = _t0 * _t3;
+        dd[0] = Math.fma(_t6, _t2, _t3 * _t4);
+        dd[1] = _t2 * _t5;
+        dd[2] = Math.fma(_t7, _t2, -(_t1 * _t4));
+        dd[3] = 0.0f;
+        dd[4] = Math.fma(_t6, _t4, -(_t2 * _t3));
+        dd[5] = _t5 * _t4;
+        dd[6] = Math.fma(_t7, _t4, _t1 * _t2);
+        dd[7] = 0.0f;
+        dd[8] = _t1 * _t5;
+        dd[9] = -_t0;
+        dd[10] = _t5 * _t3;
+        dd[11] = 0.0f;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateYXZ}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateYXZ} dispatcher.
+     */
+    private Float4x4 rotateYXZ_translation_self(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleY);
+        float _t2 = (float) Math.sin(angleZ);
+        float _t3 = (float) Math.cos(angleY);
+        float _t4 = (float) Math.cos(angleZ);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t0 * _t1;
+        float _t7 = _t0 * _t3;
+        dd[0] = Math.fma(_t6, _t2, _t3 * _t4);
+        dd[1] = _t2 * _t5;
+        dd[2] = Math.fma(_t7, _t2, -(_t1 * _t4));
+        dd[4] = Math.fma(_t6, _t4, -(_t2 * _t3));
+        dd[5] = _t5 * _t4;
+        dd[6] = Math.fma(_t7, _t4, _t1 * _t2);
+        dd[8] = _t1 * _t5;
+        dd[9] = -_t0;
+        dd[10] = _t5 * _t3;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
      * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
      * about the Z axis first, then X, then Y), to this matrix and store the result in {@code dest}.
@@ -59517,7 +62939,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     public Float4x4 rotateYXZ(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return rotateYXZ_identity_affine_general(angleX, angleY, angleZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYXZ_identity(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYXZ_translation(angleX, angleY, angleZ, dest);
+        return rotateYXZ_orthogonal_affine_general(angleX, angleY, angleZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -59538,8 +62962,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated public Float4x4 rotateYXZ(float angleX, float angleY, float angleZ) {
         if (Joml.RETURN_NEW) return rotateYXZ(angleX, angleY, angleZ, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateYXZ_identity_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
-        return rotateYXZ_identity_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYXZ_identity_self(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYXZ_translation_self(angleX, angleY, angleZ, this);
+        return rotateYXZ_orthogonal_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -59613,12 +63038,12 @@ public class Float4x4Impl implements Float4x4 {
      * Private body of {@code rotateYZX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYZX} dispatcher.
      */
-    private Float4x4 rotateYZX_identity_affine_general(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return rotateYZX_identity_affine_general_fma(angleX, angleY, angleZ, dest, _props);
-        return rotateYZX_identity_affine_general_mulAdd(angleX, angleY, angleZ, dest, _props);
+    private Float4x4 rotateYZX_orthogonal_affine_general(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return rotateYZX_orthogonal_affine_general_fma(angleX, angleY, angleZ, dest, _props);
+        return rotateYZX_orthogonal_affine_general_mulAdd(angleX, angleY, angleZ, dest, _props);
     }
 
-    private Float4x4 rotateYZX_identity_affine_general_fma(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 rotateYZX_orthogonal_affine_general_fma(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -59644,7 +63069,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 rotateYZX_identity_affine_general_mulAdd(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 rotateYZX_orthogonal_affine_general_mulAdd(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -59672,6 +63097,136 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
+     * Private body of {@code rotateYZX}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateYZX} dispatcher.
+     */
+    private Float4x4 rotateYZX_identity(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.sin(angleY);
+        float _t4 = (float) Math.sin(angleZ);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t4 * _t0;
+        float _t7 = _t3 * _t4;
+        dd[0] = _t0 * _t1;
+        dd[1] = _t4;
+        dd[2] = -(_t3 * _t1);
+        dd[3] = 0.0f;
+        dd[4] = Math.fma(_t2, _t3, -(_t6 * _t5));
+        dd[5] = _t5 * _t1;
+        dd[6] = Math.fma(_t7, _t5, _t2 * _t0);
+        dd[7] = 0.0f;
+        dd[8] = Math.fma(_t6, _t2, _t3 * _t5);
+        dd[9] = -(_t2 * _t1);
+        dd[10] = Math.fma(_t5, _t0, -(_t7 * _t2));
+        VEC_24.intoArray(dd, 11);
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateYZX}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateYZX} dispatcher.
+     */
+    private Float4x4 rotateYZX_identity_self(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.sin(angleY);
+        float _t4 = (float) Math.sin(angleZ);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t4 * _t0;
+        float _t7 = _t3 * _t4;
+        dd[0] = _t0 * _t1;
+        dd[1] = _t4;
+        dd[2] = -(_t3 * _t1);
+        dd[4] = Math.fma(_t2, _t3, -(_t6 * _t5));
+        dd[5] = _t5 * _t1;
+        dd[6] = Math.fma(_t7, _t5, _t2 * _t0);
+        dd[8] = Math.fma(_t6, _t2, _t3 * _t5);
+        dd[9] = -(_t2 * _t1);
+        dd[10] = Math.fma(_t5, _t0, -(_t7 * _t2));
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code rotateYZX}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateYZX} dispatcher.
+     */
+    private Float4x4 rotateYZX_translation(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.sin(angleY);
+        float _t4 = (float) Math.sin(angleZ);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t4 * _t0;
+        float _t7 = _t3 * _t4;
+        dd[0] = _t0 * _t1;
+        dd[1] = _t4;
+        dd[2] = -(_t3 * _t1);
+        dd[3] = 0.0f;
+        dd[4] = Math.fma(_t2, _t3, -(_t6 * _t5));
+        dd[5] = _t5 * _t1;
+        dd[6] = Math.fma(_t7, _t5, _t2 * _t0);
+        dd[7] = 0.0f;
+        dd[8] = Math.fma(_t6, _t2, _t3 * _t5);
+        dd[9] = -(_t2 * _t1);
+        dd[10] = Math.fma(_t5, _t0, -(_t7 * _t2));
+        dd[11] = 0.0f;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateYZX}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateYZX} dispatcher.
+     */
+    private Float4x4 rotateYZX_translation_self(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.sin(angleY);
+        float _t4 = (float) Math.sin(angleZ);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t4 * _t0;
+        float _t7 = _t3 * _t4;
+        dd[0] = _t0 * _t1;
+        dd[1] = _t4;
+        dd[2] = -(_t3 * _t1);
+        dd[4] = Math.fma(_t2, _t3, -(_t6 * _t5));
+        dd[5] = _t5 * _t1;
+        dd[6] = Math.fma(_t7, _t5, _t2 * _t0);
+        dd[8] = Math.fma(_t6, _t2, _t3 * _t5);
+        dd[9] = -(_t2 * _t1);
+        dd[10] = Math.fma(_t5, _t0, -(_t7 * _t2));
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
      * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
      * about the X axis first, then Z, then Y), to this matrix and store the result in {@code dest}.
@@ -59688,7 +63243,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     public Float4x4 rotateYZX(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return rotateYZX_identity_affine_general(angleX, angleY, angleZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYZX_identity(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYZX_translation(angleX, angleY, angleZ, dest);
+        return rotateYZX_orthogonal_affine_general(angleX, angleY, angleZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -59709,8 +63266,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated public Float4x4 rotateYZX(float angleX, float angleY, float angleZ) {
         if (Joml.RETURN_NEW) return rotateYZX(angleX, angleY, angleZ, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateYZX_identity_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
-        return rotateYZX_identity_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYZX_identity_self(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYZX_translation_self(angleX, angleY, angleZ, this);
+        return rotateYZX_orthogonal_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -60209,12 +63767,12 @@ public class Float4x4Impl implements Float4x4 {
      * Private body of {@code rotateZXY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZXY} dispatcher.
      */
-    private Float4x4 rotateZXY_identity_affine_general(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return rotateZXY_identity_affine_general_fma(angleX, angleY, angleZ, dest, _props);
-        return rotateZXY_identity_affine_general_mulAdd(angleX, angleY, angleZ, dest, _props);
+    private Float4x4 rotateZXY_orthogonal_affine_general(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return rotateZXY_orthogonal_affine_general_fma(angleX, angleY, angleZ, dest, _props);
+        return rotateZXY_orthogonal_affine_general_mulAdd(angleX, angleY, angleZ, dest, _props);
     }
 
-    private Float4x4 rotateZXY_identity_affine_general_fma(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 rotateZXY_orthogonal_affine_general_fma(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -60240,7 +63798,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 rotateZXY_identity_affine_general_mulAdd(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 rotateZXY_orthogonal_affine_general_mulAdd(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -60268,6 +63826,136 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
+     * Private body of {@code rotateZXY}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZXY} dispatcher.
+     */
+    private Float4x4 rotateZXY_identity(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.sin(angleZ);
+        float _t4 = (float) Math.sin(angleY);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t2 * _t3;
+        float _t7 = _t2 * _t1;
+        dd[0] = Math.fma(_t0, _t1, -(_t6 * _t4));
+        dd[1] = Math.fma(_t7, _t4, _t3 * _t0);
+        dd[2] = -(_t4 * _t5);
+        dd[3] = 0.0f;
+        dd[4] = -(_t3 * _t5);
+        dd[5] = _t5 * _t1;
+        dd[6] = _t2;
+        dd[7] = 0.0f;
+        dd[8] = Math.fma(_t6, _t0, _t4 * _t1);
+        dd[9] = Math.fma(_t4, _t3, -(_t7 * _t0));
+        dd[10] = _t5 * _t0;
+        VEC_24.intoArray(dd, 11);
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateZXY}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateZXY} dispatcher.
+     */
+    private Float4x4 rotateZXY_identity_self(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.sin(angleZ);
+        float _t4 = (float) Math.sin(angleY);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t2 * _t3;
+        float _t7 = _t2 * _t1;
+        dd[0] = Math.fma(_t0, _t1, -(_t6 * _t4));
+        dd[1] = Math.fma(_t7, _t4, _t3 * _t0);
+        dd[2] = -(_t4 * _t5);
+        dd[4] = -(_t3 * _t5);
+        dd[5] = _t5 * _t1;
+        dd[6] = _t2;
+        dd[8] = Math.fma(_t6, _t0, _t4 * _t1);
+        dd[9] = Math.fma(_t4, _t3, -(_t7 * _t0));
+        dd[10] = _t5 * _t0;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code rotateZXY}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZXY} dispatcher.
+     */
+    private Float4x4 rotateZXY_translation(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.sin(angleZ);
+        float _t4 = (float) Math.sin(angleY);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t2 * _t3;
+        float _t7 = _t2 * _t1;
+        dd[0] = Math.fma(_t0, _t1, -(_t6 * _t4));
+        dd[1] = Math.fma(_t7, _t4, _t3 * _t0);
+        dd[2] = -(_t4 * _t5);
+        dd[3] = 0.0f;
+        dd[4] = -(_t3 * _t5);
+        dd[5] = _t5 * _t1;
+        dd[6] = _t2;
+        dd[7] = 0.0f;
+        dd[8] = Math.fma(_t6, _t0, _t4 * _t1);
+        dd[9] = Math.fma(_t4, _t3, -(_t7 * _t0));
+        dd[10] = _t5 * _t0;
+        dd[11] = 0.0f;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateZXY}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateZXY} dispatcher.
+     */
+    private Float4x4 rotateZXY_translation_self(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.sin(angleZ);
+        float _t4 = (float) Math.sin(angleY);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t2 * _t3;
+        float _t7 = _t2 * _t1;
+        dd[0] = Math.fma(_t0, _t1, -(_t6 * _t4));
+        dd[1] = Math.fma(_t7, _t4, _t3 * _t0);
+        dd[2] = -(_t4 * _t5);
+        dd[4] = -(_t3 * _t5);
+        dd[5] = _t5 * _t1;
+        dd[6] = _t2;
+        dd[8] = Math.fma(_t6, _t0, _t4 * _t1);
+        dd[9] = Math.fma(_t4, _t3, -(_t7 * _t0));
+        dd[10] = _t5 * _t0;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
      * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
      * about the Y axis first, then X, then Z), to this matrix and store the result in {@code dest}.
@@ -60284,7 +63972,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     public Float4x4 rotateZXY(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return rotateZXY_identity_affine_general(angleX, angleY, angleZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZXY_identity(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZXY_translation(angleX, angleY, angleZ, dest);
+        return rotateZXY_orthogonal_affine_general(angleX, angleY, angleZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -60305,8 +63995,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated public Float4x4 rotateZXY(float angleX, float angleY, float angleZ) {
         if (Joml.RETURN_NEW) return rotateZXY(angleX, angleY, angleZ, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZXY_identity_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
-        return rotateZXY_identity_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZXY_identity_self(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZXY_translation_self(angleX, angleY, angleZ, this);
+        return rotateZXY_orthogonal_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -60380,12 +64071,12 @@ public class Float4x4Impl implements Float4x4 {
      * Private body of {@code rotateZYX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZYX} dispatcher.
      */
-    private Float4x4 rotateZYX_identity_affine_general(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return rotateZYX_identity_affine_general_fma(angleX, angleY, angleZ, dest, _props);
-        return rotateZYX_identity_affine_general_mulAdd(angleX, angleY, angleZ, dest, _props);
+    private Float4x4 rotateZYX_orthogonal_affine_general(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return rotateZYX_orthogonal_affine_general_fma(angleX, angleY, angleZ, dest, _props);
+        return rotateZYX_orthogonal_affine_general_mulAdd(angleX, angleY, angleZ, dest, _props);
     }
 
-    private Float4x4 rotateZYX_identity_affine_general_fma(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 rotateZYX_orthogonal_affine_general_fma(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -60411,7 +64102,7 @@ public class Float4x4Impl implements Float4x4 {
         return dest;
     }
 
-    private Float4x4 rotateZYX_identity_affine_general_mulAdd(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
+    private Float4x4 rotateZYX_orthogonal_affine_general_mulAdd(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -60439,6 +64130,136 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
+     * Private body of {@code rotateZYX}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZYX} dispatcher.
+     */
+    private Float4x4 rotateZYX_identity(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleY);
+        float _t3 = (float) Math.sin(angleX);
+        float _t4 = (float) Math.sin(angleZ);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t2 * _t1;
+        float _t7 = _t2 * _t4;
+        dd[0] = _t0 * _t1;
+        dd[1] = _t4 * _t0;
+        dd[2] = -_t2;
+        dd[3] = 0.0f;
+        dd[4] = Math.fma(_t6, _t3, -(_t4 * _t5));
+        dd[5] = Math.fma(_t7, _t3, _t5 * _t1);
+        dd[6] = _t3 * _t0;
+        dd[7] = 0.0f;
+        dd[8] = Math.fma(_t6, _t5, _t3 * _t4);
+        dd[9] = Math.fma(_t7, _t5, -(_t3 * _t1));
+        dd[10] = _t5 * _t0;
+        VEC_24.intoArray(dd, 11);
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateZYX}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateZYX} dispatcher.
+     */
+    private Float4x4 rotateZYX_identity_self(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleY);
+        float _t3 = (float) Math.sin(angleX);
+        float _t4 = (float) Math.sin(angleZ);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t2 * _t1;
+        float _t7 = _t2 * _t4;
+        dd[0] = _t0 * _t1;
+        dd[1] = _t4 * _t0;
+        dd[2] = -_t2;
+        dd[4] = Math.fma(_t6, _t3, -(_t4 * _t5));
+        dd[5] = Math.fma(_t7, _t3, _t5 * _t1);
+        dd[6] = _t3 * _t0;
+        dd[8] = Math.fma(_t6, _t5, _t3 * _t4);
+        dd[9] = Math.fma(_t7, _t5, -(_t3 * _t1));
+        dd[10] = _t5 * _t0;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code rotateZYX}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZYX} dispatcher.
+     */
+    private Float4x4 rotateZYX_translation(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleY);
+        float _t3 = (float) Math.sin(angleX);
+        float _t4 = (float) Math.sin(angleZ);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t2 * _t1;
+        float _t7 = _t2 * _t4;
+        dd[0] = _t0 * _t1;
+        dd[1] = _t4 * _t0;
+        dd[2] = -_t2;
+        dd[3] = 0.0f;
+        dd[4] = Math.fma(_t6, _t3, -(_t4 * _t5));
+        dd[5] = Math.fma(_t7, _t3, _t5 * _t1);
+        dd[6] = _t3 * _t0;
+        dd[7] = 0.0f;
+        dd[8] = Math.fma(_t6, _t5, _t3 * _t4);
+        dd[9] = Math.fma(_t7, _t5, -(_t3 * _t1));
+        dd[10] = _t5 * _t0;
+        dd[11] = 0.0f;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        dd[15] = 1.0f;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateZYX}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateZYX} dispatcher.
+     */
+    private Float4x4 rotateZYX_translation_self(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        float _t0 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleY);
+        float _t3 = (float) Math.sin(angleX);
+        float _t4 = (float) Math.sin(angleZ);
+        float _t5 = (float) Math.cos(angleX);
+        float _t6 = _t2 * _t1;
+        float _t7 = _t2 * _t4;
+        dd[0] = _t0 * _t1;
+        dd[1] = _t4 * _t0;
+        dd[2] = -_t2;
+        dd[4] = Math.fma(_t6, _t3, -(_t4 * _t5));
+        dd[5] = Math.fma(_t7, _t3, _t5 * _t1);
+        dd[6] = _t3 * _t0;
+        dd[8] = Math.fma(_t6, _t5, _t3 * _t4);
+        dd[9] = Math.fma(_t7, _t5, -(_t3 * _t1));
+        dd[10] = _t5 * _t0;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
      * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
      * about the X axis first, then Y, then Z), to this matrix and store the result in {@code dest}.
@@ -60455,7 +64276,9 @@ public class Float4x4Impl implements Float4x4 {
      */
     public Float4x4 rotateZYX(float angleX, float angleY, float angleZ, @Mutated Float4x4 dest) {
         int p = this.properties;
-        return rotateZYX_identity_affine_general(angleX, angleY, angleZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZYX_identity(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZYX_translation(angleX, angleY, angleZ, dest);
+        return rotateZYX_orthogonal_affine_general(angleX, angleY, angleZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -60476,8 +64299,9 @@ public class Float4x4Impl implements Float4x4 {
     @Mutated public Float4x4 rotateZYX(float angleX, float angleY, float angleZ) {
         if (Joml.RETURN_NEW) return rotateZYX(angleX, angleY, angleZ, Joml.float4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZYX_identity_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
-        return rotateZYX_identity_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZYX_identity_self(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZYX_translation_self(angleX, angleY, angleZ, this);
+        return rotateZYX_orthogonal_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -61425,11 +65249,11 @@ public class Float4x4Impl implements Float4x4 {
         var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, Math.fma(-lightX, planeX, _t4)).withLane(1, -(lightY * planeX)).withLane(2, -(lightZ * planeX)).withLane(3, -(lightW * planeX));
         var _sv0 = FloatVector.zero(COL_SPECIES);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, planeY);
-        var _col1 = _sv0.mul(_sv1).withLane(1, Math.fma(-lightY, planeY, _t4)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(2, lightZ).withLane(3, lightW).mul(_sv1).neg(), MASK_72);
+        var _col1 = _sv0.mul(_sv1).withLane(1, Math.fma(-lightY, planeY, _t4)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(2, lightZ).withLane(3, lightW).mul(_sv1).neg(), MASK_80);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, planeZ);
-        var _col2 = _sv0.mul(_sv2).withLane(2, Math.fma(-lightZ, planeZ, _t4)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(3, lightW).mul(_sv2).neg(), MASK_73);
+        var _col2 = _sv0.mul(_sv2).withLane(2, Math.fma(-lightZ, planeZ, _t4)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(3, lightW).mul(_sv2).neg(), MASK_81);
         var _sv3 = FloatVector.broadcast(COL_SPECIES, planeW);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, Math.fma(-lightW, planeW, _t4)).fma(VEC_0, _sv0.mul(_sv3)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(2, lightZ).mul(_sv3).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, Math.fma(-lightW, planeW, _t4)).fma(VEC_0, _sv0.mul(_sv3)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(2, lightZ).mul(_sv3).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -61445,11 +65269,11 @@ public class Float4x4Impl implements Float4x4 {
         var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, Math.fma(-lightX, planeX, _t4)).withLane(1, -(lightY * planeX)).withLane(2, -(lightZ * planeX)).withLane(3, -(lightW * planeX));
         var _sv0 = FloatVector.zero(COL_SPECIES);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, planeY);
-        var _col1 = _sv0.mul(_sv1).withLane(1, Math.fma(-lightY, planeY, _t4)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(2, lightZ).withLane(3, lightW).mul(_sv1).neg(), MASK_72);
+        var _col1 = _sv0.mul(_sv1).withLane(1, Math.fma(-lightY, planeY, _t4)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(2, lightZ).withLane(3, lightW).mul(_sv1).neg(), MASK_80);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, planeZ);
-        var _col2 = _sv0.mul(_sv2).withLane(2, Math.fma(-lightZ, planeZ, _t4)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(3, lightW).mul(_sv2).neg(), MASK_73);
+        var _col2 = _sv0.mul(_sv2).withLane(2, Math.fma(-lightZ, planeZ, _t4)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(3, lightW).mul(_sv2).neg(), MASK_81);
         var _sv3 = FloatVector.broadcast(COL_SPECIES, planeW);
-        var _col3 = FloatVector.broadcast(COL_SPECIES, Math.fma(-lightW, planeW, _t4)).mul(VEC_0).add(_sv0.mul(_sv3)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(2, lightZ).mul(_sv3).neg(), MASK_16);
+        var _col3 = FloatVector.broadcast(COL_SPECIES, Math.fma(-lightW, planeW, _t4)).mul(VEC_0).add(_sv0.mul(_sv3)).blend(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(2, lightZ).mul(_sv3).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -61483,9 +65307,9 @@ public class Float4x4Impl implements Float4x4 {
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t0);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, lightX);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, planeY);
-        var _col1 = _sv0.withLane(2, _t3).mul(FloatVector.broadcast(COL_SPECIES, _t7)).withLane(1, _t11).add(_sv1.mul(_sv2).withLane(1, _t2 * _t7 + -lightY * planeY).blend(_sv1.withLane(2, lightZ).mul(_sv2).neg(), MASK_72)).withLane(3, -_t7);
+        var _col1 = _sv0.withLane(2, _t3).mul(FloatVector.broadcast(COL_SPECIES, _t7)).withLane(1, _t11).add(_sv1.mul(_sv2).withLane(1, _t2 * _t7 + -lightY * planeY).blend(_sv1.withLane(2, lightZ).mul(_sv2).neg(), MASK_80)).withLane(3, -_t7);
         var _sv3 = FloatVector.broadcast(COL_SPECIES, planeZ);
-        var _col2 = _sv0.withLane(1, _t2).mul(FloatVector.broadcast(COL_SPECIES, _t8)).withLane(2, _t11).add(_sv1.mul(_sv3).withLane(2, _t3 * _t8 + -lightZ * planeZ).blend(_sv1.withLane(1, lightY).mul(_sv3).neg(), MASK_73)).withLane(3, -_t8);
+        var _col2 = _sv0.withLane(1, _t2).mul(FloatVector.broadcast(COL_SPECIES, _t8)).withLane(2, _t11).add(_sv1.mul(_sv3).withLane(2, _t3 * _t8 + -lightZ * planeZ).blend(_sv1.withLane(1, lightY).mul(_sv3).neg(), MASK_81)).withLane(3, -_t8);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, _t12);
         var _col3 = FloatVector.fromArray(COL_SPECIES, sd, 12).fma(_sv4, FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(2, lightZ).mul(FloatVector.broadcast(COL_SPECIES, -planeW))).withLane(3, _t12);
         _col0.intoArray(dd, 0);
@@ -61511,9 +65335,9 @@ public class Float4x4Impl implements Float4x4 {
         var _sv0 = FloatVector.broadcast(COL_SPECIES, _t0);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, lightX);
         var _sv2 = FloatVector.broadcast(COL_SPECIES, planeY);
-        var _col1 = _sv0.withLane(2, _t3).mul(FloatVector.broadcast(COL_SPECIES, _t7)).withLane(1, _t11).add(_sv1.mul(_sv2).withLane(1, _t2 * _t7 + -lightY * planeY).blend(_sv1.withLane(2, lightZ).mul(_sv2).neg(), MASK_72)).withLane(3, -_t7);
+        var _col1 = _sv0.withLane(2, _t3).mul(FloatVector.broadcast(COL_SPECIES, _t7)).withLane(1, _t11).add(_sv1.mul(_sv2).withLane(1, _t2 * _t7 + -lightY * planeY).blend(_sv1.withLane(2, lightZ).mul(_sv2).neg(), MASK_80)).withLane(3, -_t7);
         var _sv3 = FloatVector.broadcast(COL_SPECIES, planeZ);
-        var _col2 = _sv0.withLane(1, _t2).mul(FloatVector.broadcast(COL_SPECIES, _t8)).withLane(2, _t11).add(_sv1.mul(_sv3).withLane(2, _t3 * _t8 + -lightZ * planeZ).blend(_sv1.withLane(1, lightY).mul(_sv3).neg(), MASK_73)).withLane(3, -_t8);
+        var _col2 = _sv0.withLane(1, _t2).mul(FloatVector.broadcast(COL_SPECIES, _t8)).withLane(2, _t11).add(_sv1.mul(_sv3).withLane(2, _t3 * _t8 + -lightZ * planeZ).blend(_sv1.withLane(1, lightY).mul(_sv3).neg(), MASK_81)).withLane(3, -_t8);
         var _sv4 = FloatVector.broadcast(COL_SPECIES, _t12);
         var _col3 = FloatVector.fromArray(COL_SPECIES, sd, 12).mul(_sv4).add(FloatVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(2, lightZ).mul(FloatVector.broadcast(COL_SPECIES, -planeW))).withLane(3, _t12);
         _col0.intoArray(dd, 0);
@@ -62317,10 +66141,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[5] = _t61 * _t3 * _t52_inv;
         dd[6] = 0.0f;
         dd[7] = _t54;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = 1.0f;
-        dd[11] = 0.0f;
+        VEC_4.intoArray(dd, 8);
         dd[12] = 2.0f * Math.fma(p0Y, _t5, Math.fma(_t0, _t3, _t30)) * _t41_inv - _t58;
         dd[13] = _t61 * _t50 * _t52_inv - _t60;
         dd[14] = 0.0f;
@@ -62419,10 +66240,7 @@ public class Float4x4Impl implements Float4x4 {
         dd[5] = _t68 * _t56_inv;
         dd[6] = 0.0f;
         dd[7] = _t58;
-        dd[8] = 0.0f;
-        dd[9] = 0.0f;
-        dd[10] = 1.0f;
-        dd[11] = 0.0f;
+        VEC_4.intoArray(dd, 8);
         float _buf0 = Math.fma(sd[12], _t59, Math.fma(sd[13], _t60, 2.0f * Math.fma(p0Y, _t5, Math.fma(_t0, _t3, _t32)) * _t43_inv - _t54 * _t56_inv));
         float _buf1 = _t66 * _t54 * _t56_inv - _t65 + Math.fma(sd[12], _t67, sd[13] * _t68) * _t56_inv;
         dd[14] = sd[14];
@@ -66633,83 +70451,91 @@ public class Float4x4Impl implements Float4x4 {
     }
 
     private static final VectorSpecies<Float> COL_SPECIES = FloatVector.SPECIES_128;
-    private static final VectorShuffle<Float> SHUF_7 = VectorShuffle.fromArray(COL_SPECIES, new int[]{0, 0, 1, 1}, 0);
-    private static final VectorShuffle<Float> SHUF_8 = VectorShuffle.fromArray(COL_SPECIES, new int[]{0, 1, 0, 1}, 0);
-    private static final VectorShuffle<Float> SHUF_9 = VectorShuffle.fromArray(COL_SPECIES, new int[]{2, 3, 2, 3}, 0);
-    private static final VectorShuffle<Float> SHUF_10 = VectorShuffle.fromArray(COL_SPECIES, new int[]{2, 2, 3, 3}, 0);
-    private static final VectorMask<Float> MASK_2 = VectorMask.fromValues(COL_SPECIES, false, true, true, false);
-    private static final VectorMask<Float> MASK_3 = VectorMask.fromValues(COL_SPECIES, true, false, true, false);
-    private static final VectorMask<Float> MASK_4 = VectorMask.fromValues(COL_SPECIES, false, true, false, true);
-    private static final VectorMask<Float> MASK_5 = VectorMask.fromValues(COL_SPECIES, false, true, true, true);
-    private static final VectorMask<Float> MASK_6 = VectorMask.fromValues(COL_SPECIES, false, false, true, true);
-    private static final VectorMask<Float> MASK_16 = VectorMask.fromValues(COL_SPECIES, true, true, true, false);
-    private static final VectorMask<Float> MASK_72 = VectorMask.fromValues(COL_SPECIES, true, false, true, true);
-    private static final VectorMask<Float> MASK_73 = VectorMask.fromValues(COL_SPECIES, true, true, false, true);
-    private static final VectorMask<Float> MASK_76 = VectorMask.fromValues(COL_SPECIES, true, true, false, false);
+    private static final VectorShuffle<Float> SHUF_10 = VectorShuffle.fromArray(COL_SPECIES, new int[]{0, 0, 1, 1}, 0);
+    private static final VectorShuffle<Float> SHUF_11 = VectorShuffle.fromArray(COL_SPECIES, new int[]{0, 1, 0, 1}, 0);
+    private static final VectorShuffle<Float> SHUF_12 = VectorShuffle.fromArray(COL_SPECIES, new int[]{2, 3, 2, 3}, 0);
+    private static final VectorShuffle<Float> SHUF_13 = VectorShuffle.fromArray(COL_SPECIES, new int[]{2, 2, 3, 3}, 0);
+    private static final VectorMask<Float> MASK_5 = VectorMask.fromValues(COL_SPECIES, false, true, true, false);
+    private static final VectorMask<Float> MASK_6 = VectorMask.fromValues(COL_SPECIES, true, false, true, false);
+    private static final VectorMask<Float> MASK_7 = VectorMask.fromValues(COL_SPECIES, false, true, false, true);
+    private static final VectorMask<Float> MASK_8 = VectorMask.fromValues(COL_SPECIES, false, true, true, true);
+    private static final VectorMask<Float> MASK_9 = VectorMask.fromValues(COL_SPECIES, false, false, true, true);
+    private static final VectorMask<Float> MASK_22 = VectorMask.fromValues(COL_SPECIES, true, true, true, false);
+    private static final VectorMask<Float> MASK_80 = VectorMask.fromValues(COL_SPECIES, true, false, true, true);
+    private static final VectorMask<Float> MASK_81 = VectorMask.fromValues(COL_SPECIES, true, true, false, true);
+    private static final VectorMask<Float> MASK_84 = VectorMask.fromValues(COL_SPECIES, true, true, false, false);
     private static final FloatVector VEC_0 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 1.0f}, 0);
-    private static final FloatVector VEC_11 = FloatVector.fromArray(COL_SPECIES, new float[]{1.0f, 0.0f, 0.0f, 0.0f}, 0);
-    private static final FloatVector VEC_12 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 1.0f, 0.0f, 0.0f}, 0);
-    private static final FloatVector VEC_13 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 1.0f, 0.0f}, 0);
+    private static final FloatVector VEC_2 = FloatVector.fromArray(COL_SPECIES, new float[]{1.0f, 0.0f, 0.0f, 0.0f}, 0);
+    private static final FloatVector VEC_3 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 1.0f, 0.0f, 0.0f}, 0);
+    private static final FloatVector VEC_4 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 1.0f, 0.0f}, 0);
+    private static final FloatVector VEC_15 = FloatVector.fromArray(COL_SPECIES, new float[]{2.0f, 0.0f, 0.0f, 0.0f}, 0);
+    private static final FloatVector VEC_16 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 2.0f, 0.0f, 0.0f}, 0);
+    private static final FloatVector VEC_17 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 2.0f, 0.0f}, 0);
+    private static final FloatVector VEC_19 = FloatVector.fromArray(COL_SPECIES, new float[]{-1.0f, 0.0f, 0.0f, 0.0f}, 0);
+    private static final FloatVector VEC_20 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, -1.0f, 0.0f, 0.0f}, 0);
+    private static final FloatVector VEC_21 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, -1.0f, 0.0f}, 0);
+    private static final FloatVector VEC_24 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 0.0f}, 0);
+    private static final FloatVector VEC_79 = FloatVector.fromArray(COL_SPECIES, new float[]{-1.0f, 0.0f, 0.0f, 1.0f}, 0);
     private static final float[] DATA_1 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
     private static final float[] DATA_14 = new float[] {2.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.0f};
-    private static final float[] DATA_15 = new float[] {-1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f};
-    private static final float[] DATA_17 = new float[] {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
-    private static final float[] DATA_18 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_19 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f};
-    private static final float[] DATA_20 = new float[] {0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f};
-    private static final float[] DATA_21 = new float[] {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_22 = new float[] {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f};
-    private static final float[] DATA_23 = new float[] {-1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f};
-    private static final float[] DATA_24 = new float[] {-1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f};
-    private static final float[] DATA_25 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_26 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_27 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_28 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_29 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_30 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_31 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_32 = new float[] {0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_33 = new float[] {0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_34 = new float[] {0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_35 = new float[] {0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_36 = new float[] {0.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_37 = new float[] {0.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_38 = new float[] {0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_39 = new float[] {0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_40 = new float[] {0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_41 = new float[] {0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_42 = new float[] {0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_43 = new float[] {0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_44 = new float[] {0.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_45 = new float[] {0.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_46 = new float[] {0.0f, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_47 = new float[] {0.0f, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_48 = new float[] {-1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_49 = new float[] {-1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_50 = new float[] {-1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_51 = new float[] {-1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_52 = new float[] {-1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_53 = new float[] {-1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_54 = new float[] {-1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_55 = new float[] {-1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_56 = new float[] {0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_57 = new float[] {0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_58 = new float[] {0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_59 = new float[] {0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_60 = new float[] {0.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_61 = new float[] {0.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_62 = new float[] {0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_63 = new float[] {0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_64 = new float[] {0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_65 = new float[] {0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_66 = new float[] {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_67 = new float[] {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_68 = new float[] {0.0f, 0.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_69 = new float[] {0.0f, 0.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_70 = new float[] {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_71 = new float[] {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_74 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f};
-    private static final float[] DATA_75 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    private static final float[] DATA_77 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f};
+    private static final float[] DATA_18 = new float[] {-1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f};
+    private static final float[] DATA_23 = new float[] {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+    private static final float[] DATA_25 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_26 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f};
+    private static final float[] DATA_27 = new float[] {0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+    private static final float[] DATA_28 = new float[] {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_29 = new float[] {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+    private static final float[] DATA_30 = new float[] {-1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f};
+    private static final float[] DATA_31 = new float[] {-1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f};
+    private static final float[] DATA_32 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_33 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_34 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_35 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_36 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_37 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_38 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_39 = new float[] {0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_40 = new float[] {0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_41 = new float[] {0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_42 = new float[] {0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_43 = new float[] {0.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_44 = new float[] {0.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_45 = new float[] {0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_46 = new float[] {0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_47 = new float[] {0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_48 = new float[] {0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_49 = new float[] {0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_50 = new float[] {0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_51 = new float[] {0.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_52 = new float[] {0.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_53 = new float[] {0.0f, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_54 = new float[] {0.0f, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_55 = new float[] {-1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_56 = new float[] {-1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_57 = new float[] {-1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_58 = new float[] {-1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_59 = new float[] {-1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_60 = new float[] {-1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_61 = new float[] {-1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_62 = new float[] {-1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_63 = new float[] {0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_64 = new float[] {0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_65 = new float[] {0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_66 = new float[] {0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_67 = new float[] {0.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_68 = new float[] {0.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_69 = new float[] {0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_70 = new float[] {0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_71 = new float[] {0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_72 = new float[] {0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_73 = new float[] {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_74 = new float[] {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_75 = new float[] {0.0f, 0.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_76 = new float[] {0.0f, 0.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_77 = new float[] {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_78 = new float[] {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_82 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f};
+    private static final float[] DATA_83 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    private static final float[] DATA_85 = new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f};
 
 }

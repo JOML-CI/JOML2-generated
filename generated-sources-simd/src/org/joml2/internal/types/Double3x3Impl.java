@@ -628,10 +628,7 @@ public class Double3x3Impl implements Double3x3 {
     private DoubleQuat getNormalizedRotation_identity(@Mutated DoubleQuat dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
-        dd[0] = 0.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 1.0;
+        VEC_0.intoArray(dd, 0);
         return dest;
     }
 
@@ -1284,10 +1281,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 invert_translation(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = -sd[6];
@@ -1628,10 +1622,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] otherData = ((Double3x3Impl) other).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = -otherData[6];
@@ -1679,10 +1670,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] otherData = ((Double3x3Impl) other).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = -sd[6];
@@ -1701,10 +1689,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] otherData = ((Double3x3Impl) other).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = -(otherData[6] + sd[6]);
@@ -2539,7 +2524,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] otherData = ((Double3x3Impl) other).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        System.arraycopy(DATA_2, 0, dd, 0, 9);
+        System.arraycopy(DATA_3, 0, dd, 0, 9);
         ((Double3x3Impl) dest).properties = 0;
         return dest;
     }
@@ -2553,10 +2538,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] otherData = ((Double3x3Impl) other).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 2.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_4.intoArray(dd, 0);
         dd[4] = 2.0;
         dd[5] = 0.0;
         dd[6] = otherData[6];
@@ -2597,10 +2579,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] otherData = ((Double3x3Impl) other).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 2.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_4.intoArray(dd, 0);
         dd[4] = 2.0;
         dd[5] = 0.0;
         dd[6] = sd[6];
@@ -2619,10 +2598,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] otherData = ((Double3x3Impl) other).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 2.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_4.intoArray(dd, 0);
         dd[4] = 2.0;
         dd[5] = 0.0;
         dd[6] = otherData[6] + sd[6];
@@ -2859,7 +2835,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 negate_identity(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        System.arraycopy(DATA_3, 0, dd, 0, 9);
+        System.arraycopy(DATA_5, 0, dd, 0, 9);
         ((Double3x3Impl) dest).properties = 0;
         return dest;
     }
@@ -2881,10 +2857,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 negate_translation(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = -1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_6.intoArray(dd, 0);
         dd[4] = -1.0;
         dd[5] = 0.0;
         dd[6] = -sd[6];
@@ -3101,7 +3074,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] otherData = ((Double3x3Impl) other).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        System.arraycopy(DATA_4, 0, dd, 0, 9);
+        System.arraycopy(DATA_7, 0, dd, 0, 9);
         ((Double3x3Impl) dest).properties = 0;
         return dest;
     }
@@ -3115,10 +3088,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] otherData = ((Double3x3Impl) other).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 0.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_8.intoArray(dd, 0);
         dd[4] = 0.0;
         dd[5] = 0.0;
         dd[6] = -otherData[6];
@@ -3159,10 +3129,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] otherData = ((Double3x3Impl) other).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 0.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_8.intoArray(dd, 0);
         dd[4] = 0.0;
         dd[5] = 0.0;
         dd[6] = sd[6];
@@ -3181,10 +3148,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] otherData = ((Double3x3Impl) other).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 0.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_8.intoArray(dd, 0);
         dd[4] = 0.0;
         dd[5] = 0.0;
         dd[6] = sd[6] - otherData[6];
@@ -3502,10 +3466,7 @@ public class Double3x3Impl implements Double3x3 {
         dd[2] = 0.0;
         dd[3] = mData[2];
         dd[4] = mData[3];
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
-        dd[8] = 1.0;
+        VEC_0.intoArray(dd, 5);
         ((Double3x3Impl) this).properties = determineProperties();
         return this;
     }
@@ -3660,10 +3621,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 withTranslation_identity(double tX, double tY, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = tX;
@@ -3890,7 +3848,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double2x2 to2x2_identity(@Mutated Double2x2 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x2Impl) dest).data;
-        DoubleVector.fromArray(COL_SPECIES, DATA_5, 0).intoArray(dd, 0);
+        DoubleVector.fromArray(COL_SPECIES, DATA_9, 0).intoArray(dd, 0);
         ((Double2x2Impl) dest).properties = Joml.BIT_IDENTITY;
         return dest;
     }
@@ -3951,7 +3909,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double2x3 to2x3_identity(@Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        System.arraycopy(DATA_6, 0, dd, 0, 6);
+        System.arraycopy(DATA_10, 0, dd, 0, 6);
         ((Double2x3Impl) dest).properties = Joml.BIT_IDENTITY;
         return dest;
     }
@@ -3964,10 +3922,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double2x3 to2x3_translation(@Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 1.0;
+        VEC_11.intoArray(dd, 0);
         dd[4] = sd[6];
         dd[5] = sd[7];
         ((Double2x3Impl) dest).properties = Joml.BIT_TRANSLATION;
@@ -3997,9 +3952,9 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x4 to3x4_identity(@Mutated Double3x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
-        DoubleVector.fromArray(COL_SPECIES, DATA_7, 0).intoArray(dd, 0);
-        DoubleVector.fromArray(COL_SPECIES, DATA_7, 4).intoArray(dd, 4);
-        DoubleVector.fromArray(COL_SPECIES, DATA_7, 8).intoArray(dd, 8);
+        DoubleVector.fromArray(COL_SPECIES, DATA_12, 0).intoArray(dd, 0);
+        DoubleVector.fromArray(COL_SPECIES, DATA_12, 4).intoArray(dd, 4);
+        DoubleVector.fromArray(COL_SPECIES, DATA_12, 8).intoArray(dd, 8);
         ((Double3x4Impl) dest).properties = Joml.BIT_IDENTITY;
         return dest;
     }
@@ -4019,10 +3974,7 @@ public class Double3x3Impl implements Double3x3 {
         dd[4] = 0.0;
         double _buf0 = 1.0;
         dd[6] = sd[7];
-        dd[7] = 0.0;
-        dd[8] = 0.0;
-        dd[9] = 0.0;
-        dd[10] = 1.0;
+        VEC_0.intoArray(dd, 7);
         dd[11] = 0.0;
         dd[5] = _buf0;
         ((Double3x4Impl) dest).properties = Joml.BIT_AFFINE;
@@ -4044,10 +3996,7 @@ public class Double3x3Impl implements Double3x3 {
         double _buf1 = sd[1];
         double _buf2 = sd[4];
         dd[6] = sd[7];
-        dd[7] = 0.0;
-        dd[8] = 0.0;
-        dd[9] = 0.0;
-        dd[10] = 1.0;
+        VEC_0.intoArray(dd, 7);
         dd[11] = 0.0;
         dd[3] = _buf0;
         dd[4] = _buf1;
@@ -4111,13 +4060,13 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         if (DoubleVector.SPECIES_PREFERRED.length() >= 8) {
-            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_8, 0).intoArray(dd, 0);
-            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_8, 8).intoArray(dd, 8);
+            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_13, 0).intoArray(dd, 0);
+            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_13, 8).intoArray(dd, 8);
         } else {
-            DoubleVector.fromArray(COL_SPECIES, DATA_8, 0).intoArray(dd, 0);
-            DoubleVector.fromArray(COL_SPECIES, DATA_8, 4).intoArray(dd, 4);
-            DoubleVector.fromArray(COL_SPECIES, DATA_8, 8).intoArray(dd, 8);
-            DoubleVector.fromArray(COL_SPECIES, DATA_8, 12).intoArray(dd, 12);
+            DoubleVector.fromArray(COL_SPECIES, DATA_13, 0).intoArray(dd, 0);
+            DoubleVector.fromArray(COL_SPECIES, DATA_13, 4).intoArray(dd, 4);
+            DoubleVector.fromArray(COL_SPECIES, DATA_13, 8).intoArray(dd, 8);
+            DoubleVector.fromArray(COL_SPECIES, DATA_13, 12).intoArray(dd, 12);
         }
         ((Double4x4Impl) dest).properties = Joml.BIT_IDENTITY;
         return dest;
@@ -4131,23 +4080,13 @@ public class Double3x3Impl implements Double3x3 {
     private Double4x4 to4x4_translation(@Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
-        dd[4] = 0.0;
-        double _buf0 = 1.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[8] = sd[6];
         dd[9] = sd[7];
-        dd[10] = 1.0;
-        dd[11] = 0.0;
-        dd[12] = 0.0;
-        dd[13] = 0.0;
+        VEC_2.intoArray(dd, 10);
         dd[14] = 0.0;
         dd[15] = 1.0;
-        dd[5] = _buf0;
+        VEC_14.intoArray(dd, 4);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -4170,10 +4109,7 @@ public class Double3x3Impl implements Double3x3 {
         dd[7] = 0.0;
         dd[8] = sd[6];
         dd[9] = sd[7];
-        dd[10] = 1.0;
-        dd[11] = 0.0;
-        dd[12] = 0.0;
-        dd[13] = 0.0;
+        VEC_2.intoArray(dd, 10);
         dd[14] = 0.0;
         dd[15] = 1.0;
         dd[1] = _buf0;
@@ -4201,10 +4137,7 @@ public class Double3x3Impl implements Double3x3 {
         dd[8] = sd[6];
         dd[9] = sd[7];
         dd[10] = sd[8];
-        dd[11] = 0.0;
-        dd[12] = 0.0;
-        dd[13] = 0.0;
-        dd[14] = 0.0;
+        VEC_8.intoArray(dd, 11);
         dd[15] = 1.0;
         dd[1] = _buf0;
         dd[2] = _buf1;
@@ -4238,10 +4171,10 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] dd = ((DoubleDualQuatImpl) dest).data;
         if (DoubleVector.SPECIES_PREFERRED.length() >= 8) {
-            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_9, 0).intoArray(dd, 0);
+            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_15, 0).intoArray(dd, 0);
         } else {
-            DoubleVector.fromArray(COL_SPECIES, DATA_9, 0).intoArray(dd, 0);
-            DoubleVector.fromArray(COL_SPECIES, DATA_9, 4).intoArray(dd, 4);
+            DoubleVector.fromArray(COL_SPECIES, DATA_15, 0).intoArray(dd, 0);
+            DoubleVector.fromArray(COL_SPECIES, DATA_15, 4).intoArray(dd, 4);
         }
         return dest;
     }
@@ -4256,10 +4189,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] dd = ((DoubleDualQuatImpl) dest).data;
         dd[0] = -(0.25 * sd[7]);
         dd[1] = 0.25 * sd[6];
-        dd[2] = 0.0;
-        dd[3] = 1.0;
-        dd[4] = 0.0;
-        dd[5] = 0.0;
+        VEC_14.intoArray(dd, 2);
         dd[6] = 0.0;
         dd[7] = 0.0;
         return dest;
@@ -4319,10 +4249,7 @@ public class Double3x3Impl implements Double3x3 {
                 }
             }
         }
-        dd[4] = 0.0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
+        VEC_8.intoArray(dd, 4);
         return dest;
     }
 
@@ -4380,10 +4307,7 @@ public class Double3x3Impl implements Double3x3 {
                 }
             }
         }
-        dd[4] = 0.0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
+        VEC_8.intoArray(dd, 4);
         return dest;
     }
 
@@ -4411,7 +4335,7 @@ public class Double3x3Impl implements Double3x3 {
     private DoubleRigid toRigid_identity(@Mutated DoubleRigid dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleRigidImpl) dest).data;
-        System.arraycopy(DATA_10, 0, dd, 0, 7);
+        System.arraycopy(DATA_16, 0, dd, 0, 7);
         return dest;
     }
 
@@ -4573,7 +4497,7 @@ public class Double3x3Impl implements Double3x3 {
     private DoubleTransform toTransform_identity(@Mutated DoubleTransform dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleTransformImpl) dest).data;
-        System.arraycopy(DATA_11, 0, dd, 0, 10);
+        System.arraycopy(DATA_17, 0, dd, 0, 10);
         return dest;
     }
 
@@ -5178,10 +5102,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] otherData = ((Double3x3Impl) other).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = t * otherData[6];
@@ -5222,10 +5143,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] otherData = ((Double3x3Impl) other).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = Math.fma(-t, sd[6], sd[6]);
@@ -5244,10 +5162,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] otherData = ((Double3x3Impl) other).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = Math.fma(t, otherData[6] - sd[6], sd[6]);
@@ -5599,10 +5514,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] rightData = ((Double3x3Impl) right).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = rightData[6] + sd[6];
@@ -5900,10 +5812,7 @@ public class Double3x3Impl implements Double3x3 {
         dd[2] = 0.0;
         dd[3] = rightData[2];
         dd[4] = rightData[3];
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
-        dd[8] = 1.0;
+        VEC_0.intoArray(dd, 5);
         ((Double3x3Impl) dest).properties = (((Double2x2Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_IDENTITY : Joml.BIT_AFFINE;
         return dest;
     }
@@ -6258,10 +6167,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] rightData = ((Double2x3Impl) right).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = rightData[4];
@@ -6280,10 +6186,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] rightData = ((Double2x3Impl) right).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = rightData[4] + sd[6];
@@ -6542,10 +6445,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] otherData = ((Double3x3Impl) other).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = otherData[6] + sd[6];
@@ -6840,10 +6740,7 @@ public class Double3x3Impl implements Double3x3 {
         dd[2] = 0.0;
         dd[3] = otherData[2];
         dd[4] = otherData[3];
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
-        dd[8] = 1.0;
+        VEC_0.intoArray(dd, 5);
         ((Double3x3Impl) dest).properties = (((Double2x2Impl) other).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_IDENTITY : Joml.BIT_AFFINE;
         return dest;
     }
@@ -7201,10 +7098,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] otherData = ((Double2x3Impl) other).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = otherData[4];
@@ -7223,10 +7117,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] otherData = ((Double2x3Impl) other).data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = otherData[4] + sd[6];
@@ -7579,10 +7470,7 @@ public class Double3x3Impl implements Double3x3 {
         dd[2] = 0.0;
         dd[3] = -_t1;
         dd[4] = _t0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
-        dd[8] = 1.0;
+        VEC_0.intoArray(dd, 5);
         ((Double3x3Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
     }
@@ -7759,10 +7647,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] dd = this.data;
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = _t0;
         dd[5] = _t1;
         dd[6] = 0.0;
@@ -7948,10 +7833,7 @@ public class Double3x3Impl implements Double3x3 {
         dd[2] = 0.0;
         dd[3] = -_t1;
         dd[4] = _t0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
-        dd[8] = 1.0;
+        VEC_0.intoArray(dd, 5);
         ((Double3x3Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
     }
@@ -8050,10 +7932,7 @@ public class Double3x3Impl implements Double3x3 {
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = vY;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
-        dd[8] = 1.0;
+        VEC_0.intoArray(dd, 5);
         ((Double3x3Impl) this).properties = Joml.BIT_AFFINE;
         return this;
     }
@@ -8073,10 +7952,7 @@ public class Double3x3Impl implements Double3x3 {
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = s;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
-        dd[8] = 1.0;
+        VEC_0.intoArray(dd, 5);
         ((Double3x3Impl) this).properties = Joml.BIT_AFFINE;
         return this;
     }
@@ -8102,10 +7978,7 @@ public class Double3x3Impl implements Double3x3 {
      */
     @Mutated public Double3x3 makeTranslation(double vX, double vY) {
         double[] dd = this.data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = vX;
@@ -8209,10 +8082,7 @@ public class Double3x3Impl implements Double3x3 {
         dd[2] = 0.0;
         dd[3] = -_t1;
         dd[4] = _t0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
-        dd[8] = 1.0;
+        VEC_0.intoArray(dd, 5);
         ((Double3x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -8870,10 +8740,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] dd = ((Double3x3Impl) dest).data;
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = _t0;
         dd[5] = _t1;
         dd[6] = 0.0;
@@ -8911,10 +8778,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] dd = ((Double3x3Impl) dest).data;
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = _t0;
         dd[5] = _t1;
         dd[6] = sd[6];
@@ -9319,10 +9183,7 @@ public class Double3x3Impl implements Double3x3 {
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = vY;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
-        dd[8] = 1.0;
+        VEC_0.intoArray(dd, 5);
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -9494,10 +9355,7 @@ public class Double3x3Impl implements Double3x3 {
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = s;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
-        dd[8] = 1.0;
+        VEC_0.intoArray(dd, 5);
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -10174,10 +10032,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 preTranslate_identity(double vX, double vY, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = vX;
@@ -10209,10 +10064,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 preTranslate_translation(double vX, double vY, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = sd[6] + vX;
@@ -11178,7 +11030,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 rotateX180_identity(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        System.arraycopy(DATA_12, 0, dd, 0, 9);
+        System.arraycopy(DATA_18, 0, dd, 0, 9);
         ((Double3x3Impl) dest).properties = 0;
         return dest;
     }
@@ -11200,10 +11052,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 rotateX180_translation(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = -1.0;
         dd[5] = 0.0;
         dd[6] = -sd[6];
@@ -11381,7 +11230,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 rotateX270_identity(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        System.arraycopy(DATA_13, 0, dd, 0, 9);
+        System.arraycopy(DATA_19, 0, dd, 0, 9);
         ((Double3x3Impl) dest).properties = 0;
         return dest;
     }
@@ -11408,10 +11257,7 @@ public class Double3x3Impl implements Double3x3 {
         dd[2] = 0.0;
         dd[3] = -sd[6];
         dd[4] = -sd[7];
-        dd[5] = -1.0;
-        dd[6] = 0.0;
-        dd[7] = 1.0;
-        dd[8] = 0.0;
+        VEC_20.intoArray(dd, 5);
         ((Double3x3Impl) dest).properties = 0;
         return dest;
     }
@@ -11426,10 +11272,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] dd = ((Double3x3Impl) dest).data;
         dd[3] = -sd[6];
         dd[4] = -sd[7];
-        dd[5] = -1.0;
-        dd[6] = 0.0;
-        dd[7] = 1.0;
-        dd[8] = 0.0;
+        VEC_20.intoArray(dd, 5);
         ((Double3x3Impl) dest).properties = 0;
         return dest;
     }
@@ -11550,7 +11393,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 rotateX90_identity(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        System.arraycopy(DATA_14, 0, dd, 0, 9);
+        System.arraycopy(DATA_21, 0, dd, 0, 9);
         ((Double3x3Impl) dest).properties = 0;
         return dest;
     }
@@ -11577,10 +11420,7 @@ public class Double3x3Impl implements Double3x3 {
         dd[2] = 0.0;
         dd[3] = sd[6];
         dd[4] = sd[7];
-        dd[5] = 1.0;
-        dd[6] = 0.0;
-        dd[7] = -1.0;
-        dd[8] = 0.0;
+        VEC_22.intoArray(dd, 5);
         ((Double3x3Impl) dest).properties = 0;
         return dest;
     }
@@ -11595,10 +11435,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] dd = ((Double3x3Impl) dest).data;
         dd[3] = sd[6];
         dd[4] = sd[7];
-        dd[5] = 1.0;
-        dd[6] = 0.0;
-        dd[7] = -1.0;
-        dd[8] = 0.0;
+        VEC_22.intoArray(dd, 5);
         ((Double3x3Impl) dest).properties = 0;
         return dest;
     }
@@ -12419,7 +12256,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 rotateY180_identity(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        System.arraycopy(DATA_15, 0, dd, 0, 9);
+        System.arraycopy(DATA_23, 0, dd, 0, 9);
         ((Double3x3Impl) dest).properties = 0;
         return dest;
     }
@@ -12441,10 +12278,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 rotateY180_translation(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = -1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_6.intoArray(dd, 0);
         dd[4] = 1.0;
         dd[5] = 0.0;
         dd[6] = -sd[6];
@@ -12578,7 +12412,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 rotateY270_identity(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        System.arraycopy(DATA_16, 0, dd, 0, 9);
+        System.arraycopy(DATA_24, 0, dd, 0, 9);
         ((Double3x3Impl) dest).properties = 0;
         return dest;
     }
@@ -12602,10 +12436,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] dd = ((Double3x3Impl) dest).data;
         dd[0] = sd[6];
         dd[1] = sd[7];
-        dd[2] = 1.0;
-        dd[3] = 0.0;
-        dd[4] = 1.0;
-        dd[5] = 0.0;
+        VEC_25.intoArray(dd, 2);
         dd[6] = -1.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -12747,7 +12578,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 rotateY90_identity(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        System.arraycopy(DATA_17, 0, dd, 0, 9);
+        System.arraycopy(DATA_26, 0, dd, 0, 9);
         ((Double3x3Impl) dest).properties = 0;
         return dest;
     }
@@ -12771,10 +12602,7 @@ public class Double3x3Impl implements Double3x3 {
         double[] dd = ((Double3x3Impl) dest).data;
         dd[0] = -sd[6];
         dd[1] = -sd[7];
-        dd[2] = -1.0;
-        dd[3] = 0.0;
-        dd[4] = 1.0;
-        dd[5] = 0.0;
+        VEC_20.intoArray(dd, 2);
         dd[6] = 1.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -13424,7 +13252,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 rotateZ180_identity(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        System.arraycopy(DATA_18, 0, dd, 0, 9);
+        System.arraycopy(DATA_27, 0, dd, 0, 9);
         ((Double3x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -13446,10 +13274,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 rotateZ180_translation(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = -1.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_6.intoArray(dd, 0);
         dd[4] = -1.0;
         dd[5] = 0.0;
         dd[6] = sd[6];
@@ -13627,7 +13452,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 rotateZ270_identity(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        System.arraycopy(DATA_19, 0, dd, 0, 9);
+        System.arraycopy(DATA_28, 0, dd, 0, 9);
         ((Double3x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -13649,10 +13474,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 rotateZ270_translation(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 0.0;
-        dd[1] = -1.0;
-        dd[2] = 0.0;
-        dd[3] = 1.0;
+        VEC_29.intoArray(dd, 0);
         dd[4] = 0.0;
         dd[5] = 0.0;
         dd[6] = sd[6];
@@ -13880,7 +13702,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 rotateZ90_identity(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        System.arraycopy(DATA_20, 0, dd, 0, 9);
+        System.arraycopy(DATA_30, 0, dd, 0, 9);
         ((Double3x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -13902,10 +13724,7 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 rotateZ90_translation(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        dd[0] = 0.0;
-        dd[1] = 1.0;
-        dd[2] = 0.0;
-        dd[3] = -1.0;
+        VEC_31.intoArray(dd, 0);
         dd[4] = 0.0;
         dd[5] = 0.0;
         dd[6] = sd[6];
@@ -16499,25 +16318,36 @@ public class Double3x3Impl implements Double3x3 {
 
     private static final VectorSpecies<Double> COL_SPECIES = DoubleVector.SPECIES_256;
     private static final DoubleVector VEC_0 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 0.0, 0.0, 1.0}, 0);
+    private static final DoubleVector VEC_2 = DoubleVector.fromArray(COL_SPECIES, new double[]{1.0, 0.0, 0.0, 0.0}, 0);
+    private static final DoubleVector VEC_4 = DoubleVector.fromArray(COL_SPECIES, new double[]{2.0, 0.0, 0.0, 0.0}, 0);
+    private static final DoubleVector VEC_6 = DoubleVector.fromArray(COL_SPECIES, new double[]{-1.0, 0.0, 0.0, 0.0}, 0);
+    private static final DoubleVector VEC_8 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 0.0, 0.0, 0.0}, 0);
+    private static final DoubleVector VEC_11 = DoubleVector.fromArray(COL_SPECIES, new double[]{1.0, 0.0, 0.0, 1.0}, 0);
+    private static final DoubleVector VEC_14 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 1.0, 0.0, 0.0}, 0);
+    private static final DoubleVector VEC_20 = DoubleVector.fromArray(COL_SPECIES, new double[]{-1.0, 0.0, 1.0, 0.0}, 0);
+    private static final DoubleVector VEC_22 = DoubleVector.fromArray(COL_SPECIES, new double[]{1.0, 0.0, -1.0, 0.0}, 0);
+    private static final DoubleVector VEC_25 = DoubleVector.fromArray(COL_SPECIES, new double[]{1.0, 0.0, 1.0, 0.0}, 0);
+    private static final DoubleVector VEC_29 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, -1.0, 0.0, 1.0}, 0);
+    private static final DoubleVector VEC_31 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 1.0, 0.0, -1.0}, 0);
     private static final double[] DATA_1 = new double[] {1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0};
-    private static final double[] DATA_2 = new double[] {2.0, 0.0, 0.0, 0.0, 2.0, 0.0, 0.0, 0.0, 2.0};
-    private static final double[] DATA_3 = new double[] {-1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0};
-    private static final double[] DATA_4 = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-    private static final double[] DATA_5 = new double[] {1.0, 0.0, 0.0, 1.0};
-    private static final double[] DATA_6 = new double[] {1.0, 0.0, 0.0, 1.0, 0.0, 0.0};
-    private static final double[] DATA_7 = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0};
-    private static final double[] DATA_8 = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0};
-    private static final double[] DATA_9 = new double[] {0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0};
-    private static final double[] DATA_10 = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
-    private static final double[] DATA_11 = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0};
-    private static final double[] DATA_12 = new double[] {1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0};
-    private static final double[] DATA_13 = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0};
-    private static final double[] DATA_14 = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, -1.0, 0.0};
-    private static final double[] DATA_15 = new double[] {-1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0};
-    private static final double[] DATA_16 = new double[] {0.0, 0.0, 1.0, 0.0, 1.0, 0.0, -1.0, 0.0, 0.0};
-    private static final double[] DATA_17 = new double[] {0.0, 0.0, -1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0};
-    private static final double[] DATA_18 = new double[] {-1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 1.0};
-    private static final double[] DATA_19 = new double[] {0.0, -1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0};
-    private static final double[] DATA_20 = new double[] {0.0, 1.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0};
+    private static final double[] DATA_3 = new double[] {2.0, 0.0, 0.0, 0.0, 2.0, 0.0, 0.0, 0.0, 2.0};
+    private static final double[] DATA_5 = new double[] {-1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0};
+    private static final double[] DATA_7 = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+    private static final double[] DATA_9 = new double[] {1.0, 0.0, 0.0, 1.0};
+    private static final double[] DATA_10 = new double[] {1.0, 0.0, 0.0, 1.0, 0.0, 0.0};
+    private static final double[] DATA_12 = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0};
+    private static final double[] DATA_13 = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0};
+    private static final double[] DATA_15 = new double[] {0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0};
+    private static final double[] DATA_16 = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
+    private static final double[] DATA_17 = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0};
+    private static final double[] DATA_18 = new double[] {1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0};
+    private static final double[] DATA_19 = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0};
+    private static final double[] DATA_21 = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, -1.0, 0.0};
+    private static final double[] DATA_23 = new double[] {-1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0};
+    private static final double[] DATA_24 = new double[] {0.0, 0.0, 1.0, 0.0, 1.0, 0.0, -1.0, 0.0, 0.0};
+    private static final double[] DATA_26 = new double[] {0.0, 0.0, -1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0};
+    private static final double[] DATA_27 = new double[] {-1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 1.0};
+    private static final double[] DATA_28 = new double[] {0.0, -1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0};
+    private static final double[] DATA_30 = new double[] {0.0, 1.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0};
 
 }

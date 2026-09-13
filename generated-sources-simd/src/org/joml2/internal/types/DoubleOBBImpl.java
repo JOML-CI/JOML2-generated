@@ -286,14 +286,8 @@ public final class DoubleOBBImpl implements DoubleOBB {
         dd[0] = sd[0];
         dd[1] = sd[1];
         dd[2] = sd[2];
-        dd[3] = 1.0;
-        dd[4] = 0.0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 1.0;
-        dd[8] = 0.0;
-        dd[9] = 0.0;
-        dd[10] = 0.0;
+        VEC_0.intoArray(dd, 3);
+        VEC_0.intoArray(dd, 7);
         dd[11] = 1.0;
         dd[12] = sd[12];
         dd[13] = sd[13];
@@ -393,7 +387,7 @@ public final class DoubleOBBImpl implements DoubleOBB {
      */
     @Mutated public DoubleOBB makeIdentity() {
         double[] dd = this.data;
-        System.arraycopy(DATA_0, 0, dd, 0, 15);
+        System.arraycopy(DATA_1, 0, dd, 0, 15);
         return this;
     }
 
@@ -1077,6 +1071,7 @@ public final class DoubleOBBImpl implements DoubleOBB {
     }
 
     private static final VectorSpecies<Double> COL_SPECIES = DoubleVector.SPECIES_256;
-    private static final double[] DATA_0 = new double[] {0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0};
+    private static final DoubleVector VEC_0 = DoubleVector.fromArray(COL_SPECIES, new double[]{1.0, 0.0, 0.0, 0.0}, 0);
+    private static final double[] DATA_1 = new double[] {0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0};
 
 }

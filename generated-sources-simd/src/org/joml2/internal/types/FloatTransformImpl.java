@@ -1339,10 +1339,7 @@ public final class FloatTransformImpl implements FloatTransform {
         dd[0] = translationX;
         dd[1] = translationY;
         dd[2] = translationZ;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 0.0f;
-        dd[6] = 1.0f;
+        VEC_0.intoArray(dd, 3);
         dd[7] = 1.0f;
         dd[8] = 1.0f;
         dd[9] = 1.0f;
@@ -2944,10 +2941,7 @@ public final class FloatTransformImpl implements FloatTransform {
     @Mutated public FloatTransform makeRotationY(float angle) {
         float[] dd = this.data;
         float _t0 = 0.5f * angle;
-        dd[0] = 0.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
+        VEC_2.intoArray(dd, 0);
         dd[4] = (float) Math.sin(_t0);
         dd[5] = 0.0f;
         dd[6] = (float) Math.cos(_t0);
@@ -3045,10 +3039,7 @@ public final class FloatTransformImpl implements FloatTransform {
     @Mutated public FloatTransform makeRotationZ(float angle) {
         float[] dd = this.data;
         float _t0 = 0.5f * angle;
-        dd[0] = 0.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 0.0f;
         dd[5] = (float) Math.sin(_t0);
         dd[6] = (float) Math.cos(_t0);
@@ -3159,10 +3150,7 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     @Mutated public FloatTransform makeScaling(float scaleX, float scaleY, float scaleZ) {
         float[] dd = this.data;
-        dd[0] = 0.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 0.0f;
         dd[5] = 0.0f;
         dd[6] = 1.0f;
@@ -3181,10 +3169,7 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     @Mutated public FloatTransform makeScaling(float scale) {
         float[] dd = this.data;
-        dd[0] = 0.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 0.0f;
         dd[5] = 0.0f;
         dd[6] = 1.0f;
@@ -5519,6 +5504,7 @@ public final class FloatTransformImpl implements FloatTransform {
 
     private static final VectorSpecies<Float> COL_SPECIES = FloatVector.SPECIES_128;
     private static final FloatVector VEC_0 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 1.0f}, 0);
+    private static final FloatVector VEC_2 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 0.0f}, 0);
     private static final float[] DATA_1 = new float[] {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f};
 
 }

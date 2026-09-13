@@ -1002,10 +1002,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
         dd[0] = translationX;
         dd[1] = translationY;
         dd[2] = translationZ;
-        dd[3] = 0.0;
-        dd[4] = 0.0;
-        dd[5] = 0.0;
-        dd[6] = 1.0;
+        VEC_0.intoArray(dd, 3);
         dd[7] = 1.0;
         dd[8] = 1.0;
         dd[9] = 1.0;
@@ -1858,10 +1855,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
     @Mutated public DoubleTransform makeRotationY(double angle) {
         double[] dd = this.data;
         double _t0 = 0.5 * angle;
-        dd[0] = 0.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = Math.sin(_t0);
         dd[5] = 0.0;
         dd[6] = Math.cos(_t0);
@@ -1959,10 +1953,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
     @Mutated public DoubleTransform makeRotationZ(double angle) {
         double[] dd = this.data;
         double _t0 = 0.5 * angle;
-        dd[0] = 0.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 0.0;
         dd[5] = Math.sin(_t0);
         dd[6] = Math.cos(_t0);
@@ -2073,10 +2064,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
      */
     @Mutated public DoubleTransform makeScaling(double scaleX, double scaleY, double scaleZ) {
         double[] dd = this.data;
-        dd[0] = 0.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 0.0;
         dd[5] = 0.0;
         dd[6] = 1.0;
@@ -2095,10 +2083,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
      */
     @Mutated public DoubleTransform makeScaling(double scale) {
         double[] dd = this.data;
-        dd[0] = 0.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 0.0;
         dd[5] = 0.0;
         dd[6] = 1.0;
@@ -3293,6 +3278,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
     private static final VectorSpecies<Double> COL_SPECIES = DoubleVector.SPECIES_256;
     private static final DoubleVector VEC_0 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 0.0, 0.0, 1.0}, 0);
+    private static final DoubleVector VEC_2 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 0.0, 0.0, 0.0}, 0);
     private static final double[] DATA_1 = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0};
 
 }

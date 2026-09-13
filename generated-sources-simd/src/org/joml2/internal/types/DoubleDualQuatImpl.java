@@ -608,10 +608,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         dd[1] = rotationY;
         dd[2] = rotationZ;
         dd[3] = rotationW;
-        dd[4] = 0.0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -687,10 +684,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      */
     @Mutated public DoubleDualQuat set(double translationX, double translationY, double translationZ) {
         double[] dd = this.data;
-        dd[0] = 0.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 1.0;
+        VEC_3.intoArray(dd, 0);
         dd[4] = 0.5 * translationX;
         dd[5] = 0.5 * translationY;
         dd[6] = 0.5 * translationZ;
@@ -1918,10 +1912,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
                 }
             }
         }
-        dd[4] = 0.0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -2394,10 +2385,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         dd[1] = axisY * _t1;
         dd[2] = axisZ * _t1;
         dd[3] = Math.cos(_t0);
-        dd[4] = 0.0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -2501,10 +2489,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
                 }
             }
         }
-        dd[4] = 0.0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -2522,10 +2507,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = Math.cos(_t0);
-        dd[4] = 0.0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -2559,10 +2541,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         dd[1] = Math.fma(_t10, _t5, -(_t9 * _t8));
         dd[2] = Math.fma(_t11, _t5, _t12 * _t8);
         dd[3] = Math.fma(_t12, _t5, -(_t11 * _t8));
-        dd[4] = 0.0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -2596,10 +2575,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         dd[1] = Math.fma(_t11, _t8, -(_t12 * _t5));
         dd[2] = Math.fma(_t9, _t8, _t10 * _t5);
         dd[3] = Math.fma(_t12, _t8, _t11 * _t5);
-        dd[4] = 0.0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -2617,10 +2593,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         dd[1] = Math.sin(_t0);
         dd[2] = 0.0;
         dd[3] = Math.cos(_t0);
-        dd[4] = 0.0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -2654,10 +2627,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         dd[1] = Math.fma(_t10, _t5, -(_t9 * _t8));
         dd[2] = Math.fma(_t11, _t8, -(_t12 * _t5));
         dd[3] = Math.fma(_t12, _t8, _t11 * _t5);
-        dd[4] = 0.0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -2691,10 +2661,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         dd[1] = Math.fma(_t11, _t5, _t12 * _t8);
         dd[2] = Math.fma(_t12, _t5, -(_t11 * _t8));
         dd[3] = Math.fma(_t10, _t5, -(_t9 * _t8));
-        dd[4] = 0.0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -2712,10 +2679,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         dd[1] = 0.0;
         dd[2] = Math.sin(_t0);
         dd[3] = Math.cos(_t0);
-        dd[4] = 0.0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -2749,10 +2713,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         dd[1] = Math.fma(_t11, _t5, _t12 * _t8);
         dd[2] = Math.fma(_t9, _t8, _t10 * _t5);
         dd[3] = Math.fma(_t12, _t5, -(_t11 * _t8));
-        dd[4] = 0.0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -2786,10 +2747,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         dd[1] = Math.fma(_t11, _t8, _t12 * _t5);
         dd[2] = Math.fma(_t12, _t8, -(_t11 * _t5));
         dd[3] = Math.fma(_t10, _t5, _t9 * _t8);
-        dd[4] = 0.0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -3787,6 +3745,8 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     }
 
     private static final VectorSpecies<Double> COL_SPECIES = DoubleVector.SPECIES_256;
+    private static final DoubleVector VEC_2 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 0.0, 0.0, 0.0}, 0);
+    private static final DoubleVector VEC_3 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 0.0, 0.0, 1.0}, 0);
     private static final double[] DATA_0 = new double[] {0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0};
     private static final double[] DATA_1 = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 

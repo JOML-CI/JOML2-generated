@@ -876,10 +876,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
         dd[0] = translationX;
         dd[1] = translationY;
         dd[2] = translationZ;
-        dd[3] = 0.0;
-        dd[4] = 0.0;
-        dd[5] = 0.0;
-        dd[6] = 1.0;
+        VEC_1.intoArray(dd, 3);
         return this;
     }
 
@@ -1610,10 +1607,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
     @Mutated public DoubleRigid makeRotationY(double angle) {
         double[] dd = this.data;
         double _t0 = 0.5 * angle;
-        dd[0] = 0.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = Math.sin(_t0);
         dd[5] = 0.0;
         dd[6] = Math.cos(_t0);
@@ -1702,10 +1696,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
     @Mutated public DoubleRigid makeRotationZ(double angle) {
         double[] dd = this.data;
         double _t0 = 0.5 * angle;
-        dd[0] = 0.0;
-        dd[1] = 0.0;
-        dd[2] = 0.0;
-        dd[3] = 0.0;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 0.0;
         dd[5] = Math.sin(_t0);
         dd[6] = Math.cos(_t0);
@@ -2685,6 +2676,8 @@ public final class DoubleRigidImpl implements DoubleRigid {
     }
 
     private static final VectorSpecies<Double> COL_SPECIES = DoubleVector.SPECIES_256;
+    private static final DoubleVector VEC_1 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 0.0, 0.0, 1.0}, 0);
+    private static final DoubleVector VEC_2 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 0.0, 0.0, 0.0}, 0);
     private static final double[] DATA_0 = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
 
 }

@@ -1136,10 +1136,7 @@ public final class FloatRigidImpl implements FloatRigid {
         dd[0] = translationX;
         dd[1] = translationY;
         dd[2] = translationZ;
-        dd[3] = 0.0f;
-        dd[4] = 0.0f;
-        dd[5] = 0.0f;
-        dd[6] = 1.0f;
+        VEC_1.intoArray(dd, 3);
         return this;
     }
 
@@ -2509,10 +2506,7 @@ public final class FloatRigidImpl implements FloatRigid {
     @Mutated public FloatRigid makeRotationY(float angle) {
         float[] dd = this.data;
         float _t0 = 0.5f * angle;
-        dd[0] = 0.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
+        VEC_2.intoArray(dd, 0);
         dd[4] = (float) Math.sin(_t0);
         dd[5] = 0.0f;
         dd[6] = (float) Math.cos(_t0);
@@ -2601,10 +2595,7 @@ public final class FloatRigidImpl implements FloatRigid {
     @Mutated public FloatRigid makeRotationZ(float angle) {
         float[] dd = this.data;
         float _t0 = 0.5f * angle;
-        dd[0] = 0.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 0.0f;
+        VEC_2.intoArray(dd, 0);
         dd[4] = 0.0f;
         dd[5] = (float) Math.sin(_t0);
         dd[6] = (float) Math.cos(_t0);
@@ -4435,6 +4426,8 @@ public final class FloatRigidImpl implements FloatRigid {
     }
 
     private static final VectorSpecies<Float> COL_SPECIES = FloatVector.SPECIES_128;
+    private static final FloatVector VEC_1 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 1.0f}, 0);
+    private static final FloatVector VEC_2 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 0.0f}, 0);
     private static final float[] DATA_0 = new float[] {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
 
 }

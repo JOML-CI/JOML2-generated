@@ -830,10 +830,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         dd[1] = rotationY;
         dd[2] = rotationZ;
         dd[3] = rotationW;
-        dd[4] = 0.0f;
-        dd[5] = 0.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -909,10 +906,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     @Mutated public FloatDualQuat set(float translationX, float translationY, float translationZ) {
         float[] dd = this.data;
-        dd[0] = 0.0f;
-        dd[1] = 0.0f;
-        dd[2] = 0.0f;
-        dd[3] = 1.0f;
+        VEC_3.intoArray(dd, 0);
         dd[4] = 0.5f * translationX;
         dd[5] = 0.5f * translationY;
         dd[6] = 0.5f * translationZ;
@@ -3201,10 +3195,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
                 }
             }
         }
-        dd[4] = 0.0f;
-        dd[5] = 0.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -4148,10 +4139,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         dd[1] = axisY * _t1;
         dd[2] = axisZ * _t1;
         dd[3] = (float) Math.cos(_t0);
-        dd[4] = 0.0f;
-        dd[5] = 0.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -4255,10 +4243,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
                 }
             }
         }
-        dd[4] = 0.0f;
-        dd[5] = 0.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -4276,10 +4261,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         dd[1] = 0.0f;
         dd[2] = 0.0f;
         dd[3] = (float) Math.cos(_t0);
-        dd[4] = 0.0f;
-        dd[5] = 0.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -4313,10 +4295,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         dd[1] = Math.fma(_t10, _t5, -(_t9 * _t8));
         dd[2] = Math.fma(_t11, _t5, _t12 * _t8);
         dd[3] = Math.fma(_t12, _t5, -(_t11 * _t8));
-        dd[4] = 0.0f;
-        dd[5] = 0.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -4350,10 +4329,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         dd[1] = Math.fma(_t11, _t8, -(_t12 * _t5));
         dd[2] = Math.fma(_t9, _t8, _t10 * _t5);
         dd[3] = Math.fma(_t12, _t8, _t11 * _t5);
-        dd[4] = 0.0f;
-        dd[5] = 0.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -4371,10 +4347,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         dd[1] = (float) Math.sin(_t0);
         dd[2] = 0.0f;
         dd[3] = (float) Math.cos(_t0);
-        dd[4] = 0.0f;
-        dd[5] = 0.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -4408,10 +4381,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         dd[1] = Math.fma(_t10, _t5, -(_t9 * _t8));
         dd[2] = Math.fma(_t11, _t8, -(_t12 * _t5));
         dd[3] = Math.fma(_t12, _t8, _t11 * _t5);
-        dd[4] = 0.0f;
-        dd[5] = 0.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -4445,10 +4415,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         dd[1] = Math.fma(_t11, _t5, _t12 * _t8);
         dd[2] = Math.fma(_t12, _t5, -(_t11 * _t8));
         dd[3] = Math.fma(_t10, _t5, -(_t9 * _t8));
-        dd[4] = 0.0f;
-        dd[5] = 0.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -4466,10 +4433,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         dd[1] = 0.0f;
         dd[2] = (float) Math.sin(_t0);
         dd[3] = (float) Math.cos(_t0);
-        dd[4] = 0.0f;
-        dd[5] = 0.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -4503,10 +4467,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         dd[1] = Math.fma(_t11, _t5, _t12 * _t8);
         dd[2] = Math.fma(_t9, _t8, _t10 * _t5);
         dd[3] = Math.fma(_t12, _t5, -(_t11 * _t8));
-        dd[4] = 0.0f;
-        dd[5] = 0.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -4540,10 +4501,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         dd[1] = Math.fma(_t11, _t8, _t12 * _t5);
         dd[2] = Math.fma(_t12, _t8, -(_t11 * _t5));
         dd[3] = Math.fma(_t10, _t5, _t9 * _t8);
-        dd[4] = 0.0f;
-        dd[5] = 0.0f;
-        dd[6] = 0.0f;
-        dd[7] = 0.0f;
+        VEC_2.intoArray(dd, 4);
         return this;
     }
 
@@ -6487,6 +6445,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
     }
 
     private static final VectorSpecies<Float> COL_SPECIES = FloatVector.SPECIES_128;
+    private static final FloatVector VEC_2 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 0.0f}, 0);
+    private static final FloatVector VEC_3 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 1.0f}, 0);
     private static final float[] DATA_0 = new float[] {0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f};
     private static final float[] DATA_1 = new float[] {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 

@@ -2332,10 +2332,7 @@ public class Double2x2Impl implements Double2x2 {
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = sd[2];
-        dd[4] = 1.0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
+        VEC_6.intoArray(dd, 4);
         dd[8] = 1.0;
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -2353,10 +2350,7 @@ public class Double2x2Impl implements Double2x2 {
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = sd[2];
-        dd[4] = 1.0;
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
+        VEC_6.intoArray(dd, 4);
         dd[8] = 1.0;
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -2375,10 +2369,7 @@ public class Double2x2Impl implements Double2x2 {
         dd[2] = 0.0;
         dd[3] = sd[2];
         dd[4] = sd[3];
-        dd[5] = 0.0;
-        dd[6] = 0.0;
-        dd[7] = 0.0;
-        dd[8] = 1.0;
+        VEC_7.intoArray(dd, 5);
         dd[1] = _buf0;
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -4917,6 +4908,8 @@ public class Double2x2Impl implements Double2x2 {
     }
 
     private static final VectorSpecies<Double> COL_SPECIES = DoubleVector.SPECIES_256;
+    private static final DoubleVector VEC_6 = DoubleVector.fromArray(COL_SPECIES, new double[]{1.0, 0.0, 0.0, 0.0}, 0);
+    private static final DoubleVector VEC_7 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 0.0, 0.0, 1.0}, 0);
     private static final double[] DATA_0 = new double[] {1.0, 0.0, 0.0, 1.0};
     private static final double[] DATA_1 = new double[] {2.0, 0.0, 0.0, 2.0};
     private static final double[] DATA_2 = new double[] {-1.0, 0.0, 0.0, -1.0};
