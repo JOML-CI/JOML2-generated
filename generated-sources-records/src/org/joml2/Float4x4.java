@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 package org.joml2;
 
 import org.joml2.internal.storeload.*;
@@ -3617,10 +3619,13 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * @return the resulting matrix
      */
     public static Float4x4 makeFromTransform(float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        float _t0 = tRZ * tRZ;
-        float _t1 = tRZ * tRW;
-        float _t2 = tRY * tRW;
-        return new Float4x4(tSX * Math.fma(-2.0f, Math.fma(tRY, tRY, _t0), 1.0f), tSY * 2.0f * Math.fma(tRX, tRY, -_t1), tSZ * 2.0f * Math.fma(tRX, tRZ, _t2), tTX, tSX * 2.0f * Math.fma(tRX, tRY, _t1), tSY * Math.fma(-2.0f, Math.fma(tRX, tRX, _t0), 1.0f), tSZ * 2.0f * Math.fma(tRY, tRZ, -(tRX * tRW)), tTY, tSX * 2.0f * Math.fma(tRX, tRZ, -_t2), tSY * 2.0f * Math.fma(tRX, tRW, tRY * tRZ), tSZ * Math.fma(-2.0f, Math.fma(tRX, tRX, tRY * tRY), 1.0f), tTZ, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        float _t0 = 2.0f * tSX;
+        float _t1 = 2.0f * tSY;
+        float _t2 = 2.0f * tSZ;
+        float _t3 = tRZ * tRZ;
+        float _t4 = tRZ * tRW;
+        float _t5 = tRY * tRW;
+        return new Float4x4(Math.fma(-Math.fma(tRY, tRY, _t3), _t0, tSX), Math.fma(tRX, tRY, -_t4) * _t1, Math.fma(tRX, tRZ, _t5) * _t2, tTX, Math.fma(tRX, tRY, _t4) * _t0, Math.fma(-Math.fma(tRX, tRX, _t3), _t1, tSY), Math.fma(tRY, tRZ, -(tRX * tRW)) * _t2, tTY, Math.fma(tRX, tRZ, -_t5) * _t0, Math.fma(tRX, tRW, tRY * tRZ) * _t1, Math.fma(-Math.fma(tRX, tRX, tRY * tRY), _t2, tSZ), tTZ, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -8681,10 +8686,13 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * @return the resulting matrix
      */
     public static Float4x4 composeTRS(float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        float _t0 = rotationZ * rotationZ;
-        float _t1 = rotationZ * rotationW;
-        float _t2 = rotationY * rotationW;
-        return new Float4x4(scaleX * Math.fma(-2.0f, Math.fma(rotationY, rotationY, _t0), 1.0f), scaleY * 2.0f * Math.fma(rotationX, rotationY, -_t1), scaleZ * 2.0f * Math.fma(rotationX, rotationZ, _t2), translationX, scaleX * 2.0f * Math.fma(rotationX, rotationY, _t1), scaleY * Math.fma(-2.0f, Math.fma(rotationX, rotationX, _t0), 1.0f), scaleZ * 2.0f * Math.fma(rotationY, rotationZ, -(rotationX * rotationW)), translationY, scaleX * 2.0f * Math.fma(rotationX, rotationZ, -_t2), scaleY * 2.0f * Math.fma(rotationX, rotationW, rotationY * rotationZ), scaleZ * Math.fma(-2.0f, Math.fma(rotationX, rotationX, rotationY * rotationY), 1.0f), translationZ, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        float _t0 = 2.0f * scaleX;
+        float _t1 = 2.0f * scaleY;
+        float _t2 = 2.0f * scaleZ;
+        float _t3 = rotationZ * rotationZ;
+        float _t4 = rotationZ * rotationW;
+        float _t5 = rotationY * rotationW;
+        return new Float4x4(Math.fma(-Math.fma(rotationY, rotationY, _t3), _t0, scaleX), Math.fma(rotationX, rotationY, -_t4) * _t1, Math.fma(rotationX, rotationZ, _t5) * _t2, translationX, Math.fma(rotationX, rotationY, _t4) * _t0, Math.fma(-Math.fma(rotationX, rotationX, _t3), _t1, scaleY), Math.fma(rotationY, rotationZ, -(rotationX * rotationW)) * _t2, translationY, Math.fma(rotationX, rotationZ, -_t5) * _t0, Math.fma(rotationX, rotationW, rotationY * rotationZ) * _t1, Math.fma(-Math.fma(rotationX, rotationX, rotationY * rotationY), _t2, scaleZ), translationZ, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -8703,23 +8711,23 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
     }
 
     /** Private per-column body of {@code composeTRSMul}; reached only through it. */
-    private static Float4 composeTRSMul_s30bb8954_c0(Float4x4 m, float translationX, float _t27, float _t33, float _t30, float translationY, float _t31, float _t28, float _t34, float translationZ, float _t35, float _t32, float _t29) {
-        return new Float4(Math.fma(m.m30(), translationX, Math.fma(m.m20(), _t27, Math.fma(m.m00(), _t33, m.m10() * _t30))), Math.fma(m.m30(), translationY, Math.fma(m.m20(), _t31, Math.fma(m.m00(), _t28, m.m10() * _t34))), Math.fma(m.m30(), translationZ, Math.fma(m.m20(), _t35, Math.fma(m.m00(), _t32, m.m10() * _t29))), m.m30());
+    private static Float4 composeTRSMul_s30bb8954_c0(Float4x4 m, float translationX, float _t24, float _t30, float _t27, float translationY, float _t28, float _t25, float _t31, float translationZ, float _t32, float _t29, float _t26) {
+        return new Float4(Math.fma(m.m30(), translationX, Math.fma(m.m20(), _t24, Math.fma(m.m00(), _t30, m.m10() * _t27))), Math.fma(m.m30(), translationY, Math.fma(m.m20(), _t28, Math.fma(m.m00(), _t25, m.m10() * _t31))), Math.fma(m.m30(), translationZ, Math.fma(m.m20(), _t32, Math.fma(m.m00(), _t29, m.m10() * _t26))), m.m30());
     }
 
     /** Private per-column body of {@code composeTRSMul}; reached only through it. */
-    private static Float4 composeTRSMul_s30bb8954_c1(Float4x4 m, float translationX, float _t27, float _t33, float _t30, float translationY, float _t31, float _t28, float _t34, float translationZ, float _t35, float _t32, float _t29) {
-        return new Float4(Math.fma(m.m31(), translationX, Math.fma(m.m21(), _t27, Math.fma(m.m01(), _t33, m.m11() * _t30))), Math.fma(m.m31(), translationY, Math.fma(m.m21(), _t31, Math.fma(m.m01(), _t28, m.m11() * _t34))), Math.fma(m.m31(), translationZ, Math.fma(m.m21(), _t35, Math.fma(m.m01(), _t32, m.m11() * _t29))), m.m31());
+    private static Float4 composeTRSMul_s30bb8954_c1(Float4x4 m, float translationX, float _t24, float _t30, float _t27, float translationY, float _t28, float _t25, float _t31, float translationZ, float _t32, float _t29, float _t26) {
+        return new Float4(Math.fma(m.m31(), translationX, Math.fma(m.m21(), _t24, Math.fma(m.m01(), _t30, m.m11() * _t27))), Math.fma(m.m31(), translationY, Math.fma(m.m21(), _t28, Math.fma(m.m01(), _t25, m.m11() * _t31))), Math.fma(m.m31(), translationZ, Math.fma(m.m21(), _t32, Math.fma(m.m01(), _t29, m.m11() * _t26))), m.m31());
     }
 
     /** Private per-column body of {@code composeTRSMul}; reached only through it. */
-    private static Float4 composeTRSMul_s30bb8954_c2(Float4x4 m, float translationX, float _t27, float _t33, float _t30, float translationY, float _t31, float _t28, float _t34, float translationZ, float _t35, float _t32, float _t29) {
-        return new Float4(Math.fma(m.m32(), translationX, Math.fma(m.m22(), _t27, Math.fma(m.m02(), _t33, m.m12() * _t30))), Math.fma(m.m32(), translationY, Math.fma(m.m22(), _t31, Math.fma(m.m02(), _t28, m.m12() * _t34))), Math.fma(m.m32(), translationZ, Math.fma(m.m22(), _t35, Math.fma(m.m02(), _t32, m.m12() * _t29))), m.m32());
+    private static Float4 composeTRSMul_s30bb8954_c2(Float4x4 m, float translationX, float _t24, float _t30, float _t27, float translationY, float _t28, float _t25, float _t31, float translationZ, float _t32, float _t29, float _t26) {
+        return new Float4(Math.fma(m.m32(), translationX, Math.fma(m.m22(), _t24, Math.fma(m.m02(), _t30, m.m12() * _t27))), Math.fma(m.m32(), translationY, Math.fma(m.m22(), _t28, Math.fma(m.m02(), _t25, m.m12() * _t31))), Math.fma(m.m32(), translationZ, Math.fma(m.m22(), _t32, Math.fma(m.m02(), _t29, m.m12() * _t26))), m.m32());
     }
 
     /** Private per-column body of {@code composeTRSMul}; reached only through it. */
-    private static Float4 composeTRSMul_s30bb8954_c3(Float4x4 m, float translationX, float _t27, float _t33, float _t30, float translationY, float _t31, float _t28, float _t34, float translationZ, float _t35, float _t32, float _t29) {
-        return new Float4(Math.fma(m.m33(), translationX, Math.fma(m.m23(), _t27, Math.fma(m.m03(), _t33, m.m13() * _t30))), Math.fma(m.m33(), translationY, Math.fma(m.m23(), _t31, Math.fma(m.m03(), _t28, m.m13() * _t34))), Math.fma(m.m33(), translationZ, Math.fma(m.m23(), _t35, Math.fma(m.m03(), _t32, m.m13() * _t29))), m.m33());
+    private static Float4 composeTRSMul_s30bb8954_c3(Float4x4 m, float translationX, float _t24, float _t30, float _t27, float translationY, float _t28, float _t25, float _t31, float translationZ, float _t32, float _t29, float _t26) {
+        return new Float4(Math.fma(m.m33(), translationX, Math.fma(m.m23(), _t24, Math.fma(m.m03(), _t30, m.m13() * _t27))), Math.fma(m.m33(), translationY, Math.fma(m.m23(), _t28, Math.fma(m.m03(), _t25, m.m13() * _t31))), Math.fma(m.m33(), translationZ, Math.fma(m.m23(), _t32, Math.fma(m.m03(), _t29, m.m13() * _t26))), m.m33());
     }
 
 
@@ -8752,19 +8760,22 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * @return the resulting matrix
      */
     public static Float4x4 composeTRSMul(float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ, Float4x4 m) {
-        float _t0 = rotationY * rotationW;
-        float _t1 = rotationZ * rotationZ;
-        float _t2 = rotationZ * rotationW;
-        float _t27 = scaleZ * 2.0f * Math.fma(rotationX, rotationZ, _t0);
-        float _t28 = scaleX * 2.0f * Math.fma(rotationX, rotationY, _t2);
-        float _t29 = scaleY * 2.0f * Math.fma(rotationX, rotationW, rotationY * rotationZ);
-        float _t30 = scaleY * 2.0f * Math.fma(rotationX, rotationY, -_t2);
-        float _t31 = scaleZ * 2.0f * Math.fma(rotationY, rotationZ, -(rotationX * rotationW));
-        float _t32 = scaleX * 2.0f * Math.fma(rotationX, rotationZ, -_t0);
-        float _t33 = scaleX * Math.fma(-2.0f, Math.fma(rotationY, rotationY, _t1), 1.0f);
-        float _t34 = scaleY * Math.fma(-2.0f, Math.fma(rotationX, rotationX, _t1), 1.0f);
-        float _t35 = scaleZ * Math.fma(-2.0f, Math.fma(rotationX, rotationX, rotationY * rotationY), 1.0f);
-        return new Float4x4(composeTRSMul_s30bb8954_c0(m, translationX, _t27, _t33, _t30, translationY, _t31, _t28, _t34, translationZ, _t35, _t32, _t29), composeTRSMul_s30bb8954_c1(m, translationX, _t27, _t33, _t30, translationY, _t31, _t28, _t34, translationZ, _t35, _t32, _t29), composeTRSMul_s30bb8954_c2(m, translationX, _t27, _t33, _t30, translationY, _t31, _t28, _t34, translationZ, _t35, _t32, _t29), composeTRSMul_s30bb8954_c3(m, translationX, _t27, _t33, _t30, translationY, _t31, _t28, _t34, translationZ, _t35, _t32, _t29), 0);
+        float _t0 = 2.0f * scaleZ;
+        float _t1 = 2.0f * scaleX;
+        float _t2 = 2.0f * scaleY;
+        float _t3 = rotationY * rotationW;
+        float _t4 = rotationZ * rotationZ;
+        float _t5 = rotationZ * rotationW;
+        float _t24 = Math.fma(rotationX, rotationZ, _t3) * _t0;
+        float _t25 = Math.fma(rotationX, rotationY, _t5) * _t1;
+        float _t26 = Math.fma(rotationX, rotationW, rotationY * rotationZ) * _t2;
+        float _t27 = Math.fma(rotationX, rotationY, -_t5) * _t2;
+        float _t28 = Math.fma(rotationY, rotationZ, -(rotationX * rotationW)) * _t0;
+        float _t29 = Math.fma(rotationX, rotationZ, -_t3) * _t1;
+        float _t30 = Math.fma(-Math.fma(rotationY, rotationY, _t4), _t1, scaleX);
+        float _t31 = Math.fma(-Math.fma(rotationX, rotationX, _t4), _t2, scaleY);
+        float _t32 = Math.fma(-Math.fma(rotationX, rotationX, rotationY * rotationY), _t0, scaleZ);
+        return new Float4x4(composeTRSMul_s30bb8954_c0(m, translationX, _t24, _t30, _t27, translationY, _t28, _t25, _t31, translationZ, _t32, _t29, _t26), composeTRSMul_s30bb8954_c1(m, translationX, _t24, _t30, _t27, translationY, _t28, _t25, _t31, translationZ, _t32, _t29, _t26), composeTRSMul_s30bb8954_c2(m, translationX, _t24, _t30, _t27, translationY, _t28, _t25, _t31, translationZ, _t32, _t29, _t26), composeTRSMul_s30bb8954_c3(m, translationX, _t24, _t30, _t27, translationY, _t28, _t25, _t31, translationZ, _t32, _t29, _t26), 0);
     }
 
 
@@ -27774,40 +27785,44 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * only through the public {@code preRotateAround} dispatcher.
      */
     private Float4x4 preRotateAround_identity(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
-        float _t0 = -pivotZ;
-        float _t1 = rotZ * rotZ;
-        float _t2 = rotZ * rotW;
-        float _t3 = rotY * rotW;
-        float _t10 = Math.fma(rotY, rotY, _t1);
-        float _t13 = Math.fma(rotX, rotX, _t1);
-        float _t15 = Math.fma(rotX, rotX, rotY * rotY);
-        float _t19 = 2.0f * Math.fma(rotX, rotZ, _t3);
-        float _t20 = 2.0f * Math.fma(rotX, rotY, _t2);
-        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t22 = 2.0f * Math.fma(rotX, rotY, -_t2);
-        float _t23 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t24 = 2.0f * Math.fma(rotX, rotZ, -_t3);
-        return new Float4x4(Math.fma(-2.0f, _t10, 1.0f), _t22, _t19, Math.fma(_t0, _t19, Math.fma(pivotX, 2.0f * _t10, -(pivotY * _t22))), _t20, Math.fma(-2.0f, _t13, 1.0f), _t23, Math.fma(_t0, _t23, Math.fma(pivotY, 2.0f * _t13, -(pivotX * _t20))), _t24, _t21, Math.fma(-2.0f, _t15, 1.0f), Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t15, -(pivotX * _t24))), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = -rotY;
+        float _t2 = -pivotZ;
+        float _t3 = -rotX;
+        float _t4 = 2.0f * rotY;
+        float _t5 = 2.0f * rotZ;
+        float _t6 = 2.0f * rotX;
+        float _t7 = rotW * _t5;
+        float _t8 = rotW * _t4;
+        float _t9 = rotZ * _t5;
+        float _t10 = rotW * _t6;
+        float _t14 = Math.fma(-rotZ, _t5, 1.0f);
+        float _t15 = Math.fma(rotZ, _t6, _t8);
+        float _t16 = Math.fma(rotY, _t6, _t7);
+        float _t17 = Math.fma(rotZ, _t4, _t10);
+        float _t18 = Math.fma(rotY, _t6, -_t7);
+        float _t19 = Math.fma(rotZ, _t4, -_t10);
+        float _t20 = Math.fma(rotZ, _t6, -_t8);
+        return new Float4x4(Math.fma(_t0, _t4, _t14), _t18, _t15, Math.fma(_t2, _t15, Math.fma(pivotX, Math.fma(rotY, _t4, _t9), -(pivotY * _t18))), _t16, Math.fma(_t3, _t6, _t14), _t19, Math.fma(_t2, _t19, Math.fma(pivotY, Math.fma(rotX, _t6, _t9), -(pivotX * _t16))), _t20, _t17, Math.fma(_t3, _t6, Math.fma(_t0, _t4, 1.0f)), Math.fma(-pivotY, _t17, Math.fma(pivotZ, Math.fma(rotX, _t6, rotY * _t4), -(pivotX * _t20))), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code preRotateAround_translation}; reached only through it. */
-    private Float4 preRotateAround_translation_s373cbb5f_c0(float _t25, float _t20, float _t24) {
-        return new Float4(_t25, _t20, _t24, 0.0f);
+    private Float4 preRotateAround_translation_s373cbb5f_c0(float _t22, float _t17, float _t21) {
+        return new Float4(_t22, _t17, _t21, 0.0f);
     }
 
     /** Private per-column body of {@code preRotateAround_translation}; reached only through it. */
-    private Float4 preRotateAround_translation_s373cbb5f_c1(float _t22, float _t26, float _t21) {
-        return new Float4(_t22, _t26, _t21, 0.0f);
+    private Float4 preRotateAround_translation_s373cbb5f_c1(float _t19, float _t23, float _t18) {
+        return new Float4(_t19, _t23, _t18, 0.0f);
     }
 
     /** Private per-column body of {@code preRotateAround_translation}; reached only through it. */
-    private Float4 preRotateAround_translation_s373cbb5f_c2(float _t19, float _t23, float _t27) {
-        return new Float4(_t19, _t23, _t27, 0.0f);
+    private Float4 preRotateAround_translation_s373cbb5f_c2(float _t16, float _t20, float _t24) {
+        return new Float4(_t16, _t20, _t24, 0.0f);
     }
 
     /** Private per-column body of {@code preRotateAround_translation}; reached only through it. */
-    private Float4 preRotateAround_translation_s373cbb5f_c3(float _t19, float _t25, float _t22, float _t0, float pivotX, float _t10, float pivotY, float _t23, float _t20, float _t26, float _t13, float _t27, float _t24, float _t21, float pivotZ, float _t15) {
-        return new Float4(Math.fma(this.m23, _t19, Math.fma(this.m03, _t25, this.m13 * _t22)) + Math.fma(_t0, _t19, Math.fma(pivotX, 2.0f * _t10, -(pivotY * _t22))), Math.fma(this.m23, _t23, Math.fma(this.m03, _t20, this.m13 * _t26)) + Math.fma(_t0, _t23, Math.fma(pivotY, 2.0f * _t13, -(pivotX * _t20))), Math.fma(this.m23, _t27, Math.fma(this.m03, _t24, this.m13 * _t21)) + Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t15, -(pivotX * _t24))), 1.0f);
+    private Float4 preRotateAround_translation_s373cbb5f_c3(float _t16, float _t22, float _t19, float _t2, float pivotX, float rotY, float _t4, float _t9, float pivotY, float _t20, float _t17, float _t23, float rotX, float _t6, float _t24, float _t21, float _t18, float pivotZ) {
+        return new Float4(Math.fma(this.m23, _t16, Math.fma(this.m03, _t22, this.m13 * _t19)) + Math.fma(_t2, _t16, Math.fma(pivotX, Math.fma(rotY, _t4, _t9), -(pivotY * _t19))), Math.fma(this.m23, _t20, Math.fma(this.m03, _t17, this.m13 * _t23)) + Math.fma(_t2, _t20, Math.fma(pivotY, Math.fma(rotX, _t6, _t9), -(pivotX * _t17))), Math.fma(this.m23, _t24, Math.fma(this.m03, _t21, this.m13 * _t18)) + Math.fma(-pivotY, _t18, Math.fma(pivotZ, Math.fma(rotX, _t6, rotY * _t4), -(pivotX * _t21))), 1.0f);
     }
 
 
@@ -27816,43 +27831,47 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * only through the public {@code preRotateAround} dispatcher.
      */
     private Float4x4 preRotateAround_translation(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
-        float _t0 = -pivotZ;
-        float _t1 = rotZ * rotZ;
-        float _t2 = rotZ * rotW;
-        float _t3 = rotY * rotW;
-        float _t10 = Math.fma(rotY, rotY, _t1);
-        float _t13 = Math.fma(rotX, rotX, _t1);
-        float _t15 = Math.fma(rotX, rotX, rotY * rotY);
-        float _t19 = 2.0f * Math.fma(rotX, rotZ, _t3);
-        float _t20 = 2.0f * Math.fma(rotX, rotY, _t2);
-        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t22 = 2.0f * Math.fma(rotX, rotY, -_t2);
-        float _t23 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t24 = 2.0f * Math.fma(rotX, rotZ, -_t3);
-        float _t25 = Math.fma(-2.0f, _t10, 1.0f);
-        float _t26 = Math.fma(-2.0f, _t13, 1.0f);
-        float _t27 = Math.fma(-2.0f, _t15, 1.0f);
-        return new Float4x4(preRotateAround_translation_s373cbb5f_c0(_t25, _t20, _t24), preRotateAround_translation_s373cbb5f_c1(_t22, _t26, _t21), preRotateAround_translation_s373cbb5f_c2(_t19, _t23, _t27), preRotateAround_translation_s373cbb5f_c3(_t19, _t25, _t22, _t0, pivotX, _t10, pivotY, _t23, _t20, _t26, _t13, _t27, _t24, _t21, pivotZ, _t15), Joml.BIT_ORTHOGONAL);
+        float _t0 = -rotY;
+        float _t2 = -pivotZ;
+        float _t3 = -rotX;
+        float _t4 = 2.0f * rotY;
+        float _t5 = 2.0f * rotZ;
+        float _t6 = 2.0f * rotX;
+        float _t7 = rotW * _t5;
+        float _t8 = rotW * _t4;
+        float _t9 = rotZ * _t5;
+        float _t10 = rotW * _t6;
+        float _t14 = Math.fma(-rotZ, _t5, 1.0f);
+        float _t16 = Math.fma(rotZ, _t6, _t8);
+        float _t17 = Math.fma(rotY, _t6, _t7);
+        float _t18 = Math.fma(rotZ, _t4, _t10);
+        float _t19 = Math.fma(rotY, _t6, -_t7);
+        float _t20 = Math.fma(rotZ, _t4, -_t10);
+        float _t21 = Math.fma(rotZ, _t6, -_t8);
+        float _t22 = Math.fma(_t0, _t4, _t14);
+        float _t23 = Math.fma(_t3, _t6, _t14);
+        float _t24 = Math.fma(_t3, _t6, Math.fma(_t0, _t4, 1.0f));
+        return new Float4x4(preRotateAround_translation_s373cbb5f_c0(_t22, _t17, _t21), preRotateAround_translation_s373cbb5f_c1(_t19, _t23, _t18), preRotateAround_translation_s373cbb5f_c2(_t16, _t20, _t24), preRotateAround_translation_s373cbb5f_c3(_t16, _t22, _t19, _t2, pivotX, rotY, _t4, _t9, pivotY, _t20, _t17, _t23, rotX, _t6, _t24, _t21, _t18, pivotZ), Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code preRotateAround_orthogonal}; reached only through it. */
-    private Float4 preRotateAround_orthogonal_s373cbb5f_c0(float _t19, float _t25, float _t22, float _t23, float _t20, float _t26, float _t27, float _t24, float _t21) {
-        return new Float4(Math.fma(this.m20, _t19, Math.fma(this.m00, _t25, this.m10 * _t22)), Math.fma(this.m20, _t23, Math.fma(this.m00, _t20, this.m10 * _t26)), Math.fma(this.m20, _t27, Math.fma(this.m00, _t24, this.m10 * _t21)), 0.0f);
+    private Float4 preRotateAround_orthogonal_s373cbb5f_c0(float _t16, float _t22, float _t19, float _t20, float _t17, float _t23, float _t24, float _t21, float _t18) {
+        return new Float4(Math.fma(this.m20, _t16, Math.fma(this.m00, _t22, this.m10 * _t19)), Math.fma(this.m20, _t20, Math.fma(this.m00, _t17, this.m10 * _t23)), Math.fma(this.m20, _t24, Math.fma(this.m00, _t21, this.m10 * _t18)), 0.0f);
     }
 
     /** Private per-column body of {@code preRotateAround_orthogonal}; reached only through it. */
-    private Float4 preRotateAround_orthogonal_s373cbb5f_c1(float _t19, float _t25, float _t22, float _t23, float _t20, float _t26, float _t27, float _t24, float _t21) {
-        return new Float4(Math.fma(this.m21, _t19, Math.fma(this.m01, _t25, this.m11 * _t22)), Math.fma(this.m21, _t23, Math.fma(this.m01, _t20, this.m11 * _t26)), Math.fma(this.m21, _t27, Math.fma(this.m01, _t24, this.m11 * _t21)), 0.0f);
+    private Float4 preRotateAround_orthogonal_s373cbb5f_c1(float _t16, float _t22, float _t19, float _t20, float _t17, float _t23, float _t24, float _t21, float _t18) {
+        return new Float4(Math.fma(this.m21, _t16, Math.fma(this.m01, _t22, this.m11 * _t19)), Math.fma(this.m21, _t20, Math.fma(this.m01, _t17, this.m11 * _t23)), Math.fma(this.m21, _t24, Math.fma(this.m01, _t21, this.m11 * _t18)), 0.0f);
     }
 
     /** Private per-column body of {@code preRotateAround_orthogonal}; reached only through it. */
-    private Float4 preRotateAround_orthogonal_s373cbb5f_c2(float _t19, float _t25, float _t22, float _t23, float _t20, float _t26, float _t27, float _t24, float _t21) {
-        return new Float4(Math.fma(this.m22, _t19, Math.fma(this.m02, _t25, this.m12 * _t22)), Math.fma(this.m22, _t23, Math.fma(this.m02, _t20, this.m12 * _t26)), Math.fma(this.m22, _t27, Math.fma(this.m02, _t24, this.m12 * _t21)), 0.0f);
+    private Float4 preRotateAround_orthogonal_s373cbb5f_c2(float _t16, float _t22, float _t19, float _t20, float _t17, float _t23, float _t24, float _t21, float _t18) {
+        return new Float4(Math.fma(this.m22, _t16, Math.fma(this.m02, _t22, this.m12 * _t19)), Math.fma(this.m22, _t20, Math.fma(this.m02, _t17, this.m12 * _t23)), Math.fma(this.m22, _t24, Math.fma(this.m02, _t21, this.m12 * _t18)), 0.0f);
     }
 
     /** Private per-column body of {@code preRotateAround_orthogonal}; reached only through it. */
-    private Float4 preRotateAround_orthogonal_s373cbb5f_c3(float _t19, float _t25, float _t22, float _t0, float pivotX, float _t11, float pivotY, float _t23, float _t20, float _t26, float _t13, float _t27, float _t24, float _t21, float pivotZ, float _t14) {
-        return new Float4(Math.fma(this.m23, _t19, Math.fma(this.m03, _t25, this.m13 * _t22)) + Math.fma(_t0, _t19, Math.fma(pivotX, 2.0f * _t11, -(pivotY * _t22))), Math.fma(this.m23, _t23, Math.fma(this.m03, _t20, this.m13 * _t26)) + Math.fma(_t0, _t23, Math.fma(pivotY, 2.0f * _t13, -(pivotX * _t20))), Math.fma(this.m23, _t27, Math.fma(this.m03, _t24, this.m13 * _t21)) + Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t14, -(pivotX * _t24))), 1.0f);
+    private Float4 preRotateAround_orthogonal_s373cbb5f_c3(float _t16, float _t22, float _t19, float _t2, float pivotX, float rotY, float _t5, float _t9, float pivotY, float _t20, float _t17, float _t23, float rotX, float _t4, float _t24, float _t21, float _t18, float pivotZ) {
+        return new Float4(Math.fma(this.m23, _t16, Math.fma(this.m03, _t22, this.m13 * _t19)) + Math.fma(_t2, _t16, Math.fma(pivotX, Math.fma(rotY, _t5, _t9), -(pivotY * _t19))), Math.fma(this.m23, _t20, Math.fma(this.m03, _t17, this.m13 * _t23)) + Math.fma(_t2, _t20, Math.fma(pivotY, Math.fma(rotX, _t4, _t9), -(pivotX * _t17))), Math.fma(this.m23, _t24, Math.fma(this.m03, _t21, this.m13 * _t18)) + Math.fma(-pivotY, _t18, Math.fma(pivotZ, Math.fma(rotX, _t4, rotY * _t5), -(pivotX * _t21))), 1.0f);
     }
 
 
@@ -27861,43 +27880,47 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * only through the public {@code preRotateAround} dispatcher.
      */
     private Float4x4 preRotateAround_orthogonal(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
-        float _t0 = -pivotZ;
-        float _t1 = rotY * rotW;
-        float _t2 = rotZ * rotZ;
-        float _t3 = rotZ * rotW;
-        float _t11 = Math.fma(rotY, rotY, _t2);
-        float _t13 = Math.fma(rotX, rotX, _t2);
-        float _t14 = Math.fma(rotX, rotX, rotY * rotY);
-        float _t19 = 2.0f * Math.fma(rotX, rotZ, _t1);
-        float _t20 = 2.0f * Math.fma(rotX, rotY, _t3);
-        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t22 = 2.0f * Math.fma(rotX, rotY, -_t3);
-        float _t23 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t24 = 2.0f * Math.fma(rotX, rotZ, -_t1);
-        float _t25 = Math.fma(-2.0f, _t11, 1.0f);
-        float _t26 = Math.fma(-2.0f, _t13, 1.0f);
-        float _t27 = Math.fma(-2.0f, _t14, 1.0f);
-        return new Float4x4(preRotateAround_orthogonal_s373cbb5f_c0(_t19, _t25, _t22, _t23, _t20, _t26, _t27, _t24, _t21), preRotateAround_orthogonal_s373cbb5f_c1(_t19, _t25, _t22, _t23, _t20, _t26, _t27, _t24, _t21), preRotateAround_orthogonal_s373cbb5f_c2(_t19, _t25, _t22, _t23, _t20, _t26, _t27, _t24, _t21), preRotateAround_orthogonal_s373cbb5f_c3(_t19, _t25, _t22, _t0, pivotX, _t11, pivotY, _t23, _t20, _t26, _t13, _t27, _t24, _t21, pivotZ, _t14), Joml.BIT_ORTHOGONAL);
+        float _t0 = -rotY;
+        float _t2 = -pivotZ;
+        float _t3 = -rotX;
+        float _t4 = 2.0f * rotX;
+        float _t5 = 2.0f * rotY;
+        float _t6 = 2.0f * rotZ;
+        float _t7 = rotW * _t5;
+        float _t8 = rotW * _t6;
+        float _t9 = rotZ * _t6;
+        float _t10 = rotW * _t4;
+        float _t14 = Math.fma(-rotZ, _t6, 1.0f);
+        float _t16 = Math.fma(rotZ, _t4, _t7);
+        float _t17 = Math.fma(rotY, _t4, _t8);
+        float _t18 = Math.fma(rotZ, _t5, _t10);
+        float _t19 = Math.fma(rotY, _t4, -_t8);
+        float _t20 = Math.fma(rotZ, _t5, -_t10);
+        float _t21 = Math.fma(rotZ, _t4, -_t7);
+        float _t22 = Math.fma(_t0, _t5, _t14);
+        float _t23 = Math.fma(_t3, _t4, _t14);
+        float _t24 = Math.fma(_t3, _t4, Math.fma(_t0, _t5, 1.0f));
+        return new Float4x4(preRotateAround_orthogonal_s373cbb5f_c0(_t16, _t22, _t19, _t20, _t17, _t23, _t24, _t21, _t18), preRotateAround_orthogonal_s373cbb5f_c1(_t16, _t22, _t19, _t20, _t17, _t23, _t24, _t21, _t18), preRotateAround_orthogonal_s373cbb5f_c2(_t16, _t22, _t19, _t20, _t17, _t23, _t24, _t21, _t18), preRotateAround_orthogonal_s373cbb5f_c3(_t16, _t22, _t19, _t2, pivotX, rotY, _t5, _t9, pivotY, _t20, _t17, _t23, rotX, _t4, _t24, _t21, _t18, pivotZ), Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code preRotateAround_affine}; reached only through it. */
-    private Float4 preRotateAround_affine_s373cbb5f_c0(float _t19, float _t25, float _t22, float _t23, float _t20, float _t26, float _t27, float _t24, float _t21) {
-        return new Float4(Math.fma(this.m20, _t19, Math.fma(this.m00, _t25, this.m10 * _t22)), Math.fma(this.m20, _t23, Math.fma(this.m00, _t20, this.m10 * _t26)), Math.fma(this.m20, _t27, Math.fma(this.m00, _t24, this.m10 * _t21)), 0.0f);
+    private Float4 preRotateAround_affine_s373cbb5f_c0(float _t16, float _t22, float _t19, float _t20, float _t17, float _t23, float _t24, float _t21, float _t18) {
+        return new Float4(Math.fma(this.m20, _t16, Math.fma(this.m00, _t22, this.m10 * _t19)), Math.fma(this.m20, _t20, Math.fma(this.m00, _t17, this.m10 * _t23)), Math.fma(this.m20, _t24, Math.fma(this.m00, _t21, this.m10 * _t18)), 0.0f);
     }
 
     /** Private per-column body of {@code preRotateAround_affine}; reached only through it. */
-    private Float4 preRotateAround_affine_s373cbb5f_c1(float _t19, float _t25, float _t22, float _t23, float _t20, float _t26, float _t27, float _t24, float _t21) {
-        return new Float4(Math.fma(this.m21, _t19, Math.fma(this.m01, _t25, this.m11 * _t22)), Math.fma(this.m21, _t23, Math.fma(this.m01, _t20, this.m11 * _t26)), Math.fma(this.m21, _t27, Math.fma(this.m01, _t24, this.m11 * _t21)), 0.0f);
+    private Float4 preRotateAround_affine_s373cbb5f_c1(float _t16, float _t22, float _t19, float _t20, float _t17, float _t23, float _t24, float _t21, float _t18) {
+        return new Float4(Math.fma(this.m21, _t16, Math.fma(this.m01, _t22, this.m11 * _t19)), Math.fma(this.m21, _t20, Math.fma(this.m01, _t17, this.m11 * _t23)), Math.fma(this.m21, _t24, Math.fma(this.m01, _t21, this.m11 * _t18)), 0.0f);
     }
 
     /** Private per-column body of {@code preRotateAround_affine}; reached only through it. */
-    private Float4 preRotateAround_affine_s373cbb5f_c2(float _t19, float _t25, float _t22, float _t23, float _t20, float _t26, float _t27, float _t24, float _t21) {
-        return new Float4(Math.fma(this.m22, _t19, Math.fma(this.m02, _t25, this.m12 * _t22)), Math.fma(this.m22, _t23, Math.fma(this.m02, _t20, this.m12 * _t26)), Math.fma(this.m22, _t27, Math.fma(this.m02, _t24, this.m12 * _t21)), 0.0f);
+    private Float4 preRotateAround_affine_s373cbb5f_c2(float _t16, float _t22, float _t19, float _t20, float _t17, float _t23, float _t24, float _t21, float _t18) {
+        return new Float4(Math.fma(this.m22, _t16, Math.fma(this.m02, _t22, this.m12 * _t19)), Math.fma(this.m22, _t20, Math.fma(this.m02, _t17, this.m12 * _t23)), Math.fma(this.m22, _t24, Math.fma(this.m02, _t21, this.m12 * _t18)), 0.0f);
     }
 
     /** Private per-column body of {@code preRotateAround_affine}; reached only through it. */
-    private Float4 preRotateAround_affine_s373cbb5f_c3(float _t19, float _t25, float _t22, float _t0, float pivotX, float _t11, float pivotY, float _t23, float _t20, float _t26, float _t13, float _t27, float _t24, float _t21, float pivotZ, float _t14) {
-        return new Float4(Math.fma(this.m23, _t19, Math.fma(this.m03, _t25, this.m13 * _t22)) + Math.fma(_t0, _t19, Math.fma(pivotX, 2.0f * _t11, -(pivotY * _t22))), Math.fma(this.m23, _t23, Math.fma(this.m03, _t20, this.m13 * _t26)) + Math.fma(_t0, _t23, Math.fma(pivotY, 2.0f * _t13, -(pivotX * _t20))), Math.fma(this.m23, _t27, Math.fma(this.m03, _t24, this.m13 * _t21)) + Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t14, -(pivotX * _t24))), 1.0f);
+    private Float4 preRotateAround_affine_s373cbb5f_c3(float _t16, float _t22, float _t19, float _t2, float pivotX, float rotY, float _t5, float _t9, float pivotY, float _t20, float _t17, float _t23, float rotX, float _t4, float _t24, float _t21, float _t18, float pivotZ) {
+        return new Float4(Math.fma(this.m23, _t16, Math.fma(this.m03, _t22, this.m13 * _t19)) + Math.fma(_t2, _t16, Math.fma(pivotX, Math.fma(rotY, _t5, _t9), -(pivotY * _t19))), Math.fma(this.m23, _t20, Math.fma(this.m03, _t17, this.m13 * _t23)) + Math.fma(_t2, _t20, Math.fma(pivotY, Math.fma(rotX, _t4, _t9), -(pivotX * _t17))), Math.fma(this.m23, _t24, Math.fma(this.m03, _t21, this.m13 * _t18)) + Math.fma(-pivotY, _t18, Math.fma(pivotZ, Math.fma(rotX, _t4, rotY * _t5), -(pivotX * _t21))), 1.0f);
     }
 
 
@@ -27906,23 +27929,27 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * only through the public {@code preRotateAround} dispatcher.
      */
     private Float4x4 preRotateAround_affine(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
-        float _t0 = -pivotZ;
-        float _t1 = rotY * rotW;
-        float _t2 = rotZ * rotZ;
-        float _t3 = rotZ * rotW;
-        float _t11 = Math.fma(rotY, rotY, _t2);
-        float _t13 = Math.fma(rotX, rotX, _t2);
-        float _t14 = Math.fma(rotX, rotX, rotY * rotY);
-        float _t19 = 2.0f * Math.fma(rotX, rotZ, _t1);
-        float _t20 = 2.0f * Math.fma(rotX, rotY, _t3);
-        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t22 = 2.0f * Math.fma(rotX, rotY, -_t3);
-        float _t23 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t24 = 2.0f * Math.fma(rotX, rotZ, -_t1);
-        float _t25 = Math.fma(-2.0f, _t11, 1.0f);
-        float _t26 = Math.fma(-2.0f, _t13, 1.0f);
-        float _t27 = Math.fma(-2.0f, _t14, 1.0f);
-        return new Float4x4(preRotateAround_affine_s373cbb5f_c0(_t19, _t25, _t22, _t23, _t20, _t26, _t27, _t24, _t21), preRotateAround_affine_s373cbb5f_c1(_t19, _t25, _t22, _t23, _t20, _t26, _t27, _t24, _t21), preRotateAround_affine_s373cbb5f_c2(_t19, _t25, _t22, _t23, _t20, _t26, _t27, _t24, _t21), preRotateAround_affine_s373cbb5f_c3(_t19, _t25, _t22, _t0, pivotX, _t11, pivotY, _t23, _t20, _t26, _t13, _t27, _t24, _t21, pivotZ, _t14), Joml.BIT_AFFINE);
+        float _t0 = -rotY;
+        float _t2 = -pivotZ;
+        float _t3 = -rotX;
+        float _t4 = 2.0f * rotX;
+        float _t5 = 2.0f * rotY;
+        float _t6 = 2.0f * rotZ;
+        float _t7 = rotW * _t5;
+        float _t8 = rotW * _t6;
+        float _t9 = rotZ * _t6;
+        float _t10 = rotW * _t4;
+        float _t14 = Math.fma(-rotZ, _t6, 1.0f);
+        float _t16 = Math.fma(rotZ, _t4, _t7);
+        float _t17 = Math.fma(rotY, _t4, _t8);
+        float _t18 = Math.fma(rotZ, _t5, _t10);
+        float _t19 = Math.fma(rotY, _t4, -_t8);
+        float _t20 = Math.fma(rotZ, _t5, -_t10);
+        float _t21 = Math.fma(rotZ, _t4, -_t7);
+        float _t22 = Math.fma(_t0, _t5, _t14);
+        float _t23 = Math.fma(_t3, _t4, _t14);
+        float _t24 = Math.fma(_t3, _t4, Math.fma(_t0, _t5, 1.0f));
+        return new Float4x4(preRotateAround_affine_s373cbb5f_c0(_t16, _t22, _t19, _t20, _t17, _t23, _t24, _t21, _t18), preRotateAround_affine_s373cbb5f_c1(_t16, _t22, _t19, _t20, _t17, _t23, _t24, _t21, _t18), preRotateAround_affine_s373cbb5f_c2(_t16, _t22, _t19, _t20, _t17, _t23, _t24, _t21, _t18), preRotateAround_affine_s373cbb5f_c3(_t16, _t22, _t19, _t2, pivotX, rotY, _t5, _t9, pivotY, _t20, _t17, _t23, rotX, _t4, _t24, _t21, _t18, pivotZ), Joml.BIT_AFFINE);
     }
 
 
@@ -27932,25 +27959,29 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      */
     private Float4x4 preRotateAround_general(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
         float _t0 = -pivotZ;
-        float _t2 = rotY * rotW;
-        float _t3 = rotZ * rotZ;
-        float _t4 = rotZ * rotW;
-        float _t12 = Math.fma(rotY, rotY, _t3);
-        float _t13 = Math.fma(rotX, rotX, _t3);
-        float _t16 = Math.fma(rotX, rotX, rotY * rotY);
-        float _t20 = 2.0f * Math.fma(rotX, rotZ, _t2);
-        float _t23 = 2.0f * Math.fma(rotX, rotY, _t4);
-        float _t24 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t26 = 2.0f * Math.fma(rotX, rotY, -_t4);
-        float _t27 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t28 = 2.0f * Math.fma(rotX, rotZ, -_t2);
-        float _t29 = Math.fma(-2.0f, _t12, 1.0f);
-        float _t30 = Math.fma(-2.0f, _t13, 1.0f);
-        float _t31 = Math.fma(-2.0f, _t16, 1.0f);
-        float _t41 = Math.fma(_t0, _t20, Math.fma(pivotX, 2.0f * _t12, -(pivotY * _t26)));
-        float _t42 = Math.fma(_t0, _t27, Math.fma(pivotY, 2.0f * _t13, -(pivotX * _t23)));
-        float _t43 = Math.fma(-pivotY, _t24, Math.fma(pivotZ, 2.0f * _t16, -(pivotX * _t28)));
-        return new Float4x4(Math.fma(this.m30, _t41, Math.fma(this.m20, _t20, Math.fma(this.m00, _t29, this.m10 * _t26))), Math.fma(this.m31, _t41, Math.fma(this.m21, _t20, Math.fma(this.m01, _t29, this.m11 * _t26))), Math.fma(this.m32, _t41, Math.fma(this.m22, _t20, Math.fma(this.m02, _t29, this.m12 * _t26))), Math.fma(this.m33, _t41, Math.fma(this.m23, _t20, Math.fma(this.m03, _t29, this.m13 * _t26))), Math.fma(this.m30, _t42, Math.fma(this.m20, _t27, Math.fma(this.m00, _t23, this.m10 * _t30))), Math.fma(this.m31, _t42, Math.fma(this.m21, _t27, Math.fma(this.m01, _t23, this.m11 * _t30))), Math.fma(this.m32, _t42, Math.fma(this.m22, _t27, Math.fma(this.m02, _t23, this.m12 * _t30))), Math.fma(this.m33, _t42, Math.fma(this.m23, _t27, Math.fma(this.m03, _t23, this.m13 * _t30))), Math.fma(this.m30, _t43, Math.fma(this.m20, _t31, Math.fma(this.m00, _t28, this.m10 * _t24))), Math.fma(this.m31, _t43, Math.fma(this.m21, _t31, Math.fma(this.m01, _t28, this.m11 * _t24))), Math.fma(this.m32, _t43, Math.fma(this.m22, _t31, Math.fma(this.m02, _t28, this.m12 * _t24))), Math.fma(this.m33, _t43, Math.fma(this.m23, _t31, Math.fma(this.m03, _t28, this.m13 * _t24))), this.m30, this.m31, this.m32, this.m33, 0);
+        float _t1 = -rotY;
+        float _t3 = -rotX;
+        float _t5 = 2.0f * rotX;
+        float _t6 = 2.0f * rotY;
+        float _t7 = 2.0f * rotZ;
+        float _t8 = rotW * _t6;
+        float _t9 = rotZ * _t7;
+        float _t10 = rotW * _t7;
+        float _t11 = rotW * _t5;
+        float _t16 = Math.fma(-rotZ, _t7, 1.0f);
+        float _t18 = Math.fma(rotZ, _t5, _t8);
+        float _t21 = Math.fma(rotY, _t5, _t10);
+        float _t22 = Math.fma(rotZ, _t6, _t11);
+        float _t24 = Math.fma(rotY, _t5, -_t10);
+        float _t25 = Math.fma(rotZ, _t6, -_t11);
+        float _t26 = Math.fma(rotZ, _t5, -_t8);
+        float _t27 = Math.fma(_t1, _t6, _t16);
+        float _t29 = Math.fma(_t3, _t5, _t16);
+        float _t30 = Math.fma(_t3, _t5, Math.fma(_t1, _t6, 1.0f));
+        float _t39 = Math.fma(_t0, _t18, Math.fma(pivotX, Math.fma(rotY, _t6, _t9), -(pivotY * _t24)));
+        float _t40 = Math.fma(_t0, _t25, Math.fma(pivotY, Math.fma(rotX, _t5, _t9), -(pivotX * _t21)));
+        float _t41 = Math.fma(-pivotY, _t22, Math.fma(pivotZ, Math.fma(rotX, _t5, rotY * _t6), -(pivotX * _t26)));
+        return new Float4x4(Math.fma(this.m30, _t39, Math.fma(this.m20, _t18, Math.fma(this.m00, _t27, this.m10 * _t24))), Math.fma(this.m31, _t39, Math.fma(this.m21, _t18, Math.fma(this.m01, _t27, this.m11 * _t24))), Math.fma(this.m32, _t39, Math.fma(this.m22, _t18, Math.fma(this.m02, _t27, this.m12 * _t24))), Math.fma(this.m33, _t39, Math.fma(this.m23, _t18, Math.fma(this.m03, _t27, this.m13 * _t24))), Math.fma(this.m30, _t40, Math.fma(this.m20, _t25, Math.fma(this.m00, _t21, this.m10 * _t29))), Math.fma(this.m31, _t40, Math.fma(this.m21, _t25, Math.fma(this.m01, _t21, this.m11 * _t29))), Math.fma(this.m32, _t40, Math.fma(this.m22, _t25, Math.fma(this.m02, _t21, this.m12 * _t29))), Math.fma(this.m33, _t40, Math.fma(this.m23, _t25, Math.fma(this.m03, _t21, this.m13 * _t29))), Math.fma(this.m30, _t41, Math.fma(this.m20, _t30, Math.fma(this.m00, _t26, this.m10 * _t22))), Math.fma(this.m31, _t41, Math.fma(this.m21, _t30, Math.fma(this.m01, _t26, this.m11 * _t22))), Math.fma(this.m32, _t41, Math.fma(this.m22, _t30, Math.fma(this.m02, _t26, this.m12 * _t22))), Math.fma(this.m33, _t41, Math.fma(this.m23, _t30, Math.fma(this.m03, _t26, this.m13 * _t22))), this.m30, this.m31, this.m32, this.m33, 0);
     }
 
 
@@ -28229,10 +28260,16 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code preRotateQuat} dispatcher.
      */
     private Float4x4 preRotateQuat_identity(float qX, float qY, float qZ, float qW) {
-        float _t0 = qZ * qZ;
-        float _t1 = qZ * qW;
-        float _t2 = qY * qW;
-        return new Float4x4(Math.fma(-2.0f, Math.fma(qY, qY, _t0), 1.0f), 2.0f * Math.fma(qX, qY, -_t1), 2.0f * Math.fma(qX, qZ, _t2), 0.0f, 2.0f * Math.fma(qX, qY, _t1), Math.fma(-2.0f, Math.fma(qX, qX, _t0), 1.0f), 2.0f * Math.fma(qY, qZ, -(qX * qW)), 0.0f, 2.0f * Math.fma(qX, qZ, -_t2), 2.0f * Math.fma(qX, qW, qY * qZ), Math.fma(-2.0f, Math.fma(qX, qX, qY * qY), 1.0f), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = -qY;
+        float _t2 = -qX;
+        float _t3 = 2.0f * qY;
+        float _t4 = 2.0f * qZ;
+        float _t5 = 2.0f * qX;
+        float _t6 = qW * _t4;
+        float _t7 = qW * _t3;
+        float _t8 = qW * _t5;
+        float _t9 = Math.fma(-qZ, _t4, 1.0f);
+        return new Float4x4(Math.fma(_t0, _t3, _t9), Math.fma(qY, _t5, -_t6), Math.fma(qZ, _t5, _t7), 0.0f, Math.fma(qY, _t5, _t6), Math.fma(_t2, _t5, _t9), Math.fma(qZ, _t3, -_t8), 0.0f, Math.fma(qZ, _t5, -_t7), Math.fma(qZ, _t3, _t8), Math.fma(_t2, _t5, Math.fma(_t0, _t3, 1.0f)), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -28241,39 +28278,45 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code preRotateQuat} dispatcher.
      */
     private Float4x4 preRotateQuat_translation(float qX, float qY, float qZ, float qW) {
-        float _t0 = qZ * qZ;
-        float _t1 = qZ * qW;
-        float _t2 = qY * qW;
-        float _t18 = 2.0f * Math.fma(qX, qZ, _t2);
-        float _t19 = 2.0f * Math.fma(qX, qY, _t1);
-        float _t20 = 2.0f * Math.fma(qX, qW, qY * qZ);
-        float _t21 = 2.0f * Math.fma(qX, qY, -_t1);
-        float _t22 = 2.0f * Math.fma(qY, qZ, -(qX * qW));
-        float _t23 = 2.0f * Math.fma(qX, qZ, -_t2);
-        float _t24 = Math.fma(-2.0f, Math.fma(qY, qY, _t0), 1.0f);
-        float _t25 = Math.fma(-2.0f, Math.fma(qX, qX, _t0), 1.0f);
-        float _t26 = Math.fma(-2.0f, Math.fma(qX, qX, qY * qY), 1.0f);
-        return new Float4x4(_t24, _t21, _t18, Math.fma(this.m23, _t18, Math.fma(this.m03, _t24, this.m13 * _t21)), _t19, _t25, _t22, Math.fma(this.m23, _t22, Math.fma(this.m03, _t19, this.m13 * _t25)), _t23, _t20, _t26, Math.fma(this.m23, _t26, Math.fma(this.m03, _t23, this.m13 * _t20)), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = -qY;
+        float _t2 = -qX;
+        float _t3 = 2.0f * qY;
+        float _t4 = 2.0f * qZ;
+        float _t5 = 2.0f * qX;
+        float _t6 = qW * _t4;
+        float _t7 = qW * _t3;
+        float _t8 = qW * _t5;
+        float _t12 = Math.fma(-qZ, _t4, 1.0f);
+        float _t14 = Math.fma(qZ, _t5, _t7);
+        float _t15 = Math.fma(qY, _t5, _t6);
+        float _t16 = Math.fma(qZ, _t3, _t8);
+        float _t17 = Math.fma(qY, _t5, -_t6);
+        float _t18 = Math.fma(qZ, _t3, -_t8);
+        float _t19 = Math.fma(qZ, _t5, -_t7);
+        float _t20 = Math.fma(_t0, _t3, _t12);
+        float _t21 = Math.fma(_t2, _t5, _t12);
+        float _t22 = Math.fma(_t2, _t5, Math.fma(_t0, _t3, 1.0f));
+        return new Float4x4(_t20, _t17, _t14, Math.fma(this.m23, _t14, Math.fma(this.m03, _t20, this.m13 * _t17)), _t15, _t21, _t18, Math.fma(this.m23, _t18, Math.fma(this.m03, _t15, this.m13 * _t21)), _t19, _t16, _t22, Math.fma(this.m23, _t22, Math.fma(this.m03, _t19, this.m13 * _t16)), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code preRotateQuat_orthogonal}; reached only through it. */
-    private Float4 preRotateQuat_orthogonal_s4eb09b0a_c0(float _t18, float _t24, float _t21, float _t22, float _t19, float _t25, float _t26, float _t23, float _t20) {
-        return new Float4(Math.fma(this.m20, _t18, Math.fma(this.m00, _t24, this.m10 * _t21)), Math.fma(this.m20, _t22, Math.fma(this.m00, _t19, this.m10 * _t25)), Math.fma(this.m20, _t26, Math.fma(this.m00, _t23, this.m10 * _t20)), 0.0f);
+    private Float4 preRotateQuat_orthogonal_s4eb09b0a_c0(float _t14, float _t20, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        return new Float4(Math.fma(this.m20, _t14, Math.fma(this.m00, _t20, this.m10 * _t17)), Math.fma(this.m20, _t18, Math.fma(this.m00, _t15, this.m10 * _t21)), Math.fma(this.m20, _t22, Math.fma(this.m00, _t19, this.m10 * _t16)), 0.0f);
     }
 
     /** Private per-column body of {@code preRotateQuat_orthogonal}; reached only through it. */
-    private Float4 preRotateQuat_orthogonal_s4eb09b0a_c1(float _t18, float _t24, float _t21, float _t22, float _t19, float _t25, float _t26, float _t23, float _t20) {
-        return new Float4(Math.fma(this.m21, _t18, Math.fma(this.m01, _t24, this.m11 * _t21)), Math.fma(this.m21, _t22, Math.fma(this.m01, _t19, this.m11 * _t25)), Math.fma(this.m21, _t26, Math.fma(this.m01, _t23, this.m11 * _t20)), 0.0f);
+    private Float4 preRotateQuat_orthogonal_s4eb09b0a_c1(float _t14, float _t20, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        return new Float4(Math.fma(this.m21, _t14, Math.fma(this.m01, _t20, this.m11 * _t17)), Math.fma(this.m21, _t18, Math.fma(this.m01, _t15, this.m11 * _t21)), Math.fma(this.m21, _t22, Math.fma(this.m01, _t19, this.m11 * _t16)), 0.0f);
     }
 
     /** Private per-column body of {@code preRotateQuat_orthogonal}; reached only through it. */
-    private Float4 preRotateQuat_orthogonal_s4eb09b0a_c2(float _t18, float _t24, float _t21, float _t22, float _t19, float _t25, float _t26, float _t23, float _t20) {
-        return new Float4(Math.fma(this.m22, _t18, Math.fma(this.m02, _t24, this.m12 * _t21)), Math.fma(this.m22, _t22, Math.fma(this.m02, _t19, this.m12 * _t25)), Math.fma(this.m22, _t26, Math.fma(this.m02, _t23, this.m12 * _t20)), 0.0f);
+    private Float4 preRotateQuat_orthogonal_s4eb09b0a_c2(float _t14, float _t20, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        return new Float4(Math.fma(this.m22, _t14, Math.fma(this.m02, _t20, this.m12 * _t17)), Math.fma(this.m22, _t18, Math.fma(this.m02, _t15, this.m12 * _t21)), Math.fma(this.m22, _t22, Math.fma(this.m02, _t19, this.m12 * _t16)), 0.0f);
     }
 
     /** Private per-column body of {@code preRotateQuat_orthogonal}; reached only through it. */
-    private Float4 preRotateQuat_orthogonal_s4eb09b0a_c3(float _t18, float _t24, float _t21, float _t22, float _t19, float _t25, float _t26, float _t23, float _t20) {
-        return new Float4(Math.fma(this.m23, _t18, Math.fma(this.m03, _t24, this.m13 * _t21)), Math.fma(this.m23, _t22, Math.fma(this.m03, _t19, this.m13 * _t25)), Math.fma(this.m23, _t26, Math.fma(this.m03, _t23, this.m13 * _t20)), 1.0f);
+    private Float4 preRotateQuat_orthogonal_s4eb09b0a_c3(float _t14, float _t20, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        return new Float4(Math.fma(this.m23, _t14, Math.fma(this.m03, _t20, this.m13 * _t17)), Math.fma(this.m23, _t18, Math.fma(this.m03, _t15, this.m13 * _t21)), Math.fma(this.m23, _t22, Math.fma(this.m03, _t19, this.m13 * _t16)), 1.0f);
     }
 
 
@@ -28282,39 +28325,45 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code preRotateQuat} dispatcher.
      */
     private Float4x4 preRotateQuat_orthogonal(float qX, float qY, float qZ, float qW) {
-        float _t0 = qY * qW;
-        float _t1 = qZ * qZ;
-        float _t2 = qZ * qW;
-        float _t18 = 2.0f * Math.fma(qX, qZ, _t0);
-        float _t19 = 2.0f * Math.fma(qX, qY, _t2);
-        float _t20 = 2.0f * Math.fma(qX, qW, qY * qZ);
-        float _t21 = 2.0f * Math.fma(qX, qY, -_t2);
-        float _t22 = 2.0f * Math.fma(qY, qZ, -(qX * qW));
-        float _t23 = 2.0f * Math.fma(qX, qZ, -_t0);
-        float _t24 = Math.fma(-2.0f, Math.fma(qY, qY, _t1), 1.0f);
-        float _t25 = Math.fma(-2.0f, Math.fma(qX, qX, _t1), 1.0f);
-        float _t26 = Math.fma(-2.0f, Math.fma(qX, qX, qY * qY), 1.0f);
-        return new Float4x4(preRotateQuat_orthogonal_s4eb09b0a_c0(_t18, _t24, _t21, _t22, _t19, _t25, _t26, _t23, _t20), preRotateQuat_orthogonal_s4eb09b0a_c1(_t18, _t24, _t21, _t22, _t19, _t25, _t26, _t23, _t20), preRotateQuat_orthogonal_s4eb09b0a_c2(_t18, _t24, _t21, _t22, _t19, _t25, _t26, _t23, _t20), preRotateQuat_orthogonal_s4eb09b0a_c3(_t18, _t24, _t21, _t22, _t19, _t25, _t26, _t23, _t20), Joml.BIT_ORTHOGONAL);
+        float _t0 = -qY;
+        float _t2 = -qX;
+        float _t3 = 2.0f * qX;
+        float _t4 = 2.0f * qY;
+        float _t5 = 2.0f * qZ;
+        float _t6 = qW * _t4;
+        float _t7 = qW * _t5;
+        float _t8 = qW * _t3;
+        float _t12 = Math.fma(-qZ, _t5, 1.0f);
+        float _t14 = Math.fma(qZ, _t3, _t6);
+        float _t15 = Math.fma(qY, _t3, _t7);
+        float _t16 = Math.fma(qZ, _t4, _t8);
+        float _t17 = Math.fma(qY, _t3, -_t7);
+        float _t18 = Math.fma(qZ, _t4, -_t8);
+        float _t19 = Math.fma(qZ, _t3, -_t6);
+        float _t20 = Math.fma(_t0, _t4, _t12);
+        float _t21 = Math.fma(_t2, _t3, _t12);
+        float _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f));
+        return new Float4x4(preRotateQuat_orthogonal_s4eb09b0a_c0(_t14, _t20, _t17, _t18, _t15, _t21, _t22, _t19, _t16), preRotateQuat_orthogonal_s4eb09b0a_c1(_t14, _t20, _t17, _t18, _t15, _t21, _t22, _t19, _t16), preRotateQuat_orthogonal_s4eb09b0a_c2(_t14, _t20, _t17, _t18, _t15, _t21, _t22, _t19, _t16), preRotateQuat_orthogonal_s4eb09b0a_c3(_t14, _t20, _t17, _t18, _t15, _t21, _t22, _t19, _t16), Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code preRotateQuat_affine}; reached only through it. */
-    private Float4 preRotateQuat_affine_s4eb09b0a_c0(float _t18, float _t24, float _t21, float _t22, float _t19, float _t25, float _t26, float _t23, float _t20) {
-        return new Float4(Math.fma(this.m20, _t18, Math.fma(this.m00, _t24, this.m10 * _t21)), Math.fma(this.m20, _t22, Math.fma(this.m00, _t19, this.m10 * _t25)), Math.fma(this.m20, _t26, Math.fma(this.m00, _t23, this.m10 * _t20)), 0.0f);
+    private Float4 preRotateQuat_affine_s4eb09b0a_c0(float _t14, float _t20, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        return new Float4(Math.fma(this.m20, _t14, Math.fma(this.m00, _t20, this.m10 * _t17)), Math.fma(this.m20, _t18, Math.fma(this.m00, _t15, this.m10 * _t21)), Math.fma(this.m20, _t22, Math.fma(this.m00, _t19, this.m10 * _t16)), 0.0f);
     }
 
     /** Private per-column body of {@code preRotateQuat_affine}; reached only through it. */
-    private Float4 preRotateQuat_affine_s4eb09b0a_c1(float _t18, float _t24, float _t21, float _t22, float _t19, float _t25, float _t26, float _t23, float _t20) {
-        return new Float4(Math.fma(this.m21, _t18, Math.fma(this.m01, _t24, this.m11 * _t21)), Math.fma(this.m21, _t22, Math.fma(this.m01, _t19, this.m11 * _t25)), Math.fma(this.m21, _t26, Math.fma(this.m01, _t23, this.m11 * _t20)), 0.0f);
+    private Float4 preRotateQuat_affine_s4eb09b0a_c1(float _t14, float _t20, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        return new Float4(Math.fma(this.m21, _t14, Math.fma(this.m01, _t20, this.m11 * _t17)), Math.fma(this.m21, _t18, Math.fma(this.m01, _t15, this.m11 * _t21)), Math.fma(this.m21, _t22, Math.fma(this.m01, _t19, this.m11 * _t16)), 0.0f);
     }
 
     /** Private per-column body of {@code preRotateQuat_affine}; reached only through it. */
-    private Float4 preRotateQuat_affine_s4eb09b0a_c2(float _t18, float _t24, float _t21, float _t22, float _t19, float _t25, float _t26, float _t23, float _t20) {
-        return new Float4(Math.fma(this.m22, _t18, Math.fma(this.m02, _t24, this.m12 * _t21)), Math.fma(this.m22, _t22, Math.fma(this.m02, _t19, this.m12 * _t25)), Math.fma(this.m22, _t26, Math.fma(this.m02, _t23, this.m12 * _t20)), 0.0f);
+    private Float4 preRotateQuat_affine_s4eb09b0a_c2(float _t14, float _t20, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        return new Float4(Math.fma(this.m22, _t14, Math.fma(this.m02, _t20, this.m12 * _t17)), Math.fma(this.m22, _t18, Math.fma(this.m02, _t15, this.m12 * _t21)), Math.fma(this.m22, _t22, Math.fma(this.m02, _t19, this.m12 * _t16)), 0.0f);
     }
 
     /** Private per-column body of {@code preRotateQuat_affine}; reached only through it. */
-    private Float4 preRotateQuat_affine_s4eb09b0a_c3(float _t18, float _t24, float _t21, float _t22, float _t19, float _t25, float _t26, float _t23, float _t20) {
-        return new Float4(Math.fma(this.m23, _t18, Math.fma(this.m03, _t24, this.m13 * _t21)), Math.fma(this.m23, _t22, Math.fma(this.m03, _t19, this.m13 * _t25)), Math.fma(this.m23, _t26, Math.fma(this.m03, _t23, this.m13 * _t20)), 1.0f);
+    private Float4 preRotateQuat_affine_s4eb09b0a_c3(float _t14, float _t20, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        return new Float4(Math.fma(this.m23, _t14, Math.fma(this.m03, _t20, this.m13 * _t17)), Math.fma(this.m23, _t18, Math.fma(this.m03, _t15, this.m13 * _t21)), Math.fma(this.m23, _t22, Math.fma(this.m03, _t19, this.m13 * _t16)), 1.0f);
     }
 
 
@@ -28323,39 +28372,45 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code preRotateQuat} dispatcher.
      */
     private Float4x4 preRotateQuat_affine(float qX, float qY, float qZ, float qW) {
-        float _t0 = qY * qW;
-        float _t1 = qZ * qZ;
-        float _t2 = qZ * qW;
-        float _t18 = 2.0f * Math.fma(qX, qZ, _t0);
-        float _t19 = 2.0f * Math.fma(qX, qY, _t2);
-        float _t20 = 2.0f * Math.fma(qX, qW, qY * qZ);
-        float _t21 = 2.0f * Math.fma(qX, qY, -_t2);
-        float _t22 = 2.0f * Math.fma(qY, qZ, -(qX * qW));
-        float _t23 = 2.0f * Math.fma(qX, qZ, -_t0);
-        float _t24 = Math.fma(-2.0f, Math.fma(qY, qY, _t1), 1.0f);
-        float _t25 = Math.fma(-2.0f, Math.fma(qX, qX, _t1), 1.0f);
-        float _t26 = Math.fma(-2.0f, Math.fma(qX, qX, qY * qY), 1.0f);
-        return new Float4x4(preRotateQuat_affine_s4eb09b0a_c0(_t18, _t24, _t21, _t22, _t19, _t25, _t26, _t23, _t20), preRotateQuat_affine_s4eb09b0a_c1(_t18, _t24, _t21, _t22, _t19, _t25, _t26, _t23, _t20), preRotateQuat_affine_s4eb09b0a_c2(_t18, _t24, _t21, _t22, _t19, _t25, _t26, _t23, _t20), preRotateQuat_affine_s4eb09b0a_c3(_t18, _t24, _t21, _t22, _t19, _t25, _t26, _t23, _t20), Joml.BIT_AFFINE);
+        float _t0 = -qY;
+        float _t2 = -qX;
+        float _t3 = 2.0f * qX;
+        float _t4 = 2.0f * qY;
+        float _t5 = 2.0f * qZ;
+        float _t6 = qW * _t4;
+        float _t7 = qW * _t5;
+        float _t8 = qW * _t3;
+        float _t12 = Math.fma(-qZ, _t5, 1.0f);
+        float _t14 = Math.fma(qZ, _t3, _t6);
+        float _t15 = Math.fma(qY, _t3, _t7);
+        float _t16 = Math.fma(qZ, _t4, _t8);
+        float _t17 = Math.fma(qY, _t3, -_t7);
+        float _t18 = Math.fma(qZ, _t4, -_t8);
+        float _t19 = Math.fma(qZ, _t3, -_t6);
+        float _t20 = Math.fma(_t0, _t4, _t12);
+        float _t21 = Math.fma(_t2, _t3, _t12);
+        float _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f));
+        return new Float4x4(preRotateQuat_affine_s4eb09b0a_c0(_t14, _t20, _t17, _t18, _t15, _t21, _t22, _t19, _t16), preRotateQuat_affine_s4eb09b0a_c1(_t14, _t20, _t17, _t18, _t15, _t21, _t22, _t19, _t16), preRotateQuat_affine_s4eb09b0a_c2(_t14, _t20, _t17, _t18, _t15, _t21, _t22, _t19, _t16), preRotateQuat_affine_s4eb09b0a_c3(_t14, _t20, _t17, _t18, _t15, _t21, _t22, _t19, _t16), Joml.BIT_AFFINE);
     }
 
     /** Private per-column body of {@code preRotateQuat_general}; reached only through it. */
-    private Float4 preRotateQuat_general_s4eb09b0a_c0(float _t18, float _t24, float _t21, float _t22, float _t19, float _t25, float _t26, float _t23, float _t20) {
-        return new Float4(Math.fma(this.m20, _t18, Math.fma(this.m00, _t24, this.m10 * _t21)), Math.fma(this.m20, _t22, Math.fma(this.m00, _t19, this.m10 * _t25)), Math.fma(this.m20, _t26, Math.fma(this.m00, _t23, this.m10 * _t20)), this.m30);
+    private Float4 preRotateQuat_general_s4eb09b0a_c0(float _t14, float _t20, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        return new Float4(Math.fma(this.m20, _t14, Math.fma(this.m00, _t20, this.m10 * _t17)), Math.fma(this.m20, _t18, Math.fma(this.m00, _t15, this.m10 * _t21)), Math.fma(this.m20, _t22, Math.fma(this.m00, _t19, this.m10 * _t16)), this.m30);
     }
 
     /** Private per-column body of {@code preRotateQuat_general}; reached only through it. */
-    private Float4 preRotateQuat_general_s4eb09b0a_c1(float _t18, float _t24, float _t21, float _t22, float _t19, float _t25, float _t26, float _t23, float _t20) {
-        return new Float4(Math.fma(this.m21, _t18, Math.fma(this.m01, _t24, this.m11 * _t21)), Math.fma(this.m21, _t22, Math.fma(this.m01, _t19, this.m11 * _t25)), Math.fma(this.m21, _t26, Math.fma(this.m01, _t23, this.m11 * _t20)), this.m31);
+    private Float4 preRotateQuat_general_s4eb09b0a_c1(float _t14, float _t20, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        return new Float4(Math.fma(this.m21, _t14, Math.fma(this.m01, _t20, this.m11 * _t17)), Math.fma(this.m21, _t18, Math.fma(this.m01, _t15, this.m11 * _t21)), Math.fma(this.m21, _t22, Math.fma(this.m01, _t19, this.m11 * _t16)), this.m31);
     }
 
     /** Private per-column body of {@code preRotateQuat_general}; reached only through it. */
-    private Float4 preRotateQuat_general_s4eb09b0a_c2(float _t18, float _t24, float _t21, float _t22, float _t19, float _t25, float _t26, float _t23, float _t20) {
-        return new Float4(Math.fma(this.m22, _t18, Math.fma(this.m02, _t24, this.m12 * _t21)), Math.fma(this.m22, _t22, Math.fma(this.m02, _t19, this.m12 * _t25)), Math.fma(this.m22, _t26, Math.fma(this.m02, _t23, this.m12 * _t20)), this.m32);
+    private Float4 preRotateQuat_general_s4eb09b0a_c2(float _t14, float _t20, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        return new Float4(Math.fma(this.m22, _t14, Math.fma(this.m02, _t20, this.m12 * _t17)), Math.fma(this.m22, _t18, Math.fma(this.m02, _t15, this.m12 * _t21)), Math.fma(this.m22, _t22, Math.fma(this.m02, _t19, this.m12 * _t16)), this.m32);
     }
 
     /** Private per-column body of {@code preRotateQuat_general}; reached only through it. */
-    private Float4 preRotateQuat_general_s4eb09b0a_c3(float _t18, float _t24, float _t21, float _t22, float _t19, float _t25, float _t26, float _t23, float _t20) {
-        return new Float4(Math.fma(this.m23, _t18, Math.fma(this.m03, _t24, this.m13 * _t21)), Math.fma(this.m23, _t22, Math.fma(this.m03, _t19, this.m13 * _t25)), Math.fma(this.m23, _t26, Math.fma(this.m03, _t23, this.m13 * _t20)), this.m33);
+    private Float4 preRotateQuat_general_s4eb09b0a_c3(float _t14, float _t20, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        return new Float4(Math.fma(this.m23, _t14, Math.fma(this.m03, _t20, this.m13 * _t17)), Math.fma(this.m23, _t18, Math.fma(this.m03, _t15, this.m13 * _t21)), Math.fma(this.m23, _t22, Math.fma(this.m03, _t19, this.m13 * _t16)), this.m33);
     }
 
 
@@ -28364,19 +28419,25 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code preRotateQuat} dispatcher.
      */
     private Float4x4 preRotateQuat_general(float qX, float qY, float qZ, float qW) {
-        float _t0 = qY * qW;
-        float _t1 = qZ * qZ;
-        float _t2 = qZ * qW;
-        float _t18 = 2.0f * Math.fma(qX, qZ, _t0);
-        float _t19 = 2.0f * Math.fma(qX, qY, _t2);
-        float _t20 = 2.0f * Math.fma(qX, qW, qY * qZ);
-        float _t21 = 2.0f * Math.fma(qX, qY, -_t2);
-        float _t22 = 2.0f * Math.fma(qY, qZ, -(qX * qW));
-        float _t23 = 2.0f * Math.fma(qX, qZ, -_t0);
-        float _t24 = Math.fma(-2.0f, Math.fma(qY, qY, _t1), 1.0f);
-        float _t25 = Math.fma(-2.0f, Math.fma(qX, qX, _t1), 1.0f);
-        float _t26 = Math.fma(-2.0f, Math.fma(qX, qX, qY * qY), 1.0f);
-        return new Float4x4(preRotateQuat_general_s4eb09b0a_c0(_t18, _t24, _t21, _t22, _t19, _t25, _t26, _t23, _t20), preRotateQuat_general_s4eb09b0a_c1(_t18, _t24, _t21, _t22, _t19, _t25, _t26, _t23, _t20), preRotateQuat_general_s4eb09b0a_c2(_t18, _t24, _t21, _t22, _t19, _t25, _t26, _t23, _t20), preRotateQuat_general_s4eb09b0a_c3(_t18, _t24, _t21, _t22, _t19, _t25, _t26, _t23, _t20), 0);
+        float _t0 = -qY;
+        float _t2 = -qX;
+        float _t3 = 2.0f * qX;
+        float _t4 = 2.0f * qY;
+        float _t5 = 2.0f * qZ;
+        float _t6 = qW * _t4;
+        float _t7 = qW * _t5;
+        float _t8 = qW * _t3;
+        float _t12 = Math.fma(-qZ, _t5, 1.0f);
+        float _t14 = Math.fma(qZ, _t3, _t6);
+        float _t15 = Math.fma(qY, _t3, _t7);
+        float _t16 = Math.fma(qZ, _t4, _t8);
+        float _t17 = Math.fma(qY, _t3, -_t7);
+        float _t18 = Math.fma(qZ, _t4, -_t8);
+        float _t19 = Math.fma(qZ, _t3, -_t6);
+        float _t20 = Math.fma(_t0, _t4, _t12);
+        float _t21 = Math.fma(_t2, _t3, _t12);
+        float _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f));
+        return new Float4x4(preRotateQuat_general_s4eb09b0a_c0(_t14, _t20, _t17, _t18, _t15, _t21, _t22, _t19, _t16), preRotateQuat_general_s4eb09b0a_c1(_t14, _t20, _t17, _t18, _t15, _t21, _t22, _t19, _t16), preRotateQuat_general_s4eb09b0a_c2(_t14, _t20, _t17, _t18, _t15, _t21, _t22, _t19, _t16), preRotateQuat_general_s4eb09b0a_c3(_t14, _t20, _t17, _t18, _t15, _t21, _t22, _t19, _t16), 0);
     }
 
 
@@ -29389,42 +29450,46 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateAround} dispatcher.
      */
     private Float4x4 rotateAround_translation(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
-        float _t0 = -pivotY;
-        float _t1 = -pivotZ;
-        float _t2 = -pivotX;
-        float _t3 = rotZ * rotZ;
-        float _t4 = rotZ * rotW;
-        float _t5 = rotY * rotW;
-        float _t12 = Math.fma(rotY, rotY, _t3);
-        float _t15 = Math.fma(rotX, rotX, _t3);
-        float _t17 = Math.fma(rotX, rotX, rotY * rotY);
-        float _t21 = 2.0f * Math.fma(rotX, rotZ, _t5);
-        float _t22 = 2.0f * Math.fma(rotX, rotY, _t4);
-        float _t23 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t24 = 2.0f * Math.fma(rotX, rotY, -_t4);
-        float _t25 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t5);
-        return new Float4x4(Math.fma(-2.0f, _t12, 1.0f), _t24, _t21, Math.fma(pivotX, 2.0f * _t12, Math.fma(_t0, _t24, Math.fma(_t1, _t21, this.m03))), _t22, Math.fma(-2.0f, _t15, 1.0f), _t25, Math.fma(pivotY, 2.0f * _t15, Math.fma(_t2, _t22, Math.fma(_t1, _t25, this.m13))), _t26, _t23, Math.fma(-2.0f, _t17, 1.0f), Math.fma(pivotZ, 2.0f * _t17, Math.fma(_t2, _t26, Math.fma(_t0, _t23, this.m23))), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = -rotY;
+        float _t2 = -pivotY;
+        float _t3 = -pivotZ;
+        float _t4 = -rotX;
+        float _t5 = -pivotX;
+        float _t6 = 2.0f * rotY;
+        float _t7 = 2.0f * rotZ;
+        float _t8 = 2.0f * rotX;
+        float _t9 = rotW * _t7;
+        float _t10 = rotW * _t6;
+        float _t11 = rotZ * _t7;
+        float _t12 = rotW * _t8;
+        float _t16 = Math.fma(-rotZ, _t7, 1.0f);
+        float _t17 = Math.fma(rotZ, _t8, _t10);
+        float _t18 = Math.fma(rotY, _t8, _t9);
+        float _t19 = Math.fma(rotZ, _t6, _t12);
+        float _t20 = Math.fma(rotY, _t8, -_t9);
+        float _t21 = Math.fma(rotZ, _t6, -_t12);
+        float _t22 = Math.fma(rotZ, _t8, -_t10);
+        return new Float4x4(Math.fma(_t0, _t6, _t16), _t20, _t17, Math.fma(pivotX, Math.fma(rotY, _t6, _t11), Math.fma(_t2, _t20, Math.fma(_t3, _t17, this.m03))), _t18, Math.fma(_t4, _t8, _t16), _t21, Math.fma(pivotY, Math.fma(rotX, _t8, _t11), Math.fma(_t5, _t18, Math.fma(_t3, _t21, this.m13))), _t22, _t19, Math.fma(_t4, _t8, Math.fma(_t0, _t6, 1.0f)), Math.fma(pivotZ, Math.fma(rotX, _t8, rotY * _t6), Math.fma(_t5, _t22, Math.fma(_t2, _t19, this.m23))), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code rotateAround_orthogonal}; reached only through it. */
-    private Float4 rotateAround_orthogonal_s373cbb5f_c0(float _t26, float _t29, float _t20) {
-        return new Float4(Math.fma(this.m02, _t26, Math.fma(this.m00, _t29, this.m01 * _t20)), Math.fma(this.m12, _t26, Math.fma(this.m10, _t29, this.m11 * _t20)), Math.fma(this.m22, _t26, Math.fma(this.m20, _t29, this.m21 * _t20)), 0.0f);
+    private Float4 rotateAround_orthogonal_s373cbb5f_c0(float _t24, float _t27, float _t18) {
+        return new Float4(Math.fma(this.m02, _t24, Math.fma(this.m00, _t27, this.m01 * _t18)), Math.fma(this.m12, _t24, Math.fma(this.m10, _t27, this.m11 * _t18)), Math.fma(this.m22, _t24, Math.fma(this.m20, _t27, this.m21 * _t18)), 0.0f);
     }
 
     /** Private per-column body of {@code rotateAround_orthogonal}; reached only through it. */
-    private Float4 rotateAround_orthogonal_s373cbb5f_c1(float _t21, float _t27, float _t30) {
-        return new Float4(Math.fma(this.m02, _t21, Math.fma(this.m00, _t27, this.m01 * _t30)), Math.fma(this.m12, _t21, Math.fma(this.m10, _t27, this.m11 * _t30)), Math.fma(this.m22, _t21, Math.fma(this.m20, _t27, this.m21 * _t30)), 0.0f);
+    private Float4 rotateAround_orthogonal_s373cbb5f_c1(float _t19, float _t25, float _t28) {
+        return new Float4(Math.fma(this.m02, _t19, Math.fma(this.m00, _t25, this.m01 * _t28)), Math.fma(this.m12, _t19, Math.fma(this.m10, _t25, this.m11 * _t28)), Math.fma(this.m22, _t19, Math.fma(this.m20, _t25, this.m21 * _t28)), 0.0f);
     }
 
     /** Private per-column body of {@code rotateAround_orthogonal}; reached only through it. */
-    private Float4 rotateAround_orthogonal_s373cbb5f_c2(float _t31, float _t22, float _t28) {
-        return new Float4(Math.fma(this.m02, _t31, Math.fma(this.m00, _t22, this.m01 * _t28)), Math.fma(this.m12, _t31, Math.fma(this.m10, _t22, this.m11 * _t28)), Math.fma(this.m22, _t31, Math.fma(this.m20, _t22, this.m21 * _t28)), 0.0f);
+    private Float4 rotateAround_orthogonal_s373cbb5f_c2(float _t29, float _t20, float _t26) {
+        return new Float4(Math.fma(this.m02, _t29, Math.fma(this.m00, _t20, this.m01 * _t26)), Math.fma(this.m12, _t29, Math.fma(this.m10, _t20, this.m11 * _t26)), Math.fma(this.m22, _t29, Math.fma(this.m20, _t20, this.m21 * _t26)), 0.0f);
     }
 
     /** Private per-column body of {@code rotateAround_orthogonal}; reached only through it. */
-    private Float4 rotateAround_orthogonal_s373cbb5f_c3(float _t41, float _t42, float _t43) {
-        return new Float4(Math.fma(this.m00, _t41, Math.fma(this.m01, _t42, Math.fma(this.m02, _t43, this.m03))), Math.fma(this.m10, _t41, Math.fma(this.m11, _t42, Math.fma(this.m12, _t43, this.m13))), Math.fma(this.m20, _t41, Math.fma(this.m21, _t42, Math.fma(this.m22, _t43, this.m23))), 1.0f);
+    private Float4 rotateAround_orthogonal_s373cbb5f_c3(float _t39, float _t40, float _t41) {
+        return new Float4(Math.fma(this.m00, _t39, Math.fma(this.m01, _t40, Math.fma(this.m02, _t41, this.m03))), Math.fma(this.m10, _t39, Math.fma(this.m11, _t40, Math.fma(this.m12, _t41, this.m13))), Math.fma(this.m20, _t39, Math.fma(this.m21, _t40, Math.fma(this.m22, _t41, this.m23))), 1.0f);
     }
 
 
@@ -29433,46 +29498,50 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateAround} dispatcher.
      */
     private Float4x4 rotateAround_orthogonal(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
-        float _t0 = -pivotZ;
-        float _t2 = rotY * rotW;
-        float _t3 = rotZ * rotZ;
-        float _t4 = rotZ * rotW;
-        float _t11 = Math.fma(rotY, rotY, _t3);
-        float _t14 = Math.fma(rotX, rotX, _t3);
-        float _t15 = Math.fma(rotX, rotX, rotY * rotY);
-        float _t20 = 2.0f * Math.fma(rotX, rotY, _t4);
-        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t22 = 2.0f * Math.fma(rotX, rotZ, _t2);
-        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t2);
-        float _t27 = 2.0f * Math.fma(rotX, rotY, -_t4);
-        float _t28 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t29 = Math.fma(-2.0f, _t11, 1.0f);
-        float _t30 = Math.fma(-2.0f, _t14, 1.0f);
-        float _t31 = Math.fma(-2.0f, _t15, 1.0f);
-        float _t41 = Math.fma(_t0, _t22, Math.fma(pivotX, 2.0f * _t11, -(pivotY * _t27)));
-        float _t42 = Math.fma(_t0, _t28, Math.fma(pivotY, 2.0f * _t14, -(pivotX * _t20)));
-        float _t43 = Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t15, -(pivotX * _t26)));
-        return new Float4x4(rotateAround_orthogonal_s373cbb5f_c0(_t26, _t29, _t20), rotateAround_orthogonal_s373cbb5f_c1(_t21, _t27, _t30), rotateAround_orthogonal_s373cbb5f_c2(_t31, _t22, _t28), rotateAround_orthogonal_s373cbb5f_c3(_t41, _t42, _t43), Joml.BIT_ORTHOGONAL);
+        float _t0 = -rotY;
+        float _t2 = -rotX;
+        float _t3 = -pivotZ;
+        float _t5 = 2.0f * rotX;
+        float _t6 = 2.0f * rotY;
+        float _t7 = 2.0f * rotZ;
+        float _t8 = rotW * _t6;
+        float _t9 = rotW * _t7;
+        float _t10 = rotW * _t5;
+        float _t11 = rotZ * _t7;
+        float _t16 = Math.fma(-rotZ, _t7, 1.0f);
+        float _t18 = Math.fma(rotY, _t5, _t9);
+        float _t19 = Math.fma(rotZ, _t6, _t10);
+        float _t20 = Math.fma(rotZ, _t5, _t8);
+        float _t24 = Math.fma(rotZ, _t5, -_t8);
+        float _t25 = Math.fma(rotY, _t5, -_t9);
+        float _t26 = Math.fma(rotZ, _t6, -_t10);
+        float _t27 = Math.fma(_t0, _t6, _t16);
+        float _t28 = Math.fma(_t2, _t5, _t16);
+        float _t29 = Math.fma(_t2, _t5, Math.fma(_t0, _t6, 1.0f));
+        float _t39 = Math.fma(_t3, _t20, Math.fma(pivotX, Math.fma(rotY, _t6, _t11), -(pivotY * _t25)));
+        float _t40 = Math.fma(_t3, _t26, Math.fma(pivotY, Math.fma(rotX, _t5, _t11), -(pivotX * _t18)));
+        float _t41 = Math.fma(-pivotY, _t19, Math.fma(pivotZ, Math.fma(rotX, _t5, rotY * _t6), -(pivotX * _t24)));
+        return new Float4x4(rotateAround_orthogonal_s373cbb5f_c0(_t24, _t27, _t18), rotateAround_orthogonal_s373cbb5f_c1(_t19, _t25, _t28), rotateAround_orthogonal_s373cbb5f_c2(_t29, _t20, _t26), rotateAround_orthogonal_s373cbb5f_c3(_t39, _t40, _t41), Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code rotateAround_affine}; reached only through it. */
-    private Float4 rotateAround_affine_s373cbb5f_c0(float _t26, float _t29, float _t20) {
-        return new Float4(Math.fma(this.m02, _t26, Math.fma(this.m00, _t29, this.m01 * _t20)), Math.fma(this.m12, _t26, Math.fma(this.m10, _t29, this.m11 * _t20)), Math.fma(this.m22, _t26, Math.fma(this.m20, _t29, this.m21 * _t20)), 0.0f);
+    private Float4 rotateAround_affine_s373cbb5f_c0(float _t24, float _t27, float _t18) {
+        return new Float4(Math.fma(this.m02, _t24, Math.fma(this.m00, _t27, this.m01 * _t18)), Math.fma(this.m12, _t24, Math.fma(this.m10, _t27, this.m11 * _t18)), Math.fma(this.m22, _t24, Math.fma(this.m20, _t27, this.m21 * _t18)), 0.0f);
     }
 
     /** Private per-column body of {@code rotateAround_affine}; reached only through it. */
-    private Float4 rotateAround_affine_s373cbb5f_c1(float _t21, float _t27, float _t30) {
-        return new Float4(Math.fma(this.m02, _t21, Math.fma(this.m00, _t27, this.m01 * _t30)), Math.fma(this.m12, _t21, Math.fma(this.m10, _t27, this.m11 * _t30)), Math.fma(this.m22, _t21, Math.fma(this.m20, _t27, this.m21 * _t30)), 0.0f);
+    private Float4 rotateAround_affine_s373cbb5f_c1(float _t19, float _t25, float _t28) {
+        return new Float4(Math.fma(this.m02, _t19, Math.fma(this.m00, _t25, this.m01 * _t28)), Math.fma(this.m12, _t19, Math.fma(this.m10, _t25, this.m11 * _t28)), Math.fma(this.m22, _t19, Math.fma(this.m20, _t25, this.m21 * _t28)), 0.0f);
     }
 
     /** Private per-column body of {@code rotateAround_affine}; reached only through it. */
-    private Float4 rotateAround_affine_s373cbb5f_c2(float _t31, float _t22, float _t28) {
-        return new Float4(Math.fma(this.m02, _t31, Math.fma(this.m00, _t22, this.m01 * _t28)), Math.fma(this.m12, _t31, Math.fma(this.m10, _t22, this.m11 * _t28)), Math.fma(this.m22, _t31, Math.fma(this.m20, _t22, this.m21 * _t28)), 0.0f);
+    private Float4 rotateAround_affine_s373cbb5f_c2(float _t29, float _t20, float _t26) {
+        return new Float4(Math.fma(this.m02, _t29, Math.fma(this.m00, _t20, this.m01 * _t26)), Math.fma(this.m12, _t29, Math.fma(this.m10, _t20, this.m11 * _t26)), Math.fma(this.m22, _t29, Math.fma(this.m20, _t20, this.m21 * _t26)), 0.0f);
     }
 
     /** Private per-column body of {@code rotateAround_affine}; reached only through it. */
-    private Float4 rotateAround_affine_s373cbb5f_c3(float _t41, float _t42, float _t43) {
-        return new Float4(Math.fma(this.m00, _t41, Math.fma(this.m01, _t42, Math.fma(this.m02, _t43, this.m03))), Math.fma(this.m10, _t41, Math.fma(this.m11, _t42, Math.fma(this.m12, _t43, this.m13))), Math.fma(this.m20, _t41, Math.fma(this.m21, _t42, Math.fma(this.m22, _t43, this.m23))), 1.0f);
+    private Float4 rotateAround_affine_s373cbb5f_c3(float _t39, float _t40, float _t41) {
+        return new Float4(Math.fma(this.m00, _t39, Math.fma(this.m01, _t40, Math.fma(this.m02, _t41, this.m03))), Math.fma(this.m10, _t39, Math.fma(this.m11, _t40, Math.fma(this.m12, _t41, this.m13))), Math.fma(this.m20, _t39, Math.fma(this.m21, _t40, Math.fma(this.m22, _t41, this.m23))), 1.0f);
     }
 
 
@@ -29481,46 +29550,50 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateAround} dispatcher.
      */
     private Float4x4 rotateAround_affine(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
-        float _t0 = -pivotZ;
-        float _t2 = rotY * rotW;
-        float _t3 = rotZ * rotZ;
-        float _t4 = rotZ * rotW;
-        float _t11 = Math.fma(rotY, rotY, _t3);
-        float _t14 = Math.fma(rotX, rotX, _t3);
-        float _t15 = Math.fma(rotX, rotX, rotY * rotY);
-        float _t20 = 2.0f * Math.fma(rotX, rotY, _t4);
-        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t22 = 2.0f * Math.fma(rotX, rotZ, _t2);
-        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t2);
-        float _t27 = 2.0f * Math.fma(rotX, rotY, -_t4);
-        float _t28 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t29 = Math.fma(-2.0f, _t11, 1.0f);
-        float _t30 = Math.fma(-2.0f, _t14, 1.0f);
-        float _t31 = Math.fma(-2.0f, _t15, 1.0f);
-        float _t41 = Math.fma(_t0, _t22, Math.fma(pivotX, 2.0f * _t11, -(pivotY * _t27)));
-        float _t42 = Math.fma(_t0, _t28, Math.fma(pivotY, 2.0f * _t14, -(pivotX * _t20)));
-        float _t43 = Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t15, -(pivotX * _t26)));
-        return new Float4x4(rotateAround_affine_s373cbb5f_c0(_t26, _t29, _t20), rotateAround_affine_s373cbb5f_c1(_t21, _t27, _t30), rotateAround_affine_s373cbb5f_c2(_t31, _t22, _t28), rotateAround_affine_s373cbb5f_c3(_t41, _t42, _t43), Joml.BIT_AFFINE);
+        float _t0 = -rotY;
+        float _t2 = -rotX;
+        float _t3 = -pivotZ;
+        float _t5 = 2.0f * rotX;
+        float _t6 = 2.0f * rotY;
+        float _t7 = 2.0f * rotZ;
+        float _t8 = rotW * _t6;
+        float _t9 = rotW * _t7;
+        float _t10 = rotW * _t5;
+        float _t11 = rotZ * _t7;
+        float _t16 = Math.fma(-rotZ, _t7, 1.0f);
+        float _t18 = Math.fma(rotY, _t5, _t9);
+        float _t19 = Math.fma(rotZ, _t6, _t10);
+        float _t20 = Math.fma(rotZ, _t5, _t8);
+        float _t24 = Math.fma(rotZ, _t5, -_t8);
+        float _t25 = Math.fma(rotY, _t5, -_t9);
+        float _t26 = Math.fma(rotZ, _t6, -_t10);
+        float _t27 = Math.fma(_t0, _t6, _t16);
+        float _t28 = Math.fma(_t2, _t5, _t16);
+        float _t29 = Math.fma(_t2, _t5, Math.fma(_t0, _t6, 1.0f));
+        float _t39 = Math.fma(_t3, _t20, Math.fma(pivotX, Math.fma(rotY, _t6, _t11), -(pivotY * _t25)));
+        float _t40 = Math.fma(_t3, _t26, Math.fma(pivotY, Math.fma(rotX, _t5, _t11), -(pivotX * _t18)));
+        float _t41 = Math.fma(-pivotY, _t19, Math.fma(pivotZ, Math.fma(rotX, _t5, rotY * _t6), -(pivotX * _t24)));
+        return new Float4x4(rotateAround_affine_s373cbb5f_c0(_t24, _t27, _t18), rotateAround_affine_s373cbb5f_c1(_t19, _t25, _t28), rotateAround_affine_s373cbb5f_c2(_t29, _t20, _t26), rotateAround_affine_s373cbb5f_c3(_t39, _t40, _t41), Joml.BIT_AFFINE);
     }
 
     /** Private per-column body of {@code rotateAround_general}; reached only through it. */
-    private Float4 rotateAround_general_s373cbb5f_c0(float _t26, float _t29, float _t20) {
-        return new Float4(Math.fma(this.m02, _t26, Math.fma(this.m00, _t29, this.m01 * _t20)), Math.fma(this.m12, _t26, Math.fma(this.m10, _t29, this.m11 * _t20)), Math.fma(this.m22, _t26, Math.fma(this.m20, _t29, this.m21 * _t20)), Math.fma(this.m32, _t26, Math.fma(this.m30, _t29, this.m31 * _t20)));
+    private Float4 rotateAround_general_s373cbb5f_c0(float _t24, float _t27, float _t18) {
+        return new Float4(Math.fma(this.m02, _t24, Math.fma(this.m00, _t27, this.m01 * _t18)), Math.fma(this.m12, _t24, Math.fma(this.m10, _t27, this.m11 * _t18)), Math.fma(this.m22, _t24, Math.fma(this.m20, _t27, this.m21 * _t18)), Math.fma(this.m32, _t24, Math.fma(this.m30, _t27, this.m31 * _t18)));
     }
 
     /** Private per-column body of {@code rotateAround_general}; reached only through it. */
-    private Float4 rotateAround_general_s373cbb5f_c1(float _t21, float _t27, float _t30) {
-        return new Float4(Math.fma(this.m02, _t21, Math.fma(this.m00, _t27, this.m01 * _t30)), Math.fma(this.m12, _t21, Math.fma(this.m10, _t27, this.m11 * _t30)), Math.fma(this.m22, _t21, Math.fma(this.m20, _t27, this.m21 * _t30)), Math.fma(this.m32, _t21, Math.fma(this.m30, _t27, this.m31 * _t30)));
+    private Float4 rotateAround_general_s373cbb5f_c1(float _t19, float _t25, float _t28) {
+        return new Float4(Math.fma(this.m02, _t19, Math.fma(this.m00, _t25, this.m01 * _t28)), Math.fma(this.m12, _t19, Math.fma(this.m10, _t25, this.m11 * _t28)), Math.fma(this.m22, _t19, Math.fma(this.m20, _t25, this.m21 * _t28)), Math.fma(this.m32, _t19, Math.fma(this.m30, _t25, this.m31 * _t28)));
     }
 
     /** Private per-column body of {@code rotateAround_general}; reached only through it. */
-    private Float4 rotateAround_general_s373cbb5f_c2(float _t31, float _t22, float _t28) {
-        return new Float4(Math.fma(this.m02, _t31, Math.fma(this.m00, _t22, this.m01 * _t28)), Math.fma(this.m12, _t31, Math.fma(this.m10, _t22, this.m11 * _t28)), Math.fma(this.m22, _t31, Math.fma(this.m20, _t22, this.m21 * _t28)), Math.fma(this.m32, _t31, Math.fma(this.m30, _t22, this.m31 * _t28)));
+    private Float4 rotateAround_general_s373cbb5f_c2(float _t29, float _t20, float _t26) {
+        return new Float4(Math.fma(this.m02, _t29, Math.fma(this.m00, _t20, this.m01 * _t26)), Math.fma(this.m12, _t29, Math.fma(this.m10, _t20, this.m11 * _t26)), Math.fma(this.m22, _t29, Math.fma(this.m20, _t20, this.m21 * _t26)), Math.fma(this.m32, _t29, Math.fma(this.m30, _t20, this.m31 * _t26)));
     }
 
     /** Private per-column body of {@code rotateAround_general}; reached only through it. */
-    private Float4 rotateAround_general_s373cbb5f_c3(float _t41, float _t42, float _t43) {
-        return new Float4(Math.fma(this.m00, _t41, Math.fma(this.m01, _t42, Math.fma(this.m02, _t43, this.m03))), Math.fma(this.m10, _t41, Math.fma(this.m11, _t42, Math.fma(this.m12, _t43, this.m13))), Math.fma(this.m20, _t41, Math.fma(this.m21, _t42, Math.fma(this.m22, _t43, this.m23))), Math.fma(this.m30, _t41, Math.fma(this.m31, _t42, Math.fma(this.m32, _t43, this.m33))));
+    private Float4 rotateAround_general_s373cbb5f_c3(float _t39, float _t40, float _t41) {
+        return new Float4(Math.fma(this.m00, _t39, Math.fma(this.m01, _t40, Math.fma(this.m02, _t41, this.m03))), Math.fma(this.m10, _t39, Math.fma(this.m11, _t40, Math.fma(this.m12, _t41, this.m13))), Math.fma(this.m20, _t39, Math.fma(this.m21, _t40, Math.fma(this.m22, _t41, this.m23))), Math.fma(this.m30, _t39, Math.fma(this.m31, _t40, Math.fma(this.m32, _t41, this.m33))));
     }
 
 
@@ -29529,26 +29602,30 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateAround} dispatcher.
      */
     private Float4x4 rotateAround_general(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
-        float _t0 = -pivotZ;
-        float _t2 = rotY * rotW;
-        float _t3 = rotZ * rotZ;
-        float _t4 = rotZ * rotW;
-        float _t11 = Math.fma(rotY, rotY, _t3);
-        float _t14 = Math.fma(rotX, rotX, _t3);
-        float _t15 = Math.fma(rotX, rotX, rotY * rotY);
-        float _t20 = 2.0f * Math.fma(rotX, rotY, _t4);
-        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t22 = 2.0f * Math.fma(rotX, rotZ, _t2);
-        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t2);
-        float _t27 = 2.0f * Math.fma(rotX, rotY, -_t4);
-        float _t28 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t29 = Math.fma(-2.0f, _t11, 1.0f);
-        float _t30 = Math.fma(-2.0f, _t14, 1.0f);
-        float _t31 = Math.fma(-2.0f, _t15, 1.0f);
-        float _t41 = Math.fma(_t0, _t22, Math.fma(pivotX, 2.0f * _t11, -(pivotY * _t27)));
-        float _t42 = Math.fma(_t0, _t28, Math.fma(pivotY, 2.0f * _t14, -(pivotX * _t20)));
-        float _t43 = Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t15, -(pivotX * _t26)));
-        return new Float4x4(rotateAround_general_s373cbb5f_c0(_t26, _t29, _t20), rotateAround_general_s373cbb5f_c1(_t21, _t27, _t30), rotateAround_general_s373cbb5f_c2(_t31, _t22, _t28), rotateAround_general_s373cbb5f_c3(_t41, _t42, _t43), 0);
+        float _t0 = -rotY;
+        float _t2 = -rotX;
+        float _t3 = -pivotZ;
+        float _t5 = 2.0f * rotX;
+        float _t6 = 2.0f * rotY;
+        float _t7 = 2.0f * rotZ;
+        float _t8 = rotW * _t6;
+        float _t9 = rotW * _t7;
+        float _t10 = rotW * _t5;
+        float _t11 = rotZ * _t7;
+        float _t16 = Math.fma(-rotZ, _t7, 1.0f);
+        float _t18 = Math.fma(rotY, _t5, _t9);
+        float _t19 = Math.fma(rotZ, _t6, _t10);
+        float _t20 = Math.fma(rotZ, _t5, _t8);
+        float _t24 = Math.fma(rotZ, _t5, -_t8);
+        float _t25 = Math.fma(rotY, _t5, -_t9);
+        float _t26 = Math.fma(rotZ, _t6, -_t10);
+        float _t27 = Math.fma(_t0, _t6, _t16);
+        float _t28 = Math.fma(_t2, _t5, _t16);
+        float _t29 = Math.fma(_t2, _t5, Math.fma(_t0, _t6, 1.0f));
+        float _t39 = Math.fma(_t3, _t20, Math.fma(pivotX, Math.fma(rotY, _t6, _t11), -(pivotY * _t25)));
+        float _t40 = Math.fma(_t3, _t26, Math.fma(pivotY, Math.fma(rotX, _t5, _t11), -(pivotX * _t18)));
+        float _t41 = Math.fma(-pivotY, _t19, Math.fma(pivotZ, Math.fma(rotX, _t5, rotY * _t6), -(pivotX * _t24)));
+        return new Float4x4(rotateAround_general_s373cbb5f_c0(_t24, _t27, _t18), rotateAround_general_s373cbb5f_c1(_t19, _t25, _t28), rotateAround_general_s373cbb5f_c2(_t29, _t20, _t26), rotateAround_general_s373cbb5f_c3(_t39, _t40, _t41), 0);
     }
 
 
@@ -29821,25 +29898,31 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateQuat} dispatcher.
      */
     private Float4x4 rotateQuat_translation(float qX, float qY, float qZ, float qW) {
-        float _t0 = qZ * qZ;
-        float _t1 = qZ * qW;
-        float _t2 = qY * qW;
-        return new Float4x4(Math.fma(-2.0f, Math.fma(qY, qY, _t0), 1.0f), 2.0f * Math.fma(qX, qY, -_t1), 2.0f * Math.fma(qX, qZ, _t2), this.m03, 2.0f * Math.fma(qX, qY, _t1), Math.fma(-2.0f, Math.fma(qX, qX, _t0), 1.0f), 2.0f * Math.fma(qY, qZ, -(qX * qW)), this.m13, 2.0f * Math.fma(qX, qZ, -_t2), 2.0f * Math.fma(qX, qW, qY * qZ), Math.fma(-2.0f, Math.fma(qX, qX, qY * qY), 1.0f), this.m23, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = -qY;
+        float _t2 = -qX;
+        float _t3 = 2.0f * qY;
+        float _t4 = 2.0f * qZ;
+        float _t5 = 2.0f * qX;
+        float _t6 = qW * _t4;
+        float _t7 = qW * _t3;
+        float _t8 = qW * _t5;
+        float _t9 = Math.fma(-qZ, _t4, 1.0f);
+        return new Float4x4(Math.fma(_t0, _t3, _t9), Math.fma(qY, _t5, -_t6), Math.fma(qZ, _t5, _t7), this.m03, Math.fma(qY, _t5, _t6), Math.fma(_t2, _t5, _t9), Math.fma(qZ, _t3, -_t8), this.m13, Math.fma(qZ, _t5, -_t7), Math.fma(qZ, _t3, _t8), Math.fma(_t2, _t5, Math.fma(_t0, _t3, 1.0f)), this.m23, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code rotateQuat_orthogonal}; reached only through it. */
-    private Float4 rotateQuat_orthogonal_s4eb09b0a_c0(float _t21, float _t24, float _t18) {
-        return new Float4(Math.fma(this.m02, _t21, Math.fma(this.m00, _t24, this.m01 * _t18)), Math.fma(this.m12, _t21, Math.fma(this.m10, _t24, this.m11 * _t18)), Math.fma(this.m22, _t21, Math.fma(this.m20, _t24, this.m21 * _t18)), 0.0f);
+    private Float4 rotateQuat_orthogonal_s4eb09b0a_c0(float _t17, float _t20, float _t14) {
+        return new Float4(Math.fma(this.m02, _t17, Math.fma(this.m00, _t20, this.m01 * _t14)), Math.fma(this.m12, _t17, Math.fma(this.m10, _t20, this.m11 * _t14)), Math.fma(this.m22, _t17, Math.fma(this.m20, _t20, this.m21 * _t14)), 0.0f);
     }
 
     /** Private per-column body of {@code rotateQuat_orthogonal}; reached only through it. */
-    private Float4 rotateQuat_orthogonal_s4eb09b0a_c1(float _t19, float _t22, float _t25) {
-        return new Float4(Math.fma(this.m02, _t19, Math.fma(this.m00, _t22, this.m01 * _t25)), Math.fma(this.m12, _t19, Math.fma(this.m10, _t22, this.m11 * _t25)), Math.fma(this.m22, _t19, Math.fma(this.m20, _t22, this.m21 * _t25)), 0.0f);
+    private Float4 rotateQuat_orthogonal_s4eb09b0a_c1(float _t15, float _t18, float _t21) {
+        return new Float4(Math.fma(this.m02, _t15, Math.fma(this.m00, _t18, this.m01 * _t21)), Math.fma(this.m12, _t15, Math.fma(this.m10, _t18, this.m11 * _t21)), Math.fma(this.m22, _t15, Math.fma(this.m20, _t18, this.m21 * _t21)), 0.0f);
     }
 
     /** Private per-column body of {@code rotateQuat_orthogonal}; reached only through it. */
-    private Float4 rotateQuat_orthogonal_s4eb09b0a_c2(float _t26, float _t20, float _t23) {
-        return new Float4(Math.fma(this.m02, _t26, Math.fma(this.m00, _t20, this.m01 * _t23)), Math.fma(this.m12, _t26, Math.fma(this.m10, _t20, this.m11 * _t23)), Math.fma(this.m22, _t26, Math.fma(this.m20, _t20, this.m21 * _t23)), 0.0f);
+    private Float4 rotateQuat_orthogonal_s4eb09b0a_c2(float _t22, float _t16, float _t19) {
+        return new Float4(Math.fma(this.m02, _t22, Math.fma(this.m00, _t16, this.m01 * _t19)), Math.fma(this.m12, _t22, Math.fma(this.m10, _t16, this.m11 * _t19)), Math.fma(this.m22, _t22, Math.fma(this.m20, _t16, this.m21 * _t19)), 0.0f);
     }
 
     /** Private per-column body of {@code rotateQuat_orthogonal}; reached only through it. */
@@ -29853,34 +29936,40 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateQuat} dispatcher.
      */
     private Float4x4 rotateQuat_orthogonal(float qX, float qY, float qZ, float qW) {
-        float _t0 = qY * qW;
-        float _t1 = qZ * qZ;
-        float _t2 = qZ * qW;
-        float _t18 = 2.0f * Math.fma(qX, qY, _t2);
-        float _t19 = 2.0f * Math.fma(qX, qW, qY * qZ);
-        float _t20 = 2.0f * Math.fma(qX, qZ, _t0);
-        float _t21 = 2.0f * Math.fma(qX, qZ, -_t0);
-        float _t22 = 2.0f * Math.fma(qX, qY, -_t2);
-        float _t23 = 2.0f * Math.fma(qY, qZ, -(qX * qW));
-        float _t24 = Math.fma(-2.0f, Math.fma(qY, qY, _t1), 1.0f);
-        float _t25 = Math.fma(-2.0f, Math.fma(qX, qX, _t1), 1.0f);
-        float _t26 = Math.fma(-2.0f, Math.fma(qX, qX, qY * qY), 1.0f);
-        return new Float4x4(rotateQuat_orthogonal_s4eb09b0a_c0(_t21, _t24, _t18), rotateQuat_orthogonal_s4eb09b0a_c1(_t19, _t22, _t25), rotateQuat_orthogonal_s4eb09b0a_c2(_t26, _t20, _t23), rotateQuat_orthogonal_s4eb09b0a_c3(), Joml.BIT_ORTHOGONAL);
+        float _t0 = -qY;
+        float _t2 = -qX;
+        float _t3 = 2.0f * qX;
+        float _t4 = 2.0f * qY;
+        float _t5 = 2.0f * qZ;
+        float _t6 = qW * _t4;
+        float _t7 = qW * _t5;
+        float _t8 = qW * _t3;
+        float _t12 = Math.fma(-qZ, _t5, 1.0f);
+        float _t14 = Math.fma(qY, _t3, _t7);
+        float _t15 = Math.fma(qZ, _t4, _t8);
+        float _t16 = Math.fma(qZ, _t3, _t6);
+        float _t17 = Math.fma(qZ, _t3, -_t6);
+        float _t18 = Math.fma(qY, _t3, -_t7);
+        float _t19 = Math.fma(qZ, _t4, -_t8);
+        float _t20 = Math.fma(_t0, _t4, _t12);
+        float _t21 = Math.fma(_t2, _t3, _t12);
+        float _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f));
+        return new Float4x4(rotateQuat_orthogonal_s4eb09b0a_c0(_t17, _t20, _t14), rotateQuat_orthogonal_s4eb09b0a_c1(_t15, _t18, _t21), rotateQuat_orthogonal_s4eb09b0a_c2(_t22, _t16, _t19), rotateQuat_orthogonal_s4eb09b0a_c3(), Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code rotateQuat_affine}; reached only through it. */
-    private Float4 rotateQuat_affine_s4eb09b0a_c0(float _t21, float _t24, float _t18) {
-        return new Float4(Math.fma(this.m02, _t21, Math.fma(this.m00, _t24, this.m01 * _t18)), Math.fma(this.m12, _t21, Math.fma(this.m10, _t24, this.m11 * _t18)), Math.fma(this.m22, _t21, Math.fma(this.m20, _t24, this.m21 * _t18)), 0.0f);
+    private Float4 rotateQuat_affine_s4eb09b0a_c0(float _t17, float _t20, float _t14) {
+        return new Float4(Math.fma(this.m02, _t17, Math.fma(this.m00, _t20, this.m01 * _t14)), Math.fma(this.m12, _t17, Math.fma(this.m10, _t20, this.m11 * _t14)), Math.fma(this.m22, _t17, Math.fma(this.m20, _t20, this.m21 * _t14)), 0.0f);
     }
 
     /** Private per-column body of {@code rotateQuat_affine}; reached only through it. */
-    private Float4 rotateQuat_affine_s4eb09b0a_c1(float _t19, float _t22, float _t25) {
-        return new Float4(Math.fma(this.m02, _t19, Math.fma(this.m00, _t22, this.m01 * _t25)), Math.fma(this.m12, _t19, Math.fma(this.m10, _t22, this.m11 * _t25)), Math.fma(this.m22, _t19, Math.fma(this.m20, _t22, this.m21 * _t25)), 0.0f);
+    private Float4 rotateQuat_affine_s4eb09b0a_c1(float _t15, float _t18, float _t21) {
+        return new Float4(Math.fma(this.m02, _t15, Math.fma(this.m00, _t18, this.m01 * _t21)), Math.fma(this.m12, _t15, Math.fma(this.m10, _t18, this.m11 * _t21)), Math.fma(this.m22, _t15, Math.fma(this.m20, _t18, this.m21 * _t21)), 0.0f);
     }
 
     /** Private per-column body of {@code rotateQuat_affine}; reached only through it. */
-    private Float4 rotateQuat_affine_s4eb09b0a_c2(float _t26, float _t20, float _t23) {
-        return new Float4(Math.fma(this.m02, _t26, Math.fma(this.m00, _t20, this.m01 * _t23)), Math.fma(this.m12, _t26, Math.fma(this.m10, _t20, this.m11 * _t23)), Math.fma(this.m22, _t26, Math.fma(this.m20, _t20, this.m21 * _t23)), 0.0f);
+    private Float4 rotateQuat_affine_s4eb09b0a_c2(float _t22, float _t16, float _t19) {
+        return new Float4(Math.fma(this.m02, _t22, Math.fma(this.m00, _t16, this.m01 * _t19)), Math.fma(this.m12, _t22, Math.fma(this.m10, _t16, this.m11 * _t19)), Math.fma(this.m22, _t22, Math.fma(this.m20, _t16, this.m21 * _t19)), 0.0f);
     }
 
     /** Private per-column body of {@code rotateQuat_affine}; reached only through it. */
@@ -29894,34 +29983,40 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateQuat} dispatcher.
      */
     private Float4x4 rotateQuat_affine(float qX, float qY, float qZ, float qW) {
-        float _t0 = qY * qW;
-        float _t1 = qZ * qZ;
-        float _t2 = qZ * qW;
-        float _t18 = 2.0f * Math.fma(qX, qY, _t2);
-        float _t19 = 2.0f * Math.fma(qX, qW, qY * qZ);
-        float _t20 = 2.0f * Math.fma(qX, qZ, _t0);
-        float _t21 = 2.0f * Math.fma(qX, qZ, -_t0);
-        float _t22 = 2.0f * Math.fma(qX, qY, -_t2);
-        float _t23 = 2.0f * Math.fma(qY, qZ, -(qX * qW));
-        float _t24 = Math.fma(-2.0f, Math.fma(qY, qY, _t1), 1.0f);
-        float _t25 = Math.fma(-2.0f, Math.fma(qX, qX, _t1), 1.0f);
-        float _t26 = Math.fma(-2.0f, Math.fma(qX, qX, qY * qY), 1.0f);
-        return new Float4x4(rotateQuat_affine_s4eb09b0a_c0(_t21, _t24, _t18), rotateQuat_affine_s4eb09b0a_c1(_t19, _t22, _t25), rotateQuat_affine_s4eb09b0a_c2(_t26, _t20, _t23), rotateQuat_affine_s4eb09b0a_c3(), Joml.BIT_AFFINE);
+        float _t0 = -qY;
+        float _t2 = -qX;
+        float _t3 = 2.0f * qX;
+        float _t4 = 2.0f * qY;
+        float _t5 = 2.0f * qZ;
+        float _t6 = qW * _t4;
+        float _t7 = qW * _t5;
+        float _t8 = qW * _t3;
+        float _t12 = Math.fma(-qZ, _t5, 1.0f);
+        float _t14 = Math.fma(qY, _t3, _t7);
+        float _t15 = Math.fma(qZ, _t4, _t8);
+        float _t16 = Math.fma(qZ, _t3, _t6);
+        float _t17 = Math.fma(qZ, _t3, -_t6);
+        float _t18 = Math.fma(qY, _t3, -_t7);
+        float _t19 = Math.fma(qZ, _t4, -_t8);
+        float _t20 = Math.fma(_t0, _t4, _t12);
+        float _t21 = Math.fma(_t2, _t3, _t12);
+        float _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f));
+        return new Float4x4(rotateQuat_affine_s4eb09b0a_c0(_t17, _t20, _t14), rotateQuat_affine_s4eb09b0a_c1(_t15, _t18, _t21), rotateQuat_affine_s4eb09b0a_c2(_t22, _t16, _t19), rotateQuat_affine_s4eb09b0a_c3(), Joml.BIT_AFFINE);
     }
 
     /** Private per-column body of {@code rotateQuat_general}; reached only through it. */
-    private Float4 rotateQuat_general_s4eb09b0a_c0(float _t21, float _t24, float _t18) {
-        return new Float4(Math.fma(this.m02, _t21, Math.fma(this.m00, _t24, this.m01 * _t18)), Math.fma(this.m12, _t21, Math.fma(this.m10, _t24, this.m11 * _t18)), Math.fma(this.m22, _t21, Math.fma(this.m20, _t24, this.m21 * _t18)), Math.fma(this.m32, _t21, Math.fma(this.m30, _t24, this.m31 * _t18)));
+    private Float4 rotateQuat_general_s4eb09b0a_c0(float _t17, float _t20, float _t14) {
+        return new Float4(Math.fma(this.m02, _t17, Math.fma(this.m00, _t20, this.m01 * _t14)), Math.fma(this.m12, _t17, Math.fma(this.m10, _t20, this.m11 * _t14)), Math.fma(this.m22, _t17, Math.fma(this.m20, _t20, this.m21 * _t14)), Math.fma(this.m32, _t17, Math.fma(this.m30, _t20, this.m31 * _t14)));
     }
 
     /** Private per-column body of {@code rotateQuat_general}; reached only through it. */
-    private Float4 rotateQuat_general_s4eb09b0a_c1(float _t19, float _t22, float _t25) {
-        return new Float4(Math.fma(this.m02, _t19, Math.fma(this.m00, _t22, this.m01 * _t25)), Math.fma(this.m12, _t19, Math.fma(this.m10, _t22, this.m11 * _t25)), Math.fma(this.m22, _t19, Math.fma(this.m20, _t22, this.m21 * _t25)), Math.fma(this.m32, _t19, Math.fma(this.m30, _t22, this.m31 * _t25)));
+    private Float4 rotateQuat_general_s4eb09b0a_c1(float _t15, float _t18, float _t21) {
+        return new Float4(Math.fma(this.m02, _t15, Math.fma(this.m00, _t18, this.m01 * _t21)), Math.fma(this.m12, _t15, Math.fma(this.m10, _t18, this.m11 * _t21)), Math.fma(this.m22, _t15, Math.fma(this.m20, _t18, this.m21 * _t21)), Math.fma(this.m32, _t15, Math.fma(this.m30, _t18, this.m31 * _t21)));
     }
 
     /** Private per-column body of {@code rotateQuat_general}; reached only through it. */
-    private Float4 rotateQuat_general_s4eb09b0a_c2(float _t26, float _t20, float _t23) {
-        return new Float4(Math.fma(this.m02, _t26, Math.fma(this.m00, _t20, this.m01 * _t23)), Math.fma(this.m12, _t26, Math.fma(this.m10, _t20, this.m11 * _t23)), Math.fma(this.m22, _t26, Math.fma(this.m20, _t20, this.m21 * _t23)), Math.fma(this.m32, _t26, Math.fma(this.m30, _t20, this.m31 * _t23)));
+    private Float4 rotateQuat_general_s4eb09b0a_c2(float _t22, float _t16, float _t19) {
+        return new Float4(Math.fma(this.m02, _t22, Math.fma(this.m00, _t16, this.m01 * _t19)), Math.fma(this.m12, _t22, Math.fma(this.m10, _t16, this.m11 * _t19)), Math.fma(this.m22, _t22, Math.fma(this.m20, _t16, this.m21 * _t19)), Math.fma(this.m32, _t22, Math.fma(this.m30, _t16, this.m31 * _t19)));
     }
 
     /** Private per-column body of {@code rotateQuat_general}; reached only through it. */
@@ -29935,19 +30030,25 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateQuat} dispatcher.
      */
     private Float4x4 rotateQuat_general(float qX, float qY, float qZ, float qW) {
-        float _t0 = qY * qW;
-        float _t1 = qZ * qZ;
-        float _t2 = qZ * qW;
-        float _t18 = 2.0f * Math.fma(qX, qY, _t2);
-        float _t19 = 2.0f * Math.fma(qX, qW, qY * qZ);
-        float _t20 = 2.0f * Math.fma(qX, qZ, _t0);
-        float _t21 = 2.0f * Math.fma(qX, qZ, -_t0);
-        float _t22 = 2.0f * Math.fma(qX, qY, -_t2);
-        float _t23 = 2.0f * Math.fma(qY, qZ, -(qX * qW));
-        float _t24 = Math.fma(-2.0f, Math.fma(qY, qY, _t1), 1.0f);
-        float _t25 = Math.fma(-2.0f, Math.fma(qX, qX, _t1), 1.0f);
-        float _t26 = Math.fma(-2.0f, Math.fma(qX, qX, qY * qY), 1.0f);
-        return new Float4x4(rotateQuat_general_s4eb09b0a_c0(_t21, _t24, _t18), rotateQuat_general_s4eb09b0a_c1(_t19, _t22, _t25), rotateQuat_general_s4eb09b0a_c2(_t26, _t20, _t23), rotateQuat_general_s4eb09b0a_c3(), 0);
+        float _t0 = -qY;
+        float _t2 = -qX;
+        float _t3 = 2.0f * qX;
+        float _t4 = 2.0f * qY;
+        float _t5 = 2.0f * qZ;
+        float _t6 = qW * _t4;
+        float _t7 = qW * _t5;
+        float _t8 = qW * _t3;
+        float _t12 = Math.fma(-qZ, _t5, 1.0f);
+        float _t14 = Math.fma(qY, _t3, _t7);
+        float _t15 = Math.fma(qZ, _t4, _t8);
+        float _t16 = Math.fma(qZ, _t3, _t6);
+        float _t17 = Math.fma(qZ, _t3, -_t6);
+        float _t18 = Math.fma(qY, _t3, -_t7);
+        float _t19 = Math.fma(qZ, _t4, -_t8);
+        float _t20 = Math.fma(_t0, _t4, _t12);
+        float _t21 = Math.fma(_t2, _t3, _t12);
+        float _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f));
+        return new Float4x4(rotateQuat_general_s4eb09b0a_c0(_t17, _t20, _t14), rotateQuat_general_s4eb09b0a_c1(_t15, _t18, _t21), rotateQuat_general_s4eb09b0a_c2(_t22, _t16, _t19), rotateQuat_general_s4eb09b0a_c3(), 0);
     }
 
 

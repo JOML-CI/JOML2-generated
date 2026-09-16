@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 @file:Suppress("NOTHING_TO_INLINE")
 @file:JvmSynthetic
 

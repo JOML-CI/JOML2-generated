@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 package org.joml2.internal.simd;
 
 import jdk.incubator.vector.*;
@@ -700,84 +702,6 @@ public final class Float4x4OpsSimd {
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 52L, _ty);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 56L, _tz);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 60L, _self33);
-        return dest;
-    }
-
-    public static float[] makeFromTransform(float[] dest, int destOffset, float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        if (SimdSupport.USE_FMA) return makeFromTransform_fma(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
-        return makeFromTransform_mulAdd(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
-    }
-
-    public static float[] makeFromTransform_fma(float[] dest, int destOffset, float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        float _t0 = tRZ * tRZ;
-        float _t1 = tRZ * tRW;
-        float _t2 = tRY * tRW;
-        var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.0f);
-        var _sv1 = FloatVector.broadcast(SIMD_SPECIES, 2.0f);
-        var _c0 = _sv0.fma(UNIT_W, FloatVector.broadcast(SIMD_SPECIES, tSX).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, Math.fma(-2.0f, Math.fma(tRY, tRY, _t0), 1.0f)).withLane(1, 2.0f * Math.fma(tRX, tRY, _t1)).withLane(2, 2.0f * Math.fma(tRX, tRZ, -_t2))));
-        var _c1 = FloatVector.broadcast(SIMD_SPECIES, tSY).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(tRX, tRY, -_t1)).withLane(2, Math.fma(tRX, tRW, tRY * tRZ))).withLane(1, Math.fma(-2.0f, Math.fma(tRX, tRX, _t0), 1.0f))).withLane(3, 0.0f);
-        var _c2 = FloatVector.broadcast(SIMD_SPECIES, tSZ).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(tRX, tRZ, _t2)).withLane(1, Math.fma(tRY, tRZ, -(tRX * tRW)))).withLane(2, Math.fma(-2.0f, Math.fma(tRX, tRX, tRY * tRY), 1.0f))).withLane(3, 0.0f);
-        var _c3 = FloatVector.zero(SIMD_SPECIES).withLane(0, tTX).withLane(1, tTY).withLane(2, tTZ).withLane(3, 1.0f);
-        _c0.intoArray(dest, destOffset);
-        _c1.intoArray(dest, destOffset + 4);
-        _c2.intoArray(dest, destOffset + 8);
-        _c3.intoArray(dest, destOffset + 12);
-        return dest;
-    }
-
-    public static float[] makeFromTransform_mulAdd(float[] dest, int destOffset, float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        float _t0 = tRZ * tRZ;
-        float _t1 = tRZ * tRW;
-        float _t2 = tRY * tRW;
-        var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.0f);
-        var _sv1 = FloatVector.broadcast(SIMD_SPECIES, 2.0f);
-        var _c0 = _sv0.mul(UNIT_W).add(FloatVector.broadcast(SIMD_SPECIES, tSX).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, Math.fma(-2.0f, Math.fma(tRY, tRY, _t0), 1.0f)).withLane(1, 2.0f * Math.fma(tRX, tRY, _t1)).withLane(2, 2.0f * Math.fma(tRX, tRZ, -_t2))));
-        var _c1 = FloatVector.broadcast(SIMD_SPECIES, tSY).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(tRX, tRY, -_t1)).withLane(2, Math.fma(tRX, tRW, tRY * tRZ))).withLane(1, Math.fma(-2.0f, Math.fma(tRX, tRX, _t0), 1.0f))).withLane(3, 0.0f);
-        var _c2 = FloatVector.broadcast(SIMD_SPECIES, tSZ).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(tRX, tRZ, _t2)).withLane(1, Math.fma(tRY, tRZ, -(tRX * tRW)))).withLane(2, Math.fma(-2.0f, Math.fma(tRX, tRX, tRY * tRY), 1.0f))).withLane(3, 0.0f);
-        var _c3 = FloatVector.zero(SIMD_SPECIES).withLane(0, tTX).withLane(1, tTY).withLane(2, tTZ).withLane(3, 1.0f);
-        _c0.intoArray(dest, destOffset);
-        _c1.intoArray(dest, destOffset + 4);
-        _c2.intoArray(dest, destOffset + 8);
-        _c3.intoArray(dest, destOffset + 12);
-        return dest;
-    }
-
-    public static java.lang.foreign.MemorySegment makeFromTransform(java.lang.foreign.MemorySegment dest, long destOffset, float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        if (SimdSupport.USE_FMA) return makeFromTransform_fma(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
-        return makeFromTransform_mulAdd(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
-    }
-
-    public static java.lang.foreign.MemorySegment makeFromTransform_fma(java.lang.foreign.MemorySegment dest, long destOffset, float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        float _t0 = tRZ * tRZ;
-        float _t1 = tRZ * tRW;
-        float _t2 = tRY * tRW;
-        var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.0f);
-        var _sv1 = FloatVector.broadcast(SIMD_SPECIES, 2.0f);
-        var _c0 = _sv0.fma(UNIT_W, FloatVector.broadcast(SIMD_SPECIES, tSX).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, Math.fma(-2.0f, Math.fma(tRY, tRY, _t0), 1.0f)).withLane(1, 2.0f * Math.fma(tRX, tRY, _t1)).withLane(2, 2.0f * Math.fma(tRX, tRZ, -_t2))));
-        var _c1 = FloatVector.broadcast(SIMD_SPECIES, tSY).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(tRX, tRY, -_t1)).withLane(2, Math.fma(tRX, tRW, tRY * tRZ))).withLane(1, Math.fma(-2.0f, Math.fma(tRX, tRX, _t0), 1.0f))).withLane(3, 0.0f);
-        var _c2 = FloatVector.broadcast(SIMD_SPECIES, tSZ).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(tRX, tRZ, _t2)).withLane(1, Math.fma(tRY, tRZ, -(tRX * tRW)))).withLane(2, Math.fma(-2.0f, Math.fma(tRX, tRX, tRY * tRY), 1.0f))).withLane(3, 0.0f);
-        var _c3 = FloatVector.zero(SIMD_SPECIES).withLane(0, tTX).withLane(1, tTY).withLane(2, tTZ).withLane(3, 1.0f);
-        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
-        _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        _c2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        _c3.intoMemorySegment(dest, destOffset + 48L, java.nio.ByteOrder.nativeOrder());
-        return dest;
-    }
-
-    public static java.lang.foreign.MemorySegment makeFromTransform_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        float _t0 = tRZ * tRZ;
-        float _t1 = tRZ * tRW;
-        float _t2 = tRY * tRW;
-        var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.0f);
-        var _sv1 = FloatVector.broadcast(SIMD_SPECIES, 2.0f);
-        var _c0 = _sv0.mul(UNIT_W).add(FloatVector.broadcast(SIMD_SPECIES, tSX).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, Math.fma(-2.0f, Math.fma(tRY, tRY, _t0), 1.0f)).withLane(1, 2.0f * Math.fma(tRX, tRY, _t1)).withLane(2, 2.0f * Math.fma(tRX, tRZ, -_t2))));
-        var _c1 = FloatVector.broadcast(SIMD_SPECIES, tSY).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(tRX, tRY, -_t1)).withLane(2, Math.fma(tRX, tRW, tRY * tRZ))).withLane(1, Math.fma(-2.0f, Math.fma(tRX, tRX, _t0), 1.0f))).withLane(3, 0.0f);
-        var _c2 = FloatVector.broadcast(SIMD_SPECIES, tSZ).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(tRX, tRZ, _t2)).withLane(1, Math.fma(tRY, tRZ, -(tRX * tRW)))).withLane(2, Math.fma(-2.0f, Math.fma(tRX, tRX, tRY * tRY), 1.0f))).withLane(3, 0.0f);
-        var _c3 = FloatVector.zero(SIMD_SPECIES).withLane(0, tTX).withLane(1, tTY).withLane(2, tTZ).withLane(3, 1.0f);
-        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
-        _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        _c2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        _c3.intoMemorySegment(dest, destOffset + 48L, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
 
@@ -2543,236 +2467,6 @@ public final class Float4x4OpsSimd {
         var _c1 = _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t1)).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t3)));
         var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t1 * _t2)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t0)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t3 * _t2)))));
         var _c3 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder());
-        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
-        _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        _c2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        _c3.intoMemorySegment(dest, destOffset + 48L, java.nio.ByteOrder.nativeOrder());
-        return dest;
-    }
-
-    public static float[] composeTRS(float[] dest, int destOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        if (SimdSupport.USE_FMA) return composeTRS_fma(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
-        return composeTRS_mulAdd(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
-    }
-
-    public static float[] composeTRS_fma(float[] dest, int destOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        float _t0 = rotationZ * rotationZ;
-        float _t1 = rotationZ * rotationW;
-        float _t2 = rotationY * rotationW;
-        var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.0f);
-        var _sv1 = FloatVector.broadcast(SIMD_SPECIES, 2.0f);
-        var _c0 = _sv0.fma(UNIT_W, FloatVector.broadcast(SIMD_SPECIES, scaleX).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, Math.fma(-2.0f, Math.fma(rotationY, rotationY, _t0), 1.0f)).withLane(1, 2.0f * Math.fma(rotationX, rotationY, _t1)).withLane(2, 2.0f * Math.fma(rotationX, rotationZ, -_t2))));
-        var _c1 = FloatVector.broadcast(SIMD_SPECIES, scaleY).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(rotationX, rotationY, -_t1)).withLane(2, Math.fma(rotationX, rotationW, rotationY * rotationZ))).withLane(1, Math.fma(-2.0f, Math.fma(rotationX, rotationX, _t0), 1.0f))).withLane(3, 0.0f);
-        var _c2 = FloatVector.broadcast(SIMD_SPECIES, scaleZ).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(rotationX, rotationZ, _t2)).withLane(1, Math.fma(rotationY, rotationZ, -(rotationX * rotationW)))).withLane(2, Math.fma(-2.0f, Math.fma(rotationX, rotationX, rotationY * rotationY), 1.0f))).withLane(3, 0.0f);
-        var _c3 = FloatVector.zero(SIMD_SPECIES).withLane(0, translationX).withLane(1, translationY).withLane(2, translationZ).withLane(3, 1.0f);
-        _c0.intoArray(dest, destOffset);
-        _c1.intoArray(dest, destOffset + 4);
-        _c2.intoArray(dest, destOffset + 8);
-        _c3.intoArray(dest, destOffset + 12);
-        return dest;
-    }
-
-    public static float[] composeTRS_mulAdd(float[] dest, int destOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        float _t0 = rotationZ * rotationZ;
-        float _t1 = rotationZ * rotationW;
-        float _t2 = rotationY * rotationW;
-        var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.0f);
-        var _sv1 = FloatVector.broadcast(SIMD_SPECIES, 2.0f);
-        var _c0 = _sv0.mul(UNIT_W).add(FloatVector.broadcast(SIMD_SPECIES, scaleX).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, Math.fma(-2.0f, Math.fma(rotationY, rotationY, _t0), 1.0f)).withLane(1, 2.0f * Math.fma(rotationX, rotationY, _t1)).withLane(2, 2.0f * Math.fma(rotationX, rotationZ, -_t2))));
-        var _c1 = FloatVector.broadcast(SIMD_SPECIES, scaleY).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(rotationX, rotationY, -_t1)).withLane(2, Math.fma(rotationX, rotationW, rotationY * rotationZ))).withLane(1, Math.fma(-2.0f, Math.fma(rotationX, rotationX, _t0), 1.0f))).withLane(3, 0.0f);
-        var _c2 = FloatVector.broadcast(SIMD_SPECIES, scaleZ).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(rotationX, rotationZ, _t2)).withLane(1, Math.fma(rotationY, rotationZ, -(rotationX * rotationW)))).withLane(2, Math.fma(-2.0f, Math.fma(rotationX, rotationX, rotationY * rotationY), 1.0f))).withLane(3, 0.0f);
-        var _c3 = FloatVector.zero(SIMD_SPECIES).withLane(0, translationX).withLane(1, translationY).withLane(2, translationZ).withLane(3, 1.0f);
-        _c0.intoArray(dest, destOffset);
-        _c1.intoArray(dest, destOffset + 4);
-        _c2.intoArray(dest, destOffset + 8);
-        _c3.intoArray(dest, destOffset + 12);
-        return dest;
-    }
-
-    public static java.lang.foreign.MemorySegment composeTRS(java.lang.foreign.MemorySegment dest, long destOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        if (SimdSupport.USE_FMA) return composeTRS_fma(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
-        return composeTRS_mulAdd(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
-    }
-
-    public static java.lang.foreign.MemorySegment composeTRS_fma(java.lang.foreign.MemorySegment dest, long destOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        float _t0 = rotationZ * rotationZ;
-        float _t1 = rotationZ * rotationW;
-        float _t2 = rotationY * rotationW;
-        var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.0f);
-        var _sv1 = FloatVector.broadcast(SIMD_SPECIES, 2.0f);
-        var _c0 = _sv0.fma(UNIT_W, FloatVector.broadcast(SIMD_SPECIES, scaleX).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, Math.fma(-2.0f, Math.fma(rotationY, rotationY, _t0), 1.0f)).withLane(1, 2.0f * Math.fma(rotationX, rotationY, _t1)).withLane(2, 2.0f * Math.fma(rotationX, rotationZ, -_t2))));
-        var _c1 = FloatVector.broadcast(SIMD_SPECIES, scaleY).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(rotationX, rotationY, -_t1)).withLane(2, Math.fma(rotationX, rotationW, rotationY * rotationZ))).withLane(1, Math.fma(-2.0f, Math.fma(rotationX, rotationX, _t0), 1.0f))).withLane(3, 0.0f);
-        var _c2 = FloatVector.broadcast(SIMD_SPECIES, scaleZ).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(rotationX, rotationZ, _t2)).withLane(1, Math.fma(rotationY, rotationZ, -(rotationX * rotationW)))).withLane(2, Math.fma(-2.0f, Math.fma(rotationX, rotationX, rotationY * rotationY), 1.0f))).withLane(3, 0.0f);
-        var _c3 = FloatVector.zero(SIMD_SPECIES).withLane(0, translationX).withLane(1, translationY).withLane(2, translationZ).withLane(3, 1.0f);
-        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
-        _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        _c2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        _c3.intoMemorySegment(dest, destOffset + 48L, java.nio.ByteOrder.nativeOrder());
-        return dest;
-    }
-
-    public static java.lang.foreign.MemorySegment composeTRS_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        float _t0 = rotationZ * rotationZ;
-        float _t1 = rotationZ * rotationW;
-        float _t2 = rotationY * rotationW;
-        var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.0f);
-        var _sv1 = FloatVector.broadcast(SIMD_SPECIES, 2.0f);
-        var _c0 = _sv0.mul(UNIT_W).add(FloatVector.broadcast(SIMD_SPECIES, scaleX).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, Math.fma(-2.0f, Math.fma(rotationY, rotationY, _t0), 1.0f)).withLane(1, 2.0f * Math.fma(rotationX, rotationY, _t1)).withLane(2, 2.0f * Math.fma(rotationX, rotationZ, -_t2))));
-        var _c1 = FloatVector.broadcast(SIMD_SPECIES, scaleY).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(rotationX, rotationY, -_t1)).withLane(2, Math.fma(rotationX, rotationW, rotationY * rotationZ))).withLane(1, Math.fma(-2.0f, Math.fma(rotationX, rotationX, _t0), 1.0f))).withLane(3, 0.0f);
-        var _c2 = FloatVector.broadcast(SIMD_SPECIES, scaleZ).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(rotationX, rotationZ, _t2)).withLane(1, Math.fma(rotationY, rotationZ, -(rotationX * rotationW)))).withLane(2, Math.fma(-2.0f, Math.fma(rotationX, rotationX, rotationY * rotationY), 1.0f))).withLane(3, 0.0f);
-        var _c3 = FloatVector.zero(SIMD_SPECIES).withLane(0, translationX).withLane(1, translationY).withLane(2, translationZ).withLane(3, 1.0f);
-        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
-        _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        _c2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        _c3.intoMemorySegment(dest, destOffset + 48L, java.nio.ByteOrder.nativeOrder());
-        return dest;
-    }
-
-    public static float[] composeTRS(float[] dest, int destOffset, float[] translation, int translationOffset, float[] rotation, int rotationOffset, float[] scale, int scaleOffset) {
-        if (SimdSupport.USE_FMA) return composeTRS_fma(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
-        return composeTRS_mulAdd(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
-    }
-
-    public static float[] composeTRS_fma(float[] dest, int destOffset, float[] translation, int translationOffset, float[] rotation, int rotationOffset, float[] scale, int scaleOffset) {
-        float _rotationy = rotation[rotationOffset + 1];
-        float _rotationx = rotation[rotationOffset + 0];
-        float _rotationz = rotation[rotationOffset + 2];
-        float _rotationw = rotation[rotationOffset + 3];
-        float _t0 = _rotationz * _rotationz;
-        float _t1 = _rotationz * _rotationw;
-        float _t2 = _rotationy * _rotationw;
-        var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.0f);
-        var _sv1 = FloatVector.broadcast(SIMD_SPECIES, 2.0f);
-        var _c0 = _sv0.fma(UNIT_W, FloatVector.broadcast(SIMD_SPECIES, scale[scaleOffset + 0]).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, Math.fma(-2.0f, Math.fma(_rotationy, _rotationy, _t0), 1.0f)).withLane(1, 2.0f * Math.fma(_rotationx, _rotationy, _t1)).withLane(2, 2.0f * Math.fma(_rotationx, _rotationz, -_t2))));
-        var _c1 = FloatVector.broadcast(SIMD_SPECIES, scale[scaleOffset + 1]).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_rotationx, _rotationy, -_t1)).withLane(2, Math.fma(_rotationx, _rotationw, _rotationy * _rotationz))).withLane(1, Math.fma(-2.0f, Math.fma(_rotationx, _rotationx, _t0), 1.0f))).withLane(3, 0.0f);
-        var _c2 = FloatVector.broadcast(SIMD_SPECIES, scale[scaleOffset + 2]).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_rotationx, _rotationz, _t2)).withLane(1, Math.fma(_rotationy, _rotationz, -(_rotationx * _rotationw)))).withLane(2, Math.fma(-2.0f, Math.fma(_rotationx, _rotationx, _rotationy * _rotationy), 1.0f))).withLane(3, 0.0f);
-        var _c3 = FloatVector.zero(SIMD_SPECIES).withLane(0, translation[translationOffset + 0]).withLane(1, translation[translationOffset + 1]).withLane(2, translation[translationOffset + 2]).withLane(3, 1.0f);
-        _c0.intoArray(dest, destOffset);
-        _c1.intoArray(dest, destOffset + 4);
-        _c2.intoArray(dest, destOffset + 8);
-        _c3.intoArray(dest, destOffset + 12);
-        return dest;
-    }
-
-    public static float[] composeTRS_mulAdd(float[] dest, int destOffset, float[] translation, int translationOffset, float[] rotation, int rotationOffset, float[] scale, int scaleOffset) {
-        float _rotationy = rotation[rotationOffset + 1];
-        float _rotationx = rotation[rotationOffset + 0];
-        float _rotationz = rotation[rotationOffset + 2];
-        float _rotationw = rotation[rotationOffset + 3];
-        float _t0 = _rotationz * _rotationz;
-        float _t1 = _rotationz * _rotationw;
-        float _t2 = _rotationy * _rotationw;
-        var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.0f);
-        var _sv1 = FloatVector.broadcast(SIMD_SPECIES, 2.0f);
-        var _c0 = _sv0.mul(UNIT_W).add(FloatVector.broadcast(SIMD_SPECIES, scale[scaleOffset + 0]).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, Math.fma(-2.0f, Math.fma(_rotationy, _rotationy, _t0), 1.0f)).withLane(1, 2.0f * Math.fma(_rotationx, _rotationy, _t1)).withLane(2, 2.0f * Math.fma(_rotationx, _rotationz, -_t2))));
-        var _c1 = FloatVector.broadcast(SIMD_SPECIES, scale[scaleOffset + 1]).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_rotationx, _rotationy, -_t1)).withLane(2, Math.fma(_rotationx, _rotationw, _rotationy * _rotationz))).withLane(1, Math.fma(-2.0f, Math.fma(_rotationx, _rotationx, _t0), 1.0f))).withLane(3, 0.0f);
-        var _c2 = FloatVector.broadcast(SIMD_SPECIES, scale[scaleOffset + 2]).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_rotationx, _rotationz, _t2)).withLane(1, Math.fma(_rotationy, _rotationz, -(_rotationx * _rotationw)))).withLane(2, Math.fma(-2.0f, Math.fma(_rotationx, _rotationx, _rotationy * _rotationy), 1.0f))).withLane(3, 0.0f);
-        var _c3 = FloatVector.zero(SIMD_SPECIES).withLane(0, translation[translationOffset + 0]).withLane(1, translation[translationOffset + 1]).withLane(2, translation[translationOffset + 2]).withLane(3, 1.0f);
-        _c0.intoArray(dest, destOffset);
-        _c1.intoArray(dest, destOffset + 4);
-        _c2.intoArray(dest, destOffset + 8);
-        _c3.intoArray(dest, destOffset + 12);
-        return dest;
-    }
-
-    public static java.lang.foreign.MemorySegment composeTRS(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment translation, long translationOffset, java.lang.foreign.MemorySegment rotation, long rotationOffset, java.lang.foreign.MemorySegment scale, long scaleOffset) {
-        if (SimdSupport.USE_FMA) return composeTRS_fma(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
-        return composeTRS_mulAdd(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
-    }
-
-    public static java.lang.foreign.MemorySegment composeTRS_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment translation, long translationOffset, java.lang.foreign.MemorySegment rotation, long rotationOffset, java.lang.foreign.MemorySegment scale, long scaleOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && translation.isNative() && rotation.isNative() && scale.isNative()) return composeTRS_fma_unsafe(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
-        return composeTRS_fma_api(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
-    }
-
-    public static java.lang.foreign.MemorySegment composeTRS_fma_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment translation, long translationOffset, java.lang.foreign.MemorySegment rotation, long rotationOffset, java.lang.foreign.MemorySegment scale, long scaleOffset) {
-        long _translationBase = translation.address() + translationOffset;
-        long _rotationBase = rotation.address() + rotationOffset;
-        long _scaleBase = scale.address() + scaleOffset;
-        float _rotationy = UnsafeOpsHolder.U.getFloat(_rotationBase + 4L);
-        float _rotationx = UnsafeOpsHolder.U.getFloat(_rotationBase + 0L);
-        float _rotationz = UnsafeOpsHolder.U.getFloat(_rotationBase + 8L);
-        float _rotationw = UnsafeOpsHolder.U.getFloat(_rotationBase + 12L);
-        float _t0 = _rotationz * _rotationz;
-        float _t1 = _rotationz * _rotationw;
-        float _t2 = _rotationy * _rotationw;
-        var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.0f);
-        var _sv1 = FloatVector.broadcast(SIMD_SPECIES, 2.0f);
-        var _c0 = _sv0.fma(UNIT_W, FloatVector.broadcast(SIMD_SPECIES, UnsafeOpsHolder.U.getFloat(_scaleBase + 0L)).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, Math.fma(-2.0f, Math.fma(_rotationy, _rotationy, _t0), 1.0f)).withLane(1, 2.0f * Math.fma(_rotationx, _rotationy, _t1)).withLane(2, 2.0f * Math.fma(_rotationx, _rotationz, -_t2))));
-        var _c1 = FloatVector.broadcast(SIMD_SPECIES, UnsafeOpsHolder.U.getFloat(_scaleBase + 4L)).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_rotationx, _rotationy, -_t1)).withLane(2, Math.fma(_rotationx, _rotationw, _rotationy * _rotationz))).withLane(1, Math.fma(-2.0f, Math.fma(_rotationx, _rotationx, _t0), 1.0f))).withLane(3, 0.0f);
-        var _c2 = FloatVector.broadcast(SIMD_SPECIES, UnsafeOpsHolder.U.getFloat(_scaleBase + 8L)).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_rotationx, _rotationz, _t2)).withLane(1, Math.fma(_rotationy, _rotationz, -(_rotationx * _rotationw)))).withLane(2, Math.fma(-2.0f, Math.fma(_rotationx, _rotationx, _rotationy * _rotationy), 1.0f))).withLane(3, 0.0f);
-        var _c3 = FloatVector.zero(SIMD_SPECIES).withLane(0, UnsafeOpsHolder.U.getFloat(_translationBase + 0L)).withLane(1, UnsafeOpsHolder.U.getFloat(_translationBase + 4L)).withLane(2, UnsafeOpsHolder.U.getFloat(_translationBase + 8L)).withLane(3, 1.0f);
-        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
-        _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        _c2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        _c3.intoMemorySegment(dest, destOffset + 48L, java.nio.ByteOrder.nativeOrder());
-        return dest;
-    }
-
-    public static java.lang.foreign.MemorySegment composeTRS_fma_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment translation, long translationOffset, java.lang.foreign.MemorySegment rotation, long rotationOffset, java.lang.foreign.MemorySegment scale, long scaleOffset) {
-        float _rotationy = rotation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 4L);
-        float _rotationx = rotation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 0L);
-        float _rotationz = rotation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 8L);
-        float _rotationw = rotation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 12L);
-        float _t0 = _rotationz * _rotationz;
-        float _t1 = _rotationz * _rotationw;
-        float _t2 = _rotationy * _rotationw;
-        var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.0f);
-        var _sv1 = FloatVector.broadcast(SIMD_SPECIES, 2.0f);
-        var _c0 = _sv0.fma(UNIT_W, FloatVector.broadcast(SIMD_SPECIES, scale.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, scaleOffset + 0L)).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, Math.fma(-2.0f, Math.fma(_rotationy, _rotationy, _t0), 1.0f)).withLane(1, 2.0f * Math.fma(_rotationx, _rotationy, _t1)).withLane(2, 2.0f * Math.fma(_rotationx, _rotationz, -_t2))));
-        var _c1 = FloatVector.broadcast(SIMD_SPECIES, scale.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, scaleOffset + 4L)).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_rotationx, _rotationy, -_t1)).withLane(2, Math.fma(_rotationx, _rotationw, _rotationy * _rotationz))).withLane(1, Math.fma(-2.0f, Math.fma(_rotationx, _rotationx, _t0), 1.0f))).withLane(3, 0.0f);
-        var _c2 = FloatVector.broadcast(SIMD_SPECIES, scale.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, scaleOffset + 8L)).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_rotationx, _rotationz, _t2)).withLane(1, Math.fma(_rotationy, _rotationz, -(_rotationx * _rotationw)))).withLane(2, Math.fma(-2.0f, Math.fma(_rotationx, _rotationx, _rotationy * _rotationy), 1.0f))).withLane(3, 0.0f);
-        var _c3 = FloatVector.zero(SIMD_SPECIES).withLane(0, translation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, translationOffset + 0L)).withLane(1, translation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, translationOffset + 4L)).withLane(2, translation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, translationOffset + 8L)).withLane(3, 1.0f);
-        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
-        _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        _c2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        _c3.intoMemorySegment(dest, destOffset + 48L, java.nio.ByteOrder.nativeOrder());
-        return dest;
-    }
-
-    public static java.lang.foreign.MemorySegment composeTRS_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment translation, long translationOffset, java.lang.foreign.MemorySegment rotation, long rotationOffset, java.lang.foreign.MemorySegment scale, long scaleOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && translation.isNative() && rotation.isNative() && scale.isNative()) return composeTRS_mulAdd_unsafe(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
-        return composeTRS_mulAdd_api(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
-    }
-
-    public static java.lang.foreign.MemorySegment composeTRS_mulAdd_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment translation, long translationOffset, java.lang.foreign.MemorySegment rotation, long rotationOffset, java.lang.foreign.MemorySegment scale, long scaleOffset) {
-        long _translationBase = translation.address() + translationOffset;
-        long _rotationBase = rotation.address() + rotationOffset;
-        long _scaleBase = scale.address() + scaleOffset;
-        float _rotationy = UnsafeOpsHolder.U.getFloat(_rotationBase + 4L);
-        float _rotationx = UnsafeOpsHolder.U.getFloat(_rotationBase + 0L);
-        float _rotationz = UnsafeOpsHolder.U.getFloat(_rotationBase + 8L);
-        float _rotationw = UnsafeOpsHolder.U.getFloat(_rotationBase + 12L);
-        float _t0 = _rotationz * _rotationz;
-        float _t1 = _rotationz * _rotationw;
-        float _t2 = _rotationy * _rotationw;
-        var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.0f);
-        var _sv1 = FloatVector.broadcast(SIMD_SPECIES, 2.0f);
-        var _c0 = _sv0.mul(UNIT_W).add(FloatVector.broadcast(SIMD_SPECIES, UnsafeOpsHolder.U.getFloat(_scaleBase + 0L)).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, Math.fma(-2.0f, Math.fma(_rotationy, _rotationy, _t0), 1.0f)).withLane(1, 2.0f * Math.fma(_rotationx, _rotationy, _t1)).withLane(2, 2.0f * Math.fma(_rotationx, _rotationz, -_t2))));
-        var _c1 = FloatVector.broadcast(SIMD_SPECIES, UnsafeOpsHolder.U.getFloat(_scaleBase + 4L)).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_rotationx, _rotationy, -_t1)).withLane(2, Math.fma(_rotationx, _rotationw, _rotationy * _rotationz))).withLane(1, Math.fma(-2.0f, Math.fma(_rotationx, _rotationx, _t0), 1.0f))).withLane(3, 0.0f);
-        var _c2 = FloatVector.broadcast(SIMD_SPECIES, UnsafeOpsHolder.U.getFloat(_scaleBase + 8L)).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_rotationx, _rotationz, _t2)).withLane(1, Math.fma(_rotationy, _rotationz, -(_rotationx * _rotationw)))).withLane(2, Math.fma(-2.0f, Math.fma(_rotationx, _rotationx, _rotationy * _rotationy), 1.0f))).withLane(3, 0.0f);
-        var _c3 = FloatVector.zero(SIMD_SPECIES).withLane(0, UnsafeOpsHolder.U.getFloat(_translationBase + 0L)).withLane(1, UnsafeOpsHolder.U.getFloat(_translationBase + 4L)).withLane(2, UnsafeOpsHolder.U.getFloat(_translationBase + 8L)).withLane(3, 1.0f);
-        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
-        _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        _c2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        _c3.intoMemorySegment(dest, destOffset + 48L, java.nio.ByteOrder.nativeOrder());
-        return dest;
-    }
-
-    public static java.lang.foreign.MemorySegment composeTRS_mulAdd_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment translation, long translationOffset, java.lang.foreign.MemorySegment rotation, long rotationOffset, java.lang.foreign.MemorySegment scale, long scaleOffset) {
-        float _rotationy = rotation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 4L);
-        float _rotationx = rotation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 0L);
-        float _rotationz = rotation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 8L);
-        float _rotationw = rotation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 12L);
-        float _t0 = _rotationz * _rotationz;
-        float _t1 = _rotationz * _rotationw;
-        float _t2 = _rotationy * _rotationw;
-        var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.0f);
-        var _sv1 = FloatVector.broadcast(SIMD_SPECIES, 2.0f);
-        var _c0 = _sv0.mul(UNIT_W).add(FloatVector.broadcast(SIMD_SPECIES, scale.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, scaleOffset + 0L)).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, Math.fma(-2.0f, Math.fma(_rotationy, _rotationy, _t0), 1.0f)).withLane(1, 2.0f * Math.fma(_rotationx, _rotationy, _t1)).withLane(2, 2.0f * Math.fma(_rotationx, _rotationz, -_t2))));
-        var _c1 = FloatVector.broadcast(SIMD_SPECIES, scale.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, scaleOffset + 4L)).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_rotationx, _rotationy, -_t1)).withLane(2, Math.fma(_rotationx, _rotationw, _rotationy * _rotationz))).withLane(1, Math.fma(-2.0f, Math.fma(_rotationx, _rotationx, _t0), 1.0f))).withLane(3, 0.0f);
-        var _c2 = FloatVector.broadcast(SIMD_SPECIES, scale.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, scaleOffset + 8L)).mul(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_rotationx, _rotationz, _t2)).withLane(1, Math.fma(_rotationy, _rotationz, -(_rotationx * _rotationw)))).withLane(2, Math.fma(-2.0f, Math.fma(_rotationx, _rotationx, _rotationy * _rotationy), 1.0f))).withLane(3, 0.0f);
-        var _c3 = FloatVector.zero(SIMD_SPECIES).withLane(0, translation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, translationOffset + 0L)).withLane(1, translation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, translationOffset + 4L)).withLane(2, translation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, translationOffset + 8L)).withLane(3, 1.0f);
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
         _c2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -9328,26 +9022,30 @@ public final class Float4x4OpsSimd {
     }
 
     public static float[] rotateAround_fma(float[] dest, int destOffset, float[] src, int srcOffset, float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
-        float _t0 = -pivotZ;
-        float _t2 = rotY * rotW;
-        float _t3 = rotZ * rotZ;
-        float _t4 = rotZ * rotW;
-        float _t11 = Math.fma(rotY, rotY, _t3);
-        float _t14 = Math.fma(rotX, rotX, _t3);
-        float _t15 = Math.fma(rotX, rotX, rotY * rotY);
-        float _t20 = 2.0f * Math.fma(rotX, rotY, _t4);
-        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t22 = 2.0f * Math.fma(rotX, rotZ, _t2);
-        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t2);
-        float _t27 = 2.0f * Math.fma(rotX, rotY, -_t4);
-        float _t28 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
+        float _t0 = -rotY;
+        float _t2 = -rotX;
+        float _t3 = -pivotZ;
+        float _t5 = 2.0f * rotX;
+        float _t6 = 2.0f * rotY;
+        float _t7 = 2.0f * rotZ;
+        float _t8 = rotW * _t6;
+        float _t9 = rotW * _t7;
+        float _t10 = rotW * _t5;
+        float _t11 = rotZ * _t7;
+        float _t16 = Math.fma(-rotZ, _t7, 1.0f);
+        float _t18 = Math.fma(rotY, _t5, _t9);
+        float _t19 = Math.fma(rotZ, _t6, _t10);
+        float _t20 = Math.fma(rotZ, _t5, _t8);
+        float _t24 = Math.fma(rotZ, _t5, -_t8);
+        float _t25 = Math.fma(rotY, _t5, -_t9);
+        float _t26 = Math.fma(rotZ, _t6, -_t10);
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t26), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t11, 1.0f)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t20))));
-        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t21), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t27), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t14, 1.0f)))));
-        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t15, 1.0f)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t22), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t28))));
-        var _c3 = _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t22, Math.fma(pivotX, 2.0f * _t11, -(pivotY * _t27)))), _sv2.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t28, Math.fma(pivotY, 2.0f * _t14, -(pivotX * _t20)))), _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t15, -(pivotX * _t26)))), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t24), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t6, _t16)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t18))));
+        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t19), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t25), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, _t16)))));
+        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, Math.fma(_t0, _t6, 1.0f))), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t20), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t26))));
+        var _c3 = _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t20, Math.fma(pivotX, Math.fma(rotY, _t6, _t11), -(pivotY * _t25)))), _sv2.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t26, Math.fma(pivotY, Math.fma(rotX, _t5, _t11), -(pivotX * _t18)))), _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-pivotY, _t19, Math.fma(pivotZ, Math.fma(rotX, _t5, rotY * _t6), -(pivotX * _t24)))), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -9356,26 +9054,30 @@ public final class Float4x4OpsSimd {
     }
 
     public static float[] rotateAround_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
-        float _t0 = -pivotZ;
-        float _t2 = rotY * rotW;
-        float _t3 = rotZ * rotZ;
-        float _t4 = rotZ * rotW;
-        float _t11 = Math.fma(rotY, rotY, _t3);
-        float _t14 = Math.fma(rotX, rotX, _t3);
-        float _t15 = Math.fma(rotX, rotX, rotY * rotY);
-        float _t20 = 2.0f * Math.fma(rotX, rotY, _t4);
-        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t22 = 2.0f * Math.fma(rotX, rotZ, _t2);
-        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t2);
-        float _t27 = 2.0f * Math.fma(rotX, rotY, -_t4);
-        float _t28 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
+        float _t0 = -rotY;
+        float _t2 = -rotX;
+        float _t3 = -pivotZ;
+        float _t5 = 2.0f * rotX;
+        float _t6 = 2.0f * rotY;
+        float _t7 = 2.0f * rotZ;
+        float _t8 = rotW * _t6;
+        float _t9 = rotW * _t7;
+        float _t10 = rotW * _t5;
+        float _t11 = rotZ * _t7;
+        float _t16 = Math.fma(-rotZ, _t7, 1.0f);
+        float _t18 = Math.fma(rotY, _t5, _t9);
+        float _t19 = Math.fma(rotZ, _t6, _t10);
+        float _t20 = Math.fma(rotZ, _t5, _t8);
+        float _t24 = Math.fma(rotZ, _t5, -_t8);
+        float _t25 = Math.fma(rotY, _t5, -_t9);
+        float _t26 = Math.fma(rotZ, _t6, -_t10);
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t26)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t11, 1.0f))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t20))));
-        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t21)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t27)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t14, 1.0f)))));
-        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t15, 1.0f))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t22)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t28))));
-        var _c3 = _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t22, Math.fma(pivotX, 2.0f * _t11, -(pivotY * _t27))))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t28, Math.fma(pivotY, 2.0f * _t14, -(pivotX * _t20))))).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t15, -(pivotX * _t26))))).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t24)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t6, _t16))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t18))));
+        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t19)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t25)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, _t16)))));
+        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, Math.fma(_t0, _t6, 1.0f)))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t20)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t26))));
+        var _c3 = _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t20, Math.fma(pivotX, Math.fma(rotY, _t6, _t11), -(pivotY * _t25))))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t26, Math.fma(pivotY, Math.fma(rotX, _t5, _t11), -(pivotX * _t18))))).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-pivotY, _t19, Math.fma(pivotZ, Math.fma(rotX, _t5, rotY * _t6), -(pivotX * _t24))))).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -9389,26 +9091,30 @@ public final class Float4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment rotateAround_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
-        float _t0 = -pivotZ;
-        float _t2 = rotY * rotW;
-        float _t3 = rotZ * rotZ;
-        float _t4 = rotZ * rotW;
-        float _t11 = Math.fma(rotY, rotY, _t3);
-        float _t14 = Math.fma(rotX, rotX, _t3);
-        float _t15 = Math.fma(rotX, rotX, rotY * rotY);
-        float _t20 = 2.0f * Math.fma(rotX, rotY, _t4);
-        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t22 = 2.0f * Math.fma(rotX, rotZ, _t2);
-        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t2);
-        float _t27 = 2.0f * Math.fma(rotX, rotY, -_t4);
-        float _t28 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
+        float _t0 = -rotY;
+        float _t2 = -rotX;
+        float _t3 = -pivotZ;
+        float _t5 = 2.0f * rotX;
+        float _t6 = 2.0f * rotY;
+        float _t7 = 2.0f * rotZ;
+        float _t8 = rotW * _t6;
+        float _t9 = rotW * _t7;
+        float _t10 = rotW * _t5;
+        float _t11 = rotZ * _t7;
+        float _t16 = Math.fma(-rotZ, _t7, 1.0f);
+        float _t18 = Math.fma(rotY, _t5, _t9);
+        float _t19 = Math.fma(rotZ, _t6, _t10);
+        float _t20 = Math.fma(rotZ, _t5, _t8);
+        float _t24 = Math.fma(rotZ, _t5, -_t8);
+        float _t25 = Math.fma(rotY, _t5, -_t9);
+        float _t26 = Math.fma(rotZ, _t6, -_t10);
         var _sv0 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t26), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t11, 1.0f)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t20))));
-        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t21), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t27), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t14, 1.0f)))));
-        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t15, 1.0f)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t22), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t28))));
-        var _c3 = _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t22, Math.fma(pivotX, 2.0f * _t11, -(pivotY * _t27)))), _sv2.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t28, Math.fma(pivotY, 2.0f * _t14, -(pivotX * _t20)))), _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t15, -(pivotX * _t26)))), FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder()))));
+        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t24), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t6, _t16)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t18))));
+        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t19), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t25), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, _t16)))));
+        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, Math.fma(_t0, _t6, 1.0f))), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t20), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t26))));
+        var _c3 = _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t20, Math.fma(pivotX, Math.fma(rotY, _t6, _t11), -(pivotY * _t25)))), _sv2.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t26, Math.fma(pivotY, Math.fma(rotX, _t5, _t11), -(pivotX * _t18)))), _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-pivotY, _t19, Math.fma(pivotZ, Math.fma(rotX, _t5, rotY * _t6), -(pivotX * _t24)))), FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder()))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
         _c2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -9417,26 +9123,30 @@ public final class Float4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment rotateAround_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
-        float _t0 = -pivotZ;
-        float _t2 = rotY * rotW;
-        float _t3 = rotZ * rotZ;
-        float _t4 = rotZ * rotW;
-        float _t11 = Math.fma(rotY, rotY, _t3);
-        float _t14 = Math.fma(rotX, rotX, _t3);
-        float _t15 = Math.fma(rotX, rotX, rotY * rotY);
-        float _t20 = 2.0f * Math.fma(rotX, rotY, _t4);
-        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t22 = 2.0f * Math.fma(rotX, rotZ, _t2);
-        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t2);
-        float _t27 = 2.0f * Math.fma(rotX, rotY, -_t4);
-        float _t28 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
+        float _t0 = -rotY;
+        float _t2 = -rotX;
+        float _t3 = -pivotZ;
+        float _t5 = 2.0f * rotX;
+        float _t6 = 2.0f * rotY;
+        float _t7 = 2.0f * rotZ;
+        float _t8 = rotW * _t6;
+        float _t9 = rotW * _t7;
+        float _t10 = rotW * _t5;
+        float _t11 = rotZ * _t7;
+        float _t16 = Math.fma(-rotZ, _t7, 1.0f);
+        float _t18 = Math.fma(rotY, _t5, _t9);
+        float _t19 = Math.fma(rotZ, _t6, _t10);
+        float _t20 = Math.fma(rotZ, _t5, _t8);
+        float _t24 = Math.fma(rotZ, _t5, -_t8);
+        float _t25 = Math.fma(rotY, _t5, -_t9);
+        float _t26 = Math.fma(rotZ, _t6, -_t10);
         var _sv0 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t26)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t11, 1.0f))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t20))));
-        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t21)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t27)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t14, 1.0f)))));
-        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t15, 1.0f))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t22)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t28))));
-        var _c3 = _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t22, Math.fma(pivotX, 2.0f * _t11, -(pivotY * _t27))))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t28, Math.fma(pivotY, 2.0f * _t14, -(pivotX * _t20))))).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t15, -(pivotX * _t26))))).add(FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder()))));
+        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t24)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t6, _t16))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t18))));
+        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t19)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t25)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, _t16)))));
+        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, Math.fma(_t0, _t6, 1.0f)))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t20)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t26))));
+        var _c3 = _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t20, Math.fma(pivotX, Math.fma(rotY, _t6, _t11), -(pivotY * _t25))))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t26, Math.fma(pivotY, Math.fma(rotX, _t5, _t11), -(pivotX * _t18))))).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-pivotY, _t19, Math.fma(pivotZ, Math.fma(rotX, _t5, rotY * _t6), -(pivotX * _t24))))).add(FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder()))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
         _c2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -9451,32 +9161,36 @@ public final class Float4x4OpsSimd {
 
     public static float[] rotateAround_fma(float[] dest, int destOffset, float[] src, int srcOffset, float[] rot, int rotOffset, float[] pivot, int pivotOffset) {
         float _pivotx = pivot[pivotOffset + 0];
-        float _pivoty = pivot[pivotOffset + 1];
-        float _pivotz = pivot[pivotOffset + 2];
         float _roty = rot[rotOffset + 1];
-        float _rotw = rot[rotOffset + 3];
-        float _rotz = rot[rotOffset + 2];
+        float _pivoty = pivot[pivotOffset + 1];
         float _rotx = rot[rotOffset + 0];
-        float _t0 = -_pivotz;
-        float _t2 = _roty * _rotw;
-        float _t3 = _rotz * _rotz;
-        float _t4 = _rotz * _rotw;
-        float _t11 = Math.fma(_roty, _roty, _t3);
-        float _t14 = Math.fma(_rotx, _rotx, _t3);
-        float _t15 = Math.fma(_rotx, _rotx, _roty * _roty);
-        float _t20 = 2.0f * Math.fma(_rotx, _roty, _t4);
-        float _t21 = 2.0f * Math.fma(_rotx, _rotw, _roty * _rotz);
-        float _t22 = 2.0f * Math.fma(_rotx, _rotz, _t2);
-        float _t26 = 2.0f * Math.fma(_rotx, _rotz, -_t2);
-        float _t27 = 2.0f * Math.fma(_rotx, _roty, -_t4);
-        float _t28 = 2.0f * Math.fma(_roty, _rotz, -(_rotx * _rotw));
+        float _pivotz = pivot[pivotOffset + 2];
+        float _rotz = rot[rotOffset + 2];
+        float _rotw = rot[rotOffset + 3];
+        float _t0 = -_roty;
+        float _t2 = -_rotx;
+        float _t3 = -_pivotz;
+        float _t5 = 2.0f * _rotx;
+        float _t6 = 2.0f * _roty;
+        float _t7 = 2.0f * _rotz;
+        float _t8 = _rotw * _t6;
+        float _t9 = _rotw * _t7;
+        float _t10 = _rotw * _t5;
+        float _t11 = _rotz * _t7;
+        float _t16 = Math.fma(-_rotz, _t7, 1.0f);
+        float _t18 = Math.fma(_roty, _t5, _t9);
+        float _t19 = Math.fma(_rotz, _t6, _t10);
+        float _t20 = Math.fma(_rotz, _t5, _t8);
+        float _t24 = Math.fma(_rotz, _t5, -_t8);
+        float _t25 = Math.fma(_roty, _t5, -_t9);
+        float _t26 = Math.fma(_rotz, _t6, -_t10);
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t26), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t11, 1.0f)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t20))));
-        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t21), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t27), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t14, 1.0f)))));
-        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t15, 1.0f)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t22), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t28))));
-        var _c3 = _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t22, Math.fma(_pivotx, 2.0f * _t11, -(_pivoty * _t27)))), _sv2.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t28, Math.fma(_pivoty, 2.0f * _t14, -(_pivotx * _t20)))), _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-_pivoty, _t21, Math.fma(_pivotz, 2.0f * _t15, -(_pivotx * _t26)))), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t24), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t6, _t16)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t18))));
+        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t19), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t25), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, _t16)))));
+        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, Math.fma(_t0, _t6, 1.0f))), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t20), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t26))));
+        var _c3 = _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t20, Math.fma(_pivotx, Math.fma(_roty, _t6, _t11), -(_pivoty * _t25)))), _sv2.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t26, Math.fma(_pivoty, Math.fma(_rotx, _t5, _t11), -(_pivotx * _t18)))), _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-_pivoty, _t19, Math.fma(_pivotz, Math.fma(_rotx, _t5, _roty * _t6), -(_pivotx * _t24)))), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -9486,32 +9200,36 @@ public final class Float4x4OpsSimd {
 
     public static float[] rotateAround_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float[] rot, int rotOffset, float[] pivot, int pivotOffset) {
         float _pivotx = pivot[pivotOffset + 0];
-        float _pivoty = pivot[pivotOffset + 1];
-        float _pivotz = pivot[pivotOffset + 2];
         float _roty = rot[rotOffset + 1];
-        float _rotw = rot[rotOffset + 3];
-        float _rotz = rot[rotOffset + 2];
+        float _pivoty = pivot[pivotOffset + 1];
         float _rotx = rot[rotOffset + 0];
-        float _t0 = -_pivotz;
-        float _t2 = _roty * _rotw;
-        float _t3 = _rotz * _rotz;
-        float _t4 = _rotz * _rotw;
-        float _t11 = Math.fma(_roty, _roty, _t3);
-        float _t14 = Math.fma(_rotx, _rotx, _t3);
-        float _t15 = Math.fma(_rotx, _rotx, _roty * _roty);
-        float _t20 = 2.0f * Math.fma(_rotx, _roty, _t4);
-        float _t21 = 2.0f * Math.fma(_rotx, _rotw, _roty * _rotz);
-        float _t22 = 2.0f * Math.fma(_rotx, _rotz, _t2);
-        float _t26 = 2.0f * Math.fma(_rotx, _rotz, -_t2);
-        float _t27 = 2.0f * Math.fma(_rotx, _roty, -_t4);
-        float _t28 = 2.0f * Math.fma(_roty, _rotz, -(_rotx * _rotw));
+        float _pivotz = pivot[pivotOffset + 2];
+        float _rotz = rot[rotOffset + 2];
+        float _rotw = rot[rotOffset + 3];
+        float _t0 = -_roty;
+        float _t2 = -_rotx;
+        float _t3 = -_pivotz;
+        float _t5 = 2.0f * _rotx;
+        float _t6 = 2.0f * _roty;
+        float _t7 = 2.0f * _rotz;
+        float _t8 = _rotw * _t6;
+        float _t9 = _rotw * _t7;
+        float _t10 = _rotw * _t5;
+        float _t11 = _rotz * _t7;
+        float _t16 = Math.fma(-_rotz, _t7, 1.0f);
+        float _t18 = Math.fma(_roty, _t5, _t9);
+        float _t19 = Math.fma(_rotz, _t6, _t10);
+        float _t20 = Math.fma(_rotz, _t5, _t8);
+        float _t24 = Math.fma(_rotz, _t5, -_t8);
+        float _t25 = Math.fma(_roty, _t5, -_t9);
+        float _t26 = Math.fma(_rotz, _t6, -_t10);
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t26)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t11, 1.0f))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t20))));
-        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t21)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t27)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t14, 1.0f)))));
-        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t15, 1.0f))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t22)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t28))));
-        var _c3 = _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t22, Math.fma(_pivotx, 2.0f * _t11, -(_pivoty * _t27))))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t28, Math.fma(_pivoty, 2.0f * _t14, -(_pivotx * _t20))))).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-_pivoty, _t21, Math.fma(_pivotz, 2.0f * _t15, -(_pivotx * _t26))))).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t24)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t6, _t16))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t18))));
+        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t19)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t25)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, _t16)))));
+        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, Math.fma(_t0, _t6, 1.0f)))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t20)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t26))));
+        var _c3 = _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t20, Math.fma(_pivotx, Math.fma(_roty, _t6, _t11), -(_pivoty * _t25))))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t26, Math.fma(_pivoty, Math.fma(_rotx, _t5, _t11), -(_pivotx * _t18))))).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-_pivoty, _t19, Math.fma(_pivotz, Math.fma(_rotx, _t5, _roty * _t6), -(_pivotx * _t24))))).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -9533,32 +9251,36 @@ public final class Float4x4OpsSimd {
         long _rotBase = rot.address() + rotOffset;
         long _pivotBase = pivot.address() + pivotOffset;
         float _pivotx = UnsafeOpsHolder.U.getFloat(_pivotBase + 0L);
-        float _pivoty = UnsafeOpsHolder.U.getFloat(_pivotBase + 4L);
-        float _pivotz = UnsafeOpsHolder.U.getFloat(_pivotBase + 8L);
         float _roty = UnsafeOpsHolder.U.getFloat(_rotBase + 4L);
-        float _rotw = UnsafeOpsHolder.U.getFloat(_rotBase + 12L);
-        float _rotz = UnsafeOpsHolder.U.getFloat(_rotBase + 8L);
+        float _pivoty = UnsafeOpsHolder.U.getFloat(_pivotBase + 4L);
         float _rotx = UnsafeOpsHolder.U.getFloat(_rotBase + 0L);
-        float _t0 = -_pivotz;
-        float _t2 = _roty * _rotw;
-        float _t3 = _rotz * _rotz;
-        float _t4 = _rotz * _rotw;
-        float _t11 = Math.fma(_roty, _roty, _t3);
-        float _t14 = Math.fma(_rotx, _rotx, _t3);
-        float _t15 = Math.fma(_rotx, _rotx, _roty * _roty);
-        float _t20 = 2.0f * Math.fma(_rotx, _roty, _t4);
-        float _t21 = 2.0f * Math.fma(_rotx, _rotw, _roty * _rotz);
-        float _t22 = 2.0f * Math.fma(_rotx, _rotz, _t2);
-        float _t26 = 2.0f * Math.fma(_rotx, _rotz, -_t2);
-        float _t27 = 2.0f * Math.fma(_rotx, _roty, -_t4);
-        float _t28 = 2.0f * Math.fma(_roty, _rotz, -(_rotx * _rotw));
+        float _pivotz = UnsafeOpsHolder.U.getFloat(_pivotBase + 8L);
+        float _rotz = UnsafeOpsHolder.U.getFloat(_rotBase + 8L);
+        float _rotw = UnsafeOpsHolder.U.getFloat(_rotBase + 12L);
+        float _t0 = -_roty;
+        float _t2 = -_rotx;
+        float _t3 = -_pivotz;
+        float _t5 = 2.0f * _rotx;
+        float _t6 = 2.0f * _roty;
+        float _t7 = 2.0f * _rotz;
+        float _t8 = _rotw * _t6;
+        float _t9 = _rotw * _t7;
+        float _t10 = _rotw * _t5;
+        float _t11 = _rotz * _t7;
+        float _t16 = Math.fma(-_rotz, _t7, 1.0f);
+        float _t18 = Math.fma(_roty, _t5, _t9);
+        float _t19 = Math.fma(_rotz, _t6, _t10);
+        float _t20 = Math.fma(_rotz, _t5, _t8);
+        float _t24 = Math.fma(_rotz, _t5, -_t8);
+        float _t25 = Math.fma(_roty, _t5, -_t9);
+        float _t26 = Math.fma(_rotz, _t6, -_t10);
         var _sv0 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t26), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t11, 1.0f)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t20))));
-        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t21), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t27), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t14, 1.0f)))));
-        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t15, 1.0f)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t22), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t28))));
-        var _c3 = _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t22, Math.fma(_pivotx, 2.0f * _t11, -(_pivoty * _t27)))), _sv2.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t28, Math.fma(_pivoty, 2.0f * _t14, -(_pivotx * _t20)))), _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-_pivoty, _t21, Math.fma(_pivotz, 2.0f * _t15, -(_pivotx * _t26)))), FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder()))));
+        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t24), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t6, _t16)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t18))));
+        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t19), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t25), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, _t16)))));
+        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, Math.fma(_t0, _t6, 1.0f))), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t20), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t26))));
+        var _c3 = _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t20, Math.fma(_pivotx, Math.fma(_roty, _t6, _t11), -(_pivoty * _t25)))), _sv2.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t26, Math.fma(_pivoty, Math.fma(_rotx, _t5, _t11), -(_pivotx * _t18)))), _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-_pivoty, _t19, Math.fma(_pivotz, Math.fma(_rotx, _t5, _roty * _t6), -(_pivotx * _t24)))), FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder()))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
         _c2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -9568,32 +9290,36 @@ public final class Float4x4OpsSimd {
 
     public static java.lang.foreign.MemorySegment rotateAround_fma_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment rot, long rotOffset, java.lang.foreign.MemorySegment pivot, long pivotOffset) {
         float _pivotx = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 0L);
-        float _pivoty = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 4L);
-        float _pivotz = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 8L);
         float _roty = rot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotOffset + 4L);
-        float _rotw = rot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotOffset + 12L);
-        float _rotz = rot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotOffset + 8L);
+        float _pivoty = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 4L);
         float _rotx = rot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotOffset + 0L);
-        float _t0 = -_pivotz;
-        float _t2 = _roty * _rotw;
-        float _t3 = _rotz * _rotz;
-        float _t4 = _rotz * _rotw;
-        float _t11 = Math.fma(_roty, _roty, _t3);
-        float _t14 = Math.fma(_rotx, _rotx, _t3);
-        float _t15 = Math.fma(_rotx, _rotx, _roty * _roty);
-        float _t20 = 2.0f * Math.fma(_rotx, _roty, _t4);
-        float _t21 = 2.0f * Math.fma(_rotx, _rotw, _roty * _rotz);
-        float _t22 = 2.0f * Math.fma(_rotx, _rotz, _t2);
-        float _t26 = 2.0f * Math.fma(_rotx, _rotz, -_t2);
-        float _t27 = 2.0f * Math.fma(_rotx, _roty, -_t4);
-        float _t28 = 2.0f * Math.fma(_roty, _rotz, -(_rotx * _rotw));
+        float _pivotz = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 8L);
+        float _rotz = rot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotOffset + 8L);
+        float _rotw = rot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotOffset + 12L);
+        float _t0 = -_roty;
+        float _t2 = -_rotx;
+        float _t3 = -_pivotz;
+        float _t5 = 2.0f * _rotx;
+        float _t6 = 2.0f * _roty;
+        float _t7 = 2.0f * _rotz;
+        float _t8 = _rotw * _t6;
+        float _t9 = _rotw * _t7;
+        float _t10 = _rotw * _t5;
+        float _t11 = _rotz * _t7;
+        float _t16 = Math.fma(-_rotz, _t7, 1.0f);
+        float _t18 = Math.fma(_roty, _t5, _t9);
+        float _t19 = Math.fma(_rotz, _t6, _t10);
+        float _t20 = Math.fma(_rotz, _t5, _t8);
+        float _t24 = Math.fma(_rotz, _t5, -_t8);
+        float _t25 = Math.fma(_roty, _t5, -_t9);
+        float _t26 = Math.fma(_rotz, _t6, -_t10);
         var _sv0 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t26), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t11, 1.0f)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t20))));
-        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t21), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t27), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t14, 1.0f)))));
-        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t15, 1.0f)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t22), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t28))));
-        var _c3 = _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t22, Math.fma(_pivotx, 2.0f * _t11, -(_pivoty * _t27)))), _sv2.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t28, Math.fma(_pivoty, 2.0f * _t14, -(_pivotx * _t20)))), _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-_pivoty, _t21, Math.fma(_pivotz, 2.0f * _t15, -(_pivotx * _t26)))), FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder()))));
+        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t24), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t6, _t16)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t18))));
+        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t19), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t25), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, _t16)))));
+        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, Math.fma(_t0, _t6, 1.0f))), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, _t20), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t26))));
+        var _c3 = _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t20, Math.fma(_pivotx, Math.fma(_roty, _t6, _t11), -(_pivoty * _t25)))), _sv2.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t26, Math.fma(_pivoty, Math.fma(_rotx, _t5, _t11), -(_pivotx * _t18)))), _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-_pivoty, _t19, Math.fma(_pivotz, Math.fma(_rotx, _t5, _roty * _t6), -(_pivotx * _t24)))), FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder()))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
         _c2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -9610,32 +9336,36 @@ public final class Float4x4OpsSimd {
         long _rotBase = rot.address() + rotOffset;
         long _pivotBase = pivot.address() + pivotOffset;
         float _pivotx = UnsafeOpsHolder.U.getFloat(_pivotBase + 0L);
-        float _pivoty = UnsafeOpsHolder.U.getFloat(_pivotBase + 4L);
-        float _pivotz = UnsafeOpsHolder.U.getFloat(_pivotBase + 8L);
         float _roty = UnsafeOpsHolder.U.getFloat(_rotBase + 4L);
-        float _rotw = UnsafeOpsHolder.U.getFloat(_rotBase + 12L);
-        float _rotz = UnsafeOpsHolder.U.getFloat(_rotBase + 8L);
+        float _pivoty = UnsafeOpsHolder.U.getFloat(_pivotBase + 4L);
         float _rotx = UnsafeOpsHolder.U.getFloat(_rotBase + 0L);
-        float _t0 = -_pivotz;
-        float _t2 = _roty * _rotw;
-        float _t3 = _rotz * _rotz;
-        float _t4 = _rotz * _rotw;
-        float _t11 = Math.fma(_roty, _roty, _t3);
-        float _t14 = Math.fma(_rotx, _rotx, _t3);
-        float _t15 = Math.fma(_rotx, _rotx, _roty * _roty);
-        float _t20 = 2.0f * Math.fma(_rotx, _roty, _t4);
-        float _t21 = 2.0f * Math.fma(_rotx, _rotw, _roty * _rotz);
-        float _t22 = 2.0f * Math.fma(_rotx, _rotz, _t2);
-        float _t26 = 2.0f * Math.fma(_rotx, _rotz, -_t2);
-        float _t27 = 2.0f * Math.fma(_rotx, _roty, -_t4);
-        float _t28 = 2.0f * Math.fma(_roty, _rotz, -(_rotx * _rotw));
+        float _pivotz = UnsafeOpsHolder.U.getFloat(_pivotBase + 8L);
+        float _rotz = UnsafeOpsHolder.U.getFloat(_rotBase + 8L);
+        float _rotw = UnsafeOpsHolder.U.getFloat(_rotBase + 12L);
+        float _t0 = -_roty;
+        float _t2 = -_rotx;
+        float _t3 = -_pivotz;
+        float _t5 = 2.0f * _rotx;
+        float _t6 = 2.0f * _roty;
+        float _t7 = 2.0f * _rotz;
+        float _t8 = _rotw * _t6;
+        float _t9 = _rotw * _t7;
+        float _t10 = _rotw * _t5;
+        float _t11 = _rotz * _t7;
+        float _t16 = Math.fma(-_rotz, _t7, 1.0f);
+        float _t18 = Math.fma(_roty, _t5, _t9);
+        float _t19 = Math.fma(_rotz, _t6, _t10);
+        float _t20 = Math.fma(_rotz, _t5, _t8);
+        float _t24 = Math.fma(_rotz, _t5, -_t8);
+        float _t25 = Math.fma(_roty, _t5, -_t9);
+        float _t26 = Math.fma(_rotz, _t6, -_t10);
         var _sv0 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t26)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t11, 1.0f))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t20))));
-        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t21)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t27)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t14, 1.0f)))));
-        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t15, 1.0f))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t22)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t28))));
-        var _c3 = _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t22, Math.fma(_pivotx, 2.0f * _t11, -(_pivoty * _t27))))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t28, Math.fma(_pivoty, 2.0f * _t14, -(_pivotx * _t20))))).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-_pivoty, _t21, Math.fma(_pivotz, 2.0f * _t15, -(_pivotx * _t26))))).add(FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder()))));
+        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t24)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t6, _t16))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t18))));
+        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t19)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t25)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, _t16)))));
+        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, Math.fma(_t0, _t6, 1.0f)))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t20)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t26))));
+        var _c3 = _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t20, Math.fma(_pivotx, Math.fma(_roty, _t6, _t11), -(_pivoty * _t25))))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t26, Math.fma(_pivoty, Math.fma(_rotx, _t5, _t11), -(_pivotx * _t18))))).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-_pivoty, _t19, Math.fma(_pivotz, Math.fma(_rotx, _t5, _roty * _t6), -(_pivotx * _t24))))).add(FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder()))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
         _c2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -9645,32 +9375,36 @@ public final class Float4x4OpsSimd {
 
     public static java.lang.foreign.MemorySegment rotateAround_mulAdd_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment rot, long rotOffset, java.lang.foreign.MemorySegment pivot, long pivotOffset) {
         float _pivotx = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 0L);
-        float _pivoty = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 4L);
-        float _pivotz = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 8L);
         float _roty = rot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotOffset + 4L);
-        float _rotw = rot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotOffset + 12L);
-        float _rotz = rot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotOffset + 8L);
+        float _pivoty = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 4L);
         float _rotx = rot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotOffset + 0L);
-        float _t0 = -_pivotz;
-        float _t2 = _roty * _rotw;
-        float _t3 = _rotz * _rotz;
-        float _t4 = _rotz * _rotw;
-        float _t11 = Math.fma(_roty, _roty, _t3);
-        float _t14 = Math.fma(_rotx, _rotx, _t3);
-        float _t15 = Math.fma(_rotx, _rotx, _roty * _roty);
-        float _t20 = 2.0f * Math.fma(_rotx, _roty, _t4);
-        float _t21 = 2.0f * Math.fma(_rotx, _rotw, _roty * _rotz);
-        float _t22 = 2.0f * Math.fma(_rotx, _rotz, _t2);
-        float _t26 = 2.0f * Math.fma(_rotx, _rotz, -_t2);
-        float _t27 = 2.0f * Math.fma(_rotx, _roty, -_t4);
-        float _t28 = 2.0f * Math.fma(_roty, _rotz, -(_rotx * _rotw));
+        float _pivotz = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 8L);
+        float _rotz = rot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotOffset + 8L);
+        float _rotw = rot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotOffset + 12L);
+        float _t0 = -_roty;
+        float _t2 = -_rotx;
+        float _t3 = -_pivotz;
+        float _t5 = 2.0f * _rotx;
+        float _t6 = 2.0f * _roty;
+        float _t7 = 2.0f * _rotz;
+        float _t8 = _rotw * _t6;
+        float _t9 = _rotw * _t7;
+        float _t10 = _rotw * _t5;
+        float _t11 = _rotz * _t7;
+        float _t16 = Math.fma(-_rotz, _t7, 1.0f);
+        float _t18 = Math.fma(_roty, _t5, _t9);
+        float _t19 = Math.fma(_rotz, _t6, _t10);
+        float _t20 = Math.fma(_rotz, _t5, _t8);
+        float _t24 = Math.fma(_rotz, _t5, -_t8);
+        float _t25 = Math.fma(_roty, _t5, -_t9);
+        float _t26 = Math.fma(_rotz, _t6, -_t10);
         var _sv0 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t26)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t11, 1.0f))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t20))));
-        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t21)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t27)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t14, 1.0f)))));
-        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, _t15, 1.0f))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t22)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t28))));
-        var _c3 = _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t22, Math.fma(_pivotx, 2.0f * _t11, -(_pivoty * _t27))))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t28, Math.fma(_pivoty, 2.0f * _t14, -(_pivotx * _t20))))).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-_pivoty, _t21, Math.fma(_pivotz, 2.0f * _t15, -(_pivotx * _t26))))).add(FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder()))));
+        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t24)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t6, _t16))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t18))));
+        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t19)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t25)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, _t16)))));
+        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t5, Math.fma(_t0, _t6, 1.0f)))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t20)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t26))));
+        var _c3 = _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t20, Math.fma(_pivotx, Math.fma(_roty, _t6, _t11), -(_pivoty * _t25))))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t26, Math.fma(_pivoty, Math.fma(_rotx, _t5, _t11), -(_pivotx * _t18))))).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-_pivoty, _t19, Math.fma(_pivotz, Math.fma(_rotx, _t5, _roty * _t6), -(_pivotx * _t24))))).add(FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder()))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
         _c2.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -9944,15 +9678,21 @@ public final class Float4x4OpsSimd {
     }
 
     public static float[] rotateQuat_fma(float[] dest, int destOffset, float[] src, int srcOffset, float qX, float qY, float qZ, float qW) {
-        float _t0 = qY * qW;
-        float _t1 = qZ * qZ;
-        float _t2 = qZ * qW;
+        float _t0 = -qY;
+        float _t2 = -qX;
+        float _t3 = 2.0f * qX;
+        float _t4 = 2.0f * qY;
+        float _t5 = 2.0f * qZ;
+        float _t6 = qW * _t4;
+        float _t7 = qW * _t5;
+        float _t8 = qW * _t3;
+        float _t12 = Math.fma(-qZ, _t5, 1.0f);
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qZ, -_t0)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(qY, qY, _t1), 1.0f)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qY, _t2)))));
-        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qW, qY * qZ)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qY, -_t2)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(qX, qX, _t1), 1.0f)))));
-        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(qX, qX, qY * qY), 1.0f)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qZ, _t0)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qY, qZ, -(qX * qW))))));
+        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qZ, _t3, -_t6)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t4, _t12)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qY, _t3, _t7)))));
+        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qZ, _t4, _t8)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qY, _t3, -_t7)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, _t12)))));
+        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f))), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qZ, _t3, _t6)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qZ, _t4, -_t8)))));
         var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -9962,15 +9702,21 @@ public final class Float4x4OpsSimd {
     }
 
     public static float[] rotateQuat_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float qX, float qY, float qZ, float qW) {
-        float _t0 = qY * qW;
-        float _t1 = qZ * qZ;
-        float _t2 = qZ * qW;
+        float _t0 = -qY;
+        float _t2 = -qX;
+        float _t3 = 2.0f * qX;
+        float _t4 = 2.0f * qY;
+        float _t5 = 2.0f * qZ;
+        float _t6 = qW * _t4;
+        float _t7 = qW * _t5;
+        float _t8 = qW * _t3;
+        float _t12 = Math.fma(-qZ, _t5, 1.0f);
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qZ, -_t0))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(qY, qY, _t1), 1.0f))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qY, _t2)))));
-        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qW, qY * qZ))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qY, -_t2))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(qX, qX, _t1), 1.0f)))));
-        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(qX, qX, qY * qY), 1.0f))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qZ, _t0))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qY, qZ, -(qX * qW))))));
+        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qZ, _t3, -_t6))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t4, _t12))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qY, _t3, _t7)))));
+        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qZ, _t4, _t8))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qY, _t3, -_t7))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, _t12)))));
+        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f)))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qZ, _t3, _t6))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qZ, _t4, -_t8)))));
         var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -9985,15 +9731,21 @@ public final class Float4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment rotateQuat_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float qX, float qY, float qZ, float qW) {
-        float _t0 = qY * qW;
-        float _t1 = qZ * qZ;
-        float _t2 = qZ * qW;
+        float _t0 = -qY;
+        float _t2 = -qX;
+        float _t3 = 2.0f * qX;
+        float _t4 = 2.0f * qY;
+        float _t5 = 2.0f * qZ;
+        float _t6 = qW * _t4;
+        float _t7 = qW * _t5;
+        float _t8 = qW * _t3;
+        float _t12 = Math.fma(-qZ, _t5, 1.0f);
         var _sv0 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qZ, -_t0)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(qY, qY, _t1), 1.0f)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qY, _t2)))));
-        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qW, qY * qZ)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qY, -_t2)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(qX, qX, _t1), 1.0f)))));
-        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(qX, qX, qY * qY), 1.0f)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qZ, _t0)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qY, qZ, -(qX * qW))))));
+        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qZ, _t3, -_t6)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t4, _t12)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qY, _t3, _t7)))));
+        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qZ, _t4, _t8)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qY, _t3, -_t7)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, _t12)))));
+        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f))), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qZ, _t3, _t6)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qZ, _t4, -_t8)))));
         var _c3 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
@@ -10003,15 +9755,21 @@ public final class Float4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment rotateQuat_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float qX, float qY, float qZ, float qW) {
-        float _t0 = qY * qW;
-        float _t1 = qZ * qZ;
-        float _t2 = qZ * qW;
+        float _t0 = -qY;
+        float _t2 = -qX;
+        float _t3 = 2.0f * qX;
+        float _t4 = 2.0f * qY;
+        float _t5 = 2.0f * qZ;
+        float _t6 = qW * _t4;
+        float _t7 = qW * _t5;
+        float _t8 = qW * _t3;
+        float _t12 = Math.fma(-qZ, _t5, 1.0f);
         var _sv0 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qZ, -_t0))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(qY, qY, _t1), 1.0f))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qY, _t2)))));
-        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qW, qY * qZ))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qY, -_t2))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(qX, qX, _t1), 1.0f)))));
-        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(qX, qX, qY * qY), 1.0f))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qX, qZ, _t0))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(qY, qZ, -(qX * qW))))));
+        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qZ, _t3, -_t6))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t4, _t12))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qY, _t3, _t7)))));
+        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qZ, _t4, _t8))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qY, _t3, -_t7))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, _t12)))));
+        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f)))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qZ, _t3, _t6))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(qZ, _t4, -_t8)))));
         var _c3 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
@@ -10026,19 +9784,25 @@ public final class Float4x4OpsSimd {
     }
 
     public static float[] rotateQuat_fma(float[] dest, int destOffset, float[] src, int srcOffset, float[] q, int qOffset) {
-        float _qx = q[qOffset + 0];
         float _qz = q[qOffset + 2];
         float _qy = q[qOffset + 1];
+        float _qx = q[qOffset + 0];
         float _qw = q[qOffset + 3];
-        float _t0 = _qy * _qw;
-        float _t1 = _qz * _qz;
-        float _t2 = _qz * _qw;
+        float _t0 = -_qy;
+        float _t2 = -_qx;
+        float _t3 = 2.0f * _qx;
+        float _t4 = 2.0f * _qy;
+        float _t5 = 2.0f * _qz;
+        float _t6 = _qw * _t4;
+        float _t7 = _qw * _t5;
+        float _t8 = _qw * _t3;
+        float _t12 = Math.fma(-_qz, _t5, 1.0f);
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qz, -_t0)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(_qy, _qy, _t1), 1.0f)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qy, _t2)))));
-        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qw, _qy * _qz)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qy, -_t2)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(_qx, _qx, _t1), 1.0f)))));
-        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(_qx, _qx, _qy * _qy), 1.0f)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qz, _t0)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qy, _qz, -(_qx * _qw))))));
+        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t3, -_t6)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t4, _t12)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qy, _t3, _t7)))));
+        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t4, _t8)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qy, _t3, -_t7)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, _t12)))));
+        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f))), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t3, _t6)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t4, -_t8)))));
         var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -10048,19 +9812,25 @@ public final class Float4x4OpsSimd {
     }
 
     public static float[] rotateQuat_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float[] q, int qOffset) {
-        float _qx = q[qOffset + 0];
         float _qz = q[qOffset + 2];
         float _qy = q[qOffset + 1];
+        float _qx = q[qOffset + 0];
         float _qw = q[qOffset + 3];
-        float _t0 = _qy * _qw;
-        float _t1 = _qz * _qz;
-        float _t2 = _qz * _qw;
+        float _t0 = -_qy;
+        float _t2 = -_qx;
+        float _t3 = 2.0f * _qx;
+        float _t4 = 2.0f * _qy;
+        float _t5 = 2.0f * _qz;
+        float _t6 = _qw * _t4;
+        float _t7 = _qw * _t5;
+        float _t8 = _qw * _t3;
+        float _t12 = Math.fma(-_qz, _t5, 1.0f);
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qz, -_t0))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(_qy, _qy, _t1), 1.0f))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qy, _t2)))));
-        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qw, _qy * _qz))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qy, -_t2))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(_qx, _qx, _t1), 1.0f)))));
-        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(_qx, _qx, _qy * _qy), 1.0f))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qz, _t0))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qy, _qz, -(_qx * _qw))))));
+        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t3, -_t6))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t4, _t12))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qy, _t3, _t7)))));
+        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t4, _t8))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qy, _t3, -_t7))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, _t12)))));
+        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f)))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t3, _t6))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t4, -_t8)))));
         var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -10081,19 +9851,25 @@ public final class Float4x4OpsSimd {
 
     public static java.lang.foreign.MemorySegment rotateQuat_fma_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment q, long qOffset) {
         long _qBase = q.address() + qOffset;
-        float _qx = UnsafeOpsHolder.U.getFloat(_qBase + 0L);
         float _qz = UnsafeOpsHolder.U.getFloat(_qBase + 8L);
         float _qy = UnsafeOpsHolder.U.getFloat(_qBase + 4L);
+        float _qx = UnsafeOpsHolder.U.getFloat(_qBase + 0L);
         float _qw = UnsafeOpsHolder.U.getFloat(_qBase + 12L);
-        float _t0 = _qy * _qw;
-        float _t1 = _qz * _qz;
-        float _t2 = _qz * _qw;
+        float _t0 = -_qy;
+        float _t2 = -_qx;
+        float _t3 = 2.0f * _qx;
+        float _t4 = 2.0f * _qy;
+        float _t5 = 2.0f * _qz;
+        float _t6 = _qw * _t4;
+        float _t7 = _qw * _t5;
+        float _t8 = _qw * _t3;
+        float _t12 = Math.fma(-_qz, _t5, 1.0f);
         var _sv0 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qz, -_t0)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(_qy, _qy, _t1), 1.0f)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qy, _t2)))));
-        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qw, _qy * _qz)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qy, -_t2)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(_qx, _qx, _t1), 1.0f)))));
-        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(_qx, _qx, _qy * _qy), 1.0f)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qz, _t0)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qy, _qz, -(_qx * _qw))))));
+        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t3, -_t6)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t4, _t12)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qy, _t3, _t7)))));
+        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t4, _t8)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qy, _t3, -_t7)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, _t12)))));
+        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f))), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t3, _t6)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t4, -_t8)))));
         var _c3 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
@@ -10103,19 +9879,25 @@ public final class Float4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment rotateQuat_fma_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment q, long qOffset) {
-        float _qx = q.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, qOffset + 0L);
         float _qz = q.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, qOffset + 8L);
         float _qy = q.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, qOffset + 4L);
+        float _qx = q.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, qOffset + 0L);
         float _qw = q.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, qOffset + 12L);
-        float _t0 = _qy * _qw;
-        float _t1 = _qz * _qz;
-        float _t2 = _qz * _qw;
+        float _t0 = -_qy;
+        float _t2 = -_qx;
+        float _t3 = 2.0f * _qx;
+        float _t4 = 2.0f * _qy;
+        float _t5 = 2.0f * _qz;
+        float _t6 = _qw * _t4;
+        float _t7 = _qw * _t5;
+        float _t8 = _qw * _t3;
+        float _t12 = Math.fma(-_qz, _t5, 1.0f);
         var _sv0 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qz, -_t0)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(_qy, _qy, _t1), 1.0f)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qy, _t2)))));
-        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qw, _qy * _qz)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qy, -_t2)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(_qx, _qx, _t1), 1.0f)))));
-        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(_qx, _qx, _qy * _qy), 1.0f)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qz, _t0)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qy, _qz, -(_qx * _qw))))));
+        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t3, -_t6)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t4, _t12)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qy, _t3, _t7)))));
+        var _c1 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t4, _t8)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qy, _t3, -_t7)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, _t12)))));
+        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f))), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t3, _t6)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t4, -_t8)))));
         var _c3 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
@@ -10131,19 +9913,25 @@ public final class Float4x4OpsSimd {
 
     public static java.lang.foreign.MemorySegment rotateQuat_mulAdd_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment q, long qOffset) {
         long _qBase = q.address() + qOffset;
-        float _qx = UnsafeOpsHolder.U.getFloat(_qBase + 0L);
         float _qz = UnsafeOpsHolder.U.getFloat(_qBase + 8L);
         float _qy = UnsafeOpsHolder.U.getFloat(_qBase + 4L);
+        float _qx = UnsafeOpsHolder.U.getFloat(_qBase + 0L);
         float _qw = UnsafeOpsHolder.U.getFloat(_qBase + 12L);
-        float _t0 = _qy * _qw;
-        float _t1 = _qz * _qz;
-        float _t2 = _qz * _qw;
+        float _t0 = -_qy;
+        float _t2 = -_qx;
+        float _t3 = 2.0f * _qx;
+        float _t4 = 2.0f * _qy;
+        float _t5 = 2.0f * _qz;
+        float _t6 = _qw * _t4;
+        float _t7 = _qw * _t5;
+        float _t8 = _qw * _t3;
+        float _t12 = Math.fma(-_qz, _t5, 1.0f);
         var _sv0 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qz, -_t0))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(_qy, _qy, _t1), 1.0f))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qy, _t2)))));
-        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qw, _qy * _qz))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qy, -_t2))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(_qx, _qx, _t1), 1.0f)))));
-        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(_qx, _qx, _qy * _qy), 1.0f))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qz, _t0))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qy, _qz, -(_qx * _qw))))));
+        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t3, -_t6))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t4, _t12))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qy, _t3, _t7)))));
+        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t4, _t8))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qy, _t3, -_t7))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, _t12)))));
+        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f)))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t3, _t6))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t4, -_t8)))));
         var _c3 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());
@@ -10153,19 +9941,25 @@ public final class Float4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment rotateQuat_mulAdd_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment q, long qOffset) {
-        float _qx = q.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, qOffset + 0L);
         float _qz = q.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, qOffset + 8L);
         float _qy = q.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, qOffset + 4L);
+        float _qx = q.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, qOffset + 0L);
         float _qw = q.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, qOffset + 12L);
-        float _t0 = _qy * _qw;
-        float _t1 = _qz * _qz;
-        float _t2 = _qz * _qw;
+        float _t0 = -_qy;
+        float _t2 = -_qx;
+        float _t3 = 2.0f * _qx;
+        float _t4 = 2.0f * _qy;
+        float _t5 = 2.0f * _qz;
+        float _t6 = _qw * _t4;
+        float _t7 = _qw * _t5;
+        float _t8 = _qw * _t3;
+        float _t12 = Math.fma(-_qz, _t5, 1.0f);
         var _sv0 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 16L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qz, -_t0))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(_qy, _qy, _t1), 1.0f))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qy, _t2)))));
-        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qw, _qy * _qz))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qy, -_t2))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(_qx, _qx, _t1), 1.0f)))));
-        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-2.0f, Math.fma(_qx, _qx, _qy * _qy), 1.0f))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qx, _qz, _t0))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 2.0f * Math.fma(_qy, _qz, -(_qx * _qw))))));
+        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t3, -_t6))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t4, _t12))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qy, _t3, _t7)))));
+        var _c1 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t4, _t8))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qy, _t3, -_t7))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, _t12)))));
+        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f)))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t3, _t6))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(_qz, _t4, -_t8)))));
         var _c3 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 48L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 16L, java.nio.ByteOrder.nativeOrder());

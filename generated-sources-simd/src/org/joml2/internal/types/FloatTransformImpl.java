@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 package org.joml2.internal.types;
 
 import org.joml2.*;
@@ -949,46 +951,37 @@ public final class FloatTransformImpl implements FloatTransform {
      * @return dest
      */
     public Float4x4 toMatrix(@Mutated Float4x4 dest) {
-        if (SimdMath.USE_FMA) return toMatrix_fma(dest);
-        return toMatrix_mulAdd(dest);
-    }
-
-    private Float4x4 toMatrix_fma(@Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
-        float _t0 = sd[5] * sd[5];
-        float _t1 = sd[5] * sd[6];
-        float _t2 = sd[4] * sd[6];
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = _sv0.fma(VEC_0, FloatVector.broadcast(COL_SPECIES, sd[7]).mul(FloatVector.zero(COL_SPECIES).withLane(0, Math.fma(-2.0f, Math.fma(sd[4], sd[4], _t0), 1.0f)).withLane(1, 2.0f * Math.fma(sd[3], sd[4], _t1)).withLane(2, 2.0f * Math.fma(sd[3], sd[5], -_t2))));
-        var _sv1 = FloatVector.broadcast(COL_SPECIES, 2.0f);
-        var _col1 = FloatVector.broadcast(COL_SPECIES, sd[8]).mul(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(sd[3], sd[4], -_t1)).withLane(2, Math.fma(sd[3], sd[6], sd[4] * sd[5]))).withLane(1, Math.fma(-2.0f, Math.fma(sd[3], sd[3], _t0), 1.0f))).withLane(3, 0.0f);
-        var _col2 = FloatVector.broadcast(COL_SPECIES, sd[9]).mul(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(sd[3], sd[5], _t2)).withLane(1, Math.fma(sd[4], sd[5], -(sd[3] * sd[6])))).withLane(2, Math.fma(-2.0f, Math.fma(sd[3], sd[3], sd[4] * sd[4]), 1.0f))).withLane(3, 0.0f);
-        var _col3 = FloatVector.zero(COL_SPECIES).withLane(0, sd[0]).withLane(1, sd[1]).withLane(2, sd[2]).withLane(3, 1.0f);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
-        return dest;
-    }
-
-    private Float4x4 toMatrix_mulAdd(@Mutated Float4x4 dest) {
-        float[] sd = this.data;
-        float[] dd = ((Float4x4Impl) dest).data;
-        float _t0 = sd[5] * sd[5];
-        float _t1 = sd[5] * sd[6];
-        float _t2 = sd[4] * sd[6];
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = _sv0.mul(VEC_0).add(FloatVector.broadcast(COL_SPECIES, sd[7]).mul(FloatVector.zero(COL_SPECIES).withLane(0, Math.fma(-2.0f, Math.fma(sd[4], sd[4], _t0), 1.0f)).withLane(1, 2.0f * Math.fma(sd[3], sd[4], _t1)).withLane(2, 2.0f * Math.fma(sd[3], sd[5], -_t2))));
-        var _sv1 = FloatVector.broadcast(COL_SPECIES, 2.0f);
-        var _col1 = FloatVector.broadcast(COL_SPECIES, sd[8]).mul(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(sd[3], sd[4], -_t1)).withLane(2, Math.fma(sd[3], sd[6], sd[4] * sd[5]))).withLane(1, Math.fma(-2.0f, Math.fma(sd[3], sd[3], _t0), 1.0f))).withLane(3, 0.0f);
-        var _col2 = FloatVector.broadcast(COL_SPECIES, sd[9]).mul(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(sd[3], sd[5], _t2)).withLane(1, Math.fma(sd[4], sd[5], -(sd[3] * sd[6])))).withLane(2, Math.fma(-2.0f, Math.fma(sd[3], sd[3], sd[4] * sd[4]), 1.0f))).withLane(3, 0.0f);
-        var _col3 = FloatVector.zero(COL_SPECIES).withLane(0, sd[0]).withLane(1, sd[1]).withLane(2, sd[2]).withLane(3, 1.0f);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
+        float _t0 = 2.0f * sd[7];
+        float _t1 = 2.0f * sd[8];
+        float _t2 = 2.0f * sd[9];
+        float _t3 = sd[5] * sd[5];
+        float _t4 = sd[5] * sd[6];
+        float _t5 = sd[4] * sd[6];
+        float _buf0 = Math.fma(-Math.fma(sd[4], sd[4], _t3), _t0, sd[7]);
+        float _buf1 = Math.fma(sd[3], sd[4], _t4) * _t0;
+        float _buf2 = Math.fma(sd[3], sd[5], -_t5) * _t0;
+        dd[3] = 0.0f;
+        float _buf3 = Math.fma(sd[3], sd[4], -_t4) * _t1;
+        float _buf4 = Math.fma(-Math.fma(sd[3], sd[3], _t3), _t1, sd[8]);
+        float _buf5 = Math.fma(sd[3], sd[6], sd[4] * sd[5]) * _t1;
+        dd[7] = 0.0f;
+        float _buf6 = Math.fma(sd[3], sd[5], _t5) * _t2;
+        dd[9] = Math.fma(sd[4], sd[5], -(sd[3] * sd[6])) * _t2;
+        dd[10] = Math.fma(-Math.fma(sd[3], sd[3], sd[4] * sd[4]), _t2, sd[9]);
+        dd[11] = 0.0f;
+        dd[12] = sd[0];
+        dd[13] = sd[1];
+        dd[14] = sd[2];
+        dd[15] = 1.0f;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        dd[4] = _buf3;
+        dd[5] = _buf4;
+        dd[6] = _buf5;
+        dd[8] = _buf6;
         ((Float4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -1006,20 +999,23 @@ public final class FloatTransformImpl implements FloatTransform {
     public Double4x4 toMatrix(@Mutated Double4x4 dest) {
         float[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        float _t0 = sd[5] * sd[5];
-        float _t1 = sd[5] * sd[6];
-        float _t2 = sd[4] * sd[6];
-        float _buf0 = sd[7] * Math.fma(-2.0f, Math.fma(sd[4], sd[4], _t0), 1.0f);
-        float _buf1 = sd[7] * 2.0f * Math.fma(sd[3], sd[4], _t1);
-        float _buf2 = sd[7] * 2.0f * Math.fma(sd[3], sd[5], -_t2);
+        float _t0 = 2.0f * sd[7];
+        float _t1 = 2.0f * sd[8];
+        float _t2 = 2.0f * sd[9];
+        float _t3 = sd[5] * sd[5];
+        float _t4 = sd[5] * sd[6];
+        float _t5 = sd[4] * sd[6];
+        float _buf0 = Math.fma(-Math.fma(sd[4], sd[4], _t3), _t0, sd[7]);
+        float _buf1 = Math.fma(sd[3], sd[4], _t4) * _t0;
+        float _buf2 = Math.fma(sd[3], sd[5], -_t5) * _t0;
         dd[3] = 0.0f;
-        float _buf3 = sd[8] * 2.0f * Math.fma(sd[3], sd[4], -_t1);
-        float _buf4 = sd[8] * Math.fma(-2.0f, Math.fma(sd[3], sd[3], _t0), 1.0f);
-        float _buf5 = sd[8] * 2.0f * Math.fma(sd[3], sd[6], sd[4] * sd[5]);
+        float _buf3 = Math.fma(sd[3], sd[4], -_t4) * _t1;
+        float _buf4 = Math.fma(-Math.fma(sd[3], sd[3], _t3), _t1, sd[8]);
+        float _buf5 = Math.fma(sd[3], sd[6], sd[4] * sd[5]) * _t1;
         dd[7] = 0.0f;
-        float _buf6 = sd[9] * 2.0f * Math.fma(sd[3], sd[5], _t2);
-        dd[9] = sd[9] * 2.0f * Math.fma(sd[4], sd[5], -(sd[3] * sd[6]));
-        dd[10] = sd[9] * Math.fma(-2.0f, Math.fma(sd[3], sd[3], sd[4] * sd[4]), 1.0f);
+        float _buf6 = Math.fma(sd[3], sd[5], _t5) * _t2;
+        dd[9] = Math.fma(sd[4], sd[5], -(sd[3] * sd[6])) * _t2;
+        dd[10] = Math.fma(-Math.fma(sd[3], sd[3], sd[4] * sd[4]), _t2, sd[9]);
         dd[11] = 0.0f;
         dd[12] = sd[0];
         dd[13] = sd[1];
@@ -1047,18 +1043,21 @@ public final class FloatTransformImpl implements FloatTransform {
     public Float3x3 toMatrix3x3(@Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
-        float _t0 = sd[5] * sd[5];
-        float _t1 = sd[5] * sd[6];
-        float _t2 = sd[4] * sd[6];
-        dd[0] = sd[7] * Math.fma(-2.0f, Math.fma(sd[4], sd[4], _t0), 1.0f);
-        float _buf0 = sd[7] * 2.0f * Math.fma(sd[3], sd[4], _t1);
-        float _buf1 = sd[7] * 2.0f * Math.fma(sd[3], sd[5], -_t2);
-        dd[3] = sd[8] * 2.0f * Math.fma(sd[3], sd[4], -_t1);
-        float _buf2 = sd[8] * Math.fma(-2.0f, Math.fma(sd[3], sd[3], _t0), 1.0f);
-        dd[5] = sd[8] * 2.0f * Math.fma(sd[3], sd[6], sd[4] * sd[5]);
-        dd[6] = sd[9] * 2.0f * Math.fma(sd[3], sd[5], _t2);
-        dd[7] = sd[9] * 2.0f * Math.fma(sd[4], sd[5], -(sd[3] * sd[6]));
-        dd[8] = sd[9] * Math.fma(-2.0f, Math.fma(sd[3], sd[3], sd[4] * sd[4]), 1.0f);
+        float _t0 = 2.0f * sd[7];
+        float _t1 = 2.0f * sd[8];
+        float _t2 = 2.0f * sd[9];
+        float _t3 = sd[5] * sd[5];
+        float _t4 = sd[5] * sd[6];
+        float _t5 = sd[4] * sd[6];
+        dd[0] = Math.fma(-Math.fma(sd[4], sd[4], _t3), _t0, sd[7]);
+        float _buf0 = Math.fma(sd[3], sd[4], _t4) * _t0;
+        float _buf1 = Math.fma(sd[3], sd[5], -_t5) * _t0;
+        dd[3] = Math.fma(sd[3], sd[4], -_t4) * _t1;
+        float _buf2 = Math.fma(-Math.fma(sd[3], sd[3], _t3), _t1, sd[8]);
+        dd[5] = Math.fma(sd[3], sd[6], sd[4] * sd[5]) * _t1;
+        dd[6] = Math.fma(sd[3], sd[5], _t5) * _t2;
+        dd[7] = Math.fma(sd[4], sd[5], -(sd[3] * sd[6])) * _t2;
+        dd[8] = Math.fma(-Math.fma(sd[3], sd[3], sd[4] * sd[4]), _t2, sd[9]);
         dd[1] = _buf0;
         dd[2] = _buf1;
         dd[4] = _buf2;
@@ -1080,18 +1079,21 @@ public final class FloatTransformImpl implements FloatTransform {
     public Double3x3 toMatrix3x3(@Mutated Double3x3 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        float _t0 = sd[5] * sd[5];
-        float _t1 = sd[5] * sd[6];
-        float _t2 = sd[4] * sd[6];
-        dd[0] = sd[7] * Math.fma(-2.0f, Math.fma(sd[4], sd[4], _t0), 1.0f);
-        float _buf0 = sd[7] * 2.0f * Math.fma(sd[3], sd[4], _t1);
-        float _buf1 = sd[7] * 2.0f * Math.fma(sd[3], sd[5], -_t2);
-        dd[3] = sd[8] * 2.0f * Math.fma(sd[3], sd[4], -_t1);
-        float _buf2 = sd[8] * Math.fma(-2.0f, Math.fma(sd[3], sd[3], _t0), 1.0f);
-        dd[5] = sd[8] * 2.0f * Math.fma(sd[3], sd[6], sd[4] * sd[5]);
-        dd[6] = sd[9] * 2.0f * Math.fma(sd[3], sd[5], _t2);
-        dd[7] = sd[9] * 2.0f * Math.fma(sd[4], sd[5], -(sd[3] * sd[6]));
-        dd[8] = sd[9] * Math.fma(-2.0f, Math.fma(sd[3], sd[3], sd[4] * sd[4]), 1.0f);
+        float _t0 = 2.0f * sd[7];
+        float _t1 = 2.0f * sd[8];
+        float _t2 = 2.0f * sd[9];
+        float _t3 = sd[5] * sd[5];
+        float _t4 = sd[5] * sd[6];
+        float _t5 = sd[4] * sd[6];
+        dd[0] = Math.fma(-Math.fma(sd[4], sd[4], _t3), _t0, sd[7]);
+        float _buf0 = Math.fma(sd[3], sd[4], _t4) * _t0;
+        float _buf1 = Math.fma(sd[3], sd[5], -_t5) * _t0;
+        dd[3] = Math.fma(sd[3], sd[4], -_t4) * _t1;
+        float _buf2 = Math.fma(-Math.fma(sd[3], sd[3], _t3), _t1, sd[8]);
+        dd[5] = Math.fma(sd[3], sd[6], sd[4] * sd[5]) * _t1;
+        dd[6] = Math.fma(sd[3], sd[5], _t5) * _t2;
+        dd[7] = Math.fma(sd[4], sd[5], -(sd[3] * sd[6])) * _t2;
+        dd[8] = Math.fma(-Math.fma(sd[3], sd[3], sd[4] * sd[4]), _t2, sd[9]);
         dd[1] = _buf0;
         dd[2] = _buf1;
         dd[4] = _buf2;
@@ -1108,42 +1110,34 @@ public final class FloatTransformImpl implements FloatTransform {
      * @return dest
      */
     public Float3x4 toMatrix3x4(@Mutated Float3x4 dest) {
-        if (SimdMath.USE_FMA) return toMatrix3x4_fma(dest);
-        return toMatrix3x4_mulAdd(dest);
-    }
-
-    private Float3x4 toMatrix3x4_fma(@Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t0 = sd[5] * sd[5];
-        float _t1 = sd[5] * sd[6];
-        float _t2 = sd[4] * sd[6];
-        var _sv0 = FloatVector.zero(COL_SPECIES).withLane(0, sd[7]).withLane(1, sd[8]).withLane(2, sd[9]);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, sd[0]).fma(VEC_0, _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, Math.fma(-2.0f, Math.fma(sd[4], sd[4], _t0), 1.0f)).withLane(1, 2.0f * Math.fma(sd[3], sd[4], -_t1)).withLane(2, 2.0f * Math.fma(sd[3], sd[5], _t2))));
-        var _sv1 = FloatVector.broadcast(COL_SPECIES, 2.0f);
-        var _col1 = FloatVector.broadcast(COL_SPECIES, sd[1]).fma(VEC_0, _sv0.mul(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(sd[3], sd[4], _t1)).withLane(2, Math.fma(sd[4], sd[5], -(sd[3] * sd[6])))).withLane(1, Math.fma(-2.0f, Math.fma(sd[3], sd[3], _t0), 1.0f))));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, sd[2]).fma(VEC_0, _sv0.mul(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(sd[3], sd[5], -_t2)).withLane(1, Math.fma(sd[3], sd[6], sd[4] * sd[5]))).withLane(2, Math.fma(-2.0f, Math.fma(sd[3], sd[3], sd[4] * sd[4]), 1.0f))));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
-        return dest;
-    }
-
-    private Float3x4 toMatrix3x4_mulAdd(@Mutated Float3x4 dest) {
-        float[] sd = this.data;
-        float[] dd = ((Float3x4Impl) dest).data;
-        float _t0 = sd[5] * sd[5];
-        float _t1 = sd[5] * sd[6];
-        float _t2 = sd[4] * sd[6];
-        var _sv0 = FloatVector.zero(COL_SPECIES).withLane(0, sd[7]).withLane(1, sd[8]).withLane(2, sd[9]);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, sd[0]).mul(VEC_0).add(_sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, Math.fma(-2.0f, Math.fma(sd[4], sd[4], _t0), 1.0f)).withLane(1, 2.0f * Math.fma(sd[3], sd[4], -_t1)).withLane(2, 2.0f * Math.fma(sd[3], sd[5], _t2))));
-        var _sv1 = FloatVector.broadcast(COL_SPECIES, 2.0f);
-        var _col1 = FloatVector.broadcast(COL_SPECIES, sd[1]).mul(VEC_0).add(_sv0.mul(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(sd[3], sd[4], _t1)).withLane(2, Math.fma(sd[4], sd[5], -(sd[3] * sd[6])))).withLane(1, Math.fma(-2.0f, Math.fma(sd[3], sd[3], _t0), 1.0f))));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, sd[2]).mul(VEC_0).add(_sv0.mul(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(sd[3], sd[5], -_t2)).withLane(1, Math.fma(sd[3], sd[6], sd[4] * sd[5]))).withLane(2, Math.fma(-2.0f, Math.fma(sd[3], sd[3], sd[4] * sd[4]), 1.0f))));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _t0 = 2.0f * sd[7];
+        float _t1 = 2.0f * sd[8];
+        float _t2 = 2.0f * sd[9];
+        float _t3 = sd[5] * sd[5];
+        float _t4 = sd[5] * sd[6];
+        float _t5 = sd[4] * sd[6];
+        float _buf0 = Math.fma(-Math.fma(sd[4], sd[4], _t3), _t0, sd[7]);
+        float _buf1 = Math.fma(sd[3], sd[4], -_t4) * _t1;
+        float _buf2 = Math.fma(sd[3], sd[5], _t5) * _t2;
+        float _buf3 = sd[0];
+        float _buf4 = Math.fma(sd[3], sd[4], _t4) * _t0;
+        float _buf5 = Math.fma(-Math.fma(sd[3], sd[3], _t3), _t1, sd[8]);
+        float _buf6 = Math.fma(sd[4], sd[5], -(sd[3] * sd[6])) * _t2;
+        dd[7] = sd[1];
+        dd[8] = Math.fma(sd[3], sd[5], -_t5) * _t0;
+        float _buf7 = Math.fma(sd[3], sd[6], sd[4] * sd[5]) * _t1;
+        dd[10] = Math.fma(-Math.fma(sd[3], sd[3], sd[4] * sd[4]), _t2, sd[9]);
+        dd[11] = sd[2];
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        dd[3] = _buf3;
+        dd[4] = _buf4;
+        dd[5] = _buf5;
+        dd[6] = _buf6;
+        dd[9] = _buf7;
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -1162,20 +1156,23 @@ public final class FloatTransformImpl implements FloatTransform {
     public Double3x4 toMatrix3x4(@Mutated Double3x4 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
-        float _t0 = sd[5] * sd[5];
-        float _t1 = sd[5] * sd[6];
-        float _t2 = sd[4] * sd[6];
-        float _buf0 = sd[7] * Math.fma(-2.0f, Math.fma(sd[4], sd[4], _t0), 1.0f);
-        float _buf1 = sd[8] * 2.0f * Math.fma(sd[3], sd[4], -_t1);
-        float _buf2 = sd[9] * 2.0f * Math.fma(sd[3], sd[5], _t2);
+        float _t0 = 2.0f * sd[7];
+        float _t1 = 2.0f * sd[8];
+        float _t2 = 2.0f * sd[9];
+        float _t3 = sd[5] * sd[5];
+        float _t4 = sd[5] * sd[6];
+        float _t5 = sd[4] * sd[6];
+        float _buf0 = Math.fma(-Math.fma(sd[4], sd[4], _t3), _t0, sd[7]);
+        float _buf1 = Math.fma(sd[3], sd[4], -_t4) * _t1;
+        float _buf2 = Math.fma(sd[3], sd[5], _t5) * _t2;
         float _buf3 = sd[0];
-        float _buf4 = sd[7] * 2.0f * Math.fma(sd[3], sd[4], _t1);
-        float _buf5 = sd[8] * Math.fma(-2.0f, Math.fma(sd[3], sd[3], _t0), 1.0f);
-        float _buf6 = sd[9] * 2.0f * Math.fma(sd[4], sd[5], -(sd[3] * sd[6]));
-        float _buf7 = sd[1];
-        float _buf8 = sd[7] * 2.0f * Math.fma(sd[3], sd[5], -_t2);
-        float _buf9 = sd[8] * 2.0f * Math.fma(sd[3], sd[6], sd[4] * sd[5]);
-        dd[10] = sd[9] * Math.fma(-2.0f, Math.fma(sd[3], sd[3], sd[4] * sd[4]), 1.0f);
+        float _buf4 = Math.fma(sd[3], sd[4], _t4) * _t0;
+        float _buf5 = Math.fma(-Math.fma(sd[3], sd[3], _t3), _t1, sd[8]);
+        float _buf6 = Math.fma(sd[4], sd[5], -(sd[3] * sd[6])) * _t2;
+        dd[7] = sd[1];
+        dd[8] = Math.fma(sd[3], sd[5], -_t5) * _t0;
+        float _buf7 = Math.fma(sd[3], sd[6], sd[4] * sd[5]) * _t1;
+        dd[10] = Math.fma(-Math.fma(sd[3], sd[3], sd[4] * sd[4]), _t2, sd[9]);
         dd[11] = sd[2];
         dd[0] = _buf0;
         dd[1] = _buf1;
@@ -1184,9 +1181,7 @@ public final class FloatTransformImpl implements FloatTransform {
         dd[4] = _buf4;
         dd[5] = _buf5;
         dd[6] = _buf6;
-        dd[7] = _buf7;
-        dd[8] = _buf8;
-        dd[9] = _buf9;
+        dd[9] = _buf7;
         ((Double3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -1264,7 +1259,7 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     @Mutated public FloatTransform makeIdentity() {
         float[] dd = this.data;
-        System.arraycopy(DATA_1, 0, dd, 0, 10);
+        System.arraycopy(DATA_0, 0, dd, 0, 10);
         return this;
     }
 
@@ -1339,7 +1334,7 @@ public final class FloatTransformImpl implements FloatTransform {
         dd[0] = translationX;
         dd[1] = translationY;
         dd[2] = translationZ;
-        VEC_0.intoArray(dd, 3);
+        VEC_1.intoArray(dd, 3);
         dd[7] = 1.0f;
         dd[8] = 1.0f;
         dd[9] = 1.0f;
@@ -5503,8 +5498,8 @@ public final class FloatTransformImpl implements FloatTransform {
     }
 
     private static final VectorSpecies<Float> COL_SPECIES = FloatVector.SPECIES_128;
-    private static final FloatVector VEC_0 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 1.0f}, 0);
+    private static final FloatVector VEC_1 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 1.0f}, 0);
     private static final FloatVector VEC_2 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 0.0f}, 0);
-    private static final float[] DATA_1 = new float[] {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+    private static final float[] DATA_0 = new float[] {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f};
 
 }

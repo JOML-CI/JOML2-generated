@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 package org.joml2.internal.types;
 
 import org.joml2.*;
@@ -748,20 +750,23 @@ public final class DoubleTransformImpl implements DoubleTransform {
      */
     public Double4x4 toMatrix(@Mutated Double4x4 dest) {
         Double4x4Impl d = (Double4x4Impl) dest;
-        double _t0 = this.rZ * this.rZ;
-        double _t1 = this.rZ * this.rW;
-        double _t2 = this.rY * this.rW;
-        double _buf0 = this.sX * Math.fma(-2.0, Math.fma(this.rY, this.rY, _t0), 1.0);
-        double _buf1 = this.sX * 2.0 * Math.fma(this.rX, this.rY, _t1);
-        double _buf2 = this.sX * 2.0 * Math.fma(this.rX, this.rZ, -_t2);
+        double _t0 = 2.0 * this.sX;
+        double _t1 = 2.0 * this.sY;
+        double _t2 = 2.0 * this.sZ;
+        double _t3 = this.rZ * this.rZ;
+        double _t4 = this.rZ * this.rW;
+        double _t5 = this.rY * this.rW;
+        double _buf0 = Math.fma(-Math.fma(this.rY, this.rY, _t3), _t0, this.sX);
+        double _buf1 = Math.fma(this.rX, this.rY, _t4) * _t0;
+        double _buf2 = Math.fma(this.rX, this.rZ, -_t5) * _t0;
         d.m30 = 0.0;
-        double _buf3 = this.sY * 2.0 * Math.fma(this.rX, this.rY, -_t1);
-        double _buf4 = this.sY * Math.fma(-2.0, Math.fma(this.rX, this.rX, _t0), 1.0);
-        double _buf5 = this.sY * 2.0 * Math.fma(this.rX, this.rW, this.rY * this.rZ);
+        double _buf3 = Math.fma(this.rX, this.rY, -_t4) * _t1;
+        double _buf4 = Math.fma(-Math.fma(this.rX, this.rX, _t3), _t1, this.sY);
+        double _buf5 = Math.fma(this.rX, this.rW, this.rY * this.rZ) * _t1;
         d.m31 = 0.0;
-        double _buf6 = this.sZ * 2.0 * Math.fma(this.rX, this.rZ, _t2);
-        d.m12 = this.sZ * 2.0 * Math.fma(this.rY, this.rZ, -(this.rX * this.rW));
-        d.m22 = this.sZ * Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0);
+        double _buf6 = Math.fma(this.rX, this.rZ, _t5) * _t2;
+        d.m12 = Math.fma(this.rY, this.rZ, -(this.rX * this.rW)) * _t2;
+        d.m22 = Math.fma(-Math.fma(this.rX, this.rX, this.rY * this.rY), _t2, this.sZ);
         d.m32 = 0.0;
         d.m03 = this.tX;
         d.m13 = this.tY;
@@ -788,18 +793,21 @@ public final class DoubleTransformImpl implements DoubleTransform {
      */
     public Double3x3 toMatrix3x3(@Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
-        double _t0 = this.rZ * this.rZ;
-        double _t1 = this.rZ * this.rW;
-        double _t2 = this.rY * this.rW;
-        d.m00 = this.sX * Math.fma(-2.0, Math.fma(this.rY, this.rY, _t0), 1.0);
-        double _buf0 = this.sX * 2.0 * Math.fma(this.rX, this.rY, _t1);
-        double _buf1 = this.sX * 2.0 * Math.fma(this.rX, this.rZ, -_t2);
-        d.m01 = this.sY * 2.0 * Math.fma(this.rX, this.rY, -_t1);
-        double _buf2 = this.sY * Math.fma(-2.0, Math.fma(this.rX, this.rX, _t0), 1.0);
-        d.m21 = this.sY * 2.0 * Math.fma(this.rX, this.rW, this.rY * this.rZ);
-        d.m02 = this.sZ * 2.0 * Math.fma(this.rX, this.rZ, _t2);
-        d.m12 = this.sZ * 2.0 * Math.fma(this.rY, this.rZ, -(this.rX * this.rW));
-        d.m22 = this.sZ * Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0);
+        double _t0 = 2.0 * this.sX;
+        double _t1 = 2.0 * this.sY;
+        double _t2 = 2.0 * this.sZ;
+        double _t3 = this.rZ * this.rZ;
+        double _t4 = this.rZ * this.rW;
+        double _t5 = this.rY * this.rW;
+        d.m00 = Math.fma(-Math.fma(this.rY, this.rY, _t3), _t0, this.sX);
+        double _buf0 = Math.fma(this.rX, this.rY, _t4) * _t0;
+        double _buf1 = Math.fma(this.rX, this.rZ, -_t5) * _t0;
+        d.m01 = Math.fma(this.rX, this.rY, -_t4) * _t1;
+        double _buf2 = Math.fma(-Math.fma(this.rX, this.rX, _t3), _t1, this.sY);
+        d.m21 = Math.fma(this.rX, this.rW, this.rY * this.rZ) * _t1;
+        d.m02 = Math.fma(this.rX, this.rZ, _t5) * _t2;
+        d.m12 = Math.fma(this.rY, this.rZ, -(this.rX * this.rW)) * _t2;
+        d.m22 = Math.fma(-Math.fma(this.rX, this.rX, this.rY * this.rY), _t2, this.sZ);
         d.m10 = _buf0;
         d.m20 = _buf1;
         d.m11 = _buf2;
@@ -817,20 +825,23 @@ public final class DoubleTransformImpl implements DoubleTransform {
      */
     public Double3x4 toMatrix3x4(@Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = this.rZ * this.rZ;
-        double _t1 = this.rZ * this.rW;
-        double _t2 = this.rY * this.rW;
-        double _buf0 = this.sX * Math.fma(-2.0, Math.fma(this.rY, this.rY, _t0), 1.0);
-        double _buf1 = this.sY * 2.0 * Math.fma(this.rX, this.rY, -_t1);
-        double _buf2 = this.sZ * 2.0 * Math.fma(this.rX, this.rZ, _t2);
+        double _t0 = 2.0 * this.sX;
+        double _t1 = 2.0 * this.sY;
+        double _t2 = 2.0 * this.sZ;
+        double _t3 = this.rZ * this.rZ;
+        double _t4 = this.rZ * this.rW;
+        double _t5 = this.rY * this.rW;
+        double _buf0 = Math.fma(-Math.fma(this.rY, this.rY, _t3), _t0, this.sX);
+        double _buf1 = Math.fma(this.rX, this.rY, -_t4) * _t1;
+        double _buf2 = Math.fma(this.rX, this.rZ, _t5) * _t2;
         double _buf3 = this.tX;
-        double _buf4 = this.sX * 2.0 * Math.fma(this.rX, this.rY, _t1);
-        double _buf5 = this.sY * Math.fma(-2.0, Math.fma(this.rX, this.rX, _t0), 1.0);
-        double _buf6 = this.sZ * 2.0 * Math.fma(this.rY, this.rZ, -(this.rX * this.rW));
-        double _buf7 = this.tY;
-        double _buf8 = this.sX * 2.0 * Math.fma(this.rX, this.rZ, -_t2);
-        double _buf9 = this.sY * 2.0 * Math.fma(this.rX, this.rW, this.rY * this.rZ);
-        d.m22 = this.sZ * Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0);
+        double _buf4 = Math.fma(this.rX, this.rY, _t4) * _t0;
+        double _buf5 = Math.fma(-Math.fma(this.rX, this.rX, _t3), _t1, this.sY);
+        double _buf6 = Math.fma(this.rY, this.rZ, -(this.rX * this.rW)) * _t2;
+        d.m13 = this.tY;
+        d.m20 = Math.fma(this.rX, this.rZ, -_t5) * _t0;
+        double _buf7 = Math.fma(this.rX, this.rW, this.rY * this.rZ) * _t1;
+        d.m22 = Math.fma(-Math.fma(this.rX, this.rX, this.rY * this.rY), _t2, this.sZ);
         d.m23 = this.tZ;
         d.m00 = _buf0;
         d.m01 = _buf1;
@@ -839,9 +850,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
         d.m10 = _buf4;
         d.m11 = _buf5;
         d.m12 = _buf6;
-        d.m13 = _buf7;
-        d.m20 = _buf8;
-        d.m21 = _buf9;
+        d.m21 = _buf7;
         d.properties = Joml.BIT_AFFINE;
         return d;
     }

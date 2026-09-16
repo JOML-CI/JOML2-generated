@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 package org.joml2;
 
 import org.joml2.internal.types.Double2x3Impl;

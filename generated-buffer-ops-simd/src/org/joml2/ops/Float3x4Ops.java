@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 package org.joml2.ops;
 
 import org.joml2.*;
@@ -2838,8 +2840,25 @@ public final class Float3x4Ops {
      * @return {@code dest}
      */
     public static float[] makeFromTransform(float[] dest, int destOffset, float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        if (SimdSupport.VECTOR_API) return Float3x4OpsSimd.makeFromTransform(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
-        return Float3x4OpsKernelsArray.makeFromTransform_scalar(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
+        float _t0 = 2.0f * tSX;
+        float _t1 = 2.0f * tSY;
+        float _t2 = 2.0f * tSZ;
+        float _t3 = tRZ * tRZ;
+        float _t4 = tRZ * tRW;
+        float _t5 = tRY * tRW;
+        dest[destOffset + 0] = Math.fma(-Math.fma(tRY, tRY, _t3), _t0, tSX);
+        dest[destOffset + 1] = Math.fma(tRX, tRY, -_t4) * _t1;
+        dest[destOffset + 2] = Math.fma(tRX, tRZ, _t5) * _t2;
+        dest[destOffset + 3] = tTX;
+        dest[destOffset + 4] = Math.fma(tRX, tRY, _t4) * _t0;
+        dest[destOffset + 5] = Math.fma(-Math.fma(tRX, tRX, _t3), _t1, tSY);
+        dest[destOffset + 6] = Math.fma(tRY, tRZ, -(tRX * tRW)) * _t2;
+        dest[destOffset + 7] = tTY;
+        dest[destOffset + 8] = Math.fma(tRX, tRZ, -_t5) * _t0;
+        dest[destOffset + 9] = Math.fma(tRX, tRW, tRY * tRZ) * _t1;
+        dest[destOffset + 10] = Math.fma(-Math.fma(tRX, tRX, tRY * tRY), _t2, tSZ);
+        dest[destOffset + 11] = tTZ;
+        return dest;
     }
 
     /** {@link #makeFromTransform(float[], int, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
@@ -2856,7 +2875,6 @@ public final class Float3x4Ops {
 
     /** {@link #makeFromTransform(float[], int, float, float, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeFromTransform(java.lang.foreign.MemorySegment dest, long destOffset, float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        if (SimdSupport.VECTOR_API) return Float3x4OpsSimd.makeFromTransform(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Float3x4OpsKernelsSegment.makeFromTransform_unsafe(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
         return Float3x4OpsKernelsSegment.makeFromTransform_api(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
     }
@@ -4396,8 +4414,25 @@ public final class Float3x4Ops {
      * @return {@code dest}
      */
     public static float[] composeTRS(float[] dest, int destOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        if (SimdSupport.VECTOR_API) return Float3x4OpsSimd.composeTRS(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
-        return Float3x4OpsKernelsArray.composeTRS_scalar(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
+        float _t0 = 2.0f * scaleX;
+        float _t1 = 2.0f * scaleY;
+        float _t2 = 2.0f * scaleZ;
+        float _t3 = rotationZ * rotationZ;
+        float _t4 = rotationZ * rotationW;
+        float _t5 = rotationY * rotationW;
+        dest[destOffset + 0] = Math.fma(-Math.fma(rotationY, rotationY, _t3), _t0, scaleX);
+        dest[destOffset + 1] = Math.fma(rotationX, rotationY, -_t4) * _t1;
+        dest[destOffset + 2] = Math.fma(rotationX, rotationZ, _t5) * _t2;
+        dest[destOffset + 3] = translationX;
+        dest[destOffset + 4] = Math.fma(rotationX, rotationY, _t4) * _t0;
+        dest[destOffset + 5] = Math.fma(-Math.fma(rotationX, rotationX, _t3), _t1, scaleY);
+        dest[destOffset + 6] = Math.fma(rotationY, rotationZ, -(rotationX * rotationW)) * _t2;
+        dest[destOffset + 7] = translationY;
+        dest[destOffset + 8] = Math.fma(rotationX, rotationZ, -_t5) * _t0;
+        dest[destOffset + 9] = Math.fma(rotationX, rotationW, rotationY * rotationZ) * _t1;
+        dest[destOffset + 10] = Math.fma(-Math.fma(rotationX, rotationX, rotationY * rotationY), _t2, scaleZ);
+        dest[destOffset + 11] = translationZ;
+        return dest;
     }
 
     /** {@link #composeTRS(float[], int, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
@@ -4414,7 +4449,6 @@ public final class Float3x4Ops {
 
     /** {@link #composeTRS(float[], int, float, float, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment composeTRS(java.lang.foreign.MemorySegment dest, long destOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        if (SimdSupport.VECTOR_API) return Float3x4OpsSimd.composeTRS(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Float3x4OpsKernelsSegment.composeTRS_unsafe(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
         return Float3x4OpsKernelsSegment.composeTRS_api(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
     }
@@ -4441,8 +4475,35 @@ public final class Float3x4Ops {
      * @return {@code dest}
      */
     public static float[] composeTRS(float[] dest, int destOffset, float[] translation, int translationOffset, float[] rotation, int rotationOffset, float[] scale, int scaleOffset) {
-        if (SimdSupport.VECTOR_API) return Float3x4OpsSimd.composeTRS(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
-        return Float3x4OpsKernelsArray.composeTRS_scalar(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
+        float _translationx = translation[translationOffset + 0];
+        float _translationy = translation[translationOffset + 1];
+        float _translationz = translation[translationOffset + 2];
+        float _rotationx = rotation[rotationOffset + 0];
+        float _rotationy = rotation[rotationOffset + 1];
+        float _rotationz = rotation[rotationOffset + 2];
+        float _rotationw = rotation[rotationOffset + 3];
+        float _scalex = scale[scaleOffset + 0];
+        float _scaley = scale[scaleOffset + 1];
+        float _scalez = scale[scaleOffset + 2];
+        float _t0 = 2.0f * _scalex;
+        float _t1 = 2.0f * _scaley;
+        float _t2 = 2.0f * _scalez;
+        float _t3 = _rotationz * _rotationz;
+        float _t4 = _rotationz * _rotationw;
+        float _t5 = _rotationy * _rotationw;
+        dest[destOffset + 0] = Math.fma(-Math.fma(_rotationy, _rotationy, _t3), _t0, _scalex);
+        dest[destOffset + 1] = Math.fma(_rotationx, _rotationy, -_t4) * _t1;
+        dest[destOffset + 2] = Math.fma(_rotationx, _rotationz, _t5) * _t2;
+        dest[destOffset + 3] = _translationx;
+        dest[destOffset + 4] = Math.fma(_rotationx, _rotationy, _t4) * _t0;
+        dest[destOffset + 5] = Math.fma(-Math.fma(_rotationx, _rotationx, _t3), _t1, _scaley);
+        dest[destOffset + 6] = Math.fma(_rotationy, _rotationz, -(_rotationx * _rotationw)) * _t2;
+        dest[destOffset + 7] = _translationy;
+        dest[destOffset + 8] = Math.fma(_rotationx, _rotationz, -_t5) * _t0;
+        dest[destOffset + 9] = Math.fma(_rotationx, _rotationw, _rotationy * _rotationz) * _t1;
+        dest[destOffset + 10] = Math.fma(-Math.fma(_rotationx, _rotationx, _rotationy * _rotationy), _t2, _scalez);
+        dest[destOffset + 11] = _translationz;
+        return dest;
     }
 
     /** {@link #composeTRS(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -4459,7 +4520,6 @@ public final class Float3x4Ops {
 
     /** {@link #composeTRS(float[], int, float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment composeTRS(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment translation, long translationOffset, java.lang.foreign.MemorySegment rotation, long rotationOffset, java.lang.foreign.MemorySegment scale, long scaleOffset) {
-        if (SimdSupport.VECTOR_API) return Float3x4OpsSimd.composeTRS(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && translation.isNative() && rotation.isNative() && scale.isNative()) return Float3x4OpsKernelsSegment.composeTRS_unsafe(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
         return Float3x4OpsKernelsSegment.composeTRS_api(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
     }
@@ -13270,29 +13330,35 @@ public final class Float3x4Ops {
         float _self21 = src[srcOffset + 9];
         float _self22 = src[srcOffset + 10];
         float _self23 = src[srcOffset + 11];
-        float _t0 = qY * qW;
-        float _t1 = qZ * qZ;
-        float _t2 = qZ * qW;
-        float _t18 = 2.0f * Math.fma(qX, qY, _t2);
-        float _t19 = 2.0f * Math.fma(qX, qW, qY * qZ);
-        float _t20 = 2.0f * Math.fma(qX, qZ, _t0);
-        float _t21 = 2.0f * Math.fma(qX, qZ, -_t0);
-        float _t22 = 2.0f * Math.fma(qX, qY, -_t2);
-        float _t23 = 2.0f * Math.fma(qY, qZ, -(qX * qW));
-        float _t24 = Math.fma(-2.0f, Math.fma(qY, qY, _t1), 1.0f);
-        float _t25 = Math.fma(-2.0f, Math.fma(qX, qX, _t1), 1.0f);
-        float _t26 = Math.fma(-2.0f, Math.fma(qX, qX, qY * qY), 1.0f);
-        dest[destOffset + 0] = Math.fma(_self02, _t21, Math.fma(_self00, _t24, _self01 * _t18));
-        dest[destOffset + 1] = Math.fma(_self02, _t19, Math.fma(_self00, _t22, _self01 * _t25));
-        dest[destOffset + 2] = Math.fma(_self02, _t26, Math.fma(_self00, _t20, _self01 * _t23));
+        float _t0 = -qY;
+        float _t2 = -qX;
+        float _t3 = 2.0f * qX;
+        float _t4 = 2.0f * qY;
+        float _t5 = 2.0f * qZ;
+        float _t6 = qW * _t4;
+        float _t7 = qW * _t5;
+        float _t8 = qW * _t3;
+        float _t12 = Math.fma(-qZ, _t5, 1.0f);
+        float _t14 = Math.fma(qY, _t3, _t7);
+        float _t15 = Math.fma(qZ, _t4, _t8);
+        float _t16 = Math.fma(qZ, _t3, _t6);
+        float _t17 = Math.fma(qZ, _t3, -_t6);
+        float _t18 = Math.fma(qY, _t3, -_t7);
+        float _t19 = Math.fma(qZ, _t4, -_t8);
+        float _t20 = Math.fma(_t0, _t4, _t12);
+        float _t21 = Math.fma(_t2, _t3, _t12);
+        float _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f));
+        dest[destOffset + 0] = Math.fma(_self02, _t17, Math.fma(_self00, _t20, _self01 * _t14));
+        dest[destOffset + 1] = Math.fma(_self02, _t15, Math.fma(_self00, _t18, _self01 * _t21));
+        dest[destOffset + 2] = Math.fma(_self02, _t22, Math.fma(_self00, _t16, _self01 * _t19));
         dest[destOffset + 3] = _self03;
-        dest[destOffset + 4] = Math.fma(_self12, _t21, Math.fma(_self10, _t24, _self11 * _t18));
-        dest[destOffset + 5] = Math.fma(_self12, _t19, Math.fma(_self10, _t22, _self11 * _t25));
-        dest[destOffset + 6] = Math.fma(_self12, _t26, Math.fma(_self10, _t20, _self11 * _t23));
+        dest[destOffset + 4] = Math.fma(_self12, _t17, Math.fma(_self10, _t20, _self11 * _t14));
+        dest[destOffset + 5] = Math.fma(_self12, _t15, Math.fma(_self10, _t18, _self11 * _t21));
+        dest[destOffset + 6] = Math.fma(_self12, _t22, Math.fma(_self10, _t16, _self11 * _t19));
         dest[destOffset + 7] = _self13;
-        dest[destOffset + 8] = Math.fma(_self22, _t21, Math.fma(_self20, _t24, _self21 * _t18));
-        dest[destOffset + 9] = Math.fma(_self22, _t19, Math.fma(_self20, _t22, _self21 * _t25));
-        dest[destOffset + 10] = Math.fma(_self22, _t26, Math.fma(_self20, _t20, _self21 * _t23));
+        dest[destOffset + 8] = Math.fma(_self22, _t17, Math.fma(_self20, _t20, _self21 * _t14));
+        dest[destOffset + 9] = Math.fma(_self22, _t15, Math.fma(_self20, _t18, _self21 * _t21));
+        dest[destOffset + 10] = Math.fma(_self22, _t22, Math.fma(_self20, _t16, _self21 * _t19));
         dest[destOffset + 11] = _self23;
         return dest;
     }
@@ -13355,29 +13421,35 @@ public final class Float3x4Ops {
         float _qy = q[qOffset + 1];
         float _qz = q[qOffset + 2];
         float _qw = q[qOffset + 3];
-        float _t0 = _qy * _qw;
-        float _t1 = _qz * _qz;
-        float _t2 = _qz * _qw;
-        float _t18 = 2.0f * Math.fma(_qx, _qy, _t2);
-        float _t19 = 2.0f * Math.fma(_qx, _qw, _qy * _qz);
-        float _t20 = 2.0f * Math.fma(_qx, _qz, _t0);
-        float _t21 = 2.0f * Math.fma(_qx, _qz, -_t0);
-        float _t22 = 2.0f * Math.fma(_qx, _qy, -_t2);
-        float _t23 = 2.0f * Math.fma(_qy, _qz, -(_qx * _qw));
-        float _t24 = Math.fma(-2.0f, Math.fma(_qy, _qy, _t1), 1.0f);
-        float _t25 = Math.fma(-2.0f, Math.fma(_qx, _qx, _t1), 1.0f);
-        float _t26 = Math.fma(-2.0f, Math.fma(_qx, _qx, _qy * _qy), 1.0f);
-        dest[destOffset + 0] = Math.fma(_self02, _t21, Math.fma(_self00, _t24, _self01 * _t18));
-        dest[destOffset + 1] = Math.fma(_self02, _t19, Math.fma(_self00, _t22, _self01 * _t25));
-        dest[destOffset + 2] = Math.fma(_self02, _t26, Math.fma(_self00, _t20, _self01 * _t23));
+        float _t0 = -_qy;
+        float _t2 = -_qx;
+        float _t3 = 2.0f * _qx;
+        float _t4 = 2.0f * _qy;
+        float _t5 = 2.0f * _qz;
+        float _t6 = _qw * _t4;
+        float _t7 = _qw * _t5;
+        float _t8 = _qw * _t3;
+        float _t12 = Math.fma(-_qz, _t5, 1.0f);
+        float _t14 = Math.fma(_qy, _t3, _t7);
+        float _t15 = Math.fma(_qz, _t4, _t8);
+        float _t16 = Math.fma(_qz, _t3, _t6);
+        float _t17 = Math.fma(_qz, _t3, -_t6);
+        float _t18 = Math.fma(_qy, _t3, -_t7);
+        float _t19 = Math.fma(_qz, _t4, -_t8);
+        float _t20 = Math.fma(_t0, _t4, _t12);
+        float _t21 = Math.fma(_t2, _t3, _t12);
+        float _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f));
+        dest[destOffset + 0] = Math.fma(_self02, _t17, Math.fma(_self00, _t20, _self01 * _t14));
+        dest[destOffset + 1] = Math.fma(_self02, _t15, Math.fma(_self00, _t18, _self01 * _t21));
+        dest[destOffset + 2] = Math.fma(_self02, _t22, Math.fma(_self00, _t16, _self01 * _t19));
         dest[destOffset + 3] = _self03;
-        dest[destOffset + 4] = Math.fma(_self12, _t21, Math.fma(_self10, _t24, _self11 * _t18));
-        dest[destOffset + 5] = Math.fma(_self12, _t19, Math.fma(_self10, _t22, _self11 * _t25));
-        dest[destOffset + 6] = Math.fma(_self12, _t26, Math.fma(_self10, _t20, _self11 * _t23));
+        dest[destOffset + 4] = Math.fma(_self12, _t17, Math.fma(_self10, _t20, _self11 * _t14));
+        dest[destOffset + 5] = Math.fma(_self12, _t15, Math.fma(_self10, _t18, _self11 * _t21));
+        dest[destOffset + 6] = Math.fma(_self12, _t22, Math.fma(_self10, _t16, _self11 * _t19));
         dest[destOffset + 7] = _self13;
-        dest[destOffset + 8] = Math.fma(_self22, _t21, Math.fma(_self20, _t24, _self21 * _t18));
-        dest[destOffset + 9] = Math.fma(_self22, _t19, Math.fma(_self20, _t22, _self21 * _t25));
-        dest[destOffset + 10] = Math.fma(_self22, _t26, Math.fma(_self20, _t20, _self21 * _t23));
+        dest[destOffset + 8] = Math.fma(_self22, _t17, Math.fma(_self20, _t20, _self21 * _t14));
+        dest[destOffset + 9] = Math.fma(_self22, _t15, Math.fma(_self20, _t18, _self21 * _t21));
+        dest[destOffset + 10] = Math.fma(_self22, _t22, Math.fma(_self20, _t16, _self21 * _t19));
         dest[destOffset + 11] = _self23;
         return dest;
     }

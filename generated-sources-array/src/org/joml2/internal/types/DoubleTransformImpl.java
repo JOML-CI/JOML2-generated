@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 package org.joml2.internal.types;
 
 import org.joml2.*;
@@ -766,20 +768,23 @@ public final class DoubleTransformImpl implements DoubleTransform {
     public Double4x4 toMatrix(@Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = sd[5] * sd[5];
-        double _t1 = sd[5] * sd[6];
-        double _t2 = sd[4] * sd[6];
-        double _buf0 = sd[7] * Math.fma(-2.0, Math.fma(sd[4], sd[4], _t0), 1.0);
-        double _buf1 = sd[7] * 2.0 * Math.fma(sd[3], sd[4], _t1);
-        double _buf2 = sd[7] * 2.0 * Math.fma(sd[3], sd[5], -_t2);
+        double _t0 = 2.0 * sd[7];
+        double _t1 = 2.0 * sd[8];
+        double _t2 = 2.0 * sd[9];
+        double _t3 = sd[5] * sd[5];
+        double _t4 = sd[5] * sd[6];
+        double _t5 = sd[4] * sd[6];
+        double _buf0 = Math.fma(-Math.fma(sd[4], sd[4], _t3), _t0, sd[7]);
+        double _buf1 = Math.fma(sd[3], sd[4], _t4) * _t0;
+        double _buf2 = Math.fma(sd[3], sd[5], -_t5) * _t0;
         dd[3] = 0.0;
-        double _buf3 = sd[8] * 2.0 * Math.fma(sd[3], sd[4], -_t1);
-        double _buf4 = sd[8] * Math.fma(-2.0, Math.fma(sd[3], sd[3], _t0), 1.0);
-        double _buf5 = sd[8] * 2.0 * Math.fma(sd[3], sd[6], sd[4] * sd[5]);
+        double _buf3 = Math.fma(sd[3], sd[4], -_t4) * _t1;
+        double _buf4 = Math.fma(-Math.fma(sd[3], sd[3], _t3), _t1, sd[8]);
+        double _buf5 = Math.fma(sd[3], sd[6], sd[4] * sd[5]) * _t1;
         dd[7] = 0.0;
-        double _buf6 = sd[9] * 2.0 * Math.fma(sd[3], sd[5], _t2);
-        dd[9] = sd[9] * 2.0 * Math.fma(sd[4], sd[5], -(sd[3] * sd[6]));
-        dd[10] = sd[9] * Math.fma(-2.0, Math.fma(sd[3], sd[3], sd[4] * sd[4]), 1.0);
+        double _buf6 = Math.fma(sd[3], sd[5], _t5) * _t2;
+        dd[9] = Math.fma(sd[4], sd[5], -(sd[3] * sd[6])) * _t2;
+        dd[10] = Math.fma(-Math.fma(sd[3], sd[3], sd[4] * sd[4]), _t2, sd[9]);
         dd[11] = 0.0;
         dd[12] = sd[0];
         dd[13] = sd[1];
@@ -807,18 +812,21 @@ public final class DoubleTransformImpl implements DoubleTransform {
     public Double3x3 toMatrix3x3(@Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        double _t0 = sd[5] * sd[5];
-        double _t1 = sd[5] * sd[6];
-        double _t2 = sd[4] * sd[6];
-        dd[0] = sd[7] * Math.fma(-2.0, Math.fma(sd[4], sd[4], _t0), 1.0);
-        double _buf0 = sd[7] * 2.0 * Math.fma(sd[3], sd[4], _t1);
-        double _buf1 = sd[7] * 2.0 * Math.fma(sd[3], sd[5], -_t2);
-        dd[3] = sd[8] * 2.0 * Math.fma(sd[3], sd[4], -_t1);
-        double _buf2 = sd[8] * Math.fma(-2.0, Math.fma(sd[3], sd[3], _t0), 1.0);
-        dd[5] = sd[8] * 2.0 * Math.fma(sd[3], sd[6], sd[4] * sd[5]);
-        dd[6] = sd[9] * 2.0 * Math.fma(sd[3], sd[5], _t2);
-        dd[7] = sd[9] * 2.0 * Math.fma(sd[4], sd[5], -(sd[3] * sd[6]));
-        dd[8] = sd[9] * Math.fma(-2.0, Math.fma(sd[3], sd[3], sd[4] * sd[4]), 1.0);
+        double _t0 = 2.0 * sd[7];
+        double _t1 = 2.0 * sd[8];
+        double _t2 = 2.0 * sd[9];
+        double _t3 = sd[5] * sd[5];
+        double _t4 = sd[5] * sd[6];
+        double _t5 = sd[4] * sd[6];
+        dd[0] = Math.fma(-Math.fma(sd[4], sd[4], _t3), _t0, sd[7]);
+        double _buf0 = Math.fma(sd[3], sd[4], _t4) * _t0;
+        double _buf1 = Math.fma(sd[3], sd[5], -_t5) * _t0;
+        dd[3] = Math.fma(sd[3], sd[4], -_t4) * _t1;
+        double _buf2 = Math.fma(-Math.fma(sd[3], sd[3], _t3), _t1, sd[8]);
+        dd[5] = Math.fma(sd[3], sd[6], sd[4] * sd[5]) * _t1;
+        dd[6] = Math.fma(sd[3], sd[5], _t5) * _t2;
+        dd[7] = Math.fma(sd[4], sd[5], -(sd[3] * sd[6])) * _t2;
+        dd[8] = Math.fma(-Math.fma(sd[3], sd[3], sd[4] * sd[4]), _t2, sd[9]);
         dd[1] = _buf0;
         dd[2] = _buf1;
         dd[4] = _buf2;
@@ -837,20 +845,23 @@ public final class DoubleTransformImpl implements DoubleTransform {
     public Double3x4 toMatrix3x4(@Mutated Double3x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
-        double _t0 = sd[5] * sd[5];
-        double _t1 = sd[5] * sd[6];
-        double _t2 = sd[4] * sd[6];
-        double _buf0 = sd[7] * Math.fma(-2.0, Math.fma(sd[4], sd[4], _t0), 1.0);
-        double _buf1 = sd[8] * 2.0 * Math.fma(sd[3], sd[4], -_t1);
-        double _buf2 = sd[9] * 2.0 * Math.fma(sd[3], sd[5], _t2);
+        double _t0 = 2.0 * sd[7];
+        double _t1 = 2.0 * sd[8];
+        double _t2 = 2.0 * sd[9];
+        double _t3 = sd[5] * sd[5];
+        double _t4 = sd[5] * sd[6];
+        double _t5 = sd[4] * sd[6];
+        double _buf0 = Math.fma(-Math.fma(sd[4], sd[4], _t3), _t0, sd[7]);
+        double _buf1 = Math.fma(sd[3], sd[4], -_t4) * _t1;
+        double _buf2 = Math.fma(sd[3], sd[5], _t5) * _t2;
         double _buf3 = sd[0];
-        double _buf4 = sd[7] * 2.0 * Math.fma(sd[3], sd[4], _t1);
-        double _buf5 = sd[8] * Math.fma(-2.0, Math.fma(sd[3], sd[3], _t0), 1.0);
-        double _buf6 = sd[9] * 2.0 * Math.fma(sd[4], sd[5], -(sd[3] * sd[6]));
-        double _buf7 = sd[1];
-        double _buf8 = sd[7] * 2.0 * Math.fma(sd[3], sd[5], -_t2);
-        double _buf9 = sd[8] * 2.0 * Math.fma(sd[3], sd[6], sd[4] * sd[5]);
-        dd[10] = sd[9] * Math.fma(-2.0, Math.fma(sd[3], sd[3], sd[4] * sd[4]), 1.0);
+        double _buf4 = Math.fma(sd[3], sd[4], _t4) * _t0;
+        double _buf5 = Math.fma(-Math.fma(sd[3], sd[3], _t3), _t1, sd[8]);
+        double _buf6 = Math.fma(sd[4], sd[5], -(sd[3] * sd[6])) * _t2;
+        dd[7] = sd[1];
+        dd[8] = Math.fma(sd[3], sd[5], -_t5) * _t0;
+        double _buf7 = Math.fma(sd[3], sd[6], sd[4] * sd[5]) * _t1;
+        dd[10] = Math.fma(-Math.fma(sd[3], sd[3], sd[4] * sd[4]), _t2, sd[9]);
         dd[11] = sd[2];
         dd[0] = _buf0;
         dd[1] = _buf1;
@@ -859,9 +870,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
         dd[4] = _buf4;
         dd[5] = _buf5;
         dd[6] = _buf6;
-        dd[7] = _buf7;
-        dd[8] = _buf8;
-        dd[9] = _buf9;
+        dd[9] = _buf7;
         ((Double3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }

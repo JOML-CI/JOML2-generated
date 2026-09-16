@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 package org.joml2.internal.kernels;
 
 import org.joml2.*;
@@ -929,18 +931,21 @@ public final class Float3x3OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer makeFromTransform_api(java.nio.ByteBuffer dest, int destOffset, float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        float _t0 = tRZ * tRZ;
-        float _t1 = tRZ * tRW;
-        float _t2 = tRY * tRW;
-        dest.putFloat(destOffset + 0, tSX * Math.fma(-2.0f, Math.fma(tRY, tRY, _t0), 1.0f));
-        dest.putFloat(destOffset + 4, tSX * 2.0f * Math.fma(tRX, tRY, _t1));
-        dest.putFloat(destOffset + 8, tSX * 2.0f * Math.fma(tRX, tRZ, -_t2));
-        dest.putFloat(destOffset + 12, tSY * 2.0f * Math.fma(tRX, tRY, -_t1));
-        dest.putFloat(destOffset + 16, tSY * Math.fma(-2.0f, Math.fma(tRX, tRX, _t0), 1.0f));
-        dest.putFloat(destOffset + 20, tSY * 2.0f * Math.fma(tRX, tRW, tRY * tRZ));
-        dest.putFloat(destOffset + 24, tSZ * 2.0f * Math.fma(tRX, tRZ, _t2));
-        dest.putFloat(destOffset + 28, tSZ * 2.0f * Math.fma(tRY, tRZ, -(tRX * tRW)));
-        dest.putFloat(destOffset + 32, tSZ * Math.fma(-2.0f, Math.fma(tRX, tRX, tRY * tRY), 1.0f));
+        float _t0 = 2.0f * tSX;
+        float _t1 = 2.0f * tSY;
+        float _t2 = 2.0f * tSZ;
+        float _t3 = tRZ * tRZ;
+        float _t4 = tRZ * tRW;
+        float _t5 = tRY * tRW;
+        dest.putFloat(destOffset + 0, Math.fma(-Math.fma(tRY, tRY, _t3), _t0, tSX));
+        dest.putFloat(destOffset + 4, Math.fma(tRX, tRY, _t4) * _t0);
+        dest.putFloat(destOffset + 8, Math.fma(tRX, tRZ, -_t5) * _t0);
+        dest.putFloat(destOffset + 12, Math.fma(tRX, tRY, -_t4) * _t1);
+        dest.putFloat(destOffset + 16, Math.fma(-Math.fma(tRX, tRX, _t3), _t1, tSY));
+        dest.putFloat(destOffset + 20, Math.fma(tRX, tRW, tRY * tRZ) * _t1);
+        dest.putFloat(destOffset + 24, Math.fma(tRX, tRZ, _t5) * _t2);
+        dest.putFloat(destOffset + 28, Math.fma(tRY, tRZ, -(tRX * tRW)) * _t2);
+        dest.putFloat(destOffset + 32, Math.fma(-Math.fma(tRX, tRX, tRY * tRY), _t2, tSZ));
         return dest;
     }
 

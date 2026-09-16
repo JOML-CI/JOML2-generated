@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 package org.joml2.internal.kernels;
 
 import org.joml2.*;
@@ -709,18 +711,21 @@ public final class Float3x3OpsKernelsAddress {
     }
 
     public static long makeFromTransform_unsafe(long dest, float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        float _t0 = tRZ * tRZ;
-        float _t1 = tRZ * tRW;
-        float _t2 = tRY * tRW;
-        UnsafeOpsHolder.U.putFloat(dest + 0L, tSX * Math.fma(-2.0f, Math.fma(tRY, tRY, _t0), 1.0f));
-        UnsafeOpsHolder.U.putFloat(dest + 4L, tSX * 2.0f * Math.fma(tRX, tRY, _t1));
-        UnsafeOpsHolder.U.putFloat(dest + 8L, tSX * 2.0f * Math.fma(tRX, tRZ, -_t2));
-        UnsafeOpsHolder.U.putFloat(dest + 12L, tSY * 2.0f * Math.fma(tRX, tRY, -_t1));
-        UnsafeOpsHolder.U.putFloat(dest + 16L, tSY * Math.fma(-2.0f, Math.fma(tRX, tRX, _t0), 1.0f));
-        UnsafeOpsHolder.U.putFloat(dest + 20L, tSY * 2.0f * Math.fma(tRX, tRW, tRY * tRZ));
-        UnsafeOpsHolder.U.putFloat(dest + 24L, tSZ * 2.0f * Math.fma(tRX, tRZ, _t2));
-        UnsafeOpsHolder.U.putFloat(dest + 28L, tSZ * 2.0f * Math.fma(tRY, tRZ, -(tRX * tRW)));
-        UnsafeOpsHolder.U.putFloat(dest + 32L, tSZ * Math.fma(-2.0f, Math.fma(tRX, tRX, tRY * tRY), 1.0f));
+        float _t0 = 2.0f * tSX;
+        float _t1 = 2.0f * tSY;
+        float _t2 = 2.0f * tSZ;
+        float _t3 = tRZ * tRZ;
+        float _t4 = tRZ * tRW;
+        float _t5 = tRY * tRW;
+        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(-Math.fma(tRY, tRY, _t3), _t0, tSX));
+        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(tRX, tRY, _t4) * _t0);
+        UnsafeOpsHolder.U.putFloat(dest + 8L, Math.fma(tRX, tRZ, -_t5) * _t0);
+        UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(tRX, tRY, -_t4) * _t1);
+        UnsafeOpsHolder.U.putFloat(dest + 16L, Math.fma(-Math.fma(tRX, tRX, _t3), _t1, tSY));
+        UnsafeOpsHolder.U.putFloat(dest + 20L, Math.fma(tRX, tRW, tRY * tRZ) * _t1);
+        UnsafeOpsHolder.U.putFloat(dest + 24L, Math.fma(tRX, tRZ, _t5) * _t2);
+        UnsafeOpsHolder.U.putFloat(dest + 28L, Math.fma(tRY, tRZ, -(tRX * tRW)) * _t2);
+        UnsafeOpsHolder.U.putFloat(dest + 32L, Math.fma(-Math.fma(tRX, tRX, tRY * tRY), _t2, tSZ));
         return dest;
     }
 

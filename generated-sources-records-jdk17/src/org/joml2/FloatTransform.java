@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 package org.joml2;
 
 import org.joml2.internal.storeload.*;
@@ -598,10 +600,13 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * @return the resulting matrix
      */
     public Float4x4 toMatrix() {
-        float _t0 = this.rZ * this.rZ;
-        float _t1 = this.rZ * this.rW;
-        float _t2 = this.rY * this.rW;
-        return new Float4x4(this.sX * Math.fma(-2.0f, Math.fma(this.rY, this.rY, _t0), 1.0f), this.sY * 2.0f * Math.fma(this.rX, this.rY, -_t1), this.sZ * 2.0f * Math.fma(this.rX, this.rZ, _t2), this.tX, this.sX * 2.0f * Math.fma(this.rX, this.rY, _t1), this.sY * Math.fma(-2.0f, Math.fma(this.rX, this.rX, _t0), 1.0f), this.sZ * 2.0f * Math.fma(this.rY, this.rZ, -(this.rX * this.rW)), this.tY, this.sX * 2.0f * Math.fma(this.rX, this.rZ, -_t2), this.sY * 2.0f * Math.fma(this.rX, this.rW, this.rY * this.rZ), this.sZ * Math.fma(-2.0f, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0f), this.tZ, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        float _t0 = 2.0f * this.sX;
+        float _t1 = 2.0f * this.sY;
+        float _t2 = 2.0f * this.sZ;
+        float _t3 = this.rZ * this.rZ;
+        float _t4 = this.rZ * this.rW;
+        float _t5 = this.rY * this.rW;
+        return new Float4x4(Math.fma(-Math.fma(this.rY, this.rY, _t3), _t0, this.sX), Math.fma(this.rX, this.rY, -_t4) * _t1, Math.fma(this.rX, this.rZ, _t5) * _t2, this.tX, Math.fma(this.rX, this.rY, _t4) * _t0, Math.fma(-Math.fma(this.rX, this.rX, _t3), _t1, this.sY), Math.fma(this.rY, this.rZ, -(this.rX * this.rW)) * _t2, this.tY, Math.fma(this.rX, this.rZ, -_t5) * _t0, Math.fma(this.rX, this.rW, this.rY * this.rZ) * _t1, Math.fma(-Math.fma(this.rX, this.rX, this.rY * this.rY), _t2, this.sZ), this.tZ, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -612,10 +617,13 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * @return the resulting matrix
      */
     public Float3x3 toMatrix3x3() {
-        float _t0 = this.rZ * this.rZ;
-        float _t1 = this.rZ * this.rW;
-        float _t2 = this.rY * this.rW;
-        return new Float3x3(this.sX * Math.fma(-2.0f, Math.fma(this.rY, this.rY, _t0), 1.0f), this.sY * 2.0f * Math.fma(this.rX, this.rY, -_t1), this.sZ * 2.0f * Math.fma(this.rX, this.rZ, _t2), this.sX * 2.0f * Math.fma(this.rX, this.rY, _t1), this.sY * Math.fma(-2.0f, Math.fma(this.rX, this.rX, _t0), 1.0f), this.sZ * 2.0f * Math.fma(this.rY, this.rZ, -(this.rX * this.rW)), this.sX * 2.0f * Math.fma(this.rX, this.rZ, -_t2), this.sY * 2.0f * Math.fma(this.rX, this.rW, this.rY * this.rZ), this.sZ * Math.fma(-2.0f, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0f), 0);
+        float _t0 = 2.0f * this.sX;
+        float _t1 = 2.0f * this.sY;
+        float _t2 = 2.0f * this.sZ;
+        float _t3 = this.rZ * this.rZ;
+        float _t4 = this.rZ * this.rW;
+        float _t5 = this.rY * this.rW;
+        return new Float3x3(Math.fma(-Math.fma(this.rY, this.rY, _t3), _t0, this.sX), Math.fma(this.rX, this.rY, -_t4) * _t1, Math.fma(this.rX, this.rZ, _t5) * _t2, Math.fma(this.rX, this.rY, _t4) * _t0, Math.fma(-Math.fma(this.rX, this.rX, _t3), _t1, this.sY), Math.fma(this.rY, this.rZ, -(this.rX * this.rW)) * _t2, Math.fma(this.rX, this.rZ, -_t5) * _t0, Math.fma(this.rX, this.rW, this.rY * this.rZ) * _t1, Math.fma(-Math.fma(this.rX, this.rX, this.rY * this.rY), _t2, this.sZ), 0);
     }
 
 
@@ -626,10 +634,13 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * @return the resulting matrix
      */
     public Float3x4 toMatrix3x4() {
-        float _t0 = this.rZ * this.rZ;
-        float _t1 = this.rZ * this.rW;
-        float _t2 = this.rY * this.rW;
-        return new Float3x4(this.sX * Math.fma(-2.0f, Math.fma(this.rY, this.rY, _t0), 1.0f), this.sY * 2.0f * Math.fma(this.rX, this.rY, -_t1), this.sZ * 2.0f * Math.fma(this.rX, this.rZ, _t2), this.tX, this.sX * 2.0f * Math.fma(this.rX, this.rY, _t1), this.sY * Math.fma(-2.0f, Math.fma(this.rX, this.rX, _t0), 1.0f), this.sZ * 2.0f * Math.fma(this.rY, this.rZ, -(this.rX * this.rW)), this.tY, this.sX * 2.0f * Math.fma(this.rX, this.rZ, -_t2), this.sY * 2.0f * Math.fma(this.rX, this.rW, this.rY * this.rZ), this.sZ * Math.fma(-2.0f, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0f), this.tZ, Joml.BIT_AFFINE);
+        float _t0 = 2.0f * this.sX;
+        float _t1 = 2.0f * this.sY;
+        float _t2 = 2.0f * this.sZ;
+        float _t3 = this.rZ * this.rZ;
+        float _t4 = this.rZ * this.rW;
+        float _t5 = this.rY * this.rW;
+        return new Float3x4(Math.fma(-Math.fma(this.rY, this.rY, _t3), _t0, this.sX), Math.fma(this.rX, this.rY, -_t4) * _t1, Math.fma(this.rX, this.rZ, _t5) * _t2, this.tX, Math.fma(this.rX, this.rY, _t4) * _t0, Math.fma(-Math.fma(this.rX, this.rX, _t3), _t1, this.sY), Math.fma(this.rY, this.rZ, -(this.rX * this.rW)) * _t2, this.tY, Math.fma(this.rX, this.rZ, -_t5) * _t0, Math.fma(this.rX, this.rW, this.rY * this.rZ) * _t1, Math.fma(-Math.fma(this.rX, this.rX, this.rY * this.rY), _t2, this.sZ), this.tZ, Joml.BIT_AFFINE);
     }
 
 

@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 package org.joml2.internal.kernels;
 
 import org.joml2.*;
@@ -929,18 +931,21 @@ public final class Double3x3OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makeFromTransform_api(java.lang.foreign.MemorySegment dest, long destOffset, double tTX, double tTY, double tTZ, double tRX, double tRY, double tRZ, double tRW, double tSX, double tSY, double tSZ) {
-        double _t0 = tRZ * tRZ;
-        double _t1 = tRZ * tRW;
-        double _t2 = tRY * tRW;
-        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, tSX * Math.fma(-2.0, Math.fma(tRY, tRY, _t0), 1.0));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, tSX * 2.0 * Math.fma(tRX, tRY, _t1));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 16L, tSX * 2.0 * Math.fma(tRX, tRZ, -_t2));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 24L, tSY * 2.0 * Math.fma(tRX, tRY, -_t1));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 32L, tSY * Math.fma(-2.0, Math.fma(tRX, tRX, _t0), 1.0));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 40L, tSY * 2.0 * Math.fma(tRX, tRW, tRY * tRZ));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 48L, tSZ * 2.0 * Math.fma(tRX, tRZ, _t2));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 56L, tSZ * 2.0 * Math.fma(tRY, tRZ, -(tRX * tRW)));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 64L, tSZ * Math.fma(-2.0, Math.fma(tRX, tRX, tRY * tRY), 1.0));
+        double _t0 = 2.0 * tSX;
+        double _t1 = 2.0 * tSY;
+        double _t2 = 2.0 * tSZ;
+        double _t3 = tRZ * tRZ;
+        double _t4 = tRZ * tRW;
+        double _t5 = tRY * tRW;
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(-Math.fma(tRY, tRY, _t3), _t0, tSX));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, Math.fma(tRX, tRY, _t4) * _t0);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 16L, Math.fma(tRX, tRZ, -_t5) * _t0);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 24L, Math.fma(tRX, tRY, -_t4) * _t1);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 32L, Math.fma(-Math.fma(tRX, tRX, _t3), _t1, tSY));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 40L, Math.fma(tRX, tRW, tRY * tRZ) * _t1);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 48L, Math.fma(tRX, tRZ, _t5) * _t2);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 56L, Math.fma(tRY, tRZ, -(tRX * tRW)) * _t2);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 64L, Math.fma(-Math.fma(tRX, tRX, tRY * tRY), _t2, tSZ));
         return dest;
     }
 

@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 package org.joml2.internal.types;
 
 import org.joml2.*;
@@ -753,26 +755,29 @@ public final class DoubleTransformImpl implements DoubleTransform {
      */
     public Double4x4 toMatrix(@Mutated Double4x4 dest) {
         Double4x4Impl d = (Double4x4Impl) dest;
-        double _t0 = this.rY * this.rY;
-        double _t1 = this.rZ * this.rZ;
-        double _t2 = this.rX * this.rY;
-        double _t3 = this.rZ * this.rW;
-        double _t4 = this.rX * this.rZ;
-        double _t5 = this.rY * this.rW;
-        double _t6 = this.rX * this.rX;
-        double _t7 = this.rY * this.rZ;
-        double _t8 = this.rX * this.rW;
-        double _buf0 = this.sX * (1.0 - 2.0 * (_t0 + _t1));
-        d.m10 = this.sX * 2.0 * (_t2 + _t3);
-        double _buf1 = this.sX * 2.0 * (_t4 - _t5);
+        double _t0 = 2.0 * this.sX;
+        double _t1 = 2.0 * this.sY;
+        double _t2 = 2.0 * this.sZ;
+        double _t3 = this.rY * this.rY;
+        double _t4 = this.rZ * this.rZ;
+        double _t5 = this.rX * this.rY;
+        double _t6 = this.rZ * this.rW;
+        double _t7 = this.rX * this.rZ;
+        double _t8 = this.rY * this.rW;
+        double _t9 = this.rX * this.rX;
+        double _t10 = this.rY * this.rZ;
+        double _t11 = this.rX * this.rW;
+        double _buf0 = this.sX - (_t3 + _t4) * _t0;
+        d.m10 = (_t5 + _t6) * _t0;
+        double _buf1 = (_t7 - _t8) * _t0;
         d.m30 = 0.0;
-        double _buf2 = this.sY * 2.0 * (_t2 - _t3);
-        d.m11 = this.sY * (1.0 - 2.0 * (_t6 + _t1));
-        double _buf3 = this.sY * 2.0 * (_t8 + _t7);
+        double _buf2 = (_t5 - _t6) * _t1;
+        d.m11 = this.sY - (_t9 + _t4) * _t1;
+        double _buf3 = (_t11 + _t10) * _t1;
         d.m31 = 0.0;
-        double _buf4 = this.sZ * 2.0 * (_t4 + _t5);
-        d.m12 = this.sZ * 2.0 * (_t7 - _t8);
-        d.m22 = this.sZ * (1.0 - 2.0 * (_t6 + _t0));
+        double _buf4 = (_t7 + _t8) * _t2;
+        d.m12 = (_t10 - _t11) * _t2;
+        d.m22 = this.sZ - (_t9 + _t3) * _t2;
         d.m32 = 0.0;
         d.m03 = this.tX;
         d.m13 = this.tY;
@@ -797,24 +802,27 @@ public final class DoubleTransformImpl implements DoubleTransform {
      */
     public Double3x3 toMatrix3x3(@Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
-        double _t0 = this.rY * this.rY;
-        double _t1 = this.rZ * this.rZ;
-        double _t2 = this.rX * this.rY;
-        double _t3 = this.rZ * this.rW;
-        double _t4 = this.rX * this.rZ;
-        double _t5 = this.rY * this.rW;
-        double _t6 = this.rX * this.rX;
-        double _t7 = this.rY * this.rZ;
-        double _t8 = this.rX * this.rW;
-        d.m00 = this.sX * (1.0 - 2.0 * (_t0 + _t1));
-        d.m10 = this.sX * 2.0 * (_t2 + _t3);
-        d.m20 = this.sX * 2.0 * (_t4 - _t5);
-        d.m01 = this.sY * 2.0 * (_t2 - _t3);
-        d.m11 = this.sY * (1.0 - 2.0 * (_t6 + _t1));
-        d.m21 = this.sY * 2.0 * (_t8 + _t7);
-        d.m02 = this.sZ * 2.0 * (_t4 + _t5);
-        d.m12 = this.sZ * 2.0 * (_t7 - _t8);
-        d.m22 = this.sZ * (1.0 - 2.0 * (_t6 + _t0));
+        double _t0 = 2.0 * this.sX;
+        double _t1 = 2.0 * this.sY;
+        double _t2 = 2.0 * this.sZ;
+        double _t3 = this.rY * this.rY;
+        double _t4 = this.rZ * this.rZ;
+        double _t5 = this.rX * this.rY;
+        double _t6 = this.rZ * this.rW;
+        double _t7 = this.rX * this.rZ;
+        double _t8 = this.rY * this.rW;
+        double _t9 = this.rX * this.rX;
+        double _t10 = this.rY * this.rZ;
+        double _t11 = this.rX * this.rW;
+        d.m00 = this.sX - (_t3 + _t4) * _t0;
+        d.m10 = (_t5 + _t6) * _t0;
+        d.m20 = (_t7 - _t8) * _t0;
+        d.m01 = (_t5 - _t6) * _t1;
+        d.m11 = this.sY - (_t9 + _t4) * _t1;
+        d.m21 = (_t11 + _t10) * _t1;
+        d.m02 = (_t7 + _t8) * _t2;
+        d.m12 = (_t10 - _t11) * _t2;
+        d.m22 = this.sZ - (_t9 + _t3) * _t2;
         d.properties = 0;
         return d;
     }
@@ -829,33 +837,34 @@ public final class DoubleTransformImpl implements DoubleTransform {
      */
     public Double3x4 toMatrix3x4(@Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = this.rY * this.rY;
-        double _t1 = this.rZ * this.rZ;
-        double _t2 = this.rX * this.rY;
-        double _t3 = this.rZ * this.rW;
-        double _t4 = this.rX * this.rZ;
-        double _t5 = this.rY * this.rW;
-        double _t6 = this.rX * this.rX;
-        double _t7 = this.rY * this.rZ;
-        double _t8 = this.rX * this.rW;
-        double _buf0 = this.sX * (1.0 - 2.0 * (_t0 + _t1));
-        double _buf1 = this.sY * 2.0 * (_t2 - _t3);
-        double _buf2 = this.sZ * 2.0 * (_t4 + _t5);
+        double _t0 = 2.0 * this.sX;
+        double _t1 = 2.0 * this.sY;
+        double _t2 = 2.0 * this.sZ;
+        double _t3 = this.rY * this.rY;
+        double _t4 = this.rZ * this.rZ;
+        double _t5 = this.rX * this.rY;
+        double _t6 = this.rZ * this.rW;
+        double _t7 = this.rX * this.rZ;
+        double _t8 = this.rY * this.rW;
+        double _t9 = this.rX * this.rX;
+        double _t10 = this.rY * this.rZ;
+        double _t11 = this.rX * this.rW;
+        double _buf0 = this.sX - (_t3 + _t4) * _t0;
+        double _buf1 = (_t5 - _t6) * _t1;
+        double _buf2 = (_t7 + _t8) * _t2;
         d.m03 = this.tX;
-        d.m10 = this.sX * 2.0 * (_t2 + _t3);
-        d.m11 = this.sY * (1.0 - 2.0 * (_t6 + _t1));
-        d.m12 = this.sZ * 2.0 * (_t7 - _t8);
-        double _buf3 = this.tY;
-        double _buf4 = this.sX * 2.0 * (_t4 - _t5);
-        double _buf5 = this.sY * 2.0 * (_t8 + _t7);
-        d.m22 = this.sZ * (1.0 - 2.0 * (_t6 + _t0));
+        d.m10 = (_t5 + _t6) * _t0;
+        d.m11 = this.sY - (_t9 + _t4) * _t1;
+        d.m12 = (_t10 - _t11) * _t2;
+        d.m13 = this.tY;
+        d.m20 = (_t7 - _t8) * _t0;
+        double _buf3 = (_t11 + _t10) * _t1;
+        d.m22 = this.sZ - (_t9 + _t3) * _t2;
         d.m23 = this.tZ;
         d.m00 = _buf0;
         d.m01 = _buf1;
         d.m02 = _buf2;
-        d.m13 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        d.m21 = _buf3;
         d.properties = Joml.BIT_AFFINE;
         return d;
     }

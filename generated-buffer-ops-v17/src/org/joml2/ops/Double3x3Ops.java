@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 package org.joml2.ops;
 
 import org.joml2.*;
@@ -1777,18 +1779,21 @@ public final class Double3x3Ops {
      * @return {@code dest}
      */
     public static double[] makeFromTransform(double[] dest, int destOffset, double tTX, double tTY, double tTZ, double tRX, double tRY, double tRZ, double tRW, double tSX, double tSY, double tSZ) {
-        double _t0 = tRZ * tRZ;
-        double _t1 = tRZ * tRW;
-        double _t2 = tRY * tRW;
-        dest[destOffset + 0] = tSX * Math.fma(-2.0, Math.fma(tRY, tRY, _t0), 1.0);
-        dest[destOffset + 1] = tSX * 2.0 * Math.fma(tRX, tRY, _t1);
-        dest[destOffset + 2] = tSX * 2.0 * Math.fma(tRX, tRZ, -_t2);
-        dest[destOffset + 3] = tSY * 2.0 * Math.fma(tRX, tRY, -_t1);
-        dest[destOffset + 4] = tSY * Math.fma(-2.0, Math.fma(tRX, tRX, _t0), 1.0);
-        dest[destOffset + 5] = tSY * 2.0 * Math.fma(tRX, tRW, tRY * tRZ);
-        dest[destOffset + 6] = tSZ * 2.0 * Math.fma(tRX, tRZ, _t2);
-        dest[destOffset + 7] = tSZ * 2.0 * Math.fma(tRY, tRZ, -(tRX * tRW));
-        dest[destOffset + 8] = tSZ * Math.fma(-2.0, Math.fma(tRX, tRX, tRY * tRY), 1.0);
+        double _t0 = 2.0 * tSX;
+        double _t1 = 2.0 * tSY;
+        double _t2 = 2.0 * tSZ;
+        double _t3 = tRZ * tRZ;
+        double _t4 = tRZ * tRW;
+        double _t5 = tRY * tRW;
+        dest[destOffset + 0] = Math.fma(-Math.fma(tRY, tRY, _t3), _t0, tSX);
+        dest[destOffset + 1] = Math.fma(tRX, tRY, _t4) * _t0;
+        dest[destOffset + 2] = Math.fma(tRX, tRZ, -_t5) * _t0;
+        dest[destOffset + 3] = Math.fma(tRX, tRY, -_t4) * _t1;
+        dest[destOffset + 4] = Math.fma(-Math.fma(tRX, tRX, _t3), _t1, tSY);
+        dest[destOffset + 5] = Math.fma(tRX, tRW, tRY * tRZ) * _t1;
+        dest[destOffset + 6] = Math.fma(tRX, tRZ, _t5) * _t2;
+        dest[destOffset + 7] = Math.fma(tRY, tRZ, -(tRX * tRW)) * _t2;
+        dest[destOffset + 8] = Math.fma(-Math.fma(tRX, tRX, tRY * tRY), _t2, tSZ);
         return dest;
     }
 

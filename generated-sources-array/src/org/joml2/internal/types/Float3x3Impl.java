@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 package org.joml2.internal.types;
 
 import org.joml2.*;
@@ -4937,18 +4939,21 @@ public class Float3x3Impl implements Float3x3 {
      */
     @Mutated public Float3x3 makeFromTransform(float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
         float[] dd = this.data;
-        float _t0 = tRZ * tRZ;
-        float _t1 = tRZ * tRW;
-        float _t2 = tRY * tRW;
-        dd[0] = tSX * Math.fma(-2.0f, Math.fma(tRY, tRY, _t0), 1.0f);
-        dd[1] = tSX * 2.0f * Math.fma(tRX, tRY, _t1);
-        dd[2] = tSX * 2.0f * Math.fma(tRX, tRZ, -_t2);
-        dd[3] = tSY * 2.0f * Math.fma(tRX, tRY, -_t1);
-        dd[4] = tSY * Math.fma(-2.0f, Math.fma(tRX, tRX, _t0), 1.0f);
-        dd[5] = tSY * 2.0f * Math.fma(tRX, tRW, tRY * tRZ);
-        dd[6] = tSZ * 2.0f * Math.fma(tRX, tRZ, _t2);
-        dd[7] = tSZ * 2.0f * Math.fma(tRY, tRZ, -(tRX * tRW));
-        dd[8] = tSZ * Math.fma(-2.0f, Math.fma(tRX, tRX, tRY * tRY), 1.0f);
+        float _t0 = 2.0f * tSX;
+        float _t1 = 2.0f * tSY;
+        float _t2 = 2.0f * tSZ;
+        float _t3 = tRZ * tRZ;
+        float _t4 = tRZ * tRW;
+        float _t5 = tRY * tRW;
+        dd[0] = Math.fma(-Math.fma(tRY, tRY, _t3), _t0, tSX);
+        dd[1] = Math.fma(tRX, tRY, _t4) * _t0;
+        dd[2] = Math.fma(tRX, tRZ, -_t5) * _t0;
+        dd[3] = Math.fma(tRX, tRY, -_t4) * _t1;
+        dd[4] = Math.fma(-Math.fma(tRX, tRX, _t3), _t1, tSY);
+        dd[5] = Math.fma(tRX, tRW, tRY * tRZ) * _t1;
+        dd[6] = Math.fma(tRX, tRZ, _t5) * _t2;
+        dd[7] = Math.fma(tRY, tRZ, -(tRX * tRW)) * _t2;
+        dd[8] = Math.fma(-Math.fma(tRX, tRX, tRY * tRY), _t2, tSZ);
         ((Float3x3Impl) this).properties = 0;
         return this;
     }

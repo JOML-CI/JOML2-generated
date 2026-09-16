@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 package org.joml2.internal.types;
 
 import org.joml2.*;
@@ -3900,24 +3902,27 @@ public class Double3x3Impl implements Double3x3 {
      * @return this
      */
     @Mutated public Double3x3 makeFromTransform(double tTX, double tTY, double tTZ, double tRX, double tRY, double tRZ, double tRW, double tSX, double tSY, double tSZ) {
-        double _t0 = tRY * tRY;
-        double _t1 = tRZ * tRZ;
-        double _t2 = tRX * tRY;
-        double _t3 = tRZ * tRW;
-        double _t4 = tRX * tRZ;
-        double _t5 = tRY * tRW;
-        double _t6 = tRX * tRX;
-        double _t7 = tRY * tRZ;
-        double _t8 = tRX * tRW;
-        this.m00 = tSX * (1.0 - 2.0 * (_t0 + _t1));
-        this.m10 = tSX * 2.0 * (_t2 + _t3);
-        this.m20 = tSX * 2.0 * (_t4 - _t5);
-        this.m01 = tSY * 2.0 * (_t2 - _t3);
-        this.m11 = tSY * (1.0 - 2.0 * (_t6 + _t1));
-        this.m21 = tSY * 2.0 * (_t8 + _t7);
-        this.m02 = tSZ * 2.0 * (_t4 + _t5);
-        this.m12 = tSZ * 2.0 * (_t7 - _t8);
-        this.m22 = tSZ * (1.0 - 2.0 * (_t6 + _t0));
+        double _t0 = 2.0 * tSX;
+        double _t1 = 2.0 * tSY;
+        double _t2 = 2.0 * tSZ;
+        double _t3 = tRY * tRY;
+        double _t4 = tRZ * tRZ;
+        double _t5 = tRX * tRY;
+        double _t6 = tRZ * tRW;
+        double _t7 = tRX * tRZ;
+        double _t8 = tRY * tRW;
+        double _t9 = tRX * tRX;
+        double _t10 = tRY * tRZ;
+        double _t11 = tRX * tRW;
+        this.m00 = tSX - (_t3 + _t4) * _t0;
+        this.m10 = (_t5 + _t6) * _t0;
+        this.m20 = (_t7 - _t8) * _t0;
+        this.m01 = (_t5 - _t6) * _t1;
+        this.m11 = tSY - (_t9 + _t4) * _t1;
+        this.m21 = (_t11 + _t10) * _t1;
+        this.m02 = (_t7 + _t8) * _t2;
+        this.m12 = (_t10 - _t11) * _t2;
+        this.m22 = tSZ - (_t9 + _t3) * _t2;
         this.properties = 0;
         return this;
     }

@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 package org.joml2.ops;
 
 import org.joml2.*;
@@ -2523,8 +2525,25 @@ public final class Double3x4Ops {
      * @return {@code dest}
      */
     public static double[] makeFromTransform(double[] dest, int destOffset, double tTX, double tTY, double tTZ, double tRX, double tRY, double tRZ, double tRW, double tSX, double tSY, double tSZ) {
-        if (SimdSupport.VECTOR_API) return Double3x4OpsSimd.makeFromTransform(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
-        return Double3x4OpsKernelsArray.makeFromTransform_scalar(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
+        double _t0 = 2.0 * tSX;
+        double _t1 = 2.0 * tSY;
+        double _t2 = 2.0 * tSZ;
+        double _t3 = tRZ * tRZ;
+        double _t4 = tRZ * tRW;
+        double _t5 = tRY * tRW;
+        dest[destOffset + 0] = Math.fma(-Math.fma(tRY, tRY, _t3), _t0, tSX);
+        dest[destOffset + 1] = Math.fma(tRX, tRY, -_t4) * _t1;
+        dest[destOffset + 2] = Math.fma(tRX, tRZ, _t5) * _t2;
+        dest[destOffset + 3] = tTX;
+        dest[destOffset + 4] = Math.fma(tRX, tRY, _t4) * _t0;
+        dest[destOffset + 5] = Math.fma(-Math.fma(tRX, tRX, _t3), _t1, tSY);
+        dest[destOffset + 6] = Math.fma(tRY, tRZ, -(tRX * tRW)) * _t2;
+        dest[destOffset + 7] = tTY;
+        dest[destOffset + 8] = Math.fma(tRX, tRZ, -_t5) * _t0;
+        dest[destOffset + 9] = Math.fma(tRX, tRW, tRY * tRZ) * _t1;
+        dest[destOffset + 10] = Math.fma(-Math.fma(tRX, tRX, tRY * tRY), _t2, tSZ);
+        dest[destOffset + 11] = tTZ;
+        return dest;
     }
 
     /** {@link #makeFromTransform(double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
@@ -3939,8 +3958,25 @@ public final class Double3x4Ops {
      * @return {@code dest}
      */
     public static double[] composeTRS(double[] dest, int destOffset, double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ) {
-        if (SimdSupport.VECTOR_API) return Double3x4OpsSimd.composeTRS(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
-        return Double3x4OpsKernelsArray.composeTRS_scalar(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
+        double _t0 = 2.0 * scaleX;
+        double _t1 = 2.0 * scaleY;
+        double _t2 = 2.0 * scaleZ;
+        double _t3 = rotationZ * rotationZ;
+        double _t4 = rotationZ * rotationW;
+        double _t5 = rotationY * rotationW;
+        dest[destOffset + 0] = Math.fma(-Math.fma(rotationY, rotationY, _t3), _t0, scaleX);
+        dest[destOffset + 1] = Math.fma(rotationX, rotationY, -_t4) * _t1;
+        dest[destOffset + 2] = Math.fma(rotationX, rotationZ, _t5) * _t2;
+        dest[destOffset + 3] = translationX;
+        dest[destOffset + 4] = Math.fma(rotationX, rotationY, _t4) * _t0;
+        dest[destOffset + 5] = Math.fma(-Math.fma(rotationX, rotationX, _t3), _t1, scaleY);
+        dest[destOffset + 6] = Math.fma(rotationY, rotationZ, -(rotationX * rotationW)) * _t2;
+        dest[destOffset + 7] = translationY;
+        dest[destOffset + 8] = Math.fma(rotationX, rotationZ, -_t5) * _t0;
+        dest[destOffset + 9] = Math.fma(rotationX, rotationW, rotationY * rotationZ) * _t1;
+        dest[destOffset + 10] = Math.fma(-Math.fma(rotationX, rotationX, rotationY * rotationY), _t2, scaleZ);
+        dest[destOffset + 11] = translationZ;
+        return dest;
     }
 
     /** {@link #composeTRS(double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
@@ -3977,8 +4013,35 @@ public final class Double3x4Ops {
      * @return {@code dest}
      */
     public static double[] composeTRS(double[] dest, int destOffset, double[] translation, int translationOffset, double[] rotation, int rotationOffset, double[] scale, int scaleOffset) {
-        if (SimdSupport.VECTOR_API) return Double3x4OpsSimd.composeTRS(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
-        return Double3x4OpsKernelsArray.composeTRS_scalar(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
+        double _translationx = translation[translationOffset + 0];
+        double _translationy = translation[translationOffset + 1];
+        double _translationz = translation[translationOffset + 2];
+        double _rotationx = rotation[rotationOffset + 0];
+        double _rotationy = rotation[rotationOffset + 1];
+        double _rotationz = rotation[rotationOffset + 2];
+        double _rotationw = rotation[rotationOffset + 3];
+        double _scalex = scale[scaleOffset + 0];
+        double _scaley = scale[scaleOffset + 1];
+        double _scalez = scale[scaleOffset + 2];
+        double _t0 = 2.0 * _scalex;
+        double _t1 = 2.0 * _scaley;
+        double _t2 = 2.0 * _scalez;
+        double _t3 = _rotationz * _rotationz;
+        double _t4 = _rotationz * _rotationw;
+        double _t5 = _rotationy * _rotationw;
+        dest[destOffset + 0] = Math.fma(-Math.fma(_rotationy, _rotationy, _t3), _t0, _scalex);
+        dest[destOffset + 1] = Math.fma(_rotationx, _rotationy, -_t4) * _t1;
+        dest[destOffset + 2] = Math.fma(_rotationx, _rotationz, _t5) * _t2;
+        dest[destOffset + 3] = _translationx;
+        dest[destOffset + 4] = Math.fma(_rotationx, _rotationy, _t4) * _t0;
+        dest[destOffset + 5] = Math.fma(-Math.fma(_rotationx, _rotationx, _t3), _t1, _scaley);
+        dest[destOffset + 6] = Math.fma(_rotationy, _rotationz, -(_rotationx * _rotationw)) * _t2;
+        dest[destOffset + 7] = _translationy;
+        dest[destOffset + 8] = Math.fma(_rotationx, _rotationz, -_t5) * _t0;
+        dest[destOffset + 9] = Math.fma(_rotationx, _rotationw, _rotationy * _rotationz) * _t1;
+        dest[destOffset + 10] = Math.fma(-Math.fma(_rotationx, _rotationx, _rotationy * _rotationy), _t2, _scalez);
+        dest[destOffset + 11] = _translationz;
+        return dest;
     }
 
     /** {@link #composeTRS(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
@@ -11818,29 +11881,35 @@ public final class Double3x4Ops {
         double _self21 = src[srcOffset + 9];
         double _self22 = src[srcOffset + 10];
         double _self23 = src[srcOffset + 11];
-        double _t0 = qY * qW;
-        double _t1 = qZ * qZ;
-        double _t2 = qZ * qW;
-        double _t18 = 2.0 * Math.fma(qX, qY, _t2);
-        double _t19 = 2.0 * Math.fma(qX, qW, qY * qZ);
-        double _t20 = 2.0 * Math.fma(qX, qZ, _t0);
-        double _t21 = 2.0 * Math.fma(qX, qZ, -_t0);
-        double _t22 = 2.0 * Math.fma(qX, qY, -_t2);
-        double _t23 = 2.0 * Math.fma(qY, qZ, -(qX * qW));
-        double _t24 = Math.fma(-2.0, Math.fma(qY, qY, _t1), 1.0);
-        double _t25 = Math.fma(-2.0, Math.fma(qX, qX, _t1), 1.0);
-        double _t26 = Math.fma(-2.0, Math.fma(qX, qX, qY * qY), 1.0);
-        dest[destOffset + 0] = Math.fma(_self02, _t21, Math.fma(_self00, _t24, _self01 * _t18));
-        dest[destOffset + 1] = Math.fma(_self02, _t19, Math.fma(_self00, _t22, _self01 * _t25));
-        dest[destOffset + 2] = Math.fma(_self02, _t26, Math.fma(_self00, _t20, _self01 * _t23));
+        double _t0 = -qY;
+        double _t2 = -qX;
+        double _t3 = 2.0 * qX;
+        double _t4 = 2.0 * qY;
+        double _t5 = 2.0 * qZ;
+        double _t6 = qW * _t4;
+        double _t7 = qW * _t5;
+        double _t8 = qW * _t3;
+        double _t12 = Math.fma(-qZ, _t5, 1.0);
+        double _t14 = Math.fma(qY, _t3, _t7);
+        double _t15 = Math.fma(qZ, _t4, _t8);
+        double _t16 = Math.fma(qZ, _t3, _t6);
+        double _t17 = Math.fma(qZ, _t3, -_t6);
+        double _t18 = Math.fma(qY, _t3, -_t7);
+        double _t19 = Math.fma(qZ, _t4, -_t8);
+        double _t20 = Math.fma(_t0, _t4, _t12);
+        double _t21 = Math.fma(_t2, _t3, _t12);
+        double _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0));
+        dest[destOffset + 0] = Math.fma(_self02, _t17, Math.fma(_self00, _t20, _self01 * _t14));
+        dest[destOffset + 1] = Math.fma(_self02, _t15, Math.fma(_self00, _t18, _self01 * _t21));
+        dest[destOffset + 2] = Math.fma(_self02, _t22, Math.fma(_self00, _t16, _self01 * _t19));
         dest[destOffset + 3] = _self03;
-        dest[destOffset + 4] = Math.fma(_self12, _t21, Math.fma(_self10, _t24, _self11 * _t18));
-        dest[destOffset + 5] = Math.fma(_self12, _t19, Math.fma(_self10, _t22, _self11 * _t25));
-        dest[destOffset + 6] = Math.fma(_self12, _t26, Math.fma(_self10, _t20, _self11 * _t23));
+        dest[destOffset + 4] = Math.fma(_self12, _t17, Math.fma(_self10, _t20, _self11 * _t14));
+        dest[destOffset + 5] = Math.fma(_self12, _t15, Math.fma(_self10, _t18, _self11 * _t21));
+        dest[destOffset + 6] = Math.fma(_self12, _t22, Math.fma(_self10, _t16, _self11 * _t19));
         dest[destOffset + 7] = _self13;
-        dest[destOffset + 8] = Math.fma(_self22, _t21, Math.fma(_self20, _t24, _self21 * _t18));
-        dest[destOffset + 9] = Math.fma(_self22, _t19, Math.fma(_self20, _t22, _self21 * _t25));
-        dest[destOffset + 10] = Math.fma(_self22, _t26, Math.fma(_self20, _t20, _self21 * _t23));
+        dest[destOffset + 8] = Math.fma(_self22, _t17, Math.fma(_self20, _t20, _self21 * _t14));
+        dest[destOffset + 9] = Math.fma(_self22, _t15, Math.fma(_self20, _t18, _self21 * _t21));
+        dest[destOffset + 10] = Math.fma(_self22, _t22, Math.fma(_self20, _t16, _self21 * _t19));
         dest[destOffset + 11] = _self23;
         return dest;
     }
@@ -11897,29 +11966,35 @@ public final class Double3x4Ops {
         double _qy = q[qOffset + 1];
         double _qz = q[qOffset + 2];
         double _qw = q[qOffset + 3];
-        double _t0 = _qy * _qw;
-        double _t1 = _qz * _qz;
-        double _t2 = _qz * _qw;
-        double _t18 = 2.0 * Math.fma(_qx, _qy, _t2);
-        double _t19 = 2.0 * Math.fma(_qx, _qw, _qy * _qz);
-        double _t20 = 2.0 * Math.fma(_qx, _qz, _t0);
-        double _t21 = 2.0 * Math.fma(_qx, _qz, -_t0);
-        double _t22 = 2.0 * Math.fma(_qx, _qy, -_t2);
-        double _t23 = 2.0 * Math.fma(_qy, _qz, -(_qx * _qw));
-        double _t24 = Math.fma(-2.0, Math.fma(_qy, _qy, _t1), 1.0);
-        double _t25 = Math.fma(-2.0, Math.fma(_qx, _qx, _t1), 1.0);
-        double _t26 = Math.fma(-2.0, Math.fma(_qx, _qx, _qy * _qy), 1.0);
-        dest[destOffset + 0] = Math.fma(_self02, _t21, Math.fma(_self00, _t24, _self01 * _t18));
-        dest[destOffset + 1] = Math.fma(_self02, _t19, Math.fma(_self00, _t22, _self01 * _t25));
-        dest[destOffset + 2] = Math.fma(_self02, _t26, Math.fma(_self00, _t20, _self01 * _t23));
+        double _t0 = -_qy;
+        double _t2 = -_qx;
+        double _t3 = 2.0 * _qx;
+        double _t4 = 2.0 * _qy;
+        double _t5 = 2.0 * _qz;
+        double _t6 = _qw * _t4;
+        double _t7 = _qw * _t5;
+        double _t8 = _qw * _t3;
+        double _t12 = Math.fma(-_qz, _t5, 1.0);
+        double _t14 = Math.fma(_qy, _t3, _t7);
+        double _t15 = Math.fma(_qz, _t4, _t8);
+        double _t16 = Math.fma(_qz, _t3, _t6);
+        double _t17 = Math.fma(_qz, _t3, -_t6);
+        double _t18 = Math.fma(_qy, _t3, -_t7);
+        double _t19 = Math.fma(_qz, _t4, -_t8);
+        double _t20 = Math.fma(_t0, _t4, _t12);
+        double _t21 = Math.fma(_t2, _t3, _t12);
+        double _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0));
+        dest[destOffset + 0] = Math.fma(_self02, _t17, Math.fma(_self00, _t20, _self01 * _t14));
+        dest[destOffset + 1] = Math.fma(_self02, _t15, Math.fma(_self00, _t18, _self01 * _t21));
+        dest[destOffset + 2] = Math.fma(_self02, _t22, Math.fma(_self00, _t16, _self01 * _t19));
         dest[destOffset + 3] = _self03;
-        dest[destOffset + 4] = Math.fma(_self12, _t21, Math.fma(_self10, _t24, _self11 * _t18));
-        dest[destOffset + 5] = Math.fma(_self12, _t19, Math.fma(_self10, _t22, _self11 * _t25));
-        dest[destOffset + 6] = Math.fma(_self12, _t26, Math.fma(_self10, _t20, _self11 * _t23));
+        dest[destOffset + 4] = Math.fma(_self12, _t17, Math.fma(_self10, _t20, _self11 * _t14));
+        dest[destOffset + 5] = Math.fma(_self12, _t15, Math.fma(_self10, _t18, _self11 * _t21));
+        dest[destOffset + 6] = Math.fma(_self12, _t22, Math.fma(_self10, _t16, _self11 * _t19));
         dest[destOffset + 7] = _self13;
-        dest[destOffset + 8] = Math.fma(_self22, _t21, Math.fma(_self20, _t24, _self21 * _t18));
-        dest[destOffset + 9] = Math.fma(_self22, _t19, Math.fma(_self20, _t22, _self21 * _t25));
-        dest[destOffset + 10] = Math.fma(_self22, _t26, Math.fma(_self20, _t20, _self21 * _t23));
+        dest[destOffset + 8] = Math.fma(_self22, _t17, Math.fma(_self20, _t20, _self21 * _t14));
+        dest[destOffset + 9] = Math.fma(_self22, _t15, Math.fma(_self20, _t18, _self21 * _t21));
+        dest[destOffset + 10] = Math.fma(_self22, _t22, Math.fma(_self20, _t16, _self21 * _t19));
         dest[destOffset + 11] = _self23;
         return dest;
     }

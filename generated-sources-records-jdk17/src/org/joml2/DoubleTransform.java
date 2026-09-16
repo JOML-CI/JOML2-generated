@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 package org.joml2;
 
 import org.joml2.internal.storeload.*;
@@ -598,10 +600,13 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * @return the resulting matrix
      */
     public Double4x4 toMatrix() {
-        double _t0 = this.rZ * this.rZ;
-        double _t1 = this.rZ * this.rW;
-        double _t2 = this.rY * this.rW;
-        return new Double4x4(this.sX * Math.fma(-2.0, Math.fma(this.rY, this.rY, _t0), 1.0), this.sY * 2.0 * Math.fma(this.rX, this.rY, -_t1), this.sZ * 2.0 * Math.fma(this.rX, this.rZ, _t2), this.tX, this.sX * 2.0 * Math.fma(this.rX, this.rY, _t1), this.sY * Math.fma(-2.0, Math.fma(this.rX, this.rX, _t0), 1.0), this.sZ * 2.0 * Math.fma(this.rY, this.rZ, -(this.rX * this.rW)), this.tY, this.sX * 2.0 * Math.fma(this.rX, this.rZ, -_t2), this.sY * 2.0 * Math.fma(this.rX, this.rW, this.rY * this.rZ), this.sZ * Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0), this.tZ, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE);
+        double _t0 = 2.0 * this.sX;
+        double _t1 = 2.0 * this.sY;
+        double _t2 = 2.0 * this.sZ;
+        double _t3 = this.rZ * this.rZ;
+        double _t4 = this.rZ * this.rW;
+        double _t5 = this.rY * this.rW;
+        return new Double4x4(Math.fma(-Math.fma(this.rY, this.rY, _t3), _t0, this.sX), Math.fma(this.rX, this.rY, -_t4) * _t1, Math.fma(this.rX, this.rZ, _t5) * _t2, this.tX, Math.fma(this.rX, this.rY, _t4) * _t0, Math.fma(-Math.fma(this.rX, this.rX, _t3), _t1, this.sY), Math.fma(this.rY, this.rZ, -(this.rX * this.rW)) * _t2, this.tY, Math.fma(this.rX, this.rZ, -_t5) * _t0, Math.fma(this.rX, this.rW, this.rY * this.rZ) * _t1, Math.fma(-Math.fma(this.rX, this.rX, this.rY * this.rY), _t2, this.sZ), this.tZ, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE);
     }
 
 
@@ -612,10 +617,13 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * @return the resulting matrix
      */
     public Double3x3 toMatrix3x3() {
-        double _t0 = this.rZ * this.rZ;
-        double _t1 = this.rZ * this.rW;
-        double _t2 = this.rY * this.rW;
-        return new Double3x3(this.sX * Math.fma(-2.0, Math.fma(this.rY, this.rY, _t0), 1.0), this.sY * 2.0 * Math.fma(this.rX, this.rY, -_t1), this.sZ * 2.0 * Math.fma(this.rX, this.rZ, _t2), this.sX * 2.0 * Math.fma(this.rX, this.rY, _t1), this.sY * Math.fma(-2.0, Math.fma(this.rX, this.rX, _t0), 1.0), this.sZ * 2.0 * Math.fma(this.rY, this.rZ, -(this.rX * this.rW)), this.sX * 2.0 * Math.fma(this.rX, this.rZ, -_t2), this.sY * 2.0 * Math.fma(this.rX, this.rW, this.rY * this.rZ), this.sZ * Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0), 0);
+        double _t0 = 2.0 * this.sX;
+        double _t1 = 2.0 * this.sY;
+        double _t2 = 2.0 * this.sZ;
+        double _t3 = this.rZ * this.rZ;
+        double _t4 = this.rZ * this.rW;
+        double _t5 = this.rY * this.rW;
+        return new Double3x3(Math.fma(-Math.fma(this.rY, this.rY, _t3), _t0, this.sX), Math.fma(this.rX, this.rY, -_t4) * _t1, Math.fma(this.rX, this.rZ, _t5) * _t2, Math.fma(this.rX, this.rY, _t4) * _t0, Math.fma(-Math.fma(this.rX, this.rX, _t3), _t1, this.sY), Math.fma(this.rY, this.rZ, -(this.rX * this.rW)) * _t2, Math.fma(this.rX, this.rZ, -_t5) * _t0, Math.fma(this.rX, this.rW, this.rY * this.rZ) * _t1, Math.fma(-Math.fma(this.rX, this.rX, this.rY * this.rY), _t2, this.sZ), 0);
     }
 
 
@@ -626,10 +634,13 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * @return the resulting matrix
      */
     public Double3x4 toMatrix3x4() {
-        double _t0 = this.rZ * this.rZ;
-        double _t1 = this.rZ * this.rW;
-        double _t2 = this.rY * this.rW;
-        return new Double3x4(this.sX * Math.fma(-2.0, Math.fma(this.rY, this.rY, _t0), 1.0), this.sY * 2.0 * Math.fma(this.rX, this.rY, -_t1), this.sZ * 2.0 * Math.fma(this.rX, this.rZ, _t2), this.tX, this.sX * 2.0 * Math.fma(this.rX, this.rY, _t1), this.sY * Math.fma(-2.0, Math.fma(this.rX, this.rX, _t0), 1.0), this.sZ * 2.0 * Math.fma(this.rY, this.rZ, -(this.rX * this.rW)), this.tY, this.sX * 2.0 * Math.fma(this.rX, this.rZ, -_t2), this.sY * 2.0 * Math.fma(this.rX, this.rW, this.rY * this.rZ), this.sZ * Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0), this.tZ, Joml.BIT_AFFINE);
+        double _t0 = 2.0 * this.sX;
+        double _t1 = 2.0 * this.sY;
+        double _t2 = 2.0 * this.sZ;
+        double _t3 = this.rZ * this.rZ;
+        double _t4 = this.rZ * this.rW;
+        double _t5 = this.rY * this.rW;
+        return new Double3x4(Math.fma(-Math.fma(this.rY, this.rY, _t3), _t0, this.sX), Math.fma(this.rX, this.rY, -_t4) * _t1, Math.fma(this.rX, this.rZ, _t5) * _t2, this.tX, Math.fma(this.rX, this.rY, _t4) * _t0, Math.fma(-Math.fma(this.rX, this.rX, _t3), _t1, this.sY), Math.fma(this.rY, this.rZ, -(this.rX * this.rW)) * _t2, this.tY, Math.fma(this.rX, this.rZ, -_t5) * _t0, Math.fma(this.rX, this.rW, this.rY * this.rZ) * _t1, Math.fma(-Math.fma(this.rX, this.rX, this.rY * this.rY), _t2, this.sZ), this.tZ, Joml.BIT_AFFINE);
     }
 
 

@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 package org.joml2.internal.types;
 
 import org.joml2.*;
@@ -4792,24 +4794,27 @@ public class Float3x3Impl implements Float3x3 {
      * @return this
      */
     @Mutated public Float3x3 makeFromTransform(float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        float _t0 = tRY * tRY;
-        float _t1 = tRZ * tRZ;
-        float _t2 = tRX * tRY;
-        float _t3 = tRZ * tRW;
-        float _t4 = tRX * tRZ;
-        float _t5 = tRY * tRW;
-        float _t6 = tRX * tRX;
-        float _t7 = tRY * tRZ;
-        float _t8 = tRX * tRW;
-        this.m00 = tSX * (1.0f - 2.0f * (_t0 + _t1));
-        this.m10 = tSX * 2.0f * (_t2 + _t3);
-        this.m20 = tSX * 2.0f * (_t4 - _t5);
-        this.m01 = tSY * 2.0f * (_t2 - _t3);
-        this.m11 = tSY * (1.0f - 2.0f * (_t6 + _t1));
-        this.m21 = tSY * 2.0f * (_t8 + _t7);
-        this.m02 = tSZ * 2.0f * (_t4 + _t5);
-        this.m12 = tSZ * 2.0f * (_t7 - _t8);
-        this.m22 = tSZ * (1.0f - 2.0f * (_t6 + _t0));
+        float _t0 = 2.0f * tSX;
+        float _t1 = 2.0f * tSY;
+        float _t2 = 2.0f * tSZ;
+        float _t3 = tRY * tRY;
+        float _t4 = tRZ * tRZ;
+        float _t5 = tRX * tRY;
+        float _t6 = tRZ * tRW;
+        float _t7 = tRX * tRZ;
+        float _t8 = tRY * tRW;
+        float _t9 = tRX * tRX;
+        float _t10 = tRY * tRZ;
+        float _t11 = tRX * tRW;
+        this.m00 = tSX - (_t3 + _t4) * _t0;
+        this.m10 = (_t5 + _t6) * _t0;
+        this.m20 = (_t7 - _t8) * _t0;
+        this.m01 = (_t5 - _t6) * _t1;
+        this.m11 = tSY - (_t9 + _t4) * _t1;
+        this.m21 = (_t11 + _t10) * _t1;
+        this.m02 = (_t7 + _t8) * _t2;
+        this.m12 = (_t10 - _t11) * _t2;
+        this.m22 = tSZ - (_t9 + _t3) * _t2;
         this.properties = 0;
         return this;
     }

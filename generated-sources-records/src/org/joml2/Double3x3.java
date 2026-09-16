@@ -1,3 +1,5 @@
+// Copyright (c) 2015-2026 JOML
+// SPDX-License-Identifier: MIT
 package org.joml2;
 
 import org.joml2.internal.storeload.*;
@@ -2335,10 +2337,13 @@ public record Double3x3(double m00, double m01, double m02, double m10, double m
      * @return the resulting matrix
      */
     public static Double3x3 makeFromTransform(double tTX, double tTY, double tTZ, double tRX, double tRY, double tRZ, double tRW, double tSX, double tSY, double tSZ) {
-        double _t0 = tRZ * tRZ;
-        double _t1 = tRZ * tRW;
-        double _t2 = tRY * tRW;
-        return new Double3x3(tSX * Math.fma(-2.0, Math.fma(tRY, tRY, _t0), 1.0), tSY * 2.0 * Math.fma(tRX, tRY, -_t1), tSZ * 2.0 * Math.fma(tRX, tRZ, _t2), tSX * 2.0 * Math.fma(tRX, tRY, _t1), tSY * Math.fma(-2.0, Math.fma(tRX, tRX, _t0), 1.0), tSZ * 2.0 * Math.fma(tRY, tRZ, -(tRX * tRW)), tSX * 2.0 * Math.fma(tRX, tRZ, -_t2), tSY * 2.0 * Math.fma(tRX, tRW, tRY * tRZ), tSZ * Math.fma(-2.0, Math.fma(tRX, tRX, tRY * tRY), 1.0), 0);
+        double _t0 = 2.0 * tSX;
+        double _t1 = 2.0 * tSY;
+        double _t2 = 2.0 * tSZ;
+        double _t3 = tRZ * tRZ;
+        double _t4 = tRZ * tRW;
+        double _t5 = tRY * tRW;
+        return new Double3x3(Math.fma(-Math.fma(tRY, tRY, _t3), _t0, tSX), Math.fma(tRX, tRY, -_t4) * _t1, Math.fma(tRX, tRZ, _t5) * _t2, Math.fma(tRX, tRY, _t4) * _t0, Math.fma(-Math.fma(tRX, tRX, _t3), _t1, tSY), Math.fma(tRY, tRZ, -(tRX * tRW)) * _t2, Math.fma(tRX, tRZ, -_t5) * _t0, Math.fma(tRX, tRW, tRY * tRZ) * _t1, Math.fma(-Math.fma(tRX, tRX, tRY * tRY), _t2, tSZ), 0);
     }
 
 
