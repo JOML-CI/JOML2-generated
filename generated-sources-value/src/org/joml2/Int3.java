@@ -36,7 +36,13 @@ public value record Int3(int x, int y, int z) {
     /** The zero vector (all components 0). */
     public static final Int3 ZERO = new Int3(0, 0, 0);
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param x the {@code x} component
+     * @param y the {@code y} component
+     * @param z the {@code z} component
+     */
     public Int3(int x, int y, int z) {
         this.x = x;
         this.y = y;
@@ -50,17 +56,31 @@ public value record Int3(int x, int y, int z) {
         this(0, 0, 0);
     }
 
-    /** Create a vector with all components set to {@code s}. */
+    /**
+     * Create a vector with all components set to {@code s}.
+     *
+     * @param s the value assigned to every component
+     */
     public Int3(int s) {
         this(s, s, s);
     }
 
-    /** Create a vector composed of the given parts, in order. */
+    /**
+     * Create a vector composed of the given parts, in order.
+     *
+     * @param v0 the {@code x} component
+     * @param v1 the {@code y} and {@code z} components
+     */
     public Int3(int v0, Int2 v1) {
         this(v0, v1.x(), v1.y());
     }
 
-    /** Create a vector composed of the given parts, in order. */
+    /**
+     * Create a vector composed of the given parts, in order.
+     *
+     * @param v0 the {@code x} and {@code y} components
+     * @param v1 the {@code z} component
+     */
     public Int3(Int2 v0, int v1) {
         this(v0.x(), v0.y(), v1);
     }
@@ -76,7 +96,7 @@ public value record Int3(int x, int y, int z) {
     /**
      * Add {@code other} to this vector, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return the resulting vector
      */
     public Int3 add(Int3 other) {
@@ -102,7 +122,7 @@ public value record Int3(int x, int y, int z) {
      * Compute the component-wise ceiling division of this vector by {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Int3 ceilDiv(int scalar) {
@@ -114,7 +134,7 @@ public value record Int3(int x, int y, int z) {
      * Compute the component-wise ceiling division of this vector by {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Int3 ceilDiv(Int3 other) {
@@ -140,7 +160,7 @@ public value record Int3(int x, int y, int z) {
      * Compute the component-wise ceiling modulus of this vector and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Int3 ceilMod(int scalar) {
@@ -152,7 +172,7 @@ public value record Int3(int x, int y, int z) {
      * Compute the component-wise ceiling modulus of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Int3 ceilMod(Int3 other) {
@@ -178,7 +198,7 @@ public value record Int3(int x, int y, int z) {
      * Divide each component of this vector by {@code scalar} (integer division, truncating toward
      * zero), returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Int3 div(int scalar) {
@@ -190,7 +210,7 @@ public value record Int3(int x, int y, int z) {
      * Divide this vector component-wise by {@code other} (integer division, truncating toward
      * zero), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Int3 div(Int3 other) {
@@ -216,7 +236,7 @@ public value record Int3(int x, int y, int z) {
      * Compute the component-wise floor division of this vector by {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Int3 floorDiv(int scalar) {
@@ -228,7 +248,7 @@ public value record Int3(int x, int y, int z) {
      * Compute the component-wise floor division of this vector by {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Int3 floorDiv(Int3 other) {
@@ -254,7 +274,7 @@ public value record Int3(int x, int y, int z) {
      * Compute the component-wise floor modulus of this vector and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Int3 floorMod(int scalar) {
@@ -266,7 +286,7 @@ public value record Int3(int x, int y, int z) {
      * Compute the component-wise floor modulus of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Int3 floorMod(Int3 other) {
@@ -291,7 +311,7 @@ public value record Int3(int x, int y, int z) {
     /**
      * Multiply each component of this vector by {@code scalar}, returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @return the resulting vector
      */
     public Int3 mul(int scalar) {
@@ -302,7 +322,7 @@ public value record Int3(int x, int y, int z) {
     /**
      * Multiply this vector component-wise by {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return the resulting vector
      */
     public Int3 mul(Int3 other) {
@@ -339,7 +359,7 @@ public value record Int3(int x, int y, int z) {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}), returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Int3 rem(int scalar) {
@@ -352,7 +372,7 @@ public value record Int3(int x, int y, int z) {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Int3 rem(Int3 other) {
@@ -378,7 +398,7 @@ public value record Int3(int x, int y, int z) {
     /**
      * Subtract {@code other} from this vector, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return the resulting vector
      */
     public Int3 sub(Int3 other) {
@@ -404,7 +424,7 @@ public value record Int3(int x, int y, int z) {
      * Compute the bitwise AND of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @return the resulting vector
      */
     public Int3 and(Int3 other) {
@@ -473,7 +493,7 @@ public value record Int3(int x, int y, int z) {
      * Compute the bitwise OR of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @return the resulting vector
      */
     public Int3 or(Int3 other) {
@@ -581,7 +601,7 @@ public value record Int3(int x, int y, int z) {
      * Compute the bitwise XOR of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @return the resulting vector
      */
     public Int3 xor(Int3 other) {
@@ -606,7 +626,7 @@ public value record Int3(int x, int y, int z) {
     /**
      * Create a new vector from the given values.
      *
-     * @param v the vector
+     * @param v the vector to copy
      * @return the resulting vector
      */
     public Int3 set(Int3 v) {
@@ -798,9 +818,10 @@ public value record Int3(int x, int y, int z) {
 
 
     /**
-     * Compute the cross product of this vector and {@code other}, returning the result as a value.
+     * Compute the cross product of this vector and {@code other}, in that order
+     * ({@code this x other}), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the right operand of the cross product
      * @return the resulting vector
      */
     public Int3 cross(Int3 other) {
@@ -810,7 +831,8 @@ public value record Int3(int x, int y, int z) {
 
     /**
      * Compute the cross product of this vector and ({@code otherX}, {@code otherY},
-     * {@code otherZ}), returning the result as a value.
+     * {@code otherZ}), in that order ({@code this x (otherX, otherY, otherZ)}), returning the
+     * result as a value.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -825,7 +847,7 @@ public value record Int3(int x, int y, int z) {
     /**
      * Compute the squared distance between this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
     public int distanceSquared(Int3 other) {
@@ -854,7 +876,7 @@ public value record Int3(int x, int y, int z) {
     /**
      * Compute the dot product of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
     public int dot(Int3 other) {
@@ -888,7 +910,7 @@ public value record Int3(int x, int y, int z) {
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
     public int manhattanDistance(Int3 other) {
@@ -925,7 +947,7 @@ public value record Int3(int x, int y, int z) {
      * Set each component of this vector to the larger of itself and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @return the resulting vector
      */
     public Int3 max(int scalar) {
@@ -937,7 +959,7 @@ public value record Int3(int x, int y, int z) {
      * Set each component of this vector to the larger of itself and the corresponding component of
      * {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @return the resulting vector
      */
     public Int3 max(Int3 other) {
@@ -963,7 +985,7 @@ public value record Int3(int x, int y, int z) {
      * Set each component of this vector to the smaller of itself and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @return the resulting vector
      */
     public Int3 min(int scalar) {
@@ -975,7 +997,7 @@ public value record Int3(int x, int y, int z) {
      * Set each component of this vector to the smaller of itself and the corresponding component of
      * {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @return the resulting vector
      */
     public Int3 min(Int3 other) {
@@ -1011,7 +1033,7 @@ public value record Int3(int x, int y, int z) {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return the resulting vector
      */
     public Int3 satAdd(Int3 other) {
@@ -1037,7 +1059,7 @@ public value record Int3(int x, int y, int z) {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return the resulting vector
      */
     public Int3 satMul(Int3 other) {
@@ -1074,7 +1096,7 @@ public value record Int3(int x, int y, int z) {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return the resulting vector
      */
     public Int3 satSub(Int3 other) {
@@ -1117,37 +1139,70 @@ public value record Int3(int x, int y, int z) {
         return new Int4(this.x, this.y, this.z, 1);
     }
 
-    /** {@return a copy of this vector with the X component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the X component replaced by the given value}
+     *
+     * @param x the new value of the {@code x} component
+     */
     public Int3 withX(int x) {
         return new Int3(x, this.y(), this.z());
     }
 
-    /** {@return a copy of this vector with the Y component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the Y component replaced by the given value}
+     *
+     * @param y the new value of the {@code y} component
+     */
     public Int3 withY(int y) {
         return new Int3(this.x(), y, this.z());
     }
 
-    /** {@return a copy of this vector with the XY components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XY components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param y the new value of the {@code y} component
+     */
     public Int3 withXY(int x, int y) {
         return new Int3(x, y, this.z());
     }
 
-    /** {@return a copy of this vector with the Z component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the Z component replaced by the given value}
+     *
+     * @param z the new value of the {@code z} component
+     */
     public Int3 withZ(int z) {
         return new Int3(this.x(), this.y(), z);
     }
 
-    /** {@return a copy of this vector with the XZ components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XZ components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param z the new value of the {@code z} component
+     */
     public Int3 withXZ(int x, int z) {
         return new Int3(x, this.y(), z);
     }
 
-    /** {@return a copy of this vector with the YZ components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the YZ components replaced by the given values}
+     *
+     * @param y the new value of the {@code y} component
+     * @param z the new value of the {@code z} component
+     */
     public Int3 withYZ(int y, int z) {
         return new Int3(this.x(), y, z);
     }
 
-    /** {@return a copy of this vector with the XYZ components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XYZ components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param y the new value of the {@code y} component
+     * @param z the new value of the {@code z} component
+     */
     public Int3 withXYZ(int x, int y, int z) {
         return new Int3(x, y, z);
     }

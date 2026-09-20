@@ -34,7 +34,12 @@ public record Short2(short x, short y) {
     /** The zero vector (all components 0). */
     public static final Short2 ZERO = new Short2((short) 0, (short) 0);
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param x the {@code x} component
+     * @param y the {@code y} component
+     */
     public Short2(short x, short y) {
         this.x = x;
         this.y = y;
@@ -47,7 +52,11 @@ public record Short2(short x, short y) {
         this((short) 0, (short) 0);
     }
 
-    /** Create a vector with all components set to {@code s}. */
+    /**
+     * Create a vector with all components set to {@code s}.
+     *
+     * @param s the value assigned to every component
+     */
     public Short2(short s) {
         this(s, s);
     }
@@ -61,7 +70,7 @@ public record Short2(short x, short y) {
     /**
      * Add {@code other} to this vector, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return the resulting vector
      */
     public Short2 add(Short2 other) {
@@ -85,7 +94,7 @@ public record Short2(short x, short y) {
      * Compute the component-wise ceiling division of this vector by {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Short2 ceilDiv(short scalar) {
@@ -97,7 +106,7 @@ public record Short2(short x, short y) {
      * Compute the component-wise ceiling division of this vector by {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Short2 ceilDiv(Short2 other) {
@@ -122,7 +131,7 @@ public record Short2(short x, short y) {
      * Compute the component-wise ceiling modulus of this vector and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Short2 ceilMod(short scalar) {
@@ -134,7 +143,7 @@ public record Short2(short x, short y) {
      * Compute the component-wise ceiling modulus of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Short2 ceilMod(Short2 other) {
@@ -159,7 +168,7 @@ public record Short2(short x, short y) {
      * Divide each component of this vector by {@code scalar} (integer division, truncating toward
      * zero), returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Short2 div(short scalar) {
@@ -171,7 +180,7 @@ public record Short2(short x, short y) {
      * Divide this vector component-wise by {@code other} (integer division, truncating toward
      * zero), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Short2 div(Short2 other) {
@@ -196,7 +205,7 @@ public record Short2(short x, short y) {
      * Compute the component-wise floor division of this vector by {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Short2 floorDiv(short scalar) {
@@ -208,7 +217,7 @@ public record Short2(short x, short y) {
      * Compute the component-wise floor division of this vector by {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Short2 floorDiv(Short2 other) {
@@ -233,7 +242,7 @@ public record Short2(short x, short y) {
      * Compute the component-wise floor modulus of this vector and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Short2 floorMod(short scalar) {
@@ -245,7 +254,7 @@ public record Short2(short x, short y) {
      * Compute the component-wise floor modulus of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Short2 floorMod(Short2 other) {
@@ -269,7 +278,7 @@ public record Short2(short x, short y) {
     /**
      * Multiply each component of this vector by {@code scalar}, returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @return the resulting vector
      */
     public Short2 mul(short scalar) {
@@ -280,7 +289,7 @@ public record Short2(short x, short y) {
     /**
      * Multiply this vector component-wise by {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return the resulting vector
      */
     public Short2 mul(Short2 other) {
@@ -316,7 +325,7 @@ public record Short2(short x, short y) {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}), returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Short2 rem(short scalar) {
@@ -329,7 +338,7 @@ public record Short2(short x, short y) {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Short2 rem(Short2 other) {
@@ -354,7 +363,7 @@ public record Short2(short x, short y) {
     /**
      * Subtract {@code other} from this vector, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return the resulting vector
      */
     public Short2 sub(Short2 other) {
@@ -378,7 +387,7 @@ public record Short2(short x, short y) {
      * Compute the bitwise AND of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @return the resulting vector
      */
     public Short2 and(Short2 other) {
@@ -446,7 +455,7 @@ public record Short2(short x, short y) {
      * Compute the bitwise OR of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @return the resulting vector
      */
     public Short2 or(Short2 other) {
@@ -556,7 +565,7 @@ public record Short2(short x, short y) {
      * Compute the bitwise XOR of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @return the resulting vector
      */
     public Short2 xor(Short2 other) {
@@ -580,7 +589,7 @@ public record Short2(short x, short y) {
     /**
      * Create a new vector from the given values.
      *
-     * @param v the vector
+     * @param v the vector to copy
      * @return the resulting vector
      */
     public Short2 set(Short2 v) {
@@ -776,7 +785,7 @@ public record Short2(short x, short y) {
      * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
      * result outside the {@code short} range wraps.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
     public short distanceSquared(Short2 other) {
@@ -807,7 +816,7 @@ public record Short2(short x, short y) {
      * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
      * result outside the {@code short} range wraps.
      *
-     * @param other the other vector
+     * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
     public short dot(Short2 other) {
@@ -849,7 +858,7 @@ public record Short2(short x, short y) {
      * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
      * result outside the {@code short} range wraps.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
     public short manhattanDistance(Short2 other) {
@@ -889,7 +898,7 @@ public record Short2(short x, short y) {
      * Set each component of this vector to the larger of itself and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @return the resulting vector
      */
     public Short2 max(short scalar) {
@@ -901,7 +910,7 @@ public record Short2(short x, short y) {
      * Set each component of this vector to the larger of itself and the corresponding component of
      * {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @return the resulting vector
      */
     public Short2 max(Short2 other) {
@@ -926,7 +935,7 @@ public record Short2(short x, short y) {
      * Set each component of this vector to the smaller of itself and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @return the resulting vector
      */
     public Short2 min(short scalar) {
@@ -938,7 +947,7 @@ public record Short2(short x, short y) {
      * Set each component of this vector to the smaller of itself and the corresponding component of
      * {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @return the resulting vector
      */
     public Short2 min(Short2 other) {
@@ -973,7 +982,7 @@ public record Short2(short x, short y) {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return the resulting vector
      */
     public Short2 satAdd(Short2 other) {
@@ -998,7 +1007,7 @@ public record Short2(short x, short y) {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return the resulting vector
      */
     public Short2 satMul(Short2 other) {
@@ -1034,7 +1043,7 @@ public record Short2(short x, short y) {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return the resulting vector
      */
     public Short2 satSub(Short2 other) {
@@ -1054,17 +1063,30 @@ public record Short2(short x, short y) {
         return new Short2((short) (org.joml2.SaturatingMath.satSubS(this.x, otherX)), (short) (org.joml2.SaturatingMath.satSubS(this.y, otherY)));
     }
 
-    /** {@return a copy of this vector with the X component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the X component replaced by the given value}
+     *
+     * @param x the new value of the {@code x} component
+     */
     public Short2 withX(short x) {
         return new Short2(x, this.y());
     }
 
-    /** {@return a copy of this vector with the Y component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the Y component replaced by the given value}
+     *
+     * @param y the new value of the {@code y} component
+     */
     public Short2 withY(short y) {
         return new Short2(this.x(), y);
     }
 
-    /** {@return a copy of this vector with the XY components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XY components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param y the new value of the {@code y} component
+     */
     public Short2 withXY(short x, short y) {
         return new Short2(x, y);
     }

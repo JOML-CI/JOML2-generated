@@ -1249,7 +1249,7 @@ public interface Float4x4R {
      * factor, or factors of very different scale) invert both factors separately and multiply the
      * inverses in reverse order instead.
      *
-     * @param other the other matrix
+     * @param other the right factor of the product
      * @param dest will hold the result
      * @return dest
      */
@@ -1268,7 +1268,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the right factor of the product
      * @param dest will hold the result
      * @return dest
      */
@@ -1393,7 +1393,7 @@ public interface Float4x4R {
     /**
      * Add {@code other} to this matrix and store the result in {@code dest}.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @param dest will hold the result
      * @return dest
      */
@@ -1405,7 +1405,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @param dest will hold the result
      * @return dest
      */
@@ -1488,7 +1488,7 @@ public interface Float4x4R {
     /**
      * Subtract {@code other} from this matrix and store the result in {@code dest}.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -1500,7 +1500,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -2178,8 +2178,8 @@ public interface Float4x4R {
      * Compute the frustum test of the given axis-aligned box against the frustum defined by this
      * matrix: {@code 1} if the box intersects or is inside the frustum, {@code 0} if fully outside.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the frustum test of the given axis-aligned box against the frustum defined by this
      *        matrix: {@code 1} if the box intersects or is inside the frustum, {@code 0} if fully
@@ -2208,7 +2208,7 @@ public interface Float4x4R {
      * Compute the frustum test of the given axis-aligned box against the frustum defined by this
      * matrix: {@code 1} if the box intersects or is inside the frustum, {@code 0} if fully outside.
      *
-     * @param aabb the axis-aligned bounding box
+     * @param aabb the axis-aligned box to test
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the frustum test of the given axis-aligned box against the frustum defined by this
      *        matrix: {@code 1} if the box intersects or is inside the frustum, {@code 0} if fully
@@ -2222,8 +2222,8 @@ public interface Float4x4R {
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
      * @return the frustum test of the given axis-aligned box against the frustum defined by this
      *        matrix: {@code 1} if the box intersects or is inside the frustum, {@code 0} if fully
      *        outside
@@ -2254,7 +2254,7 @@ public interface Float4x4R {
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param aabb the axis-aligned bounding box
+     * @param aabb the axis-aligned box to test
      * @return the frustum test of the given axis-aligned box against the frustum defined by this
      *        matrix: {@code 1} if the box intersects or is inside the frustum, {@code 0} if fully
      *        outside
@@ -2265,7 +2265,7 @@ public interface Float4x4R {
      * Compute the frustum test of the given point against the frustum defined by this matrix:
      * {@code 1} if the point lies inside, {@code 0} otherwise.
      *
-     * @param point the vector
+     * @param point the point to test
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the frustum test of the given point against the frustum defined by this matrix:
      *        {@code 1} if the point lies inside, {@code 0} otherwise
@@ -2291,7 +2291,7 @@ public interface Float4x4R {
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param point the vector
+     * @param point the point to test
      * @return the frustum test of the given point against the frustum defined by this matrix:
      *        {@code 1} if the point lies inside, {@code 0} otherwise
      */
@@ -2315,8 +2315,8 @@ public interface Float4x4R {
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
      *
-     * @param center the center point
-     * @param radius the radius
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the frustum test of the given sphere against the frustum defined by this matrix:
      *        {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully
@@ -2331,7 +2331,7 @@ public interface Float4x4R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @param radius the radius
+     * @param radius the radius of the sphere
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the frustum test of the given sphere against the frustum defined by this matrix:
      *        {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully
@@ -2343,7 +2343,7 @@ public interface Float4x4R {
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
      *
-     * @param sph the sphere
+     * @param sph the sphere to test
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the frustum test of the given sphere against the frustum defined by this matrix:
      *        {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully
@@ -2357,8 +2357,8 @@ public interface Float4x4R {
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param center the center point
-     * @param radius the radius
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
      * @return the frustum test of the given sphere against the frustum defined by this matrix:
      *        {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully
      *        outside
@@ -2374,7 +2374,7 @@ public interface Float4x4R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @param radius the radius
+     * @param radius the radius of the sphere
      * @return the frustum test of the given sphere against the frustum defined by this matrix:
      *        {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully
      *        outside
@@ -2387,7 +2387,7 @@ public interface Float4x4R {
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param sph the sphere
+     * @param sph the sphere to test
      * @return the frustum test of the given sphere against the frustum defined by this matrix:
      *        {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully
      *        outside
@@ -2397,8 +2397,11 @@ public interface Float4x4R {
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -2409,10 +2412,13 @@ public interface Float4x4R {
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
      * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -2424,6 +2430,11 @@ public interface Float4x4R {
      * {@code m03}, {@code m10}, {@code m11}, {@code m12}, {@code m13}, {@code m20}, {@code m21},
      * {@code m22}, {@code m23}, {@code m30}, {@code m31}, {@code m32}, {@code m33}) using the
      * interpolation factor {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m02}, {@code m03}, {@code m10}, {@code m11}, {@code m12},
+     * {@code m13}, {@code m20}, {@code m21}, {@code m22}, {@code m23}, {@code m30}, {@code m31},
+     * {@code m32}, {@code m33}) (interpolation factor {@code 1}).
      *
      * @param m00 the element in row 0, column 0 of the matrix
      * @param m01 the element in row 0, column 1 of the matrix
@@ -2452,6 +2463,11 @@ public interface Float4x4R {
      * {@code m03}, {@code m10}, {@code m11}, {@code m12}, {@code m13}, {@code m20}, {@code m21},
      * {@code m22}, {@code m23}, {@code m30}, {@code m31}, {@code m32}, {@code m33}) using the
      * interpolation factor {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m02}, {@code m03}, {@code m10}, {@code m11}, {@code m12},
+     * {@code m13}, {@code m20}, {@code m21}, {@code m22}, {@code m23}, {@code m30}, {@code m31},
+     * {@code m32}, {@code m33}) (interpolation factor {@code 1}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2718,7 +2734,7 @@ public interface Float4x4R {
      * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -2735,7 +2751,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -2816,7 +2832,7 @@ public interface Float4x4R {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -2835,7 +2851,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -2851,7 +2867,7 @@ public interface Float4x4R {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -2870,7 +2886,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -2886,7 +2902,7 @@ public interface Float4x4R {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -2905,7 +2921,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -2921,7 +2937,7 @@ public interface Float4x4R {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -2940,7 +2956,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -2954,8 +2970,8 @@ public interface Float4x4R {
      * matrix will be {@code M * A}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * A * v}, the arcball view will be applied first.
      *
-     * @param radius the radius
-     * @param center the center point
+     * @param radius the distance of the eye from the center
+     * @param center the center of the arcball, i.e. the point the eye orbits around
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
@@ -2974,8 +2990,8 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param radius the radius
-     * @param center the center point
+     * @param radius the distance of the eye from the center
+     * @param center the center of the arcball, i.e. the point the eye orbits around
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
@@ -2991,7 +3007,7 @@ public interface Float4x4R {
      * matrix will be {@code M * A}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * A * v}, the arcball view will be applied first.
      *
-     * @param radius the radius
+     * @param radius the distance of the eye from the center
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
@@ -3013,7 +3029,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param radius the radius
+     * @param radius the distance of the eye from the center
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
@@ -3369,7 +3385,8 @@ public interface Float4x4R {
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @param dest will hold the result
      * @return dest
@@ -3387,7 +3404,8 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @param dest will hold the result
      * @return dest
@@ -7507,7 +7525,7 @@ public interface Float4x4R {
      * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
      * origin.
      *
-     * @param rot the quaternion (must be a unit quaternion)
+     * @param rot the rotation to apply (must be a unit quaternion)
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -7529,7 +7547,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param rot the quaternion (must be a unit quaternion)
+     * @param rot the rotation to apply (must be a unit quaternion)
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -7681,7 +7699,7 @@ public interface Float4x4R {
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -7698,7 +7716,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -7849,7 +7867,7 @@ public interface Float4x4R {
      * will be {@code S * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code S * M * p}, the scaling will be applied last.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -7865,7 +7883,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -8089,7 +8107,7 @@ public interface Float4x4R {
      * will be {@code T * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code T * M * p}, the translation will be applied last.
      *
-     * @param v the vector
+     * @param v the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -8106,7 +8124,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -8178,12 +8196,12 @@ public interface Float4x4R {
      * Project the given position onto window coordinates using this matrix and the given viewport
      * and store the result in {@code dest}.
      *
-     * @param objX the {@code x} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objY the {@code y} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objZ the {@code z} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
+     * @param objX the {@code x} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objY the {@code y} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objZ the {@code z} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -8205,12 +8223,12 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param objX the {@code x} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objY the {@code y} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objZ the {@code z} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
+     * @param objX the {@code x} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objY the {@code y} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objZ the {@code z} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -8260,12 +8278,12 @@ public interface Float4x4R {
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param objX the {@code x} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objY the {@code y} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objZ the {@code z} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
+     * @param objX the {@code x} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objY the {@code y} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objZ the {@code z} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -8288,12 +8306,12 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param objX the {@code x} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objY the {@code y} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objZ the {@code z} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
+     * @param objX the {@code x} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objY the {@code y} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objZ the {@code z} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -8315,7 +8333,7 @@ public interface Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the reflection will be applied first.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the plane to reflect about (must be a unit vector)
      * @param dest will hold the result
      * @return dest
      */
@@ -8332,7 +8350,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the plane to reflect about (must be a unit vector)
      * @param dest will hold the result
      * @return dest
      */
@@ -8391,7 +8409,7 @@ public interface Float4x4R {
      * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
      * origin.
      *
-     * @param rot the quaternion (must be a unit quaternion)
+     * @param rot the rotation to apply (must be a unit quaternion)
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -8413,7 +8431,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param rot the quaternion (must be a unit quaternion)
+     * @param rot the rotation to apply (must be a unit quaternion)
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -8565,7 +8583,7 @@ public interface Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -8582,7 +8600,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -9477,7 +9495,7 @@ public interface Float4x4R {
      * will be {@code M * S}. So when transforming a vector {@code p} with the new matrix by using
      * {@code M * S * p}, the scaling will be applied first.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -9493,7 +9511,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -10760,28 +10778,31 @@ public interface Float4x4R {
     default Float4x4 unprojectRay(float winCoordsX, float winCoordsY, float viewportX, float viewportY, float viewportZ, float viewportW, @Mutated Double3 rayOrigin, @Mutated Double3 rayDir) { return unprojectRay(winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE, rayOrigin, rayDir); }
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the right operand of the product
      * @param dest will hold the result
      * @return dest
      */
     Float4 mul(Float4R v, @Mutated Float4 dest);
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the right operand of the product
      * @param dest will hold the result
      * @return dest
      */
     Double4 mul(Float4R v, @Mutated Double4 dest);
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
@@ -10793,7 +10814,8 @@ public interface Float4x4R {
     Float4 mul(float x, float y, float z, float w, @Mutated Float4 dest);
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -10808,9 +10830,10 @@ public interface Float4x4R {
     Double4 mul(float x, float y, float z, float w, @Mutated Double4 dest);
 
     /**
-     * Multiply this matrix by the given vector and store the result back into {@code v}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the right operand of the product (also receives the result)
      * @return {@code v}
      */
     default Float4 mul(@Mutated Float4 v) { return mul(v, v); }
@@ -10822,7 +10845,7 @@ public interface Float4x4R {
      * Only the affine part of this matrix is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param aabb the axis-aligned bounding box
+     * @param aabb the axis-aligned box to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -10838,7 +10861,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param aabb the axis-aligned bounding box
+     * @param aabb the axis-aligned box to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -10902,8 +10925,8 @@ public interface Float4x4R {
      * Only the affine part of this matrix is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
      * @param dest will hold the result
      * @return dest
      */
@@ -10919,8 +10942,8 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
      * @param dest will hold the result
      * @return dest
      */
@@ -10933,7 +10956,7 @@ public interface Float4x4R {
      * Only the affine part of this matrix is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param aabb the axis-aligned bounding box (also receives the result)
+     * @param aabb the axis-aligned box to transform (also receives the result)
      * @return {@code aabb}
      */
     default FloatAABB transformAabb(@Mutated FloatAABB aabb) { return transformAabb(aabb, aabb); }
@@ -10945,7 +10968,7 @@ public interface Float4x4R {
      * Only the affine part of this matrix is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -10961,7 +10984,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -11007,7 +11030,7 @@ public interface Float4x4R {
      * Only the affine part of this matrix is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param v the vector (also receives the result)
+     * @param v the direction to transform (also receives the result)
      * @return {@code v}
      */
     default Float3 transformDirection(@Mutated Float3 v) { return transformDirection(v, v); }
@@ -11019,7 +11042,7 @@ public interface Float4x4R {
      * Only the affine part of this matrix is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param v the vector
+     * @param v the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -11035,7 +11058,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -11081,7 +11104,7 @@ public interface Float4x4R {
      * Only the affine part of this matrix is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param v the vector (also receives the result)
+     * @param v the position to transform (also receives the result)
      * @return {@code v}
      */
     default Float3 transformPosition(@Mutated Float3 v) { return transformPosition(v, v); }
@@ -11090,7 +11113,7 @@ public interface Float4x4R {
      * Transform {@code v} by this matrix and perform perspective division and store the result in
      * {@code dest}.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -11103,7 +11126,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -11140,7 +11163,7 @@ public interface Float4x4R {
      * Transform {@code v} by this matrix and perform perspective division and store the result back
      * into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the vector to transform (also receives the result)
      * @return {@code v}
      */
     default Float3 transformProject(@Mutated Float3 v) { return transformProject(v, v); }

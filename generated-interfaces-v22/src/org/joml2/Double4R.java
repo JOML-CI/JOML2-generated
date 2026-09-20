@@ -41,7 +41,7 @@ public interface Double4R {
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -63,7 +63,7 @@ public interface Double4R {
     /**
      * Divide each component of this vector by {@code scalar} and store the result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -72,7 +72,7 @@ public interface Double4R {
     /**
      * Divide this vector component-wise by {@code other} and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -96,7 +96,7 @@ public interface Double4R {
      * {@code this * b + c} per component and store the result in {@code dest}.
      *
      * @param b the factor to multiply this vector by
-     * @param c the vector
+     * @param c the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -122,7 +122,7 @@ public interface Double4R {
      * {@code this * b + c} per component and store the result in {@code dest}.
      *
      * @param b the factor to multiply this vector by
-     * @param c the vector
+     * @param c the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -151,7 +151,7 @@ public interface Double4R {
      * Multiply each component of this vector by {@code scalar} and store the result in
      * {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @param dest will hold the result
      * @return dest
      */
@@ -160,7 +160,7 @@ public interface Double4R {
     /**
      * Multiply this vector component-wise by {@code other} and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -190,7 +190,7 @@ public interface Double4R {
     /**
      * Subtract {@code other} from this vector and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -313,12 +313,16 @@ public interface Double4R {
     Long4 toLong(RoundingMode mode, @Mutated Long4 dest);
 
     /**
-     * Interpolate along the cubic Bézier curve defined by this vector and the given control points
-     * and store the result in {@code dest}.
+     * Interpolate along the cubic Bézier curve that starts at this vector, is shaped by the control
+     * points {@code p1} and {@code p2} and ends at {@code p3} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p3} at
+     * {@code t = 1}; the control points {@code p1} and {@code p2} pull it towards themselves but
+     * are generally not on the curve.
      *
      * @param p1 the first control point
      * @param p2 the second control point
-     * @param p3 the end point
+     * @param p3 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -326,8 +330,15 @@ public interface Double4R {
     Double4 bezier(Double4R p1, Double4R p2, Double4R p3, double t, @Mutated Double4 dest);
 
     /**
-     * Interpolate along the cubic Bézier curve defined by this vector and the given control points
+     * Interpolate along the cubic Bézier curve that starts at this vector, is shaped by the control
+     * points ({@code p1X}, {@code p1Y}, {@code p1Z}, {@code p1W}) and ({@code p2X}, {@code p2Y},
+     * {@code p2Z}, {@code p2W}) and ends at ({@code p3X}, {@code p3Y}, {@code p3Z}, {@code p3W})
      * and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p3X}, {@code p3Y},
+     * {@code p3Z}, {@code p3W}) at {@code t = 1}; the control points ({@code p1X}, {@code p1Y},
+     * {@code p1Z}, {@code p1W}) and ({@code p2X}, {@code p2Y}, {@code p2Z}, {@code p2W}) pull it
+     * towards themselves but are generally not on the curve.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
@@ -348,11 +359,15 @@ public interface Double4R {
     Double4 bezier(double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double p3X, double p3Y, double p3Z, double p3W, double t, @Mutated Double4 dest);
 
     /**
-     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
-     * points and store the result in {@code dest}.
+     * Interpolate along the quadratic Bézier curve that starts at this vector, is shaped by the
+     * control point {@code p1} and ends at {@code p2} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p2} at
+     * {@code t = 1}; the control point {@code p1} pulls it towards itself but is generally not on
+     * the curve.
      *
      * @param p1 the control point
-     * @param p2 the end point
+     * @param p2 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -360,8 +375,13 @@ public interface Double4R {
     Double4 bezier2(Double4R p1, Double4R p2, double t, @Mutated Double4 dest);
 
     /**
-     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
-     * points and store the result in {@code dest}.
+     * Interpolate along the quadratic Bézier curve that starts at this vector, is shaped by the
+     * control point ({@code p1X}, {@code p1Y}, {@code p1Z}, {@code p1W}) and ends at ({@code p2X},
+     * {@code p2Y}, {@code p2Z}, {@code p2W}) and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p2X}, {@code p2Y},
+     * {@code p2Z}, {@code p2W}) at {@code t = 1}; the control point ({@code p1X}, {@code p1Y},
+     * {@code p1Z}, {@code p1W}) pulls it towards itself but is generally not on the curve.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
@@ -378,12 +398,16 @@ public interface Double4R {
     Double4 bezier2(double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double t, @Mutated Double4 dest);
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
-     * by this vector and the given control points, at the parameter {@code t} and store the result
-     * in {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * quadratic Bézier curve that starts at this vector, is shaped by the control point {@code p1}
+     * and ends at {@code p2} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p2} at
+     * {@code t = 1}; the control point {@code p1} pulls it towards itself but is generally not on
+     * the curve.
      *
      * @param p1 the control point
-     * @param p2 the end point
+     * @param p2 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -391,9 +415,14 @@ public interface Double4R {
     Double4 bezier2Tangent(Double4R p1, Double4R p2, double t, @Mutated Double4 dest);
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
-     * by this vector and the given control points, at the parameter {@code t} and store the result
-     * in {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * quadratic Bézier curve that starts at this vector, is shaped by the control point
+     * ({@code p1X}, {@code p1Y}, {@code p1Z}, {@code p1W}) and ends at ({@code p2X}, {@code p2Y},
+     * {@code p2Z}, {@code p2W}) and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p2X}, {@code p2Y},
+     * {@code p2Z}, {@code p2W}) at {@code t = 1}; the control point ({@code p1X}, {@code p1Y},
+     * {@code p1Z}, {@code p1W}) pulls it towards itself but is generally not on the curve.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
@@ -410,13 +439,17 @@ public interface Double4R {
     Double4 bezier2Tangent(double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double t, @Mutated Double4 dest);
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
-     * this vector and the given control points, at the parameter {@code t} and store the result in
-     * {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Bézier curve that starts at this vector, is shaped by the control points {@code p1} and
+     * {@code p2} and ends at {@code p3} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p3} at
+     * {@code t = 1}; the control points {@code p1} and {@code p2} pull it towards themselves but
+     * are generally not on the curve.
      *
      * @param p1 the first control point
      * @param p2 the second control point
-     * @param p3 the end point
+     * @param p3 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -424,9 +457,16 @@ public interface Double4R {
     Double4 bezierTangent(Double4R p1, Double4R p2, Double4R p3, double t, @Mutated Double4 dest);
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
-     * this vector and the given control points, at the parameter {@code t} and store the result in
-     * {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Bézier curve that starts at this vector, is shaped by the control points ({@code p1X},
+     * {@code p1Y}, {@code p1Z}, {@code p1W}) and ({@code p2X}, {@code p2Y}, {@code p2Z},
+     * {@code p2W}) and ends at ({@code p3X}, {@code p3Y}, {@code p3Z}, {@code p3W}) and store the
+     * result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p3X}, {@code p3Y},
+     * {@code p3Z}, {@code p3W}) at {@code t = 1}; the control points ({@code p1X}, {@code p1Y},
+     * {@code p1Z}, {@code p1W}) and ({@code p2X}, {@code p2Y}, {@code p2Z}, {@code p2W}) pull it
+     * towards themselves but are generally not on the curve.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
@@ -447,12 +487,21 @@ public interface Double4R {
     Double4 bezierTangent(double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double p3X, double p3Y, double p3Z, double p3W, double t, @Mutated Double4 dest);
 
     /**
-     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points
+     * Interpolate along the Catmull-Rom spline segment from {@code p1} to {@code p2}, with this
+     * vector as the control point before the segment and {@code p3} as the control point after it
      * and store the result in {@code dest}.
+     * <p>
+     * The curve passes through {@code p1} at {@code t = 0} and through {@code p2} at {@code t = 1}.
+     * This vector and {@code p3} are the spline's neighbouring points, i.e. the point before
+     * {@code p1} and the point after {@code p2}: they only shape the tangents at the segment's two
+     * end points and are not themselves on the segment. For a spline through the points
+     * {@code p[0..n]}, the segment from {@code p[i]} to {@code p[i+1]} is therefore interpolated
+     * with {@code p[i-1]} in the role of this vector and {@code p[i]}, {@code p[i+1]},
+     * {@code p[i+2]} as the three given points.
      *
      * @param p1 the start point of the interpolated segment
      * @param p2 the end point of the interpolated segment
-     * @param p3 the outer control point after the segment
+     * @param p3 the control point after the segment, i.e. the spline point following {@code p2}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -460,8 +509,20 @@ public interface Double4R {
     Double4 catmullRom(Double4R p1, Double4R p2, Double4R p3, double t, @Mutated Double4 dest);
 
     /**
-     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points
-     * and store the result in {@code dest}.
+     * Interpolate along the Catmull-Rom spline segment from ({@code p1X}, {@code p1Y}, {@code p1Z},
+     * {@code p1W}) to ({@code p2X}, {@code p2Y}, {@code p2Z}, {@code p2W}), with this vector as the
+     * control point before the segment and ({@code p3X}, {@code p3Y}, {@code p3Z}, {@code p3W}) as
+     * the control point after it and store the result in {@code dest}.
+     * <p>
+     * The curve passes through ({@code p1X}, {@code p1Y}, {@code p1Z}, {@code p1W}) at
+     * {@code t = 0} and through ({@code p2X}, {@code p2Y}, {@code p2Z}, {@code p2W}) at
+     * {@code t = 1}. This vector and ({@code p3X}, {@code p3Y}, {@code p3Z}, {@code p3W}) are the
+     * spline's neighbouring points, i.e. the point before ({@code p1X}, {@code p1Y}, {@code p1Z},
+     * {@code p1W}) and the point after ({@code p2X}, {@code p2Y}, {@code p2Z}, {@code p2W}): they
+     * only shape the tangents at the segment's two end points and are not themselves on the
+     * segment. For a spline through the points {@code p[0..n]}, the segment from {@code p[i]} to
+     * {@code p[i+1]} is therefore interpolated with {@code p[i-1]} in the role of this vector and
+     * {@code p[i]}, {@code p[i+1]}, {@code p[i+2]} as the three given points.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
@@ -482,13 +543,22 @@ public interface Double4R {
     Double4 catmullRom(double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double p3X, double p3Y, double p3Z, double p3W, double t, @Mutated Double4 dest);
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
-     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * Catmull-Rom spline segment from {@code p1} to {@code p2}, with this vector as the control
+     * point before the segment and {@code p3} as the control point after it and store the result in
      * {@code dest}.
+     * <p>
+     * The curve passes through {@code p1} at {@code t = 0} and through {@code p2} at {@code t = 1}.
+     * This vector and {@code p3} are the spline's neighbouring points, i.e. the point before
+     * {@code p1} and the point after {@code p2}: they only shape the tangents at the segment's two
+     * end points and are not themselves on the segment. For a spline through the points
+     * {@code p[0..n]}, the segment from {@code p[i]} to {@code p[i+1]} is therefore interpolated
+     * with {@code p[i-1]} in the role of this vector and {@code p[i]}, {@code p[i+1]},
+     * {@code p[i+2]} as the three given points.
      *
      * @param p1 the start point of the interpolated segment
      * @param p2 the end point of the interpolated segment
-     * @param p3 the outer control point after the segment
+     * @param p3 the control point after the segment, i.e. the spline point following {@code p2}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -496,9 +566,21 @@ public interface Double4R {
     Double4 catmullRomTangent(Double4R p1, Double4R p2, Double4R p3, double t, @Mutated Double4 dest);
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
-     * this vector and the given control points, at the parameter {@code t} and store the result in
-     * {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * Catmull-Rom spline segment from ({@code p1X}, {@code p1Y}, {@code p1Z}, {@code p1W}) to
+     * ({@code p2X}, {@code p2Y}, {@code p2Z}, {@code p2W}), with this vector as the control point
+     * before the segment and ({@code p3X}, {@code p3Y}, {@code p3Z}, {@code p3W}) as the control
+     * point after it and store the result in {@code dest}.
+     * <p>
+     * The curve passes through ({@code p1X}, {@code p1Y}, {@code p1Z}, {@code p1W}) at
+     * {@code t = 0} and through ({@code p2X}, {@code p2Y}, {@code p2Z}, {@code p2W}) at
+     * {@code t = 1}. This vector and ({@code p3X}, {@code p3Y}, {@code p3Z}, {@code p3W}) are the
+     * spline's neighbouring points, i.e. the point before ({@code p1X}, {@code p1Y}, {@code p1Z},
+     * {@code p1W}) and the point after ({@code p2X}, {@code p2Y}, {@code p2Z}, {@code p2W}): they
+     * only shape the tangents at the segment's two end points and are not themselves on the
+     * segment. For a spline through the points {@code p[0..n]}, the segment from {@code p[i]} to
+     * {@code p[i+1]} is therefore interpolated with {@code p[i-1]} in the role of this vector and
+     * {@code p[i]}, {@code p[i+1]}, {@code p[i+2]} as the three given points.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
@@ -519,12 +601,16 @@ public interface Double4R {
     Double4 catmullRomTangent(double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double p3X, double p3Y, double p3Z, double p3W, double t, @Mutated Double4 dest);
 
     /**
-     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation and
-     * store the result in {@code dest}.
+     * Interpolate along the cubic Hermite curve that starts at this vector with the tangent
+     * {@code t0} and ends at {@code v1} with the tangent {@code t1} and store the result in
+     * {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code v1} at
+     * {@code t = 1}; the two tangents set its direction and speed at those end points.
      *
-     * @param t0 the tangent at this vector
-     * @param v1 the endpoint
-     * @param t1 the tangent at the endpoint
+     * @param t0 the tangent at the start point, i.e. at this vector
+     * @param v1 the end point of the curve
+     * @param t1 the tangent at the end point {@code v1}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -532,8 +618,14 @@ public interface Double4R {
     Double4 hermite(Double4R t0, Double4R v1, Double4R t1, double t, @Mutated Double4 dest);
 
     /**
-     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation and
-     * store the result in {@code dest}.
+     * Interpolate along the cubic Hermite curve that starts at this vector with the tangent
+     * ({@code t0X}, {@code t0Y}, {@code t0Z}, {@code t0W}) and ends at ({@code v1X}, {@code v1Y},
+     * {@code v1Z}, {@code v1W}) with the tangent ({@code t1X}, {@code t1Y}, {@code t1Z},
+     * {@code t1W}) and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code v1X}, {@code v1Y},
+     * {@code v1Z}, {@code v1W}) at {@code t = 1}; the two tangents set its direction and speed at
+     * those end points.
      *
      * @param t0X the {@code x} component of the vector {@code (t0X, t0Y, t0Z, t0W)}
      * @param t0Y the {@code y} component of the vector {@code (t0X, t0Y, t0Z, t0W)}
@@ -554,13 +646,16 @@ public interface Double4R {
     Double4 hermite(double t0X, double t0Y, double t0Z, double t0W, double v1X, double v1Y, double v1Z, double v1W, double t1X, double t1Y, double t1Z, double t1W, double t, @Mutated Double4 dest);
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
-     * this vector and the given endpoint, at the parameter {@code t} and store the result in
-     * {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Hermite curve that starts at this vector with the tangent {@code t0} and ends at
+     * {@code v1} with the tangent {@code t1} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code v1} at
+     * {@code t = 1}; the two tangents set its direction and speed at those end points.
      *
-     * @param t0 the tangent at this vector
-     * @param v1 the endpoint
-     * @param t1 the tangent at the endpoint
+     * @param t0 the tangent at the start point, i.e. at this vector
+     * @param v1 the end point of the curve
+     * @param t1 the tangent at the end point {@code v1}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -568,9 +663,15 @@ public interface Double4R {
     Double4 hermiteTangent(Double4R t0, Double4R v1, Double4R t1, double t, @Mutated Double4 dest);
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
-     * this vector and the given endpoint, at the parameter {@code t} and store the result in
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Hermite curve that starts at this vector with the tangent ({@code t0X}, {@code t0Y},
+     * {@code t0Z}, {@code t0W}) and ends at ({@code v1X}, {@code v1Y}, {@code v1Z}, {@code v1W})
+     * with the tangent ({@code t1X}, {@code t1Y}, {@code t1Z}, {@code t1W}) and store the result in
      * {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code v1X}, {@code v1Y},
+     * {@code v1Z}, {@code v1W}) at {@code t = 1}; the two tangents set its direction and speed at
+     * those end points.
      *
      * @param t0X the {@code x} component of the vector {@code (t0X, t0Y, t0Z, t0W)}
      * @param t0Y the {@code y} component of the vector {@code (t0X, t0Y, t0Z, t0W)}
@@ -593,8 +694,11 @@ public interface Double4R {
     /**
      * Linearly interpolate between this vector and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other vector
+     * @param other the vector to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -604,6 +708,9 @@ public interface Double4R {
     /**
      * Linearly interpolate between this vector and ({@code x}, {@code y}, {@code z}, {@code w})
      * using the interpolation factor {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code x}, {@code y}, {@code z}, {@code w}) (interpolation factor {@code 1}).
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
@@ -618,8 +725,11 @@ public interface Double4R {
     /**
      * Linearly interpolate between this vector and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other vector
+     * @param other the vector to interpolate towards
      * @param t the per-component interpolation factors, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -630,6 +740,10 @@ public interface Double4R {
      * Linearly interpolate between this vector and ({@code otherX}, {@code otherY}, {@code otherZ},
      * {@code otherW}) using the interpolation factor ({@code tX}, {@code tY}, {@code tZ},
      * {@code tW}) and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) (interpolation factor
+     * {@code 1}).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -664,8 +778,8 @@ public interface Double4R {
     /**
      * Add {@code b} scaled by {@code scalar} to this vector and store the result in {@code dest}.
      *
-     * @param b the vector
-     * @param scalar the scalar value
+     * @param b the vector to scale and add
+     * @param scalar the factor to scale {@code b} by before adding
      * @param dest will hold the result
      * @return dest
      */
@@ -679,7 +793,8 @@ public interface Double4R {
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
-     * @param scalar the scalar value
+     * @param scalar the factor to scale ({@code x}, {@code y}, {@code z}, {@code w}) by before
+     *        adding
      * @param dest will hold the result
      * @return dest
      */
@@ -688,8 +803,8 @@ public interface Double4R {
     /**
      * Add {@code b} scaled by {@code c} to this vector and store the result in {@code dest}.
      *
-     * @param b the vector
-     * @param c the vector
+     * @param b the vector to scale and add
+     * @param c the per-component factors to scale {@code b} by before adding
      * @param dest will hold the result
      * @return dest
      */
@@ -718,7 +833,7 @@ public interface Double4R {
      * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
      * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
-     * @param other the other vector
+     * @param other the vector to measure the angle to
      * @return the angle in radians between this vector and {@code other}
      */
     double angleBetween(Double4R other);
@@ -942,7 +1057,7 @@ public interface Double4R {
      * it stays within the {@code double} range: the magnitude of the difference vector must lie
      * roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the distance between this vector and {@code other}
      */
     double distance(Double4R other);
@@ -965,7 +1080,7 @@ public interface Double4R {
     /**
      * Compute the squared distance between this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
     double distanceSquared(Double4R other);
@@ -986,7 +1101,7 @@ public interface Double4R {
     /**
      * Compute the dot product of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
     double dot(Double4R other);
@@ -1034,8 +1149,8 @@ public interface Double4R {
      * orienting it against the incident direction {@code I} as judged by the reference vector
      * {@code Nref} and store the result in {@code dest}.
      *
-     * @param I the vector
-     * @param Nref the vector
+     * @param I the incident direction
+     * @param Nref the reference vector the incident direction is tested against
      * @param dest will hold the result
      * @return dest
      */
@@ -1187,7 +1302,7 @@ public interface Double4R {
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
     double manhattanDistance(Double4R other);
@@ -1216,7 +1331,7 @@ public interface Double4R {
      * Set each component of this vector to the larger of itself and {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -1226,7 +1341,7 @@ public interface Double4R {
      * Set each component of this vector to the larger of itself and the corresponding component of
      * {@code other} and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -1249,7 +1364,7 @@ public interface Double4R {
      * Set each component of this vector to the smaller of itself and {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -1259,7 +1374,7 @@ public interface Double4R {
      * Set each component of this vector to the smaller of itself and the corresponding component of
      * {@code other} and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -1445,7 +1560,7 @@ public interface Double4R {
      * Project this vector onto the plane with the given normal and store the result in
      * {@code dest}.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the plane to project onto (must be a unit vector)
      * @param dest will hold the result
      * @return dest
      */
@@ -1480,7 +1595,7 @@ public interface Double4R {
     /**
      * Reflect this vector about the given normal and store the result in {@code dest}.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the plane to reflect about (must be a unit vector)
      * @param dest will hold the result
      * @return dest
      */
@@ -1507,7 +1622,7 @@ public interface Double4R {
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the refracting surface (must be a unit vector)
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
      *        destination medium's
      * @param dest will hold the result
@@ -1693,7 +1808,7 @@ public interface Double4R {
      * Pre-multiply {@code mat} onto this vector, i.e. compute {@code mat * this} and store the
      * result in {@code dest}.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -1704,7 +1819,7 @@ public interface Double4R {
      * compute {@code q * this.xyz * q^-1}, leaving {@code w} unchanged, and store the result in
      * {@code dest}.
      *
-     * @param quat the quaternion (must be a unit quaternion)
+     * @param quat the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -1760,7 +1875,7 @@ public interface Double4R {
      * Rotate the {@code (x, y, z)} components of this vector by the inverse of the given rotation,
      * leaving {@code w} unchanged, and store the result in {@code dest}.
      *
-     * @param quat the quaternion (must be a unit quaternion)
+     * @param quat the rotation whose inverse to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */

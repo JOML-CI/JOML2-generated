@@ -41,7 +41,14 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /** The identity quaternion. */
     public static final FloatQuat IDENTITY = new FloatQuat();
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param x the {@code x} component
+     * @param y the {@code y} component
+     * @param z the {@code z} component
+     * @param w the {@code w} component
+     */
     public FloatQuat(float x, float y, float z, float w) {
         this.x = x;
         this.y = y;
@@ -82,7 +89,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * Compute the inverse of the product of this quaternion and {@code other}, i.e.
      * {@code (this * other)^-1}, returning the result as a value.
      *
-     * @param other the other quaternion
+     * @param other the right factor of the product
      * @return the resulting quaternion
      */
     public FloatQuat invertProduct(FloatQuat other) {
@@ -118,7 +125,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Add {@code other} to this quaternion, returning the result as a value.
      *
-     * @param other the other quaternion
+     * @param other the quaternion to add
      * @return the resulting quaternion
      */
     public FloatQuat add(FloatQuat other) {
@@ -158,7 +165,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Subtract {@code other} from this quaternion, returning the result as a value.
      *
-     * @param other the other quaternion
+     * @param other the quaternion to subtract
      * @return the resulting quaternion
      */
     public FloatQuat sub(FloatQuat other) {
@@ -188,7 +195,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Create a new quaternion from the given values.
      *
-     * @param v the quaternion
+     * @param v the quaternion to copy
      * @return the resulting quaternion
      */
     public FloatQuat set(FloatQuat v) {
@@ -223,7 +230,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Create the rotation (real) part of the unit dual quaternion {@code dq}.
      *
-     * @param dq the dual quaternion
+     * @param dq the dual quaternion to convert
      * @return the resulting quaternion
      */
     public static FloatQuat makeFromDualQuat(FloatDualQuat dq) {
@@ -261,7 +268,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Create the rotation represented by the given matrix.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return the resulting quaternion
      */
     public static FloatQuat makeFromMatrix(Float3x3 m) {
@@ -301,7 +308,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Create the rotation represented by the given matrix.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return the resulting quaternion
      */
     public static FloatQuat makeFromMatrix(Float3x4 m) {
@@ -341,7 +348,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Create the rotation represented by the given matrix.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return the resulting quaternion
      */
     public static FloatQuat makeFromMatrix(Float4x4 m) {
@@ -430,10 +437,20 @@ public value record FloatQuat(float x, float y, float z, float w) {
         return new Float3x4(Math.fma(-2.0f, Math.fma(this.y, this.y, _t0), 1.0f), 2.0f * Math.fma(this.x, this.y, -_t1), 2.0f * Math.fma(this.x, this.z, _t2), 0.0f, 2.0f * Math.fma(this.x, this.y, _t1), Math.fma(-2.0f, Math.fma(this.x, this.x, _t0), 1.0f), 2.0f * Math.fma(this.y, this.z, -(this.x * this.w)), 0.0f, 2.0f * Math.fma(this.x, this.z, -_t2), 2.0f * Math.fma(this.x, this.w, this.y * this.z), Math.fma(-2.0f, Math.fma(this.x, this.x, this.y * this.y), 1.0f), 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Result value of {@code decomposeSwingTwist}. */
+    /**
+     * Result value of {@code decomposeSwingTwist}.
+     *
+     * @param swing the swing
+     * @param twist the twist
+     */
     @jdk.internal.vm.annotation.LooselyConsistentValue
     public value record DecomposeSwingTwistResult(FloatQuat swing, FloatQuat twist) {
-        /** Canonical constructor. */
+        /**
+         * Canonical constructor.
+         *
+         * @param swing the swing
+         * @param twist the twist
+         */
         public DecomposeSwingTwistResult(FloatQuat swing, FloatQuat twist) {
             this.swing = swing;
             this.twist = twist;
@@ -596,8 +613,11 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Linearly interpolate between this quaternion and {@code other} using the interpolation factor
      * {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other quaternion
+     * @param other the quaternion to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting quaternion
      */
@@ -610,6 +630,10 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * Linearly interpolate between this quaternion and ({@code otherX}, {@code otherY},
      * {@code otherZ}, {@code otherW}) using the interpolation factor {@code t}, returning the
      * result as a value.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) (interpolation factor
+     * {@code 1}).
      *
      * @param otherX the {@code x} component of the quaternion
      *        {@code (otherX, otherY, otherZ, otherW)}
@@ -634,6 +658,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * The squared length is formed at {@code float} precision, so the result is exact only while it
      * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
      * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -652,6 +679,10 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * The squared length is formed at {@code float} precision, so the result is exact only while it
      * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
      * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code targetX}, {@code targetY}, {@code targetZ}, {@code targetW}) (interpolation factor
+     * {@code 1}).
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -686,6 +717,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * The squared length is formed at {@code float} precision, so the result is exact only while it
      * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
      * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -704,6 +738,10 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * The squared length is formed at {@code float} precision, so the result is exact only while it
      * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
      * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code targetX}, {@code targetY}, {@code targetZ}, {@code targetW}) (interpolation factor
+     * {@code 1}).
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -747,6 +785,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * This method interpolates along the arc as given: when the two quaternions' dot product is
      * negative, the longer path around the sphere is taken. Use {@link #slerpShortest} (or negate
      * one operand) to always interpolate along the shorter arc.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param target the target rotation (must be a unit quaternion)
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -765,6 +806,10 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * This method interpolates along the arc as given: when the two quaternions' dot product is
      * negative, the longer path around the sphere is taken. Use {@link #slerpShortest} (or negate
      * one operand) to always interpolate along the shorter arc.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code targetX}, {@code targetY}, {@code targetZ}, {@code targetW}) (interpolation factor
+     * {@code 1}).
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)} (the quaternion must have unit length)
@@ -797,6 +842,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * Spherically interpolate along the shortest path between this quaternion (which must have unit
      * length) and {@code target} using the interpolation factor {@code alpha}, returning the result
      * as a value.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param target the target rotation (must be a unit quaternion)
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -834,6 +882,10 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * Spherically interpolate along the shortest path between this quaternion (which must have unit
      * length) and ({@code targetX}, {@code targetY}, {@code targetZ}, {@code targetW}) using the
      * interpolation factor {@code alpha}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code targetX}, {@code targetY}, {@code targetZ}, {@code targetW}) (interpolation factor
+     * {@code 1}).
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)} (the quaternion must have unit length)
@@ -997,7 +1049,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * will be {@code Q * R}. So when transforming a vector {@code v} with the new quaternion by
      * using {@code Q * R * v}, the transformation of the operand will be applied first.
      *
-     * @param other the other quaternion
+     * @param other the right operand
      * @return the resulting quaternion
      */
     public FloatQuat mul(FloatQuat other) {
@@ -1036,7 +1088,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * then the new quaternion will be {@code T * Q}. So when transforming a vector {@code v} with
      * the new quaternion by using {@code T * Q * v}, the given transformation will be applied last.
      *
-     * @param other the other quaternion
+     * @param other the left operand
      * @return the resulting quaternion
      */
     public FloatQuat preMul(FloatQuat other) {
@@ -1088,7 +1140,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
      * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
-     * @param other the other quaternion
+     * @param other the quaternion to measure the angle to
      * @return the angle in radians between this quaternion and {@code other}
      */
     public float angleTo(FloatQuat other) {
@@ -1183,7 +1235,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * {@code q} is the given quaternion (equal to {@code q * this * q^-1} when it has unit length),
      * returning the result as a value.
      *
-     * @param q the quaternion
+     * @param q the quaternion to conjugate by
      * @return the resulting quaternion
      */
     public FloatQuat conjugateBy(FloatQuat q) {
@@ -1217,7 +1269,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * with {@code this * D = other}, that is {@code D = this^-1 * other}, returning the result as a
      * value.
      *
-     * @param other the other quaternion
+     * @param other the target quaternion, reached by composing this quaternion with the result
      * @return the resulting quaternion
      */
     public FloatQuat difference(FloatQuat other) {
@@ -1251,7 +1303,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Compute the dot product of this quaternion and {@code other}.
      *
-     * @param other the other quaternion
+     * @param other the other operand of the dot product
      * @return the dot product of this quaternion and {@code other}
      */
     public float dot(FloatQuat other) {
@@ -2086,7 +2138,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * Identical to {@link #preMul}; the lower-case spelling is kept for JOML 1 source
      * compatibility.
      *
-     * @param other the other quaternion
+     * @param other the left operand
      * @return the resulting quaternion
      */
     public FloatQuat premul(FloatQuat other) {
@@ -2220,7 +2272,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return the resulting quaternion
      */
@@ -2362,7 +2415,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Create a rotation that makes {@code +z} point along {@code dir}.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return the resulting quaternion
      */
@@ -2457,8 +2511,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
      * arbitrarily.
      *
-     * @param fromDir the vector
-     * @param toDir the vector
+     * @param fromDir the direction to rotate from (must be a unit vector)
+     * @param toDir the direction to rotate onto (must be a unit vector)
      * @return the resulting quaternion
      */
     public static FloatQuat makeRotationTo(Float3 fromDir, Float3 toDir) {
@@ -2842,8 +2896,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
      * arbitrarily.
      *
-     * @param fromDir the vector
-     * @param toDir the vector
+     * @param fromDir the direction to rotate from (must be a unit vector)
+     * @param toDir the direction to rotate onto (must be a unit vector)
      * @return the resulting quaternion
      */
     public FloatQuat rotateTo(Float3 fromDir, Float3 toDir) {
@@ -3189,7 +3243,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Transform {@code v} by this quaternion, returning the result as a value.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @return the resulting vector
      */
     public Float3 transform(Float3 v) {
@@ -3218,7 +3272,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * Transform {@code v} by the inverse of this quaternion (assumes a unit quaternion), returning
      * the result as a value.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @return the resulting vector
      */
     public Float3 transformInverse(Float3 v) {
@@ -3242,22 +3296,38 @@ public value record FloatQuat(float x, float y, float z, float w) {
         return new Float3(Math.fma(this.z, _t9, Math.fma(-this.y, _t10, Math.fma(this.w, _t11, vX))), Math.fma(this.x, _t10, Math.fma(-this.z, _t11, Math.fma(this.w, _t9, vY))), Math.fma(this.y, _t11, Math.fma(-this.x, _t9, Math.fma(this.w, _t10, vZ))));
     }
 
-    /** {@return a copy with the {@code x} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code x} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code x} component
+     */
     public FloatQuat withX(float v) {
         return new FloatQuat(v, y, z, w);
     }
 
-    /** {@return a copy with the {@code y} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code y} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code y} component
+     */
     public FloatQuat withY(float v) {
         return new FloatQuat(x, v, z, w);
     }
 
-    /** {@return a copy with the {@code z} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code z} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code z} component
+     */
     public FloatQuat withZ(float v) {
         return new FloatQuat(x, y, v, w);
     }
 
-    /** {@return a copy with the {@code w} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code w} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code w} component
+     */
     public FloatQuat withW(float v) {
         return new FloatQuat(x, y, z, v);
     }

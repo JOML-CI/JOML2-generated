@@ -76,7 +76,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * Compute the inverse of the product of this quaternion and {@code other}, i.e.
      * {@code (this * other)^-1} and store the result in {@code dest}.
      *
-     * @param other the other quaternion
+     * @param other the right factor of the product
      * @param dest will hold the result
      * @return dest
      */
@@ -119,7 +119,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Add {@code other} to this quaternion and store the result in {@code dest}.
      *
-     * @param other the other quaternion
+     * @param other the quaternion to add
      * @param dest will hold the result
      * @return dest
      */
@@ -172,7 +172,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Subtract {@code other} from this quaternion and store the result in {@code dest}.
      *
-     * @param other the other quaternion
+     * @param other the quaternion to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -209,7 +209,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Set this quaternion to the given values.
      *
-     * @param v the quaternion
+     * @param v the quaternion to copy
      * @return this
      */
     public @Mutated DoubleQuat set(DoubleQuatR v) {
@@ -256,7 +256,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Set this quaternion to the rotation (real) part of the unit dual quaternion {@code dq}.
      *
-     * @param dq the dual quaternion
+     * @param dq the dual quaternion to convert
      * @return this
      */
     public @Mutated DoubleQuat makeFromDualQuat(DoubleDualQuatR dq) {
@@ -299,7 +299,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Set this quaternion to the rotation represented by the given matrix.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated public DoubleQuat makeFromMatrix(Double3x3R m) {
@@ -352,7 +352,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Set this quaternion to the rotation represented by the given matrix.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated public DoubleQuat makeFromMatrix(Double3x4R m) {
@@ -405,7 +405,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Set this quaternion to the rotation represented by the given matrix.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated public DoubleQuat makeFromMatrix(Double4x4R m) {
@@ -795,8 +795,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Linearly interpolate between this quaternion and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other quaternion
+     * @param other the quaternion to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -810,6 +813,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * Linearly interpolate between this quaternion and ({@code otherX}, {@code otherY},
      * {@code otherZ}, {@code otherW}) using the interpolation factor {@code t} and store the result
      * in {@code dest}.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) (interpolation factor
+     * {@code 1}).
      *
      * @param otherX the {@code x} component of the quaternion
      *        {@code (otherX, otherY, otherZ, otherW)}
@@ -840,6 +847,9 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * The squared length is formed at {@code double} precision, so the result is exact only while
      * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
      * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -859,6 +869,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * The squared length is formed at {@code double} precision, so the result is exact only while
      * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
      * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code targetX}, {@code targetY}, {@code targetZ}, {@code targetW}) (interpolation factor
+     * {@code 1}).
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -903,6 +917,9 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * The squared length is formed at {@code double} precision, so the result is exact only while
      * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
      * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -922,6 +939,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * The squared length is formed at {@code double} precision, so the result is exact only while
      * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
      * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code targetX}, {@code targetY}, {@code targetZ}, {@code targetW}) (interpolation factor
+     * {@code 1}).
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -975,6 +996,9 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * This method interpolates along the arc as given: when the two quaternions' dot product is
      * negative, the longer path around the sphere is taken. Use {@link #slerpShortest} (or negate
      * one operand) to always interpolate along the shorter arc.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param target the target rotation (must be a unit quaternion)
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -994,6 +1018,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * This method interpolates along the arc as given: when the two quaternions' dot product is
      * negative, the longer path around the sphere is taken. Use {@link #slerpShortest} (or negate
      * one operand) to always interpolate along the shorter arc.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code targetX}, {@code targetY}, {@code targetZ}, {@code targetW}) (interpolation factor
+     * {@code 1}).
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)} (the quaternion must have unit length)
@@ -1035,6 +1063,9 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * Spherically interpolate along the shortest path between this quaternion (which must have unit
      * length) and {@code target} using the interpolation factor {@code alpha} and store the result
      * in {@code dest}.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param target the target rotation (must be a unit quaternion)
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -1050,6 +1081,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * Spherically interpolate along the shortest path between this quaternion (which must have unit
      * length) and ({@code targetX}, {@code targetY}, {@code targetZ}, {@code targetW}) using the
      * interpolation factor {@code alpha} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code targetX}, {@code targetY}, {@code targetZ}, {@code targetW}) (interpolation factor
+     * {@code 1}).
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)} (the quaternion must have unit length)
@@ -1234,7 +1269,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * will be {@code Q * R}. So when transforming a vector {@code v} with the new quaternion by
      * using {@code Q * R * v}, the transformation of the operand will be applied first.
      *
-     * @param other the other quaternion
+     * @param other the right operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1283,7 +1318,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * then the new quaternion will be {@code T * Q}. So when transforming a vector {@code v} with
      * the new quaternion by using {@code T * Q * v}, the given transformation will be applied last.
      *
-     * @param other the other quaternion
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1345,7 +1380,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
      * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
-     * @param other the other quaternion
+     * @param other the quaternion to measure the angle to
      * @return the angle in radians between this quaternion and {@code other}
      */
     public double angleTo(DoubleQuatR other) {
@@ -1463,7 +1498,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * {@code q} is the given quaternion (equal to {@code q * this * q^-1} when it has unit length)
      * and store the result in {@code dest}.
      *
-     * @param q the quaternion
+     * @param q the quaternion to conjugate by
      * @param dest will hold the result
      * @return dest
      */
@@ -1504,7 +1539,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * with {@code this * D = other}, that is {@code D = this^-1 * other} and store the result in
      * {@code dest}.
      *
-     * @param other the other quaternion
+     * @param other the target quaternion, reached by composing this quaternion with the result
      * @param dest will hold the result
      * @return dest
      */
@@ -1548,7 +1583,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Compute the dot product of this quaternion and {@code other}.
      *
-     * @param other the other quaternion
+     * @param other the other operand of the dot product
      * @return the dot product of this quaternion and {@code other}
      */
     public double dot(DoubleQuatR other) {
@@ -2642,7 +2677,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * Identical to {@link #preMul}; the lower-case spelling is kept for JOML 1 source
      * compatibility.
      *
-     * @param other the other quaternion
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -2783,7 +2818,8 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @param dest will hold the result
      * @return dest
@@ -2939,7 +2975,8 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Set this quaternion to a rotation that makes {@code +z} point along {@code dir}.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return this
      */
@@ -3048,8 +3085,8 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
      * arbitrarily.
      *
-     * @param fromDir the vector
-     * @param toDir the vector
+     * @param fromDir the direction to rotate from (must be a unit vector)
+     * @param toDir the direction to rotate onto (must be a unit vector)
      * @return this
      */
     public @Mutated DoubleQuat makeRotationTo(Double3R fromDir, Double3R toDir) {
@@ -3513,8 +3550,8 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
      * arbitrarily.
      *
-     * @param fromDir the vector
-     * @param toDir the vector
+     * @param fromDir the direction to rotate from (must be a unit vector)
+     * @param toDir the direction to rotate onto (must be a unit vector)
      * @param dest will hold the result
      * @return dest
      */
@@ -3949,7 +3986,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Transform {@code v} by this quaternion and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -3986,7 +4023,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * Transform {@code v} by the inverse of this quaternion (assumes a unit quaternion) and store
      * the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */

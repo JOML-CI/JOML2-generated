@@ -227,7 +227,7 @@ public class Float3x2Impl implements Float3x2 {
     /**
      * Add {@code other} to this matrix and store the result in {@code dest}.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @param dest will hold the result
      * @return dest
      */
@@ -254,7 +254,7 @@ public class Float3x2Impl implements Float3x2 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @param dest will hold the result
      * @return dest
      */
@@ -362,7 +362,7 @@ public class Float3x2Impl implements Float3x2 {
     /**
      * Subtract {@code other} from this matrix and store the result in {@code dest}.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -389,7 +389,7 @@ public class Float3x2Impl implements Float3x2 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -456,7 +456,7 @@ public class Float3x2Impl implements Float3x2 {
     /**
      * Set this matrix to the given values.
      *
-     * @param v the matrix
+     * @param v the matrix to copy
      * @return this
      */
     @Mutated public Float3x2 set(Float3x2R v) {
@@ -526,8 +526,11 @@ public class Float3x2Impl implements Float3x2 {
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -550,10 +553,13 @@ public class Float3x2Impl implements Float3x2 {
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
      * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -567,6 +573,10 @@ public class Float3x2Impl implements Float3x2 {
      * Linearly interpolate between this matrix and ({@code m00}, {@code m01}, {@code m10},
      * {@code m11}, {@code m20}, {@code m21}) using the interpolation factor {@code t} and store the
      * result in {@code dest}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m10}, {@code m11}, {@code m20}, {@code m21}) (interpolation
+     * factor {@code 1}).
      *
      * @param m00 the element in row 0, column 0 of the matrix
      * @param m01 the element in row 0, column 1 of the matrix
@@ -595,6 +605,10 @@ public class Float3x2Impl implements Float3x2 {
      * Linearly interpolate between this matrix and ({@code m00}, {@code m01}, {@code m10},
      * {@code m11}, {@code m20}, {@code m21}) using the interpolation factor {@code t} and store the
      * result in {@code dest}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m10}, {@code m11}, {@code m20}, {@code m21}) (interpolation
+     * factor {@code 1}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -695,7 +709,7 @@ public class Float3x2Impl implements Float3x2 {
      * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -728,7 +742,7 @@ public class Float3x2Impl implements Float3x2 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -751,9 +765,10 @@ public class Float3x2Impl implements Float3x2 {
 
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the right operand of the product
      * @param dest will hold the result
      * @return dest
      */
@@ -763,12 +778,13 @@ public class Float3x2Impl implements Float3x2 {
 
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the right operand of the product
      * @param dest will hold the result
      * @return dest
      */
@@ -778,7 +794,8 @@ public class Float3x2Impl implements Float3x2 {
 
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY)}
      * @param vY the {@code y} component of the vector {@code (vX, vY)}
@@ -796,7 +813,8 @@ public class Float3x2Impl implements Float3x2 {
 
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.

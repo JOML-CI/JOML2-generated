@@ -32,7 +32,7 @@ public interface FloatTriangle extends FloatTriangleR {
     /**
      * Set this triangle to the given values.
      *
-     * @param v the triangle
+     * @param v the triangle to copy
      * @return this
      */
     @Mutated FloatTriangle set(FloatTriangleR v);
@@ -72,7 +72,7 @@ public interface FloatTriangle extends FloatTriangleR {
     /**
      * Transform this triangle by {@code m}.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatTriangle transform(Float3x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.floatTriangle() : this); }
@@ -83,7 +83,7 @@ public interface FloatTriangle extends FloatTriangleR {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatTriangle transform(Float4x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.floatTriangle() : this); }

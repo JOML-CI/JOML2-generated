@@ -34,7 +34,12 @@ public record Long2(long x, long y) {
     /** The zero vector (all components 0). */
     public static final Long2 ZERO = new Long2(0, 0);
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param x the {@code x} component
+     * @param y the {@code y} component
+     */
     public Long2(long x, long y) {
         this.x = x;
         this.y = y;
@@ -47,7 +52,11 @@ public record Long2(long x, long y) {
         this(0, 0);
     }
 
-    /** Create a vector with all components set to {@code s}. */
+    /**
+     * Create a vector with all components set to {@code s}.
+     *
+     * @param s the value assigned to every component
+     */
     public Long2(long s) {
         this(s, s);
     }
@@ -61,7 +70,7 @@ public record Long2(long x, long y) {
     /**
      * Add {@code other} to this vector, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return the resulting vector
      */
     public Long2 add(Long2 other) {
@@ -85,7 +94,7 @@ public record Long2(long x, long y) {
      * Compute the component-wise ceiling division of this vector by {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Long2 ceilDiv(long scalar) {
@@ -97,7 +106,7 @@ public record Long2(long x, long y) {
      * Compute the component-wise ceiling division of this vector by {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Long2 ceilDiv(Long2 other) {
@@ -122,7 +131,7 @@ public record Long2(long x, long y) {
      * Compute the component-wise ceiling modulus of this vector and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Long2 ceilMod(long scalar) {
@@ -134,7 +143,7 @@ public record Long2(long x, long y) {
      * Compute the component-wise ceiling modulus of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Long2 ceilMod(Long2 other) {
@@ -159,7 +168,7 @@ public record Long2(long x, long y) {
      * Divide each component of this vector by {@code scalar} (integer division, truncating toward
      * zero), returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Long2 div(long scalar) {
@@ -171,7 +180,7 @@ public record Long2(long x, long y) {
      * Divide this vector component-wise by {@code other} (integer division, truncating toward
      * zero), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Long2 div(Long2 other) {
@@ -196,7 +205,7 @@ public record Long2(long x, long y) {
      * Compute the component-wise floor division of this vector by {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Long2 floorDiv(long scalar) {
@@ -208,7 +217,7 @@ public record Long2(long x, long y) {
      * Compute the component-wise floor division of this vector by {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Long2 floorDiv(Long2 other) {
@@ -233,7 +242,7 @@ public record Long2(long x, long y) {
      * Compute the component-wise floor modulus of this vector and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Long2 floorMod(long scalar) {
@@ -245,7 +254,7 @@ public record Long2(long x, long y) {
      * Compute the component-wise floor modulus of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Long2 floorMod(Long2 other) {
@@ -269,7 +278,7 @@ public record Long2(long x, long y) {
     /**
      * Multiply each component of this vector by {@code scalar}, returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @return the resulting vector
      */
     public Long2 mul(long scalar) {
@@ -280,7 +289,7 @@ public record Long2(long x, long y) {
     /**
      * Multiply this vector component-wise by {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return the resulting vector
      */
     public Long2 mul(Long2 other) {
@@ -316,7 +325,7 @@ public record Long2(long x, long y) {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}), returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Long2 rem(long scalar) {
@@ -329,7 +338,7 @@ public record Long2(long x, long y) {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Long2 rem(Long2 other) {
@@ -354,7 +363,7 @@ public record Long2(long x, long y) {
     /**
      * Subtract {@code other} from this vector, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return the resulting vector
      */
     public Long2 sub(Long2 other) {
@@ -378,7 +387,7 @@ public record Long2(long x, long y) {
      * Compute the bitwise AND of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @return the resulting vector
      */
     public Long2 and(Long2 other) {
@@ -446,7 +455,7 @@ public record Long2(long x, long y) {
      * Compute the bitwise OR of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @return the resulting vector
      */
     public Long2 or(Long2 other) {
@@ -553,7 +562,7 @@ public record Long2(long x, long y) {
      * Compute the bitwise XOR of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @return the resulting vector
      */
     public Long2 xor(Long2 other) {
@@ -577,7 +586,7 @@ public record Long2(long x, long y) {
     /**
      * Create a new vector from the given values.
      *
-     * @param v the vector
+     * @param v the vector to copy
      * @return the resulting vector
      */
     public Long2 set(Long2 v) {
@@ -772,7 +781,7 @@ public record Long2(long x, long y) {
     /**
      * Compute the squared distance between this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
     public long distanceSquared(Long2 other) {
@@ -797,7 +806,7 @@ public record Long2(long x, long y) {
     /**
      * Compute the dot product of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
     public long dot(Long2 other) {
@@ -830,7 +839,7 @@ public record Long2(long x, long y) {
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
     public long manhattanDistance(Long2 other) {
@@ -864,7 +873,7 @@ public record Long2(long x, long y) {
      * Set each component of this vector to the larger of itself and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @return the resulting vector
      */
     public Long2 max(long scalar) {
@@ -876,7 +885,7 @@ public record Long2(long x, long y) {
      * Set each component of this vector to the larger of itself and the corresponding component of
      * {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @return the resulting vector
      */
     public Long2 max(Long2 other) {
@@ -901,7 +910,7 @@ public record Long2(long x, long y) {
      * Set each component of this vector to the smaller of itself and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @return the resulting vector
      */
     public Long2 min(long scalar) {
@@ -913,7 +922,7 @@ public record Long2(long x, long y) {
      * Set each component of this vector to the smaller of itself and the corresponding component of
      * {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @return the resulting vector
      */
     public Long2 min(Long2 other) {
@@ -948,7 +957,7 @@ public record Long2(long x, long y) {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return the resulting vector
      */
     public Long2 satAdd(Long2 other) {
@@ -973,7 +982,7 @@ public record Long2(long x, long y) {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return the resulting vector
      */
     public Long2 satMul(Long2 other) {
@@ -1009,7 +1018,7 @@ public record Long2(long x, long y) {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return the resulting vector
      */
     public Long2 satSub(Long2 other) {
@@ -1029,17 +1038,30 @@ public record Long2(long x, long y) {
         return new Long2(org.joml2.SaturatingMath.satSubL(this.x, otherX), org.joml2.SaturatingMath.satSubL(this.y, otherY));
     }
 
-    /** {@return a copy of this vector with the X component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the X component replaced by the given value}
+     *
+     * @param x the new value of the {@code x} component
+     */
     public Long2 withX(long x) {
         return new Long2(x, this.y());
     }
 
-    /** {@return a copy of this vector with the Y component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the Y component replaced by the given value}
+     *
+     * @param y the new value of the {@code y} component
+     */
     public Long2 withY(long y) {
         return new Long2(this.x(), y);
     }
 
-    /** {@return a copy of this vector with the XY components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XY components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param y the new value of the {@code y} component
+     */
     public Long2 withXY(long x, long y) {
         return new Long2(x, y);
     }

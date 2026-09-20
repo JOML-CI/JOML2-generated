@@ -29,7 +29,7 @@ public interface Int2 extends Int2R {
     /**
      * Add {@code other} to this vector.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 add(Int2R other) { return add(other, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -46,7 +46,7 @@ public interface Int2 extends Int2R {
     /**
      * Compute the component-wise ceiling division of this vector by {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 ceilDiv(int scalar) { return ceilDiv(scalar, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -54,7 +54,7 @@ public interface Int2 extends Int2R {
     /**
      * Compute the component-wise ceiling division of this vector by {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 ceilDiv(Int2R other) { return ceilDiv(other, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -71,7 +71,7 @@ public interface Int2 extends Int2R {
     /**
      * Compute the component-wise ceiling modulus of this vector and {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 ceilMod(int scalar) { return ceilMod(scalar, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -79,7 +79,7 @@ public interface Int2 extends Int2R {
     /**
      * Compute the component-wise ceiling modulus of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 ceilMod(Int2R other) { return ceilMod(other, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -97,7 +97,7 @@ public interface Int2 extends Int2R {
      * Divide each component of this vector by {@code scalar} (integer division, truncating toward
      * zero).
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 div(int scalar) { return div(scalar, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -106,7 +106,7 @@ public interface Int2 extends Int2R {
      * Divide this vector component-wise by {@code other} (integer division, truncating toward
      * zero).
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 div(Int2R other) { return div(other, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -124,7 +124,7 @@ public interface Int2 extends Int2R {
     /**
      * Compute the component-wise floor division of this vector by {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 floorDiv(int scalar) { return floorDiv(scalar, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -132,7 +132,7 @@ public interface Int2 extends Int2R {
     /**
      * Compute the component-wise floor division of this vector by {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 floorDiv(Int2R other) { return floorDiv(other, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -149,7 +149,7 @@ public interface Int2 extends Int2R {
     /**
      * Compute the component-wise floor modulus of this vector and {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 floorMod(int scalar) { return floorMod(scalar, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -157,7 +157,7 @@ public interface Int2 extends Int2R {
     /**
      * Compute the component-wise floor modulus of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 floorMod(Int2R other) { return floorMod(other, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -174,7 +174,7 @@ public interface Int2 extends Int2R {
     /**
      * Multiply each component of this vector by {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 mul(int scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -182,7 +182,7 @@ public interface Int2 extends Int2R {
     /**
      * Multiply this vector component-wise by {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 mul(Int2R other) { return mul(other, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -208,7 +208,7 @@ public interface Int2 extends Int2R {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}).
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 rem(int scalar) { return rem(scalar, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -218,7 +218,7 @@ public interface Int2 extends Int2R {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}).
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 rem(Int2R other) { return rem(other, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -237,7 +237,7 @@ public interface Int2 extends Int2R {
     /**
      * Subtract {@code other} from this vector.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 sub(Int2R other) { return sub(other, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -254,7 +254,7 @@ public interface Int2 extends Int2R {
     /**
      * Compute the bitwise AND of each component of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 and(Int2R other) { return and(other, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -299,7 +299,7 @@ public interface Int2 extends Int2R {
     /**
      * Compute the bitwise OR of each component of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 or(Int2R other) { return or(other, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -370,7 +370,7 @@ public interface Int2 extends Int2R {
     /**
      * Compute the bitwise XOR of each component of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 xor(Int2R other) { return xor(other, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -387,7 +387,7 @@ public interface Int2 extends Int2R {
     /**
      * Set this vector to the given values.
      *
-     * @param v the vector
+     * @param v the vector to copy
      * @return this
      */
     @Mutated Int2 set(Int2R v);
@@ -497,7 +497,7 @@ public interface Int2 extends Int2R {
     /**
      * Set each component of this vector to the larger of itself and {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 max(int scalar) { return max(scalar, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -506,7 +506,7 @@ public interface Int2 extends Int2R {
      * Set each component of this vector to the larger of itself and the corresponding component of
      * {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 max(Int2R other) { return max(other, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -524,7 +524,7 @@ public interface Int2 extends Int2R {
     /**
      * Set each component of this vector to the smaller of itself and {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 min(int scalar) { return min(scalar, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -533,7 +533,7 @@ public interface Int2 extends Int2R {
      * Set each component of this vector to the smaller of itself and the corresponding component of
      * {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 min(Int2R other) { return min(other, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -558,7 +558,7 @@ public interface Int2 extends Int2R {
     /**
      * Add {@code other} to this vector, clamping to the value range instead of overflowing.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 satAdd(Int2R other) { return satAdd(other, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -576,7 +576,7 @@ public interface Int2 extends Int2R {
     /**
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 satMul(Int2R other) { return satMul(other, Joml.RETURN_NEW ? Joml.int2() : this); }
@@ -601,7 +601,7 @@ public interface Int2 extends Int2R {
     /**
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 satSub(Int2R other) { return satSub(other, Joml.RETURN_NEW ? Joml.int2() : this); }

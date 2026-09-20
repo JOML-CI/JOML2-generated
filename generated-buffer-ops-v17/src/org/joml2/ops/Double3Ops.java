@@ -110,7 +110,7 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param other the storage holding the other vector
+     * @param other the storage holding the vector to add
      * @param otherOffset the element index in {@code other} at which the vector starts
      * @return {@code dest}
      */
@@ -153,7 +153,7 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return {@code dest}
      */
     public static double[] div(double[] dest, int destOffset, double[] src, int srcOffset, double scalar) {
@@ -234,7 +234,7 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param other the storage holding the other vector
+     * @param other the storage holding the vector of per-component divisors
      * @param otherOffset the element index in {@code other} at which the vector starts
      * @return {@code dest}
      */
@@ -321,7 +321,7 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param c the storage holding the vector
+     * @param c the storage holding the vector to add
      * @param cOffset the element index in {@code c} at which the vector starts
      * @param b the factor to multiply this vector by
      * @return {@code dest}
@@ -413,7 +413,7 @@ public final class Double3Ops {
      * @param srcOffset the element index in {@code src} at which the vector starts
      * @param b the storage holding the factor to multiply this vector by
      * @param bOffset the element index in {@code b} at which the vector starts
-     * @param c the storage holding the vector
+     * @param c the storage holding the vector to add
      * @param cOffset the element index in {@code c} at which the vector starts
      * @return {@code dest}
      */
@@ -460,7 +460,7 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @return {@code dest}
      */
     public static double[] mul(double[] dest, int destOffset, double[] src, int srcOffset, double scalar) {
@@ -540,7 +540,7 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param other the storage holding the other vector
+     * @param other the storage holding the vector of per-component factors
      * @param otherOffset the element index in {@code other} at which the vector starts
      * @return {@code dest}
      */
@@ -662,7 +662,7 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param other the storage holding the other vector
+     * @param other the storage holding the vector to subtract
      * @param otherOffset the element index in {@code other} at which the vector starts
      * @return {@code dest}
      */
@@ -739,7 +739,7 @@ public final class Double3Ops {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
-     * @param v the storage holding the vector
+     * @param v the storage holding the vector to copy
      * @param vOffset the element index in {@code v} at which the vector starts
      * @return {@code dest}
      */
@@ -840,8 +840,12 @@ public final class Double3Ops {
     }
 
     /**
-     * Interpolate along the cubic Bézier curve defined by this vector and the given control points
-     * and store the result in {@code dest}.
+     * Interpolate along the cubic Bézier curve that starts at this vector, is shaped by the control
+     * points {@code p1} and {@code p2} and ends at {@code p3} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p3} at
+     * {@code t = 1}; the control points {@code p1} and {@code p2} pull it towards themselves but
+     * are generally not on the curve.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -896,8 +900,12 @@ public final class Double3Ops {
     }
 
     /**
-     * Interpolate along the cubic Bézier curve defined by this vector and the given control points
-     * and store the result in {@code dest}.
+     * Interpolate along the cubic Bézier curve that starts at this vector, is shaped by the control
+     * points {@code p1} and {@code p2} and ends at {@code p3} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p3} at
+     * {@code t = 1}; the control points {@code p1} and {@code p2} pull it towards themselves but
+     * are generally not on the curve.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -907,7 +915,7 @@ public final class Double3Ops {
      * @param p1Offset the element index in {@code p1} at which the vector starts
      * @param p2 the storage holding the second control point
      * @param p2Offset the element index in {@code p2} at which the vector starts
-     * @param p3 the storage holding the end point
+     * @param p3 the storage holding the end point of the curve
      * @param p3Offset the element index in {@code p3} at which the vector starts
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return {@code dest}
@@ -958,8 +966,12 @@ public final class Double3Ops {
     }
 
     /**
-     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
-     * points and store the result in {@code dest}.
+     * Interpolate along the quadratic Bézier curve that starts at this vector, is shaped by the
+     * control point {@code p1} and ends at {@code p2} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p2} at
+     * {@code t = 1}; the control point {@code p1} pulls it towards itself but is generally not on
+     * the curve.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1008,8 +1020,12 @@ public final class Double3Ops {
     }
 
     /**
-     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
-     * points and store the result in {@code dest}.
+     * Interpolate along the quadratic Bézier curve that starts at this vector, is shaped by the
+     * control point {@code p1} and ends at {@code p2} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p2} at
+     * {@code t = 1}; the control point {@code p1} pulls it towards itself but is generally not on
+     * the curve.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1017,7 +1033,7 @@ public final class Double3Ops {
      * @param srcOffset the element index in {@code src} at which the vector starts
      * @param p1 the storage holding the control point
      * @param p1Offset the element index in {@code p1} at which the vector starts
-     * @param p2 the storage holding the end point
+     * @param p2 the storage holding the end point of the curve
      * @param p2Offset the element index in {@code p2} at which the vector starts
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return {@code dest}
@@ -1062,9 +1078,13 @@ public final class Double3Ops {
     }
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
-     * by this vector and the given control points, at the parameter {@code t} and store the result
-     * in {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * quadratic Bézier curve that starts at this vector, is shaped by the control point {@code p1}
+     * and ends at {@code p2} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p2} at
+     * {@code t = 1}; the control point {@code p1} pulls it towards itself but is generally not on
+     * the curve.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1111,9 +1131,13 @@ public final class Double3Ops {
     }
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
-     * by this vector and the given control points, at the parameter {@code t} and store the result
-     * in {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * quadratic Bézier curve that starts at this vector, is shaped by the control point {@code p1}
+     * and ends at {@code p2} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p2} at
+     * {@code t = 1}; the control point {@code p1} pulls it towards itself but is generally not on
+     * the curve.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1121,7 +1145,7 @@ public final class Double3Ops {
      * @param srcOffset the element index in {@code src} at which the vector starts
      * @param p1 the storage holding the control point
      * @param p1Offset the element index in {@code p1} at which the vector starts
-     * @param p2 the storage holding the end point
+     * @param p2 the storage holding the end point of the curve
      * @param p2Offset the element index in {@code p2} at which the vector starts
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return {@code dest}
@@ -1164,9 +1188,13 @@ public final class Double3Ops {
     }
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
-     * this vector and the given control points, at the parameter {@code t} and store the result in
-     * {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Bézier curve that starts at this vector, is shaped by the control points {@code p1} and
+     * {@code p2} and ends at {@code p3} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p3} at
+     * {@code t = 1}; the control points {@code p1} and {@code p2} pull it towards themselves but
+     * are generally not on the curve.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1218,9 +1246,13 @@ public final class Double3Ops {
     }
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
-     * this vector and the given control points, at the parameter {@code t} and store the result in
-     * {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Bézier curve that starts at this vector, is shaped by the control points {@code p1} and
+     * {@code p2} and ends at {@code p3} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p3} at
+     * {@code t = 1}; the control points {@code p1} and {@code p2} pull it towards themselves but
+     * are generally not on the curve.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1230,7 +1262,7 @@ public final class Double3Ops {
      * @param p1Offset the element index in {@code p1} at which the vector starts
      * @param p2 the storage holding the second control point
      * @param p2Offset the element index in {@code p2} at which the vector starts
-     * @param p3 the storage holding the end point
+     * @param p3 the storage holding the end point of the curve
      * @param p3Offset the element index in {@code p3} at which the vector starts
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return {@code dest}
@@ -1278,8 +1310,17 @@ public final class Double3Ops {
     }
 
     /**
-     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points
+     * Interpolate along the Catmull-Rom spline segment from {@code p1} to {@code p2}, with this
+     * vector as the control point before the segment and {@code p3} as the control point after it
      * and store the result in {@code dest}.
+     * <p>
+     * The curve passes through {@code p1} at {@code t = 0} and through {@code p2} at {@code t = 1}.
+     * This vector and {@code p3} are the spline's neighbouring points, i.e. the point before
+     * {@code p1} and the point after {@code p2}: they only shape the tangents at the segment's two
+     * end points and are not themselves on the segment. For a spline through the points
+     * {@code p[0..n]}, the segment from {@code p[i]} to {@code p[i+1]} is therefore interpolated
+     * with {@code p[i-1]} in the role of this vector and {@code p[i]}, {@code p[i+1]},
+     * {@code p[i+2]} as the three given points.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1329,8 +1370,17 @@ public final class Double3Ops {
     }
 
     /**
-     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points
+     * Interpolate along the Catmull-Rom spline segment from {@code p1} to {@code p2}, with this
+     * vector as the control point before the segment and {@code p3} as the control point after it
      * and store the result in {@code dest}.
+     * <p>
+     * The curve passes through {@code p1} at {@code t = 0} and through {@code p2} at {@code t = 1}.
+     * This vector and {@code p3} are the spline's neighbouring points, i.e. the point before
+     * {@code p1} and the point after {@code p2}: they only shape the tangents at the segment's two
+     * end points and are not themselves on the segment. For a spline through the points
+     * {@code p[0..n]}, the segment from {@code p[i]} to {@code p[i+1]} is therefore interpolated
+     * with {@code p[i-1]} in the role of this vector and {@code p[i]}, {@code p[i+1]},
+     * {@code p[i+2]} as the three given points.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1340,7 +1390,8 @@ public final class Double3Ops {
      * @param p1Offset the element index in {@code p1} at which the vector starts
      * @param p2 the storage holding the end point of the interpolated segment
      * @param p2Offset the element index in {@code p2} at which the vector starts
-     * @param p3 the storage holding the outer control point after the segment
+     * @param p3 the storage holding the control point after the segment, i.e. the spline point
+     *        following the given vector
      * @param p3Offset the element index in {@code p3} at which the vector starts
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return {@code dest}
@@ -1386,9 +1437,18 @@ public final class Double3Ops {
     }
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
-     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * Catmull-Rom spline segment from {@code p1} to {@code p2}, with this vector as the control
+     * point before the segment and {@code p3} as the control point after it and store the result in
      * {@code dest}.
+     * <p>
+     * The curve passes through {@code p1} at {@code t = 0} and through {@code p2} at {@code t = 1}.
+     * This vector and {@code p3} are the spline's neighbouring points, i.e. the point before
+     * {@code p1} and the point after {@code p2}: they only shape the tangents at the segment's two
+     * end points and are not themselves on the segment. For a spline through the points
+     * {@code p[0..n]}, the segment from {@code p[i]} to {@code p[i+1]} is therefore interpolated
+     * with {@code p[i-1]} in the role of this vector and {@code p[i]}, {@code p[i+1]},
+     * {@code p[i+2]} as the three given points.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1437,9 +1497,18 @@ public final class Double3Ops {
     }
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
-     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * Catmull-Rom spline segment from {@code p1} to {@code p2}, with this vector as the control
+     * point before the segment and {@code p3} as the control point after it and store the result in
      * {@code dest}.
+     * <p>
+     * The curve passes through {@code p1} at {@code t = 0} and through {@code p2} at {@code t = 1}.
+     * This vector and {@code p3} are the spline's neighbouring points, i.e. the point before
+     * {@code p1} and the point after {@code p2}: they only shape the tangents at the segment's two
+     * end points and are not themselves on the segment. For a spline through the points
+     * {@code p[0..n]}, the segment from {@code p[i]} to {@code p[i+1]} is therefore interpolated
+     * with {@code p[i-1]} in the role of this vector and {@code p[i]}, {@code p[i+1]},
+     * {@code p[i+2]} as the three given points.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1449,7 +1518,8 @@ public final class Double3Ops {
      * @param p1Offset the element index in {@code p1} at which the vector starts
      * @param p2 the storage holding the end point of the interpolated segment
      * @param p2Offset the element index in {@code p2} at which the vector starts
-     * @param p3 the storage holding the outer control point after the segment
+     * @param p3 the storage holding the control point after the segment, i.e. the spline point
+     *        following the given vector
      * @param p3Offset the element index in {@code p3} at which the vector starts
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return {@code dest}
@@ -1494,8 +1564,12 @@ public final class Double3Ops {
     }
 
     /**
-     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation and
-     * store the result in {@code dest}.
+     * Interpolate along the cubic Hermite curve that starts at this vector with the tangent
+     * {@code t0} and ends at {@code v1} with the tangent {@code t1} and store the result in
+     * {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code v1} at
+     * {@code t = 1}; the two tangents set its direction and speed at those end points.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1549,18 +1623,22 @@ public final class Double3Ops {
     }
 
     /**
-     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation and
-     * store the result in {@code dest}.
+     * Interpolate along the cubic Hermite curve that starts at this vector with the tangent
+     * {@code t0} and ends at {@code v1} with the tangent {@code t1} and store the result in
+     * {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code v1} at
+     * {@code t = 1}; the two tangents set its direction and speed at those end points.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param t0 the storage holding the tangent at this vector
+     * @param t0 the storage holding the tangent at the start point, i.e. at this vector
      * @param t0Offset the element index in {@code t0} at which the vector starts
-     * @param v1 the storage holding the endpoint
+     * @param v1 the storage holding the end point of the curve
      * @param v1Offset the element index in {@code v1} at which the vector starts
-     * @param t1 the storage holding the tangent at the endpoint
+     * @param t1 the storage holding the tangent at the end point the given vector
      * @param t1Offset the element index in {@code t1} at which the vector starts
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return {@code dest}
@@ -1610,9 +1688,12 @@ public final class Double3Ops {
     }
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
-     * this vector and the given endpoint, at the parameter {@code t} and store the result in
-     * {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Hermite curve that starts at this vector with the tangent {@code t0} and ends at
+     * {@code v1} with the tangent {@code t1} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code v1} at
+     * {@code t = 1}; the two tangents set its direction and speed at those end points.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1665,19 +1746,22 @@ public final class Double3Ops {
     }
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
-     * this vector and the given endpoint, at the parameter {@code t} and store the result in
-     * {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Hermite curve that starts at this vector with the tangent {@code t0} and ends at
+     * {@code v1} with the tangent {@code t1} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code v1} at
+     * {@code t = 1}; the two tangents set its direction and speed at those end points.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param t0 the storage holding the tangent at this vector
+     * @param t0 the storage holding the tangent at the start point, i.e. at this vector
      * @param t0Offset the element index in {@code t0} at which the vector starts
-     * @param v1 the storage holding the endpoint
+     * @param v1 the storage holding the end point of the curve
      * @param v1Offset the element index in {@code v1} at which the vector starts
-     * @param t1 the storage holding the tangent at the endpoint
+     * @param t1 the storage holding the tangent at the end point the given vector
      * @param t1Offset the element index in {@code t1} at which the vector starts
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return {@code dest}
@@ -1728,6 +1812,9 @@ public final class Double3Ops {
     /**
      * Linearly interpolate between this vector and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1771,12 +1858,15 @@ public final class Double3Ops {
     /**
      * Linearly interpolate between this vector and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param other the storage holding the other vector
+     * @param other the storage holding the vector to interpolate towards
      * @param otherOffset the element index in {@code other} at which the vector starts
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return {@code dest}
@@ -1816,6 +1906,9 @@ public final class Double3Ops {
     /**
      * Linearly interpolate between this vector and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1861,12 +1954,15 @@ public final class Double3Ops {
     /**
      * Linearly interpolate between this vector and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param other the storage holding the other vector
+     * @param other the storage holding the vector to interpolate towards
      * @param otherOffset the element index in {@code other} at which the vector starts
      * @param t the storage holding the per-component interpolation factors, typically within
      *        {@code [0, 1]}
@@ -1995,7 +2091,7 @@ public final class Double3Ops {
      * @param bX the {@code x} component of the vector {@code (bX, bY, bZ)}
      * @param bY the {@code y} component of the vector {@code (bX, bY, bZ)}
      * @param bZ the {@code z} component of the vector {@code (bX, bY, bZ)}
-     * @param scalar the scalar value
+     * @param scalar the factor to scale ({@code bX}, {@code bY}, {@code bZ}) by before adding
      * @return {@code dest}
      */
     public static double[] addScaled(double[] dest, int destOffset, double[] src, int srcOffset, double bX, double bY, double bZ, double scalar) {
@@ -2034,9 +2130,9 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param b the storage holding the vector
+     * @param b the storage holding the vector to scale and add
      * @param bOffset the element index in {@code b} at which the vector starts
-     * @param scalar the scalar value
+     * @param scalar the factor to scale the given vector by before adding
      * @return {@code dest}
      */
     public static double[] addScaled(double[] dest, int destOffset, double[] src, int srcOffset, double[] b, int bOffset, double scalar) {
@@ -2122,9 +2218,10 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param b the storage holding the vector
+     * @param b the storage holding the vector to scale and add
      * @param bOffset the element index in {@code b} at which the vector starts
-     * @param c the storage holding the vector
+     * @param c the storage holding the per-component factors to scale the given vector by before
+     *        adding
      * @param cOffset the element index in {@code c} at which the vector starts
      * @return {@code dest}
      */
@@ -2213,7 +2310,7 @@ public final class Double3Ops {
      *
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param other the storage holding the other vector
+     * @param other the storage holding the vector to measure the angle to
      * @param otherOffset the element index in {@code other} at which the vector starts
      * @return the angle in radians between this vector and {@code other}
      */
@@ -2733,9 +2830,9 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param lineStart the storage holding the vector
+     * @param lineStart the storage holding the start point of the line segment
      * @param lineStartOffset the element index in {@code lineStart} at which the vector starts
-     * @param lineEnd the storage holding the vector
+     * @param lineEnd the storage holding the end point of the line segment
      * @param lineEndOffset the element index in {@code lineEnd} at which the vector starts
      * @return {@code dest}
      */
@@ -3121,8 +3218,8 @@ public final class Double3Ops {
     }
 
     /**
-     * Compute the cross product of this vector and {@code other} and store the result in
-     * {@code dest}.
+     * Compute the cross product of this vector and {@code other}, in that order
+     * ({@code this x other}) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -3163,14 +3260,14 @@ public final class Double3Ops {
     }
 
     /**
-     * Compute the cross product of this vector and {@code other} and store the result in
-     * {@code dest}.
+     * Compute the cross product of this vector and {@code other}, in that order
+     * ({@code this x other}) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param other the storage holding the other vector
+     * @param other the storage holding the right operand of the cross product
      * @param otherOffset the element index in {@code other} at which the vector starts
      * @return {@code dest}
      */
@@ -3297,7 +3394,7 @@ public final class Double3Ops {
      *
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param other the storage holding the other vector
+     * @param other the storage holding the vector to measure the distance to
      * @param otherOffset the element index in {@code other} at which the vector starts
      * @return the distance between this vector and {@code other}
      */
@@ -3377,7 +3474,7 @@ public final class Double3Ops {
      *
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param other the storage holding the other vector
+     * @param other the storage holding the vector to measure the distance to
      * @param otherOffset the element index in {@code other} at which the vector starts
      * @return the squared distance between this vector and {@code other}
      */
@@ -3454,7 +3551,7 @@ public final class Double3Ops {
      *
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param other the storage holding the other vector
+     * @param other the storage holding the other operand of the dot product
      * @param otherOffset the element index in {@code other} at which the vector starts
      * @return the dot product of this vector and {@code other}
      */
@@ -3666,9 +3763,9 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param I the storage holding the vector
+     * @param I the storage holding the incident direction
      * @param IOffset the element index in {@code I} at which the vector starts
-     * @param Nref the storage holding the vector
+     * @param Nref the storage holding the reference vector the incident direction is tested against
      * @param NrefOffset the element index in {@code Nref} at which the vector starts
      * @return {@code dest}
      */
@@ -4266,7 +4363,7 @@ public final class Double3Ops {
      *
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param other the storage holding the other vector
+     * @param other the storage holding the vector to measure the distance to
      * @param otherOffset the element index in {@code other} at which the vector starts
      * @return the Manhattan distance between this vector and {@code other}
      */
@@ -4340,7 +4437,7 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @return {@code dest}
      */
     public static double[] max(double[] dest, int destOffset, double[] src, int srcOffset, double scalar) {
@@ -4422,7 +4519,7 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param other the storage holding the other vector
+     * @param other the storage holding the vector to take the component-wise maximum with
      * @param otherOffset the element index in {@code other} at which the vector starts
      * @return {@code dest}
      */
@@ -4466,7 +4563,7 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @return {@code dest}
      */
     public static double[] min(double[] dest, int destOffset, double[] src, int srcOffset, double scalar) {
@@ -4548,7 +4645,7 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param other the storage holding the other vector
+     * @param other the storage holding the vector to take the component-wise minimum with
      * @param otherOffset the element index in {@code other} at which the vector starts
      * @return {@code dest}
      */
@@ -4958,7 +5055,7 @@ public final class Double3Ops {
      *
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param other the storage holding the other vector
+     * @param other the storage holding the vector to measure the signed angle to
      * @param otherOffset the element index in {@code other} at which the vector starts
      * @param normal the storage holding the reference axis that defines the sign of the angle
      * @param normalOffset the element index in {@code normal} at which the vector starts
@@ -5418,7 +5515,8 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param normal the storage holding the normal (must be a unit vector)
+     * @param normal the storage holding the normal of the plane to project onto (must be a unit
+     *        vector)
      * @param normalOffset the element index in {@code normal} at which the vector starts
      * @return {@code dest}
      */
@@ -5546,7 +5644,8 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param normal the storage holding the normal (must be a unit vector)
+     * @param normal the storage holding the normal of the plane to reflect about (must be a unit
+     *        vector)
      * @param normalOffset the element index in {@code normal} at which the vector starts
      * @return {@code dest}
      */
@@ -5649,7 +5748,8 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param normal the storage holding the normal (must be a unit vector)
+     * @param normal the storage holding the normal of the refracting surface (must be a unit
+     *        vector)
      * @param normalOffset the element index in {@code normal} at which the vector starts
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
      *        destination medium's
@@ -6539,7 +6639,7 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param mat the storage holding the matrix
+     * @param mat the storage holding the matrix to apply
      * @param matOffset the element index in {@code mat} at which the matrix starts
      * @return {@code dest}
      */
@@ -6590,7 +6690,7 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param mat the storage holding the matrix
+     * @param mat the storage holding the matrix to apply
      * @param matOffset the element index in {@code mat} at which the matrix starts
      * @return {@code dest}
      */
@@ -6641,7 +6741,7 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param mat the storage holding the matrix
+     * @param mat the storage holding the matrix to apply
      * @param matOffset the element index in {@code mat} at which the matrix starts
      * @return {@code dest}
      */
@@ -6692,7 +6792,7 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param mat the storage holding the matrix
+     * @param mat the storage holding the matrix to apply
      * @param matOffset the element index in {@code mat} at which the matrix starts
      * @return {@code dest}
      */
@@ -6746,7 +6846,7 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param mat the storage holding the matrix
+     * @param mat the storage holding the matrix to apply
      * @param matOffset the element index in {@code mat} at which the matrix starts
      * @return {@code dest}
      */
@@ -6800,7 +6900,7 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param mat the storage holding the matrix
+     * @param mat the storage holding the matrix to apply
      * @param matOffset the element index in {@code mat} at which the matrix starts
      * @return {@code dest}
      */
@@ -6909,7 +7009,7 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param quat the storage holding the quaternion (must be a unit quaternion)
+     * @param quat the storage holding the rotation to apply (must be a unit quaternion)
      * @param quatOffset the element index in {@code quat} at which the quaternion starts
      * @return {@code dest}
      */
@@ -7104,7 +7204,8 @@ public final class Double3Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
-     * @param quat the storage holding the quaternion (must be a unit quaternion)
+     * @param quat the storage holding the rotation whose inverse to apply (must be a unit
+     *        quaternion)
      * @param quatOffset the element index in {@code quat} at which the quaternion starts
      * @return {@code dest}
      */

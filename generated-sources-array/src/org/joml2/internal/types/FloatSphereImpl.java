@@ -56,7 +56,7 @@ public final class FloatSphereImpl implements FloatSphere {
     /**
      * Set this sphere to the given values.
      *
-     * @param v the sphere
+     * @param v the sphere to copy
      * @return this
      */
     public @Mutated FloatSphere set(FloatSphereR v) {
@@ -86,7 +86,7 @@ public final class FloatSphereImpl implements FloatSphere {
     /**
      * Set the center of this sphere to {@code c} and store the result in {@code dest}.
      *
-     * @param c the vector
+     * @param c the new center
      * @param dest will hold the result
      * @return dest
      */
@@ -101,7 +101,7 @@ public final class FloatSphereImpl implements FloatSphere {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param c the vector
+     * @param c the new center
      * @param dest will hold the result
      * @return dest
      */
@@ -215,7 +215,7 @@ public final class FloatSphereImpl implements FloatSphere {
      * Transform this sphere by {@code m}, scaling the radius conservatively by the matrix's maximum
      * axis scale and store the result in {@code dest}.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -243,7 +243,7 @@ public final class FloatSphereImpl implements FloatSphere {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -271,7 +271,7 @@ public final class FloatSphereImpl implements FloatSphere {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -302,7 +302,7 @@ public final class FloatSphereImpl implements FloatSphere {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -326,7 +326,7 @@ public final class FloatSphereImpl implements FloatSphere {
     /**
      * Translate this sphere by {@code delta} and store the result in {@code dest}.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -341,7 +341,7 @@ public final class FloatSphereImpl implements FloatSphere {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -402,7 +402,7 @@ public final class FloatSphereImpl implements FloatSphere {
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -421,7 +421,7 @@ public final class FloatSphereImpl implements FloatSphere {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -437,9 +437,12 @@ public final class FloatSphereImpl implements FloatSphere {
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
      * @param dest will hold the result
      * @return dest
      */
@@ -475,9 +478,12 @@ public final class FloatSphereImpl implements FloatSphere {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
      * @param dest will hold the result
      * @return dest
      */
@@ -508,7 +514,7 @@ public final class FloatSphereImpl implements FloatSphere {
      * square of the distance from the box to the center minus the radius, clamped at zero; zero
      * when they overlap or touch.
      *
-     * @param aabb the axis-aligned box
+     * @param aabb the axis-aligned box to measure the distance to
      * @return the squared distance between this sphere and the given axis-aligned box, i.e. the
      *        square of the distance from the box to the center minus the radius, clamped at zero;
      *        zero when they overlap or touch
@@ -524,17 +530,17 @@ public final class FloatSphereImpl implements FloatSphere {
      * when they overlap or touch.
      *
      * @param minX the {@code minX} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param minY the {@code minY} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param minZ the {@code minZ} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param maxX the {@code maxX} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param maxY the {@code maxY} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param maxZ the {@code maxZ} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @return the squared distance between this sphere and the given axis-aligned box, i.e. the
      *        square of the distance from the box to the center minus the radius, clamped at zero;
      *        zero when they overlap or touch
@@ -554,8 +560,8 @@ public final class FloatSphereImpl implements FloatSphere {
      * square of the distance from the box to the center minus the radius, clamped at zero; zero
      * when they overlap or touch.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
      * @return the squared distance between this sphere and the given axis-aligned box, i.e. the
      *        square of the distance from the box to the center minus the radius, clamped at zero;
      *        zero when they overlap or touch
@@ -570,7 +576,7 @@ public final class FloatSphereImpl implements FloatSphere {
      * distance from the point to the center minus the radius, clamped at zero; zero for a point
      * inside or on the sphere.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the squared distance between this sphere and the given point, i.e. the square of the
      *        distance from the point to the center minus the radius, clamped at zero; zero for a
      *        point inside or on the sphere
@@ -585,9 +591,12 @@ public final class FloatSphereImpl implements FloatSphere {
      * distance from the point to the center minus the radius, clamped at zero; zero for a point
      * inside or on the sphere.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the squared distance between this sphere and the given point, i.e. the square of the
      *        distance from the point to the center minus the radius, clamped at zero; zero for a
      *        point inside or on the sphere
@@ -607,7 +616,7 @@ public final class FloatSphereImpl implements FloatSphere {
      * distance between the centers minus both radii, clamped at zero; zero when they overlap or
      * touch.
      *
-     * @param other the other sphere
+     * @param other the sphere to measure the distance to
      * @return the squared distance between this sphere and the given sphere, i.e. the square of the
      *        distance between the centers minus both radii, clamped at zero; zero when they overlap
      *        or touch
@@ -622,14 +631,14 @@ public final class FloatSphereImpl implements FloatSphere {
      * distance between the centers minus both radii, clamped at zero; zero when they overlap or
      * touch.
      *
-     * @param otherX the {@code x} component of the other sphere
-     *        {@code (otherX, otherY, otherZ, otherR)}
-     * @param otherY the {@code y} component of the other sphere
-     *        {@code (otherX, otherY, otherZ, otherR)}
-     * @param otherZ the {@code z} component of the other sphere
-     *        {@code (otherX, otherY, otherZ, otherR)}
-     * @param otherR the {@code r} component of the other sphere
-     *        {@code (otherX, otherY, otherZ, otherR)}
+     * @param otherX the {@code x} component of the sphere {@code (otherX, otherY, otherZ, otherR)}
+     *        to measure the distance to
+     * @param otherY the {@code y} component of the sphere {@code (otherX, otherY, otherZ, otherR)}
+     *        to measure the distance to
+     * @param otherZ the {@code z} component of the sphere {@code (otherX, otherY, otherZ, otherR)}
+     *        to measure the distance to
+     * @param otherR the {@code r} component of the sphere {@code (otherX, otherY, otherZ, otherR)}
+     *        to measure the distance to
      * @return the squared distance between this sphere and the given sphere, i.e. the square of the
      *        distance between the centers minus both radii, clamped at zero; zero when they overlap
      *        or touch
@@ -649,7 +658,7 @@ public final class FloatSphereImpl implements FloatSphere {
      * from the box to the center minus the radius, clamped at zero; zero when they overlap or
      * touch.
      *
-     * @param aabb the axis-aligned box
+     * @param aabb the axis-aligned box to measure the distance to
      * @return the distance between this sphere and the given axis-aligned box, i.e. the distance
      *        from the box to the center minus the radius, clamped at zero; zero when they overlap
      *        or touch
@@ -665,17 +674,17 @@ public final class FloatSphereImpl implements FloatSphere {
      * touch.
      *
      * @param minX the {@code minX} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param minY the {@code minY} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param minZ the {@code minZ} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param maxX the {@code maxX} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param maxY the {@code maxY} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param maxZ the {@code maxZ} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @return the distance between this sphere and the given axis-aligned box, i.e. the distance
      *        from the box to the center minus the radius, clamped at zero; zero when they overlap
      *        or touch
@@ -694,8 +703,8 @@ public final class FloatSphereImpl implements FloatSphere {
      * from the box to the center minus the radius, clamped at zero; zero when they overlap or
      * touch.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
      * @return the distance between this sphere and the given axis-aligned box, i.e. the distance
      *        from the box to the center minus the radius, clamped at zero; zero when they overlap
      *        or touch
@@ -710,7 +719,7 @@ public final class FloatSphereImpl implements FloatSphere {
      * center to the plane minus the radius, clamped at zero; zero when the plane intersects or
      * touches the sphere. The plane's normal need not be of unit length.
      *
-     * @param plane the plane
+     * @param plane the plane to measure the distance to
      * @return the distance between this sphere and the given plane, i.e. the distance from the
      *        center to the plane minus the radius, clamped at zero; zero when the plane intersects
      *        or touches the sphere. The plane's normal need not be of unit length
@@ -726,9 +735,13 @@ public final class FloatSphereImpl implements FloatSphere {
      * touches the sphere. The plane's normal need not be of unit length.
      *
      * @param planeA the {@code a} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     *        to measure the distance to
      * @param planeB the {@code b} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     *        to measure the distance to
      * @param planeC the {@code c} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     *        to measure the distance to
      * @param planeD the {@code d} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     *        to measure the distance to
      * @return the distance between this sphere and the given plane, i.e. the distance from the
      *        center to the plane minus the radius, clamped at zero; zero when the plane intersects
      *        or touches the sphere. The plane's normal need not be of unit length
@@ -744,7 +757,7 @@ public final class FloatSphereImpl implements FloatSphere {
      * center to the plane minus the radius, clamped at zero; zero when the plane intersects or
      * touches the sphere. The plane's normal need not be of unit length.
      *
-     * @param plane the plane
+     * @param plane the plane to measure the distance to
      * @return the distance between this sphere and the given plane, i.e. the distance from the
      *        center to the plane minus the radius, clamped at zero; zero when the plane intersects
      *        or touches the sphere. The plane's normal need not be of unit length
@@ -759,7 +772,7 @@ public final class FloatSphereImpl implements FloatSphere {
      * point to the center minus the radius, clamped at zero; zero for a point inside or on the
      * sphere.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the distance between this sphere and the given point, i.e. the distance from the
      *        point to the center minus the radius, clamped at zero; zero for a point inside or on
      *        the sphere
@@ -774,9 +787,12 @@ public final class FloatSphereImpl implements FloatSphere {
      * point to the center minus the radius, clamped at zero; zero for a point inside or on the
      * sphere.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the distance between this sphere and the given point, i.e. the distance from the
      *        point to the center minus the radius, clamped at zero; zero for a point inside or on
      *        the sphere
@@ -794,7 +810,7 @@ public final class FloatSphereImpl implements FloatSphere {
      * Compute the distance between this sphere and the given sphere, i.e. the distance between the
      * centers minus both radii, clamped at zero; zero when they overlap or touch.
      *
-     * @param other the other sphere
+     * @param other the sphere to measure the distance to
      * @return the distance between this sphere and the given sphere, i.e. the distance between the
      *        centers minus both radii, clamped at zero; zero when they overlap or touch
      */
@@ -807,14 +823,14 @@ public final class FloatSphereImpl implements FloatSphere {
      * Compute the distance between this sphere and the given sphere, i.e. the distance between the
      * centers minus both radii, clamped at zero; zero when they overlap or touch.
      *
-     * @param otherX the {@code x} component of the other sphere
-     *        {@code (otherX, otherY, otherZ, otherR)}
-     * @param otherY the {@code y} component of the other sphere
-     *        {@code (otherX, otherY, otherZ, otherR)}
-     * @param otherZ the {@code z} component of the other sphere
-     *        {@code (otherX, otherY, otherZ, otherR)}
-     * @param otherR the {@code r} component of the other sphere
-     *        {@code (otherX, otherY, otherZ, otherR)}
+     * @param otherX the {@code x} component of the sphere {@code (otherX, otherY, otherZ, otherR)}
+     *        to measure the distance to
+     * @param otherY the {@code y} component of the sphere {@code (otherX, otherY, otherZ, otherR)}
+     *        to measure the distance to
+     * @param otherZ the {@code z} component of the sphere {@code (otherX, otherY, otherZ, otherR)}
+     *        to measure the distance to
+     * @param otherR the {@code r} component of the sphere {@code (otherX, otherY, otherZ, otherR)}
+     *        to measure the distance to
      * @return the distance between this sphere and the given sphere, i.e. the distance between the
      *        centers minus both radii, clamped at zero; zero when they overlap or touch
      */
@@ -879,7 +895,7 @@ public final class FloatSphereImpl implements FloatSphere {
      * distance from the point to the center minus the radius: positive outside, zero on the surface
      * and negative inside.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the signed distance between the given point and the surface of this sphere, i.e. the
      *        distance from the point to the center minus the radius: positive outside, zero on the
      *        surface and negative inside
@@ -894,9 +910,12 @@ public final class FloatSphereImpl implements FloatSphere {
      * distance from the point to the center minus the radius: positive outside, zero on the surface
      * and negative inside.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the signed distance between the given point and the surface of this sphere, i.e. the
      *        distance from the point to the center minus the radius: positive outside, zero on the
      *        surface and negative inside

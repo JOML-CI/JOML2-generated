@@ -41,7 +41,7 @@ public interface FloatRigidR {
     /**
      * Set the rotation of this rigid transform to {@code r} and store the result in {@code dest}.
      *
-     * @param r the quaternion
+     * @param r the new rotation
      * @param dest will hold the result
      * @return dest
      */
@@ -53,7 +53,7 @@ public interface FloatRigidR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param r the quaternion
+     * @param r the new rotation
      * @param dest will hold the result
      * @return dest
      */
@@ -258,8 +258,11 @@ public interface FloatRigidR {
      * Interpolate between this rigid transform and {@code other} using the interpolation factor
      * {@code t}, interpolating the translation linearly and the rotation via shortest-arc slerp and
      * store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this rigid transform (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other rigid transform
+     * @param other the rigid transform to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -271,10 +274,13 @@ public interface FloatRigidR {
      * {@code t}, interpolating the translation linearly and the rotation via shortest-arc slerp and
      * store the result in {@code dest}.
      * <p>
+     * The interpolation starts at this rigid transform (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other rigid transform
+     * @param other the rigid transform to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -286,6 +292,10 @@ public interface FloatRigidR {
      * {@code rY}, {@code rZ}, {@code rW}) using the interpolation factor {@code t}, interpolating
      * the translation linearly and the rotation via shortest-arc slerp and store the result in
      * {@code dest}.
+     * <p>
+     * The interpolation starts at this rigid transform (interpolation factor {@code 0}) and ends at
+     * ({@code tX}, {@code tY}, {@code tZ}, {@code rX}, {@code rY}, {@code rZ}, {@code rW})
+     * (interpolation factor {@code 1}).
      *
      * @param tX the {@code tX} component of the rigid transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
@@ -312,6 +322,10 @@ public interface FloatRigidR {
      * {@code rY}, {@code rZ}, {@code rW}) using the interpolation factor {@code t}, interpolating
      * the translation linearly and the rotation via shortest-arc slerp and store the result in
      * {@code dest}.
+     * <p>
+     * The interpolation starts at this rigid transform (interpolation factor {@code 0}) and ends at
+     * ({@code tX}, {@code tY}, {@code tZ}, {@code rX}, {@code rY}, {@code rZ}, {@code rW})
+     * (interpolation factor {@code 1}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -344,7 +358,7 @@ public interface FloatRigidR {
      * transform by using {@code M * R * v}, the transformation of the operand will be applied
      * first.
      *
-     * @param other the other rigid transform
+     * @param other the right operand
      * @param dest will hold the result
      * @return dest
      */
@@ -361,7 +375,7 @@ public interface FloatRigidR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other rigid transform
+     * @param other the right operand
      * @param dest will hold the result
      * @return dest
      */
@@ -433,7 +447,7 @@ public interface FloatRigidR {
      * transform will be {@code R * M}. So when transforming a vector {@code v} with the new rigid
      * transform by using {@code R * M * v}, the transformation of the operand will be applied last.
      *
-     * @param other the other rigid transform
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -449,7 +463,7 @@ public interface FloatRigidR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other rigid transform
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -517,7 +531,8 @@ public interface FloatRigidR {
      * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other}
      * and store the result in {@code dest}.
      *
-     * @param other the other rigid transform
+     * @param other the target rigid transform, reached by composing this rigid transform with the
+     *        result
      * @param dest will hold the result
      * @return dest
      */
@@ -531,7 +546,8 @@ public interface FloatRigidR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other rigid transform
+     * @param other the target rigid transform, reached by composing this rigid transform with the
+     *        result
      * @param dest will hold the result
      * @return dest
      */
@@ -886,7 +902,7 @@ public interface FloatRigidR {
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
-     * @param rotation the quaternion (must be a unit quaternion)
+     * @param rotation the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -903,7 +919,7 @@ public interface FloatRigidR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param rotation the quaternion (must be a unit quaternion)
+     * @param rotation the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -1366,7 +1382,7 @@ public interface FloatRigidR {
      * with the new rigid transform by using {@code M * T * v}, the translation will be applied
      * first.
      *
-     * @param translation the vector
+     * @param translation the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -1384,7 +1400,7 @@ public interface FloatRigidR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param translation the vector
+     * @param translation the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -1430,7 +1446,7 @@ public interface FloatRigidR {
     /**
      * Transform {@code v} by this rigid transform and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -1442,7 +1458,7 @@ public interface FloatRigidR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -1478,7 +1494,7 @@ public interface FloatRigidR {
     /**
      * Transform {@code v} by this rigid transform and store the result back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the vector to transform (also receives the result)
      * @return {@code v}
      */
     default Float3 transform(@Mutated Float3 v) { return transform(v, v); }
@@ -1487,7 +1503,7 @@ public interface FloatRigidR {
      * Transform the given direction by the rotation part of this rigid transform, ignoring the
      * translation and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -1500,7 +1516,7 @@ public interface FloatRigidR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -1537,7 +1553,7 @@ public interface FloatRigidR {
      * Transform the given direction by the rotation part of this rigid transform, ignoring the
      * translation and store the result back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the direction to transform (also receives the result)
      * @return {@code v}
      */
     default Float3 transformDirection(@Mutated Float3 v) { return transformDirection(v, v); }
@@ -1547,7 +1563,7 @@ public interface FloatRigidR {
      * local), ignoring the translation, without materializing {@code invert()} and store the result
      * in {@code dest}.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -1561,7 +1577,7 @@ public interface FloatRigidR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -1601,7 +1617,7 @@ public interface FloatRigidR {
      * local), ignoring the translation, without materializing {@code invert()} and store the result
      * back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the direction to transform (also receives the result)
      * @return {@code v}
      */
     default Float3 transformDirectionInverse(@Mutated Float3 v) { return transformDirectionInverse(v, v); }
@@ -1610,7 +1626,7 @@ public interface FloatRigidR {
      * Transform {@code p} by the inverse of this rigid transform and store the result in
      * {@code dest}.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -1623,7 +1639,7 @@ public interface FloatRigidR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -1660,7 +1676,7 @@ public interface FloatRigidR {
      * Transform {@code p} by the inverse of this rigid transform and store the result back into
      * {@code p}.
      *
-     * @param p the vector (also receives the result)
+     * @param p the position to transform (also receives the result)
      * @return {@code p}
      */
     default Float3 transformInverse(@Mutated Float3 p) { return transformInverse(p, p); }
@@ -1669,7 +1685,7 @@ public interface FloatRigidR {
      * Transform the given position by this rigid transform, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -1682,7 +1698,7 @@ public interface FloatRigidR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -1719,7 +1735,7 @@ public interface FloatRigidR {
      * Transform the given position by this rigid transform, treating it as a point with an implicit
      * {@code w = 1} and store the result back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the position to transform (also receives the result)
      * @return {@code v}
      */
     default Float3 transformPosition(@Mutated Float3 v) { return transformPosition(v, v); }
@@ -1728,7 +1744,7 @@ public interface FloatRigidR {
      * Transform the given position by the inverse of this rigid transform (world to local), without
      * materializing {@code invert()} and store the result in {@code dest}.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -1741,7 +1757,7 @@ public interface FloatRigidR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -1778,7 +1794,7 @@ public interface FloatRigidR {
      * Transform the given position by the inverse of this rigid transform (world to local), without
      * materializing {@code invert()} and store the result back into {@code p}.
      *
-     * @param p the vector (also receives the result)
+     * @param p the position to transform (also receives the result)
      * @return {@code p}
      */
     default Float3 transformPositionInverse(@Mutated Float3 p) { return transformPositionInverse(p, p); }

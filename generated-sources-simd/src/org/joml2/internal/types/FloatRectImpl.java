@@ -64,7 +64,7 @@ public final class FloatRectImpl implements FloatRect {
     /**
      * Add {@code other} to this rectangle and store the result in {@code dest}.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to add
      * @param dest will hold the result
      * @return dest
      */
@@ -84,7 +84,7 @@ public final class FloatRectImpl implements FloatRect {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to add
      * @param dest will hold the result
      * @return dest
      */
@@ -186,7 +186,7 @@ public final class FloatRectImpl implements FloatRect {
     /**
      * Subtract {@code other} from this rectangle and store the result in {@code dest}.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -206,7 +206,7 @@ public final class FloatRectImpl implements FloatRect {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -273,7 +273,7 @@ public final class FloatRectImpl implements FloatRect {
     /**
      * Set this rectangle to the given values.
      *
-     * @param v the rectangle
+     * @param v the rectangle to copy
      * @return this
      */
     @Mutated public FloatRect set(FloatRectR v) {
@@ -307,7 +307,7 @@ public final class FloatRectImpl implements FloatRect {
     /**
      * Set the maximum corner of this rectangle to {@code max} and store the result in {@code dest}.
      *
-     * @param max the maximum corner
+     * @param max the maximum corner of the box
      * @param dest will hold the result
      * @return dest
      */
@@ -329,7 +329,7 @@ public final class FloatRectImpl implements FloatRect {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param max the maximum corner
+     * @param max the maximum corner of the box
      * @param dest will hold the result
      * @return dest
      */
@@ -384,7 +384,7 @@ public final class FloatRectImpl implements FloatRect {
     /**
      * Set the minimum corner of this rectangle to {@code min} and store the result in {@code dest}.
      *
-     * @param min the minimum corner
+     * @param min the minimum corner of the box
      * @param dest will hold the result
      * @return dest
      */
@@ -406,7 +406,7 @@ public final class FloatRectImpl implements FloatRect {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param min the minimum corner
+     * @param min the minimum corner of the box
      * @param dest will hold the result
      * @return dest
      */
@@ -546,8 +546,11 @@ public final class FloatRectImpl implements FloatRect {
     /**
      * Linearly interpolate between this rectangle and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this rectangle (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other rectangle
+     * @param other the rectangle to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -582,10 +585,13 @@ public final class FloatRectImpl implements FloatRect {
      * Linearly interpolate between this rectangle and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
      * <p>
+     * The interpolation starts at this rectangle (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -599,6 +605,10 @@ public final class FloatRectImpl implements FloatRect {
      * Linearly interpolate between this rectangle and ({@code otherMINX}, {@code otherMINY},
      * {@code otherMAXX}, {@code otherMAXY}) using the interpolation factor {@code t} and store the
      * result in {@code dest}.
+     * <p>
+     * The interpolation starts at this rectangle (interpolation factor {@code 0}) and ends at
+     * ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX}, {@code otherMAXY}) (interpolation
+     * factor {@code 1}).
      *
      * @param otherMINX the {@code minX} component of the rectangle
      *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
@@ -640,6 +650,10 @@ public final class FloatRectImpl implements FloatRect {
      * Linearly interpolate between this rectangle and ({@code otherMINX}, {@code otherMINY},
      * {@code otherMAXX}, {@code otherMAXY}) using the interpolation factor {@code t} and store the
      * result in {@code dest}.
+     * <p>
+     * The interpolation starts at this rectangle (interpolation factor {@code 0}) and ends at
+     * ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX}, {@code otherMAXY}) (interpolation
+     * factor {@code 1}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -755,7 +769,7 @@ public final class FloatRectImpl implements FloatRect {
      * Compute the intersection of this rectangle and {@code other} (disjoint inputs yield inverted
      * bounds - check {@code isValid()}) and store the result in {@code dest}.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to intersect with
      * @param dest will hold the result
      * @return dest
      */
@@ -771,7 +785,7 @@ public final class FloatRectImpl implements FloatRect {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to intersect with
      * @param dest will hold the result
      * @return dest
      */
@@ -881,7 +895,7 @@ public final class FloatRectImpl implements FloatRect {
     /**
      * Translate this rectangle by {@code delta} and store the result in {@code dest}.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -901,7 +915,7 @@ public final class FloatRectImpl implements FloatRect {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -955,7 +969,7 @@ public final class FloatRectImpl implements FloatRect {
      * Set this rectangle to the union of itself and {@code other} and store the result in
      * {@code dest}.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to include in the union
      * @param dest will hold the result
      * @return dest
      */
@@ -978,7 +992,7 @@ public final class FloatRectImpl implements FloatRect {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to include in the union
      * @param dest will hold the result
      * @return dest
      */
@@ -1045,7 +1059,7 @@ public final class FloatRectImpl implements FloatRect {
     /**
      * Grow this rectangle to include the point {@code p} and store the result in {@code dest}.
      *
-     * @param p the vector
+     * @param p the point to include
      * @param dest will hold the result
      * @return dest
      */
@@ -1067,7 +1081,7 @@ public final class FloatRectImpl implements FloatRect {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the vector
+     * @param p the point to include
      * @param dest will hold the result
      * @return dest
      */
@@ -1159,7 +1173,7 @@ public final class FloatRectImpl implements FloatRect {
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -1178,7 +1192,7 @@ public final class FloatRectImpl implements FloatRect {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -1194,8 +1208,8 @@ public final class FloatRectImpl implements FloatRect {
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY)}
-     * @param pY the {@code y} component of the point {@code (pX, pY)}
+     * @param pX the {@code x} component of the point {@code (pX, pY)} to find the closest point to
+     * @param pY the {@code y} component of the point {@code (pX, pY)} to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -1218,8 +1232,8 @@ public final class FloatRectImpl implements FloatRect {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY)}
-     * @param pY the {@code y} component of the point {@code (pX, pY)}
+     * @param pX the {@code x} component of the point {@code (pX, pY)} to find the closest point to
+     * @param pY the {@code y} component of the point {@code (pX, pY)} to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -1235,7 +1249,7 @@ public final class FloatRectImpl implements FloatRect {
     /**
      * Determine whether this rectangle contains the given point (boundary inclusive).
      *
-     * @param p the vector
+     * @param p the point to test
      * @return {@code true} if this rectangle contains the given point (boundary inclusive),
      *        {@code false} otherwise
      */
@@ -1264,7 +1278,7 @@ public final class FloatRectImpl implements FloatRect {
     /**
      * Determine whether this rectangle completely contains {@code o}.
      *
-     * @param o the rectangle
+     * @param o the rectangle to test
      * @return {@code true} if this rectangle completely contains {@code o}, {@code false} otherwise
      */
     public boolean containsRect(FloatRectR o) {
@@ -1297,7 +1311,7 @@ public final class FloatRectImpl implements FloatRect {
      * length of the difference between the point and its per-axis clamp into the rectangle's
      * bounds; zero for a point inside or on the rectangle.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the squared distance between this rectangle and the given point, i.e. the squared
      *        length of the difference between the point and its per-axis clamp into the rectangle's
      *        bounds; zero for a point inside or on the rectangle
@@ -1312,8 +1326,8 @@ public final class FloatRectImpl implements FloatRect {
      * length of the difference between the point and its per-axis clamp into the rectangle's
      * bounds; zero for a point inside or on the rectangle.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY)}
-     * @param pY the {@code y} component of the point {@code (pX, pY)}
+     * @param pX the {@code x} component of the point {@code (pX, pY)} to measure the distance to
+     * @param pY the {@code y} component of the point {@code (pX, pY)} to measure the distance to
      * @return the squared distance between this rectangle and the given point, i.e. the squared
      *        length of the difference between the point and its per-axis clamp into the rectangle's
      *        bounds; zero for a point inside or on the rectangle
@@ -1331,7 +1345,7 @@ public final class FloatRectImpl implements FloatRect {
      * length of the shortest vector between any two points of the two rectangles; zero when they
      * overlap or touch.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to measure the distance to
      * @return the squared distance between this rectangle and the given rectangle, i.e. the squared
      *        length of the shortest vector between any two points of the two rectangles; zero when
      *        they overlap or touch
@@ -1346,14 +1360,14 @@ public final class FloatRectImpl implements FloatRect {
      * length of the shortest vector between any two points of the two rectangles; zero when they
      * overlap or touch.
      *
-     * @param otherMINX the {@code minX} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
-     * @param otherMINY the {@code minY} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
-     * @param otherMAXX the {@code maxX} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
-     * @param otherMAXY the {@code maxY} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
+     * @param otherMINX the {@code minX} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
+     * @param otherMINY the {@code minY} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
+     * @param otherMAXX the {@code maxX} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
+     * @param otherMAXY the {@code maxY} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
      * @return the squared distance between this rectangle and the given rectangle, i.e. the squared
      *        length of the shortest vector between any two points of the two rectangles; zero when
      *        they overlap or touch
@@ -1371,7 +1385,7 @@ public final class FloatRectImpl implements FloatRect {
      * difference between the point and its per-axis clamp into the rectangle's bounds; zero for a
      * point inside or on the rectangle.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the distance between this rectangle and the given point, i.e. the length of the
      *        difference between the point and its per-axis clamp into the rectangle's bounds; zero
      *        for a point inside or on the rectangle
@@ -1386,8 +1400,8 @@ public final class FloatRectImpl implements FloatRect {
      * difference between the point and its per-axis clamp into the rectangle's bounds; zero for a
      * point inside or on the rectangle.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY)}
-     * @param pY the {@code y} component of the point {@code (pX, pY)}
+     * @param pX the {@code x} component of the point {@code (pX, pY)} to measure the distance to
+     * @param pY the {@code y} component of the point {@code (pX, pY)} to measure the distance to
      * @return the distance between this rectangle and the given point, i.e. the length of the
      *        difference between the point and its per-axis clamp into the rectangle's bounds; zero
      *        for a point inside or on the rectangle
@@ -1405,7 +1419,7 @@ public final class FloatRectImpl implements FloatRect {
      * shortest vector between any two points of the two rectangles; zero when they overlap or
      * touch.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to measure the distance to
      * @return the distance between this rectangle and the given rectangle, i.e. the length of the
      *        shortest vector between any two points of the two rectangles; zero when they overlap
      *        or touch
@@ -1420,14 +1434,14 @@ public final class FloatRectImpl implements FloatRect {
      * shortest vector between any two points of the two rectangles; zero when they overlap or
      * touch.
      *
-     * @param otherMINX the {@code minX} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
-     * @param otherMINY the {@code minY} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
-     * @param otherMAXX the {@code maxX} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
-     * @param otherMAXY the {@code maxY} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
+     * @param otherMINX the {@code minX} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
+     * @param otherMINY the {@code minY} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
+     * @param otherMAXX the {@code maxX} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
+     * @param otherMAXY the {@code maxY} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
      * @return the distance between this rectangle and the given rectangle, i.e. the length of the
      *        shortest vector between any two points of the two rectangles; zero when they overlap
      *        or touch
@@ -1588,7 +1602,7 @@ public final class FloatRectImpl implements FloatRect {
     /**
      * Determine whether this rectangle intersects {@code o}.
      *
-     * @param o the rectangle
+     * @param o the rectangle to test
      * @return {@code true} if this rectangle intersects {@code o}, {@code false} otherwise
      */
     public boolean intersectsRect(FloatRectR o) {

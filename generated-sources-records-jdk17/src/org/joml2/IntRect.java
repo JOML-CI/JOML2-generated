@@ -31,7 +31,14 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
     /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
     public static final int SIZE_BYTES = 16;
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param minX the {@code minX} component
+     * @param minY the {@code minY} component
+     * @param maxX the {@code maxX} component
+     * @param maxY the {@code maxY} component
+     */
     public IntRect(int minX, int minY, int maxX, int maxY) {
         this.minX = minX;
         this.minY = minY;
@@ -60,7 +67,7 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
     /**
      * Add {@code other} to this rectangle, returning the result as a value.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to add
      * @return the resulting rectangle
      */
     public IntRect add(IntRect other) {
@@ -100,7 +107,7 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
     /**
      * Subtract {@code other} from this rectangle, returning the result as a value.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to subtract
      * @return the resulting rectangle
      */
     public IntRect sub(IntRect other) {
@@ -130,7 +137,7 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
     /**
      * Create a new rectangle from the given values.
      *
-     * @param v the rectangle
+     * @param v the rectangle to copy
      * @return the resulting rectangle
      */
     public IntRect set(IntRect v) {
@@ -155,7 +162,7 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
     /**
      * Set the maximum corner of this rectangle to {@code max}, returning the result as a value.
      *
-     * @param max the maximum corner
+     * @param max the maximum corner of the box
      * @return the resulting rectangle
      */
     public IntRect setMax(Int2 max) {
@@ -179,7 +186,7 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
     /**
      * Set the minimum corner of this rectangle to {@code min}, returning the result as a value.
      *
-     * @param min the minimum corner
+     * @param min the minimum corner of the box
      * @return the resulting rectangle
      */
     public IntRect setMin(Int2 min) {
@@ -248,7 +255,7 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * Compute the intersection of this rectangle and {@code other} (disjoint inputs yield inverted
      * bounds - check {@code isValid()}), returning the result as a value.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to intersect with
      * @return the resulting rectangle
      */
     public IntRect intersect(IntRect other) {
@@ -279,7 +286,7 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
     /**
      * Translate this rectangle by {@code delta}, returning the result as a value.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @return the resulting rectangle
      */
     public IntRect translate(Int2 delta) {
@@ -303,7 +310,7 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
     /**
      * Set this rectangle to the union of itself and {@code other}, returning the result as a value.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to include in the union
      * @return the resulting rectangle
      */
     public IntRect union(IntRect other) {
@@ -333,7 +340,7 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
     /**
      * Grow this rectangle to include the point {@code p}, returning the result as a value.
      *
-     * @param p the vector
+     * @param p the point to include
      * @return the resulting rectangle
      */
     public IntRect union(Int2 p) {
@@ -399,7 +406,7 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * The result is returned as a value; {@code this} is not modified.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @return the resulting vector
      */
     public Int2 closestPointToPoint(Int2 p) {
@@ -414,8 +421,8 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * The result is returned as a value; {@code this} is not modified.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY)}
-     * @param pY the {@code y} component of the point {@code (pX, pY)}
+     * @param pX the {@code x} component of the point {@code (pX, pY)} to find the closest point to
+     * @param pY the {@code y} component of the point {@code (pX, pY)} to find the closest point to
      * @return the resulting vector
      */
     public Int2 closestPointToPoint(int pX, int pY) {
@@ -426,7 +433,7 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
     /**
      * Determine whether this rectangle contains the given point (boundary inclusive).
      *
-     * @param p the vector
+     * @param p the point to test
      * @return {@code true} if this rectangle contains the given point (boundary inclusive),
      *        {@code false} otherwise
      */
@@ -454,7 +461,7 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
     /**
      * Determine whether this rectangle completely contains {@code o}.
      *
-     * @param o the rectangle
+     * @param o the rectangle to test
      * @return {@code true} if this rectangle completely contains {@code o}, {@code false} otherwise
      */
     public boolean containsRect(IntRect o) {
@@ -486,7 +493,7 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * length of the difference between the point and its per-axis clamp into the rectangle's
      * bounds; zero for a point inside or on the rectangle.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the squared distance between this rectangle and the given point, i.e. the squared
      *        length of the difference between the point and its per-axis clamp into the rectangle's
      *        bounds; zero for a point inside or on the rectangle
@@ -501,8 +508,8 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * length of the difference between the point and its per-axis clamp into the rectangle's
      * bounds; zero for a point inside or on the rectangle.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY)}
-     * @param pY the {@code y} component of the point {@code (pX, pY)}
+     * @param pX the {@code x} component of the point {@code (pX, pY)} to measure the distance to
+     * @param pY the {@code y} component of the point {@code (pX, pY)} to measure the distance to
      * @return the squared distance between this rectangle and the given point, i.e. the squared
      *        length of the difference between the point and its per-axis clamp into the rectangle's
      *        bounds; zero for a point inside or on the rectangle
@@ -519,7 +526,7 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * length of the shortest vector between any two points of the two rectangles; zero when they
      * overlap or touch.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to measure the distance to
      * @return the squared distance between this rectangle and the given rectangle, i.e. the squared
      *        length of the shortest vector between any two points of the two rectangles; zero when
      *        they overlap or touch
@@ -534,14 +541,14 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * length of the shortest vector between any two points of the two rectangles; zero when they
      * overlap or touch.
      *
-     * @param otherMINX the {@code minX} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
-     * @param otherMINY the {@code minY} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
-     * @param otherMAXX the {@code maxX} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
-     * @param otherMAXY the {@code maxY} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
+     * @param otherMINX the {@code minX} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
+     * @param otherMINY the {@code minY} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
+     * @param otherMAXX the {@code maxX} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
+     * @param otherMAXY the {@code maxY} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
      * @return the squared distance between this rectangle and the given rectangle, i.e. the squared
      *        length of the shortest vector between any two points of the two rectangles; zero when
      *        they overlap or touch
@@ -611,7 +618,7 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
     /**
      * Determine whether this rectangle intersects {@code o}.
      *
-     * @param o the rectangle
+     * @param o the rectangle to test
      * @return {@code true} if this rectangle intersects {@code o}, {@code false} otherwise
      */
     public boolean intersectsRect(IntRect o) {
@@ -659,22 +666,38 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
         return this.maxX - this.minX;
     }
 
-    /** {@return a copy with the {@code minX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code minX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code minX} component
+     */
     public IntRect withMinX(int v) {
         return new IntRect(v, minY, maxX, maxY);
     }
 
-    /** {@return a copy with the {@code minY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code minY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code minY} component
+     */
     public IntRect withMinY(int v) {
         return new IntRect(minX, v, maxX, maxY);
     }
 
-    /** {@return a copy with the {@code maxX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code maxX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code maxX} component
+     */
     public IntRect withMaxX(int v) {
         return new IntRect(minX, minY, v, maxY);
     }
 
-    /** {@return a copy with the {@code maxY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code maxY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code maxY} component
+     */
     public IntRect withMaxY(int v) {
         return new IntRect(minX, minY, maxX, v);
     }

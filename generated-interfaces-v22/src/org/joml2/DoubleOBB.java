@@ -32,7 +32,7 @@ public interface DoubleOBB extends DoubleOBBR {
     /**
      * Set this oriented bounding box to the given values.
      *
-     * @param v the oriented bounding box
+     * @param v the oriented bounding box to copy
      * @return this
      */
     @Mutated DoubleOBB set(DoubleOBBR v);
@@ -106,7 +106,7 @@ public interface DoubleOBB extends DoubleOBBR {
     /**
      * Set the center of this oriented bounding box to {@code c}.
      *
-     * @param c the vector
+     * @param c the new center
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleOBB setCenter(Double3R c) { return setCenter(c, Joml.RETURN_NEW ? Joml.doubleOBB() : this); }
@@ -124,7 +124,7 @@ public interface DoubleOBB extends DoubleOBBR {
     /**
      * Set the half extents of this oriented bounding box to {@code h}.
      *
-     * @param h the vector
+     * @param h the new half extents
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleOBB setHalfSize(Double3R h) { return setHalfSize(h, Joml.RETURN_NEW ? Joml.doubleOBB() : this); }
@@ -149,7 +149,7 @@ public interface DoubleOBB extends DoubleOBBR {
     /**
      * Set the orientation of this oriented bounding box to {@code q}.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the new orientation (must be a unit quaternion)
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleOBB setOrientation(DoubleQuatR q) { return setOrientation(q, Joml.RETURN_NEW ? Joml.doubleOBB() : this); }
@@ -193,7 +193,7 @@ public interface DoubleOBB extends DoubleOBBR {
      * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
      * shear is approximated).
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleOBB transform(Double3x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.doubleOBB() : this); }
@@ -207,7 +207,7 @@ public interface DoubleOBB extends DoubleOBBR {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleOBB transform(Double4x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.doubleOBB() : this); }
@@ -215,7 +215,7 @@ public interface DoubleOBB extends DoubleOBBR {
     /**
      * Translate this oriented bounding box by {@code delta}.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleOBB translate(Double3R delta) { return translate(delta, Joml.RETURN_NEW ? Joml.doubleOBB() : this); }

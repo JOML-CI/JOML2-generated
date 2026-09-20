@@ -5613,7 +5613,7 @@ public class Float4x4Impl implements Float4x4 {
      * factor, or factors of very different scale) invert both factors separately and multiply the
      * inverses in reverse order instead.
      *
-     * @param other the other matrix
+     * @param other the right factor of the product
      * @param dest will hold the result
      * @return dest
      */
@@ -5661,7 +5661,7 @@ public class Float4x4Impl implements Float4x4 {
      * factor, or factors of very different scale) invert both factors separately and multiply the
      * inverses in reverse order instead.
      *
-     * @param other the other matrix
+     * @param other the right factor of the product
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 invertProduct(Float4x4R other) {
@@ -5712,7 +5712,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the right factor of the product
      * @param dest will hold the result
      * @return dest
      */
@@ -6862,7 +6862,7 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Add {@code other} to this matrix and store the result in {@code dest}.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @param dest will hold the result
      * @return dest
      */
@@ -6899,7 +6899,7 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Add {@code other} to this matrix.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 add(Float4x4R other) {
@@ -6939,7 +6939,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @param dest will hold the result
      * @return dest
      */
@@ -7668,7 +7668,7 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Subtract {@code other} from this matrix and store the result in {@code dest}.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -7706,7 +7706,7 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Subtract {@code other} from this matrix.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 sub(Float4x4R other) {
@@ -7747,7 +7747,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -7858,7 +7858,7 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Set this matrix to the given values.
      *
-     * @param v the matrix
+     * @param v the matrix to copy
      * @return this
      */
     @Mutated public Float4x4 set(Float4x4R v) {
@@ -7925,7 +7925,7 @@ public class Float4x4Impl implements Float4x4 {
      * Set this matrix to the given 3x3 matrix, copying the overlapping cells and filling the rest
      * with identity.
      *
-     * @param m the matrix
+     * @param m the matrix to copy from
      * @return this
      */
     @Mutated public Float4x4 set(Float3x3R m) {
@@ -7953,7 +7953,7 @@ public class Float4x4Impl implements Float4x4 {
      * Set this matrix to the given 3x4 matrix, copying the overlapping cells and filling the rest
      * with identity.
      *
-     * @param m the matrix
+     * @param m the matrix to copy from
      * @return this
      */
     @Mutated public Float4x4 set(Float3x4R m) {
@@ -8216,7 +8216,7 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Set this matrix to the given rigid transform's {@code T * R} composition.
      *
-     * @param r the rigid transform (whose rotation must be a unit quaternion)
+     * @param r the rigid transform to convert (whose rotation must be a unit quaternion)
      * @return this
      */
     public @Mutated Float4x4 makeFromRigid(FloatRigidR r) {
@@ -8276,7 +8276,7 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Set this matrix to the given transform's {@code T * R * S} composition.
      *
-     * @param t the transform
+     * @param t the transform to convert
      * @return this
      */
     public @Mutated Float4x4 makeFromTransform(FloatTransformR t) {
@@ -12814,8 +12814,8 @@ public class Float4x4Impl implements Float4x4 {
      * Compute the frustum test of the given axis-aligned box against the frustum defined by this
      * matrix: {@code 1} if the box intersects or is inside the frustum, {@code 0} if fully outside.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the frustum test of the given axis-aligned box against the frustum defined by this
      *        matrix: {@code 1} if the box intersects or is inside the frustum, {@code 0} if fully
@@ -12856,7 +12856,7 @@ public class Float4x4Impl implements Float4x4 {
      * Compute the frustum test of the given axis-aligned box against the frustum defined by this
      * matrix: {@code 1} if the box intersects or is inside the frustum, {@code 0} if fully outside.
      *
-     * @param aabb the axis-aligned bounding box
+     * @param aabb the axis-aligned box to test
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the frustum test of the given axis-aligned box against the frustum defined by this
      *        matrix: {@code 1} if the box intersects or is inside the frustum, {@code 0} if fully
@@ -12876,8 +12876,8 @@ public class Float4x4Impl implements Float4x4 {
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
      * @return the frustum test of the given axis-aligned box against the frustum defined by this
      *        matrix: {@code 1} if the box intersects or is inside the frustum, {@code 0} if fully
      *        outside
@@ -12910,7 +12910,7 @@ public class Float4x4Impl implements Float4x4 {
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param aabb the axis-aligned bounding box
+     * @param aabb the axis-aligned box to test
      * @return the frustum test of the given axis-aligned box against the frustum defined by this
      *        matrix: {@code 1} if the box intersects or is inside the frustum, {@code 0} if fully
      *        outside
@@ -12960,7 +12960,7 @@ public class Float4x4Impl implements Float4x4 {
      * Compute the frustum test of the given point against the frustum defined by this matrix:
      * {@code 1} if the point lies inside, {@code 0} otherwise.
      *
-     * @param point the vector
+     * @param point the point to test
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the frustum test of the given point against the frustum defined by this matrix:
      *        {@code 1} if the point lies inside, {@code 0} otherwise
@@ -12998,7 +12998,7 @@ public class Float4x4Impl implements Float4x4 {
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param point the vector
+     * @param point the point to test
      * @return the frustum test of the given point against the frustum defined by this matrix:
      *        {@code 1} if the point lies inside, {@code 0} otherwise
      */
@@ -13137,8 +13137,8 @@ public class Float4x4Impl implements Float4x4 {
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
      *
-     * @param center the center point
-     * @param radius the radius
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the frustum test of the given sphere against the frustum defined by this matrix:
      *        {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully
@@ -13159,7 +13159,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param centerX the {@code x} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerY the {@code y} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerZ the {@code z} component of the vector {@code (centerX, centerY, centerZ)}
-     * @param radius the radius
+     * @param radius the radius of the sphere
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the frustum test of the given sphere against the frustum defined by this matrix:
      *        {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully
@@ -13177,7 +13177,7 @@ public class Float4x4Impl implements Float4x4 {
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
      *
-     * @param sph the sphere
+     * @param sph the sphere to test
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the frustum test of the given sphere against the frustum defined by this matrix:
      *        {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully
@@ -13197,8 +13197,8 @@ public class Float4x4Impl implements Float4x4 {
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param center the center point
-     * @param radius the radius
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
      * @return the frustum test of the given sphere against the frustum defined by this matrix:
      *        {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully
      *        outside
@@ -13215,7 +13215,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param centerX the {@code x} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerY the {@code y} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerZ the {@code z} component of the vector {@code (centerX, centerY, centerZ)}
-     * @param radius the radius
+     * @param radius the radius of the sphere
      * @return the frustum test of the given sphere against the frustum defined by this matrix:
      *        {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully
      *        outside
@@ -13229,7 +13229,7 @@ public class Float4x4Impl implements Float4x4 {
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param sph the sphere
+     * @param sph the sphere to test
      * @return the frustum test of the given sphere against the frustum defined by this matrix:
      *        {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully
      *        outside
@@ -13339,8 +13339,11 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -13377,8 +13380,11 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -13416,10 +13422,13 @@ public class Float4x4Impl implements Float4x4 {
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
      * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -13434,6 +13443,11 @@ public class Float4x4Impl implements Float4x4 {
      * {@code m03}, {@code m10}, {@code m11}, {@code m12}, {@code m13}, {@code m20}, {@code m21},
      * {@code m22}, {@code m23}, {@code m30}, {@code m31}, {@code m32}, {@code m33}) using the
      * interpolation factor {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m02}, {@code m03}, {@code m10}, {@code m11}, {@code m12},
+     * {@code m13}, {@code m20}, {@code m21}, {@code m22}, {@code m23}, {@code m30}, {@code m31},
+     * {@code m32}, {@code m33}) (interpolation factor {@code 1}).
      *
      * @param m00 the element in row 0, column 0 of the matrix
      * @param m01 the element in row 0, column 1 of the matrix
@@ -13506,6 +13520,11 @@ public class Float4x4Impl implements Float4x4 {
      * {@code m03}, {@code m10}, {@code m11}, {@code m12}, {@code m13}, {@code m20}, {@code m21},
      * {@code m22}, {@code m23}, {@code m30}, {@code m31}, {@code m32}, {@code m33}) using the
      * interpolation factor {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m02}, {@code m03}, {@code m10}, {@code m11}, {@code m12},
+     * {@code m13}, {@code m20}, {@code m21}, {@code m22}, {@code m23}, {@code m30}, {@code m31},
+     * {@code m32}, {@code m33}) (interpolation factor {@code 1}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -15720,7 +15739,7 @@ public class Float4x4Impl implements Float4x4 {
      * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -15752,7 +15771,7 @@ public class Float4x4Impl implements Float4x4 {
      * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preMul(Float4x4R other) {
@@ -15788,7 +15807,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -16185,7 +16204,7 @@ public class Float4x4Impl implements Float4x4 {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -16209,7 +16228,7 @@ public class Float4x4Impl implements Float4x4 {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preMul(Float2x2R other) {
@@ -16236,7 +16255,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -16534,7 +16553,7 @@ public class Float4x4Impl implements Float4x4 {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -16558,7 +16577,7 @@ public class Float4x4Impl implements Float4x4 {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preMul(Float2x3R other) {
@@ -16585,7 +16604,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -16911,7 +16930,7 @@ public class Float4x4Impl implements Float4x4 {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -16935,7 +16954,7 @@ public class Float4x4Impl implements Float4x4 {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preMul(Float3x3R other) {
@@ -16962,7 +16981,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -17256,7 +17275,7 @@ public class Float4x4Impl implements Float4x4 {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -17291,7 +17310,7 @@ public class Float4x4Impl implements Float4x4 {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preMul(Float3x4R other) {
@@ -17329,7 +17348,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -17423,8 +17442,8 @@ public class Float4x4Impl implements Float4x4 {
      * matrix will be {@code M * A}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * A * v}, the arcball view will be applied first.
      *
-     * @param radius the radius
-     * @param center the center point
+     * @param radius the distance of the eye from the center
+     * @param center the center of the arcball, i.e. the point the eye orbits around
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
@@ -17446,8 +17465,8 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param radius the radius
-     * @param center the center point
+     * @param radius the distance of the eye from the center
+     * @param center the center of the arcball, i.e. the point the eye orbits around
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
@@ -17465,8 +17484,8 @@ public class Float4x4Impl implements Float4x4 {
      * matrix will be {@code M * A}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * A * v}, the arcball view will be applied first.
      *
-     * @param radius the radius
-     * @param center the center point
+     * @param radius the distance of the eye from the center
+     * @param center the center of the arcball, i.e. the point the eye orbits around
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -17694,7 +17713,7 @@ public class Float4x4Impl implements Float4x4 {
      * matrix will be {@code M * A}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * A * v}, the arcball view will be applied first.
      *
-     * @param radius the radius
+     * @param radius the distance of the eye from the center
      * @param centerX the {@code x} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerY the {@code y} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerZ the {@code z} component of the vector {@code (centerX, centerY, centerZ)}
@@ -17718,7 +17737,7 @@ public class Float4x4Impl implements Float4x4 {
      * matrix will be {@code M * A}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * A * v}, the arcball view will be applied first.
      *
-     * @param radius the radius
+     * @param radius the distance of the eye from the center
      * @param centerX the {@code x} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerY the {@code y} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerZ the {@code z} component of the vector {@code (centerX, centerY, centerZ)}
@@ -17746,7 +17765,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param radius the radius
+     * @param radius the distance of the eye from the center
      * @param centerX the {@code x} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerY the {@code y} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerZ the {@code z} component of the vector {@code (centerX, centerY, centerZ)}
@@ -18358,9 +18377,9 @@ public class Float4x4Impl implements Float4x4 {
      * Set this matrix to a transformation composed of the given translation, rotation and scale,
      * applied in scale-rotation-translation order.
      *
-     * @param translation the vector
-     * @param rotation the quaternion (must be a unit quaternion)
-     * @param scale the scale factor
+     * @param translation the translation
+     * @param rotation the rotation (must be a unit quaternion)
+     * @param scale the scale factors
      * @return this
      */
     public @Mutated Float4x4 composeTRS(Float3R translation, FloatQuatR rotation, Float3R scale) {
@@ -18428,10 +18447,10 @@ public class Float4x4Impl implements Float4x4 {
      * Set this matrix to a transformation composed of the given translation, rotation and scale
      * (applied in scale-rotation-translation order), post-multiplied by the given matrix.
      *
-     * @param translation the vector
-     * @param rotation the quaternion (must be a unit quaternion)
-     * @param scale the scale factor
-     * @param m the matrix
+     * @param translation the translation
+     * @param rotation the rotation (must be a unit quaternion)
+     * @param scale the scale factors
+     * @param m the matrix to post-multiply the composed transformation by
      * @return this
      */
     public @Mutated Float4x4 composeTRSMul(Float3R translation, FloatQuatR rotation, Float3R scale, Float4x4R m) {
@@ -18464,7 +18483,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param scaleX the {@code x} component of the vector {@code (scaleX, scaleY, scaleZ)}
      * @param scaleY the {@code y} component of the vector {@code (scaleX, scaleY, scaleZ)}
      * @param scaleZ the {@code z} component of the vector {@code (scaleX, scaleY, scaleZ)}
-     * @param m the matrix
+     * @param m the matrix to post-multiply the composed transformation by
      * @return this
      */
     @Mutated public Float4x4 composeTRSMul(float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ, Float4x4R m) {
@@ -19898,7 +19917,8 @@ public class Float4x4Impl implements Float4x4 {
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @param dest will hold the result
      * @return dest
@@ -19919,7 +19939,8 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @param dest will hold the result
      * @return dest
@@ -19936,7 +19957,8 @@ public class Float4x4Impl implements Float4x4 {
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -21582,8 +21604,8 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Set this matrix to an arcball view transformation about the given center.
      *
-     * @param radius the radius
-     * @param center the center point
+     * @param radius the distance of the eye from the center
+     * @param center the center of the arcball, i.e. the point the eye orbits around
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @return this
@@ -21596,7 +21618,7 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Set this matrix to an arcball view transformation about the given center.
      *
-     * @param radius the radius
+     * @param radius the distance of the eye from the center
      * @param centerX the {@code x} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerY the {@code y} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerZ the {@code z} component of the vector {@code (centerX, centerY, centerZ)}
@@ -21968,7 +21990,7 @@ public class Float4x4Impl implements Float4x4 {
      * Set this matrix to the rigid transformation represented by the unit dual quaternion
      * {@code dq}.
      *
-     * @param dq the dual quaternion (must be a unit dual quaternion)
+     * @param dq the dual quaternion to convert (must be a unit dual quaternion)
      * @return this
      */
     public @Mutated Float4x4 makeFromDualQuat(FloatDualQuatR dq) {
@@ -25702,7 +25724,7 @@ public class Float4x4Impl implements Float4x4 {
      * Set this matrix to a reflection transformation about the plane through the origin with the
      * normal {@code normal}.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the reflection plane (must be a unit vector)
      * @return this
      */
     public @Mutated Float4x4 makeReflection(Float3R normal) {
@@ -25802,7 +25824,8 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Set this matrix to a rotation that makes {@code +z} point along {@code dir}.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return this
      */
@@ -25873,7 +25896,7 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Set this matrix to the rotation represented by the quaternion {@code q}.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation quaternion (must be a unit quaternion)
      * @return this
      */
     public @Mutated Float4x4 makeRotationQuat(FloatQuatR q) {
@@ -26224,7 +26247,7 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Set this matrix to a scaling transformation that scales by {@code v}.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return this
      */
     public @Mutated Float4x4 makeScaling(Float3R v) {
@@ -55891,7 +55914,7 @@ public class Float4x4Impl implements Float4x4 {
      * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
      * origin.
      *
-     * @param rot the quaternion (must be a unit quaternion)
+     * @param rot the rotation to apply (must be a unit quaternion)
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -55916,7 +55939,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param rot the quaternion (must be a unit quaternion)
+     * @param rot the rotation to apply (must be a unit quaternion)
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -55937,7 +55960,7 @@ public class Float4x4Impl implements Float4x4 {
      * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
      * origin.
      *
-     * @param rot the quaternion (must be a unit quaternion)
+     * @param rot the rotation to apply (must be a unit quaternion)
      * @param pivot the pivot point
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -56939,7 +56962,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -56959,7 +56982,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -56975,7 +56998,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation to apply (must be a unit quaternion)
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 preRotateQuat(FloatQuatR q) {
@@ -58260,7 +58283,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code S * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code S * M * p}, the scaling will be applied last.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -58279,7 +58302,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -58295,7 +58318,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code S * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code S * M * p}, the scaling will be applied last.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 preScale(Float3R v) {
@@ -59434,7 +59457,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code T * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code T * M * p}, the translation will be applied last.
      *
-     * @param v the vector
+     * @param v the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -59454,7 +59477,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -59470,7 +59493,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code T * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code T * M * p}, the translation will be applied last.
      *
-     * @param v the vector
+     * @param v the translation offsets
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 preTranslate(Float3R v) {
@@ -59975,12 +59998,12 @@ public class Float4x4Impl implements Float4x4 {
      * Project the given position onto window coordinates using this matrix and the given viewport
      * and store the result in {@code dest}.
      *
-     * @param objX the {@code x} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objY the {@code y} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objZ the {@code z} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
+     * @param objX the {@code x} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objY the {@code y} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objZ the {@code z} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -60008,12 +60031,12 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param objX the {@code x} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objY the {@code y} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objZ the {@code z} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
+     * @param objX the {@code x} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objY the {@code y} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objZ the {@code z} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -60071,12 +60094,12 @@ public class Float4x4Impl implements Float4x4 {
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param objX the {@code x} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objY the {@code y} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objZ the {@code z} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
+     * @param objX the {@code x} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objY the {@code y} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objZ the {@code z} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -60100,12 +60123,12 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param objX the {@code x} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objY the {@code y} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objZ the {@code z} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
+     * @param objX the {@code x} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objY the {@code y} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objZ the {@code z} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -60128,7 +60151,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the reflection will be applied first.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the plane to reflect about (must be a unit vector)
      * @param dest will hold the result
      * @return dest
      */
@@ -60148,7 +60171,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the plane to reflect about (must be a unit vector)
      * @param dest will hold the result
      * @return dest
      */
@@ -60165,7 +60188,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the reflection will be applied first.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the plane to reflect about (must be a unit vector)
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 reflect(Float3R normal) {
@@ -60469,7 +60492,7 @@ public class Float4x4Impl implements Float4x4 {
      * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
      * origin.
      *
-     * @param rot the quaternion (must be a unit quaternion)
+     * @param rot the rotation to apply (must be a unit quaternion)
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -60494,7 +60517,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param rot the quaternion (must be a unit quaternion)
+     * @param rot the rotation to apply (must be a unit quaternion)
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -60515,7 +60538,7 @@ public class Float4x4Impl implements Float4x4 {
      * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
      * origin.
      *
-     * @param rot the quaternion (must be a unit quaternion)
+     * @param rot the rotation to apply (must be a unit quaternion)
      * @param pivot the pivot point
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -61202,7 +61225,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -61222,7 +61245,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -61238,7 +61261,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation to apply (must be a unit quaternion)
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 rotateQuat(FloatQuatR q) {
@@ -64630,7 +64653,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * S}. So when transforming a vector {@code p} with the new matrix by using
      * {@code M * S * p}, the scaling will be applied first.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -64649,7 +64672,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -64665,7 +64688,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * S}. So when transforming a vector {@code p} with the new matrix by using
      * {@code M * S * p}, the scaling will be applied first.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 scale(Float3R v) {
@@ -68970,9 +68993,10 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the right operand of the product
      * @param dest will hold the result
      * @return dest
      */
@@ -68982,12 +69006,13 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the right operand of the product
      * @param dest will hold the result
      * @return dest
      */
@@ -69047,7 +69072,8 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ, vW)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ, vW)}
@@ -69065,7 +69091,8 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -69095,7 +69122,7 @@ public class Float4x4Impl implements Float4x4 {
      * Only the affine part of this matrix is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param aabb the axis-aligned bounding box
+     * @param aabb the axis-aligned box to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -69114,7 +69141,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param aabb the axis-aligned bounding box
+     * @param aabb the axis-aligned box to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -69295,8 +69322,8 @@ public class Float4x4Impl implements Float4x4 {
      * Only the affine part of this matrix is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
      * @param dest will hold the result
      * @return dest
      */
@@ -69315,8 +69342,8 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
      * @param dest will hold the result
      * @return dest
      */
@@ -69332,7 +69359,7 @@ public class Float4x4Impl implements Float4x4 {
      * Only the affine part of this matrix is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -69351,7 +69378,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -69441,7 +69468,7 @@ public class Float4x4Impl implements Float4x4 {
      * Only the affine part of this matrix is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param v the vector
+     * @param v the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -69460,7 +69487,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -69557,7 +69584,7 @@ public class Float4x4Impl implements Float4x4 {
      * Transform {@code v} by this matrix and perform perspective division and store the result in
      * {@code dest}.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -69573,7 +69600,7 @@ public class Float4x4Impl implements Float4x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */

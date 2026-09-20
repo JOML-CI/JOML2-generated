@@ -39,7 +39,7 @@ public interface Short3R {
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -51,7 +51,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -63,7 +63,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -75,7 +75,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -138,7 +138,7 @@ public interface Short3R {
      * Compute the component-wise ceiling division of this vector by {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -151,7 +151,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -164,7 +164,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -177,7 +177,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -187,7 +187,7 @@ public interface Short3R {
      * Compute the component-wise ceiling division of this vector by {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -200,7 +200,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -213,7 +213,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -226,7 +226,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -293,7 +293,7 @@ public interface Short3R {
      * Compute the component-wise ceiling modulus of this vector and {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -306,7 +306,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -319,7 +319,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -332,7 +332,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -342,7 +342,7 @@ public interface Short3R {
      * Compute the component-wise ceiling modulus of this vector and {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -355,7 +355,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -368,7 +368,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -381,7 +381,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -448,7 +448,7 @@ public interface Short3R {
      * Divide each component of this vector by {@code scalar} (integer division, truncating toward
      * zero) and store the result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -461,7 +461,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -474,7 +474,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -487,7 +487,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -497,7 +497,7 @@ public interface Short3R {
      * Divide this vector component-wise by {@code other} (integer division, truncating toward zero)
      * and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -510,7 +510,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -523,7 +523,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -536,7 +536,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -603,7 +603,7 @@ public interface Short3R {
      * Compute the component-wise floor division of this vector by {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -616,7 +616,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -629,7 +629,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -642,7 +642,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -652,7 +652,7 @@ public interface Short3R {
      * Compute the component-wise floor division of this vector by {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -665,7 +665,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -678,7 +678,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -691,7 +691,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -758,7 +758,7 @@ public interface Short3R {
      * Compute the component-wise floor modulus of this vector and {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -771,7 +771,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -784,7 +784,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -797,7 +797,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -807,7 +807,7 @@ public interface Short3R {
      * Compute the component-wise floor modulus of this vector and {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -820,7 +820,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -833,7 +833,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -846,7 +846,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -913,7 +913,7 @@ public interface Short3R {
      * Multiply each component of this vector by {@code scalar} and store the result in
      * {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @param dest will hold the result
      * @return dest
      */
@@ -926,7 +926,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @param dest will hold the result
      * @return dest
      */
@@ -939,7 +939,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @param dest will hold the result
      * @return dest
      */
@@ -952,7 +952,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @param dest will hold the result
      * @return dest
      */
@@ -961,7 +961,7 @@ public interface Short3R {
     /**
      * Multiply this vector component-wise by {@code other} and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -973,7 +973,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -985,7 +985,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -997,7 +997,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -1106,7 +1106,7 @@ public interface Short3R {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}) and store the result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -1120,7 +1120,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -1134,7 +1134,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -1148,7 +1148,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -1159,7 +1159,7 @@ public interface Short3R {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}) and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -1173,7 +1173,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -1187,7 +1187,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -1201,7 +1201,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -1271,7 +1271,7 @@ public interface Short3R {
     /**
      * Subtract {@code other} from this vector and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -1283,7 +1283,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -1295,7 +1295,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -1307,7 +1307,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -1374,7 +1374,7 @@ public interface Short3R {
      * Compute the bitwise AND of each component of this vector and {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @param dest will hold the result
      * @return dest
      */
@@ -1387,7 +1387,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @param dest will hold the result
      * @return dest
      */
@@ -1400,7 +1400,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @param dest will hold the result
      * @return dest
      */
@@ -1413,7 +1413,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @param dest will hold the result
      * @return dest
      */
@@ -1669,7 +1669,7 @@ public interface Short3R {
      * Compute the bitwise OR of each component of this vector and {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @param dest will hold the result
      * @return dest
      */
@@ -1682,7 +1682,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @param dest will hold the result
      * @return dest
      */
@@ -1695,7 +1695,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @param dest will hold the result
      * @return dest
      */
@@ -1708,7 +1708,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @param dest will hold the result
      * @return dest
      */
@@ -2143,7 +2143,7 @@ public interface Short3R {
      * Compute the bitwise XOR of each component of this vector and {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @param dest will hold the result
      * @return dest
      */
@@ -2156,7 +2156,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @param dest will hold the result
      * @return dest
      */
@@ -2169,7 +2169,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @param dest will hold the result
      * @return dest
      */
@@ -2182,7 +2182,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @param dest will hold the result
      * @return dest
      */
@@ -2587,57 +2587,57 @@ public interface Short3R {
     short compMul();
 
     /**
-     * Compute the cross product of this vector and {@code other} and store the result in
-     * {@code dest}.
+     * Compute the cross product of this vector and {@code other}, in that order
+     * ({@code this x other}) and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the right operand of the cross product
      * @param dest will hold the result
      * @return dest
      */
     Short3 cross(Short3R other, @Mutated Short3 dest);
 
     /**
-     * Compute the cross product of this vector and {@code other} and store the result in
-     * {@code dest}.
+     * Compute the cross product of this vector and {@code other}, in that order
+     * ({@code this x other}) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the right operand of the cross product
      * @param dest will hold the result
      * @return dest
      */
     Int3 cross(Short3R other, @Mutated Int3 dest);
 
     /**
-     * Compute the cross product of this vector and {@code other} and store the result in
-     * {@code dest}.
+     * Compute the cross product of this vector and {@code other}, in that order
+     * ({@code this x other}) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the right operand of the cross product
      * @param dest will hold the result
      * @return dest
      */
     Long3 cross(Short3R other, @Mutated Long3 dest);
 
     /**
-     * Compute the cross product of this vector and {@code other} and store the result in
-     * {@code dest}.
+     * Compute the cross product of this vector and {@code other}, in that order
+     * ({@code this x other}) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the right operand of the cross product
      * @param dest will hold the result
      * @return dest
      */
     Double3 cross(Short3R other, @Mutated Double3 dest);
 
     /**
-     * Compute the cross product of this vector and ({@code x}, {@code y}, {@code z}) and store the
-     * result in {@code dest}.
+     * Compute the cross product of this vector and ({@code x}, {@code y}, {@code z}), in that order
+     * ({@code this x (x, y, z)}) and store the result in {@code dest}.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -2648,8 +2648,8 @@ public interface Short3R {
     Short3 cross(short x, short y, short z, @Mutated Short3 dest);
 
     /**
-     * Compute the cross product of this vector and ({@code x}, {@code y}, {@code z}) and store the
-     * result in {@code dest}.
+     * Compute the cross product of this vector and ({@code x}, {@code y}, {@code z}), in that order
+     * ({@code this x (x, y, z)}) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
@@ -2663,8 +2663,8 @@ public interface Short3R {
     Int3 cross(short x, short y, short z, @Mutated Int3 dest);
 
     /**
-     * Compute the cross product of this vector and ({@code x}, {@code y}, {@code z}) and store the
-     * result in {@code dest}.
+     * Compute the cross product of this vector and ({@code x}, {@code y}, {@code z}), in that order
+     * ({@code this x (x, y, z)}) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
@@ -2678,8 +2678,8 @@ public interface Short3R {
     Long3 cross(short x, short y, short z, @Mutated Long3 dest);
 
     /**
-     * Compute the cross product of this vector and ({@code x}, {@code y}, {@code z}) and store the
-     * result in {@code dest}.
+     * Compute the cross product of this vector and ({@code x}, {@code y}, {@code z}), in that order
+     * ({@code this x (x, y, z)}) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
@@ -2698,7 +2698,7 @@ public interface Short3R {
      * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
      * result outside the {@code short} range wraps.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
     short distanceSquared(Short3R other);
@@ -2722,7 +2722,7 @@ public interface Short3R {
      * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
      * result outside the {@code short} range wraps.
      *
-     * @param other the other vector
+     * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
     short dot(Short3R other);
@@ -2756,7 +2756,7 @@ public interface Short3R {
      * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
      * result outside the {@code short} range wraps.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
     short manhattanDistance(Short3R other);
@@ -2788,7 +2788,7 @@ public interface Short3R {
      * Set each component of this vector to the larger of itself and {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -2801,7 +2801,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -2814,7 +2814,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -2827,7 +2827,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -2837,7 +2837,7 @@ public interface Short3R {
      * Set each component of this vector to the larger of itself and the corresponding component of
      * {@code other} and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -2850,7 +2850,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -2863,7 +2863,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -2876,7 +2876,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -2943,7 +2943,7 @@ public interface Short3R {
      * Set each component of this vector to the smaller of itself and {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -2956,7 +2956,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -2969,7 +2969,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -2982,7 +2982,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -2992,7 +2992,7 @@ public interface Short3R {
      * Set each component of this vector to the smaller of itself and the corresponding component of
      * {@code other} and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3005,7 +3005,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3018,7 +3018,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3031,7 +3031,7 @@ public interface Short3R {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3139,7 +3139,7 @@ public interface Short3R {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -3153,7 +3153,7 @@ public interface Short3R {
      * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
      * to {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -3167,7 +3167,7 @@ public interface Short3R {
      * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
      * to {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -3181,7 +3181,7 @@ public interface Short3R {
      * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
      * to {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -3251,7 +3251,7 @@ public interface Short3R {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -3265,7 +3265,7 @@ public interface Short3R {
      * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
      * to {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -3279,7 +3279,7 @@ public interface Short3R {
      * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
      * to {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -3293,7 +3293,7 @@ public interface Short3R {
      * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
      * to {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -3411,7 +3411,7 @@ public interface Short3R {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing
      * and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -3425,7 +3425,7 @@ public interface Short3R {
      * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
      * to {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -3439,7 +3439,7 @@ public interface Short3R {
      * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
      * to {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -3453,7 +3453,7 @@ public interface Short3R {
      * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
      * to {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */

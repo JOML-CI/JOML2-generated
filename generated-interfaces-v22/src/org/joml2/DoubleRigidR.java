@@ -41,7 +41,7 @@ public interface DoubleRigidR {
     /**
      * Set the rotation of this rigid transform to {@code r} and store the result in {@code dest}.
      *
-     * @param r the quaternion
+     * @param r the new rotation
      * @param dest will hold the result
      * @return dest
      */
@@ -142,8 +142,11 @@ public interface DoubleRigidR {
      * Interpolate between this rigid transform and {@code other} using the interpolation factor
      * {@code t}, interpolating the translation linearly and the rotation via shortest-arc slerp and
      * store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this rigid transform (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other rigid transform
+     * @param other the rigid transform to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -155,6 +158,10 @@ public interface DoubleRigidR {
      * {@code rY}, {@code rZ}, {@code rW}) using the interpolation factor {@code t}, interpolating
      * the translation linearly and the rotation via shortest-arc slerp and store the result in
      * {@code dest}.
+     * <p>
+     * The interpolation starts at this rigid transform (interpolation factor {@code 0}) and ends at
+     * ({@code tX}, {@code tY}, {@code tZ}, {@code rX}, {@code rY}, {@code rZ}, {@code rW})
+     * (interpolation factor {@code 1}).
      *
      * @param tX the {@code tX} component of the rigid transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
@@ -184,7 +191,7 @@ public interface DoubleRigidR {
      * transform by using {@code M * R * v}, the transformation of the operand will be applied
      * first.
      *
-     * @param other the other rigid transform
+     * @param other the right operand
      * @param dest will hold the result
      * @return dest
      */
@@ -225,7 +232,7 @@ public interface DoubleRigidR {
      * transform will be {@code R * M}. So when transforming a vector {@code v} with the new rigid
      * transform by using {@code R * M * v}, the transformation of the operand will be applied last.
      *
-     * @param other the other rigid transform
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -263,7 +270,8 @@ public interface DoubleRigidR {
      * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other}
      * and store the result in {@code dest}.
      *
-     * @param other the other rigid transform
+     * @param other the target rigid transform, reached by composing this rigid transform with the
+     *        result
      * @param dest will hold the result
      * @return dest
      */
@@ -431,7 +439,7 @@ public interface DoubleRigidR {
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
-     * @param rotation the quaternion (must be a unit quaternion)
+     * @param rotation the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -652,7 +660,7 @@ public interface DoubleRigidR {
      * with the new rigid transform by using {@code M * T * v}, the translation will be applied
      * first.
      *
-     * @param translation the vector
+     * @param translation the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -678,7 +686,7 @@ public interface DoubleRigidR {
     /**
      * Transform {@code v} by this rigid transform and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -699,7 +707,7 @@ public interface DoubleRigidR {
     /**
      * Transform {@code v} by this rigid transform and store the result back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the vector to transform (also receives the result)
      * @return {@code v}
      */
     default Double3 transform(@Mutated Double3 v) { return transform(v, v); }
@@ -708,7 +716,7 @@ public interface DoubleRigidR {
      * Transform the given direction by the rotation part of this rigid transform, ignoring the
      * translation and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -730,7 +738,7 @@ public interface DoubleRigidR {
      * Transform the given direction by the rotation part of this rigid transform, ignoring the
      * translation and store the result back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the direction to transform (also receives the result)
      * @return {@code v}
      */
     default Double3 transformDirection(@Mutated Double3 v) { return transformDirection(v, v); }
@@ -740,7 +748,7 @@ public interface DoubleRigidR {
      * local), ignoring the translation, without materializing {@code invert()} and store the result
      * in {@code dest}.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -764,7 +772,7 @@ public interface DoubleRigidR {
      * local), ignoring the translation, without materializing {@code invert()} and store the result
      * back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the direction to transform (also receives the result)
      * @return {@code v}
      */
     default Double3 transformDirectionInverse(@Mutated Double3 v) { return transformDirectionInverse(v, v); }
@@ -773,7 +781,7 @@ public interface DoubleRigidR {
      * Transform {@code p} by the inverse of this rigid transform and store the result in
      * {@code dest}.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -795,7 +803,7 @@ public interface DoubleRigidR {
      * Transform {@code p} by the inverse of this rigid transform and store the result back into
      * {@code p}.
      *
-     * @param p the vector (also receives the result)
+     * @param p the position to transform (also receives the result)
      * @return {@code p}
      */
     default Double3 transformInverse(@Mutated Double3 p) { return transformInverse(p, p); }
@@ -804,7 +812,7 @@ public interface DoubleRigidR {
      * Transform the given position by this rigid transform, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -826,7 +834,7 @@ public interface DoubleRigidR {
      * Transform the given position by this rigid transform, treating it as a point with an implicit
      * {@code w = 1} and store the result back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the position to transform (also receives the result)
      * @return {@code v}
      */
     default Double3 transformPosition(@Mutated Double3 v) { return transformPosition(v, v); }
@@ -835,7 +843,7 @@ public interface DoubleRigidR {
      * Transform the given position by the inverse of this rigid transform (world to local), without
      * materializing {@code invert()} and store the result in {@code dest}.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -857,7 +865,7 @@ public interface DoubleRigidR {
      * Transform the given position by the inverse of this rigid transform (world to local), without
      * materializing {@code invert()} and store the result back into {@code p}.
      *
-     * @param p the vector (also receives the result)
+     * @param p the position to transform (also receives the result)
      * @return {@code p}
      */
     default Double3 transformPositionInverse(@Mutated Double3 p) { return transformPositionInverse(p, p); }

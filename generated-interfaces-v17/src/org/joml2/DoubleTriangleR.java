@@ -50,7 +50,7 @@ public interface DoubleTriangleR {
     /**
      * Transform this triangle by {@code m} and store the result in {@code dest}.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -62,7 +62,7 @@ public interface DoubleTriangleR {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -85,7 +85,7 @@ public interface DoubleTriangleR {
      * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
      * accurate for thin triangles.
      *
-     * @param p the vector
+     * @param p the point whose barycentric coordinates to compute
      * @param dest will hold the result
      * @return dest
      */
@@ -119,7 +119,7 @@ public interface DoubleTriangleR {
      * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
      * accurate for thin triangles.
      *
-     * @param p the vector (also receives the result)
+     * @param p the point whose barycentric coordinates to compute (also receives the result)
      * @return {@code p}
      */
     default Double3 barycentric(@Mutated Double3 p) { return barycentric(p, p); }
@@ -577,7 +577,7 @@ public interface DoubleTriangleR {
      * Determine whether the projection of the given point onto this triangle's plane lies inside or
      * on this triangle (boundary inclusive). Delegates to the shared {@code Intersectiond} kernels.
      *
-     * @param p the point
+     * @param p the point to test
      * @return {@code true} if the projection of the given point onto this triangle's plane lies
      *        inside or on this triangle, {@code false} otherwise
      */
@@ -587,7 +587,7 @@ public interface DoubleTriangleR {
      * Determine whether this triangle intersects the given ray. Delegates to the shared
      * {@code Intersectiond} kernels.
      *
-     * @param ray the ray
+     * @param ray the ray to test for intersection
      * @param epsilon the tolerance below which the ray counts as parallel to the triangle's plane,
      *        guarding the near-zero determinant
      * @return {@code true} if this triangle and the given ray intersect, {@code false} otherwise
@@ -598,7 +598,7 @@ public interface DoubleTriangleR {
      * Determine whether this triangle intersects the given ray, front face only. Delegates to the
      * shared {@code Intersectiond} kernels.
      *
-     * @param ray the ray
+     * @param ray the ray to test for intersection
      * @param epsilon the tolerance below which the ray counts as parallel to the triangle's plane,
      *        guarding the near-zero determinant
      * @return {@code true} if the ray hits the front face of this triangle, {@code false} otherwise
@@ -621,7 +621,7 @@ public interface DoubleTriangleR {
      * Compute the point on this triangle closest to the given point. Delegates to the shared
      * {@code Intersectiond} kernels.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param dest will hold the point on this triangle closest to the given point
      * @return {@code dest}
      */

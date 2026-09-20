@@ -522,7 +522,7 @@ public interface Float3x3R {
      * factor, or factors of very different scale) invert both factors separately and multiply the
      * inverses in reverse order instead.
      *
-     * @param other the other matrix
+     * @param other the right factor of the product
      * @param dest will hold the result
      * @return dest
      */
@@ -541,7 +541,7 @@ public interface Float3x3R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the right factor of the product
      * @param dest will hold the result
      * @return dest
      */
@@ -650,7 +650,7 @@ public interface Float3x3R {
     /**
      * Add {@code other} to this matrix and store the result in {@code dest}.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @param dest will hold the result
      * @return dest
      */
@@ -662,7 +662,7 @@ public interface Float3x3R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @param dest will hold the result
      * @return dest
      */
@@ -729,7 +729,7 @@ public interface Float3x3R {
     /**
      * Subtract {@code other} from this matrix and store the result in {@code dest}.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -741,7 +741,7 @@ public interface Float3x3R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -1105,8 +1105,11 @@ public interface Float3x3R {
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1117,10 +1120,13 @@ public interface Float3x3R {
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
      * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1131,6 +1137,10 @@ public interface Float3x3R {
      * Linearly interpolate between this matrix and ({@code m00}, {@code m01}, {@code m02},
      * {@code m10}, {@code m11}, {@code m12}, {@code m20}, {@code m21}, {@code m22}) using the
      * interpolation factor {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m02}, {@code m10}, {@code m11}, {@code m12}, {@code m20},
+     * {@code m21}, {@code m22}) (interpolation factor {@code 1}).
      *
      * @param m00 the element in row 0, column 0 of the matrix
      * @param m01 the element in row 0, column 1 of the matrix
@@ -1151,6 +1161,10 @@ public interface Float3x3R {
      * Linearly interpolate between this matrix and ({@code m00}, {@code m01}, {@code m02},
      * {@code m10}, {@code m11}, {@code m12}, {@code m20}, {@code m21}, {@code m22}) using the
      * interpolation factor {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m02}, {@code m10}, {@code m11}, {@code m12}, {@code m20},
+     * {@code m21}, {@code m22}) (interpolation factor {@code 1}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1324,7 +1338,7 @@ public interface Float3x3R {
      * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1341,7 +1355,7 @@ public interface Float3x3R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1406,7 +1420,7 @@ public interface Float3x3R {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1425,7 +1439,7 @@ public interface Float3x3R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1441,7 +1455,7 @@ public interface Float3x3R {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1460,7 +1474,7 @@ public interface Float3x3R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1474,7 +1488,8 @@ public interface Float3x3R {
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @param dest will hold the result
      * @return dest
@@ -1492,7 +1507,8 @@ public interface Float3x3R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @param dest will hold the result
      * @return dest
@@ -1831,7 +1847,7 @@ public interface Float3x3R {
      * will be {@code S * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code S * M * p}, the scaling will be applied last.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -1847,7 +1863,7 @@ public interface Float3x3R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -2069,7 +2085,7 @@ public interface Float3x3R {
      * will be {@code T * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code T * M * p}, the translation will be applied last.
      *
-     * @param v the vector
+     * @param v the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -2086,7 +2102,7 @@ public interface Float3x3R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -3158,7 +3174,7 @@ public interface Float3x3R {
      * will be {@code M * S}. So when transforming a vector {@code p} with the new matrix by using
      * {@code M * S * p}, the scaling will be applied first.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -3174,7 +3190,7 @@ public interface Float3x3R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -3488,28 +3504,31 @@ public interface Float3x3R {
     Double3x3 view(float left, float right, float bottom, float top, @Mutated Double3x3 dest);
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the right operand of the product
      * @param dest will hold the result
      * @return dest
      */
     Float3 mul(Float3R v, @Mutated Float3 dest);
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the right operand of the product
      * @param dest will hold the result
      * @return dest
      */
     Double3 mul(Float3R v, @Mutated Double3 dest);
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -3520,7 +3539,8 @@ public interface Float3x3R {
     Float3 mul(float x, float y, float z, @Mutated Float3 dest);
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3534,9 +3554,10 @@ public interface Float3x3R {
     Double3 mul(float x, float y, float z, @Mutated Double3 dest);
 
     /**
-     * Multiply this matrix by the given vector and store the result back into {@code v}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the right operand of the product (also receives the result)
      * @return {@code v}
      */
     default Float3 mul(@Mutated Float3 v) { return mul(v, v); }

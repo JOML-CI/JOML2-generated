@@ -49,7 +49,18 @@ public record Float2x4(float m00, float m01, float m02, float m03, float m10, fl
     /** The identity matrix. */
     public static final Float2x4 IDENTITY = new Float2x4();
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param m00 the element in row 0, column 0
+     * @param m01 the element in row 0, column 1
+     * @param m02 the element in row 0, column 2
+     * @param m03 the element in row 0, column 3
+     * @param m10 the element in row 1, column 0
+     * @param m11 the element in row 1, column 1
+     * @param m12 the element in row 1, column 2
+     * @param m13 the element in row 1, column 3
+     */
     public Float2x4(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13) {
         this.m00 = m00;
         this.m01 = m01;
@@ -68,7 +79,14 @@ public record Float2x4(float m00, float m01, float m02, float m03, float m10, fl
         this(1, 0, 0, 0, 0, 1, 0, 0);
     }
 
-    /** Create a matrix from the given column vectors. */
+    /**
+     * Create a matrix from the given column vectors.
+     *
+     * @param c0 the first column
+     * @param c1 the second column
+     * @param c2 the third column
+     * @param c3 the fourth column
+     */
     public Float2x4(Float2 c0, Float2 c1, Float2 c2, Float2 c3) {
         this(c0.x(), c1.x(), c2.x(), c3.x(), c0.y(), c1.y(), c2.y(), c3.y());
     }
@@ -138,7 +156,7 @@ public record Float2x4(float m00, float m01, float m02, float m03, float m10, fl
     /**
      * Add {@code other} to this matrix, returning the result as a value.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @return the resulting matrix
      */
     public Float2x4 add(Float2x4 other) {
@@ -178,7 +196,7 @@ public record Float2x4(float m00, float m01, float m02, float m03, float m10, fl
     /**
      * Subtract {@code other} from this matrix, returning the result as a value.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @return the resulting matrix
      */
     public Float2x4 sub(Float2x4 other) {
@@ -208,7 +226,7 @@ public record Float2x4(float m00, float m01, float m02, float m03, float m10, fl
     /**
      * Create a new matrix from the given values.
      *
-     * @param v the matrix
+     * @param v the matrix to copy
      * @return the resulting matrix
      */
     public Float2x4 set(Float2x4 v) {
@@ -257,8 +275,11 @@ public record Float2x4(float m00, float m01, float m02, float m03, float m10, fl
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting matrix
      */
@@ -271,6 +292,10 @@ public record Float2x4(float m00, float m01, float m02, float m03, float m10, fl
      * Linearly interpolate between this matrix and ({@code m00}, {@code m01}, {@code m02},
      * {@code m03}, {@code m10}, {@code m11}, {@code m12}, {@code m13}) using the interpolation
      * factor {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m02}, {@code m03}, {@code m10}, {@code m11}, {@code m12},
+     * {@code m13}) (interpolation factor {@code 1}).
      *
      * @param m00 the element in row 0, column 0 of the matrix
      * @param m01 the element in row 0, column 1 of the matrix
@@ -340,7 +365,7 @@ public record Float2x4(float m00, float m01, float m02, float m03, float m10, fl
      * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return the resulting matrix
      */
     public Float2x4 preMul(Float2x4 other) {
@@ -373,9 +398,10 @@ public record Float2x4(float m00, float m01, float m02, float m03, float m10, fl
 
 
     /**
-     * Multiply this matrix by the given vector, returning the result as a value.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v}, returning the result as a value.
      *
-     * @param v the vector
+     * @param v the right operand of the product
      * @return the resulting vector
      */
     public Float2 mul(Float4 v) {
@@ -384,7 +410,8 @@ public record Float2x4(float m00, float m01, float m02, float m03, float m10, fl
 
 
     /**
-     * Multiply this matrix by the given vector, returning the result as a value.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v}, returning the result as a value.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ, vW)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ, vW)}
@@ -396,42 +423,74 @@ public record Float2x4(float m00, float m01, float m02, float m03, float m10, fl
         return new Float2(Math.fma(this.m03, vW, Math.fma(this.m02, vZ, Math.fma(this.m00, vX, this.m01 * vY))), Math.fma(this.m13, vW, Math.fma(this.m12, vZ, Math.fma(this.m10, vX, this.m11 * vY))));
     }
 
-    /** {@return a copy with the {@code m00} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m00} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m00} element
+     */
     public Float2x4 withM00(float v) {
         return new Float2x4(v, m01, m02, m03, m10, m11, m12, m13);
     }
 
-    /** {@return a copy with the {@code m01} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m01} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m01} element
+     */
     public Float2x4 withM01(float v) {
         return new Float2x4(m00, v, m02, m03, m10, m11, m12, m13);
     }
 
-    /** {@return a copy with the {@code m02} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m02} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m02} element
+     */
     public Float2x4 withM02(float v) {
         return new Float2x4(m00, m01, v, m03, m10, m11, m12, m13);
     }
 
-    /** {@return a copy with the {@code m03} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m03} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m03} element
+     */
     public Float2x4 withM03(float v) {
         return new Float2x4(m00, m01, m02, v, m10, m11, m12, m13);
     }
 
-    /** {@return a copy with the {@code m10} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m10} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m10} element
+     */
     public Float2x4 withM10(float v) {
         return new Float2x4(m00, m01, m02, m03, v, m11, m12, m13);
     }
 
-    /** {@return a copy with the {@code m11} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m11} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m11} element
+     */
     public Float2x4 withM11(float v) {
         return new Float2x4(m00, m01, m02, m03, m10, v, m12, m13);
     }
 
-    /** {@return a copy with the {@code m12} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m12} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m12} element
+     */
     public Float2x4 withM12(float v) {
         return new Float2x4(m00, m01, m02, m03, m10, m11, v, m13);
     }
 
-    /** {@return a copy with the {@code m13} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m13} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m13} element
+     */
     public Float2x4 withM13(float v) {
         return new Float2x4(m00, m01, m02, m03, m10, m11, m12, v);
     }

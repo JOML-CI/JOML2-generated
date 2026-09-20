@@ -40,7 +40,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * Compute the inverse of the product of this quaternion and {@code other}, i.e.
      * {@code (this * other)^-1}.
      *
-     * @param other the other quaternion
+     * @param other the right factor of the product
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat invertProduct(DoubleQuatR other) { return invertProduct(other, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
@@ -60,7 +60,7 @@ public interface DoubleQuat extends DoubleQuatR {
     /**
      * Add {@code other} to this quaternion.
      *
-     * @param other the other quaternion
+     * @param other the quaternion to add
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat add(DoubleQuatR other) { return add(other, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
@@ -86,7 +86,7 @@ public interface DoubleQuat extends DoubleQuatR {
     /**
      * Subtract {@code other} from this quaternion.
      *
-     * @param other the other quaternion
+     * @param other the quaternion to subtract
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat sub(DoubleQuatR other) { return sub(other, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
@@ -105,7 +105,7 @@ public interface DoubleQuat extends DoubleQuatR {
     /**
      * Set this quaternion to the given values.
      *
-     * @param v the quaternion
+     * @param v the quaternion to copy
      * @return this
      */
     @Mutated DoubleQuat set(DoubleQuatR v);
@@ -133,7 +133,7 @@ public interface DoubleQuat extends DoubleQuatR {
     /**
      * Set this quaternion to the rotation (real) part of the unit dual quaternion {@code dq}.
      *
-     * @param dq the dual quaternion
+     * @param dq the dual quaternion to convert
      * @return this
      */
     @Mutated DoubleQuat makeFromDualQuat(DoubleDualQuatR dq);
@@ -165,7 +165,7 @@ public interface DoubleQuat extends DoubleQuatR {
     /**
      * Set this quaternion to the rotation represented by the given matrix.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated DoubleQuat makeFromMatrix(Double3x3R m);
@@ -173,7 +173,7 @@ public interface DoubleQuat extends DoubleQuatR {
     /**
      * Set this quaternion to the rotation represented by the given matrix.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated DoubleQuat makeFromMatrix(Double3x4R m);
@@ -181,7 +181,7 @@ public interface DoubleQuat extends DoubleQuatR {
     /**
      * Set this quaternion to the rotation represented by the given matrix.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated DoubleQuat makeFromMatrix(Double4x4R m);
@@ -203,8 +203,11 @@ public interface DoubleQuat extends DoubleQuatR {
     /**
      * Linearly interpolate between this quaternion and {@code other} using the interpolation factor
      * {@code t}.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other quaternion
+     * @param other the quaternion to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -213,6 +216,9 @@ public interface DoubleQuat extends DoubleQuatR {
     /**
      * Linearly interpolate between this quaternion and ({@code x}, {@code y}, {@code z}, {@code w})
      * using the interpolation factor {@code t}.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code x}, {@code y}, {@code z}, {@code w}) (interpolation factor {@code 1}).
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
@@ -230,6 +236,9 @@ public interface DoubleQuat extends DoubleQuatR {
      * The squared length is formed at {@code double} precision, so the result is exact only while
      * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
      * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -244,6 +253,9 @@ public interface DoubleQuat extends DoubleQuatR {
      * The squared length is formed at {@code double} precision, so the result is exact only while
      * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
      * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code x}, {@code y}, {@code z}, {@code w}) (interpolation factor {@code 1}).
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
@@ -261,6 +273,9 @@ public interface DoubleQuat extends DoubleQuatR {
      * The squared length is formed at {@code double} precision, so the result is exact only while
      * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
      * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -275,6 +290,9 @@ public interface DoubleQuat extends DoubleQuatR {
      * The squared length is formed at {@code double} precision, so the result is exact only while
      * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
      * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code x}, {@code y}, {@code z}, {@code w}) (interpolation factor {@code 1}).
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
@@ -292,6 +310,9 @@ public interface DoubleQuat extends DoubleQuatR {
      * This method interpolates along the arc as given: when the two quaternions' dot product is
      * negative, the longer path around the sphere is taken. Use {@link #slerpShortest} (or negate
      * one operand) to always interpolate along the shorter arc.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param target the target rotation (must be a unit quaternion)
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -306,6 +327,9 @@ public interface DoubleQuat extends DoubleQuatR {
      * This method interpolates along the arc as given: when the two quaternions' dot product is
      * negative, the longer path around the sphere is taken. Use {@link #slerpShortest} (or negate
      * one operand) to always interpolate along the shorter arc.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code x}, {@code y}, {@code z}, {@code w}) (interpolation factor {@code 1}).
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
@@ -323,6 +347,9 @@ public interface DoubleQuat extends DoubleQuatR {
     /**
      * Spherically interpolate along the shortest path between this quaternion (which must have unit
      * length) and {@code target} using the interpolation factor {@code alpha}.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param target the target rotation (must be a unit quaternion)
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -334,6 +361,9 @@ public interface DoubleQuat extends DoubleQuatR {
      * Spherically interpolate along the shortest path between this quaternion (which must have unit
      * length) and ({@code x}, {@code y}, {@code z}, {@code w}) using the interpolation factor
      * {@code alpha}.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code x}, {@code y}, {@code z}, {@code w}) (interpolation factor {@code 1}).
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
@@ -400,7 +430,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * will be {@code Q * R}. So when transforming a vector {@code v} with the new quaternion by
      * using {@code Q * R * v}, the transformation of the operand will be applied first.
      *
-     * @param other the other quaternion
+     * @param other the right operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat mul(DoubleQuatR other) { return mul(other, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
@@ -427,7 +457,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * then the new quaternion will be {@code T * Q}. So when transforming a vector {@code v} with
      * the new quaternion by using {@code T * Q * v}, the given transformation will be applied last.
      *
-     * @param other the other quaternion
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat preMul(DoubleQuatR other) { return preMul(other, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
@@ -467,7 +497,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * Conjugate this quaternion by {@code q}, i.e. compute {@code q * this * conj(q)} where
      * {@code q} is the given quaternion (equal to {@code q * this * q^-1} when it has unit length).
      *
-     * @param q the quaternion
+     * @param q the quaternion to conjugate by
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat conjugateBy(DoubleQuatR q) { return conjugateBy(q, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
@@ -489,7 +519,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * Compute the difference between this quaternion and {@code other}, i.e. the rotation {@code D}
      * with {@code this * D = other}, that is {@code D = this^-1 * other}.
      *
-     * @param other the other quaternion
+     * @param other the target quaternion, reached by composing this quaternion with the result
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat difference(DoubleQuatR other) { return difference(other, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
@@ -578,7 +608,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * Identical to {@link #preMul}; the lower-case spelling is kept for JOML 1 source
      * compatibility.
      *
-     * @param other the other quaternion
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat premul(DoubleQuatR other) { return premul(other, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
@@ -637,7 +667,8 @@ public interface DoubleQuat extends DoubleQuatR {
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -688,7 +719,8 @@ public interface DoubleQuat extends DoubleQuatR {
     /**
      * Set this quaternion to a rotation that makes {@code +z} point along {@code dir}.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return this
      */
@@ -718,8 +750,8 @@ public interface DoubleQuat extends DoubleQuatR {
      * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
      * arbitrarily.
      *
-     * @param fromDir the vector
-     * @param toDir the vector
+     * @param fromDir the direction to rotate from (must be a unit vector)
+     * @param toDir the direction to rotate onto (must be a unit vector)
      * @return this
      */
     @Mutated DoubleQuat makeRotationTo(Double3R fromDir, Double3R toDir);
@@ -922,8 +954,8 @@ public interface DoubleQuat extends DoubleQuatR {
      * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
      * arbitrarily.
      *
-     * @param fromDir the vector
-     * @param toDir the vector
+     * @param fromDir the direction to rotate from (must be a unit vector)
+     * @param toDir the direction to rotate onto (must be a unit vector)
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat rotateTo(Double3R fromDir, Double3R toDir) { return rotateTo(fromDir, toDir, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }

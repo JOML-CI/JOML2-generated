@@ -48,7 +48,7 @@ public final class Float3Impl implements Float3 {
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -63,7 +63,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -118,7 +118,7 @@ public final class Float3Impl implements Float3 {
     /**
      * Divide each component of this vector by {@code scalar} and store the result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -133,7 +133,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -145,7 +145,7 @@ public final class Float3Impl implements Float3 {
     /**
      * Divide this vector component-wise by {@code other} and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -160,7 +160,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -217,7 +217,7 @@ public final class Float3Impl implements Float3 {
      * {@code this * b + c} per component and store the result in {@code dest}.
      *
      * @param b the factor to multiply this vector by
-     * @param c the vector
+     * @param c the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -234,7 +234,7 @@ public final class Float3Impl implements Float3 {
      * {@code double} only when stored.
      *
      * @param b the factor to multiply this vector by
-     * @param c the vector
+     * @param c the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -295,7 +295,7 @@ public final class Float3Impl implements Float3 {
      * {@code this * b + c} per component and store the result in {@code dest}.
      *
      * @param b the factor to multiply this vector by
-     * @param c the vector
+     * @param c the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -312,7 +312,7 @@ public final class Float3Impl implements Float3 {
      * {@code double} only when stored.
      *
      * @param b the factor to multiply this vector by
-     * @param c the vector
+     * @param c the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -376,7 +376,7 @@ public final class Float3Impl implements Float3 {
      * Multiply each component of this vector by {@code scalar} and store the result in
      * {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @param dest will hold the result
      * @return dest
      */
@@ -392,7 +392,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @param dest will hold the result
      * @return dest
      */
@@ -404,7 +404,7 @@ public final class Float3Impl implements Float3 {
     /**
      * Multiply this vector component-wise by {@code other} and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -419,7 +419,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -509,7 +509,7 @@ public final class Float3Impl implements Float3 {
     /**
      * Subtract {@code other} from this vector and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -524,7 +524,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -579,7 +579,7 @@ public final class Float3Impl implements Float3 {
     /**
      * Set this vector to the given values.
      *
-     * @param v the vector
+     * @param v the vector to copy
      * @return this
      */
     public @Mutated Float3 set(Float3R v) {
@@ -920,12 +920,16 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Interpolate along the cubic Bézier curve defined by this vector and the given control points
-     * and store the result in {@code dest}.
+     * Interpolate along the cubic Bézier curve that starts at this vector, is shaped by the control
+     * points {@code p1} and {@code p2} and ends at {@code p3} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p3} at
+     * {@code t = 1}; the control points {@code p1} and {@code p2} pull it towards themselves but
+     * are generally not on the curve.
      *
      * @param p1 the first control point
      * @param p2 the second control point
-     * @param p3 the end point
+     * @param p3 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -936,15 +940,19 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Interpolate along the cubic Bézier curve defined by this vector and the given control points
-     * and store the result in {@code dest}.
+     * Interpolate along the cubic Bézier curve that starts at this vector, is shaped by the control
+     * points {@code p1} and {@code p2} and ends at {@code p3} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p3} at
+     * {@code t = 1}; the control points {@code p1} and {@code p2} pull it towards themselves but
+     * are generally not on the curve.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
      * @param p1 the first control point
      * @param p2 the second control point
-     * @param p3 the end point
+     * @param p3 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -955,8 +963,14 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Interpolate along the cubic Bézier curve defined by this vector and the given control points
-     * and store the result in {@code dest}.
+     * Interpolate along the cubic Bézier curve that starts at this vector, is shaped by the control
+     * points ({@code p1X}, {@code p1Y}, {@code p1Z}) and ({@code p2X}, {@code p2Y}, {@code p2Z})
+     * and ends at ({@code p3X}, {@code p3Y}, {@code p3Z}) and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p3X}, {@code p3Y},
+     * {@code p3Z}) at {@code t = 1}; the control points ({@code p1X}, {@code p1Y}, {@code p1Z}) and
+     * ({@code p2X}, {@code p2Y}, {@code p2Z}) pull it towards themselves but are generally not on
+     * the curve.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
@@ -989,8 +1003,14 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Interpolate along the cubic Bézier curve defined by this vector and the given control points
-     * and store the result in {@code dest}.
+     * Interpolate along the cubic Bézier curve that starts at this vector, is shaped by the control
+     * points ({@code p1X}, {@code p1Y}, {@code p1Z}) and ({@code p2X}, {@code p2Y}, {@code p2Z})
+     * and ends at ({@code p3X}, {@code p3Y}, {@code p3Z}) and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p3X}, {@code p3Y},
+     * {@code p3Z}) at {@code t = 1}; the control points ({@code p1X}, {@code p1Y}, {@code p1Z}) and
+     * ({@code p2X}, {@code p2Y}, {@code p2Z}) pull it towards themselves but are generally not on
+     * the curve.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1026,11 +1046,15 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
-     * points and store the result in {@code dest}.
+     * Interpolate along the quadratic Bézier curve that starts at this vector, is shaped by the
+     * control point {@code p1} and ends at {@code p2} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p2} at
+     * {@code t = 1}; the control point {@code p1} pulls it towards itself but is generally not on
+     * the curve.
      *
      * @param p1 the control point
-     * @param p2 the end point
+     * @param p2 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1041,14 +1065,18 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
-     * points and store the result in {@code dest}.
+     * Interpolate along the quadratic Bézier curve that starts at this vector, is shaped by the
+     * control point {@code p1} and ends at {@code p2} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p2} at
+     * {@code t = 1}; the control point {@code p1} pulls it towards itself but is generally not on
+     * the curve.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
      * @param p1 the control point
-     * @param p2 the end point
+     * @param p2 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1059,8 +1087,13 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
-     * points and store the result in {@code dest}.
+     * Interpolate along the quadratic Bézier curve that starts at this vector, is shaped by the
+     * control point ({@code p1X}, {@code p1Y}, {@code p1Z}) and ends at ({@code p2X}, {@code p2Y},
+     * {@code p2Z}) and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p2X}, {@code p2Y},
+     * {@code p2Z}) at {@code t = 1}; the control point ({@code p1X}, {@code p1Y}, {@code p1Z})
+     * pulls it towards itself but is generally not on the curve.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
@@ -1087,8 +1120,13 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
-     * points and store the result in {@code dest}.
+     * Interpolate along the quadratic Bézier curve that starts at this vector, is shaped by the
+     * control point ({@code p1X}, {@code p1Y}, {@code p1Z}) and ends at ({@code p2X}, {@code p2Y},
+     * {@code p2Z}) and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p2X}, {@code p2Y},
+     * {@code p2Z}) at {@code t = 1}; the control point ({@code p1X}, {@code p1Y}, {@code p1Z})
+     * pulls it towards itself but is generally not on the curve.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1118,12 +1156,16 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
-     * by this vector and the given control points, at the parameter {@code t} and store the result
-     * in {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * quadratic Bézier curve that starts at this vector, is shaped by the control point {@code p1}
+     * and ends at {@code p2} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p2} at
+     * {@code t = 1}; the control point {@code p1} pulls it towards itself but is generally not on
+     * the curve.
      *
      * @param p1 the control point
-     * @param p2 the end point
+     * @param p2 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1134,15 +1176,19 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
-     * by this vector and the given control points, at the parameter {@code t} and store the result
-     * in {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * quadratic Bézier curve that starts at this vector, is shaped by the control point {@code p1}
+     * and ends at {@code p2} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p2} at
+     * {@code t = 1}; the control point {@code p1} pulls it towards itself but is generally not on
+     * the curve.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
      * @param p1 the control point
-     * @param p2 the end point
+     * @param p2 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1153,9 +1199,14 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
-     * by this vector and the given control points, at the parameter {@code t} and store the result
-     * in {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * quadratic Bézier curve that starts at this vector, is shaped by the control point
+     * ({@code p1X}, {@code p1Y}, {@code p1Z}) and ends at ({@code p2X}, {@code p2Y}, {@code p2Z})
+     * and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p2X}, {@code p2Y},
+     * {@code p2Z}) at {@code t = 1}; the control point ({@code p1X}, {@code p1Y}, {@code p1Z})
+     * pulls it towards itself but is generally not on the curve.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
@@ -1180,9 +1231,14 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
-     * by this vector and the given control points, at the parameter {@code t} and store the result
-     * in {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * quadratic Bézier curve that starts at this vector, is shaped by the control point
+     * ({@code p1X}, {@code p1Y}, {@code p1Z}) and ends at ({@code p2X}, {@code p2Y}, {@code p2Z})
+     * and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p2X}, {@code p2Y},
+     * {@code p2Z}) at {@code t = 1}; the control point ({@code p1X}, {@code p1Y}, {@code p1Z})
+     * pulls it towards itself but is generally not on the curve.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1210,13 +1266,17 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
-     * this vector and the given control points, at the parameter {@code t} and store the result in
-     * {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Bézier curve that starts at this vector, is shaped by the control points {@code p1} and
+     * {@code p2} and ends at {@code p3} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p3} at
+     * {@code t = 1}; the control points {@code p1} and {@code p2} pull it towards themselves but
+     * are generally not on the curve.
      *
      * @param p1 the first control point
      * @param p2 the second control point
-     * @param p3 the end point
+     * @param p3 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1227,16 +1287,20 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
-     * this vector and the given control points, at the parameter {@code t} and store the result in
-     * {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Bézier curve that starts at this vector, is shaped by the control points {@code p1} and
+     * {@code p2} and ends at {@code p3} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p3} at
+     * {@code t = 1}; the control points {@code p1} and {@code p2} pull it towards themselves but
+     * are generally not on the curve.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
      * @param p1 the first control point
      * @param p2 the second control point
-     * @param p3 the end point
+     * @param p3 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1247,9 +1311,15 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
-     * this vector and the given control points, at the parameter {@code t} and store the result in
-     * {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Bézier curve that starts at this vector, is shaped by the control points ({@code p1X},
+     * {@code p1Y}, {@code p1Z}) and ({@code p2X}, {@code p2Y}, {@code p2Z}) and ends at
+     * ({@code p3X}, {@code p3Y}, {@code p3Z}) and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p3X}, {@code p3Y},
+     * {@code p3Z}) at {@code t = 1}; the control points ({@code p1X}, {@code p1Y}, {@code p1Z}) and
+     * ({@code p2X}, {@code p2Y}, {@code p2Z}) pull it towards themselves but are generally not on
+     * the curve.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
@@ -1279,9 +1349,15 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
-     * this vector and the given control points, at the parameter {@code t} and store the result in
-     * {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Bézier curve that starts at this vector, is shaped by the control points ({@code p1X},
+     * {@code p1Y}, {@code p1Z}) and ({@code p2X}, {@code p2Y}, {@code p2Z}) and ends at
+     * ({@code p3X}, {@code p3Y}, {@code p3Z}) and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p3X}, {@code p3Y},
+     * {@code p3Z}) at {@code t = 1}; the control points ({@code p1X}, {@code p1Y}, {@code p1Z}) and
+     * ({@code p2X}, {@code p2Y}, {@code p2Z}) pull it towards themselves but are generally not on
+     * the curve.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1314,12 +1390,21 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points
+     * Interpolate along the Catmull-Rom spline segment from {@code p1} to {@code p2}, with this
+     * vector as the control point before the segment and {@code p3} as the control point after it
      * and store the result in {@code dest}.
+     * <p>
+     * The curve passes through {@code p1} at {@code t = 0} and through {@code p2} at {@code t = 1}.
+     * This vector and {@code p3} are the spline's neighbouring points, i.e. the point before
+     * {@code p1} and the point after {@code p2}: they only shape the tangents at the segment's two
+     * end points and are not themselves on the segment. For a spline through the points
+     * {@code p[0..n]}, the segment from {@code p[i]} to {@code p[i+1]} is therefore interpolated
+     * with {@code p[i-1]} in the role of this vector and {@code p[i]}, {@code p[i+1]},
+     * {@code p[i+2]} as the three given points.
      *
      * @param p1 the start point of the interpolated segment
      * @param p2 the end point of the interpolated segment
-     * @param p3 the outer control point after the segment
+     * @param p3 the control point after the segment, i.e. the spline point following {@code p2}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1330,15 +1415,24 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points
+     * Interpolate along the Catmull-Rom spline segment from {@code p1} to {@code p2}, with this
+     * vector as the control point before the segment and {@code p3} as the control point after it
      * and store the result in {@code dest}.
+     * <p>
+     * The curve passes through {@code p1} at {@code t = 0} and through {@code p2} at {@code t = 1}.
+     * This vector and {@code p3} are the spline's neighbouring points, i.e. the point before
+     * {@code p1} and the point after {@code p2}: they only shape the tangents at the segment's two
+     * end points and are not themselves on the segment. For a spline through the points
+     * {@code p[0..n]}, the segment from {@code p[i]} to {@code p[i+1]} is therefore interpolated
+     * with {@code p[i-1]} in the role of this vector and {@code p[i]}, {@code p[i+1]},
+     * {@code p[i+2]} as the three given points.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
      * @param p1 the start point of the interpolated segment
      * @param p2 the end point of the interpolated segment
-     * @param p3 the outer control point after the segment
+     * @param p3 the control point after the segment, i.e. the spline point following {@code p2}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1349,8 +1443,19 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points
-     * and store the result in {@code dest}.
+     * Interpolate along the Catmull-Rom spline segment from ({@code p1X}, {@code p1Y}, {@code p1Z})
+     * to ({@code p2X}, {@code p2Y}, {@code p2Z}), with this vector as the control point before the
+     * segment and ({@code p3X}, {@code p3Y}, {@code p3Z}) as the control point after it and store
+     * the result in {@code dest}.
+     * <p>
+     * The curve passes through ({@code p1X}, {@code p1Y}, {@code p1Z}) at {@code t = 0} and through
+     * ({@code p2X}, {@code p2Y}, {@code p2Z}) at {@code t = 1}. This vector and ({@code p3X},
+     * {@code p3Y}, {@code p3Z}) are the spline's neighbouring points, i.e. the point before
+     * ({@code p1X}, {@code p1Y}, {@code p1Z}) and the point after ({@code p2X}, {@code p2Y},
+     * {@code p2Z}): they only shape the tangents at the segment's two end points and are not
+     * themselves on the segment. For a spline through the points {@code p[0..n]}, the segment from
+     * {@code p[i]} to {@code p[i+1]} is therefore interpolated with {@code p[i-1]} in the role of
+     * this vector and {@code p[i]}, {@code p[i+1]}, {@code p[i+2]} as the three given points.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
@@ -1378,8 +1483,19 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points
-     * and store the result in {@code dest}.
+     * Interpolate along the Catmull-Rom spline segment from ({@code p1X}, {@code p1Y}, {@code p1Z})
+     * to ({@code p2X}, {@code p2Y}, {@code p2Z}), with this vector as the control point before the
+     * segment and ({@code p3X}, {@code p3Y}, {@code p3Z}) as the control point after it and store
+     * the result in {@code dest}.
+     * <p>
+     * The curve passes through ({@code p1X}, {@code p1Y}, {@code p1Z}) at {@code t = 0} and through
+     * ({@code p2X}, {@code p2Y}, {@code p2Z}) at {@code t = 1}. This vector and ({@code p3X},
+     * {@code p3Y}, {@code p3Z}) are the spline's neighbouring points, i.e. the point before
+     * ({@code p1X}, {@code p1Y}, {@code p1Z}) and the point after ({@code p2X}, {@code p2Y},
+     * {@code p2Z}): they only shape the tangents at the segment's two end points and are not
+     * themselves on the segment. For a spline through the points {@code p[0..n]}, the segment from
+     * {@code p[i]} to {@code p[i+1]} is therefore interpolated with {@code p[i-1]} in the role of
+     * this vector and {@code p[i]}, {@code p[i+1]}, {@code p[i+2]} as the three given points.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1410,13 +1526,22 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
-     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * Catmull-Rom spline segment from {@code p1} to {@code p2}, with this vector as the control
+     * point before the segment and {@code p3} as the control point after it and store the result in
      * {@code dest}.
+     * <p>
+     * The curve passes through {@code p1} at {@code t = 0} and through {@code p2} at {@code t = 1}.
+     * This vector and {@code p3} are the spline's neighbouring points, i.e. the point before
+     * {@code p1} and the point after {@code p2}: they only shape the tangents at the segment's two
+     * end points and are not themselves on the segment. For a spline through the points
+     * {@code p[0..n]}, the segment from {@code p[i]} to {@code p[i+1]} is therefore interpolated
+     * with {@code p[i-1]} in the role of this vector and {@code p[i]}, {@code p[i+1]},
+     * {@code p[i+2]} as the three given points.
      *
      * @param p1 the start point of the interpolated segment
      * @param p2 the end point of the interpolated segment
-     * @param p3 the outer control point after the segment
+     * @param p3 the control point after the segment, i.e. the spline point following {@code p2}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1427,16 +1552,25 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
-     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * Catmull-Rom spline segment from {@code p1} to {@code p2}, with this vector as the control
+     * point before the segment and {@code p3} as the control point after it and store the result in
      * {@code dest}.
+     * <p>
+     * The curve passes through {@code p1} at {@code t = 0} and through {@code p2} at {@code t = 1}.
+     * This vector and {@code p3} are the spline's neighbouring points, i.e. the point before
+     * {@code p1} and the point after {@code p2}: they only shape the tangents at the segment's two
+     * end points and are not themselves on the segment. For a spline through the points
+     * {@code p[0..n]}, the segment from {@code p[i]} to {@code p[i+1]} is therefore interpolated
+     * with {@code p[i-1]} in the role of this vector and {@code p[i]}, {@code p[i+1]},
+     * {@code p[i+2]} as the three given points.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
      * @param p1 the start point of the interpolated segment
      * @param p2 the end point of the interpolated segment
-     * @param p3 the outer control point after the segment
+     * @param p3 the control point after the segment, i.e. the spline point following {@code p2}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1447,9 +1581,20 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
-     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * Catmull-Rom spline segment from ({@code p1X}, {@code p1Y}, {@code p1Z}) to ({@code p2X},
+     * {@code p2Y}, {@code p2Z}), with this vector as the control point before the segment and
+     * ({@code p3X}, {@code p3Y}, {@code p3Z}) as the control point after it and store the result in
      * {@code dest}.
+     * <p>
+     * The curve passes through ({@code p1X}, {@code p1Y}, {@code p1Z}) at {@code t = 0} and through
+     * ({@code p2X}, {@code p2Y}, {@code p2Z}) at {@code t = 1}. This vector and ({@code p3X},
+     * {@code p3Y}, {@code p3Z}) are the spline's neighbouring points, i.e. the point before
+     * ({@code p1X}, {@code p1Y}, {@code p1Z}) and the point after ({@code p2X}, {@code p2Y},
+     * {@code p2Z}): they only shape the tangents at the segment's two end points and are not
+     * themselves on the segment. For a spline through the points {@code p[0..n]}, the segment from
+     * {@code p[i]} to {@code p[i+1]} is therefore interpolated with {@code p[i-1]} in the role of
+     * this vector and {@code p[i]}, {@code p[i+1]}, {@code p[i+2]} as the three given points.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
@@ -1476,9 +1621,20 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
-     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * Catmull-Rom spline segment from ({@code p1X}, {@code p1Y}, {@code p1Z}) to ({@code p2X},
+     * {@code p2Y}, {@code p2Z}), with this vector as the control point before the segment and
+     * ({@code p3X}, {@code p3Y}, {@code p3Z}) as the control point after it and store the result in
      * {@code dest}.
+     * <p>
+     * The curve passes through ({@code p1X}, {@code p1Y}, {@code p1Z}) at {@code t = 0} and through
+     * ({@code p2X}, {@code p2Y}, {@code p2Z}) at {@code t = 1}. This vector and ({@code p3X},
+     * {@code p3Y}, {@code p3Z}) are the spline's neighbouring points, i.e. the point before
+     * ({@code p1X}, {@code p1Y}, {@code p1Z}) and the point after ({@code p2X}, {@code p2Y},
+     * {@code p2Z}): they only shape the tangents at the segment's two end points and are not
+     * themselves on the segment. For a spline through the points {@code p[0..n]}, the segment from
+     * {@code p[i]} to {@code p[i+1]} is therefore interpolated with {@code p[i-1]} in the role of
+     * this vector and {@code p[i]}, {@code p[i+1]}, {@code p[i+2]} as the three given points.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1508,12 +1664,16 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation and
-     * store the result in {@code dest}.
+     * Interpolate along the cubic Hermite curve that starts at this vector with the tangent
+     * {@code t0} and ends at {@code v1} with the tangent {@code t1} and store the result in
+     * {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code v1} at
+     * {@code t = 1}; the two tangents set its direction and speed at those end points.
      *
-     * @param t0 the tangent at this vector
-     * @param v1 the endpoint
-     * @param t1 the tangent at the endpoint
+     * @param t0 the tangent at the start point, i.e. at this vector
+     * @param v1 the end point of the curve
+     * @param t1 the tangent at the end point {@code v1}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1524,15 +1684,19 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation and
-     * store the result in {@code dest}.
+     * Interpolate along the cubic Hermite curve that starts at this vector with the tangent
+     * {@code t0} and ends at {@code v1} with the tangent {@code t1} and store the result in
+     * {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code v1} at
+     * {@code t = 1}; the two tangents set its direction and speed at those end points.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param t0 the tangent at this vector
-     * @param v1 the endpoint
-     * @param t1 the tangent at the endpoint
+     * @param t0 the tangent at the start point, i.e. at this vector
+     * @param v1 the end point of the curve
+     * @param t1 the tangent at the end point {@code v1}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1543,8 +1707,14 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation and
-     * store the result in {@code dest}.
+     * Interpolate along the cubic Hermite curve that starts at this vector with the tangent
+     * ({@code t0X}, {@code t0Y}, {@code t0Z}) and ends at ({@code v1X}, {@code v1Y}, {@code v1Z})
+     * with the tangent ({@code t1X}, {@code t1Y}, {@code t1Z}) and store the result in
+     * {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code v1X}, {@code v1Y},
+     * {@code v1Z}) at {@code t = 1}; the two tangents set its direction and speed at those end
+     * points.
      *
      * @param t0X the {@code x} component of the vector {@code (t0X, t0Y, t0Z)}
      * @param t0Y the {@code y} component of the vector {@code (t0X, t0Y, t0Z)}
@@ -1576,8 +1746,14 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation and
-     * store the result in {@code dest}.
+     * Interpolate along the cubic Hermite curve that starts at this vector with the tangent
+     * ({@code t0X}, {@code t0Y}, {@code t0Z}) and ends at ({@code v1X}, {@code v1Y}, {@code v1Z})
+     * with the tangent ({@code t1X}, {@code t1Y}, {@code t1Z}) and store the result in
+     * {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code v1X}, {@code v1Y},
+     * {@code v1Z}) at {@code t = 1}; the two tangents set its direction and speed at those end
+     * points.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1612,13 +1788,16 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
-     * this vector and the given endpoint, at the parameter {@code t} and store the result in
-     * {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Hermite curve that starts at this vector with the tangent {@code t0} and ends at
+     * {@code v1} with the tangent {@code t1} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code v1} at
+     * {@code t = 1}; the two tangents set its direction and speed at those end points.
      *
-     * @param t0 the tangent at this vector
-     * @param v1 the endpoint
-     * @param t1 the tangent at the endpoint
+     * @param t0 the tangent at the start point, i.e. at this vector
+     * @param v1 the end point of the curve
+     * @param t1 the tangent at the end point {@code v1}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1629,16 +1808,19 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
-     * this vector and the given endpoint, at the parameter {@code t} and store the result in
-     * {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Hermite curve that starts at this vector with the tangent {@code t0} and ends at
+     * {@code v1} with the tangent {@code t1} and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code v1} at
+     * {@code t = 1}; the two tangents set its direction and speed at those end points.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param t0 the tangent at this vector
-     * @param v1 the endpoint
-     * @param t1 the tangent at the endpoint
+     * @param t0 the tangent at the start point, i.e. at this vector
+     * @param v1 the end point of the curve
+     * @param t1 the tangent at the end point {@code v1}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1649,9 +1831,14 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
-     * this vector and the given endpoint, at the parameter {@code t} and store the result in
-     * {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Hermite curve that starts at this vector with the tangent ({@code t0X}, {@code t0Y},
+     * {@code t0Z}) and ends at ({@code v1X}, {@code v1Y}, {@code v1Z}) with the tangent
+     * ({@code t1X}, {@code t1Y}, {@code t1Z}) and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code v1X}, {@code v1Y},
+     * {@code v1Z}) at {@code t = 1}; the two tangents set its direction and speed at those end
+     * points.
      *
      * @param t0X the {@code x} component of the vector {@code (t0X, t0Y, t0Z)}
      * @param t0Y the {@code y} component of the vector {@code (t0X, t0Y, t0Z)}
@@ -1682,9 +1869,14 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
-     * this vector and the given endpoint, at the parameter {@code t} and store the result in
-     * {@code dest}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Hermite curve that starts at this vector with the tangent ({@code t0X}, {@code t0Y},
+     * {@code t0Z}) and ends at ({@code v1X}, {@code v1Y}, {@code v1Z}) with the tangent
+     * ({@code t1X}, {@code t1Y}, {@code t1Z}) and store the result in {@code dest}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code v1X}, {@code v1Y},
+     * {@code v1Z}) at {@code t = 1}; the two tangents set its direction and speed at those end
+     * points.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1720,8 +1912,11 @@ public final class Float3Impl implements Float3 {
     /**
      * Linearly interpolate between this vector and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other vector
+     * @param other the vector to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1735,10 +1930,13 @@ public final class Float3Impl implements Float3 {
      * Linearly interpolate between this vector and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
      * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1751,6 +1949,9 @@ public final class Float3Impl implements Float3 {
     /**
      * Linearly interpolate between this vector and ({@code otherX}, {@code otherY}, {@code otherZ})
      * using the interpolation factor {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code otherX}, {@code otherY}, {@code otherZ}) (interpolation factor {@code 1}).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -1772,6 +1973,9 @@ public final class Float3Impl implements Float3 {
     /**
      * Linearly interpolate between this vector and ({@code otherX}, {@code otherY}, {@code otherZ})
      * using the interpolation factor {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code otherX}, {@code otherY}, {@code otherZ}) (interpolation factor {@code 1}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1796,8 +2000,11 @@ public final class Float3Impl implements Float3 {
     /**
      * Linearly interpolate between this vector and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other vector
+     * @param other the vector to interpolate towards
      * @param t the per-component interpolation factors, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1811,10 +2018,13 @@ public final class Float3Impl implements Float3 {
      * Linearly interpolate between this vector and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
      * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector to interpolate towards
      * @param t the per-component interpolation factors, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1828,6 +2038,9 @@ public final class Float3Impl implements Float3 {
      * Linearly interpolate between this vector and ({@code otherX}, {@code otherY}, {@code otherZ})
      * using the interpolation factor ({@code tX}, {@code tY}, {@code tZ}) and store the result in
      * {@code dest}.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code otherX}, {@code otherY}, {@code otherZ}) (interpolation factor {@code 1}).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -1852,6 +2065,9 @@ public final class Float3Impl implements Float3 {
      * Linearly interpolate between this vector and ({@code otherX}, {@code otherY}, {@code otherZ})
      * using the interpolation factor ({@code tX}, {@code tY}, {@code tZ}) and store the result in
      * {@code dest}.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code otherX}, {@code otherY}, {@code otherZ}) (interpolation factor {@code 1}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1950,8 +2166,8 @@ public final class Float3Impl implements Float3 {
     /**
      * Add {@code b} scaled by {@code scalar} to this vector and store the result in {@code dest}.
      *
-     * @param b the vector
-     * @param scalar the scalar value
+     * @param b the vector to scale and add
+     * @param scalar the factor to scale {@code b} by before adding
      * @param dest will hold the result
      * @return dest
      */
@@ -1966,8 +2182,8 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param b the vector
-     * @param scalar the scalar value
+     * @param b the vector to scale and add
+     * @param scalar the factor to scale {@code b} by before adding
      * @param dest will hold the result
      * @return dest
      */
@@ -1983,7 +2199,7 @@ public final class Float3Impl implements Float3 {
      * @param bX the {@code x} component of the vector {@code (bX, bY, bZ)}
      * @param bY the {@code y} component of the vector {@code (bX, bY, bZ)}
      * @param bZ the {@code z} component of the vector {@code (bX, bY, bZ)}
-     * @param scalar the scalar value
+     * @param scalar the factor to scale ({@code bX}, {@code bY}, {@code bZ}) by before adding
      * @param dest will hold the result
      * @return dest
      */
@@ -2007,7 +2223,7 @@ public final class Float3Impl implements Float3 {
      * @param bX the {@code x} component of the vector {@code (bX, bY, bZ)}
      * @param bY the {@code y} component of the vector {@code (bX, bY, bZ)}
      * @param bZ the {@code z} component of the vector {@code (bX, bY, bZ)}
-     * @param scalar the scalar value
+     * @param scalar the factor to scale ({@code bX}, {@code bY}, {@code bZ}) by before adding
      * @param dest will hold the result
      * @return dest
      */
@@ -2024,8 +2240,8 @@ public final class Float3Impl implements Float3 {
     /**
      * Add {@code b} scaled by {@code c} to this vector and store the result in {@code dest}.
      *
-     * @param b the vector
-     * @param c the vector
+     * @param b the vector to scale and add
+     * @param c the per-component factors to scale {@code b} by before adding
      * @param dest will hold the result
      * @return dest
      */
@@ -2040,8 +2256,8 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param b the vector
-     * @param c the vector
+     * @param b the vector to scale and add
+     * @param c the per-component factors to scale {@code b} by before adding
      * @param dest will hold the result
      * @return dest
      */
@@ -2105,7 +2321,7 @@ public final class Float3Impl implements Float3 {
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
      * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
-     * @param other the other vector
+     * @param other the vector to measure the angle to
      * @return the angle in radians between this vector and {@code other}
      */
     public float angleBetween(Float3R other) {
@@ -2509,8 +2725,8 @@ public final class Float3Impl implements Float3 {
      * Compute the point on the line segment between {@code lineStart} and {@code lineEnd} that is
      * closest to this vector and store the result in {@code dest}.
      *
-     * @param lineStart the vector
-     * @param lineEnd the vector
+     * @param lineStart the start point of the line segment
+     * @param lineEnd the end point of the line segment
      * @param dest will hold the result
      * @return dest
      */
@@ -2526,8 +2742,8 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param lineStart the vector
-     * @param lineEnd the vector
+     * @param lineStart the start point of the line segment
+     * @param lineEnd the end point of the line segment
      * @param dest will hold the result
      * @return dest
      */
@@ -2833,10 +3049,10 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the cross product of this vector and {@code other} and store the result in
-     * {@code dest}.
+     * Compute the cross product of this vector and {@code other}, in that order
+     * ({@code this x other}) and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the right operand of the cross product
      * @param dest will hold the result
      * @return dest
      */
@@ -2846,13 +3062,13 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the cross product of this vector and {@code other} and store the result in
-     * {@code dest}.
+     * Compute the cross product of this vector and {@code other}, in that order
+     * ({@code this x other}) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the right operand of the cross product
      * @param dest will hold the result
      * @return dest
      */
@@ -2862,8 +3078,9 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the cross product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ})
-     * and store the result in {@code dest}.
+     * Compute the cross product of this vector and ({@code otherX}, {@code otherY},
+     * {@code otherZ}), in that order ({@code this x (otherX, otherY, otherZ)}) and store the result
+     * in {@code dest}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -2884,8 +3101,9 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the cross product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ})
-     * and store the result in {@code dest}.
+     * Compute the cross product of this vector and ({@code otherX}, {@code otherY},
+     * {@code otherZ}), in that order ({@code this x (otherX, otherY, otherZ)}) and store the result
+     * in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2952,7 +3170,7 @@ public final class Float3Impl implements Float3 {
      * stays within the {@code float} range: the magnitude of the difference vector must lie roughly
      * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the distance between this vector and {@code other}
      */
     public float distance(Float3R other) {
@@ -2985,7 +3203,7 @@ public final class Float3Impl implements Float3 {
     /**
      * Compute the squared distance between this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
     public float distanceSquared(Float3R other) {
@@ -3015,7 +3233,7 @@ public final class Float3Impl implements Float3 {
     /**
      * Compute the dot product of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
     public float dot(Float3R other) {
@@ -3153,8 +3371,8 @@ public final class Float3Impl implements Float3 {
      * orienting it against the incident direction {@code I} as judged by the reference vector
      * {@code Nref} and store the result in {@code dest}.
      *
-     * @param I the vector
-     * @param Nref the vector
+     * @param I the incident direction
+     * @param Nref the reference vector the incident direction is tested against
      * @param dest will hold the result
      * @return dest
      */
@@ -3171,8 +3389,8 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param I the vector
-     * @param Nref the vector
+     * @param I the incident direction
+     * @param Nref the reference vector the incident direction is tested against
      * @param dest will hold the result
      * @return dest
      */
@@ -3680,7 +3898,7 @@ public final class Float3Impl implements Float3 {
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
     public float manhattanDistance(Float3R other) {
@@ -3719,7 +3937,7 @@ public final class Float3Impl implements Float3 {
      * Set each component of this vector to the larger of itself and {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3735,7 +3953,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3748,7 +3966,7 @@ public final class Float3Impl implements Float3 {
      * Set each component of this vector to the larger of itself and the corresponding component of
      * {@code other} and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3764,7 +3982,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3820,7 +4038,7 @@ public final class Float3Impl implements Float3 {
      * Set each component of this vector to the smaller of itself and {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3836,7 +4054,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3849,7 +4067,7 @@ public final class Float3Impl implements Float3 {
      * Set each component of this vector to the smaller of itself and the corresponding component of
      * {@code other} and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3865,7 +4083,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -4238,7 +4456,7 @@ public final class Float3Impl implements Float3 {
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
      * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
-     * @param other the other vector
+     * @param other the vector to measure the signed angle to
      * @param normal the reference axis that defines the sign of the angle
      * @return the signed angle in radians between this vector and {@code other}, positive when the
      *        rotation from this vector to {@code other} is counter-clockwise as seen from the
@@ -4615,7 +4833,7 @@ public final class Float3Impl implements Float3 {
      * Project this vector onto the plane with the given normal and store the result in
      * {@code dest}.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the plane to project onto (must be a unit vector)
      * @param dest will hold the result
      * @return dest
      */
@@ -4631,7 +4849,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the plane to project onto (must be a unit vector)
      * @param dest will hold the result
      * @return dest
      */
@@ -4731,7 +4949,7 @@ public final class Float3Impl implements Float3 {
     /**
      * Reflect this vector about the given normal and store the result in {@code dest}.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the plane to reflect about (must be a unit vector)
      * @param dest will hold the result
      * @return dest
      */
@@ -4746,7 +4964,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the plane to reflect about (must be a unit vector)
      * @param dest will hold the result
      * @return dest
      */
@@ -4809,7 +5027,7 @@ public final class Float3Impl implements Float3 {
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the refracting surface (must be a unit vector)
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
      *        destination medium's
      * @param dest will hold the result
@@ -4828,7 +5046,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the refracting surface (must be a unit vector)
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
      *        destination medium's
      * @param dest will hold the result
@@ -5691,7 +5909,7 @@ public final class Float3Impl implements Float3 {
      * Pre-multiply {@code mat} onto this vector, i.e. compute {@code mat * this} and store the
      * result in {@code dest}.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -5715,7 +5933,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -5737,7 +5955,7 @@ public final class Float3Impl implements Float3 {
      * - i.e. compute {@code (mat * (this, 0)).xyz}, applying only rotation and scale and ignoring
      * translation and store the result in {@code dest}.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -5762,7 +5980,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -5784,7 +6002,7 @@ public final class Float3Impl implements Float3 {
      * - i.e. compute {@code (mat * (this, 0)).xyz}, applying only rotation and scale and ignoring
      * translation and store the result in {@code dest}.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -5809,7 +6027,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -5831,7 +6049,7 @@ public final class Float3Impl implements Float3 {
      * - i.e. compute {@code (mat * (this, 1)).xyz}, applying the full affine transform including
      * translation and store the result in {@code dest}.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -5856,7 +6074,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -5878,7 +6096,7 @@ public final class Float3Impl implements Float3 {
      * - i.e. compute {@code (mat * (this, 1)).xyz}, applying the full affine transform including
      * translation and store the result in {@code dest}.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -5903,7 +6121,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -5925,7 +6143,7 @@ public final class Float3Impl implements Float3 {
      * then perform a perspective divide - i.e. compute {@code r = mat * (this, 1)} and return
      * {@code r.xyz / r.w} and store the result in {@code dest}.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -5952,7 +6170,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -5975,7 +6193,7 @@ public final class Float3Impl implements Float3 {
      * Rotate this vector by the quaternion {@code quat}, i.e. compute {@code q * this * q^-1} and
      * store the result in {@code dest}.
      *
-     * @param quat the quaternion (must be a unit quaternion)
+     * @param quat the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -5991,7 +6209,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param quat the quaternion (must be a unit quaternion)
+     * @param quat the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -6162,7 +6380,7 @@ public final class Float3Impl implements Float3 {
     /**
      * Rotate this vector by the inverse of the given rotation and store the result in {@code dest}.
      *
-     * @param quat the quaternion (must be a unit quaternion)
+     * @param quat the rotation whose inverse to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -6177,7 +6395,7 @@ public final class Float3Impl implements Float3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param quat the quaternion (must be a unit quaternion)
+     * @param quat the rotation whose inverse to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */

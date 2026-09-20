@@ -36,7 +36,16 @@ public record DoubleRay(double oX, double oY, double oZ, double dX, double dY, d
     /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
     public static final int SIZE_BYTES = 48;
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param oX the {@code oX} component
+     * @param oY the {@code oY} component
+     * @param oZ the {@code oZ} component
+     * @param dX the {@code dX} component
+     * @param dY the {@code dY} component
+     * @param dZ the {@code dZ} component
+     */
     public DoubleRay(double oX, double oY, double oZ, double dX, double dY, double dZ) {
         this.oX = oX;
         this.oY = oY;
@@ -70,7 +79,7 @@ public record DoubleRay(double oX, double oY, double oZ, double dX, double dY, d
     /**
      * Create a new ray from the given values.
      *
-     * @param v the ray
+     * @param v the ray to copy
      * @return the resulting ray
      */
     public DoubleRay set(DoubleRay v) {
@@ -97,7 +106,7 @@ public record DoubleRay(double oX, double oY, double oZ, double dX, double dY, d
     /**
      * Set the direction of this ray to {@code d}, returning the result as a value.
      *
-     * @param d the vector
+     * @param d the new direction
      * @return the resulting ray
      */
     public DoubleRay setDirection(Double3 d) {
@@ -122,7 +131,7 @@ public record DoubleRay(double oX, double oY, double oZ, double dX, double dY, d
     /**
      * Set the origin of this ray to {@code o}, returning the result as a value.
      *
-     * @param o the vector
+     * @param o the new origin
      * @return the resulting ray
      */
     public DoubleRay setOrigin(Double3 o) {
@@ -159,7 +168,7 @@ public record DoubleRay(double oX, double oY, double oZ, double dX, double dY, d
     /**
      * Transform this ray by {@code m}, returning the result as a value.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return the resulting ray
      */
     public DoubleRay transform(Double3x4 m) {
@@ -173,7 +182,7 @@ public record DoubleRay(double oX, double oY, double oZ, double dX, double dY, d
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return the resulting ray
      */
     public DoubleRay transform(Double4x4 m) {
@@ -200,7 +209,7 @@ public record DoubleRay(double oX, double oY, double oZ, double dX, double dY, d
      * <p>
      * The result is returned as a value; {@code this} is not modified.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @return the resulting vector
      */
     public Double3 closestPointToPoint(Double3 p) {
@@ -215,9 +224,12 @@ public record DoubleRay(double oX, double oY, double oZ, double dX, double dY, d
      * <p>
      * The result is returned as a value; {@code this} is not modified.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
      * @return the resulting vector
      */
     public Double3 closestPointToPoint(double pX, double pY, double pZ) {
@@ -231,7 +243,7 @@ public record DoubleRay(double oX, double oY, double oZ, double dX, double dY, d
      * from the point to the closest point on the ray (the ray starts at its origin and extends only
      * along its direction). The direction need not be of unit length but must not be zero.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the squared distance between this ray and the given point, i.e. the squared distance
      *        from the point to the closest point on the ray (the ray starts at its origin and
      *        extends only along its direction). The direction need not be of unit length but must
@@ -247,9 +259,12 @@ public record DoubleRay(double oX, double oY, double oZ, double dX, double dY, d
      * from the point to the closest point on the ray (the ray starts at its origin and extends only
      * along its direction). The direction need not be of unit length but must not be zero.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the squared distance between this ray and the given point, i.e. the squared distance
      *        from the point to the closest point on the ray (the ray starts at its origin and
      *        extends only along its direction). The direction need not be of unit length but must
@@ -272,7 +287,7 @@ public record DoubleRay(double oX, double oY, double oZ, double dX, double dY, d
      * to the closest point on the ray (the ray starts at its origin and extends only along its
      * direction). The direction need not be of unit length but must not be zero.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the distance between this ray and the given point, i.e. the distance from the point
      *        to the closest point on the ray (the ray starts at its origin and extends only along
      *        its direction). The direction need not be of unit length but must not be zero
@@ -287,9 +302,12 @@ public record DoubleRay(double oX, double oY, double oZ, double dX, double dY, d
      * to the closest point on the ray (the ray starts at its origin and extends only along its
      * direction). The direction need not be of unit length but must not be zero.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the distance between this ray and the given point, i.e. the distance from the point
      *        to the closest point on the ray (the ray starts at its origin and extends only along
      *        its direction). The direction need not be of unit length but must not be zero
@@ -325,32 +343,56 @@ public record DoubleRay(double oX, double oY, double oZ, double dX, double dY, d
         return new Double3(this.oX, this.oY, this.oZ);
     }
 
-    /** {@return a copy with the {@code oX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code oX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code oX} component
+     */
     public DoubleRay withOX(double v) {
         return new DoubleRay(v, oY, oZ, dX, dY, dZ);
     }
 
-    /** {@return a copy with the {@code oY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code oY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code oY} component
+     */
     public DoubleRay withOY(double v) {
         return new DoubleRay(oX, v, oZ, dX, dY, dZ);
     }
 
-    /** {@return a copy with the {@code oZ} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code oZ} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code oZ} component
+     */
     public DoubleRay withOZ(double v) {
         return new DoubleRay(oX, oY, v, dX, dY, dZ);
     }
 
-    /** {@return a copy with the {@code dX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code dX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code dX} component
+     */
     public DoubleRay withDX(double v) {
         return new DoubleRay(oX, oY, oZ, v, dY, dZ);
     }
 
-    /** {@return a copy with the {@code dY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code dY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code dY} component
+     */
     public DoubleRay withDY(double v) {
         return new DoubleRay(oX, oY, oZ, dX, v, dZ);
     }
 
-    /** {@return a copy with the {@code dZ} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code dZ} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code dZ} component
+     */
     public DoubleRay withDZ(double v) {
         return new DoubleRay(oX, oY, oZ, dX, dY, v);
     }

@@ -39,7 +39,19 @@ public record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1X, dou
     /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
     public static final int SIZE_BYTES = 72;
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param v0X the {@code v0X} component
+     * @param v0Y the {@code v0Y} component
+     * @param v0Z the {@code v0Z} component
+     * @param v1X the {@code v1X} component
+     * @param v1Y the {@code v1Y} component
+     * @param v1Z the {@code v1Z} component
+     * @param v2X the {@code v2X} component
+     * @param v2Y the {@code v2Y} component
+     * @param v2Z the {@code v2Z} component
+     */
     public DoubleTriangle(double v0X, double v0Y, double v0Z, double v1X, double v1Y, double v1Z, double v2X, double v2Y, double v2Z) {
         this.v0X = v0X;
         this.v0Y = v0Y;
@@ -82,7 +94,7 @@ public record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1X, dou
     /**
      * Create a new triangle from the given values.
      *
-     * @param v the triangle
+     * @param v the triangle to copy
      * @return the resulting triangle
      */
     public DoubleTriangle set(DoubleTriangle v) {
@@ -133,7 +145,7 @@ public record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1X, dou
     /**
      * Transform this triangle by {@code m}, returning the result as a value.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return the resulting triangle
      */
     public DoubleTriangle transform(Double3x4 m) {
@@ -147,7 +159,7 @@ public record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1X, dou
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return the resulting triangle
      */
     public DoubleTriangle transform(Double4x4 m) {
@@ -184,7 +196,7 @@ public record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1X, dou
      * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
      * accurate for thin triangles.
      *
-     * @param p the vector
+     * @param p the point whose barycentric coordinates to compute
      * @return the resulting vector
      */
     public Double3 barycentric(Double3 p) {
@@ -308,7 +320,7 @@ public record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1X, dou
      * Determine whether the projection of the given point onto this triangle's plane lies inside or
      * on this triangle (boundary inclusive). Delegates to the shared {@code Intersectiond} kernels.
      *
-     * @param p the point
+     * @param p the point to test
      * @return {@code true} if the projection of the given point onto this triangle's plane lies
      *        inside or on this triangle, {@code false} otherwise
      */
@@ -320,7 +332,7 @@ public record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1X, dou
      * Determine whether this triangle intersects the given ray. Delegates to the shared
      * {@code Intersectiond} kernels.
      *
-     * @param ray the ray
+     * @param ray the ray to test for intersection
      * @param epsilon the tolerance below which the ray counts as parallel to the triangle's plane,
      *        guarding the near-zero determinant
      * @return {@code true} if this triangle and the given ray intersect, {@code false} otherwise
@@ -333,7 +345,7 @@ public record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1X, dou
      * Determine whether this triangle intersects the given ray, front face only. Delegates to the
      * shared {@code Intersectiond} kernels.
      *
-     * @param ray the ray
+     * @param ray the ray to test for intersection
      * @param epsilon the tolerance below which the ray counts as parallel to the triangle's plane,
      *        guarding the near-zero determinant
      * @return {@code true} if the ray hits the front face of this triangle, {@code false} otherwise
@@ -346,54 +358,90 @@ public record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1X, dou
      * Compute the point on this triangle closest to the given point. Delegates to the shared
      * {@code Intersectiond} kernels.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @return the point on this triangle closest to the given point
      */
     public Double3 closestPointToPoint(Double3 p) {
         return Intersectiond.closestPointOnTriangle(v0X(), v0Y(), v0Z(), v1X(), v1Y(), v1Z(), v2X(), v2Y(), v2Z(), p.x(), p.y(), p.z());
     }
 
-    /** {@return a copy with the {@code v0X} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code v0X} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code v0X} component
+     */
     public DoubleTriangle withV0X(double v) {
         return new DoubleTriangle(v, v0Y, v0Z, v1X, v1Y, v1Z, v2X, v2Y, v2Z);
     }
 
-    /** {@return a copy with the {@code v0Y} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code v0Y} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code v0Y} component
+     */
     public DoubleTriangle withV0Y(double v) {
         return new DoubleTriangle(v0X, v, v0Z, v1X, v1Y, v1Z, v2X, v2Y, v2Z);
     }
 
-    /** {@return a copy with the {@code v0Z} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code v0Z} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code v0Z} component
+     */
     public DoubleTriangle withV0Z(double v) {
         return new DoubleTriangle(v0X, v0Y, v, v1X, v1Y, v1Z, v2X, v2Y, v2Z);
     }
 
-    /** {@return a copy with the {@code v1X} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code v1X} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code v1X} component
+     */
     public DoubleTriangle withV1X(double v) {
         return new DoubleTriangle(v0X, v0Y, v0Z, v, v1Y, v1Z, v2X, v2Y, v2Z);
     }
 
-    /** {@return a copy with the {@code v1Y} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code v1Y} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code v1Y} component
+     */
     public DoubleTriangle withV1Y(double v) {
         return new DoubleTriangle(v0X, v0Y, v0Z, v1X, v, v1Z, v2X, v2Y, v2Z);
     }
 
-    /** {@return a copy with the {@code v1Z} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code v1Z} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code v1Z} component
+     */
     public DoubleTriangle withV1Z(double v) {
         return new DoubleTriangle(v0X, v0Y, v0Z, v1X, v1Y, v, v2X, v2Y, v2Z);
     }
 
-    /** {@return a copy with the {@code v2X} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code v2X} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code v2X} component
+     */
     public DoubleTriangle withV2X(double v) {
         return new DoubleTriangle(v0X, v0Y, v0Z, v1X, v1Y, v1Z, v, v2Y, v2Z);
     }
 
-    /** {@return a copy with the {@code v2Y} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code v2Y} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code v2Y} component
+     */
     public DoubleTriangle withV2Y(double v) {
         return new DoubleTriangle(v0X, v0Y, v0Z, v1X, v1Y, v1Z, v2X, v, v2Z);
     }
 
-    /** {@return a copy with the {@code v2Z} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code v2Z} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code v2Z} component
+     */
     public DoubleTriangle withV2Z(double v) {
         return new DoubleTriangle(v0X, v0Y, v0Z, v1X, v1Y, v1Z, v2X, v2Y, v);
     }

@@ -31,7 +31,7 @@ public interface FloatOBB extends FloatOBBR {
     /**
      * Set this oriented bounding box to the given values.
      *
-     * @param v the oriented bounding box
+     * @param v the oriented bounding box to copy
      * @return this
      */
     @Mutated FloatOBB set(FloatOBBR v);
@@ -105,7 +105,7 @@ public interface FloatOBB extends FloatOBBR {
     /**
      * Set the center of this oriented bounding box to {@code c}.
      *
-     * @param c the vector
+     * @param c the new center
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatOBB setCenter(Float3R c) { return setCenter(c, Joml.RETURN_NEW ? Joml.floatOBB() : this); }
@@ -123,7 +123,7 @@ public interface FloatOBB extends FloatOBBR {
     /**
      * Set the half extents of this oriented bounding box to {@code h}.
      *
-     * @param h the vector
+     * @param h the new half extents
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatOBB setHalfSize(Float3R h) { return setHalfSize(h, Joml.RETURN_NEW ? Joml.floatOBB() : this); }
@@ -148,7 +148,7 @@ public interface FloatOBB extends FloatOBBR {
     /**
      * Set the orientation of this oriented bounding box to {@code q}.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the new orientation (must be a unit quaternion)
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatOBB setOrientation(FloatQuatR q) { return setOrientation(q, Joml.RETURN_NEW ? Joml.floatOBB() : this); }
@@ -190,7 +190,7 @@ public interface FloatOBB extends FloatOBBR {
      * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
      * shear is approximated).
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatOBB transform(Float3x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.floatOBB() : this); }
@@ -204,7 +204,7 @@ public interface FloatOBB extends FloatOBBR {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatOBB transform(Float4x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.floatOBB() : this); }
@@ -212,7 +212,7 @@ public interface FloatOBB extends FloatOBBR {
     /**
      * Translate this oriented bounding box by {@code delta}.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatOBB translate(Float3R delta) { return translate(delta, Joml.RETURN_NEW ? Joml.floatOBB() : this); }

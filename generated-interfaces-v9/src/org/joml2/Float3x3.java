@@ -67,7 +67,7 @@ public interface Float3x3 extends Float3x3R {
      * factor, or factors of very different scale) invert both factors separately and multiply the
      * inverses in reverse order instead.
      *
-     * @param other the other matrix
+     * @param other the right factor of the product
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 invertProduct(Float3x3R other) { return invertProduct(other, Joml.RETURN_NEW ? Joml.float3x3() : this); }
@@ -112,7 +112,7 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Add {@code other} to this matrix.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 add(Float3x3R other) { return add(other, Joml.RETURN_NEW ? Joml.float3x3() : this); }
@@ -144,7 +144,7 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Subtract {@code other} from this matrix.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 sub(Float3x3R other) { return sub(other, Joml.RETURN_NEW ? Joml.float3x3() : this); }
@@ -169,7 +169,7 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Set this matrix to the given values.
      *
-     * @param v the matrix
+     * @param v the matrix to copy
      * @return this
      */
     @Mutated Float3x3 set(Float3x3R v);
@@ -194,7 +194,7 @@ public interface Float3x3 extends Float3x3R {
      * Set this matrix to the given 2x2 matrix, copying the overlapping cells and filling the rest
      * with identity.
      *
-     * @param m the matrix
+     * @param m the matrix to copy from
      * @return this
      */
     @Mutated Float3x3 set(Float2x2R m);
@@ -203,7 +203,7 @@ public interface Float3x3 extends Float3x3R {
      * Set this matrix to the given 2x3 matrix, copying the overlapping cells and filling the rest
      * with identity.
      *
-     * @param m the matrix
+     * @param m the matrix to copy from
      * @return this
      */
     @Mutated Float3x3 set(Float2x3R m);
@@ -211,7 +211,7 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Set this matrix to the given 3x4 matrix, copying the overlapping cells and dropping the rest.
      *
-     * @param m the matrix
+     * @param m the matrix to copy from
      * @return this
      */
     @Mutated Float3x3 set(Float3x4R m);
@@ -219,7 +219,7 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Set this matrix to the given 4x4 matrix, copying the overlapping cells and dropping the rest.
      *
-     * @param m the matrix
+     * @param m the matrix to copy from
      * @return this
      */
     @Mutated Float3x3 set(Float4x4R m);
@@ -259,7 +259,7 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Set this matrix to the given rigid transform's rotation block (the translation is dropped).
      *
-     * @param r the rigid transform (whose rotation must be a unit quaternion)
+     * @param r the rigid transform to convert (whose rotation must be a unit quaternion)
      * @return this
      */
     @Mutated Float3x3 makeFromRigid(FloatRigidR r);
@@ -289,7 +289,7 @@ public interface Float3x3 extends Float3x3R {
      * Set this matrix to the given transform's linear block {@code R * S} (the translation is
      * dropped).
      *
-     * @param t the transform
+     * @param t the transform to convert
      * @return this
      */
     @Mutated Float3x3 makeFromTransform(FloatTransformR t);
@@ -332,8 +332,11 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -343,6 +346,10 @@ public interface Float3x3 extends Float3x3R {
      * Linearly interpolate between this matrix and ({@code m00}, {@code m01}, {@code m02},
      * {@code m10}, {@code m11}, {@code m12}, {@code m20}, {@code m21}, {@code m22}) using the
      * interpolation factor {@code t}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m02}, {@code m10}, {@code m11}, {@code m12}, {@code m20},
+     * {@code m21}, {@code m22}) (interpolation factor {@code 1}).
      *
      * @param m00 the element in row 0, column 0 of the matrix
      * @param m01 the element in row 0, column 1 of the matrix
@@ -428,7 +435,7 @@ public interface Float3x3 extends Float3x3R {
      * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preMul(Float3x3R other) { return preMul(other, Joml.RETURN_NEW ? Joml.float3x3() : this); }
@@ -464,7 +471,7 @@ public interface Float3x3 extends Float3x3R {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preMul(Float2x2R other) { return preMul(other, Joml.RETURN_NEW ? Joml.float3x3() : this); }
@@ -479,7 +486,7 @@ public interface Float3x3 extends Float3x3R {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preMul(Float2x3R other) { return preMul(other, Joml.RETURN_NEW ? Joml.float3x3() : this); }
@@ -514,7 +521,8 @@ public interface Float3x3 extends Float3x3R {
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -542,7 +550,7 @@ public interface Float3x3 extends Float3x3R {
      * Set this matrix to the rotation part of the unit dual quaternion {@code dq} (the encoded
      * translation is dropped).
      *
-     * @param dq the dual quaternion (must be a unit dual quaternion)
+     * @param dq the dual quaternion to convert (must be a unit dual quaternion)
      * @return this
      */
     @Mutated Float3x3 makeFromDualQuat(FloatDualQuatR dq);
@@ -607,7 +615,8 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Set this matrix to a rotation that makes {@code +z} point along {@code dir}.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return this
      */
@@ -630,7 +639,7 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Set this matrix to the rotation represented by the quaternion {@code q}.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation quaternion (must be a unit quaternion)
      * @return this
      */
     @Mutated Float3x3 makeRotationQuat(FloatQuatR q);
@@ -750,7 +759,7 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Set this matrix to a scaling transformation that scales by {@code v}.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return this
      */
     @Mutated Float3x3 makeScaling(Float2R v);
@@ -926,7 +935,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code S * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code S * M * p}, the scaling will be applied last.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preScale(Float2R v) { return preScale(v, Joml.RETURN_NEW ? Joml.float3x3() : this); }
@@ -1024,7 +1033,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code T * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code T * M * p}, the translation will be applied last.
      *
-     * @param v the vector
+     * @param v the translation offsets
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preTranslate(Float2R v) { return preTranslate(v, Joml.RETURN_NEW ? Joml.float3x3() : this); }
@@ -1458,7 +1467,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * S}. So when transforming a vector {@code p} with the new matrix by using
      * {@code M * S * p}, the scaling will be applied first.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 scale(Float2R v) { return scale(v, Joml.RETURN_NEW ? Joml.float3x3() : this); }

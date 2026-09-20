@@ -40,7 +40,7 @@ public interface FloatTransformR {
     /**
      * Set the rotation of this transform to {@code r} and store the result in {@code dest}.
      *
-     * @param r the quaternion
+     * @param r the new rotation
      * @param dest will hold the result
      * @return dest
      */
@@ -52,7 +52,7 @@ public interface FloatTransformR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param r the quaternion
+     * @param r the new rotation
      * @param dest will hold the result
      * @return dest
      */
@@ -321,8 +321,11 @@ public interface FloatTransformR {
      * Interpolate between this transform and {@code other} using the interpolation factor
      * {@code t}, interpolating translation and scale linearly and the rotation via shortest-arc
      * slerp and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this transform (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other transform
+     * @param other the transform to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -334,10 +337,13 @@ public interface FloatTransformR {
      * {@code t}, interpolating translation and scale linearly and the rotation via shortest-arc
      * slerp and store the result in {@code dest}.
      * <p>
+     * The interpolation starts at this transform (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other transform
+     * @param other the transform to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -349,6 +355,10 @@ public interface FloatTransformR {
      * {@code rY}, {@code rZ}, {@code rW}, {@code sX}, {@code sY}, {@code sZ}) using the
      * interpolation factor {@code t}, interpolating translation and scale linearly and the rotation
      * via shortest-arc slerp and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this transform (interpolation factor {@code 0}) and ends at
+     * ({@code tX}, {@code tY}, {@code tZ}, {@code rX}, {@code rY}, {@code rZ}, {@code rW},
+     * {@code sX}, {@code sY}, {@code sZ}) (interpolation factor {@code 1}).
      *
      * @param tX the {@code tX} component of the transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
@@ -381,6 +391,10 @@ public interface FloatTransformR {
      * {@code rY}, {@code rZ}, {@code rW}, {@code sX}, {@code sY}, {@code sZ}) using the
      * interpolation factor {@code t}, interpolating translation and scale linearly and the rotation
      * via shortest-arc slerp and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this transform (interpolation factor {@code 0}) and ends at
+     * ({@code tX}, {@code tY}, {@code tZ}, {@code rX}, {@code rY}, {@code rZ}, {@code rW},
+     * {@code sX}, {@code sY}, {@code sZ}) (interpolation factor {@code 1}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -424,7 +438,7 @@ public interface FloatTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param other the other transform
+     * @param other the right operand
      * @param dest will hold the result
      * @return dest
      */
@@ -446,7 +460,7 @@ public interface FloatTransformR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other transform
+     * @param other the right operand
      * @param dest will hold the result
      * @return dest
      */
@@ -548,7 +562,7 @@ public interface FloatTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param other the other transform
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -570,7 +584,7 @@ public interface FloatTransformR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other transform
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -670,7 +684,7 @@ public interface FloatTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param other the other transform
+     * @param other the target transform, reached by composing this transform with the result
      * @param dest will hold the result
      * @return dest
      */
@@ -690,7 +704,7 @@ public interface FloatTransformR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other transform
+     * @param other the target transform, reached by composing this transform with the result
      * @param dest will hold the result
      * @return dest
      */
@@ -1098,7 +1112,7 @@ public interface FloatTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param rotation the quaternion (must be a unit quaternion)
+     * @param rotation the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -1121,7 +1135,7 @@ public interface FloatTransformR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param rotation the quaternion (must be a unit quaternion)
+     * @param rotation the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -1726,7 +1740,7 @@ public interface FloatTransformR {
      * transform will be {@code M * S}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * S * v}, the scaling will be applied first.
      *
-     * @param scale the scale factor
+     * @param scale the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -1742,7 +1756,7 @@ public interface FloatTransformR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param scale the scale factor
+     * @param scale the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -1820,7 +1834,7 @@ public interface FloatTransformR {
      * transform will be {@code M * T}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * T * v}, the translation will be applied first.
      *
-     * @param translation the vector
+     * @param translation the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -1837,7 +1851,7 @@ public interface FloatTransformR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param translation the vector
+     * @param translation the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -1881,7 +1895,7 @@ public interface FloatTransformR {
     /**
      * Transform {@code v} by this transform and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -1893,7 +1907,7 @@ public interface FloatTransformR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -1929,7 +1943,7 @@ public interface FloatTransformR {
     /**
      * Transform {@code v} by this transform and store the result back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the vector to transform (also receives the result)
      * @return {@code v}
      */
     default Float3 transform(@Mutated Float3 v) { return transform(v, v); }
@@ -1938,7 +1952,7 @@ public interface FloatTransformR {
      * Transform the given direction by the rotation part of this transform, ignoring translation
      * and scale and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -1951,7 +1965,7 @@ public interface FloatTransformR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -1988,7 +2002,7 @@ public interface FloatTransformR {
      * Transform the given direction by the rotation part of this transform, ignoring translation
      * and scale and store the result back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the direction to transform (also receives the result)
      * @return {@code v}
      */
     default Float3 transformDirection(@Mutated Float3 v) { return transformDirection(v, v); }
@@ -1998,7 +2012,7 @@ public interface FloatTransformR {
      * ignoring translation and scale, without materializing {@code invert()} and store the result
      * in {@code dest}.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2012,7 +2026,7 @@ public interface FloatTransformR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2052,7 +2066,7 @@ public interface FloatTransformR {
      * ignoring translation and scale, without materializing {@code invert()} and store the result
      * back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the direction to transform (also receives the result)
      * @return {@code v}
      */
     default Float3 transformDirectionInverse(@Mutated Float3 v) { return transformDirectionInverse(v, v); }
@@ -2060,7 +2074,7 @@ public interface FloatTransformR {
     /**
      * Transform {@code p} by the inverse of this transform and store the result in {@code dest}.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2072,7 +2086,7 @@ public interface FloatTransformR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2109,7 +2123,7 @@ public interface FloatTransformR {
      * Transform {@code p} by the inverse of this transform and store the result back into
      * {@code p}.
      *
-     * @param p the vector (also receives the result)
+     * @param p the position to transform (also receives the result)
      * @return {@code p}
      */
     default Float3 transformInverse(@Mutated Float3 p) { return transformInverse(p, p); }
@@ -2118,7 +2132,7 @@ public interface FloatTransformR {
      * Transform the given position by this transform, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2131,7 +2145,7 @@ public interface FloatTransformR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2168,7 +2182,7 @@ public interface FloatTransformR {
      * Transform the given position by this transform, treating it as a point with an implicit
      * {@code w = 1} and store the result back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the position to transform (also receives the result)
      * @return {@code v}
      */
     default Float3 transformPosition(@Mutated Float3 v) { return transformPosition(v, v); }
@@ -2177,7 +2191,7 @@ public interface FloatTransformR {
      * Transform the given position by the inverse of this transform (world to local), without
      * materializing {@code invert()} and store the result in {@code dest}.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2190,7 +2204,7 @@ public interface FloatTransformR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2227,7 +2241,7 @@ public interface FloatTransformR {
      * Transform the given position by the inverse of this transform (world to local), without
      * materializing {@code invert()} and store the result back into {@code p}.
      *
-     * @param p the vector (also receives the result)
+     * @param p the position to transform (also receives the result)
      * @return {@code p}
      */
     default Float3 transformPositionInverse(@Mutated Float3 p) { return transformPositionInverse(p, p); }
@@ -2236,7 +2250,7 @@ public interface FloatTransformR {
      * Transform the given vector by the linear part of this transform, i.e. apply its scale and
      * rotation but not its translation and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2249,7 +2263,7 @@ public interface FloatTransformR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2286,7 +2300,7 @@ public interface FloatTransformR {
      * Transform the given vector by the linear part of this transform, i.e. apply its scale and
      * rotation but not its translation and store the result back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the vector to transform (also receives the result)
      * @return {@code v}
      */
     default Float3 transformVector(@Mutated Float3 v) { return transformVector(v, v); }
@@ -2296,7 +2310,7 @@ public interface FloatTransformR {
      * i.e. undo its rotation and scale but not its translation, without materializing
      * {@code invert()} and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2310,7 +2324,7 @@ public interface FloatTransformR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2350,7 +2364,7 @@ public interface FloatTransformR {
      * i.e. undo its rotation and scale but not its translation, without materializing
      * {@code invert()} and store the result back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the vector to transform (also receives the result)
      * @return {@code v}
      */
     default Float3 transformVectorInverse(@Mutated Float3 v) { return transformVectorInverse(v, v); }

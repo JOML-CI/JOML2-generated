@@ -40,7 +40,7 @@ public interface FloatSphereR {
     /**
      * Set the center of this sphere to {@code c} and store the result in {@code dest}.
      *
-     * @param c the vector
+     * @param c the new center
      * @param dest will hold the result
      * @return dest
      */
@@ -52,7 +52,7 @@ public interface FloatSphereR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param c the vector
+     * @param c the new center
      * @param dest will hold the result
      * @return dest
      */
@@ -118,7 +118,7 @@ public interface FloatSphereR {
      * Transform this sphere by {@code m}, scaling the radius conservatively by the matrix's maximum
      * axis scale and store the result in {@code dest}.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -131,7 +131,7 @@ public interface FloatSphereR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -144,7 +144,7 @@ public interface FloatSphereR {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -160,7 +160,7 @@ public interface FloatSphereR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -169,7 +169,7 @@ public interface FloatSphereR {
     /**
      * Translate this sphere by {@code delta} and store the result in {@code dest}.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -181,7 +181,7 @@ public interface FloatSphereR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -221,7 +221,7 @@ public interface FloatSphereR {
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -237,7 +237,7 @@ public interface FloatSphereR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -250,9 +250,9 @@ public interface FloatSphereR {
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
-     * @param x the {@code x} component of the point {@code (x, y, z)}
-     * @param y the {@code y} component of the point {@code (x, y, z)}
-     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param x the {@code x} component of the point {@code (x, y, z)} to find the closest point to
+     * @param y the {@code y} component of the point {@code (x, y, z)} to find the closest point to
+     * @param z the {@code z} component of the point {@code (x, y, z)} to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -268,9 +268,9 @@ public interface FloatSphereR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param x the {@code x} component of the point {@code (x, y, z)}
-     * @param y the {@code y} component of the point {@code (x, y, z)}
-     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param x the {@code x} component of the point {@code (x, y, z)} to find the closest point to
+     * @param y the {@code y} component of the point {@code (x, y, z)} to find the closest point to
+     * @param z the {@code z} component of the point {@code (x, y, z)} to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -281,7 +281,7 @@ public interface FloatSphereR {
      * sphere, the result is the point itself; otherwise it is the point on the surface in the
      * direction from the center toward the given point.
      *
-     * @param p the point (also receives the result)
+     * @param p the point to find the closest point to (also receives the result)
      * @return {@code p}
      */
     default Float3 closestPointToPoint(@Mutated Float3 p) { return closestPointToPoint(p, p); }
@@ -291,7 +291,7 @@ public interface FloatSphereR {
      * square of the distance from the box to the center minus the radius, clamped at zero; zero
      * when they overlap or touch.
      *
-     * @param aabb the axis-aligned box
+     * @param aabb the axis-aligned box to measure the distance to
      * @return the squared distance between this sphere and the given axis-aligned box, i.e. the
      *        square of the distance from the box to the center minus the radius, clamped at zero;
      *        zero when they overlap or touch
@@ -304,17 +304,17 @@ public interface FloatSphereR {
      * when they overlap or touch.
      *
      * @param minX the {@code minX} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param minY the {@code minY} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param minZ the {@code minZ} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param maxX the {@code maxX} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param maxY the {@code maxY} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param maxZ the {@code maxZ} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @return the squared distance between this sphere and the given axis-aligned box, i.e. the
      *        square of the distance from the box to the center minus the radius, clamped at zero;
      *        zero when they overlap or touch
@@ -326,8 +326,8 @@ public interface FloatSphereR {
      * square of the distance from the box to the center minus the radius, clamped at zero; zero
      * when they overlap or touch.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
      * @return the squared distance between this sphere and the given axis-aligned box, i.e. the
      *        square of the distance from the box to the center minus the radius, clamped at zero;
      *        zero when they overlap or touch
@@ -339,7 +339,7 @@ public interface FloatSphereR {
      * distance from the point to the center minus the radius, clamped at zero; zero for a point
      * inside or on the sphere.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the squared distance between this sphere and the given point, i.e. the square of the
      *        distance from the point to the center minus the radius, clamped at zero; zero for a
      *        point inside or on the sphere
@@ -351,9 +351,9 @@ public interface FloatSphereR {
      * distance from the point to the center minus the radius, clamped at zero; zero for a point
      * inside or on the sphere.
      *
-     * @param x the {@code x} component of the point {@code (x, y, z)}
-     * @param y the {@code y} component of the point {@code (x, y, z)}
-     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param x the {@code x} component of the point {@code (x, y, z)} to measure the distance to
+     * @param y the {@code y} component of the point {@code (x, y, z)} to measure the distance to
+     * @param z the {@code z} component of the point {@code (x, y, z)} to measure the distance to
      * @return the squared distance between this sphere and the given point, i.e. the square of the
      *        distance from the point to the center minus the radius, clamped at zero; zero for a
      *        point inside or on the sphere
@@ -365,7 +365,7 @@ public interface FloatSphereR {
      * distance between the centers minus both radii, clamped at zero; zero when they overlap or
      * touch.
      *
-     * @param other the other sphere
+     * @param other the sphere to measure the distance to
      * @return the squared distance between this sphere and the given sphere, i.e. the square of the
      *        distance between the centers minus both radii, clamped at zero; zero when they overlap
      *        or touch
@@ -377,10 +377,14 @@ public interface FloatSphereR {
      * distance between the centers minus both radii, clamped at zero; zero when they overlap or
      * touch.
      *
-     * @param x the {@code x} component of the other sphere {@code (x, y, z, r)}
-     * @param y the {@code y} component of the other sphere {@code (x, y, z, r)}
-     * @param z the {@code z} component of the other sphere {@code (x, y, z, r)}
-     * @param r the {@code r} component of the other sphere {@code (x, y, z, r)}
+     * @param x the {@code x} component of the sphere {@code (x, y, z, r)} to measure the distance
+     *        to
+     * @param y the {@code y} component of the sphere {@code (x, y, z, r)} to measure the distance
+     *        to
+     * @param z the {@code z} component of the sphere {@code (x, y, z, r)} to measure the distance
+     *        to
+     * @param r the {@code r} component of the sphere {@code (x, y, z, r)} to measure the distance
+     *        to
      * @return the squared distance between this sphere and the given sphere, i.e. the square of the
      *        distance between the centers minus both radii, clamped at zero; zero when they overlap
      *        or touch
@@ -392,7 +396,7 @@ public interface FloatSphereR {
      * from the box to the center minus the radius, clamped at zero; zero when they overlap or
      * touch.
      *
-     * @param aabb the axis-aligned box
+     * @param aabb the axis-aligned box to measure the distance to
      * @return the distance between this sphere and the given axis-aligned box, i.e. the distance
      *        from the box to the center minus the radius, clamped at zero; zero when they overlap
      *        or touch
@@ -405,17 +409,17 @@ public interface FloatSphereR {
      * touch.
      *
      * @param minX the {@code minX} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param minY the {@code minY} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param minZ the {@code minZ} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param maxX the {@code maxX} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param maxY the {@code maxY} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @param maxZ the {@code maxZ} component of the axis-aligned box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @return the distance between this sphere and the given axis-aligned box, i.e. the distance
      *        from the box to the center minus the radius, clamped at zero; zero when they overlap
      *        or touch
@@ -427,8 +431,8 @@ public interface FloatSphereR {
      * from the box to the center minus the radius, clamped at zero; zero when they overlap or
      * touch.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
      * @return the distance between this sphere and the given axis-aligned box, i.e. the distance
      *        from the box to the center minus the radius, clamped at zero; zero when they overlap
      *        or touch
@@ -440,7 +444,7 @@ public interface FloatSphereR {
      * center to the plane minus the radius, clamped at zero; zero when the plane intersects or
      * touches the sphere. The plane's normal need not be of unit length.
      *
-     * @param plane the plane
+     * @param plane the plane to measure the distance to
      * @return the distance between this sphere and the given plane, i.e. the distance from the
      *        center to the plane minus the radius, clamped at zero; zero when the plane intersects
      *        or touches the sphere. The plane's normal need not be of unit length
@@ -452,10 +456,10 @@ public interface FloatSphereR {
      * center to the plane minus the radius, clamped at zero; zero when the plane intersects or
      * touches the sphere. The plane's normal need not be of unit length.
      *
-     * @param a the {@code a} component of the plane {@code (a, b, c, d)}
-     * @param b the {@code b} component of the plane {@code (a, b, c, d)}
-     * @param c the {@code c} component of the plane {@code (a, b, c, d)}
-     * @param d the {@code d} component of the plane {@code (a, b, c, d)}
+     * @param a the {@code a} component of the plane {@code (a, b, c, d)} to measure the distance to
+     * @param b the {@code b} component of the plane {@code (a, b, c, d)} to measure the distance to
+     * @param c the {@code c} component of the plane {@code (a, b, c, d)} to measure the distance to
+     * @param d the {@code d} component of the plane {@code (a, b, c, d)} to measure the distance to
      * @return the distance between this sphere and the given plane, i.e. the distance from the
      *        center to the plane minus the radius, clamped at zero; zero when the plane intersects
      *        or touches the sphere. The plane's normal need not be of unit length
@@ -467,7 +471,7 @@ public interface FloatSphereR {
      * center to the plane minus the radius, clamped at zero; zero when the plane intersects or
      * touches the sphere. The plane's normal need not be of unit length.
      *
-     * @param plane the plane
+     * @param plane the plane to measure the distance to
      * @return the distance between this sphere and the given plane, i.e. the distance from the
      *        center to the plane minus the radius, clamped at zero; zero when the plane intersects
      *        or touches the sphere. The plane's normal need not be of unit length
@@ -479,7 +483,7 @@ public interface FloatSphereR {
      * point to the center minus the radius, clamped at zero; zero for a point inside or on the
      * sphere.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the distance between this sphere and the given point, i.e. the distance from the
      *        point to the center minus the radius, clamped at zero; zero for a point inside or on
      *        the sphere
@@ -491,9 +495,9 @@ public interface FloatSphereR {
      * point to the center minus the radius, clamped at zero; zero for a point inside or on the
      * sphere.
      *
-     * @param x the {@code x} component of the point {@code (x, y, z)}
-     * @param y the {@code y} component of the point {@code (x, y, z)}
-     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param x the {@code x} component of the point {@code (x, y, z)} to measure the distance to
+     * @param y the {@code y} component of the point {@code (x, y, z)} to measure the distance to
+     * @param z the {@code z} component of the point {@code (x, y, z)} to measure the distance to
      * @return the distance between this sphere and the given point, i.e. the distance from the
      *        point to the center minus the radius, clamped at zero; zero for a point inside or on
      *        the sphere
@@ -504,7 +508,7 @@ public interface FloatSphereR {
      * Compute the distance between this sphere and the given sphere, i.e. the distance between the
      * centers minus both radii, clamped at zero; zero when they overlap or touch.
      *
-     * @param other the other sphere
+     * @param other the sphere to measure the distance to
      * @return the distance between this sphere and the given sphere, i.e. the distance between the
      *        centers minus both radii, clamped at zero; zero when they overlap or touch
      */
@@ -514,10 +518,14 @@ public interface FloatSphereR {
      * Compute the distance between this sphere and the given sphere, i.e. the distance between the
      * centers minus both radii, clamped at zero; zero when they overlap or touch.
      *
-     * @param x the {@code x} component of the other sphere {@code (x, y, z, r)}
-     * @param y the {@code y} component of the other sphere {@code (x, y, z, r)}
-     * @param z the {@code z} component of the other sphere {@code (x, y, z, r)}
-     * @param r the {@code r} component of the other sphere {@code (x, y, z, r)}
+     * @param x the {@code x} component of the sphere {@code (x, y, z, r)} to measure the distance
+     *        to
+     * @param y the {@code y} component of the sphere {@code (x, y, z, r)} to measure the distance
+     *        to
+     * @param z the {@code z} component of the sphere {@code (x, y, z, r)} to measure the distance
+     *        to
+     * @param r the {@code r} component of the sphere {@code (x, y, z, r)} to measure the distance
+     *        to
      * @return the distance between this sphere and the given sphere, i.e. the distance between the
      *        centers minus both radii, clamped at zero; zero when they overlap or touch
      */
@@ -555,7 +563,7 @@ public interface FloatSphereR {
      * distance from the point to the center minus the radius: positive outside, zero on the surface
      * and negative inside.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the signed distance between the given point and the surface of this sphere, i.e. the
      *        distance from the point to the center minus the radius: positive outside, zero on the
      *        surface and negative inside
@@ -567,9 +575,9 @@ public interface FloatSphereR {
      * distance from the point to the center minus the radius: positive outside, zero on the surface
      * and negative inside.
      *
-     * @param x the {@code x} component of the point {@code (x, y, z)}
-     * @param y the {@code y} component of the point {@code (x, y, z)}
-     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param x the {@code x} component of the point {@code (x, y, z)} to measure the distance to
+     * @param y the {@code y} component of the point {@code (x, y, z)} to measure the distance to
+     * @param z the {@code z} component of the point {@code (x, y, z)} to measure the distance to
      * @return the signed distance between the given point and the surface of this sphere, i.e. the
      *        distance from the point to the center minus the radius: positive outside, zero on the
      *        surface and negative inside
@@ -977,7 +985,7 @@ public interface FloatSphereR {
      * Determine whether this sphere contains the given point (boundary inclusive). Delegates to the
      * shared {@code Intersectionf} kernels.
      *
-     * @param p the point
+     * @param p the point to test
      * @return {@code true} if the given point lies inside or on this sphere, {@code false}
      *        otherwise
      */
@@ -987,7 +995,7 @@ public interface FloatSphereR {
      * Determine whether this sphere intersects the given sphere. Delegates to the shared
      * {@code Intersectionf} kernels.
      *
-     * @param o the other sphere
+     * @param o the sphere to test for intersection
      * @return {@code true} if this sphere and the given sphere intersect, {@code false} otherwise
      */
     boolean intersectsSphere(FloatSphereR o);
@@ -996,7 +1004,7 @@ public interface FloatSphereR {
      * Determine whether this sphere intersects the given axis-aligned box. Delegates to the shared
      * {@code Intersectionf} kernels.
      *
-     * @param aabb the axis-aligned box
+     * @param aabb the axis-aligned box to test for intersection
      * @return {@code true} if this sphere and the given axis-aligned box intersect, {@code false}
      *        otherwise
      */
@@ -1006,7 +1014,7 @@ public interface FloatSphereR {
      * Determine whether this sphere intersects the given plane. Delegates to the shared
      * {@code Intersectionf} kernels.
      *
-     * @param plane the plane
+     * @param plane the plane to test for intersection
      * @return {@code true} if this sphere and the given plane intersect, {@code false} otherwise
      */
     boolean intersectsPlane(FloatPlaneR plane);
@@ -1019,7 +1027,7 @@ public interface FloatSphereR {
      * the difference of two squared lengths, so a distant center does not lose the decision to
      * cancellation. Delegates to the shared {@code Intersectionf} kernels.
      *
-     * @param ray the ray (its direction must have unit length)
+     * @param ray the ray to test for intersection (its direction must have unit length)
      * @return {@code true} if this sphere and the given ray intersect, {@code false} otherwise
      */
     boolean intersectsRay(FloatRayR ray);

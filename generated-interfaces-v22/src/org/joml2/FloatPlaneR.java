@@ -41,7 +41,7 @@ public interface FloatPlaneR {
     /**
      * Set the normal of this plane to {@code n} and store the result in {@code dest}.
      *
-     * @param n the normal
+     * @param n the new normal
      * @param dest will hold the result
      * @return dest
      */
@@ -53,7 +53,7 @@ public interface FloatPlaneR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param n the normal
+     * @param n the new normal
      * @param dest will hold the result
      * @return dest
      */
@@ -127,7 +127,7 @@ public interface FloatPlaneR {
      * Compute the (unsigned) distance between this plane and the given point. The plane's normal
      * need not be of unit length: the result is divided by that normal's length.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the (unsigned) distance between this plane and the given point. The plane's normal
      *        need not be of unit length: the result is divided by that normal's length
      */
@@ -137,9 +137,9 @@ public interface FloatPlaneR {
      * Compute the (unsigned) distance between this plane and the given point. The plane's normal
      * need not be of unit length: the result is divided by that normal's length.
      *
-     * @param x the {@code x} component of the point {@code (x, y, z)}
-     * @param y the {@code y} component of the point {@code (x, y, z)}
-     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param x the {@code x} component of the point {@code (x, y, z)} to measure the distance to
+     * @param y the {@code y} component of the point {@code (x, y, z)} to measure the distance to
+     * @param z the {@code z} component of the point {@code (x, y, z)} to measure the distance to
      * @return the (unsigned) distance between this plane and the given point. The plane's normal
      *        need not be of unit length: the result is divided by that normal's length
      */
@@ -612,7 +612,7 @@ public interface FloatPlaneR {
      * Compute the signed distance of the given point to this plane. Delegates to the shared
      * {@code Intersectionf} kernels.
      *
-     * @param p the point
+     * @param p the point to measure the signed distance to
      * @return the signed distance from the given point to this plane - positive on the side the
      *        plane normal points to, and a true distance even when that normal is not unit length
      */
@@ -632,7 +632,7 @@ public interface FloatPlaneR {
     /**
      * Project the given point onto this plane.
      *
-     * @param p the point
+     * @param p the point to project
      * @param dest will hold the orthogonal projection of the given point onto this plane
      * @return {@code dest}
      */
@@ -656,7 +656,7 @@ public interface FloatPlaneR {
      * Determine whether this plane contains the given point (boundary inclusive). Delegates to the
      * shared {@code Intersectionf} kernels.
      *
-     * @param p the point
+     * @param p the point to test
      * @param epsilon the maximum distance from the plane at which the point still counts as lying
      *        on it
      * @return {@code true} if the given point lies within {@code epsilon} of this plane,
@@ -668,7 +668,7 @@ public interface FloatPlaneR {
      * Determine whether this plane intersects the given sphere. Delegates to the shared
      * {@code Intersectionf} kernels.
      *
-     * @param sph the sphere
+     * @param sph the sphere to test for intersection
      * @return {@code true} if this plane and the given sphere intersect, {@code false} otherwise
      */
     boolean intersectsSphere(FloatSphereR sph);
@@ -677,7 +677,7 @@ public interface FloatPlaneR {
      * Determine whether this plane intersects the given axis-aligned box. Delegates to the shared
      * {@code Intersectionf} kernels.
      *
-     * @param box the axis-aligned box
+     * @param box the axis-aligned box to test for intersection
      * @return {@code true} if this plane and the given axis-aligned box intersect, {@code false}
      *        otherwise
      */

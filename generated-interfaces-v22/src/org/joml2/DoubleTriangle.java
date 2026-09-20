@@ -32,7 +32,7 @@ public interface DoubleTriangle extends DoubleTriangleR {
     /**
      * Set this triangle to the given values.
      *
-     * @param v the triangle
+     * @param v the triangle to copy
      * @return this
      */
     @Mutated DoubleTriangle set(DoubleTriangleR v);
@@ -74,7 +74,7 @@ public interface DoubleTriangle extends DoubleTriangleR {
     /**
      * Transform this triangle by {@code m}.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTriangle transform(Double3x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.doubleTriangle() : this); }
@@ -85,7 +85,7 @@ public interface DoubleTriangle extends DoubleTriangleR {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTriangle transform(Double4x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.doubleTriangle() : this); }

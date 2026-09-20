@@ -41,7 +41,7 @@ public interface FloatAABBR {
      * Set the maximum corner of this axis-aligned bounding box to {@code max} and store the result
      * in {@code dest}.
      *
-     * @param max the maximum corner
+     * @param max the maximum corner of the box
      * @param dest will hold the result
      * @return dest
      */
@@ -54,7 +54,7 @@ public interface FloatAABBR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param max the maximum corner
+     * @param max the maximum corner of the box
      * @param dest will hold the result
      * @return dest
      */
@@ -91,7 +91,7 @@ public interface FloatAABBR {
      * Set the minimum corner of this axis-aligned bounding box to {@code min} and store the result
      * in {@code dest}.
      *
-     * @param min the minimum corner
+     * @param min the minimum corner of the box
      * @param dest will hold the result
      * @return dest
      */
@@ -104,7 +104,7 @@ public interface FloatAABBR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param min the minimum corner
+     * @param min the minimum corner of the box
      * @param dest will hold the result
      * @return dest
      */
@@ -171,7 +171,7 @@ public interface FloatAABBR {
      * Transform this axis-aligned bounding box by {@code m} and set it to the axis-aligned box
      * enclosing the transformed box and store the result in {@code dest}.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -184,7 +184,7 @@ public interface FloatAABBR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -197,7 +197,7 @@ public interface FloatAABBR {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -213,7 +213,7 @@ public interface FloatAABBR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -223,7 +223,7 @@ public interface FloatAABBR {
      * Translate this axis-aligned bounding box by {@code delta} and store the result in
      * {@code dest}.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -236,7 +236,7 @@ public interface FloatAABBR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -273,7 +273,7 @@ public interface FloatAABBR {
      * Set this axis-aligned bounding box to the union of itself and {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other axis-aligned bounding box
+     * @param other the axis-aligned bounding box to include in the union
      * @param dest will hold the result
      * @return dest
      */
@@ -286,7 +286,7 @@ public interface FloatAABBR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other axis-aligned bounding box
+     * @param other the axis-aligned bounding box to include in the union
      * @param dest will hold the result
      * @return dest
      */
@@ -341,7 +341,7 @@ public interface FloatAABBR {
      * Grow this axis-aligned bounding box to include the point {@code p} and store the result in
      * {@code dest}.
      *
-     * @param p the vector
+     * @param p the point to include
      * @param dest will hold the result
      * @return dest
      */
@@ -354,7 +354,7 @@ public interface FloatAABBR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the vector
+     * @param p the point to include
      * @param dest will hold the result
      * @return dest
      */
@@ -394,7 +394,7 @@ public interface FloatAABBR {
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -410,7 +410,7 @@ public interface FloatAABBR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -423,9 +423,9 @@ public interface FloatAABBR {
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
-     * @param x the {@code x} component of the point {@code (x, y, z)}
-     * @param y the {@code y} component of the point {@code (x, y, z)}
-     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param x the {@code x} component of the point {@code (x, y, z)} to find the closest point to
+     * @param y the {@code y} component of the point {@code (x, y, z)} to find the closest point to
+     * @param z the {@code z} component of the point {@code (x, y, z)} to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -441,9 +441,9 @@ public interface FloatAABBR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param x the {@code x} component of the point {@code (x, y, z)}
-     * @param y the {@code y} component of the point {@code (x, y, z)}
-     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param x the {@code x} component of the point {@code (x, y, z)} to find the closest point to
+     * @param y the {@code y} component of the point {@code (x, y, z)} to find the closest point to
+     * @param z the {@code z} component of the point {@code (x, y, z)} to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -454,7 +454,7 @@ public interface FloatAABBR {
      * point clamped per axis into the box's bounds. For a point inside or on the box, the result is
      * the point itself.
      *
-     * @param p the point (also receives the result)
+     * @param p the point to find the closest point to (also receives the result)
      * @return {@code p}
      */
     default Float3 closestPointToPoint(@Mutated Float3 p) { return closestPointToPoint(p, p); }
@@ -464,7 +464,7 @@ public interface FloatAABBR {
      * the squared length of the shortest vector between any two points of the two boxes; zero when
      * they overlap or touch.
      *
-     * @param other the other box
+     * @param other the box to measure the distance to
      * @return the squared distance between this axis-aligned bounding box and the given box, i.e.
      *        the squared length of the shortest vector between any two points of the two boxes;
      *        zero when they overlap or touch
@@ -476,18 +476,18 @@ public interface FloatAABBR {
      * the squared length of the shortest vector between any two points of the two boxes; zero when
      * they overlap or touch.
      *
-     * @param minX the {@code minX} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param minY the {@code minY} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param minZ the {@code minZ} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param maxX the {@code maxX} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param maxY the {@code maxY} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param maxZ the {@code maxZ} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minX the {@code minX} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param minY the {@code minY} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param minZ the {@code minZ} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param maxX the {@code maxX} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param maxY the {@code maxY} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param maxZ the {@code maxZ} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @return the squared distance between this axis-aligned bounding box and the given box, i.e.
      *        the squared length of the shortest vector between any two points of the two boxes;
      *        zero when they overlap or touch
@@ -499,7 +499,7 @@ public interface FloatAABBR {
      * the squared length of the difference between the point and its per-axis clamp into the box's
      * bounds; zero for a point inside or on the box.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the squared distance between this axis-aligned bounding box and the given point, i.e.
      *        the squared length of the difference between the point and its per-axis clamp into the
      *        box's bounds; zero for a point inside or on the box
@@ -511,9 +511,9 @@ public interface FloatAABBR {
      * the squared length of the difference between the point and its per-axis clamp into the box's
      * bounds; zero for a point inside or on the box.
      *
-     * @param x the {@code x} component of the point {@code (x, y, z)}
-     * @param y the {@code y} component of the point {@code (x, y, z)}
-     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param x the {@code x} component of the point {@code (x, y, z)} to measure the distance to
+     * @param y the {@code y} component of the point {@code (x, y, z)} to measure the distance to
+     * @param z the {@code z} component of the point {@code (x, y, z)} to measure the distance to
      * @return the squared distance between this axis-aligned bounding box and the given point, i.e.
      *        the squared length of the difference between the point and its per-axis clamp into the
      *        box's bounds; zero for a point inside or on the box
@@ -525,7 +525,7 @@ public interface FloatAABBR {
      * i.e. the square of the distance from the box to the sphere's center minus the radius, clamped
      * at zero; zero when they overlap or touch.
      *
-     * @param sphere the sphere
+     * @param sphere the sphere to measure the distance to
      * @return the squared distance between this axis-aligned bounding box and the given sphere,
      *        i.e. the square of the distance from the box to the sphere's center minus the radius,
      *        clamped at zero; zero when they overlap or touch
@@ -537,10 +537,14 @@ public interface FloatAABBR {
      * i.e. the square of the distance from the box to the sphere's center minus the radius, clamped
      * at zero; zero when they overlap or touch.
      *
-     * @param x the {@code x} component of the sphere {@code (x, y, z, r)}
-     * @param y the {@code y} component of the sphere {@code (x, y, z, r)}
-     * @param z the {@code z} component of the sphere {@code (x, y, z, r)}
-     * @param r the {@code r} component of the sphere {@code (x, y, z, r)}
+     * @param x the {@code x} component of the sphere {@code (x, y, z, r)} to measure the distance
+     *        to
+     * @param y the {@code y} component of the sphere {@code (x, y, z, r)} to measure the distance
+     *        to
+     * @param z the {@code z} component of the sphere {@code (x, y, z, r)} to measure the distance
+     *        to
+     * @param r the {@code r} component of the sphere {@code (x, y, z, r)} to measure the distance
+     *        to
      * @return the squared distance between this axis-aligned bounding box and the given sphere,
      *        i.e. the square of the distance from the box to the sphere's center minus the radius,
      *        clamped at zero; zero when they overlap or touch
@@ -552,8 +556,8 @@ public interface FloatAABBR {
      * i.e. the square of the distance from the box to the sphere's center minus the radius, clamped
      * at zero; zero when they overlap or touch.
      *
-     * @param center the center point
-     * @param radius the radius
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
      * @return the squared distance between this axis-aligned bounding box and the given sphere,
      *        i.e. the square of the distance from the box to the sphere's center minus the radius,
      *        clamped at zero; zero when they overlap or touch
@@ -565,7 +569,7 @@ public interface FloatAABBR {
      * length of the shortest vector between any two points of the two boxes; zero when they overlap
      * or touch.
      *
-     * @param other the other box
+     * @param other the box to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given box, i.e. the
      *        length of the shortest vector between any two points of the two boxes; zero when they
      *        overlap or touch
@@ -577,18 +581,18 @@ public interface FloatAABBR {
      * length of the shortest vector between any two points of the two boxes; zero when they overlap
      * or touch.
      *
-     * @param minX the {@code minX} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param minY the {@code minY} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param minZ the {@code minZ} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param maxX the {@code maxX} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param maxY the {@code maxY} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param maxZ the {@code maxZ} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minX the {@code minX} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param minY the {@code minY} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param minZ the {@code minZ} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param maxX the {@code maxX} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param maxY the {@code maxY} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param maxZ the {@code maxZ} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given box, i.e. the
      *        length of the shortest vector between any two points of the two boxes; zero when they
      *        overlap or touch
@@ -601,7 +605,7 @@ public interface FloatAABBR {
      * clamped at zero; zero when the plane intersects or touches the box. The plane's normal need
      * not be of unit length.
      *
-     * @param plane the plane
+     * @param plane the plane to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given plane, i.e. the
      *        distance from the box's center to the plane minus the box's extent along the plane
      *        normal, clamped at zero; zero when the plane intersects or touches the box. The
@@ -615,10 +619,10 @@ public interface FloatAABBR {
      * clamped at zero; zero when the plane intersects or touches the box. The plane's normal need
      * not be of unit length.
      *
-     * @param a the {@code a} component of the plane {@code (a, b, c, d)}
-     * @param b the {@code b} component of the plane {@code (a, b, c, d)}
-     * @param c the {@code c} component of the plane {@code (a, b, c, d)}
-     * @param d the {@code d} component of the plane {@code (a, b, c, d)}
+     * @param a the {@code a} component of the plane {@code (a, b, c, d)} to measure the distance to
+     * @param b the {@code b} component of the plane {@code (a, b, c, d)} to measure the distance to
+     * @param c the {@code c} component of the plane {@code (a, b, c, d)} to measure the distance to
+     * @param d the {@code d} component of the plane {@code (a, b, c, d)} to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given plane, i.e. the
      *        distance from the box's center to the plane minus the box's extent along the plane
      *        normal, clamped at zero; zero when the plane intersects or touches the box. The
@@ -632,7 +636,7 @@ public interface FloatAABBR {
      * clamped at zero; zero when the plane intersects or touches the box. The plane's normal need
      * not be of unit length.
      *
-     * @param plane the plane
+     * @param plane the plane to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given plane, i.e. the
      *        distance from the box's center to the plane minus the box's extent along the plane
      *        normal, clamped at zero; zero when the plane intersects or touches the box. The
@@ -645,7 +649,7 @@ public interface FloatAABBR {
      * length of the difference between the point and its per-axis clamp into the box's bounds; zero
      * for a point inside or on the box.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given point, i.e. the
      *        length of the difference between the point and its per-axis clamp into the box's
      *        bounds; zero for a point inside or on the box
@@ -657,9 +661,9 @@ public interface FloatAABBR {
      * length of the difference between the point and its per-axis clamp into the box's bounds; zero
      * for a point inside or on the box.
      *
-     * @param x the {@code x} component of the point {@code (x, y, z)}
-     * @param y the {@code y} component of the point {@code (x, y, z)}
-     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param x the {@code x} component of the point {@code (x, y, z)} to measure the distance to
+     * @param y the {@code y} component of the point {@code (x, y, z)} to measure the distance to
+     * @param z the {@code z} component of the point {@code (x, y, z)} to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given point, i.e. the
      *        length of the difference between the point and its per-axis clamp into the box's
      *        bounds; zero for a point inside or on the box
@@ -671,7 +675,7 @@ public interface FloatAABBR {
      * distance from the box to the sphere's center minus the radius, clamped at zero; zero when
      * they overlap or touch.
      *
-     * @param sphere the sphere
+     * @param sphere the sphere to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given sphere, i.e. the
      *        distance from the box to the sphere's center minus the radius, clamped at zero; zero
      *        when they overlap or touch
@@ -683,10 +687,14 @@ public interface FloatAABBR {
      * distance from the box to the sphere's center minus the radius, clamped at zero; zero when
      * they overlap or touch.
      *
-     * @param x the {@code x} component of the sphere {@code (x, y, z, r)}
-     * @param y the {@code y} component of the sphere {@code (x, y, z, r)}
-     * @param z the {@code z} component of the sphere {@code (x, y, z, r)}
-     * @param r the {@code r} component of the sphere {@code (x, y, z, r)}
+     * @param x the {@code x} component of the sphere {@code (x, y, z, r)} to measure the distance
+     *        to
+     * @param y the {@code y} component of the sphere {@code (x, y, z, r)} to measure the distance
+     *        to
+     * @param z the {@code z} component of the sphere {@code (x, y, z, r)} to measure the distance
+     *        to
+     * @param r the {@code r} component of the sphere {@code (x, y, z, r)} to measure the distance
+     *        to
      * @return the distance between this axis-aligned bounding box and the given sphere, i.e. the
      *        distance from the box to the sphere's center minus the radius, clamped at zero; zero
      *        when they overlap or touch
@@ -698,8 +706,8 @@ public interface FloatAABBR {
      * distance from the box to the sphere's center minus the radius, clamped at zero; zero when
      * they overlap or touch.
      *
-     * @param center the center point
-     * @param radius the radius
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
      * @return the distance between this axis-aligned bounding box and the given sphere, i.e. the
      *        distance from the box to the sphere's center minus the radius, clamped at zero; zero
      *        when they overlap or touch
@@ -1202,7 +1210,7 @@ public interface FloatAABBR {
      * Determine whether this axis-aligned bounding box contains the given point (boundary
      * inclusive). Delegates to the shared {@code Intersectionf} kernels.
      *
-     * @param p the point
+     * @param p the point to test
      * @return {@code true} if the given point lies inside or on this axis-aligned bounding box,
      *        {@code false} otherwise
      */
@@ -1222,7 +1230,7 @@ public interface FloatAABBR {
      * Determine whether this axis-aligned bounding box intersects the given axis-aligned box.
      * Delegates to the shared {@code Intersectionf} kernels.
      *
-     * @param o the other axis-aligned box
+     * @param o the axis-aligned box to test for intersection
      * @return {@code true} if this axis-aligned bounding box and the given axis-aligned box
      *        intersect, {@code false} otherwise
      */
@@ -1256,7 +1264,7 @@ public interface FloatAABBR {
      * Determine whether this axis-aligned bounding box intersects the given sphere. Delegates to
      * the shared {@code Intersectionf} kernels.
      *
-     * @param sph the sphere
+     * @param sph the sphere to test for intersection
      * @return {@code true} if this axis-aligned bounding box and the given sphere intersect,
      *        {@code false} otherwise
      */
@@ -1266,7 +1274,7 @@ public interface FloatAABBR {
      * Determine whether this axis-aligned bounding box intersects the given plane. Delegates to the
      * shared {@code Intersectionf} kernels.
      *
-     * @param plane the plane
+     * @param plane the plane to test for intersection
      * @return {@code true} if this axis-aligned bounding box and the given plane intersect,
      *        {@code false} otherwise
      */
@@ -1276,7 +1284,7 @@ public interface FloatAABBR {
      * Determine whether this axis-aligned bounding box intersects the given ray. Delegates to the
      * shared {@code Intersectionf} kernels.
      *
-     * @param r the ray
+     * @param r the ray to test for intersection
      * @return {@code true} if this axis-aligned bounding box and the given ray intersect,
      *        {@code false} otherwise
      */
@@ -1287,7 +1295,7 @@ public interface FloatAABBR {
      * values of <i>t</i> in the ray equation <i>p(t) = origin + t * dir</i> at the near and far
      * points of intersection. Delegates to the shared {@code Intersectionf} kernels.
      *
-     * @param r the ray
+     * @param r the ray to intersect
      * @param dest will hold the values of <i>t</i> in the ray equation <i>p(t) = origin + t *
      *        dir</i> at the near and far points of intersection
      * @return {@code true} if the ray intersects this axis-aligned bounding box, {@code false}

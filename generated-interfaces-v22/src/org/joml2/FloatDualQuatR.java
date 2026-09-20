@@ -41,7 +41,7 @@ public interface FloatDualQuatR {
     /**
      * Add {@code other} to this dual quaternion and store the result in {@code dest}.
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to add
      * @param dest will hold the result
      * @return dest
      */
@@ -53,7 +53,7 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to add
      * @param dest will hold the result
      * @return dest
      */
@@ -116,7 +116,7 @@ public interface FloatDualQuatR {
      * Multiply each component of this dual quaternion by {@code scalar} and store the result in
      * {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @param dest will hold the result
      * @return dest
      */
@@ -129,7 +129,7 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @param dest will hold the result
      * @return dest
      */
@@ -157,7 +157,7 @@ public interface FloatDualQuatR {
     /**
      * Subtract {@code other} from this dual quaternion and store the result in {@code dest}.
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -169,7 +169,7 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -291,8 +291,11 @@ public interface FloatDualQuatR {
     /**
      * Blend this dual quaternion with {@code other} using dual-quaternion linear blending with the
      * weight {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this dual quaternion (weight {@code 0}) and ends at {@code other}
+     * (weight {@code 1}).
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to blend towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -303,10 +306,13 @@ public interface FloatDualQuatR {
      * Blend this dual quaternion with {@code other} using dual-quaternion linear blending with the
      * weight {@code t} and store the result in {@code dest}.
      * <p>
+     * The interpolation starts at this dual quaternion (weight {@code 0}) and ends at {@code other}
+     * (weight {@code 1}).
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to blend towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -317,6 +323,10 @@ public interface FloatDualQuatR {
      * Blend this dual quaternion with ({@code rX}, {@code rY}, {@code rZ}, {@code rW}, {@code dX},
      * {@code dY}, {@code dZ}, {@code dW}) using dual-quaternion linear blending with the weight
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this dual quaternion (weight {@code 0}) and ends at ({@code rX},
+     * {@code rY}, {@code rZ}, {@code rW}, {@code dX}, {@code dY}, {@code dZ}, {@code dW}) (weight
+     * {@code 1}).
      *
      * @param rX the {@code rX} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
@@ -344,6 +354,10 @@ public interface FloatDualQuatR {
      * Blend this dual quaternion with ({@code rX}, {@code rY}, {@code rZ}, {@code rW}, {@code dX},
      * {@code dY}, {@code dZ}, {@code dW}) using dual-quaternion linear blending with the weight
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this dual quaternion (weight {@code 0}) and ends at ({@code rX},
+     * {@code rY}, {@code rZ}, {@code rW}, {@code dX}, {@code dY}, {@code dZ}, {@code dW}) (weight
+     * {@code 1}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -373,8 +387,11 @@ public interface FloatDualQuatR {
     /**
      * Linearly interpolate between this dual quaternion and {@code other} using the interpolation
      * factor {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -385,10 +402,13 @@ public interface FloatDualQuatR {
      * Linearly interpolate between this dual quaternion and {@code other} using the interpolation
      * factor {@code t} and store the result in {@code dest}.
      * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -399,6 +419,10 @@ public interface FloatDualQuatR {
      * Linearly interpolate between this dual quaternion and ({@code rX}, {@code rY}, {@code rZ},
      * {@code rW}, {@code dX}, {@code dY}, {@code dZ}, {@code dW}) using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code rX}, {@code rY}, {@code rZ}, {@code rW}, {@code dX}, {@code dY}, {@code dZ},
+     * {@code dW}) (interpolation factor {@code 1}).
      *
      * @param rX the {@code rX} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
@@ -426,6 +450,10 @@ public interface FloatDualQuatR {
      * Linearly interpolate between this dual quaternion and ({@code rX}, {@code rY}, {@code rZ},
      * {@code rW}, {@code dX}, {@code dY}, {@code dZ}, {@code dW}) using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code rX}, {@code rY}, {@code rZ}, {@code rW}, {@code dX}, {@code dY}, {@code dZ},
+     * {@code dW}) (interpolation factor {@code 1}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -455,8 +483,11 @@ public interface FloatDualQuatR {
     /**
      * Screw-linearly interpolate between this dual quaternion (which must have unit length) and
      * {@code other} using the interpolation factor {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other dual quaternion (must be a unit dual quaternion)
+     * @param other the dual quaternion to interpolate towards (must be a unit dual quaternion)
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -467,10 +498,13 @@ public interface FloatDualQuatR {
      * Screw-linearly interpolate between this dual quaternion (which must have unit length) and
      * {@code other} using the interpolation factor {@code t} and store the result in {@code dest}.
      * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other dual quaternion (must be a unit dual quaternion)
+     * @param other the dual quaternion to interpolate towards (must be a unit dual quaternion)
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -481,6 +515,10 @@ public interface FloatDualQuatR {
      * Screw-linearly interpolate between this dual quaternion (which must have unit length) and
      * ({@code rX}, {@code rY}, {@code rZ}, {@code rW}, {@code dX}, {@code dY}, {@code dZ},
      * {@code dW}) using the interpolation factor {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code rX}, {@code rY}, {@code rZ}, {@code rW}, {@code dX}, {@code dY}, {@code dZ},
+     * {@code dW}) (interpolation factor {@code 1}).
      *
      * @param rX the {@code rX} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the real part must have unit length)
@@ -508,6 +546,10 @@ public interface FloatDualQuatR {
      * Screw-linearly interpolate between this dual quaternion (which must have unit length) and
      * ({@code rX}, {@code rY}, {@code rZ}, {@code rW}, {@code dX}, {@code dY}, {@code dZ},
      * {@code dW}) using the interpolation factor {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code rX}, {@code rY}, {@code rZ}, {@code rW}, {@code dX}, {@code dY}, {@code dZ},
+     * {@code dW}) (interpolation factor {@code 1}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -542,7 +584,7 @@ public interface FloatDualQuatR {
      * quaternion by using {@code Q * R * v}, the transformation of the operand will be applied
      * first.
      *
-     * @param other the other dual quaternion
+     * @param other the right operand
      * @param dest will hold the result
      * @return dest
      */
@@ -559,7 +601,7 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other dual quaternion
+     * @param other the right operand
      * @param dest will hold the result
      * @return dest
      */
@@ -636,7 +678,7 @@ public interface FloatDualQuatR {
      * quaternion by using {@code R * Q * v}, the transformation of the operand will be applied
      * last.
      *
-     * @param other the other dual quaternion
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -653,7 +695,7 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other dual quaternion
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -726,7 +768,7 @@ public interface FloatDualQuatR {
      * Add {@code other} scaled by {@code weight} to this dual quaternion and store the result in
      * {@code dest}.
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to scale and add
      * @param weight the factor to scale {@code other} by before adding
      * @param dest will hold the result
      * @return dest
@@ -740,7 +782,7 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to scale and add
      * @param weight the factor to scale {@code other} by before adding
      * @param dest will hold the result
      * @return dest
@@ -834,7 +876,8 @@ public interface FloatDualQuatR {
      * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other}
      * and store the result in {@code dest}.
      *
-     * @param other the other dual quaternion
+     * @param other the target dual quaternion, reached by composing this dual quaternion with the
+     *        result
      * @param dest will hold the result
      * @return dest
      */
@@ -848,7 +891,8 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other dual quaternion
+     * @param other the target dual quaternion, reached by composing this dual quaternion with the
+     *        result
      * @param dest will hold the result
      * @return dest
      */
@@ -914,7 +958,7 @@ public interface FloatDualQuatR {
     /**
      * Compute the dot product of this dual quaternion and {@code other}.
      *
-     * @param other the other dual quaternion
+     * @param other the other operand of the dot product
      * @return the dot product of this dual quaternion and {@code other}
      */
     float dot(FloatDualQuatR other);
@@ -1378,7 +1422,7 @@ public interface FloatDualQuatR {
      * Set the rotation of this dual quaternion to {@code rotation} and store the result in
      * {@code dest}.
      *
-     * @param rotation the quaternion
+     * @param rotation the new rotation
      * @param dest will hold the result
      * @return dest
      */
@@ -1391,7 +1435,7 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param rotation the quaternion
+     * @param rotation the new rotation
      * @param dest will hold the result
      * @return dest
      */
@@ -1430,7 +1474,7 @@ public interface FloatDualQuatR {
      * Set the translation of this dual quaternion to {@code translation} and store the result in
      * {@code dest}.
      *
-     * @param translation the vector
+     * @param translation the new translation
      * @param dest will hold the result
      * @return dest
      */
@@ -1443,7 +1487,7 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param translation the vector
+     * @param translation the new translation
      * @param dest will hold the result
      * @return dest
      */
@@ -1552,7 +1596,8 @@ public interface FloatDualQuatR {
      * with the new dual quaternion by using {@code Q * L * v}, the "look along" will be applied
      * first.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @param dest will hold the result
      * @return dest
@@ -1571,7 +1616,8 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @param dest will hold the result
      * @return dest
@@ -1629,7 +1675,7 @@ public interface FloatDualQuatR {
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param rotation the quaternion (must be a unit quaternion)
+     * @param rotation the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -1646,7 +1692,7 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param rotation the quaternion (must be a unit quaternion)
+     * @param rotation the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -2109,7 +2155,7 @@ public interface FloatDualQuatR {
      * with the new dual quaternion by using {@code Q * T * v}, the translation will be applied
      * first.
      *
-     * @param translation the vector
+     * @param translation the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -2127,7 +2173,7 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param translation the vector
+     * @param translation the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -2173,7 +2219,7 @@ public interface FloatDualQuatR {
     /**
      * Transform {@code p} by this dual quaternion and store the result in {@code dest}.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2185,7 +2231,7 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2221,7 +2267,7 @@ public interface FloatDualQuatR {
     /**
      * Transform {@code p} by this dual quaternion and store the result back into {@code p}.
      *
-     * @param p the vector (also receives the result)
+     * @param p the position to transform (also receives the result)
      * @return {@code p}
      */
     default Float3 transform(@Mutated Float3 p) { return transform(p, p); }
@@ -2230,7 +2276,7 @@ public interface FloatDualQuatR {
      * Transform the given direction by this dual quaternion, ignoring any translation and store the
      * result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2243,7 +2289,7 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2280,7 +2326,7 @@ public interface FloatDualQuatR {
      * Transform the given direction by this dual quaternion, ignoring any translation and store the
      * result back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the direction to transform (also receives the result)
      * @return {@code v}
      */
     default Float3 transformDirection(@Mutated Float3 v) { return transformDirection(v, v); }
@@ -2290,7 +2336,7 @@ public interface FloatDualQuatR {
      * local), ignoring the translation, without materializing {@code invert()} (assumes a unit,
      * rigid dual quaternion) and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2304,7 +2350,7 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2344,7 +2390,7 @@ public interface FloatDualQuatR {
      * local), ignoring the translation, without materializing {@code invert()} (assumes a unit,
      * rigid dual quaternion) and store the result back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the direction to transform (also receives the result)
      * @return {@code v}
      */
     default Float3 transformDirectionInverse(@Mutated Float3 v) { return transformDirectionInverse(v, v); }
@@ -2353,7 +2399,7 @@ public interface FloatDualQuatR {
      * Transform {@code p} by the inverse of this dual quaternion (assumes a unit, rigid dual
      * quaternion) and store the result in {@code dest}.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2366,7 +2412,7 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2403,7 +2449,7 @@ public interface FloatDualQuatR {
      * Transform {@code p} by the inverse of this dual quaternion (assumes a unit, rigid dual
      * quaternion) and store the result back into {@code p}.
      *
-     * @param p the vector (also receives the result)
+     * @param p the position to transform (also receives the result)
      * @return {@code p}
      */
     default Float3 transformInverse(@Mutated Float3 p) { return transformInverse(p, p); }
@@ -2412,7 +2458,7 @@ public interface FloatDualQuatR {
      * Transform the given position by this dual quaternion, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2425,7 +2471,7 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2462,7 +2508,7 @@ public interface FloatDualQuatR {
      * Transform the given position by this dual quaternion, treating it as a point with an implicit
      * {@code w = 1} and store the result back into {@code p}.
      *
-     * @param p the vector (also receives the result)
+     * @param p the position to transform (also receives the result)
      * @return {@code p}
      */
     default Float3 transformPosition(@Mutated Float3 p) { return transformPosition(p, p); }
@@ -2472,7 +2518,7 @@ public interface FloatDualQuatR {
      * materializing {@code invert()} (assumes a unit, rigid dual quaternion) and store the result
      * in {@code dest}.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2486,7 +2532,7 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2526,7 +2572,7 @@ public interface FloatDualQuatR {
      * materializing {@code invert()} (assumes a unit, rigid dual quaternion) and store the result
      * back into {@code p}.
      *
-     * @param p the vector (also receives the result)
+     * @param p the position to transform (also receives the result)
      * @return {@code p}
      */
     default Float3 transformPositionInverse(@Mutated Float3 p) { return transformPositionInverse(p, p); }
@@ -2535,7 +2581,7 @@ public interface FloatDualQuatR {
      * Transform the given vector by the rotation part of this dual quaternion, ignoring the
      * translation and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2548,7 +2594,7 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2585,7 +2631,7 @@ public interface FloatDualQuatR {
      * Transform the given vector by the rotation part of this dual quaternion, ignoring the
      * translation and store the result back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the vector to transform (also receives the result)
      * @return {@code v}
      */
     default Float3 transformVector(@Mutated Float3 v) { return transformVector(v, v); }

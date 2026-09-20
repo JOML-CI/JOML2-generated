@@ -353,7 +353,7 @@ public final class Float2x2Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param other the storage holding the other matrix
+     * @param other the storage holding the right factor of the product
      * @param otherOffset the element index in {@code other} at which the matrix starts
      * @return {@code dest}
      */
@@ -520,7 +520,7 @@ public final class Float2x2Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param other the storage holding the other matrix
+     * @param other the storage holding the matrix to add
      * @param otherOffset the element index in {@code other} at which the matrix starts
      * @return {@code dest}
      */
@@ -606,7 +606,7 @@ public final class Float2x2Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param other the storage holding the other matrix
+     * @param other the storage holding the matrix to subtract
      * @param otherOffset the element index in {@code other} at which the matrix starts
      * @return {@code dest}
      */
@@ -650,7 +650,7 @@ public final class Float2x2Ops {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
-     * @param v the storage holding the matrix
+     * @param v the storage holding the matrix to copy
      * @param vOffset the element index in {@code v} at which the matrix starts
      * @return {@code dest}
      */
@@ -690,7 +690,7 @@ public final class Float2x2Ops {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
-     * @param m the storage holding the matrix
+     * @param m the storage holding the matrix to copy from
      * @param mOffset the element index in {@code m} at which the matrix starts
      * @return {@code dest}
      */
@@ -730,7 +730,7 @@ public final class Float2x2Ops {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
-     * @param m the storage holding the matrix
+     * @param m the storage holding the matrix to copy from
      * @param mOffset the element index in {@code m} at which the matrix starts
      * @return {@code dest}
      */
@@ -891,12 +891,15 @@ public final class Float2x2Ops {
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param other the storage holding the other matrix
+     * @param other the storage holding the matrix to interpolate towards
      * @param otherOffset the element index in {@code other} at which the matrix starts
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return {@code dest}
@@ -998,7 +1001,7 @@ public final class Float2x2Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param other the storage holding the other matrix
+     * @param other the storage holding the left operand
      * @param otherOffset the element index in {@code other} at which the matrix starts
      * @return {@code dest}
      */
@@ -1195,7 +1198,7 @@ public final class Float2x2Ops {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
-     * @param v the storage holding the vector
+     * @param v the storage holding the scale factors
      * @param vOffset the element index in {@code v} at which the vector starts
      * @return {@code dest}
      */
@@ -1368,7 +1371,7 @@ public final class Float2x2Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param v the storage holding the vector
+     * @param v the storage holding the scale factors
      * @param vOffset the element index in {@code v} at which the vector starts
      * @return {@code dest}
      */
@@ -1554,7 +1557,7 @@ public final class Float2x2Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param v the storage holding the vector
+     * @param v the storage holding the scale factors
      * @param vOffset the element index in {@code v} at which the vector starts
      * @return {@code dest}
      */
@@ -1626,7 +1629,8 @@ public final class Float2x2Ops {
     }
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1666,13 +1670,14 @@ public final class Float2x2Ops {
     }
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param v the storage holding the vector
+     * @param v the storage holding the right operand of the product
      * @param vOffset the element index in {@code v} at which the vector starts
      * @return {@code dest}
      */

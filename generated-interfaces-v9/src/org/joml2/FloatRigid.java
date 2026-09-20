@@ -34,7 +34,7 @@ public interface FloatRigid extends FloatRigidR {
      *
      * @param axis the rotation axis (must be a unit vector)
      * @param angle the angle in radians
-     * @param translation the vector
+     * @param translation the translation
      * @return this
      */
     @Mutated FloatRigid makeFromAxisAngle(Float3R axis, float angle, Float3R translation);
@@ -65,8 +65,8 @@ public interface FloatRigid extends FloatRigidR {
      * Set this rigid transform to a rigid transformation that first rotates by {@code rotation} and
      * then translates by {@code translation} ({@code T * R}).
      *
-     * @param translation the vector
-     * @param rotation the quaternion
+     * @param translation the translation
+     * @param rotation the rotation
      * @return this
      */
     @Mutated FloatRigid makeTranslationRotation(Float3R translation, FloatQuatR rotation);
@@ -97,7 +97,7 @@ public interface FloatRigid extends FloatRigidR {
     /**
      * Set this rigid transform to the given values.
      *
-     * @param v the rigid transform
+     * @param v the rigid transform to copy
      * @return this
      */
     @Mutated FloatRigid set(FloatRigidR v);
@@ -126,7 +126,7 @@ public interface FloatRigid extends FloatRigidR {
     /**
      * Set the rotation of this rigid transform to {@code r}.
      *
-     * @param r the quaternion
+     * @param r the new rotation
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid setRotation(FloatQuatR r) { return setRotation(r, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
@@ -164,7 +164,7 @@ public interface FloatRigid extends FloatRigidR {
      * Set this rigid transform to the rigid motion of the unit dual quaternion {@code dq} (an exact
      * conversion - both represent rotation plus translation).
      *
-     * @param dq the dual quaternion
+     * @param dq the dual quaternion to convert
      * @return this
      */
     @Mutated FloatRigid makeFromDualQuat(FloatDualQuatR dq);
@@ -199,7 +199,7 @@ public interface FloatRigid extends FloatRigidR {
      * translation (scale is removed by normalizing the columns, but shear is not removed: a sheared
      * block yields a rotation quaternion that is not unit length).
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated FloatRigid makeFromMatrix(Float3x3R m);
@@ -210,7 +210,7 @@ public interface FloatRigid extends FloatRigidR {
      * removed by normalizing the columns, but shear is not removed: a sheared block yields a
      * rotation quaternion that is not unit length).
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated FloatRigid makeFromMatrix(Float3x4R m);
@@ -221,7 +221,7 @@ public interface FloatRigid extends FloatRigidR {
      * removed by normalizing the columns, but shear is not removed: a sheared block yields a
      * rotation quaternion that is not unit length).
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated FloatRigid makeFromMatrix(Float4x4R m);
@@ -230,7 +230,7 @@ public interface FloatRigid extends FloatRigidR {
      * Set this rigid transform to the rigid motion (rotation and translation) of the given
      * transform; the scale is dropped (a rigid transform cannot represent it).
      *
-     * @param t the transform
+     * @param t the transform to convert
      * @return this
      */
     @Mutated FloatRigid makeFromTransform(FloatTransformR t);
@@ -281,7 +281,7 @@ public interface FloatRigid extends FloatRigidR {
     /**
      * Set this rigid transform to a pure rotation by {@code rotation} (zero translation).
      *
-     * @param rotation the quaternion
+     * @param rotation the rotation
      * @return this
      */
     @Mutated FloatRigid set(FloatQuatR rotation);
@@ -303,7 +303,7 @@ public interface FloatRigid extends FloatRigidR {
      * <p>
      * Alias for {@code set}.
      *
-     * @param rotation the quaternion
+     * @param rotation the rotation
      * @return this
      */
     @Mutated default FloatRigid makeRotation(FloatQuatR rotation) { return set(rotation); }
@@ -325,7 +325,7 @@ public interface FloatRigid extends FloatRigidR {
     /**
      * Set this rigid transform to a pure translation by {@code translation} (identity rotation).
      *
-     * @param translation the vector
+     * @param translation the translation
      * @return this
      */
     @Mutated FloatRigid set(Float3R translation);
@@ -346,7 +346,7 @@ public interface FloatRigid extends FloatRigidR {
      * <p>
      * Alias for {@code set}.
      *
-     * @param translation the vector
+     * @param translation the translation
      * @return this
      */
     @Mutated default FloatRigid makeTranslation(Float3R translation) { return set(translation); }
@@ -367,8 +367,11 @@ public interface FloatRigid extends FloatRigidR {
     /**
      * Interpolate between this rigid transform and {@code other} using the interpolation factor
      * {@code t}, interpolating the translation linearly and the rotation via shortest-arc slerp.
+     * <p>
+     * The interpolation starts at this rigid transform (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other rigid transform
+     * @param other the rigid transform to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -378,6 +381,10 @@ public interface FloatRigid extends FloatRigidR {
      * Interpolate between this rigid transform and ({@code tX}, {@code tY}, {@code tZ}, {@code rX},
      * {@code rY}, {@code rZ}, {@code rW}) using the interpolation factor {@code t}, interpolating
      * the translation linearly and the rotation via shortest-arc slerp.
+     * <p>
+     * The interpolation starts at this rigid transform (interpolation factor {@code 0}) and ends at
+     * ({@code tX}, {@code tY}, {@code tZ}, {@code rX}, {@code rY}, {@code rZ}, {@code rW})
+     * (interpolation factor {@code 1}).
      *
      * @param tX the {@code tX} component of the rigid transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
@@ -406,7 +413,7 @@ public interface FloatRigid extends FloatRigidR {
      * transform by using {@code M * R * v}, the transformation of the operand will be applied
      * first.
      *
-     * @param other the other rigid transform
+     * @param other the right operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid mul(FloatRigidR other) { return mul(other, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
@@ -445,7 +452,7 @@ public interface FloatRigid extends FloatRigidR {
      * transform will be {@code R * M}. So when transforming a vector {@code v} with the new rigid
      * transform by using {@code R * M * v}, the transformation of the operand will be applied last.
      *
-     * @param other the other rigid transform
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid preMul(FloatRigidR other) { return preMul(other, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
@@ -480,7 +487,8 @@ public interface FloatRigid extends FloatRigidR {
      * Compute the difference between this rigid transform and {@code other}, i.e. the rigid
      * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other}.
      *
-     * @param other the other rigid transform
+     * @param other the target rigid transform, reached by composing this rigid transform with the
+     *        result
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid difference(FloatRigidR other) { return difference(other, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
@@ -655,7 +663,7 @@ public interface FloatRigid extends FloatRigidR {
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
-     * @param rotation the quaternion (must be a unit quaternion)
+     * @param rotation the rotation to apply (must be a unit quaternion)
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid rotate(FloatQuatR rotation) { return rotate(rotation, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
@@ -853,7 +861,7 @@ public interface FloatRigid extends FloatRigidR {
      * with the new rigid transform by using {@code M * T * v}, the translation will be applied
      * first.
      *
-     * @param translation the vector
+     * @param translation the translation offsets
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid translate(Float3R translation) { return translate(translation, Joml.RETURN_NEW ? Joml.floatRigid() : this); }

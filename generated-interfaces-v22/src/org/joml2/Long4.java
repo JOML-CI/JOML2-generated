@@ -30,7 +30,7 @@ public interface Long4 extends Long4R {
     /**
      * Add {@code other} to this vector.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 add(Long4R other) { return add(other, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -49,7 +49,7 @@ public interface Long4 extends Long4R {
     /**
      * Compute the component-wise ceiling division of this vector by {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 ceilDiv(long scalar) { return ceilDiv(scalar, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -57,7 +57,7 @@ public interface Long4 extends Long4R {
     /**
      * Compute the component-wise ceiling division of this vector by {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 ceilDiv(Long4R other) { return ceilDiv(other, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -77,7 +77,7 @@ public interface Long4 extends Long4R {
     /**
      * Compute the component-wise ceiling modulus of this vector and {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 ceilMod(long scalar) { return ceilMod(scalar, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -85,7 +85,7 @@ public interface Long4 extends Long4R {
     /**
      * Compute the component-wise ceiling modulus of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 ceilMod(Long4R other) { return ceilMod(other, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -106,7 +106,7 @@ public interface Long4 extends Long4R {
      * Divide each component of this vector by {@code scalar} (integer division, truncating toward
      * zero).
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 div(long scalar) { return div(scalar, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -115,7 +115,7 @@ public interface Long4 extends Long4R {
      * Divide this vector component-wise by {@code other} (integer division, truncating toward
      * zero).
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 div(Long4R other) { return div(other, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -135,7 +135,7 @@ public interface Long4 extends Long4R {
     /**
      * Compute the component-wise floor division of this vector by {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 floorDiv(long scalar) { return floorDiv(scalar, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -143,7 +143,7 @@ public interface Long4 extends Long4R {
     /**
      * Compute the component-wise floor division of this vector by {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 floorDiv(Long4R other) { return floorDiv(other, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -163,7 +163,7 @@ public interface Long4 extends Long4R {
     /**
      * Compute the component-wise floor modulus of this vector and {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 floorMod(long scalar) { return floorMod(scalar, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -171,7 +171,7 @@ public interface Long4 extends Long4R {
     /**
      * Compute the component-wise floor modulus of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 floorMod(Long4R other) { return floorMod(other, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -191,7 +191,7 @@ public interface Long4 extends Long4R {
     /**
      * Multiply each component of this vector by {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 mul(long scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -199,7 +199,7 @@ public interface Long4 extends Long4R {
     /**
      * Multiply this vector component-wise by {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 mul(Long4R other) { return mul(other, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -227,7 +227,7 @@ public interface Long4 extends Long4R {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}).
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 rem(long scalar) { return rem(scalar, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -237,7 +237,7 @@ public interface Long4 extends Long4R {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}).
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 rem(Long4R other) { return rem(other, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -258,7 +258,7 @@ public interface Long4 extends Long4R {
     /**
      * Subtract {@code other} from this vector.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 sub(Long4R other) { return sub(other, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -277,7 +277,7 @@ public interface Long4 extends Long4R {
     /**
      * Compute the bitwise AND of each component of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 and(Long4R other) { return and(other, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -325,7 +325,7 @@ public interface Long4 extends Long4R {
     /**
      * Compute the bitwise OR of each component of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 or(Long4R other) { return or(other, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -399,7 +399,7 @@ public interface Long4 extends Long4R {
     /**
      * Compute the bitwise XOR of each component of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 xor(Long4R other) { return xor(other, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -419,7 +419,7 @@ public interface Long4 extends Long4R {
     /**
      * Set this vector to the given values.
      *
-     * @param v the vector
+     * @param v the vector to copy
      * @return this
      */
     @Mutated Long4 set(Long4R v);
@@ -539,7 +539,7 @@ public interface Long4 extends Long4R {
     /**
      * Set each component of this vector to the larger of itself and {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 max(long scalar) { return max(scalar, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -548,7 +548,7 @@ public interface Long4 extends Long4R {
      * Set each component of this vector to the larger of itself and the corresponding component of
      * {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 max(Long4R other) { return max(other, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -568,7 +568,7 @@ public interface Long4 extends Long4R {
     /**
      * Set each component of this vector to the smaller of itself and {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 min(long scalar) { return min(scalar, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -577,7 +577,7 @@ public interface Long4 extends Long4R {
      * Set each component of this vector to the smaller of itself and the corresponding component of
      * {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 min(Long4R other) { return min(other, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -604,7 +604,7 @@ public interface Long4 extends Long4R {
     /**
      * Add {@code other} to this vector, clamping to the value range instead of overflowing.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 satAdd(Long4R other) { return satAdd(other, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -624,7 +624,7 @@ public interface Long4 extends Long4R {
     /**
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 satMul(Long4R other) { return satMul(other, Joml.RETURN_NEW ? Joml.long4() : this); }
@@ -651,7 +651,7 @@ public interface Long4 extends Long4R {
     /**
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long4 satSub(Long4R other) { return satSub(other, Joml.RETURN_NEW ? Joml.long4() : this); }

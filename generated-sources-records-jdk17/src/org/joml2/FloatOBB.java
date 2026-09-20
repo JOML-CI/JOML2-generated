@@ -43,7 +43,25 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
     /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
     public static final int SIZE_BYTES = 60;
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param cX the {@code cX} component
+     * @param cY the {@code cY} component
+     * @param cZ the {@code cZ} component
+     * @param uXx the {@code uXx} component
+     * @param uXy the {@code uXy} component
+     * @param uXz the {@code uXz} component
+     * @param uYx the {@code uYx} component
+     * @param uYy the {@code uYy} component
+     * @param uYz the {@code uYz} component
+     * @param uZx the {@code uZx} component
+     * @param uZy the {@code uZy} component
+     * @param uZz the {@code uZz} component
+     * @param hsX the {@code hsX} component
+     * @param hsY the {@code hsY} component
+     * @param hsZ the {@code hsZ} component
+     */
     public FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float uXz, float uYx, float uYy, float uYz, float uZx, float uZy, float uZz, float hsX, float hsY, float hsZ) {
         this.cX = cX;
         this.cY = cY;
@@ -105,7 +123,7 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
     /**
      * Create a new oriented bounding box from the given values.
      *
-     * @param v the oriented bounding box
+     * @param v the oriented bounding box to copy
      * @return the resulting oriented bounding box
      */
     public FloatOBB set(FloatOBB v) {
@@ -191,7 +209,7 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
     /**
      * Set the center of this oriented bounding box to {@code c}, returning the result as a value.
      *
-     * @param c the vector
+     * @param c the new center
      * @return the resulting oriented bounding box
      */
     public FloatOBB setCenter(Float3 c) {
@@ -217,7 +235,7 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
      * Set the half extents of this oriented bounding box to {@code h}, returning the result as a
      * value.
      *
-     * @param h the vector
+     * @param h the new half extents
      * @return the resulting oriented bounding box
      */
     public FloatOBB setHalfSize(Float3 h) {
@@ -254,7 +272,7 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
      * Set the orientation of this oriented bounding box to {@code q}, returning the result as a
      * value.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the new orientation (must be a unit quaternion)
      * @return the resulting oriented bounding box
      */
     public FloatOBB setOrientation(FloatQuat q) {
@@ -323,7 +341,7 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
      * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
      * shear is approximated), returning the result as a value.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return the resulting oriented bounding box
      */
     public FloatOBB transform(Float3x4 m) {
@@ -360,7 +378,7 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return the resulting oriented bounding box
      */
     public FloatOBB transform(Float4x4 m) {
@@ -379,7 +397,7 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
     /**
      * Translate this oriented bounding box by {@code delta}, returning the result as a value.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @return the resulting oriented bounding box
      */
     public FloatOBB translate(Float3 delta) {
@@ -409,7 +427,7 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
      * <p>
      * The result is returned as a value; {@code this} is not modified.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @return the resulting vector
      */
     public Float3 closestPointToPoint(Float3 p) {
@@ -425,9 +443,12 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
      * <p>
      * The result is returned as a value; {@code this} is not modified.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
      * @return the resulting vector
      */
     public Float3 closestPointToPoint(float pX, float pY, float pZ) {
@@ -444,7 +465,7 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
     /**
      * Determine whether this oriented bounding box contains the given point (boundary inclusive).
      *
-     * @param p the vector
+     * @param p the point to test
      * @return {@code true} if this oriented bounding box contains the given point (boundary
      *        inclusive), {@code false} otherwise
      */
@@ -477,7 +498,7 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
      * evaluated in the box's local frame; zero for a point inside or on the box. Assumes the box's
      * axes are orthonormal.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the squared distance between this oriented bounding box and the given point,
      *        evaluated in the box's local frame; zero for a point inside or on the box. Assumes the
      *        box's axes are orthonormal
@@ -492,9 +513,12 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
      * evaluated in the box's local frame; zero for a point inside or on the box. Assumes the box's
      * axes are orthonormal.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the squared distance between this oriented bounding box and the given point,
      *        evaluated in the box's local frame; zero for a point inside or on the box. Assumes the
      *        box's axes are orthonormal
@@ -515,7 +539,7 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
      * box's local frame; zero for a point inside or on the box. Assumes the box's axes are
      * orthonormal.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the distance between this oriented bounding box and the given point, evaluated in the
      *        box's local frame; zero for a point inside or on the box. Assumes the box's axes are
      *        orthonormal
@@ -530,9 +554,12 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
      * box's local frame; zero for a point inside or on the box. Assumes the box's axes are
      * orthonormal.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the distance between this oriented bounding box and the given point, evaluated in the
      *        box's local frame; zero for a point inside or on the box. Assumes the box's axes are
      *        orthonormal
@@ -601,7 +628,7 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
     /**
      * Determine whether this oriented bounding box intersects {@code o}.
      *
-     * @param o the oriented bounding box
+     * @param o the oriented bounding box to test for intersection
      * @return {@code true} if this oriented bounding box intersects {@code o}, {@code false}
      *        otherwise
      */
@@ -707,77 +734,137 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
         return this.hsZ >= 0.0f;
     }
 
-    /** {@return a copy with the {@code cX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code cX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code cX} component
+     */
     public FloatOBB withCX(float v) {
         return new FloatOBB(v, cY, cZ, uXx, uXy, uXz, uYx, uYy, uYz, uZx, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code cY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code cY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code cY} component
+     */
     public FloatOBB withCY(float v) {
         return new FloatOBB(cX, v, cZ, uXx, uXy, uXz, uYx, uYy, uYz, uZx, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code cZ} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code cZ} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code cZ} component
+     */
     public FloatOBB withCZ(float v) {
         return new FloatOBB(cX, cY, v, uXx, uXy, uXz, uYx, uYy, uYz, uZx, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code uXx} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code uXx} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code uXx} component
+     */
     public FloatOBB withUXx(float v) {
         return new FloatOBB(cX, cY, cZ, v, uXy, uXz, uYx, uYy, uYz, uZx, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code uXy} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code uXy} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code uXy} component
+     */
     public FloatOBB withUXy(float v) {
         return new FloatOBB(cX, cY, cZ, uXx, v, uXz, uYx, uYy, uYz, uZx, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code uXz} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code uXz} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code uXz} component
+     */
     public FloatOBB withUXz(float v) {
         return new FloatOBB(cX, cY, cZ, uXx, uXy, v, uYx, uYy, uYz, uZx, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code uYx} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code uYx} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code uYx} component
+     */
     public FloatOBB withUYx(float v) {
         return new FloatOBB(cX, cY, cZ, uXx, uXy, uXz, v, uYy, uYz, uZx, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code uYy} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code uYy} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code uYy} component
+     */
     public FloatOBB withUYy(float v) {
         return new FloatOBB(cX, cY, cZ, uXx, uXy, uXz, uYx, v, uYz, uZx, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code uYz} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code uYz} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code uYz} component
+     */
     public FloatOBB withUYz(float v) {
         return new FloatOBB(cX, cY, cZ, uXx, uXy, uXz, uYx, uYy, v, uZx, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code uZx} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code uZx} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code uZx} component
+     */
     public FloatOBB withUZx(float v) {
         return new FloatOBB(cX, cY, cZ, uXx, uXy, uXz, uYx, uYy, uYz, v, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code uZy} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code uZy} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code uZy} component
+     */
     public FloatOBB withUZy(float v) {
         return new FloatOBB(cX, cY, cZ, uXx, uXy, uXz, uYx, uYy, uYz, uZx, v, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code uZz} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code uZz} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code uZz} component
+     */
     public FloatOBB withUZz(float v) {
         return new FloatOBB(cX, cY, cZ, uXx, uXy, uXz, uYx, uYy, uYz, uZx, uZy, v, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code hsX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code hsX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code hsX} component
+     */
     public FloatOBB withHsX(float v) {
         return new FloatOBB(cX, cY, cZ, uXx, uXy, uXz, uYx, uYy, uYz, uZx, uZy, uZz, v, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code hsY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code hsY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code hsY} component
+     */
     public FloatOBB withHsY(float v) {
         return new FloatOBB(cX, cY, cZ, uXx, uXy, uXz, uYx, uYy, uYz, uZx, uZy, uZz, hsX, v, hsZ);
     }
 
-    /** {@return a copy with the {@code hsZ} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code hsZ} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code hsZ} component
+     */
     public FloatOBB withHsZ(float v) {
         return new FloatOBB(cX, cY, cZ, uXx, uXy, uXz, uYx, uYy, uYz, uZx, uZy, uZz, hsX, hsY, v);
     }

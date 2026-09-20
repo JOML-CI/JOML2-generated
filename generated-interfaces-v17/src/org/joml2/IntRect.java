@@ -29,7 +29,7 @@ public interface IntRect extends IntRectR {
     /**
      * Add {@code other} to this rectangle.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to add
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect add(IntRectR other) { return add(other, Joml.RETURN_NEW ? Joml.intRect() : this); }
@@ -55,7 +55,7 @@ public interface IntRect extends IntRectR {
     /**
      * Subtract {@code other} from this rectangle.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to subtract
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect sub(IntRectR other) { return sub(other, Joml.RETURN_NEW ? Joml.intRect() : this); }
@@ -74,7 +74,7 @@ public interface IntRect extends IntRectR {
     /**
      * Set this rectangle to the given values.
      *
-     * @param v the rectangle
+     * @param v the rectangle to copy
      * @return this
      */
     @Mutated IntRect set(IntRectR v);
@@ -93,7 +93,7 @@ public interface IntRect extends IntRectR {
     /**
      * Set the maximum corner of this rectangle to {@code max}.
      *
-     * @param max the maximum corner
+     * @param max the maximum corner of the box
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect setMax(Int2R max) { return setMax(max, Joml.RETURN_NEW ? Joml.intRect() : this); }
@@ -110,7 +110,7 @@ public interface IntRect extends IntRectR {
     /**
      * Set the minimum corner of this rectangle to {@code min}.
      *
-     * @param min the minimum corner
+     * @param min the minimum corner of the box
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect setMin(Int2R min) { return setMin(min, Joml.RETURN_NEW ? Joml.intRect() : this); }
@@ -159,7 +159,7 @@ public interface IntRect extends IntRectR {
     /**
      * Translate this rectangle by {@code delta}.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect translate(Int2R delta) { return translate(delta, Joml.RETURN_NEW ? Joml.intRect() : this); }
@@ -176,7 +176,7 @@ public interface IntRect extends IntRectR {
     /**
      * Set this rectangle to the union of itself and {@code other}.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to include in the union
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect union(IntRectR other) { return union(other, Joml.RETURN_NEW ? Joml.intRect() : this); }
@@ -196,7 +196,7 @@ public interface IntRect extends IntRectR {
     /**
      * Grow this rectangle to include the point {@code p}.
      *
-     * @param p the vector
+     * @param p the point to include
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect union(Int2R p) { return union(p, Joml.RETURN_NEW ? Joml.intRect() : this); }

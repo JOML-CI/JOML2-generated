@@ -36,7 +36,16 @@ public record FloatRay(float oX, float oY, float oZ, float dX, float dY, float d
     /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
     public static final int SIZE_BYTES = 24;
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param oX the {@code oX} component
+     * @param oY the {@code oY} component
+     * @param oZ the {@code oZ} component
+     * @param dX the {@code dX} component
+     * @param dY the {@code dY} component
+     * @param dZ the {@code dZ} component
+     */
     public FloatRay(float oX, float oY, float oZ, float dX, float dY, float dZ) {
         this.oX = oX;
         this.oY = oY;
@@ -70,7 +79,7 @@ public record FloatRay(float oX, float oY, float oZ, float dX, float dY, float d
     /**
      * Create a new ray from the given values.
      *
-     * @param v the ray
+     * @param v the ray to copy
      * @return the resulting ray
      */
     public FloatRay set(FloatRay v) {
@@ -97,7 +106,7 @@ public record FloatRay(float oX, float oY, float oZ, float dX, float dY, float d
     /**
      * Set the direction of this ray to {@code d}, returning the result as a value.
      *
-     * @param d the vector
+     * @param d the new direction
      * @return the resulting ray
      */
     public FloatRay setDirection(Float3 d) {
@@ -122,7 +131,7 @@ public record FloatRay(float oX, float oY, float oZ, float dX, float dY, float d
     /**
      * Set the origin of this ray to {@code o}, returning the result as a value.
      *
-     * @param o the vector
+     * @param o the new origin
      * @return the resulting ray
      */
     public FloatRay setOrigin(Float3 o) {
@@ -157,7 +166,7 @@ public record FloatRay(float oX, float oY, float oZ, float dX, float dY, float d
     /**
      * Transform this ray by {@code m}, returning the result as a value.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return the resulting ray
      */
     public FloatRay transform(Float3x4 m) {
@@ -171,7 +180,7 @@ public record FloatRay(float oX, float oY, float oZ, float dX, float dY, float d
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return the resulting ray
      */
     public FloatRay transform(Float4x4 m) {
@@ -198,7 +207,7 @@ public record FloatRay(float oX, float oY, float oZ, float dX, float dY, float d
      * <p>
      * The result is returned as a value; {@code this} is not modified.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @return the resulting vector
      */
     public Float3 closestPointToPoint(Float3 p) {
@@ -213,9 +222,12 @@ public record FloatRay(float oX, float oY, float oZ, float dX, float dY, float d
      * <p>
      * The result is returned as a value; {@code this} is not modified.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
      * @return the resulting vector
      */
     public Float3 closestPointToPoint(float pX, float pY, float pZ) {
@@ -229,7 +241,7 @@ public record FloatRay(float oX, float oY, float oZ, float dX, float dY, float d
      * from the point to the closest point on the ray (the ray starts at its origin and extends only
      * along its direction). The direction need not be of unit length but must not be zero.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the squared distance between this ray and the given point, i.e. the squared distance
      *        from the point to the closest point on the ray (the ray starts at its origin and
      *        extends only along its direction). The direction need not be of unit length but must
@@ -245,9 +257,12 @@ public record FloatRay(float oX, float oY, float oZ, float dX, float dY, float d
      * from the point to the closest point on the ray (the ray starts at its origin and extends only
      * along its direction). The direction need not be of unit length but must not be zero.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the squared distance between this ray and the given point, i.e. the squared distance
      *        from the point to the closest point on the ray (the ray starts at its origin and
      *        extends only along its direction). The direction need not be of unit length but must
@@ -270,7 +285,7 @@ public record FloatRay(float oX, float oY, float oZ, float dX, float dY, float d
      * to the closest point on the ray (the ray starts at its origin and extends only along its
      * direction). The direction need not be of unit length but must not be zero.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the distance between this ray and the given point, i.e. the distance from the point
      *        to the closest point on the ray (the ray starts at its origin and extends only along
      *        its direction). The direction need not be of unit length but must not be zero
@@ -285,9 +300,12 @@ public record FloatRay(float oX, float oY, float oZ, float dX, float dY, float d
      * to the closest point on the ray (the ray starts at its origin and extends only along its
      * direction). The direction need not be of unit length but must not be zero.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the distance between this ray and the given point, i.e. the distance from the point
      *        to the closest point on the ray (the ray starts at its origin and extends only along
      *        its direction). The direction need not be of unit length but must not be zero
@@ -323,32 +341,56 @@ public record FloatRay(float oX, float oY, float oZ, float dX, float dY, float d
         return new Float3(this.oX, this.oY, this.oZ);
     }
 
-    /** {@return a copy with the {@code oX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code oX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code oX} component
+     */
     public FloatRay withOX(float v) {
         return new FloatRay(v, oY, oZ, dX, dY, dZ);
     }
 
-    /** {@return a copy with the {@code oY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code oY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code oY} component
+     */
     public FloatRay withOY(float v) {
         return new FloatRay(oX, v, oZ, dX, dY, dZ);
     }
 
-    /** {@return a copy with the {@code oZ} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code oZ} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code oZ} component
+     */
     public FloatRay withOZ(float v) {
         return new FloatRay(oX, oY, v, dX, dY, dZ);
     }
 
-    /** {@return a copy with the {@code dX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code dX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code dX} component
+     */
     public FloatRay withDX(float v) {
         return new FloatRay(oX, oY, oZ, v, dY, dZ);
     }
 
-    /** {@return a copy with the {@code dY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code dY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code dY} component
+     */
     public FloatRay withDY(float v) {
         return new FloatRay(oX, oY, oZ, dX, v, dZ);
     }
 
-    /** {@return a copy with the {@code dZ} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code dZ} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code dZ} component
+     */
     public FloatRay withDZ(float v) {
         return new FloatRay(oX, oY, oZ, dX, dY, v);
     }

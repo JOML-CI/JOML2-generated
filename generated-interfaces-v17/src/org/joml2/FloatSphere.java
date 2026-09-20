@@ -31,7 +31,7 @@ public interface FloatSphere extends FloatSphereR {
     /**
      * Set this sphere to the given values.
      *
-     * @param v the sphere
+     * @param v the sphere to copy
      * @return this
      */
     @Mutated FloatSphere set(FloatSphereR v);
@@ -50,7 +50,7 @@ public interface FloatSphere extends FloatSphereR {
     /**
      * Set the center of this sphere to {@code c}.
      *
-     * @param c the vector
+     * @param c the new center
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatSphere setCenter(Float3R c) { return setCenter(c, Joml.RETURN_NEW ? Joml.floatSphere() : this); }
@@ -84,7 +84,7 @@ public interface FloatSphere extends FloatSphereR {
      * Transform this sphere by {@code m}, scaling the radius conservatively by the matrix's maximum
      * axis scale.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatSphere transform(Float3x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.floatSphere() : this); }
@@ -96,7 +96,7 @@ public interface FloatSphere extends FloatSphereR {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatSphere transform(Float4x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.floatSphere() : this); }
@@ -104,7 +104,7 @@ public interface FloatSphere extends FloatSphereR {
     /**
      * Translate this sphere by {@code delta}.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatSphere translate(Float3R delta) { return translate(delta, Joml.RETURN_NEW ? Joml.floatSphere() : this); }

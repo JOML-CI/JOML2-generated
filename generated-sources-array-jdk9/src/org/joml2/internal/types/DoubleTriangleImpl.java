@@ -60,7 +60,7 @@ public final class DoubleTriangleImpl implements DoubleTriangle {
     /**
      * Set this triangle to the given values.
      *
-     * @param v the triangle
+     * @param v the triangle to copy
      * @return this
      */
     public @Mutated DoubleTriangle set(DoubleTriangleR v) {
@@ -133,7 +133,7 @@ public final class DoubleTriangleImpl implements DoubleTriangle {
     /**
      * Transform this triangle by {@code m} and store the result in {@code dest}.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -166,7 +166,7 @@ public final class DoubleTriangleImpl implements DoubleTriangle {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -223,7 +223,7 @@ public final class DoubleTriangleImpl implements DoubleTriangle {
      * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
      * accurate for thin triangles.
      *
-     * @param p the vector
+     * @param p the point whose barycentric coordinates to compute
      * @param dest will hold the result
      * @return dest
      */

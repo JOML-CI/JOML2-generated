@@ -31,9 +31,9 @@ public final class IntersectionGend {
      * @param v2X the x coordinate of the third vertex of the triangle
      * @param v2Y the y coordinate of the third vertex of the triangle
      * @param v2Z the z coordinate of the third vertex of the triangle
-     * @param pX the x coordinate of the point
-     * @param pY the y coordinate of the point
-     * @param pZ the z coordinate of the point
+     * @param pX the x coordinate of the point to find the closest point to
+     * @param pY the y coordinate of the point to find the closest point to
+     * @param pZ the z coordinate of the point to find the closest point to
      * @return the point on the triangle closest to the given point
      */
     public static Double3 closestPointOnTriangle(double v0X, double v0Y, double v0Z, double v1X, double v1Y, double v1Z, double v2X, double v2Y, double v2Z, double pX, double pY, double pZ) {
@@ -100,7 +100,7 @@ public final class IntersectionGend {
      * @param v0 the first vertex of the triangle
      * @param v1 the second vertex of the triangle
      * @param v2 the third vertex of the triangle
-     * @param p the point
+     * @param p the point to find the closest point to
      * @return the point on the triangle closest to the given point
      */
     public static Double3 closestPointOnTriangle(Double3R v0, Double3R v1, Double3R v2, Double3R p) {
@@ -122,9 +122,9 @@ public final class IntersectionGend {
      * @param bX the x coordinate of the second end point of the line segment
      * @param bY the y coordinate of the second end point of the line segment
      * @param bZ the z coordinate of the second end point of the line segment
-     * @param pX the x coordinate of the point
-     * @param pY the y coordinate of the point
-     * @param pZ the z coordinate of the point
+     * @param pX the x coordinate of the point to find the closest point to
+     * @param pY the y coordinate of the point to find the closest point to
+     * @param pZ the z coordinate of the point to find the closest point to
      * @param result will hold the point on the line segment closest to the given point
      * @return {@code result}
      */
@@ -148,7 +148,7 @@ public final class IntersectionGend {
      *
      * @param a the first end point of the line segment
      * @param b the second end point of the line segment
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param result will hold the point on the line segment closest to the given point
      * @return {@code result}
      */
@@ -170,9 +170,9 @@ public final class IntersectionGend {
      * @param nX the x coordinate of the plane's unit normal
      * @param nY the y coordinate of the plane's unit normal
      * @param nZ the z coordinate of the plane's unit normal
-     * @param pX the x coordinate of the point
-     * @param pY the y coordinate of the point
-     * @param pZ the z coordinate of the point
+     * @param pX the x coordinate of the point to find the closest point to
+     * @param pY the y coordinate of the point to find the closest point to
+     * @param pZ the z coordinate of the point to find the closest point to
      * @param result will hold the point on the plane closest to the given point
      * @return {@code result}
      */
@@ -192,7 +192,7 @@ public final class IntersectionGend {
      *
      * @param a one point on the plane
      * @param n the plane's unit normal
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param result will hold the point on the plane closest to the given point
      * @return {@code result}
      */
@@ -228,9 +228,9 @@ public final class IntersectionGend {
      *        edge
      * @param cZ the z coordinate of the corner point of the rectangle at the far end of the second
      *        edge
-     * @param pX the x coordinate of the point
-     * @param pY the y coordinate of the point
-     * @param pZ the z coordinate of the point
+     * @param pX the x coordinate of the point to find the closest point to
+     * @param pY the y coordinate of the point to find the closest point to
+     * @param pZ the z coordinate of the point to find the closest point to
      * @param res will hold the point on the rectangle closest to the given point
      * @return {@code res}
      */
@@ -270,7 +270,7 @@ public final class IntersectionGend {
      * @param a the corner point of the rectangle shared by both edges
      * @param b the corner point of the rectangle at the far end of the first edge
      * @param c the corner point of the rectangle at the far end of the second edge
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param res will hold the point on the rectangle closest to the given point
      * @return {@code res}
      */
@@ -310,9 +310,9 @@ public final class IntersectionGend {
      * @param v2X the x coordinate of the third vertex of the triangle
      * @param v2Y the y coordinate of the third vertex of the triangle
      * @param v2Z the z coordinate of the third vertex of the triangle
-     * @param pX the x coordinate of the point
-     * @param pY the y coordinate of the point
-     * @param pZ the z coordinate of the point
+     * @param pX the x coordinate of the point to find the closest point to
+     * @param pY the y coordinate of the point to find the closest point to
+     * @param pZ the z coordinate of the point to find the closest point to
      * @param result will hold the closest point on the triangle to the given point
      * @return one of <code>POINT_ON_TRIANGLE_VERTEX_0</code>,
      *        <code>POINT_ON_TRIANGLE_VERTEX_1</code>, <code>POINT_ON_TRIANGLE_VERTEX_2</code>,
@@ -411,7 +411,7 @@ public final class IntersectionGend {
      * @param v0 the first vertex of the triangle
      * @param v1 the second vertex of the triangle
      * @param v2 the third vertex of the triangle
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param result will hold the closest point on the triangle to the given point
      * @return one of <code>POINT_ON_TRIANGLE_VERTEX_0</code>,
      *        <code>POINT_ON_TRIANGLE_VERTEX_1</code>, <code>POINT_ON_TRIANGLE_VERTEX_2</code>,
@@ -442,8 +442,8 @@ public final class IntersectionGend {
      * @param v1Y the y coordinate of the second vertex of the triangle
      * @param v2X the x coordinate of the third vertex of the triangle
      * @param v2Y the y coordinate of the third vertex of the triangle
-     * @param pX the x coordinate of the point
-     * @param pY the y coordinate of the point
+     * @param pX the x coordinate of the point to find the closest point to
+     * @param pY the y coordinate of the point to find the closest point to
      * @param result will hold the closest point on the triangle
      * @return one of <code>POINT_ON_TRIANGLE_VERTEX_0</code>,
      *        <code>POINT_ON_TRIANGLE_VERTEX_1</code>, <code>POINT_ON_TRIANGLE_VERTEX_2</code>,
@@ -523,7 +523,7 @@ public final class IntersectionGend {
      * @param v0 the first vertex of the triangle
      * @param v1 the second vertex of the triangle
      * @param v2 the third vertex of the triangle
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param result will hold the closest point on the triangle
      * @return one of <code>POINT_ON_TRIANGLE_VERTEX_0</code>,
      *        <code>POINT_ON_TRIANGLE_VERTEX_1</code>, <code>POINT_ON_TRIANGLE_VERTEX_2</code>,
@@ -588,8 +588,8 @@ public final class IntersectionGend {
      * Reference: <a
      * href="http://mathworld.wolfram.com/Point-LineDistance2-Dimensional.html">http://mathworld.wolfram.com</a>
      *
-     * @param pointX the x coordinate of the point
-     * @param pointY the y coordinate of the point
+     * @param pointX the x coordinate of the point to measure the distance to
+     * @param pointY the y coordinate of the point to measure the distance to
      * @param a the x factor in the line equation
      * @param b the y factor in the line equation
      * @param c the constant in the line equation
@@ -611,7 +611,7 @@ public final class IntersectionGend {
      * Reference: <a
      * href="http://mathworld.wolfram.com/Point-LineDistance2-Dimensional.html">http://mathworld.wolfram.com</a>
      *
-     * @param point the point
+     * @param point the point to measure the distance to
      * @param a the x factor in the line equation
      * @param b the y factor in the line equation
      * @param c the constant in the line equation
@@ -632,9 +632,9 @@ public final class IntersectionGend {
      * Reference: <a
      * href="http://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html">http://mathworld.wolfram.com</a>
      *
-     * @param pX the x coordinate of the point
-     * @param pY the y coordinate of the point
-     * @param pZ the z coordinate of the point
+     * @param pX the x coordinate of the point to measure the distance to
+     * @param pY the y coordinate of the point to measure the distance to
+     * @param pZ the z coordinate of the point to measure the distance to
      * @param x0 the x coordinate of the first point on the line
      * @param y0 the y coordinate of the first point on the line
      * @param z0 the z coordinate of the first point on the line
@@ -667,7 +667,7 @@ public final class IntersectionGend {
      * Reference: <a
      * href="http://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html">http://mathworld.wolfram.com</a>
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @param x0 the x coordinate of the first point on the line
      * @param y0 the y coordinate of the first point on the line
      * @param z0 the z coordinate of the first point on the line
@@ -694,8 +694,8 @@ public final class IntersectionGend {
      * Reference: <a
      * href="http://mathworld.wolfram.com/Point-LineDistance2-Dimensional.html">http://mathworld.wolfram.com</a>
      *
-     * @param pointX the x coordinate of the point
-     * @param pointY the y coordinate of the point
+     * @param pointX the x coordinate of the point to measure the distance to
+     * @param pointY the y coordinate of the point to measure the distance to
      * @param x0 the x coordinate of the first point on the line
      * @param y0 the y coordinate of the first point on the line
      * @param x1 the x coordinate of the second point on the line
@@ -722,7 +722,7 @@ public final class IntersectionGend {
      * Reference: <a
      * href="http://mathworld.wolfram.com/Point-LineDistance2-Dimensional.html">http://mathworld.wolfram.com</a>
      *
-     * @param point the point
+     * @param point the point to measure the distance to
      * @param x0 the x coordinate of the first point on the line
      * @param y0 the y coordinate of the first point on the line
      * @param x1 the x coordinate of the second point on the line
@@ -741,9 +741,9 @@ public final class IntersectionGend {
      * by that normal's length. The distance is positive iff the point lies on the side the normal
      * points to, negative on the opposite side, and zero on the plane itself.
      *
-     * @param pointX the x coordinate of the point
-     * @param pointY the y coordinate of the point
-     * @param pointZ the z coordinate of the point
+     * @param pointX the x coordinate of the point to measure the distance to
+     * @param pointY the y coordinate of the point to measure the distance to
+     * @param pointZ the z coordinate of the point to measure the distance to
      * @param a the x factor in the plane equation
      * @param b the y factor in the plane equation
      * @param c the z factor in the plane equation
@@ -762,7 +762,7 @@ public final class IntersectionGend {
      * by that normal's length. The distance is positive iff the point lies on the side the normal
      * points to, negative on the opposite side, and zero on the plane itself.
      *
-     * @param point the point
+     * @param point the point to measure the distance to
      * @param a the x factor in the plane equation
      * @param b the y factor in the plane equation
      * @param c the z factor in the plane equation
@@ -785,9 +785,9 @@ public final class IntersectionGend {
      * v0</i>, and the result is divided by that normal's length, so a degenerate triangle whose
      * three vertices are collinear yields <code>NaN</code>.
      *
-     * @param pointX the x coordinate of the point
-     * @param pointY the y coordinate of the point
-     * @param pointZ the z coordinate of the point
+     * @param pointX the x coordinate of the point to measure the distance to
+     * @param pointY the y coordinate of the point to measure the distance to
+     * @param pointZ the z coordinate of the point to measure the distance to
      * @param v0X the x coordinate of the first vertex of the triangle
      * @param v0Y the y coordinate of the first vertex of the triangle
      * @param v0Z the z coordinate of the first vertex of the triangle
@@ -824,7 +824,7 @@ public final class IntersectionGend {
      * v0</i>, and the result is divided by that normal's length, so a degenerate triangle whose
      * three vertices are collinear yields <code>NaN</code>.
      *
-     * @param point the point
+     * @param point the point to measure the distance to
      * @param v0 the first vertex of the triangle
      * @param v1 the second vertex of the triangle
      * @param v2 the third vertex of the triangle
@@ -3602,8 +3602,8 @@ public final class IntersectionGend {
      * All four comparisons are inclusive, so a point on an edge or a corner of the rectangle is
      * contained.
      *
-     * @param pX the x coordinate of the point
-     * @param pY the y coordinate of the point
+     * @param pX the x coordinate of the point to test
+     * @param pY the y coordinate of the point to test
      * @param minX the x coordinate of the minimum corner of the axis-aligned rectangle
      * @param minY the y coordinate of the minimum corner of the axis-aligned rectangle
      * @param maxX the x coordinate of the maximum corner of the axis-aligned rectangle
@@ -3625,7 +3625,7 @@ public final class IntersectionGend {
      * All four comparisons are inclusive, so a point on an edge or a corner of the rectangle is
      * contained.
      *
-     * @param p the point
+     * @param p the point to test
      * @param min the minimum corner of the axis-aligned rectangle
      * @param max the maximum corner of the axis-aligned rectangle
      * @return <code>true</code> iff the point lies inside of, or on the boundary of, the
@@ -3642,8 +3642,8 @@ public final class IntersectionGend {
      * The radius is passed already squared and the test compares squared distances, so no square
      * root is taken. The comparison is inclusive: a point exactly on the circle counts as inside.
      *
-     * @param pX the x coordinate of the point
-     * @param pY the y coordinate of the point
+     * @param pX the x coordinate of the point to test
+     * @param pY the y coordinate of the point to test
      * @param centerX the x coordinate of the circle's center
      * @param centerY the y coordinate of the circle's center
      * @param radiusSquared the square radius of the circle
@@ -3662,7 +3662,7 @@ public final class IntersectionGend {
      * The radius is passed already squared and the test compares squared distances, so no square
      * root is taken. The comparison is inclusive: a point exactly on the circle counts as inside.
      *
-     * @param p the point
+     * @param p the point to test
      * @param center the circle's center
      * @param radiusSquared the square radius of the circle
      * @return <code>true</code> iff the point lies inside the circle; <code>false</code> otherwise
@@ -3753,9 +3753,9 @@ public final class IntersectionGend {
      * point and the center against it, so no square root is taken and a negative
      * <code>radiusSquared</code> never contains any point.
      *
-     * @param pX the x coordinate of the point
-     * @param pY the y coordinate of the point
-     * @param pZ the z coordinate of the point
+     * @param pX the x coordinate of the point to test
+     * @param pY the y coordinate of the point to test
+     * @param pZ the z coordinate of the point to test
      * @param centerX the x coordinate of the sphere's center
      * @param centerY the y coordinate of the sphere's center
      * @param centerZ the z coordinate of the sphere's center
@@ -3777,7 +3777,7 @@ public final class IntersectionGend {
      * point and the center against it, so no square root is taken and a negative
      * <code>radiusSquared</code> never contains any point.
      *
-     * @param p the point
+     * @param p the point to test
      * @param center the sphere's center
      * @param radiusSquared the square of the sphere's radius
      * @return <code>true</code> iff the point lies inside of, or on the surface of, the sphere
@@ -3796,8 +3796,8 @@ public final class IntersectionGend {
      * points give positive determinants, which is counter-clockwise when x points right and y
      * points up; with the opposite winding a point exactly on the boundary is outside.
      *
-     * @param pX the x coordinate of the point
-     * @param pY the y coordinate of the point
+     * @param pX the x coordinate of the point to test
+     * @param pY the y coordinate of the point to test
      * @param v0X the x coordinate of the first vertex of the triangle
      * @param v0Y the y coordinate of the first vertex of the triangle
      * @param v1X the x coordinate of the second vertex of the triangle
@@ -3825,7 +3825,7 @@ public final class IntersectionGend {
      * points give positive determinants, which is counter-clockwise when x points right and y
      * points up; with the opposite winding a point exactly on the boundary is outside.
      *
-     * @param p the point
+     * @param p the point to test
      * @param v0 the first vertex of the triangle
      * @param v1 the second vertex of the triangle
      * @param v2 the third vertex of the triangle

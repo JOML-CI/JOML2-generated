@@ -33,7 +33,13 @@ public record Long3(long x, long y, long z) {
     /** The zero vector (all components 0). */
     public static final Long3 ZERO = new Long3(0, 0, 0);
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param x the {@code x} component
+     * @param y the {@code y} component
+     * @param z the {@code z} component
+     */
     public Long3(long x, long y, long z) {
         this.x = x;
         this.y = y;
@@ -47,17 +53,31 @@ public record Long3(long x, long y, long z) {
         this(0, 0, 0);
     }
 
-    /** Create a vector with all components set to {@code s}. */
+    /**
+     * Create a vector with all components set to {@code s}.
+     *
+     * @param s the value assigned to every component
+     */
     public Long3(long s) {
         this(s, s, s);
     }
 
-    /** Create a vector composed of the given parts, in order. */
+    /**
+     * Create a vector composed of the given parts, in order.
+     *
+     * @param v0 the {@code x} component
+     * @param v1 the {@code y} and {@code z} components
+     */
     public Long3(long v0, Long2 v1) {
         this(v0, v1.x(), v1.y());
     }
 
-    /** Create a vector composed of the given parts, in order. */
+    /**
+     * Create a vector composed of the given parts, in order.
+     *
+     * @param v0 the {@code x} and {@code y} components
+     * @param v1 the {@code z} component
+     */
     public Long3(Long2 v0, long v1) {
         this(v0.x(), v0.y(), v1);
     }
@@ -73,7 +93,7 @@ public record Long3(long x, long y, long z) {
     /**
      * Add {@code other} to this vector, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return the resulting vector
      */
     public Long3 add(Long3 other) {
@@ -99,7 +119,7 @@ public record Long3(long x, long y, long z) {
      * Compute the component-wise ceiling division of this vector by {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Long3 ceilDiv(long scalar) {
@@ -111,7 +131,7 @@ public record Long3(long x, long y, long z) {
      * Compute the component-wise ceiling division of this vector by {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Long3 ceilDiv(Long3 other) {
@@ -137,7 +157,7 @@ public record Long3(long x, long y, long z) {
      * Compute the component-wise ceiling modulus of this vector and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Long3 ceilMod(long scalar) {
@@ -149,7 +169,7 @@ public record Long3(long x, long y, long z) {
      * Compute the component-wise ceiling modulus of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Long3 ceilMod(Long3 other) {
@@ -175,7 +195,7 @@ public record Long3(long x, long y, long z) {
      * Divide each component of this vector by {@code scalar} (integer division, truncating toward
      * zero), returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Long3 div(long scalar) {
@@ -187,7 +207,7 @@ public record Long3(long x, long y, long z) {
      * Divide this vector component-wise by {@code other} (integer division, truncating toward
      * zero), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Long3 div(Long3 other) {
@@ -213,7 +233,7 @@ public record Long3(long x, long y, long z) {
      * Compute the component-wise floor division of this vector by {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Long3 floorDiv(long scalar) {
@@ -225,7 +245,7 @@ public record Long3(long x, long y, long z) {
      * Compute the component-wise floor division of this vector by {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Long3 floorDiv(Long3 other) {
@@ -251,7 +271,7 @@ public record Long3(long x, long y, long z) {
      * Compute the component-wise floor modulus of this vector and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Long3 floorMod(long scalar) {
@@ -263,7 +283,7 @@ public record Long3(long x, long y, long z) {
      * Compute the component-wise floor modulus of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Long3 floorMod(Long3 other) {
@@ -288,7 +308,7 @@ public record Long3(long x, long y, long z) {
     /**
      * Multiply each component of this vector by {@code scalar}, returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @return the resulting vector
      */
     public Long3 mul(long scalar) {
@@ -299,7 +319,7 @@ public record Long3(long x, long y, long z) {
     /**
      * Multiply this vector component-wise by {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return the resulting vector
      */
     public Long3 mul(Long3 other) {
@@ -336,7 +356,7 @@ public record Long3(long x, long y, long z) {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}), returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Long3 rem(long scalar) {
@@ -349,7 +369,7 @@ public record Long3(long x, long y, long z) {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Long3 rem(Long3 other) {
@@ -375,7 +395,7 @@ public record Long3(long x, long y, long z) {
     /**
      * Subtract {@code other} from this vector, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return the resulting vector
      */
     public Long3 sub(Long3 other) {
@@ -401,7 +421,7 @@ public record Long3(long x, long y, long z) {
      * Compute the bitwise AND of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @return the resulting vector
      */
     public Long3 and(Long3 other) {
@@ -470,7 +490,7 @@ public record Long3(long x, long y, long z) {
      * Compute the bitwise OR of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @return the resulting vector
      */
     public Long3 or(Long3 other) {
@@ -578,7 +598,7 @@ public record Long3(long x, long y, long z) {
      * Compute the bitwise XOR of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @return the resulting vector
      */
     public Long3 xor(Long3 other) {
@@ -603,7 +623,7 @@ public record Long3(long x, long y, long z) {
     /**
      * Create a new vector from the given values.
      *
-     * @param v the vector
+     * @param v the vector to copy
      * @return the resulting vector
      */
     public Long3 set(Long3 v) {
@@ -799,9 +819,10 @@ public record Long3(long x, long y, long z) {
 
 
     /**
-     * Compute the cross product of this vector and {@code other}, returning the result as a value.
+     * Compute the cross product of this vector and {@code other}, in that order
+     * ({@code this x other}), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the right operand of the cross product
      * @return the resulting vector
      */
     public Long3 cross(Long3 other) {
@@ -811,7 +832,8 @@ public record Long3(long x, long y, long z) {
 
     /**
      * Compute the cross product of this vector and ({@code otherX}, {@code otherY},
-     * {@code otherZ}), returning the result as a value.
+     * {@code otherZ}), in that order ({@code this x (otherX, otherY, otherZ)}), returning the
+     * result as a value.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -826,7 +848,7 @@ public record Long3(long x, long y, long z) {
     /**
      * Compute the squared distance between this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
     public long distanceSquared(Long3 other) {
@@ -855,7 +877,7 @@ public record Long3(long x, long y, long z) {
     /**
      * Compute the dot product of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
     public long dot(Long3 other) {
@@ -889,7 +911,7 @@ public record Long3(long x, long y, long z) {
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
     public long manhattanDistance(Long3 other) {
@@ -926,7 +948,7 @@ public record Long3(long x, long y, long z) {
      * Set each component of this vector to the larger of itself and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @return the resulting vector
      */
     public Long3 max(long scalar) {
@@ -938,7 +960,7 @@ public record Long3(long x, long y, long z) {
      * Set each component of this vector to the larger of itself and the corresponding component of
      * {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @return the resulting vector
      */
     public Long3 max(Long3 other) {
@@ -964,7 +986,7 @@ public record Long3(long x, long y, long z) {
      * Set each component of this vector to the smaller of itself and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @return the resulting vector
      */
     public Long3 min(long scalar) {
@@ -976,7 +998,7 @@ public record Long3(long x, long y, long z) {
      * Set each component of this vector to the smaller of itself and the corresponding component of
      * {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @return the resulting vector
      */
     public Long3 min(Long3 other) {
@@ -1012,7 +1034,7 @@ public record Long3(long x, long y, long z) {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return the resulting vector
      */
     public Long3 satAdd(Long3 other) {
@@ -1038,7 +1060,7 @@ public record Long3(long x, long y, long z) {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return the resulting vector
      */
     public Long3 satMul(Long3 other) {
@@ -1075,7 +1097,7 @@ public record Long3(long x, long y, long z) {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return the resulting vector
      */
     public Long3 satSub(Long3 other) {
@@ -1118,37 +1140,70 @@ public record Long3(long x, long y, long z) {
         return new Long4(this.x, this.y, this.z, 1L);
     }
 
-    /** {@return a copy of this vector with the X component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the X component replaced by the given value}
+     *
+     * @param x the new value of the {@code x} component
+     */
     public Long3 withX(long x) {
         return new Long3(x, this.y(), this.z());
     }
 
-    /** {@return a copy of this vector with the Y component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the Y component replaced by the given value}
+     *
+     * @param y the new value of the {@code y} component
+     */
     public Long3 withY(long y) {
         return new Long3(this.x(), y, this.z());
     }
 
-    /** {@return a copy of this vector with the XY components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XY components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param y the new value of the {@code y} component
+     */
     public Long3 withXY(long x, long y) {
         return new Long3(x, y, this.z());
     }
 
-    /** {@return a copy of this vector with the Z component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the Z component replaced by the given value}
+     *
+     * @param z the new value of the {@code z} component
+     */
     public Long3 withZ(long z) {
         return new Long3(this.x(), this.y(), z);
     }
 
-    /** {@return a copy of this vector with the XZ components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XZ components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param z the new value of the {@code z} component
+     */
     public Long3 withXZ(long x, long z) {
         return new Long3(x, this.y(), z);
     }
 
-    /** {@return a copy of this vector with the YZ components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the YZ components replaced by the given values}
+     *
+     * @param y the new value of the {@code y} component
+     * @param z the new value of the {@code z} component
+     */
     public Long3 withYZ(long y, long z) {
         return new Long3(this.x(), y, z);
     }
 
-    /** {@return a copy of this vector with the XYZ components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XYZ components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param y the new value of the {@code y} component
+     * @param z the new value of the {@code z} component
+     */
     public Long3 withXYZ(long x, long y, long z) {
         return new Long3(x, y, z);
     }

@@ -35,7 +35,14 @@ public value record FloatPlane(float a, float b, float c, float d) {
     /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
     public static final int SIZE_BYTES = 16;
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param a the {@code a} component
+     * @param b the {@code b} component
+     * @param c the {@code c} component
+     * @param d the {@code d} component
+     */
     public FloatPlane(float a, float b, float c, float d) {
         this.a = a;
         this.b = b;
@@ -63,7 +70,7 @@ public value record FloatPlane(float a, float b, float c, float d) {
     /**
      * Create a new plane from the given values.
      *
-     * @param v the plane
+     * @param v the plane to copy
      * @return the resulting plane
      */
     public FloatPlane set(FloatPlane v) {
@@ -88,7 +95,7 @@ public value record FloatPlane(float a, float b, float c, float d) {
     /**
      * Set the normal of this plane to {@code n}, returning the result as a value.
      *
-     * @param n the normal
+     * @param n the new normal
      * @return the resulting plane
      */
     public FloatPlane setNormal(Float3 n) {
@@ -140,7 +147,7 @@ public value record FloatPlane(float a, float b, float c, float d) {
      * Compute the (unsigned) distance between this plane and the given point. The plane's normal
      * need not be of unit length: the result is divided by that normal's length.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the (unsigned) distance between this plane and the given point. The plane's normal
      *        need not be of unit length: the result is divided by that normal's length
      */
@@ -153,9 +160,12 @@ public value record FloatPlane(float a, float b, float c, float d) {
      * Compute the (unsigned) distance between this plane and the given point. The plane's normal
      * need not be of unit length: the result is divided by that normal's length.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the (unsigned) distance between this plane and the given point. The plane's normal
      *        need not be of unit length: the result is divided by that normal's length
      */
@@ -191,7 +201,7 @@ public value record FloatPlane(float a, float b, float c, float d) {
      * Compute the signed distance of the given point to this plane. Delegates to the shared
      * {@code Intersectionf} kernels.
      *
-     * @param p the point
+     * @param p the point to measure the signed distance to
      * @return the signed distance from the given point to this plane - positive on the side the
      *        plane normal points to, and a true distance even when that normal is not unit length
      */
@@ -219,7 +229,7 @@ public value record FloatPlane(float a, float b, float c, float d) {
      * Determine whether this plane contains the given point (boundary inclusive). Delegates to the
      * shared {@code Intersectionf} kernels.
      *
-     * @param p the point
+     * @param p the point to test
      * @param epsilon the maximum distance from the plane at which the point still counts as lying
      *        on it
      * @return {@code true} if the given point lies within {@code epsilon} of this plane,
@@ -233,7 +243,7 @@ public value record FloatPlane(float a, float b, float c, float d) {
      * Determine whether this plane intersects the given sphere. Delegates to the shared
      * {@code Intersectionf} kernels.
      *
-     * @param sph the sphere
+     * @param sph the sphere to test for intersection
      * @return {@code true} if this plane and the given sphere intersect, {@code false} otherwise
      */
     public boolean intersectsSphere(FloatSphere sph) {
@@ -244,7 +254,7 @@ public value record FloatPlane(float a, float b, float c, float d) {
      * Determine whether this plane intersects the given axis-aligned box. Delegates to the shared
      * {@code Intersectionf} kernels.
      *
-     * @param box the axis-aligned box
+     * @param box the axis-aligned box to test for intersection
      * @return {@code true} if this plane and the given axis-aligned box intersect, {@code false}
      *        otherwise
      */
@@ -269,29 +279,45 @@ public value record FloatPlane(float a, float b, float c, float d) {
      * Project the given point onto this plane. Delegates to the shared {@code Intersectionf}
      * kernels.
      *
-     * @param p the point
+     * @param p the point to project
      * @return the orthogonal projection of the given point onto this plane
      */
     public Float3 projectPoint(Float3 p) {
         return projectPoint(p.x(), p.y(), p.z());
     }
 
-    /** {@return a copy with the {@code a} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code a} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code a} component
+     */
     public FloatPlane withA(float v) {
         return new FloatPlane(v, b, c, d);
     }
 
-    /** {@return a copy with the {@code b} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code b} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code b} component
+     */
     public FloatPlane withB(float v) {
         return new FloatPlane(a, v, c, d);
     }
 
-    /** {@return a copy with the {@code c} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code c} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code c} component
+     */
     public FloatPlane withC(float v) {
         return new FloatPlane(a, b, v, d);
     }
 
-    /** {@return a copy with the {@code d} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code d} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code d} component
+     */
     public FloatPlane withD(float v) {
         return new FloatPlane(a, b, c, v);
     }

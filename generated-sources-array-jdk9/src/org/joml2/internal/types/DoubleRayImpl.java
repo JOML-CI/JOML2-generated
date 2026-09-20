@@ -54,7 +54,7 @@ public final class DoubleRayImpl implements DoubleRay {
     /**
      * Set this ray to the given values.
      *
-     * @param v the ray
+     * @param v the ray to copy
      * @return this
      */
     public @Mutated DoubleRay set(DoubleRayR v) {
@@ -88,7 +88,7 @@ public final class DoubleRayImpl implements DoubleRay {
     /**
      * Set the direction of this ray to {@code d} and store the result in {@code dest}.
      *
-     * @param d the vector
+     * @param d the new direction
      * @param dest will hold the result
      * @return dest
      */
@@ -123,7 +123,7 @@ public final class DoubleRayImpl implements DoubleRay {
     /**
      * Set the origin of this ray to {@code o} and store the result in {@code dest}.
      *
-     * @param o the vector
+     * @param o the new origin
      * @param dest will hold the result
      * @return dest
      */
@@ -179,7 +179,7 @@ public final class DoubleRayImpl implements DoubleRay {
     /**
      * Transform this ray by {@code m} and store the result in {@code dest}.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -207,7 +207,7 @@ public final class DoubleRayImpl implements DoubleRay {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -254,7 +254,7 @@ public final class DoubleRayImpl implements DoubleRay {
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -270,9 +270,12 @@ public final class DoubleRayImpl implements DoubleRay {
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
      * @param dest will hold the result
      * @return dest
      */
@@ -292,7 +295,7 @@ public final class DoubleRayImpl implements DoubleRay {
      * from the point to the closest point on the ray (the ray starts at its origin and extends only
      * along its direction). The direction need not be of unit length but must not be zero.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the squared distance between this ray and the given point, i.e. the squared distance
      *        from the point to the closest point on the ray (the ray starts at its origin and
      *        extends only along its direction). The direction need not be of unit length but must
@@ -308,9 +311,12 @@ public final class DoubleRayImpl implements DoubleRay {
      * from the point to the closest point on the ray (the ray starts at its origin and extends only
      * along its direction). The direction need not be of unit length but must not be zero.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the squared distance between this ray and the given point, i.e. the squared distance
      *        from the point to the closest point on the ray (the ray starts at its origin and
      *        extends only along its direction). The direction need not be of unit length but must
@@ -334,7 +340,7 @@ public final class DoubleRayImpl implements DoubleRay {
      * to the closest point on the ray (the ray starts at its origin and extends only along its
      * direction). The direction need not be of unit length but must not be zero.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the distance between this ray and the given point, i.e. the distance from the point
      *        to the closest point on the ray (the ray starts at its origin and extends only along
      *        its direction). The direction need not be of unit length but must not be zero
@@ -349,9 +355,12 @@ public final class DoubleRayImpl implements DoubleRay {
      * to the closest point on the ray (the ray starts at its origin and extends only along its
      * direction). The direction need not be of unit length but must not be zero.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the distance between this ray and the given point, i.e. the distance from the point
      *        to the closest point on the ray (the ray starts at its origin and extends only along
      *        its direction). The direction need not be of unit length but must not be zero

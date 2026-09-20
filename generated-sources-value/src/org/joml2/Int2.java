@@ -35,7 +35,12 @@ public value record Int2(int x, int y) {
     /** The zero vector (all components 0). */
     public static final Int2 ZERO = new Int2(0, 0);
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param x the {@code x} component
+     * @param y the {@code y} component
+     */
     public Int2(int x, int y) {
         this.x = x;
         this.y = y;
@@ -48,7 +53,11 @@ public value record Int2(int x, int y) {
         this(0, 0);
     }
 
-    /** Create a vector with all components set to {@code s}. */
+    /**
+     * Create a vector with all components set to {@code s}.
+     *
+     * @param s the value assigned to every component
+     */
     public Int2(int s) {
         this(s, s);
     }
@@ -62,7 +71,7 @@ public value record Int2(int x, int y) {
     /**
      * Add {@code other} to this vector, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return the resulting vector
      */
     public Int2 add(Int2 other) {
@@ -86,7 +95,7 @@ public value record Int2(int x, int y) {
      * Compute the component-wise ceiling division of this vector by {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Int2 ceilDiv(int scalar) {
@@ -98,7 +107,7 @@ public value record Int2(int x, int y) {
      * Compute the component-wise ceiling division of this vector by {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Int2 ceilDiv(Int2 other) {
@@ -123,7 +132,7 @@ public value record Int2(int x, int y) {
      * Compute the component-wise ceiling modulus of this vector and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Int2 ceilMod(int scalar) {
@@ -135,7 +144,7 @@ public value record Int2(int x, int y) {
      * Compute the component-wise ceiling modulus of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Int2 ceilMod(Int2 other) {
@@ -160,7 +169,7 @@ public value record Int2(int x, int y) {
      * Divide each component of this vector by {@code scalar} (integer division, truncating toward
      * zero), returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Int2 div(int scalar) {
@@ -172,7 +181,7 @@ public value record Int2(int x, int y) {
      * Divide this vector component-wise by {@code other} (integer division, truncating toward
      * zero), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Int2 div(Int2 other) {
@@ -197,7 +206,7 @@ public value record Int2(int x, int y) {
      * Compute the component-wise floor division of this vector by {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Int2 floorDiv(int scalar) {
@@ -209,7 +218,7 @@ public value record Int2(int x, int y) {
      * Compute the component-wise floor division of this vector by {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Int2 floorDiv(Int2 other) {
@@ -234,7 +243,7 @@ public value record Int2(int x, int y) {
      * Compute the component-wise floor modulus of this vector and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Int2 floorMod(int scalar) {
@@ -246,7 +255,7 @@ public value record Int2(int x, int y) {
      * Compute the component-wise floor modulus of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Int2 floorMod(Int2 other) {
@@ -270,7 +279,7 @@ public value record Int2(int x, int y) {
     /**
      * Multiply each component of this vector by {@code scalar}, returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @return the resulting vector
      */
     public Int2 mul(int scalar) {
@@ -281,7 +290,7 @@ public value record Int2(int x, int y) {
     /**
      * Multiply this vector component-wise by {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return the resulting vector
      */
     public Int2 mul(Int2 other) {
@@ -317,7 +326,7 @@ public value record Int2(int x, int y) {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}), returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Int2 rem(int scalar) {
@@ -330,7 +339,7 @@ public value record Int2(int x, int y) {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Int2 rem(Int2 other) {
@@ -355,7 +364,7 @@ public value record Int2(int x, int y) {
     /**
      * Subtract {@code other} from this vector, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return the resulting vector
      */
     public Int2 sub(Int2 other) {
@@ -379,7 +388,7 @@ public value record Int2(int x, int y) {
      * Compute the bitwise AND of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @return the resulting vector
      */
     public Int2 and(Int2 other) {
@@ -447,7 +456,7 @@ public value record Int2(int x, int y) {
      * Compute the bitwise OR of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @return the resulting vector
      */
     public Int2 or(Int2 other) {
@@ -554,7 +563,7 @@ public value record Int2(int x, int y) {
      * Compute the bitwise XOR of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @return the resulting vector
      */
     public Int2 xor(Int2 other) {
@@ -578,7 +587,7 @@ public value record Int2(int x, int y) {
     /**
      * Create a new vector from the given values.
      *
-     * @param v the vector
+     * @param v the vector to copy
      * @return the resulting vector
      */
     public Int2 set(Int2 v) {
@@ -769,7 +778,7 @@ public value record Int2(int x, int y) {
     /**
      * Compute the squared distance between this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
     public int distanceSquared(Int2 other) {
@@ -794,7 +803,7 @@ public value record Int2(int x, int y) {
     /**
      * Compute the dot product of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
     public int dot(Int2 other) {
@@ -827,7 +836,7 @@ public value record Int2(int x, int y) {
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
     public int manhattanDistance(Int2 other) {
@@ -861,7 +870,7 @@ public value record Int2(int x, int y) {
      * Set each component of this vector to the larger of itself and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @return the resulting vector
      */
     public Int2 max(int scalar) {
@@ -873,7 +882,7 @@ public value record Int2(int x, int y) {
      * Set each component of this vector to the larger of itself and the corresponding component of
      * {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @return the resulting vector
      */
     public Int2 max(Int2 other) {
@@ -898,7 +907,7 @@ public value record Int2(int x, int y) {
      * Set each component of this vector to the smaller of itself and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @return the resulting vector
      */
     public Int2 min(int scalar) {
@@ -910,7 +919,7 @@ public value record Int2(int x, int y) {
      * Set each component of this vector to the smaller of itself and the corresponding component of
      * {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @return the resulting vector
      */
     public Int2 min(Int2 other) {
@@ -945,7 +954,7 @@ public value record Int2(int x, int y) {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return the resulting vector
      */
     public Int2 satAdd(Int2 other) {
@@ -970,7 +979,7 @@ public value record Int2(int x, int y) {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return the resulting vector
      */
     public Int2 satMul(Int2 other) {
@@ -1006,7 +1015,7 @@ public value record Int2(int x, int y) {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return the resulting vector
      */
     public Int2 satSub(Int2 other) {
@@ -1026,17 +1035,30 @@ public value record Int2(int x, int y) {
         return new Int2(org.joml2.SaturatingMath.satSub(this.x, otherX), org.joml2.SaturatingMath.satSub(this.y, otherY));
     }
 
-    /** {@return a copy of this vector with the X component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the X component replaced by the given value}
+     *
+     * @param x the new value of the {@code x} component
+     */
     public Int2 withX(int x) {
         return new Int2(x, this.y());
     }
 
-    /** {@return a copy of this vector with the Y component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the Y component replaced by the given value}
+     *
+     * @param y the new value of the {@code y} component
+     */
     public Int2 withY(int y) {
         return new Int2(this.x(), y);
     }
 
-    /** {@return a copy of this vector with the XY components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XY components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param y the new value of the {@code y} component
+     */
     public Int2 withXY(int x, int y) {
         return new Int2(x, y);
     }

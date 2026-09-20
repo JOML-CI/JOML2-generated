@@ -34,7 +34,7 @@ public interface DoubleTransform extends DoubleTransformR {
      *
      * @param axis the rotation axis (must be a unit vector)
      * @param angle the angle in radians
-     * @param translation the vector
+     * @param translation the translation
      * @return this
      */
     @Mutated DoubleTransform makeFromAxisAngle(Double3R axis, double angle, Double3R translation);
@@ -65,8 +65,8 @@ public interface DoubleTransform extends DoubleTransformR {
      * Set this transform to a rigid transformation that first rotates by {@code rotation} and then
      * translates by {@code translation} ({@code T * R}).
      *
-     * @param translation the vector
-     * @param rotation the quaternion
+     * @param translation the translation
+     * @param rotation the rotation
      * @return this
      */
     @Mutated DoubleTransform makeTranslationRotation(Double3R translation, DoubleQuatR rotation);
@@ -98,9 +98,9 @@ public interface DoubleTransform extends DoubleTransformR {
      * Set this transform to a transformation composed of the given translation, rotation and scale,
      * applied in scale-rotation-translation order.
      *
-     * @param translation the vector
-     * @param rotation the quaternion
-     * @param scale the scale factor
+     * @param translation the translation
+     * @param rotation the rotation
+     * @param scale the scale factors
      * @return this
      */
     @Mutated DoubleTransform makeTranslationRotationScale(Double3R translation, DoubleQuatR rotation, Double3R scale);
@@ -133,7 +133,7 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Set this transform to the given values.
      *
-     * @param v the transform
+     * @param v the transform to copy
      * @return this
      */
     @Mutated DoubleTransform set(DoubleTransformR v);
@@ -168,7 +168,7 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Set the rotation of this transform to {@code r}.
      *
-     * @param r the quaternion
+     * @param r the new rotation
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform setRotation(DoubleQuatR r) { return setRotation(r, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
@@ -232,7 +232,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * Set this transform to the rigid motion of the unit dual quaternion {@code dq} (translation
      * and rotation from {@code dq}, scale = 1).
      *
-     * @param dq the dual quaternion
+     * @param dq the dual quaternion to convert
      * @return this
      */
     @Mutated DoubleTransform makeFromDualQuat(DoubleDualQuatR dq);
@@ -267,7 +267,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * with zero translation (scale is removed by normalizing the columns, but shear is not removed:
      * a sheared block yields a rotation quaternion that is not unit length).
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated DoubleTransform makeFromMatrix(Double3x3R m);
@@ -278,7 +278,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * column-normalized block (scale is removed by normalizing the columns, but shear is not
      * removed: a sheared block yields a rotation quaternion that is not unit length).
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated DoubleTransform makeFromMatrix(Double3x4R m);
@@ -289,7 +289,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * column-normalized block (scale is removed by normalizing the columns, but shear is not
      * removed: a sheared block yields a rotation quaternion that is not unit length).
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated DoubleTransform makeFromMatrix(Double4x4R m);
@@ -298,7 +298,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * Set this transform to the given rigid transform's motion (translation and rotation), with
      * scale = 1.
      *
-     * @param r the rigid transform
+     * @param r the rigid transform to convert
      * @return this
      */
     @Mutated DoubleTransform makeFromRigid(DoubleRigidR r);
@@ -344,7 +344,7 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Set this transform to a pure rotation by {@code rotation} (zero translation, unit scale).
      *
-     * @param rotation the quaternion
+     * @param rotation the rotation
      * @return this
      */
     @Mutated DoubleTransform set(DoubleQuatR rotation);
@@ -366,7 +366,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * <p>
      * Alias for {@code set}.
      *
-     * @param rotation the quaternion
+     * @param rotation the rotation
      * @return this
      */
     @Mutated default DoubleTransform makeRotation(DoubleQuatR rotation) { return set(rotation); }
@@ -389,7 +389,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * Set this transform to a pure translation by {@code translation} (identity rotation, unit
      * scale).
      *
-     * @param translation the vector
+     * @param translation the translation
      * @return this
      */
     @Mutated DoubleTransform set(Double3R translation);
@@ -411,7 +411,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * <p>
      * Alias for {@code set}.
      *
-     * @param translation the vector
+     * @param translation the translation
      * @return this
      */
     @Mutated default DoubleTransform makeTranslation(Double3R translation) { return set(translation); }
@@ -433,8 +433,11 @@ public interface DoubleTransform extends DoubleTransformR {
      * Interpolate between this transform and {@code other} using the interpolation factor
      * {@code t}, interpolating translation and scale linearly and the rotation via shortest-arc
      * slerp.
+     * <p>
+     * The interpolation starts at this transform (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other transform
+     * @param other the transform to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -445,6 +448,10 @@ public interface DoubleTransform extends DoubleTransformR {
      * {@code rY}, {@code rZ}, {@code rW}, {@code sX}, {@code sY}, {@code sZ}) using the
      * interpolation factor {@code t}, interpolating translation and scale linearly and the rotation
      * via shortest-arc slerp.
+     * <p>
+     * The interpolation starts at this transform (interpolation factor {@code 0}) and ends at
+     * ({@code tX}, {@code tY}, {@code tZ}, {@code rX}, {@code rY}, {@code rZ}, {@code rW},
+     * {@code sX}, {@code sY}, {@code sZ}) (interpolation factor {@code 1}).
      *
      * @param tX the {@code tX} component of the transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
@@ -484,7 +491,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param other the other transform
+     * @param other the right operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform mul(DoubleTransformR other) { return mul(other, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
@@ -540,7 +547,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param other the other transform
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform preMul(DoubleTransformR other) { return preMul(other, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
@@ -594,7 +601,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param other the other transform
+     * @param other the target transform, reached by composing this transform with the result
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform difference(DoubleTransformR other) { return difference(other, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
@@ -779,7 +786,7 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Set this transform to a scaling transformation that scales by {@code scale}.
      *
-     * @param scale the scale factor
+     * @param scale the scale factors
      * @return this
      */
     @Mutated DoubleTransform makeScaling(Double3R scale);
@@ -816,7 +823,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param rotation the quaternion (must be a unit quaternion)
+     * @param rotation the rotation to apply (must be a unit quaternion)
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform rotate(DoubleQuatR rotation) { return rotate(rotation, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
@@ -1084,7 +1091,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * transform will be {@code M * S}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * S * v}, the scaling will be applied first.
      *
-     * @param scale the scale factor
+     * @param scale the scale factors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform scale(Double3R scale) { return scale(scale, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
@@ -1122,7 +1129,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * transform will be {@code M * T}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * T * v}, the translation will be applied first.
      *
-     * @param translation the vector
+     * @param translation the translation offsets
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform translate(Double3R translation) { return translate(translation, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }

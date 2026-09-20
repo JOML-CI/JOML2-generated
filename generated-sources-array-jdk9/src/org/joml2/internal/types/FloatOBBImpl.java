@@ -75,7 +75,7 @@ public final class FloatOBBImpl implements FloatOBB {
     /**
      * Set this oriented bounding box to the given values.
      *
-     * @param v the oriented bounding box
+     * @param v the oriented bounding box to copy
      * @return this
      */
     public @Mutated FloatOBB set(FloatOBBR v) {
@@ -257,7 +257,7 @@ public final class FloatOBBImpl implements FloatOBB {
      * Set the center of this oriented bounding box to {@code c} and store the result in
      * {@code dest}.
      *
-     * @param c the vector
+     * @param c the new center
      * @param dest will hold the result
      * @return dest
      */
@@ -273,7 +273,7 @@ public final class FloatOBBImpl implements FloatOBB {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param c the vector
+     * @param c the new center
      * @param dest will hold the result
      * @return dest
      */
@@ -353,7 +353,7 @@ public final class FloatOBBImpl implements FloatOBB {
      * Set the half extents of this oriented bounding box to {@code h} and store the result in
      * {@code dest}.
      *
-     * @param h the vector
+     * @param h the new half extents
      * @param dest will hold the result
      * @return dest
      */
@@ -369,7 +369,7 @@ public final class FloatOBBImpl implements FloatOBB {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param h the vector
+     * @param h the new half extents
      * @param dest will hold the result
      * @return dest
      */
@@ -510,7 +510,7 @@ public final class FloatOBBImpl implements FloatOBB {
      * Set the orientation of this oriented bounding box to {@code q} and store the result in
      * {@code dest}.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the new orientation (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -526,7 +526,7 @@ public final class FloatOBBImpl implements FloatOBB {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the new orientation (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -679,7 +679,7 @@ public final class FloatOBBImpl implements FloatOBB {
      * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
      * shear is approximated) and store the result in {@code dest}.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -732,7 +732,7 @@ public final class FloatOBBImpl implements FloatOBB {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -785,7 +785,7 @@ public final class FloatOBBImpl implements FloatOBB {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -841,7 +841,7 @@ public final class FloatOBBImpl implements FloatOBB {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -888,7 +888,7 @@ public final class FloatOBBImpl implements FloatOBB {
     /**
      * Translate this oriented bounding box by {@code delta} and store the result in {@code dest}.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -903,7 +903,7 @@ public final class FloatOBBImpl implements FloatOBB {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -987,7 +987,7 @@ public final class FloatOBBImpl implements FloatOBB {
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -1007,7 +1007,7 @@ public final class FloatOBBImpl implements FloatOBB {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -1024,9 +1024,12 @@ public final class FloatOBBImpl implements FloatOBB {
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
      * @param dest will hold the result
      * @return dest
      */
@@ -1057,9 +1060,12 @@ public final class FloatOBBImpl implements FloatOBB {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
      * @param dest will hold the result
      * @return dest
      */
@@ -1082,7 +1088,7 @@ public final class FloatOBBImpl implements FloatOBB {
     /**
      * Determine whether this oriented bounding box contains the given point (boundary inclusive).
      *
-     * @param p the vector
+     * @param p the point to test
      * @return {@code true} if this oriented bounding box contains the given point (boundary
      *        inclusive), {@code false} otherwise
      */
@@ -1116,7 +1122,7 @@ public final class FloatOBBImpl implements FloatOBB {
      * evaluated in the box's local frame; zero for a point inside or on the box. Assumes the box's
      * axes are orthonormal.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the squared distance between this oriented bounding box and the given point,
      *        evaluated in the box's local frame; zero for a point inside or on the box. Assumes the
      *        box's axes are orthonormal
@@ -1131,9 +1137,12 @@ public final class FloatOBBImpl implements FloatOBB {
      * evaluated in the box's local frame; zero for a point inside or on the box. Assumes the box's
      * axes are orthonormal.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the squared distance between this oriented bounding box and the given point,
      *        evaluated in the box's local frame; zero for a point inside or on the box. Assumes the
      *        box's axes are orthonormal
@@ -1155,7 +1164,7 @@ public final class FloatOBBImpl implements FloatOBB {
      * box's local frame; zero for a point inside or on the box. Assumes the box's axes are
      * orthonormal.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the distance between this oriented bounding box and the given point, evaluated in the
      *        box's local frame; zero for a point inside or on the box. Assumes the box's axes are
      *        orthonormal
@@ -1170,9 +1179,12 @@ public final class FloatOBBImpl implements FloatOBB {
      * box's local frame; zero for a point inside or on the box. Assumes the box's axes are
      * orthonormal.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the distance between this oriented bounding box and the given point, evaluated in the
      *        box's local frame; zero for a point inside or on the box. Assumes the box's axes are
      *        orthonormal
@@ -1373,7 +1385,7 @@ public final class FloatOBBImpl implements FloatOBB {
     /**
      * Determine whether this oriented bounding box intersects {@code o}.
      *
-     * @param o the oriented bounding box
+     * @param o the oriented bounding box to test for intersection
      * @return {@code true} if this oriented bounding box intersects {@code o}, {@code false}
      *        otherwise
      */

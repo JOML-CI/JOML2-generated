@@ -2216,7 +2216,7 @@ public final class Float3x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param other the storage holding the other matrix
+     * @param other the storage holding the right factor of the product
      * @param otherOffset the element index in {@code other} at which the matrix starts
      * @return {@code dest}
      */
@@ -2345,7 +2345,7 @@ public final class Float3x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param other the storage holding the other matrix
+     * @param other the storage holding the matrix to add
      * @param otherOffset the element index in {@code other} at which the matrix starts
      * @return {@code dest}
      */
@@ -2420,7 +2420,7 @@ public final class Float3x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param other the storage holding the other matrix
+     * @param other the storage holding the matrix to subtract
      * @param otherOffset the element index in {@code other} at which the matrix starts
      * @return {@code dest}
      */
@@ -2457,7 +2457,7 @@ public final class Float3x4Ops {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
-     * @param v the storage holding the matrix
+     * @param v the storage holding the matrix to copy
      * @param vOffset the element index in {@code v} at which the matrix starts
      * @return {@code dest}
      */
@@ -2494,7 +2494,7 @@ public final class Float3x4Ops {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
-     * @param m the storage holding the matrix
+     * @param m the storage holding the matrix to copy from
      * @param mOffset the element index in {@code m} at which the matrix starts
      * @return {@code dest}
      */
@@ -2547,7 +2547,7 @@ public final class Float3x4Ops {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
-     * @param m the storage holding the matrix
+     * @param m the storage holding the matrix to copy from
      * @param mOffset the element index in {@code m} at which the matrix starts
      * @return {@code dest}
      */
@@ -3830,12 +3830,15 @@ public final class Float3x4Ops {
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param other the storage holding the other matrix
+     * @param other the storage holding the matrix to interpolate towards
      * @param otherOffset the element index in {@code other} at which the matrix starts
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return {@code dest}
@@ -4176,7 +4179,7 @@ public final class Float3x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param other the storage holding the other matrix
+     * @param other the storage holding the left operand
      * @param otherOffset the element index in {@code other} at which the matrix starts
      * @return {@code dest}
      */
@@ -4240,7 +4243,7 @@ public final class Float3x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param other the storage holding the other matrix
+     * @param other the storage holding the left operand
      * @param otherOffset the element index in {@code other} at which the matrix starts
      * @return {@code dest}
      */
@@ -4309,7 +4312,7 @@ public final class Float3x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param other the storage holding the other matrix
+     * @param other the storage holding the left operand
      * @param otherOffset the element index in {@code other} at which the matrix starts
      * @return {@code dest}
      */
@@ -4380,7 +4383,7 @@ public final class Float3x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param other the storage holding the other matrix
+     * @param other the storage holding the left operand
      * @param otherOffset the element index in {@code other} at which the matrix starts
      * @return {@code dest}
      */
@@ -4448,7 +4451,7 @@ public final class Float3x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param other the storage holding the other matrix
+     * @param other the storage holding the left operand
      * @param otherOffset the element index in {@code other} at which the matrix starts
      * @return {@code dest}
      */
@@ -4595,11 +4598,11 @@ public final class Float3x4Ops {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
-     * @param translation the storage holding the vector
+     * @param translation the storage holding the translation
      * @param translationOffset the element index in {@code translation} at which the vector starts
-     * @param rotation the storage holding the quaternion (must be a unit quaternion)
+     * @param rotation the storage holding the rotation (must be a unit quaternion)
      * @param rotationOffset the element index in {@code rotation} at which the quaternion starts
-     * @param scale the storage holding the scale factor
+     * @param scale the storage holding the scale factors
      * @param scaleOffset the element index in {@code scale} at which the vector starts
      * @return {@code dest}
      */
@@ -4660,7 +4663,7 @@ public final class Float3x4Ops {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
-     * @param m the storage holding the matrix
+     * @param m the storage holding the matrix to post-multiply the composed transformation by
      * @param mOffset the element index in {@code m} at which the matrix starts
      * @param translationX the {@code x} component of the vector
      *        {@code (translationX, translationY, translationZ)}
@@ -4753,13 +4756,13 @@ public final class Float3x4Ops {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
-     * @param translation the storage holding the vector
+     * @param translation the storage holding the translation
      * @param translationOffset the element index in {@code translation} at which the vector starts
-     * @param rotation the storage holding the quaternion (must be a unit quaternion)
+     * @param rotation the storage holding the rotation (must be a unit quaternion)
      * @param rotationOffset the element index in {@code rotation} at which the quaternion starts
-     * @param scale the storage holding the scale factor
+     * @param scale the storage holding the scale factors
      * @param scaleOffset the element index in {@code scale} at which the vector starts
-     * @param m the storage holding the matrix
+     * @param m the storage holding the matrix to post-multiply the composed transformation by
      * @param mOffset the element index in {@code m} at which the matrix starts
      * @return {@code dest}
      */
@@ -4944,7 +4947,8 @@ public final class Float3x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param dir the storage holding the direction
+     * @param dir the storage holding the direction to look along, i.e. the direction the local
+     *        {@code +z} axis is mapped to
      * @param dirOffset the element index in {@code dir} at which the vector starts
      * @param up the storage holding the direction of "up"
      * @param upOffset the element index in {@code up} at which the vector starts
@@ -8042,7 +8046,7 @@ public final class Float3x4Ops {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
-     * @param normal the storage holding the normal (must be a unit vector)
+     * @param normal the storage holding the normal of the reflection plane (must be a unit vector)
      * @param normalOffset the element index in {@code normal} at which the vector starts
      * @return {@code dest}
      */
@@ -8276,7 +8280,8 @@ public final class Float3x4Ops {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
-     * @param dir the storage holding the direction
+     * @param dir the storage holding the direction to look along, i.e. the direction the local
+     *        {@code +z} axis is mapped to
      * @param dirOffset the element index in {@code dir} at which the vector starts
      * @param up the storage holding the direction of "up"
      * @param upOffset the element index in {@code up} at which the vector starts
@@ -8408,7 +8413,7 @@ public final class Float3x4Ops {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
-     * @param q the storage holding the quaternion (must be a unit quaternion)
+     * @param q the storage holding the rotation quaternion (must be a unit quaternion)
      * @param qOffset the element index in {@code q} at which the quaternion starts
      * @return {@code dest}
      */
@@ -8969,7 +8974,7 @@ public final class Float3x4Ops {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
-     * @param v the storage holding the vector
+     * @param v the storage holding the scale factors
      * @param vOffset the element index in {@code v} at which the vector starts
      * @return {@code dest}
      */
@@ -11555,7 +11560,7 @@ public final class Float3x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param rot the storage holding the quaternion (must be a unit quaternion)
+     * @param rot the storage holding the rotation to apply (must be a unit quaternion)
      * @param rotOffset the element index in {@code rot} at which the quaternion starts
      * @param pivot the storage holding the pivot point
      * @param pivotOffset the element index in {@code pivot} at which the vector starts
@@ -11899,7 +11904,7 @@ public final class Float3x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param q the storage holding the quaternion (must be a unit quaternion)
+     * @param q the storage holding the rotation to apply (must be a unit quaternion)
      * @param qOffset the element index in {@code q} at which the quaternion starts
      * @return {@code dest}
      */
@@ -12238,7 +12243,7 @@ public final class Float3x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param v the storage holding the vector
+     * @param v the storage holding the scale factors
      * @param vOffset the element index in {@code v} at which the vector starts
      * @return {@code dest}
      */
@@ -12679,7 +12684,7 @@ public final class Float3x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param v the storage holding the vector
+     * @param v the storage holding the translation offsets
      * @param vOffset the element index in {@code v} at which the vector starts
      * @return {@code dest}
      */
@@ -12821,7 +12826,8 @@ public final class Float3x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param normal the storage holding the normal (must be a unit vector)
+     * @param normal the storage holding the normal of the plane to reflect about (must be a unit
+     *        vector)
      * @param normalOffset the element index in {@code normal} at which the vector starts
      * @return {@code dest}
      */
@@ -12999,7 +13005,7 @@ public final class Float3x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param rot the storage holding the quaternion (must be a unit quaternion)
+     * @param rot the storage holding the rotation to apply (must be a unit quaternion)
      * @param rotOffset the element index in {@code rot} at which the quaternion starts
      * @param pivot the storage holding the pivot point
      * @param pivotOffset the element index in {@code pivot} at which the vector starts
@@ -13346,7 +13352,7 @@ public final class Float3x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param q the storage holding the quaternion (must be a unit quaternion)
+     * @param q the storage holding the rotation to apply (must be a unit quaternion)
      * @param qOffset the element index in {@code q} at which the quaternion starts
      * @return {@code dest}
      */
@@ -14770,7 +14776,7 @@ public final class Float3x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param v the storage holding the vector
+     * @param v the storage holding the scale factors
      * @param vOffset the element index in {@code v} at which the vector starts
      * @return {@code dest}
      */
@@ -15244,7 +15250,8 @@ public final class Float3x4Ops {
     }
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -15295,13 +15302,14 @@ public final class Float3x4Ops {
     }
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param v the storage holding the vector
+     * @param v the storage holding the right operand of the product
      * @param vOffset the element index in {@code v} at which the vector starts
      * @return {@code dest}
      */
@@ -15485,7 +15493,7 @@ public final class Float3x4Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param v the storage holding the vector
+     * @param v the storage holding the direction to transform
      * @param vOffset the element index in {@code v} at which the vector starts
      * @return {@code dest}
      */
@@ -15586,7 +15594,7 @@ public final class Float3x4Ops {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param v the storage holding the vector
+     * @param v the storage holding the position to transform
      * @param vOffset the element index in {@code v} at which the vector starts
      * @return {@code dest}
      */

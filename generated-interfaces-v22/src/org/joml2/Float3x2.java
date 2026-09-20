@@ -32,7 +32,7 @@ public interface Float3x2 extends Float3x2R {
     /**
      * Add {@code other} to this matrix.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x2 add(Float3x2R other) { return add(other, Joml.RETURN_NEW ? Joml.float3x2() : this); }
@@ -61,7 +61,7 @@ public interface Float3x2 extends Float3x2R {
     /**
      * Subtract {@code other} from this matrix.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x2 sub(Float3x2R other) { return sub(other, Joml.RETURN_NEW ? Joml.float3x2() : this); }
@@ -83,7 +83,7 @@ public interface Float3x2 extends Float3x2R {
     /**
      * Set this matrix to the given values.
      *
-     * @param v the matrix
+     * @param v the matrix to copy
      * @return this
      */
     @Mutated Float3x2 set(Float3x2R v);
@@ -118,8 +118,11 @@ public interface Float3x2 extends Float3x2R {
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -128,6 +131,10 @@ public interface Float3x2 extends Float3x2R {
     /**
      * Linearly interpolate between this matrix and ({@code m00}, {@code m01}, {@code m10},
      * {@code m11}, {@code m20}, {@code m21}) using the interpolation factor {@code t}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m10}, {@code m11}, {@code m20}, {@code m21}) (interpolation
+     * factor {@code 1}).
      *
      * @param m00 the element in row 0, column 0 of the matrix
      * @param m01 the element in row 0, column 1 of the matrix
@@ -162,7 +169,7 @@ public interface Float3x2 extends Float3x2R {
      * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x2 preMul(Float3x3R other) { return preMul(other, Joml.RETURN_NEW ? Joml.float3x2() : this); }

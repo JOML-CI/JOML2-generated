@@ -72,6 +72,17 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
      * The bits are trusted as-is and never validated: wrong bits produce wrong results from every
      * dispatched operation. Prefer the {@code make*} factories, or the element constructor, which
      * computes the bits itself.
+     *
+     * @param m00 the element in row 0, column 0
+     * @param m01 the element in row 0, column 1
+     * @param m02 the element in row 0, column 2
+     * @param m10 the element in row 1, column 0
+     * @param m11 the element in row 1, column 1
+     * @param m12 the element in row 1, column 2
+     * @param m20 the element in row 2, column 0
+     * @param m21 the element in row 2, column 1
+     * @param m22 the element in row 2, column 2
+     * @param properties the cached property bits, taken as given
      */
     public Double3x3(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22, int properties) {
         this.m00 = m00;
@@ -93,12 +104,30 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
         this(1, 0, 0, 0, 1, 0, 0, 0, 1, Joml.BIT_IDENTITY);
     }
 
-    /** Create a matrix from the given elements, computing the cached property bits. */
+    /**
+     * Create a matrix from the given elements, computing the cached property bits.
+     *
+     * @param m00 the element in row 0, column 0
+     * @param m01 the element in row 0, column 1
+     * @param m02 the element in row 0, column 2
+     * @param m10 the element in row 1, column 0
+     * @param m11 the element in row 1, column 1
+     * @param m12 the element in row 1, column 2
+     * @param m20 the element in row 2, column 0
+     * @param m21 the element in row 2, column 1
+     * @param m22 the element in row 2, column 2
+     */
     public Double3x3(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22) {
         this(m00, m01, m02, m10, m11, m12, m20, m21, m22, props(m00, m01, m02, m10, m11, m12, m20, m21, m22));
     }
 
-    /** Create a matrix from the given column vectors. */
+    /**
+     * Create a matrix from the given column vectors.
+     *
+     * @param c0 the first column
+     * @param c1 the second column
+     * @param c2 the third column
+     */
     public Double3x3(Double3 c0, Double3 c1, Double3 c2) {
         this(c0.x(), c1.x(), c2.x(), c0.y(), c1.y(), c2.y(), c0.z(), c1.z(), c2.z());
     }
@@ -110,27 +139,48 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
      * The bits are trusted as-is and never validated: wrong bits produce wrong results from every
      * dispatched operation. Prefer the {@code make*} factories, or the element constructor, which
      * computes the bits itself.
+     *
+     * @param c0 the first column
+     * @param c1 the second column
+     * @param c2 the third column
+     * @param properties the cached property bits, taken as given
      */
     public Double3x3(Double3 c0, Double3 c1, Double3 c2, int properties) {
         this(c0.x(), c1.x(), c2.x(), c0.y(), c1.y(), c2.y(), c0.z(), c1.z(), c2.z(), properties);
     }
 
-    /** Create a matrix by identity-extending {@code src} to this square shape. */
+    /**
+     * Create a matrix by identity-extending {@code src} to this square shape.
+     *
+     * @param src the matrix to convert
+     */
     public Double3x3(Double2x3 src) {
         this(src.m00(), src.m01(), src.m02(), src.m10(), src.m11(), src.m12(), 0, 0, 1);
     }
 
-    /** Create a matrix by truncating {@code src} to the overlapping cells. */
+    /**
+     * Create a matrix by truncating {@code src} to the overlapping cells.
+     *
+     * @param src the matrix to convert
+     */
     public Double3x3(Double4x4 src) {
         this(src.m00(), src.m01(), src.m02(), src.m10(), src.m11(), src.m12(), src.m20(), src.m21(), src.m22());
     }
 
-    /** Create a matrix by truncating {@code src} to the overlapping cells. */
+    /**
+     * Create a matrix by truncating {@code src} to the overlapping cells.
+     *
+     * @param src the matrix to convert
+     */
     public Double3x3(Double3x4 src) {
         this(src.m00(), src.m01(), src.m02(), src.m10(), src.m11(), src.m12(), src.m20(), src.m21(), src.m22());
     }
 
-    /** Create a matrix by identity-extending {@code src} to this square shape. */
+    /**
+     * Create a matrix by identity-extending {@code src} to this square shape.
+     *
+     * @param src the matrix to convert
+     */
     public Double3x3(Double2x2 src) {
         this(src.m00(), src.m01(), 0, src.m10(), src.m11(), 0, 0, 0, 1);
     }
@@ -1467,7 +1517,7 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
      * factor, or factors of very different scale) invert both factors separately and multiply the
      * inverses in reverse order instead.
      *
-     * @param other the other matrix
+     * @param other the right factor of the product
      * @return the resulting matrix
      */
     public Double3x3 invertProduct(Double3x3 other) {
@@ -1795,7 +1845,7 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
     /**
      * Add {@code other} to this matrix, returning the result as a value.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @return the resulting matrix
      */
     public Double3x3 add(Double3x3 other) {
@@ -2034,7 +2084,7 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
     /**
      * Subtract {@code other} from this matrix, returning the result as a value.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @return the resulting matrix
      */
     public Double3x3 sub(Double3x3 other) {
@@ -2097,7 +2147,7 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
     /**
      * Create a new matrix from the given values.
      *
-     * @param v the matrix
+     * @param v the matrix to copy
      * @return the resulting matrix
      */
     public Double3x3 set(Double3x3 v) {
@@ -2128,7 +2178,7 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
      * Create a new matrix from the given 2x2 matrix, copying the overlapping cells and filling the
      * rest with identity.
      *
-     * @param m the matrix
+     * @param m the matrix to copy from
      * @return the resulting matrix
      */
     public Double3x3 set(Double2x2 m) {
@@ -2140,7 +2190,7 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
      * Create a new matrix from the given 2x3 matrix, copying the overlapping cells and filling the
      * rest with identity.
      *
-     * @param m the matrix
+     * @param m the matrix to copy from
      * @return the resulting matrix
      */
     public Double3x3 set(Double2x3 m) {
@@ -2152,7 +2202,7 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
      * Create a new matrix from the given 3x4 matrix, copying the overlapping cells and dropping the
      * rest.
      *
-     * @param m the matrix
+     * @param m the matrix to copy from
      * @return the resulting matrix
      */
     public Double3x3 set(Double3x4 m) {
@@ -2164,7 +2214,7 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
      * Create a new matrix from the given 4x4 matrix, copying the overlapping cells and dropping the
      * rest.
      *
-     * @param m the matrix
+     * @param m the matrix to copy from
      * @return the resulting matrix
      */
     public Double3x3 set(Double4x4 m) {
@@ -2262,7 +2312,7 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
     /**
      * Create the given rigid transform's rotation block (the translation is dropped).
      *
-     * @param r the rigid transform (whose rotation must be a unit quaternion)
+     * @param r the rigid transform to convert (whose rotation must be a unit quaternion)
      * @return the resulting matrix
      */
     public static Double3x3 makeFromRigid(DoubleRigid r) {
@@ -2304,7 +2354,7 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
     /**
      * Create the given transform's linear block {@code R * S} (the translation is dropped).
      *
-     * @param t the transform
+     * @param t the transform to convert
      * @return the resulting matrix
      */
     public static Double3x3 makeFromTransform(DoubleTransform t) {
@@ -3365,8 +3415,11 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting matrix
      */
@@ -3408,6 +3461,10 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
      * Linearly interpolate between this matrix and ({@code m00}, {@code m01}, {@code m02},
      * {@code m10}, {@code m11}, {@code m12}, {@code m20}, {@code m21}, {@code m22}) using the
      * interpolation factor {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m02}, {@code m10}, {@code m11}, {@code m12}, {@code m20},
+     * {@code m21}, {@code m22}) (interpolation factor {@code 1}).
      *
      * @param m00 the element in row 0, column 0 of the matrix
      * @param m01 the element in row 0, column 1 of the matrix
@@ -3879,7 +3936,7 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
      * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return the resulting matrix
      */
     public Double3x3 preMul(Double3x3 other) {
@@ -3988,7 +4045,7 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return the resulting matrix
      */
     public Double3x3 preMul(Double2x2 other) {
@@ -4092,7 +4149,7 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return the resulting matrix
      */
     public Double3x3 preMul(Double2x3 other) {
@@ -4157,7 +4214,8 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return the resulting matrix
      */
@@ -4236,7 +4294,7 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
      * Create the rotation part of the unit dual quaternion {@code dq} (the encoded translation is
      * dropped).
      *
-     * @param dq the dual quaternion (must be a unit dual quaternion)
+     * @param dq the dual quaternion to convert (must be a unit dual quaternion)
      * @return the resulting matrix
      */
     public static Double3x3 makeFromDualQuat(DoubleDualQuat dq) {
@@ -4337,7 +4395,8 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
     /**
      * Create a rotation that makes {@code +z} point along {@code dir}.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return the resulting matrix
      */
@@ -4393,7 +4452,7 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
     /**
      * Create the rotation represented by the quaternion {@code q}.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation quaternion (must be a unit quaternion)
      * @return the resulting matrix
      */
     public static Double3x3 makeRotationQuat(DoubleQuat q) {
@@ -4603,7 +4662,7 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
     /**
      * Create a scaling transformation that scales by {@code v}.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return the resulting matrix
      */
     public static Double3x3 makeScaling(Double2 v) {
@@ -5187,7 +5246,7 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
      * will be {@code S * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code S * M * p}, the scaling will be applied last.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return the resulting matrix
      */
     public Double3x3 preScale(Double2 v) {
@@ -5473,7 +5532,7 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
      * will be {@code T * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code T * M * p}, the translation will be applied last.
      *
-     * @param v the vector
+     * @param v the translation offsets
      * @return the resulting matrix
      */
     public Double3x3 preTranslate(Double2 v) {
@@ -7475,7 +7534,7 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
      * will be {@code M * S}. So when transforming a vector {@code p} with the new matrix by using
      * {@code M * S * p}, the scaling will be applied first.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return the resulting matrix
      */
     public Double3x3 scale(Double2 v) {
@@ -7935,9 +7994,10 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
 
 
     /**
-     * Multiply this matrix by the given vector, returning the result as a value.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v}, returning the result as a value.
      *
-     * @param v the vector
+     * @param v the right operand of the product
      * @return the resulting vector
      */
     public Double3 mul(Double3 v) {
@@ -7973,7 +8033,8 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
 
 
     /**
-     * Multiply this matrix by the given vector, returning the result as a value.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v}, returning the result as a value.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -7987,47 +8048,83 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
         return mul_general(vX, vY, vZ);
     }
 
-    /** {@return a copy with the {@code m00} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m00} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m00} element
+     */
     public Double3x3 withM00(double v) {
         return new Double3x3(v, m01, m02, m10, m11, m12, m20, m21, m22);
     }
 
-    /** {@return a copy with the {@code m01} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m01} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m01} element
+     */
     public Double3x3 withM01(double v) {
         return new Double3x3(m00, v, m02, m10, m11, m12, m20, m21, m22);
     }
 
-    /** {@return a copy with the {@code m02} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m02} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m02} element
+     */
     public Double3x3 withM02(double v) {
         return new Double3x3(m00, m01, v, m10, m11, m12, m20, m21, m22);
     }
 
-    /** {@return a copy with the {@code m10} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m10} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m10} element
+     */
     public Double3x3 withM10(double v) {
         return new Double3x3(m00, m01, m02, v, m11, m12, m20, m21, m22);
     }
 
-    /** {@return a copy with the {@code m11} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m11} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m11} element
+     */
     public Double3x3 withM11(double v) {
         return new Double3x3(m00, m01, m02, m10, v, m12, m20, m21, m22);
     }
 
-    /** {@return a copy with the {@code m12} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m12} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m12} element
+     */
     public Double3x3 withM12(double v) {
         return new Double3x3(m00, m01, m02, m10, m11, v, m20, m21, m22);
     }
 
-    /** {@return a copy with the {@code m20} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m20} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m20} element
+     */
     public Double3x3 withM20(double v) {
         return new Double3x3(m00, m01, m02, m10, m11, m12, v, m21, m22);
     }
 
-    /** {@return a copy with the {@code m21} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m21} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m21} element
+     */
     public Double3x3 withM21(double v) {
         return new Double3x3(m00, m01, m02, m10, m11, m12, m20, v, m22);
     }
 
-    /** {@return a copy with the {@code m22} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m22} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m22} element
+     */
     public Double3x3 withM22(double v) {
         return new Double3x3(m00, m01, m02, m10, m11, m12, m20, m21, v);
     }
@@ -8039,6 +8136,8 @@ public value record Double3x3(double m00, double m01, double m02, double m10, do
      * dispatched operation. Prefer the {@code make*} factories, or the element constructor, which
      * computes the bits itself. {@code withProperties(determineProperties())} recomputes them from
      * the elements.
+     *
+     * @param properties the cached property bits, taken as given
      */
     public Double3x3 withProperties(int properties) {
         return new Double3x3(m00, m01, m02, m10, m11, m12, m20, m21, m22, properties);

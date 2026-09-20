@@ -34,7 +34,12 @@ public record Byte2(byte x, byte y) {
     /** The zero vector (all components 0). */
     public static final Byte2 ZERO = new Byte2((byte) 0, (byte) 0);
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param x the {@code x} component
+     * @param y the {@code y} component
+     */
     public Byte2(byte x, byte y) {
         this.x = x;
         this.y = y;
@@ -47,7 +52,11 @@ public record Byte2(byte x, byte y) {
         this((byte) 0, (byte) 0);
     }
 
-    /** Create a vector with all components set to {@code s}. */
+    /**
+     * Create a vector with all components set to {@code s}.
+     *
+     * @param s the value assigned to every component
+     */
     public Byte2(byte s) {
         this(s, s);
     }
@@ -61,7 +70,7 @@ public record Byte2(byte x, byte y) {
     /**
      * Add {@code other} to this vector, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return the resulting vector
      */
     public Byte2 add(Byte2 other) {
@@ -85,7 +94,7 @@ public record Byte2(byte x, byte y) {
      * Compute the component-wise ceiling division of this vector by {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Byte2 ceilDiv(byte scalar) {
@@ -97,7 +106,7 @@ public record Byte2(byte x, byte y) {
      * Compute the component-wise ceiling division of this vector by {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Byte2 ceilDiv(Byte2 other) {
@@ -122,7 +131,7 @@ public record Byte2(byte x, byte y) {
      * Compute the component-wise ceiling modulus of this vector and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Byte2 ceilMod(byte scalar) {
@@ -134,7 +143,7 @@ public record Byte2(byte x, byte y) {
      * Compute the component-wise ceiling modulus of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Byte2 ceilMod(Byte2 other) {
@@ -159,7 +168,7 @@ public record Byte2(byte x, byte y) {
      * Divide each component of this vector by {@code scalar} (integer division, truncating toward
      * zero), returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Byte2 div(byte scalar) {
@@ -171,7 +180,7 @@ public record Byte2(byte x, byte y) {
      * Divide this vector component-wise by {@code other} (integer division, truncating toward
      * zero), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Byte2 div(Byte2 other) {
@@ -196,7 +205,7 @@ public record Byte2(byte x, byte y) {
      * Compute the component-wise floor division of this vector by {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Byte2 floorDiv(byte scalar) {
@@ -208,7 +217,7 @@ public record Byte2(byte x, byte y) {
      * Compute the component-wise floor division of this vector by {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Byte2 floorDiv(Byte2 other) {
@@ -233,7 +242,7 @@ public record Byte2(byte x, byte y) {
      * Compute the component-wise floor modulus of this vector and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Byte2 floorMod(byte scalar) {
@@ -245,7 +254,7 @@ public record Byte2(byte x, byte y) {
      * Compute the component-wise floor modulus of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Byte2 floorMod(Byte2 other) {
@@ -269,7 +278,7 @@ public record Byte2(byte x, byte y) {
     /**
      * Multiply each component of this vector by {@code scalar}, returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @return the resulting vector
      */
     public Byte2 mul(byte scalar) {
@@ -280,7 +289,7 @@ public record Byte2(byte x, byte y) {
     /**
      * Multiply this vector component-wise by {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return the resulting vector
      */
     public Byte2 mul(Byte2 other) {
@@ -316,7 +325,7 @@ public record Byte2(byte x, byte y) {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}), returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Byte2 rem(byte scalar) {
@@ -329,7 +338,7 @@ public record Byte2(byte x, byte y) {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Byte2 rem(Byte2 other) {
@@ -354,7 +363,7 @@ public record Byte2(byte x, byte y) {
     /**
      * Subtract {@code other} from this vector, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return the resulting vector
      */
     public Byte2 sub(Byte2 other) {
@@ -378,7 +387,7 @@ public record Byte2(byte x, byte y) {
      * Compute the bitwise AND of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @return the resulting vector
      */
     public Byte2 and(Byte2 other) {
@@ -446,7 +455,7 @@ public record Byte2(byte x, byte y) {
      * Compute the bitwise OR of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @return the resulting vector
      */
     public Byte2 or(Byte2 other) {
@@ -556,7 +565,7 @@ public record Byte2(byte x, byte y) {
      * Compute the bitwise XOR of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @return the resulting vector
      */
     public Byte2 xor(Byte2 other) {
@@ -580,7 +589,7 @@ public record Byte2(byte x, byte y) {
     /**
      * Create a new vector from the given values.
      *
-     * @param v the vector
+     * @param v the vector to copy
      * @return the resulting vector
      */
     public Byte2 set(Byte2 v) {
@@ -774,7 +783,7 @@ public record Byte2(byte x, byte y) {
      * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
      * result outside the {@code byte} range wraps.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
     public byte distanceSquared(Byte2 other) {
@@ -805,7 +814,7 @@ public record Byte2(byte x, byte y) {
      * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
      * result outside the {@code byte} range wraps.
      *
-     * @param other the other vector
+     * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
     public byte dot(Byte2 other) {
@@ -847,7 +856,7 @@ public record Byte2(byte x, byte y) {
      * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
      * result outside the {@code byte} range wraps.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
     public byte manhattanDistance(Byte2 other) {
@@ -887,7 +896,7 @@ public record Byte2(byte x, byte y) {
      * Set each component of this vector to the larger of itself and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @return the resulting vector
      */
     public Byte2 max(byte scalar) {
@@ -899,7 +908,7 @@ public record Byte2(byte x, byte y) {
      * Set each component of this vector to the larger of itself and the corresponding component of
      * {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @return the resulting vector
      */
     public Byte2 max(Byte2 other) {
@@ -924,7 +933,7 @@ public record Byte2(byte x, byte y) {
      * Set each component of this vector to the smaller of itself and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @return the resulting vector
      */
     public Byte2 min(byte scalar) {
@@ -936,7 +945,7 @@ public record Byte2(byte x, byte y) {
      * Set each component of this vector to the smaller of itself and the corresponding component of
      * {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @return the resulting vector
      */
     public Byte2 min(Byte2 other) {
@@ -971,7 +980,7 @@ public record Byte2(byte x, byte y) {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return the resulting vector
      */
     public Byte2 satAdd(Byte2 other) {
@@ -996,7 +1005,7 @@ public record Byte2(byte x, byte y) {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return the resulting vector
      */
     public Byte2 satMul(Byte2 other) {
@@ -1032,7 +1041,7 @@ public record Byte2(byte x, byte y) {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return the resulting vector
      */
     public Byte2 satSub(Byte2 other) {
@@ -1052,17 +1061,30 @@ public record Byte2(byte x, byte y) {
         return new Byte2((byte) (org.joml2.SaturatingMath.satSubB(this.x, otherX)), (byte) (org.joml2.SaturatingMath.satSubB(this.y, otherY)));
     }
 
-    /** {@return a copy of this vector with the X component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the X component replaced by the given value}
+     *
+     * @param x the new value of the {@code x} component
+     */
     public Byte2 withX(byte x) {
         return new Byte2(x, this.y());
     }
 
-    /** {@return a copy of this vector with the Y component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the Y component replaced by the given value}
+     *
+     * @param y the new value of the {@code y} component
+     */
     public Byte2 withY(byte y) {
         return new Byte2(this.x(), y);
     }
 
-    /** {@return a copy of this vector with the XY components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XY components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param y the new value of the {@code y} component
+     */
     public Byte2 withXY(byte x, byte y) {
         return new Byte2(x, y);
     }

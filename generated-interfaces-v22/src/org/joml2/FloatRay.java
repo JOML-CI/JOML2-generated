@@ -32,7 +32,7 @@ public interface FloatRay extends FloatRayR {
     /**
      * Set this ray to the given values.
      *
-     * @param v the ray
+     * @param v the ray to copy
      * @return this
      */
     @Mutated FloatRay set(FloatRayR v);
@@ -53,7 +53,7 @@ public interface FloatRay extends FloatRayR {
     /**
      * Set the direction of this ray to {@code d}.
      *
-     * @param d the vector
+     * @param d the new direction
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRay setDirection(Float3R d) { return setDirection(d, Joml.RETURN_NEW ? Joml.floatRay() : this); }
@@ -71,7 +71,7 @@ public interface FloatRay extends FloatRayR {
     /**
      * Set the origin of this ray to {@code o}.
      *
-     * @param o the vector
+     * @param o the new origin
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRay setOrigin(Float3R o) { return setOrigin(o, Joml.RETURN_NEW ? Joml.floatRay() : this); }
@@ -96,7 +96,7 @@ public interface FloatRay extends FloatRayR {
     /**
      * Transform this ray by {@code m}.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRay transform(Float3x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.floatRay() : this); }
@@ -107,7 +107,7 @@ public interface FloatRay extends FloatRayR {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRay transform(Float4x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.floatRay() : this); }

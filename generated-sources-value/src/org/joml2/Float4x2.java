@@ -50,7 +50,18 @@ public value record Float4x2(float m00, float m01, float m10, float m11, float m
     /** The identity matrix. */
     public static final Float4x2 IDENTITY = new Float4x2();
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param m00 the element in row 0, column 0
+     * @param m01 the element in row 0, column 1
+     * @param m10 the element in row 1, column 0
+     * @param m11 the element in row 1, column 1
+     * @param m20 the element in row 2, column 0
+     * @param m21 the element in row 2, column 1
+     * @param m30 the element in row 3, column 0
+     * @param m31 the element in row 3, column 1
+     */
     public Float4x2(float m00, float m01, float m10, float m11, float m20, float m21, float m30, float m31) {
         this.m00 = m00;
         this.m01 = m01;
@@ -69,7 +80,12 @@ public value record Float4x2(float m00, float m01, float m10, float m11, float m
         this(1, 0, 0, 1, 0, 0, 0, 0);
     }
 
-    /** Create a matrix from the given column vectors. */
+    /**
+     * Create a matrix from the given column vectors.
+     *
+     * @param c0 the first column
+     * @param c1 the second column
+     */
     public Float4x2(Float4 c0, Float4 c1) {
         this(c0.x(), c1.x(), c0.y(), c1.y(), c0.z(), c1.z(), c0.w(), c1.w());
     }
@@ -139,7 +155,7 @@ public value record Float4x2(float m00, float m01, float m10, float m11, float m
     /**
      * Add {@code other} to this matrix, returning the result as a value.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @return the resulting matrix
      */
     public Float4x2 add(Float4x2 other) {
@@ -179,7 +195,7 @@ public value record Float4x2(float m00, float m01, float m10, float m11, float m
     /**
      * Subtract {@code other} from this matrix, returning the result as a value.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @return the resulting matrix
      */
     public Float4x2 sub(Float4x2 other) {
@@ -209,7 +225,7 @@ public value record Float4x2(float m00, float m01, float m10, float m11, float m
     /**
      * Create a new matrix from the given values.
      *
-     * @param v the matrix
+     * @param v the matrix to copy
      * @return the resulting matrix
      */
     public Float4x2 set(Float4x2 v) {
@@ -258,8 +274,11 @@ public value record Float4x2(float m00, float m01, float m10, float m11, float m
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting matrix
      */
@@ -272,6 +291,10 @@ public value record Float4x2(float m00, float m01, float m10, float m11, float m
      * Linearly interpolate between this matrix and ({@code m00}, {@code m01}, {@code m10},
      * {@code m11}, {@code m20}, {@code m21}, {@code m30}, {@code m31}) using the interpolation
      * factor {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m10}, {@code m11}, {@code m20}, {@code m21}, {@code m30},
+     * {@code m31}) (interpolation factor {@code 1}).
      *
      * @param m00 the element in row 0, column 0 of the matrix
      * @param m01 the element in row 0, column 1 of the matrix
@@ -325,7 +348,7 @@ public value record Float4x2(float m00, float m01, float m10, float m11, float m
      * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return the resulting matrix
      */
     public Float4x2 preMul(Float4x4 other) {
@@ -334,9 +357,10 @@ public value record Float4x2(float m00, float m01, float m10, float m11, float m
 
 
     /**
-     * Multiply this matrix by the given vector, returning the result as a value.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v}, returning the result as a value.
      *
-     * @param v the vector
+     * @param v the right operand of the product
      * @return the resulting vector
      */
     public Float4 mul(Float2 v) {
@@ -345,7 +369,8 @@ public value record Float4x2(float m00, float m01, float m10, float m11, float m
 
 
     /**
-     * Multiply this matrix by the given vector, returning the result as a value.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v}, returning the result as a value.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY)}
      * @param vY the {@code y} component of the vector {@code (vX, vY)}
@@ -355,42 +380,74 @@ public value record Float4x2(float m00, float m01, float m10, float m11, float m
         return new Float4(Math.fma(this.m00, vX, this.m01 * vY), Math.fma(this.m10, vX, this.m11 * vY), Math.fma(this.m20, vX, this.m21 * vY), Math.fma(this.m30, vX, this.m31 * vY));
     }
 
-    /** {@return a copy with the {@code m00} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m00} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m00} element
+     */
     public Float4x2 withM00(float v) {
         return new Float4x2(v, m01, m10, m11, m20, m21, m30, m31);
     }
 
-    /** {@return a copy with the {@code m01} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m01} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m01} element
+     */
     public Float4x2 withM01(float v) {
         return new Float4x2(m00, v, m10, m11, m20, m21, m30, m31);
     }
 
-    /** {@return a copy with the {@code m10} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m10} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m10} element
+     */
     public Float4x2 withM10(float v) {
         return new Float4x2(m00, m01, v, m11, m20, m21, m30, m31);
     }
 
-    /** {@return a copy with the {@code m11} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m11} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m11} element
+     */
     public Float4x2 withM11(float v) {
         return new Float4x2(m00, m01, m10, v, m20, m21, m30, m31);
     }
 
-    /** {@return a copy with the {@code m20} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m20} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m20} element
+     */
     public Float4x2 withM20(float v) {
         return new Float4x2(m00, m01, m10, m11, v, m21, m30, m31);
     }
 
-    /** {@return a copy with the {@code m21} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m21} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m21} element
+     */
     public Float4x2 withM21(float v) {
         return new Float4x2(m00, m01, m10, m11, m20, v, m30, m31);
     }
 
-    /** {@return a copy with the {@code m30} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m30} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m30} element
+     */
     public Float4x2 withM30(float v) {
         return new Float4x2(m00, m01, m10, m11, m20, m21, v, m31);
     }
 
-    /** {@return a copy with the {@code m31} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m31} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m31} element
+     */
     public Float4x2 withM31(float v) {
         return new Float4x2(m00, m01, m10, m11, m20, m21, m30, v);
     }

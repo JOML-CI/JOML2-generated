@@ -30,7 +30,7 @@ public interface Short2 extends Short2R {
     /**
      * Add {@code other} to this vector.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 add(Short2R other) { return add(other, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -47,7 +47,7 @@ public interface Short2 extends Short2R {
     /**
      * Compute the component-wise ceiling division of this vector by {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 ceilDiv(short scalar) { return ceilDiv(scalar, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -55,7 +55,7 @@ public interface Short2 extends Short2R {
     /**
      * Compute the component-wise ceiling division of this vector by {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 ceilDiv(Short2R other) { return ceilDiv(other, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -72,7 +72,7 @@ public interface Short2 extends Short2R {
     /**
      * Compute the component-wise ceiling modulus of this vector and {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 ceilMod(short scalar) { return ceilMod(scalar, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -80,7 +80,7 @@ public interface Short2 extends Short2R {
     /**
      * Compute the component-wise ceiling modulus of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 ceilMod(Short2R other) { return ceilMod(other, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -98,7 +98,7 @@ public interface Short2 extends Short2R {
      * Divide each component of this vector by {@code scalar} (integer division, truncating toward
      * zero).
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 div(short scalar) { return div(scalar, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -107,7 +107,7 @@ public interface Short2 extends Short2R {
      * Divide this vector component-wise by {@code other} (integer division, truncating toward
      * zero).
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 div(Short2R other) { return div(other, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -125,7 +125,7 @@ public interface Short2 extends Short2R {
     /**
      * Compute the component-wise floor division of this vector by {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 floorDiv(short scalar) { return floorDiv(scalar, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -133,7 +133,7 @@ public interface Short2 extends Short2R {
     /**
      * Compute the component-wise floor division of this vector by {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 floorDiv(Short2R other) { return floorDiv(other, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -150,7 +150,7 @@ public interface Short2 extends Short2R {
     /**
      * Compute the component-wise floor modulus of this vector and {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 floorMod(short scalar) { return floorMod(scalar, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -158,7 +158,7 @@ public interface Short2 extends Short2R {
     /**
      * Compute the component-wise floor modulus of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 floorMod(Short2R other) { return floorMod(other, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -175,7 +175,7 @@ public interface Short2 extends Short2R {
     /**
      * Multiply each component of this vector by {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 mul(short scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -183,7 +183,7 @@ public interface Short2 extends Short2R {
     /**
      * Multiply this vector component-wise by {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 mul(Short2R other) { return mul(other, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -209,7 +209,7 @@ public interface Short2 extends Short2R {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}).
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 rem(short scalar) { return rem(scalar, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -219,7 +219,7 @@ public interface Short2 extends Short2R {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}).
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 rem(Short2R other) { return rem(other, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -238,7 +238,7 @@ public interface Short2 extends Short2R {
     /**
      * Subtract {@code other} from this vector.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 sub(Short2R other) { return sub(other, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -255,7 +255,7 @@ public interface Short2 extends Short2R {
     /**
      * Compute the bitwise AND of each component of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 and(Short2R other) { return and(other, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -300,7 +300,7 @@ public interface Short2 extends Short2R {
     /**
      * Compute the bitwise OR of each component of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 or(Short2R other) { return or(other, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -377,7 +377,7 @@ public interface Short2 extends Short2R {
     /**
      * Compute the bitwise XOR of each component of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 xor(Short2R other) { return xor(other, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -394,7 +394,7 @@ public interface Short2 extends Short2R {
     /**
      * Set this vector to the given values.
      *
-     * @param v the vector
+     * @param v the vector to copy
      * @return this
      */
     @Mutated Short2 set(Short2R v);
@@ -500,7 +500,7 @@ public interface Short2 extends Short2R {
     /**
      * Set each component of this vector to the larger of itself and {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 max(short scalar) { return max(scalar, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -509,7 +509,7 @@ public interface Short2 extends Short2R {
      * Set each component of this vector to the larger of itself and the corresponding component of
      * {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 max(Short2R other) { return max(other, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -527,7 +527,7 @@ public interface Short2 extends Short2R {
     /**
      * Set each component of this vector to the smaller of itself and {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 min(short scalar) { return min(scalar, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -536,7 +536,7 @@ public interface Short2 extends Short2R {
      * Set each component of this vector to the smaller of itself and the corresponding component of
      * {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 min(Short2R other) { return min(other, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -561,7 +561,7 @@ public interface Short2 extends Short2R {
     /**
      * Add {@code other} to this vector, clamping to the value range instead of overflowing.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 satAdd(Short2R other) { return satAdd(other, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -579,7 +579,7 @@ public interface Short2 extends Short2R {
     /**
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 satMul(Short2R other) { return satMul(other, Joml.RETURN_NEW ? Joml.short2() : this); }
@@ -604,7 +604,7 @@ public interface Short2 extends Short2R {
     /**
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 satSub(Short2R other) { return satSub(other, Joml.RETURN_NEW ? Joml.short2() : this); }

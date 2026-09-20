@@ -68,7 +68,7 @@ public final class FloatAABBImpl implements FloatAABB {
     /**
      * Set this axis-aligned bounding box to the given values.
      *
-     * @param v the axis-aligned bounding box
+     * @param v the axis-aligned bounding box to copy
      * @return this
      */
     public @Mutated FloatAABB set(FloatAABBR v) {
@@ -108,7 +108,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * Set the maximum corner of this axis-aligned bounding box to {@code max} and store the result
      * in {@code dest}.
      *
-     * @param max the maximum corner
+     * @param max the maximum corner of the box
      * @param dest will hold the result
      * @return dest
      */
@@ -124,7 +124,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param max the maximum corner
+     * @param max the maximum corner of the box
      * @param dest will hold the result
      * @return dest
      */
@@ -184,7 +184,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * Set the minimum corner of this axis-aligned bounding box to {@code min} and store the result
      * in {@code dest}.
      *
-     * @param min the minimum corner
+     * @param min the minimum corner of the box
      * @param dest will hold the result
      * @return dest
      */
@@ -200,7 +200,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param min the minimum corner
+     * @param min the minimum corner of the box
      * @param dest will hold the result
      * @return dest
      */
@@ -326,7 +326,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * Transform this axis-aligned bounding box by {@code m} and set it to the axis-aligned box
      * enclosing the transformed box and store the result in {@code dest}.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -364,7 +364,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -402,7 +402,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -443,7 +443,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -478,7 +478,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * Translate this axis-aligned bounding box by {@code delta} and store the result in
      * {@code dest}.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -494,7 +494,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -554,7 +554,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * Set this axis-aligned bounding box to the union of itself and {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other axis-aligned bounding box
+     * @param other the axis-aligned bounding box to include in the union
      * @param dest will hold the result
      * @return dest
      */
@@ -570,7 +570,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other axis-aligned bounding box
+     * @param other the axis-aligned bounding box to include in the union
      * @param dest will hold the result
      * @return dest
      */
@@ -648,7 +648,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * Grow this axis-aligned bounding box to include the point {@code p} and store the result in
      * {@code dest}.
      *
-     * @param p the vector
+     * @param p the point to include
      * @param dest will hold the result
      * @return dest
      */
@@ -664,7 +664,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the vector
+     * @param p the point to include
      * @param dest will hold the result
      * @return dest
      */
@@ -727,7 +727,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -746,7 +746,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -762,9 +762,12 @@ public final class FloatAABBImpl implements FloatAABB {
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
      * @param dest will hold the result
      * @return dest
      */
@@ -787,9 +790,12 @@ public final class FloatAABBImpl implements FloatAABB {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
      * @param dest will hold the result
      * @return dest
      */
@@ -807,7 +813,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * the squared length of the shortest vector between any two points of the two boxes; zero when
      * they overlap or touch.
      *
-     * @param other the other box
+     * @param other the box to measure the distance to
      * @return the squared distance between this axis-aligned bounding box and the given box, i.e.
      *        the squared length of the shortest vector between any two points of the two boxes;
      *        zero when they overlap or touch
@@ -822,18 +828,18 @@ public final class FloatAABBImpl implements FloatAABB {
      * the squared length of the shortest vector between any two points of the two boxes; zero when
      * they overlap or touch.
      *
-     * @param minX the {@code minX} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param minY the {@code minY} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param minZ the {@code minZ} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param maxX the {@code maxX} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param maxY the {@code maxY} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param maxZ the {@code maxZ} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minX the {@code minX} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param minY the {@code minY} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param minZ the {@code minZ} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param maxX the {@code maxX} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param maxY the {@code maxY} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param maxZ the {@code maxZ} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @return the squared distance between this axis-aligned bounding box and the given box, i.e.
      *        the squared length of the shortest vector between any two points of the two boxes;
      *        zero when they overlap or touch
@@ -851,7 +857,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * the squared length of the difference between the point and its per-axis clamp into the box's
      * bounds; zero for a point inside or on the box.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the squared distance between this axis-aligned bounding box and the given point, i.e.
      *        the squared length of the difference between the point and its per-axis clamp into the
      *        box's bounds; zero for a point inside or on the box
@@ -866,9 +872,12 @@ public final class FloatAABBImpl implements FloatAABB {
      * the squared length of the difference between the point and its per-axis clamp into the box's
      * bounds; zero for a point inside or on the box.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the squared distance between this axis-aligned bounding box and the given point, i.e.
      *        the squared length of the difference between the point and its per-axis clamp into the
      *        box's bounds; zero for a point inside or on the box
@@ -886,7 +895,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * i.e. the square of the distance from the box to the sphere's center minus the radius, clamped
      * at zero; zero when they overlap or touch.
      *
-     * @param sphere the sphere
+     * @param sphere the sphere to measure the distance to
      * @return the squared distance between this axis-aligned bounding box and the given sphere,
      *        i.e. the square of the distance from the box to the sphere's center minus the radius,
      *        clamped at zero; zero when they overlap or touch
@@ -902,13 +911,13 @@ public final class FloatAABBImpl implements FloatAABB {
      * at zero; zero when they overlap or touch.
      *
      * @param sphereX the {@code x} component of the sphere
-     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)} to measure the distance to
      * @param sphereY the {@code y} component of the sphere
-     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)} to measure the distance to
      * @param sphereZ the {@code z} component of the sphere
-     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)} to measure the distance to
      * @param sphereR the {@code r} component of the sphere
-     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)} to measure the distance to
      * @return the squared distance between this axis-aligned bounding box and the given sphere,
      *        i.e. the square of the distance from the box to the sphere's center minus the radius,
      *        clamped at zero; zero when they overlap or touch
@@ -927,8 +936,8 @@ public final class FloatAABBImpl implements FloatAABB {
      * i.e. the square of the distance from the box to the sphere's center minus the radius, clamped
      * at zero; zero when they overlap or touch.
      *
-     * @param center the center point
-     * @param radius the radius
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
      * @return the squared distance between this axis-aligned bounding box and the given sphere,
      *        i.e. the square of the distance from the box to the sphere's center minus the radius,
      *        clamped at zero; zero when they overlap or touch
@@ -943,7 +952,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * length of the shortest vector between any two points of the two boxes; zero when they overlap
      * or touch.
      *
-     * @param other the other box
+     * @param other the box to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given box, i.e. the
      *        length of the shortest vector between any two points of the two boxes; zero when they
      *        overlap or touch
@@ -958,18 +967,18 @@ public final class FloatAABBImpl implements FloatAABB {
      * length of the shortest vector between any two points of the two boxes; zero when they overlap
      * or touch.
      *
-     * @param minX the {@code minX} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param minY the {@code minY} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param minZ the {@code minZ} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param maxX the {@code maxX} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param maxY the {@code maxY} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param maxZ the {@code maxZ} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minX the {@code minX} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param minY the {@code minY} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param minZ the {@code minZ} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param maxX the {@code maxX} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param maxY the {@code maxY} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param maxZ the {@code maxZ} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given box, i.e. the
      *        length of the shortest vector between any two points of the two boxes; zero when they
      *        overlap or touch
@@ -988,7 +997,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * clamped at zero; zero when the plane intersects or touches the box. The plane's normal need
      * not be of unit length.
      *
-     * @param plane the plane
+     * @param plane the plane to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given plane, i.e. the
      *        distance from the box's center to the plane minus the box's extent along the plane
      *        normal, clamped at zero; zero when the plane intersects or touches the box. The
@@ -1006,9 +1015,13 @@ public final class FloatAABBImpl implements FloatAABB {
      * not be of unit length.
      *
      * @param planeA the {@code a} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     *        to measure the distance to
      * @param planeB the {@code b} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     *        to measure the distance to
      * @param planeC the {@code c} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     *        to measure the distance to
      * @param planeD the {@code d} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     *        to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given plane, i.e. the
      *        distance from the box's center to the plane minus the box's extent along the plane
      *        normal, clamped at zero; zero when the plane intersects or touches the box. The
@@ -1025,7 +1038,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * clamped at zero; zero when the plane intersects or touches the box. The plane's normal need
      * not be of unit length.
      *
-     * @param plane the plane
+     * @param plane the plane to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given plane, i.e. the
      *        distance from the box's center to the plane minus the box's extent along the plane
      *        normal, clamped at zero; zero when the plane intersects or touches the box. The
@@ -1041,7 +1054,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * length of the difference between the point and its per-axis clamp into the box's bounds; zero
      * for a point inside or on the box.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given point, i.e. the
      *        length of the difference between the point and its per-axis clamp into the box's
      *        bounds; zero for a point inside or on the box
@@ -1056,9 +1069,12 @@ public final class FloatAABBImpl implements FloatAABB {
      * length of the difference between the point and its per-axis clamp into the box's bounds; zero
      * for a point inside or on the box.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the distance between this axis-aligned bounding box and the given point, i.e. the
      *        length of the difference between the point and its per-axis clamp into the box's
      *        bounds; zero for a point inside or on the box
@@ -1076,7 +1092,7 @@ public final class FloatAABBImpl implements FloatAABB {
      * distance from the box to the sphere's center minus the radius, clamped at zero; zero when
      * they overlap or touch.
      *
-     * @param sphere the sphere
+     * @param sphere the sphere to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given sphere, i.e. the
      *        distance from the box to the sphere's center minus the radius, clamped at zero; zero
      *        when they overlap or touch
@@ -1092,13 +1108,13 @@ public final class FloatAABBImpl implements FloatAABB {
      * they overlap or touch.
      *
      * @param sphereX the {@code x} component of the sphere
-     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)} to measure the distance to
      * @param sphereY the {@code y} component of the sphere
-     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)} to measure the distance to
      * @param sphereZ the {@code z} component of the sphere
-     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)} to measure the distance to
      * @param sphereR the {@code r} component of the sphere
-     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)} to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given sphere, i.e. the
      *        distance from the box to the sphere's center minus the radius, clamped at zero; zero
      *        when they overlap or touch
@@ -1116,8 +1132,8 @@ public final class FloatAABBImpl implements FloatAABB {
      * distance from the box to the sphere's center minus the radius, clamped at zero; zero when
      * they overlap or touch.
      *
-     * @param center the center point
-     * @param radius the radius
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
      * @return the distance between this axis-aligned bounding box and the given sphere, i.e. the
      *        distance from the box to the sphere's center minus the radius, clamped at zero; zero
      *        when they overlap or touch

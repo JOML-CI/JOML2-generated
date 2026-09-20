@@ -32,7 +32,7 @@ public interface DoubleAABB extends DoubleAABBR {
     /**
      * Set this axis-aligned bounding box to the given values.
      *
-     * @param v the axis-aligned bounding box
+     * @param v the axis-aligned bounding box to copy
      * @return this
      */
     @Mutated DoubleAABB set(DoubleAABBR v);
@@ -59,7 +59,7 @@ public interface DoubleAABB extends DoubleAABBR {
     /**
      * Set the maximum corner of this axis-aligned bounding box to {@code max}.
      *
-     * @param max the maximum corner
+     * @param max the maximum corner of the box
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleAABB setMax(Double3R max) { return setMax(max, Joml.RETURN_NEW ? Joml.doubleAABB() : this); }
@@ -78,7 +78,7 @@ public interface DoubleAABB extends DoubleAABBR {
     /**
      * Set the minimum corner of this axis-aligned bounding box to {@code min}.
      *
-     * @param min the minimum corner
+     * @param min the minimum corner of the box
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleAABB setMin(Double3R min) { return setMin(min, Joml.RETURN_NEW ? Joml.doubleAABB() : this); }
@@ -116,7 +116,7 @@ public interface DoubleAABB extends DoubleAABBR {
      * Transform this axis-aligned bounding box by {@code m} and set it to the axis-aligned box
      * enclosing the transformed box.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleAABB transform(Double3x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.doubleAABB() : this); }
@@ -128,7 +128,7 @@ public interface DoubleAABB extends DoubleAABBR {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleAABB transform(Double4x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.doubleAABB() : this); }
@@ -136,7 +136,7 @@ public interface DoubleAABB extends DoubleAABBR {
     /**
      * Translate this axis-aligned bounding box by {@code delta}.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleAABB translate(Double3R delta) { return translate(delta, Joml.RETURN_NEW ? Joml.doubleAABB() : this); }
@@ -154,7 +154,7 @@ public interface DoubleAABB extends DoubleAABBR {
     /**
      * Set this axis-aligned bounding box to the union of itself and {@code other}.
      *
-     * @param other the other axis-aligned bounding box
+     * @param other the axis-aligned bounding box to include in the union
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleAABB union(DoubleAABBR other) { return union(other, Joml.RETURN_NEW ? Joml.doubleAABB() : this); }
@@ -182,7 +182,7 @@ public interface DoubleAABB extends DoubleAABBR {
     /**
      * Grow this axis-aligned bounding box to include the point {@code p}.
      *
-     * @param p the vector
+     * @param p the point to include
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleAABB union(Double3R p) { return union(p, Joml.RETURN_NEW ? Joml.doubleAABB() : this); }

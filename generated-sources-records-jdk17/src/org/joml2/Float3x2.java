@@ -45,7 +45,16 @@ public record Float3x2(float m00, float m01, float m10, float m11, float m20, fl
     /** The identity matrix. */
     public static final Float3x2 IDENTITY = new Float3x2();
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param m00 the element in row 0, column 0
+     * @param m01 the element in row 0, column 1
+     * @param m10 the element in row 1, column 0
+     * @param m11 the element in row 1, column 1
+     * @param m20 the element in row 2, column 0
+     * @param m21 the element in row 2, column 1
+     */
     public Float3x2(float m00, float m01, float m10, float m11, float m20, float m21) {
         this.m00 = m00;
         this.m01 = m01;
@@ -62,7 +71,12 @@ public record Float3x2(float m00, float m01, float m10, float m11, float m20, fl
         this(1, 0, 0, 1, 0, 0);
     }
 
-    /** Create a matrix from the given column vectors. */
+    /**
+     * Create a matrix from the given column vectors.
+     *
+     * @param c0 the first column
+     * @param c1 the second column
+     */
     public Float3x2(Float3 c0, Float3 c1) {
         this(c0.x(), c1.x(), c0.y(), c1.y(), c0.z(), c1.z());
     }
@@ -128,7 +142,7 @@ public record Float3x2(float m00, float m01, float m10, float m11, float m20, fl
     /**
      * Add {@code other} to this matrix, returning the result as a value.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @return the resulting matrix
      */
     public Float3x2 add(Float3x2 other) {
@@ -166,7 +180,7 @@ public record Float3x2(float m00, float m01, float m10, float m11, float m20, fl
     /**
      * Subtract {@code other} from this matrix, returning the result as a value.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @return the resulting matrix
      */
     public Float3x2 sub(Float3x2 other) {
@@ -194,7 +208,7 @@ public record Float3x2(float m00, float m01, float m10, float m11, float m20, fl
     /**
      * Create a new matrix from the given values.
      *
-     * @param v the matrix
+     * @param v the matrix to copy
      * @return the resulting matrix
      */
     public Float3x2 set(Float3x2 v) {
@@ -241,8 +255,11 @@ public record Float3x2(float m00, float m01, float m10, float m11, float m20, fl
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting matrix
      */
@@ -255,6 +272,10 @@ public record Float3x2(float m00, float m01, float m10, float m11, float m20, fl
      * Linearly interpolate between this matrix and ({@code m00}, {@code m01}, {@code m10},
      * {@code m11}, {@code m20}, {@code m21}) using the interpolation factor {@code t}, returning
      * the result as a value.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m10}, {@code m11}, {@code m20}, {@code m21}) (interpolation
+     * factor {@code 1}).
      *
      * @param m00 the element in row 0, column 0 of the matrix
      * @param m01 the element in row 0, column 1 of the matrix
@@ -296,7 +317,7 @@ public record Float3x2(float m00, float m01, float m10, float m11, float m20, fl
      * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return the resulting matrix
      */
     public Float3x2 preMul(Float3x3 other) {
@@ -305,9 +326,10 @@ public record Float3x2(float m00, float m01, float m10, float m11, float m20, fl
 
 
     /**
-     * Multiply this matrix by the given vector, returning the result as a value.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v}, returning the result as a value.
      *
-     * @param v the vector
+     * @param v the right operand of the product
      * @return the resulting vector
      */
     public Float3 mul(Float2 v) {
@@ -316,7 +338,8 @@ public record Float3x2(float m00, float m01, float m10, float m11, float m20, fl
 
 
     /**
-     * Multiply this matrix by the given vector, returning the result as a value.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v}, returning the result as a value.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY)}
      * @param vY the {@code y} component of the vector {@code (vX, vY)}
@@ -326,32 +349,56 @@ public record Float3x2(float m00, float m01, float m10, float m11, float m20, fl
         return new Float3(Math.fma(this.m00, vX, this.m01 * vY), Math.fma(this.m10, vX, this.m11 * vY), Math.fma(this.m20, vX, this.m21 * vY));
     }
 
-    /** {@return a copy with the {@code m00} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m00} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m00} element
+     */
     public Float3x2 withM00(float v) {
         return new Float3x2(v, m01, m10, m11, m20, m21);
     }
 
-    /** {@return a copy with the {@code m01} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m01} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m01} element
+     */
     public Float3x2 withM01(float v) {
         return new Float3x2(m00, v, m10, m11, m20, m21);
     }
 
-    /** {@return a copy with the {@code m10} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m10} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m10} element
+     */
     public Float3x2 withM10(float v) {
         return new Float3x2(m00, m01, v, m11, m20, m21);
     }
 
-    /** {@return a copy with the {@code m11} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m11} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m11} element
+     */
     public Float3x2 withM11(float v) {
         return new Float3x2(m00, m01, m10, v, m20, m21);
     }
 
-    /** {@return a copy with the {@code m20} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m20} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m20} element
+     */
     public Float3x2 withM20(float v) {
         return new Float3x2(m00, m01, m10, m11, v, m21);
     }
 
-    /** {@return a copy with the {@code m21} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m21} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m21} element
+     */
     public Float3x2 withM21(float v) {
         return new Float3x2(m00, m01, m10, m11, m20, v);
     }

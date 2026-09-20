@@ -58,7 +58,7 @@ public interface Double3x4 extends Double3x4R {
      * factor, or factors of very different scale) invert both factors separately and multiply the
      * inverses in reverse order instead.
      *
-     * @param other the other matrix
+     * @param other the right factor of the product
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3x4 invertProduct(Double3x4R other) { return invertProduct(other, Joml.RETURN_NEW ? Joml.double3x4() : this); }
@@ -93,7 +93,7 @@ public interface Double3x4 extends Double3x4R {
     /**
      * Add {@code other} to this matrix.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3x4 add(Double3x4R other) { return add(other, Joml.RETURN_NEW ? Joml.double3x4() : this); }
@@ -128,7 +128,7 @@ public interface Double3x4 extends Double3x4R {
     /**
      * Subtract {@code other} from this matrix.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3x4 sub(Double3x4R other) { return sub(other, Joml.RETURN_NEW ? Joml.double3x4() : this); }
@@ -157,7 +157,7 @@ public interface Double3x4 extends Double3x4R {
     /**
      * Set this matrix to the given values.
      *
-     * @param v the matrix
+     * @param v the matrix to copy
      * @return this
      */
     @Mutated Double3x4 set(Double3x4R v);
@@ -185,7 +185,7 @@ public interface Double3x4 extends Double3x4R {
      * Set this matrix to the given 3x3 matrix, copying the overlapping cells and filling the rest
      * with identity.
      *
-     * @param m the matrix
+     * @param m the matrix to copy from
      * @return this
      */
     @Mutated Double3x4 set(Double3x3R m);
@@ -193,7 +193,7 @@ public interface Double3x4 extends Double3x4R {
     /**
      * Set this matrix to the given 4x4 matrix, copying the overlapping cells and dropping the rest.
      *
-     * @param m the matrix
+     * @param m the matrix to copy from
      * @return this
      */
     @Mutated Double3x4 set(Double4x4R m);
@@ -236,7 +236,7 @@ public interface Double3x4 extends Double3x4R {
     /**
      * Set this matrix to the given rigid transform's {@code T * R} composition.
      *
-     * @param r the rigid transform (whose rotation must be a unit quaternion)
+     * @param r the rigid transform to convert (whose rotation must be a unit quaternion)
      * @return this
      */
     @Mutated Double3x4 makeFromRigid(DoubleRigidR r);
@@ -265,7 +265,7 @@ public interface Double3x4 extends Double3x4R {
     /**
      * Set this matrix to the given transform's {@code T * R * S} composition.
      *
-     * @param t the transform
+     * @param t the transform to convert
      * @return this
      */
     @Mutated Double3x4 makeFromTransform(DoubleTransformR t);
@@ -307,8 +307,11 @@ public interface Double3x4 extends Double3x4R {
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -318,6 +321,11 @@ public interface Double3x4 extends Double3x4R {
      * Linearly interpolate between this matrix and ({@code m00}, {@code m01}, {@code m02},
      * {@code m03}, {@code m10}, {@code m11}, {@code m12}, {@code m13}, {@code m20}, {@code m21},
      * {@code m22}, {@code m23}) using the interpolation factor {@code t}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m02}, {@code m03}, {@code m10}, {@code m11}, {@code m12},
+     * {@code m13}, {@code m20}, {@code m21}, {@code m22}, {@code m23}) (interpolation factor
+     * {@code 1}).
      *
      * @param m00 the element in row 0, column 0 of the matrix
      * @param m01 the element in row 0, column 1 of the matrix
@@ -430,7 +438,7 @@ public interface Double3x4 extends Double3x4R {
      * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3x4 preMul(Double3x4R other) { return preMul(other, Joml.RETURN_NEW ? Joml.double3x4() : this); }
@@ -470,7 +478,7 @@ public interface Double3x4 extends Double3x4R {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3x4 preMul(Double2x2R other) { return preMul(other, Joml.RETURN_NEW ? Joml.double3x4() : this); }
@@ -485,7 +493,7 @@ public interface Double3x4 extends Double3x4R {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3x4 preMul(Double2x3R other) { return preMul(other, Joml.RETURN_NEW ? Joml.double3x4() : this); }
@@ -500,7 +508,7 @@ public interface Double3x4 extends Double3x4R {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3x4 preMul(Double3x3R other) { return preMul(other, Joml.RETURN_NEW ? Joml.double3x4() : this); }
@@ -509,9 +517,9 @@ public interface Double3x4 extends Double3x4R {
      * Set this matrix to a transformation composed of the given translation, rotation and scale,
      * applied in scale-rotation-translation order.
      *
-     * @param translation the vector
-     * @param rotation the quaternion (must be a unit quaternion)
-     * @param scale the scale factor
+     * @param translation the translation
+     * @param rotation the rotation (must be a unit quaternion)
+     * @param scale the scale factors
      * @return this
      */
     @Mutated Double3x4 composeTRS(Double3R translation, DoubleQuatR rotation, Double3R scale);
@@ -549,10 +557,10 @@ public interface Double3x4 extends Double3x4R {
      * Set this matrix to a transformation composed of the given translation, rotation and scale
      * (applied in scale-rotation-translation order), post-multiplied by the given matrix.
      *
-     * @param translation the vector
-     * @param rotation the quaternion (must be a unit quaternion)
-     * @param scale the scale factor
-     * @param m the matrix
+     * @param translation the translation
+     * @param rotation the rotation (must be a unit quaternion)
+     * @param scale the scale factors
+     * @param m the matrix to post-multiply the composed transformation by
      * @return this
      */
     @Mutated Double3x4 composeTRSMul(Double3R translation, DoubleQuatR rotation, Double3R scale, Double3x4R m);
@@ -582,7 +590,7 @@ public interface Double3x4 extends Double3x4R {
      * @param scaleX the {@code x} component of the vector {@code (scaleX, scaleY, scaleZ)}
      * @param scaleY the {@code y} component of the vector {@code (scaleX, scaleY, scaleZ)}
      * @param scaleZ the {@code z} component of the vector {@code (scaleX, scaleY, scaleZ)}
-     * @param m the matrix
+     * @param m the matrix to post-multiply the composed transformation by
      * @return this
      */
     @Mutated Double3x4 composeTRSMul(double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ, Double3x4R m);
@@ -594,7 +602,8 @@ public interface Double3x4 extends Double3x4R {
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -823,7 +832,7 @@ public interface Double3x4 extends Double3x4R {
      * Set this matrix to the rigid transformation represented by the unit dual quaternion
      * {@code dq}.
      *
-     * @param dq the dual quaternion (must be a unit dual quaternion)
+     * @param dq the dual quaternion to convert (must be a unit dual quaternion)
      * @return this
      */
     @Mutated Double3x4 makeFromDualQuat(DoubleDualQuatR dq);
@@ -1303,7 +1312,7 @@ public interface Double3x4 extends Double3x4R {
      * Set this matrix to a reflection transformation about the plane through the origin with the
      * normal {@code normal}.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the reflection plane (must be a unit vector)
      * @return this
      */
     @Mutated Double3x4 makeReflection(Double3R normal);
@@ -1349,7 +1358,8 @@ public interface Double3x4 extends Double3x4R {
     /**
      * Set this matrix to a rotation that makes {@code +z} point along {@code dir}.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return this
      */
@@ -1372,7 +1382,7 @@ public interface Double3x4 extends Double3x4R {
     /**
      * Set this matrix to the rotation represented by the quaternion {@code q}.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation quaternion (must be a unit quaternion)
      * @return this
      */
     @Mutated Double3x4 makeRotationQuat(DoubleQuatR q);
@@ -1492,7 +1502,7 @@ public interface Double3x4 extends Double3x4R {
     /**
      * Set this matrix to a scaling transformation that scales by {@code v}.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return this
      */
     @Mutated Double3x4 makeScaling(Double3R v);
@@ -2121,7 +2131,7 @@ public interface Double3x4 extends Double3x4R {
      * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
      * origin.
      *
-     * @param rot the quaternion (must be a unit quaternion)
+     * @param rot the rotation to apply (must be a unit quaternion)
      * @param pivot the pivot point
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -2194,7 +2204,7 @@ public interface Double3x4 extends Double3x4R {
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation to apply (must be a unit quaternion)
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3x4 preRotateQuat(DoubleQuatR q) { return preRotateQuat(q, Joml.RETURN_NEW ? Joml.double3x4() : this); }
@@ -2262,7 +2272,7 @@ public interface Double3x4 extends Double3x4R {
      * will be {@code S * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code S * M * p}, the scaling will be applied last.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3x4 preScale(Double3R v) { return preScale(v, Joml.RETURN_NEW ? Joml.double3x4() : this); }
@@ -2360,7 +2370,7 @@ public interface Double3x4 extends Double3x4R {
      * will be {@code T * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code T * M * p}, the translation will be applied last.
      *
-     * @param v the vector
+     * @param v the translation offsets
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3x4 preTranslate(Double3R v) { return preTranslate(v, Joml.RETURN_NEW ? Joml.double3x4() : this); }
@@ -2387,7 +2397,7 @@ public interface Double3x4 extends Double3x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the reflection will be applied first.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the plane to reflect about (must be a unit vector)
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3x4 reflect(Double3R normal) { return reflect(normal, Joml.RETURN_NEW ? Joml.double3x4() : this); }
@@ -2421,7 +2431,7 @@ public interface Double3x4 extends Double3x4R {
      * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
      * origin.
      *
-     * @param rot the quaternion (must be a unit quaternion)
+     * @param rot the rotation to apply (must be a unit quaternion)
      * @param pivot the pivot point
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -2493,7 +2503,7 @@ public interface Double3x4 extends Double3x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation to apply (must be a unit quaternion)
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3x4 rotateQuat(DoubleQuatR q) { return rotateQuat(q, Joml.RETURN_NEW ? Joml.double3x4() : this); }
@@ -2855,7 +2865,7 @@ public interface Double3x4 extends Double3x4R {
      * will be {@code M * S}. So when transforming a vector {@code p} with the new matrix by using
      * {@code M * S * p}, the scaling will be applied first.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3x4 scale(Double3R v) { return scale(v, Joml.RETURN_NEW ? Joml.double3x4() : this); }

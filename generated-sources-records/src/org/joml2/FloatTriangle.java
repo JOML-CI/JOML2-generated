@@ -39,7 +39,19 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
     public static final int SIZE_BYTES = 36;
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param v0X the {@code v0X} component
+     * @param v0Y the {@code v0Y} component
+     * @param v0Z the {@code v0Z} component
+     * @param v1X the {@code v1X} component
+     * @param v1Y the {@code v1Y} component
+     * @param v1Z the {@code v1Z} component
+     * @param v2X the {@code v2X} component
+     * @param v2Y the {@code v2Y} component
+     * @param v2Z the {@code v2Z} component
+     */
     public FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1Y, float v1Z, float v2X, float v2Y, float v2Z) {
         this.v0X = v0X;
         this.v0Y = v0Y;
@@ -82,7 +94,7 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Create a new triangle from the given values.
      *
-     * @param v the triangle
+     * @param v the triangle to copy
      * @return the resulting triangle
      */
     public FloatTriangle set(FloatTriangle v) {
@@ -131,7 +143,7 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Transform this triangle by {@code m}, returning the result as a value.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return the resulting triangle
      */
     public FloatTriangle transform(Float3x4 m) {
@@ -145,7 +157,7 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return the resulting triangle
      */
     public FloatTriangle transform(Float4x4 m) {
@@ -182,7 +194,7 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
      * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
      * accurate for thin triangles.
      *
-     * @param p the vector
+     * @param p the point whose barycentric coordinates to compute
      * @return the resulting vector
      */
     public Float3 barycentric(Float3 p) {
@@ -306,7 +318,7 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
      * Determine whether the projection of the given point onto this triangle's plane lies inside or
      * on this triangle (boundary inclusive). Delegates to the shared {@code Intersectionf} kernels.
      *
-     * @param p the point
+     * @param p the point to test
      * @return {@code true} if the projection of the given point onto this triangle's plane lies
      *        inside or on this triangle, {@code false} otherwise
      */
@@ -318,7 +330,7 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
      * Determine whether this triangle intersects the given ray. Delegates to the shared
      * {@code Intersectionf} kernels.
      *
-     * @param ray the ray
+     * @param ray the ray to test for intersection
      * @param epsilon the tolerance below which the ray counts as parallel to the triangle's plane,
      *        guarding the near-zero determinant
      * @return {@code true} if this triangle and the given ray intersect, {@code false} otherwise
@@ -331,7 +343,7 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
      * Determine whether this triangle intersects the given ray, front face only. Delegates to the
      * shared {@code Intersectionf} kernels.
      *
-     * @param ray the ray
+     * @param ray the ray to test for intersection
      * @param epsilon the tolerance below which the ray counts as parallel to the triangle's plane,
      *        guarding the near-zero determinant
      * @return {@code true} if the ray hits the front face of this triangle, {@code false} otherwise
@@ -344,54 +356,90 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
      * Compute the point on this triangle closest to the given point. Delegates to the shared
      * {@code Intersectionf} kernels.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @return the point on this triangle closest to the given point
      */
     public Float3 closestPointToPoint(Float3 p) {
         return Intersectionf.closestPointOnTriangle(v0X(), v0Y(), v0Z(), v1X(), v1Y(), v1Z(), v2X(), v2Y(), v2Z(), p.x(), p.y(), p.z());
     }
 
-    /** {@return a copy with the {@code v0X} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code v0X} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code v0X} component
+     */
     public FloatTriangle withV0X(float v) {
         return new FloatTriangle(v, v0Y, v0Z, v1X, v1Y, v1Z, v2X, v2Y, v2Z);
     }
 
-    /** {@return a copy with the {@code v0Y} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code v0Y} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code v0Y} component
+     */
     public FloatTriangle withV0Y(float v) {
         return new FloatTriangle(v0X, v, v0Z, v1X, v1Y, v1Z, v2X, v2Y, v2Z);
     }
 
-    /** {@return a copy with the {@code v0Z} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code v0Z} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code v0Z} component
+     */
     public FloatTriangle withV0Z(float v) {
         return new FloatTriangle(v0X, v0Y, v, v1X, v1Y, v1Z, v2X, v2Y, v2Z);
     }
 
-    /** {@return a copy with the {@code v1X} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code v1X} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code v1X} component
+     */
     public FloatTriangle withV1X(float v) {
         return new FloatTriangle(v0X, v0Y, v0Z, v, v1Y, v1Z, v2X, v2Y, v2Z);
     }
 
-    /** {@return a copy with the {@code v1Y} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code v1Y} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code v1Y} component
+     */
     public FloatTriangle withV1Y(float v) {
         return new FloatTriangle(v0X, v0Y, v0Z, v1X, v, v1Z, v2X, v2Y, v2Z);
     }
 
-    /** {@return a copy with the {@code v1Z} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code v1Z} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code v1Z} component
+     */
     public FloatTriangle withV1Z(float v) {
         return new FloatTriangle(v0X, v0Y, v0Z, v1X, v1Y, v, v2X, v2Y, v2Z);
     }
 
-    /** {@return a copy with the {@code v2X} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code v2X} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code v2X} component
+     */
     public FloatTriangle withV2X(float v) {
         return new FloatTriangle(v0X, v0Y, v0Z, v1X, v1Y, v1Z, v, v2Y, v2Z);
     }
 
-    /** {@return a copy with the {@code v2Y} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code v2Y} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code v2Y} component
+     */
     public FloatTriangle withV2Y(float v) {
         return new FloatTriangle(v0X, v0Y, v0Z, v1X, v1Y, v1Z, v2X, v, v2Z);
     }
 
-    /** {@return a copy with the {@code v2Z} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code v2Z} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code v2Z} component
+     */
     public FloatTriangle withV2Z(float v) {
         return new FloatTriangle(v0X, v0Y, v0Z, v1X, v1Y, v1Z, v2X, v2Y, v);
     }

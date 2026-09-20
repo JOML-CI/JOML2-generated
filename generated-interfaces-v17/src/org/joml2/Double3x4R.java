@@ -589,7 +589,7 @@ public interface Double3x4R {
      * factor, or factors of very different scale) invert both factors separately and multiply the
      * inverses in reverse order instead.
      *
-     * @param other the other matrix
+     * @param other the right factor of the product
      * @param dest will hold the result
      * @return dest
      */
@@ -634,7 +634,7 @@ public interface Double3x4R {
     /**
      * Add {@code other} to this matrix and store the result in {@code dest}.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @param dest will hold the result
      * @return dest
      */
@@ -673,7 +673,7 @@ public interface Double3x4R {
     /**
      * Subtract {@code other} from this matrix and store the result in {@code dest}.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -850,8 +850,11 @@ public interface Double3x4R {
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -863,6 +866,11 @@ public interface Double3x4R {
      * {@code m03}, {@code m10}, {@code m11}, {@code m12}, {@code m13}, {@code m20}, {@code m21},
      * {@code m22}, {@code m23}) using the interpolation factor {@code t} and store the result in
      * {@code dest}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m02}, {@code m03}, {@code m10}, {@code m11}, {@code m12},
+     * {@code m13}, {@code m20}, {@code m21}, {@code m22}, {@code m23}) (interpolation factor
+     * {@code 1}).
      *
      * @param m00 the element in row 0, column 0 of the matrix
      * @param m01 the element in row 0, column 1 of the matrix
@@ -1000,7 +1008,7 @@ public interface Double3x4R {
      * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1042,7 +1050,7 @@ public interface Double3x4R {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1058,7 +1066,7 @@ public interface Double3x4R {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1074,7 +1082,7 @@ public interface Double3x4R {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1084,7 +1092,7 @@ public interface Double3x4R {
      * Pre-multiply the given matrix onto this matrix, i.e. compute {@code other * this} and store
      * the result in {@code dest}.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1094,7 +1102,7 @@ public interface Double3x4R {
      * Pre-multiply the given matrix onto this matrix, i.e. compute {@code other * this} and store
      * the result back into {@code other}.
      *
-     * @param other the other matrix (also receives the result)
+     * @param other the left operand (also receives the result)
      * @return {@code other}
      */
     default Double4x4 preMul(@Mutated Double4x4 other) { return preMul(other, other); }
@@ -1107,7 +1115,8 @@ public interface Double3x4R {
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @param dest will hold the result
      * @return dest
@@ -1853,7 +1862,7 @@ public interface Double3x4R {
      * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
      * origin.
      *
-     * @param rot the quaternion (must be a unit quaternion)
+     * @param rot the rotation to apply (must be a unit quaternion)
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -1932,7 +1941,7 @@ public interface Double3x4R {
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -2008,7 +2017,7 @@ public interface Double3x4R {
      * will be {@code S * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code S * M * p}, the scaling will be applied last.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -2118,7 +2127,7 @@ public interface Double3x4R {
      * will be {@code T * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code T * M * p}, the translation will be applied last.
      *
-     * @param v the vector
+     * @param v the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -2148,7 +2157,7 @@ public interface Double3x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the reflection will be applied first.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the plane to reflect about (must be a unit vector)
      * @param dest will hold the result
      * @return dest
      */
@@ -2185,7 +2194,7 @@ public interface Double3x4R {
      * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
      * origin.
      *
-     * @param rot the quaternion (must be a unit quaternion)
+     * @param rot the rotation to apply (must be a unit quaternion)
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -2264,7 +2273,7 @@ public interface Double3x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -2676,7 +2685,7 @@ public interface Double3x4R {
      * will be {@code M * S}. So when transforming a vector {@code p} with the new matrix by using
      * {@code M * S * p}, the scaling will be applied first.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -2808,16 +2817,18 @@ public interface Double3x4R {
     Double3x4 translate(double x, double y, double z, @Mutated Double3x4 dest);
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the right operand of the product
      * @param dest will hold the result
      * @return dest
      */
     Double3 mul(Double4R v, @Mutated Double3 dest);
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
@@ -2832,7 +2843,7 @@ public interface Double3x4R {
      * Transform the given axis-aligned box by this matrix and compute the axis-aligned box
      * enclosing the result and store the result in {@code dest}.
      *
-     * @param aabb the axis-aligned bounding box
+     * @param aabb the axis-aligned box to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2863,8 +2874,8 @@ public interface Double3x4R {
      * Transform the given axis-aligned box by this matrix and compute the axis-aligned box
      * enclosing the result and store the result in {@code dest}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
      * @param dest will hold the result
      * @return dest
      */
@@ -2874,7 +2885,7 @@ public interface Double3x4R {
      * Transform the given axis-aligned box by this matrix and compute the axis-aligned box
      * enclosing the result and store the result back into {@code aabb}.
      *
-     * @param aabb the axis-aligned bounding box (also receives the result)
+     * @param aabb the axis-aligned box to transform (also receives the result)
      * @return {@code aabb}
      */
     default DoubleAABB transformAabb(@Mutated DoubleAABB aabb) { return transformAabb(aabb, aabb); }
@@ -2883,7 +2894,7 @@ public interface Double3x4R {
      * Transform the given direction by this matrix, ignoring any translation and store the result
      * in {@code dest}.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2905,7 +2916,7 @@ public interface Double3x4R {
      * Transform the given direction by this matrix, ignoring any translation and store the result
      * back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the direction to transform (also receives the result)
      * @return {@code v}
      */
     default Double3 transformDirection(@Mutated Double3 v) { return transformDirection(v, v); }
@@ -2914,7 +2925,7 @@ public interface Double3x4R {
      * Transform the given position by this matrix, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2936,7 +2947,7 @@ public interface Double3x4R {
      * Transform the given position by this matrix, treating it as a point with an implicit
      * {@code w = 1} and store the result back into {@code v}.
      *
-     * @param v the vector (also receives the result)
+     * @param v the position to transform (also receives the result)
      * @return {@code v}
      */
     default Double3 transformPosition(@Mutated Double3 v) { return transformPosition(v, v); }

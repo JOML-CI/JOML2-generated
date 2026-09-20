@@ -66,6 +66,14 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * The bits are trusted as-is and never validated: wrong bits produce wrong results from every
      * dispatched operation. Prefer the {@code make*} factories, or the element constructor, which
      * computes the bits itself.
+     *
+     * @param m00 the element in row 0, column 0
+     * @param m01 the element in row 0, column 1
+     * @param m02 the element in row 0, column 2
+     * @param m10 the element in row 1, column 0
+     * @param m11 the element in row 1, column 1
+     * @param m12 the element in row 1, column 2
+     * @param properties the cached property bits, taken as given
      */
     public Float2x3(float m00, float m01, float m02, float m10, float m11, float m12, int properties) {
         this.m00 = m00;
@@ -84,12 +92,27 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
         this(1, 0, 0, 0, 1, 0, Joml.BIT_IDENTITY);
     }
 
-    /** Create a matrix from the given elements, computing the cached property bits. */
+    /**
+     * Create a matrix from the given elements, computing the cached property bits.
+     *
+     * @param m00 the element in row 0, column 0
+     * @param m01 the element in row 0, column 1
+     * @param m02 the element in row 0, column 2
+     * @param m10 the element in row 1, column 0
+     * @param m11 the element in row 1, column 1
+     * @param m12 the element in row 1, column 2
+     */
     public Float2x3(float m00, float m01, float m02, float m10, float m11, float m12) {
         this(m00, m01, m02, m10, m11, m12, props(m00, m01, m02, m10, m11, m12));
     }
 
-    /** Create a matrix from the given column vectors. */
+    /**
+     * Create a matrix from the given column vectors.
+     *
+     * @param c0 the first column
+     * @param c1 the second column
+     * @param c2 the third column
+     */
     public Float2x3(Float2 c0, Float2 c1, Float2 c2) {
         this(c0.x(), c1.x(), c2.x(), c0.y(), c1.y(), c2.y());
     }
@@ -101,17 +124,30 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * The bits are trusted as-is and never validated: wrong bits produce wrong results from every
      * dispatched operation. Prefer the {@code make*} factories, or the element constructor, which
      * computes the bits itself.
+     *
+     * @param c0 the first column
+     * @param c1 the second column
+     * @param c2 the third column
+     * @param properties the cached property bits, taken as given
      */
     public Float2x3(Float2 c0, Float2 c1, Float2 c2, int properties) {
         this(c0.x(), c1.x(), c2.x(), c0.y(), c1.y(), c2.y(), properties);
     }
 
-    /** Create a matrix by identity-extending {@code src} with a zero translation column. */
+    /**
+     * Create a matrix by identity-extending {@code src} with a zero translation column.
+     *
+     * @param src the matrix to convert
+     */
     public Float2x3(Float2x2 src) {
         this(src.m00(), src.m01(), 0, src.m10(), src.m11(), 0);
     }
 
-    /** Create a matrix by truncating {@code src} to the overlapping cells. */
+    /**
+     * Create a matrix by truncating {@code src} to the overlapping cells.
+     *
+     * @param src the matrix to convert
+     */
     public Float2x3(Float3x3 src) {
         this(src.m00(), src.m01(), src.m02(), src.m10(), src.m11(), src.m12());
     }
@@ -502,7 +538,7 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * factor, or factors of very different scale) invert both factors separately and multiply the
      * inverses in reverse order instead.
      *
-     * @param other the other matrix
+     * @param other the right factor of the product
      * @return the resulting matrix
      */
     public Float2x3 invertProduct(Float2x3 other) {
@@ -687,7 +723,7 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
     /**
      * Add {@code other} to this matrix, returning the result as a value.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @return the resulting matrix
      */
     public Float2x3 add(Float2x3 other) {
@@ -860,7 +896,7 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
     /**
      * Subtract {@code other} from this matrix, returning the result as a value.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @return the resulting matrix
      */
     public Float2x3 sub(Float2x3 other) {
@@ -910,7 +946,7 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
     /**
      * Create a new matrix from the given values.
      *
-     * @param v the matrix
+     * @param v the matrix to copy
      * @return the resulting matrix
      */
     public Float2x3 set(Float2x3 v) {
@@ -938,7 +974,7 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * Create a new matrix from the given 2x2 matrix, copying the overlapping cells and filling the
      * rest with identity.
      *
-     * @param m the matrix
+     * @param m the matrix to copy from
      * @return the resulting matrix
      */
     public Float2x3 set(Float2x2 m) {
@@ -950,7 +986,7 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * Create a new matrix from the given 3x3 matrix, copying the overlapping cells and dropping the
      * rest.
      *
-     * @param m the matrix
+     * @param m the matrix to copy from
      * @return the resulting matrix
      */
     public Float2x3 set(Float3x3 m) {
@@ -1191,8 +1227,11 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting matrix
      */
@@ -1218,6 +1257,10 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * Linearly interpolate between this matrix and ({@code m00}, {@code m01}, {@code m02},
      * {@code m10}, {@code m11}, {@code m12}) using the interpolation factor {@code t}, returning
      * the result as a value.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m02}, {@code m10}, {@code m11}, {@code m12}) (interpolation
+     * factor {@code 1}).
      *
      * @param m00 the element in row 0, column 0 of the matrix
      * @param m01 the element in row 0, column 1 of the matrix
@@ -1535,7 +1578,7 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return the resulting matrix
      */
     public Float2x3 preMul(Float2x3 other) {
@@ -1623,7 +1666,7 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return the resulting matrix
      */
     public Float2x3 preMul(Float2x2 other) {
@@ -1702,7 +1745,7 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * Pre-multiply the given matrix onto this matrix, i.e. compute {@code other * this}, returning
      * the result as a value.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return the resulting matrix
      */
     public Float3x3 preMul(Float3x3 other) {
@@ -1743,7 +1786,7 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
     /**
      * Create a scaling transformation that scales by {@code v}.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return the resulting matrix
      */
     public static Float2x3 makeScaling(Float2 v) {
@@ -1985,7 +2028,7 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * will be {@code S * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code S * M * p}, the scaling will be applied last.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return the resulting matrix
      */
     public Float2x3 preScale(Float2 v) {
@@ -2213,7 +2256,7 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * will be {@code T * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code T * M * p}, the translation will be applied last.
      *
-     * @param v the vector
+     * @param v the translation offsets
      * @return the resulting matrix
      */
     public Float2x3 preTranslate(Float2 v) {
@@ -2445,7 +2488,7 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * will be {@code M * S}. So when transforming a vector {@code p} with the new matrix by using
      * {@code M * S * p}, the scaling will be applied first.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return the resulting matrix
      */
     public Float2x3 scale(Float2 v) {
@@ -2851,9 +2894,10 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
 
 
     /**
-     * Multiply this matrix by the given vector, returning the result as a value.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v}, returning the result as a value.
      *
-     * @param v the vector
+     * @param v the right operand of the product
      * @return the resulting vector
      */
     public Float2 mul(Float3 v) {
@@ -2889,7 +2933,8 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
 
 
     /**
-     * Multiply this matrix by the given vector, returning the result as a value.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v}, returning the result as a value.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2908,7 +2953,7 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * Transform the given direction by this matrix, ignoring any translation, returning the result
      * as a value.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @return the resulting vector
      */
     public Float2 transformDirection(Float2 v) {
@@ -2953,7 +2998,7 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * Transform the given position by this matrix, treating it as a point with an implicit
      * {@code w = 1}, returning the result as a value.
      *
-     * @param v the vector
+     * @param v the position to transform
      * @return the resulting vector
      */
     public Float2 transformPosition(Float2 v) {
@@ -3003,32 +3048,56 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
         return transformPosition_general(vX, vY);
     }
 
-    /** {@return a copy with the {@code m00} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m00} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m00} element
+     */
     public Float2x3 withM00(float v) {
         return new Float2x3(v, m01, m02, m10, m11, m12);
     }
 
-    /** {@return a copy with the {@code m01} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m01} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m01} element
+     */
     public Float2x3 withM01(float v) {
         return new Float2x3(m00, v, m02, m10, m11, m12);
     }
 
-    /** {@return a copy with the {@code m02} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m02} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m02} element
+     */
     public Float2x3 withM02(float v) {
         return new Float2x3(m00, m01, v, m10, m11, m12);
     }
 
-    /** {@return a copy with the {@code m10} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m10} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m10} element
+     */
     public Float2x3 withM10(float v) {
         return new Float2x3(m00, m01, m02, v, m11, m12);
     }
 
-    /** {@return a copy with the {@code m11} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m11} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m11} element
+     */
     public Float2x3 withM11(float v) {
         return new Float2x3(m00, m01, m02, m10, v, m12);
     }
 
-    /** {@return a copy with the {@code m12} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m12} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m12} element
+     */
     public Float2x3 withM12(float v) {
         return new Float2x3(m00, m01, m02, m10, m11, v);
     }
@@ -3040,6 +3109,8 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * dispatched operation. Prefer the {@code make*} factories, or the element constructor, which
      * computes the bits itself. {@code withProperties(determineProperties())} recomputes them from
      * the elements.
+     *
+     * @param properties the cached property bits, taken as given
      */
     public Float2x3 withProperties(int properties) {
         return new Float2x3(m00, m01, m02, m10, m11, m12, properties);

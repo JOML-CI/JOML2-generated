@@ -34,7 +34,14 @@ public record Long4(long x, long y, long z, long w) {
     /** The zero vector (all components 0). */
     public static final Long4 ZERO = new Long4(0, 0, 0, 0);
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param x the {@code x} component
+     * @param y the {@code y} component
+     * @param z the {@code z} component
+     * @param w the {@code w} component
+     */
     public Long4(long x, long y, long z, long w) {
         this.x = x;
         this.y = y;
@@ -49,37 +56,74 @@ public record Long4(long x, long y, long z, long w) {
         this(0, 0, 0, 1);
     }
 
-    /** Create a vector with all components set to {@code s}. */
+    /**
+     * Create a vector with all components set to {@code s}.
+     *
+     * @param s the value assigned to every component
+     */
     public Long4(long s) {
         this(s, s, s, s);
     }
 
-    /** Create a vector composed of the given parts, in order. */
+    /**
+     * Create a vector composed of the given parts, in order.
+     *
+     * @param v0 the {@code x} component
+     * @param v1 the {@code y} component
+     * @param v2 the {@code z} and {@code w} components
+     */
     public Long4(long v0, long v1, Long2 v2) {
         this(v0, v1, v2.x(), v2.y());
     }
 
-    /** Create a vector composed of the given parts, in order. */
+    /**
+     * Create a vector composed of the given parts, in order.
+     *
+     * @param v0 the {@code x} component
+     * @param v1 the {@code y} and {@code z} components
+     * @param v2 the {@code w} component
+     */
     public Long4(long v0, Long2 v1, long v2) {
         this(v0, v1.x(), v1.y(), v2);
     }
 
-    /** Create a vector composed of the given parts, in order. */
+    /**
+     * Create a vector composed of the given parts, in order.
+     *
+     * @param v0 the {@code x} component
+     * @param v1 the {@code y}, {@code z} and {@code w} components
+     */
     public Long4(long v0, Long3 v1) {
         this(v0, v1.x(), v1.y(), v1.z());
     }
 
-    /** Create a vector composed of the given parts, in order. */
+    /**
+     * Create a vector composed of the given parts, in order.
+     *
+     * @param v0 the {@code x} and {@code y} components
+     * @param v1 the {@code z} component
+     * @param v2 the {@code w} component
+     */
     public Long4(Long2 v0, long v1, long v2) {
         this(v0.x(), v0.y(), v1, v2);
     }
 
-    /** Create a vector composed of the given parts, in order. */
+    /**
+     * Create a vector composed of the given parts, in order.
+     *
+     * @param v0 the {@code x} and {@code y} components
+     * @param v1 the {@code z} and {@code w} components
+     */
     public Long4(Long2 v0, Long2 v1) {
         this(v0.x(), v0.y(), v1.x(), v1.y());
     }
 
-    /** Create a vector composed of the given parts, in order. */
+    /**
+     * Create a vector composed of the given parts, in order.
+     *
+     * @param v0 the {@code x}, {@code y} and {@code z} components
+     * @param v1 the {@code w} component
+     */
     public Long4(Long3 v0, long v1) {
         this(v0.x(), v0.y(), v0.z(), v1);
     }
@@ -97,7 +141,7 @@ public record Long4(long x, long y, long z, long w) {
     /**
      * Add {@code other} to this vector, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return the resulting vector
      */
     public Long4 add(Long4 other) {
@@ -124,7 +168,7 @@ public record Long4(long x, long y, long z, long w) {
      * Compute the component-wise ceiling division of this vector by {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Long4 ceilDiv(long scalar) {
@@ -136,7 +180,7 @@ public record Long4(long x, long y, long z, long w) {
      * Compute the component-wise ceiling division of this vector by {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Long4 ceilDiv(Long4 other) {
@@ -163,7 +207,7 @@ public record Long4(long x, long y, long z, long w) {
      * Compute the component-wise ceiling modulus of this vector and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Long4 ceilMod(long scalar) {
@@ -175,7 +219,7 @@ public record Long4(long x, long y, long z, long w) {
      * Compute the component-wise ceiling modulus of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Long4 ceilMod(Long4 other) {
@@ -202,7 +246,7 @@ public record Long4(long x, long y, long z, long w) {
      * Divide each component of this vector by {@code scalar} (integer division, truncating toward
      * zero), returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Long4 div(long scalar) {
@@ -214,7 +258,7 @@ public record Long4(long x, long y, long z, long w) {
      * Divide this vector component-wise by {@code other} (integer division, truncating toward
      * zero), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Long4 div(Long4 other) {
@@ -241,7 +285,7 @@ public record Long4(long x, long y, long z, long w) {
      * Compute the component-wise floor division of this vector by {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Long4 floorDiv(long scalar) {
@@ -253,7 +297,7 @@ public record Long4(long x, long y, long z, long w) {
      * Compute the component-wise floor division of this vector by {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Long4 floorDiv(Long4 other) {
@@ -280,7 +324,7 @@ public record Long4(long x, long y, long z, long w) {
      * Compute the component-wise floor modulus of this vector and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Long4 floorMod(long scalar) {
@@ -292,7 +336,7 @@ public record Long4(long x, long y, long z, long w) {
      * Compute the component-wise floor modulus of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Long4 floorMod(Long4 other) {
@@ -318,7 +362,7 @@ public record Long4(long x, long y, long z, long w) {
     /**
      * Multiply each component of this vector by {@code scalar}, returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @return the resulting vector
      */
     public Long4 mul(long scalar) {
@@ -329,7 +373,7 @@ public record Long4(long x, long y, long z, long w) {
     /**
      * Multiply this vector component-wise by {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return the resulting vector
      */
     public Long4 mul(Long4 other) {
@@ -367,7 +411,7 @@ public record Long4(long x, long y, long z, long w) {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}), returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Long4 rem(long scalar) {
@@ -380,7 +424,7 @@ public record Long4(long x, long y, long z, long w) {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Long4 rem(Long4 other) {
@@ -408,7 +452,7 @@ public record Long4(long x, long y, long z, long w) {
     /**
      * Subtract {@code other} from this vector, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return the resulting vector
      */
     public Long4 sub(Long4 other) {
@@ -435,7 +479,7 @@ public record Long4(long x, long y, long z, long w) {
      * Compute the bitwise AND of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @return the resulting vector
      */
     public Long4 and(Long4 other) {
@@ -505,7 +549,7 @@ public record Long4(long x, long y, long z, long w) {
      * Compute the bitwise OR of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @return the resulting vector
      */
     public Long4 or(Long4 other) {
@@ -614,7 +658,7 @@ public record Long4(long x, long y, long z, long w) {
      * Compute the bitwise XOR of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @return the resulting vector
      */
     public Long4 xor(Long4 other) {
@@ -640,7 +684,7 @@ public record Long4(long x, long y, long z, long w) {
     /**
      * Create a new vector from the given values.
      *
-     * @param v the vector
+     * @param v the vector to copy
      * @return the resulting vector
      */
     public Long4 set(Long4 v) {
@@ -842,7 +886,7 @@ public record Long4(long x, long y, long z, long w) {
     /**
      * Compute the squared distance between this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
     public long distanceSquared(Long4 other) {
@@ -873,7 +917,7 @@ public record Long4(long x, long y, long z, long w) {
     /**
      * Compute the dot product of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
     public long dot(Long4 other) {
@@ -910,7 +954,7 @@ public record Long4(long x, long y, long z, long w) {
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
     public long manhattanDistance(Long4 other) {
@@ -948,7 +992,7 @@ public record Long4(long x, long y, long z, long w) {
      * Set each component of this vector to the larger of itself and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @return the resulting vector
      */
     public Long4 max(long scalar) {
@@ -960,7 +1004,7 @@ public record Long4(long x, long y, long z, long w) {
      * Set each component of this vector to the larger of itself and the corresponding component of
      * {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @return the resulting vector
      */
     public Long4 max(Long4 other) {
@@ -988,7 +1032,7 @@ public record Long4(long x, long y, long z, long w) {
      * Set each component of this vector to the smaller of itself and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @return the resulting vector
      */
     public Long4 min(long scalar) {
@@ -1000,7 +1044,7 @@ public record Long4(long x, long y, long z, long w) {
      * Set each component of this vector to the smaller of itself and the corresponding component of
      * {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @return the resulting vector
      */
     public Long4 min(Long4 other) {
@@ -1038,7 +1082,7 @@ public record Long4(long x, long y, long z, long w) {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return the resulting vector
      */
     public Long4 satAdd(Long4 other) {
@@ -1065,7 +1109,7 @@ public record Long4(long x, long y, long z, long w) {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return the resulting vector
      */
     public Long4 satMul(Long4 other) {
@@ -1103,7 +1147,7 @@ public record Long4(long x, long y, long z, long w) {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return the resulting vector
      */
     public Long4 satSub(Long4 other) {
@@ -1125,77 +1169,154 @@ public record Long4(long x, long y, long z, long w) {
         return new Long4(org.joml2.SaturatingMath.satSubL(this.x, otherX), org.joml2.SaturatingMath.satSubL(this.y, otherY), org.joml2.SaturatingMath.satSubL(this.z, otherZ), org.joml2.SaturatingMath.satSubL(this.w, otherW));
     }
 
-    /** {@return a copy of this vector with the X component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the X component replaced by the given value}
+     *
+     * @param x the new value of the {@code x} component
+     */
     public Long4 withX(long x) {
         return new Long4(x, this.y(), this.z(), this.w());
     }
 
-    /** {@return a copy of this vector with the Y component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the Y component replaced by the given value}
+     *
+     * @param y the new value of the {@code y} component
+     */
     public Long4 withY(long y) {
         return new Long4(this.x(), y, this.z(), this.w());
     }
 
-    /** {@return a copy of this vector with the XY components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XY components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param y the new value of the {@code y} component
+     */
     public Long4 withXY(long x, long y) {
         return new Long4(x, y, this.z(), this.w());
     }
 
-    /** {@return a copy of this vector with the Z component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the Z component replaced by the given value}
+     *
+     * @param z the new value of the {@code z} component
+     */
     public Long4 withZ(long z) {
         return new Long4(this.x(), this.y(), z, this.w());
     }
 
-    /** {@return a copy of this vector with the XZ components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XZ components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param z the new value of the {@code z} component
+     */
     public Long4 withXZ(long x, long z) {
         return new Long4(x, this.y(), z, this.w());
     }
 
-    /** {@return a copy of this vector with the YZ components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the YZ components replaced by the given values}
+     *
+     * @param y the new value of the {@code y} component
+     * @param z the new value of the {@code z} component
+     */
     public Long4 withYZ(long y, long z) {
         return new Long4(this.x(), y, z, this.w());
     }
 
-    /** {@return a copy of this vector with the XYZ components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XYZ components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param y the new value of the {@code y} component
+     * @param z the new value of the {@code z} component
+     */
     public Long4 withXYZ(long x, long y, long z) {
         return new Long4(x, y, z, this.w());
     }
 
-    /** {@return a copy of this vector with the W component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the W component replaced by the given value}
+     *
+     * @param w the new value of the {@code w} component
+     */
     public Long4 withW(long w) {
         return new Long4(this.x(), this.y(), this.z(), w);
     }
 
-    /** {@return a copy of this vector with the XW components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XW components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param w the new value of the {@code w} component
+     */
     public Long4 withXW(long x, long w) {
         return new Long4(x, this.y(), this.z(), w);
     }
 
-    /** {@return a copy of this vector with the YW components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the YW components replaced by the given values}
+     *
+     * @param y the new value of the {@code y} component
+     * @param w the new value of the {@code w} component
+     */
     public Long4 withYW(long y, long w) {
         return new Long4(this.x(), y, this.z(), w);
     }
 
-    /** {@return a copy of this vector with the XYW components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XYW components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param y the new value of the {@code y} component
+     * @param w the new value of the {@code w} component
+     */
     public Long4 withXYW(long x, long y, long w) {
         return new Long4(x, y, this.z(), w);
     }
 
-    /** {@return a copy of this vector with the ZW components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the ZW components replaced by the given values}
+     *
+     * @param z the new value of the {@code z} component
+     * @param w the new value of the {@code w} component
+     */
     public Long4 withZW(long z, long w) {
         return new Long4(this.x(), this.y(), z, w);
     }
 
-    /** {@return a copy of this vector with the XZW components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XZW components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param z the new value of the {@code z} component
+     * @param w the new value of the {@code w} component
+     */
     public Long4 withXZW(long x, long z, long w) {
         return new Long4(x, this.y(), z, w);
     }
 
-    /** {@return a copy of this vector with the YZW components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the YZW components replaced by the given values}
+     *
+     * @param y the new value of the {@code y} component
+     * @param z the new value of the {@code z} component
+     * @param w the new value of the {@code w} component
+     */
     public Long4 withYZW(long y, long z, long w) {
         return new Long4(this.x(), y, z, w);
     }
 
-    /** {@return a copy of this vector with the XYZW components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XYZW components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param y the new value of the {@code y} component
+     * @param z the new value of the {@code z} component
+     * @param w the new value of the {@code w} component
+     */
     public Long4 withXYZW(long x, long y, long z, long w) {
         return new Long4(x, y, z, w);
     }

@@ -73,6 +73,24 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * The bits are trusted as-is and never validated: wrong bits produce wrong results from every
      * dispatched operation. Prefer the {@code make*} factories, or the element constructor, which
      * computes the bits itself.
+     *
+     * @param m00 the element in row 0, column 0
+     * @param m01 the element in row 0, column 1
+     * @param m02 the element in row 0, column 2
+     * @param m03 the element in row 0, column 3
+     * @param m10 the element in row 1, column 0
+     * @param m11 the element in row 1, column 1
+     * @param m12 the element in row 1, column 2
+     * @param m13 the element in row 1, column 3
+     * @param m20 the element in row 2, column 0
+     * @param m21 the element in row 2, column 1
+     * @param m22 the element in row 2, column 2
+     * @param m23 the element in row 2, column 3
+     * @param m30 the element in row 3, column 0
+     * @param m31 the element in row 3, column 1
+     * @param m32 the element in row 3, column 2
+     * @param m33 the element in row 3, column 3
+     * @param properties the cached property bits, taken as given
      */
     public Double4x4(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20, double m21, double m22, double m23, double m30, double m31, double m32, double m33, int properties) {
         this.m00 = m00;
@@ -101,12 +119,38 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
         this(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, Joml.BIT_IDENTITY);
     }
 
-    /** Create a matrix from the given elements, computing the cached property bits. */
+    /**
+     * Create a matrix from the given elements, computing the cached property bits.
+     *
+     * @param m00 the element in row 0, column 0
+     * @param m01 the element in row 0, column 1
+     * @param m02 the element in row 0, column 2
+     * @param m03 the element in row 0, column 3
+     * @param m10 the element in row 1, column 0
+     * @param m11 the element in row 1, column 1
+     * @param m12 the element in row 1, column 2
+     * @param m13 the element in row 1, column 3
+     * @param m20 the element in row 2, column 0
+     * @param m21 the element in row 2, column 1
+     * @param m22 the element in row 2, column 2
+     * @param m23 the element in row 2, column 3
+     * @param m30 the element in row 3, column 0
+     * @param m31 the element in row 3, column 1
+     * @param m32 the element in row 3, column 2
+     * @param m33 the element in row 3, column 3
+     */
     public Double4x4(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20, double m21, double m22, double m23, double m30, double m31, double m32, double m33) {
         this(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33, props(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33));
     }
 
-    /** Create a matrix from the given column vectors. */
+    /**
+     * Create a matrix from the given column vectors.
+     *
+     * @param c0 the first column
+     * @param c1 the second column
+     * @param c2 the third column
+     * @param c3 the fourth column
+     */
     public Double4x4(Double4 c0, Double4 c1, Double4 c2, Double4 c3) {
         this(c0.x(), c1.x(), c2.x(), c3.x(), c0.y(), c1.y(), c2.y(), c3.y(), c0.z(), c1.z(), c2.z(), c3.z(), c0.w(), c1.w(), c2.w(), c3.w());
     }
@@ -118,17 +162,31 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * The bits are trusted as-is and never validated: wrong bits produce wrong results from every
      * dispatched operation. Prefer the {@code make*} factories, or the element constructor, which
      * computes the bits itself.
+     *
+     * @param c0 the first column
+     * @param c1 the second column
+     * @param c2 the third column
+     * @param c3 the fourth column
+     * @param properties the cached property bits, taken as given
      */
     public Double4x4(Double4 c0, Double4 c1, Double4 c2, Double4 c3, int properties) {
         this(c0.x(), c1.x(), c2.x(), c3.x(), c0.y(), c1.y(), c2.y(), c3.y(), c0.z(), c1.z(), c2.z(), c3.z(), c0.w(), c1.w(), c2.w(), c3.w(), properties);
     }
 
-    /** Create a matrix by identity-extending {@code src} to this square shape. */
+    /**
+     * Create a matrix by identity-extending {@code src} to this square shape.
+     *
+     * @param src the matrix to convert
+     */
     public Double4x4(Double3x4 src) {
         this(src.m00(), src.m01(), src.m02(), src.m03(), src.m10(), src.m11(), src.m12(), src.m13(), src.m20(), src.m21(), src.m22(), src.m23(), 0, 0, 0, 1);
     }
 
-    /** Create a matrix by identity-extending {@code src} to this square shape. */
+    /**
+     * Create a matrix by identity-extending {@code src} to this square shape.
+     *
+     * @param src the matrix to convert
+     */
     public Double4x4(Double3x3 src) {
         this(src.m00(), src.m01(), src.m02(), 0, src.m10(), src.m11(), src.m12(), 0, src.m20(), src.m21(), src.m22(), 0, 0, 0, 0, 1);
     }
@@ -2678,7 +2736,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * factor, or factors of very different scale) invert both factors separately and multiply the
      * inverses in reverse order instead.
      *
-     * @param other the other matrix
+     * @param other the right factor of the product
      * @return the resulting matrix
      */
     public Double4x4 invertProduct(Double4x4 other) {
@@ -3078,7 +3136,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Add {@code other} to this matrix, returning the result as a value.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @return the resulting matrix
      */
     public Double4x4 add(Double4x4 other) {
@@ -3331,7 +3389,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Subtract {@code other} from this matrix, returning the result as a value.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @return the resulting matrix
      */
     public Double4x4 sub(Double4x4 other) {
@@ -3400,7 +3458,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Create a new matrix from the given values.
      *
-     * @param v the matrix
+     * @param v the matrix to copy
      * @return the resulting matrix
      */
     public Double4x4 set(Double4x4 v) {
@@ -3438,7 +3496,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Create a new matrix from the given 3x3 matrix, copying the overlapping cells and filling the
      * rest with identity.
      *
-     * @param m the matrix
+     * @param m the matrix to copy from
      * @return the resulting matrix
      */
     public Double4x4 set(Double3x3 m) {
@@ -3450,7 +3508,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Create a new matrix from the given 3x4 matrix, copying the overlapping cells and filling the
      * rest with identity.
      *
-     * @param m the matrix
+     * @param m the matrix to copy from
      * @return the resulting matrix
      */
     public Double4x4 set(Double3x4 m) {
@@ -3549,7 +3607,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Create the given rigid transform's {@code T * R} composition.
      *
-     * @param r the rigid transform (whose rotation must be a unit quaternion)
+     * @param r the rigid transform to convert (whose rotation must be a unit quaternion)
      * @return the resulting matrix
      */
     public static Double4x4 makeFromRigid(DoubleRigid r) {
@@ -3591,7 +3649,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Create the given transform's {@code T * R * S} composition.
      *
-     * @param t the transform
+     * @param t the transform to convert
      * @return the resulting matrix
      */
     public static Double4x4 makeFromTransform(DoubleTransform t) {
@@ -4326,9 +4384,21 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
         return decomposeSkew_general();
     }
 
-    /** Result value of {@code decomposeTRS}. */
+    /**
+     * Result value of {@code decomposeTRS}.
+     *
+     * @param translation the translation
+     * @param rotation the rotation
+     * @param scale the scale
+     */
     public record DecomposeTRSResult(Double3 translation, DoubleQuat rotation, Double3 scale) {
-        /** Canonical constructor. */
+        /**
+         * Canonical constructor.
+         *
+         * @param translation the translation
+         * @param rotation the rotation
+         * @param scale the scale
+         */
         public DecomposeTRSResult(Double3 translation, DoubleQuat rotation, Double3 scale) {
             this.translation = translation;
             this.rotation = rotation;
@@ -6151,8 +6221,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Compute the frustum test of the given axis-aligned box against the frustum defined by this
      * matrix: {@code 1} if the box intersects or is inside the frustum, {@code 0} if fully outside.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the frustum test of the given axis-aligned box against the frustum defined by this
      *        matrix: {@code 1} if the box intersects or is inside the frustum, {@code 0} if fully
@@ -6193,7 +6263,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Compute the frustum test of the given axis-aligned box against the frustum defined by this
      * matrix: {@code 1} if the box intersects or is inside the frustum, {@code 0} if fully outside.
      *
-     * @param aabb the axis-aligned bounding box
+     * @param aabb the axis-aligned box to test
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the frustum test of the given axis-aligned box against the frustum defined by this
      *        matrix: {@code 1} if the box intersects or is inside the frustum, {@code 0} if fully
@@ -6213,8 +6283,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
      * @return the frustum test of the given axis-aligned box against the frustum defined by this
      *        matrix: {@code 1} if the box intersects or is inside the frustum, {@code 0} if fully
      *        outside
@@ -6247,7 +6317,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param aabb the axis-aligned bounding box
+     * @param aabb the axis-aligned box to test
      * @return the frustum test of the given axis-aligned box against the frustum defined by this
      *        matrix: {@code 1} if the box intersects or is inside the frustum, {@code 0} if fully
      *        outside
@@ -6295,7 +6365,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Compute the frustum test of the given point against the frustum defined by this matrix:
      * {@code 1} if the point lies inside, {@code 0} otherwise.
      *
-     * @param point the vector
+     * @param point the point to test
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the frustum test of the given point against the frustum defined by this matrix:
      *        {@code 1} if the point lies inside, {@code 0} otherwise
@@ -6333,7 +6403,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param point the vector
+     * @param point the point to test
      * @return the frustum test of the given point against the frustum defined by this matrix:
      *        {@code 1} if the point lies inside, {@code 0} otherwise
      */
@@ -6470,8 +6540,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
      *
-     * @param center the center point
-     * @param radius the radius
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the frustum test of the given sphere against the frustum defined by this matrix:
      *        {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully
@@ -6492,7 +6562,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * @param centerX the {@code x} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerY the {@code y} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerZ the {@code z} component of the vector {@code (centerX, centerY, centerZ)}
-     * @param radius the radius
+     * @param radius the radius of the sphere
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the frustum test of the given sphere against the frustum defined by this matrix:
      *        {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully
@@ -6510,7 +6580,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
      *
-     * @param sph the sphere
+     * @param sph the sphere to test
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the frustum test of the given sphere against the frustum defined by this matrix:
      *        {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully
@@ -6530,8 +6600,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param center the center point
-     * @param radius the radius
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
      * @return the frustum test of the given sphere against the frustum defined by this matrix:
      *        {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully
      *        outside
@@ -6548,7 +6618,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * @param centerX the {@code x} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerY the {@code y} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerZ the {@code z} component of the vector {@code (centerX, centerY, centerZ)}
-     * @param radius the radius
+     * @param radius the radius of the sphere
      * @return the frustum test of the given sphere against the frustum defined by this matrix:
      *        {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully
      *        outside
@@ -6562,7 +6632,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param sph the sphere
+     * @param sph the sphere to test
      * @return the frustum test of the given sphere against the frustum defined by this matrix:
      *        {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully
      *        outside
@@ -6700,8 +6770,11 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting matrix
      */
@@ -6742,6 +6815,11 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * {@code m03}, {@code m10}, {@code m11}, {@code m12}, {@code m13}, {@code m20}, {@code m21},
      * {@code m22}, {@code m23}, {@code m30}, {@code m31}, {@code m32}, {@code m33}) using the
      * interpolation factor {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m02}, {@code m03}, {@code m10}, {@code m11}, {@code m12},
+     * {@code m13}, {@code m20}, {@code m21}, {@code m22}, {@code m23}, {@code m30}, {@code m31},
+     * {@code m32}, {@code m33}) (interpolation factor {@code 1}).
      *
      * @param m00 the element in row 0, column 0 of the matrix
      * @param m01 the element in row 0, column 1 of the matrix
@@ -7550,7 +7628,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return the resulting matrix
      */
     public Double4x4 preMul(Double4x4 other) {
@@ -7682,7 +7760,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return the resulting matrix
      */
     public Double4x4 preMul(Double2x2 other) {
@@ -7750,7 +7828,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return the resulting matrix
      */
     public Double4x4 preMul(Double2x3 other) {
@@ -7878,7 +7956,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return the resulting matrix
      */
     public Double4x4 preMul(Double3x3 other) {
@@ -8013,7 +8091,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return the resulting matrix
      */
     public Double4x4 preMul(Double3x4 other) {
@@ -8076,8 +8154,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * matrix will be {@code M * A}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * A * v}, the arcball view will be applied first.
      *
-     * @param radius the radius
-     * @param center the center point
+     * @param radius the distance of the eye from the center
+     * @param center the center of the arcball, i.e. the point the eye orbits around
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @return the resulting matrix
@@ -8260,7 +8338,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * matrix will be {@code M * A}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * A * v}, the arcball view will be applied first.
      *
-     * @param radius the radius
+     * @param radius the distance of the eye from the center
      * @param centerX the {@code x} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerY the {@code y} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerZ the {@code z} component of the vector {@code (centerX, centerY, centerZ)}
@@ -8654,9 +8732,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Create a transformation composed of the given translation, rotation and scale, applied in
      * scale-rotation-translation order.
      *
-     * @param translation the vector
-     * @param rotation the quaternion (must be a unit quaternion)
-     * @param scale the scale factor
+     * @param translation the translation
+     * @param rotation the rotation (must be a unit quaternion)
+     * @param scale the scale factors
      * @return the resulting matrix
      */
     public static Double4x4 composeTRS(Double3 translation, DoubleQuat rotation, Double3 scale) {
@@ -8706,10 +8784,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Create a transformation composed of the given translation, rotation and scale (applied in
      * scale-rotation-translation order), post-multiplied by the given matrix.
      *
-     * @param translation the vector
-     * @param rotation the quaternion (must be a unit quaternion)
-     * @param scale the scale factor
-     * @param m the matrix
+     * @param translation the translation
+     * @param rotation the rotation (must be a unit quaternion)
+     * @param scale the scale factors
+     * @param m the matrix to post-multiply the composed transformation by
      * @return the resulting matrix
      */
     public static Double4x4 composeTRSMul(Double3 translation, DoubleQuat rotation, Double3 scale, Double4x4 m) {
@@ -8762,7 +8840,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * @param scaleX the {@code x} component of the vector {@code (scaleX, scaleY, scaleZ)}
      * @param scaleY the {@code y} component of the vector {@code (scaleX, scaleY, scaleZ)}
      * @param scaleZ the {@code z} component of the vector {@code (scaleX, scaleY, scaleZ)}
-     * @param m the matrix
+     * @param m the matrix to post-multiply the composed transformation by
      * @return the resulting matrix
      */
     public static Double4x4 composeTRSMul(double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ, Double4x4 m) {
@@ -9647,7 +9725,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return the resulting matrix
      */
@@ -10668,8 +10747,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Create an arcball view transformation about the given center.
      *
-     * @param radius the radius
-     * @param center the center point
+     * @param radius the distance of the eye from the center
+     * @param center the center of the arcball, i.e. the point the eye orbits around
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @return the resulting matrix
@@ -10682,7 +10761,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Create an arcball view transformation about the given center.
      *
-     * @param radius the radius
+     * @param radius the distance of the eye from the center
      * @param centerX the {@code x} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerY the {@code y} component of the vector {@code (centerX, centerY, centerZ)}
      * @param centerZ the {@code z} component of the vector {@code (centerX, centerY, centerZ)}
@@ -11005,7 +11084,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Create the rigid transformation represented by the unit dual quaternion {@code dq}.
      *
-     * @param dq the dual quaternion (must be a unit dual quaternion)
+     * @param dq the dual quaternion to convert (must be a unit dual quaternion)
      * @return the resulting matrix
      */
     public static Double4x4 makeFromDualQuat(DoubleDualQuat dq) {
@@ -13714,7 +13793,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Create a reflection transformation about the plane through the origin with the normal
      * {@code normal}.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the reflection plane (must be a unit vector)
      * @return the resulting matrix
      */
     public static Double4x4 makeReflection(Double3 normal) {
@@ -13784,7 +13863,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Create a rotation that makes {@code +z} point along {@code dir}.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return the resulting matrix
      */
@@ -13840,7 +13920,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Create the rotation represented by the quaternion {@code q}.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation quaternion (must be a unit quaternion)
      * @return the resulting matrix
      */
     public static Double4x4 makeRotationQuat(DoubleQuat q) {
@@ -14050,7 +14130,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Create a scaling transformation that scales by {@code v}.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return the resulting matrix
      */
     public static Double4x4 makeScaling(Double3 v) {
@@ -27777,7 +27857,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
      * origin.
      *
-     * @param rot the quaternion (must be a unit quaternion)
+     * @param rot the rotation to apply (must be a unit quaternion)
      * @param pivot the pivot point
      * @return the resulting matrix
      */
@@ -28253,7 +28333,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation to apply (must be a unit quaternion)
      * @return the resulting matrix
      */
     public Double4x4 preRotateQuat(DoubleQuat q) {
@@ -28710,7 +28790,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * will be {@code S * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code S * M * p}, the scaling will be applied last.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return the resulting matrix
      */
     public Double4x4 preScale(Double3 v) {
@@ -28999,7 +29079,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * will be {@code T * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code T * M * p}, the translation will be applied last.
      *
-     * @param v the vector
+     * @param v the translation offsets
      * @return the resulting matrix
      */
     public Double4x4 preTranslate(Double3 v) {
@@ -29216,12 +29296,12 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Project the given position onto window coordinates using this matrix and the given viewport,
      * returning the result as a value.
      *
-     * @param objX the {@code x} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objY the {@code y} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objZ the {@code z} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
+     * @param objX the {@code x} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objY the {@code y} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objZ the {@code z} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -29260,12 +29340,12 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param objX the {@code x} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objY the {@code y} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
-     * @param objZ the {@code z} component of the object-space position to project
-     *        {@code (objX, objY, objZ)}
+     * @param objX the {@code x} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objY the {@code y} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
+     * @param objZ the {@code z} component of the object-space position {@code (objX, objY, objZ)}
+     *        to project
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -29287,7 +29367,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the reflection will be applied first.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the plane to reflect about (must be a unit vector)
      * @return the resulting matrix
      */
     public Double4x4 reflect(Double3 normal) {
@@ -29433,7 +29513,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
      * origin.
      *
-     * @param rot the quaternion (must be a unit quaternion)
+     * @param rot the rotation to apply (must be a unit quaternion)
      * @param pivot the pivot point
      * @return the resulting matrix
      */
@@ -29882,7 +29962,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the rotation to apply (must be a unit quaternion)
      * @return the resulting matrix
      */
     public Double4x4 rotateQuat(DoubleQuat q) {
@@ -31743,7 +31823,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * will be {@code M * S}. So when transforming a vector {@code p} with the new matrix by using
      * {@code M * S * p}, the scaling will be applied first.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return the resulting matrix
      */
     public Double4x4 scale(Double3 v) {
@@ -33248,9 +33328,19 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      */
     public Double3 unprojectInv(double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) { return unprojectInv(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** Result value of {@code unprojectInvRay}. */
+    /**
+     * Result value of {@code unprojectInvRay}.
+     *
+     * @param rayOrigin the origin of the ray
+     * @param rayDir the direction of the ray
+     */
     public record UnprojectInvRayResult(Double3 rayOrigin, Double3 rayDir) {
-        /** Canonical constructor. */
+        /**
+         * Canonical constructor.
+         *
+         * @param rayOrigin the origin of the ray
+         * @param rayDir the direction of the ray
+         */
         public UnprojectInvRayResult(Double3 rayOrigin, Double3 rayDir) {
             this.rayOrigin = rayOrigin;
             this.rayDir = rayDir;
@@ -33339,9 +33429,19 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      */
     public UnprojectInvRayResult unprojectInvRay(Double2 winCoords, Double4 viewport) { return unprojectInvRay(winCoords, viewport, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** Result value of {@code unprojectRay}. */
+    /**
+     * Result value of {@code unprojectRay}.
+     *
+     * @param rayOrigin the origin of the ray
+     * @param rayDir the direction of the ray
+     */
     public record UnprojectRayResult(Double3 rayOrigin, Double3 rayDir) {
-        /** Canonical constructor. */
+        /**
+         * Canonical constructor.
+         *
+         * @param rayOrigin the origin of the ray
+         * @param rayDir the direction of the ray
+         */
         public UnprojectRayResult(Double3 rayOrigin, Double3 rayDir) {
             this.rayOrigin = rayOrigin;
             this.rayDir = rayDir;
@@ -33493,9 +33593,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
 
     /**
-     * Multiply this matrix by the given vector, returning the result as a value.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v}, returning the result as a value.
      *
-     * @param v the vector
+     * @param v the right operand of the product
      * @return the resulting vector
      */
     public Double4 mul(Double4 v) {
@@ -33531,7 +33632,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
 
     /**
-     * Multiply this matrix by the given vector, returning the result as a value.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v}, returning the result as a value.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ, vW)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ, vW)}
@@ -33554,7 +33656,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Only the affine part of this matrix is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param aabb the axis-aligned bounding box
+     * @param aabb the axis-aligned box to transform
      * @return the resulting axis-aligned bounding box
      */
     public DoubleAABB transformAabb(DoubleAABB aabb) {
@@ -33659,8 +33761,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Only the affine part of this matrix is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
      * @return the resulting axis-aligned bounding box
      */
     public DoubleAABB transformAabb(Double3 min, Double3 max) {
@@ -33675,7 +33777,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Only the affine part of this matrix is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @return the resulting vector
      */
     public Double3 transformDirection(Double3 v) {
@@ -33727,7 +33829,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Only the affine part of this matrix is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param v the vector
+     * @param v the position to transform
      * @return the resulting vector
      */
     public Double3 transformPosition(Double3 v) {
@@ -33786,7 +33888,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Transform {@code v} by this matrix and perform perspective division, returning the result as
      * a value.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @return the resulting vector
      */
     public Double3 transformProject(Double3 v) {
@@ -33849,82 +33951,146 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
         return transformProject_general(vX, vY, vZ);
     }
 
-    /** {@return a copy with the {@code m00} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m00} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m00} element
+     */
     public Double4x4 withM00(double v) {
         return new Double4x4(v, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33);
     }
 
-    /** {@return a copy with the {@code m01} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m01} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m01} element
+     */
     public Double4x4 withM01(double v) {
         return new Double4x4(m00, v, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33);
     }
 
-    /** {@return a copy with the {@code m02} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m02} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m02} element
+     */
     public Double4x4 withM02(double v) {
         return new Double4x4(m00, m01, v, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33);
     }
 
-    /** {@return a copy with the {@code m03} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m03} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m03} element
+     */
     public Double4x4 withM03(double v) {
         return new Double4x4(m00, m01, m02, v, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33);
     }
 
-    /** {@return a copy with the {@code m10} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m10} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m10} element
+     */
     public Double4x4 withM10(double v) {
         return new Double4x4(m00, m01, m02, m03, v, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33);
     }
 
-    /** {@return a copy with the {@code m11} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m11} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m11} element
+     */
     public Double4x4 withM11(double v) {
         return new Double4x4(m00, m01, m02, m03, m10, v, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33);
     }
 
-    /** {@return a copy with the {@code m12} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m12} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m12} element
+     */
     public Double4x4 withM12(double v) {
         return new Double4x4(m00, m01, m02, m03, m10, m11, v, m13, m20, m21, m22, m23, m30, m31, m32, m33);
     }
 
-    /** {@return a copy with the {@code m13} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m13} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m13} element
+     */
     public Double4x4 withM13(double v) {
         return new Double4x4(m00, m01, m02, m03, m10, m11, m12, v, m20, m21, m22, m23, m30, m31, m32, m33);
     }
 
-    /** {@return a copy with the {@code m20} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m20} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m20} element
+     */
     public Double4x4 withM20(double v) {
         return new Double4x4(m00, m01, m02, m03, m10, m11, m12, m13, v, m21, m22, m23, m30, m31, m32, m33);
     }
 
-    /** {@return a copy with the {@code m21} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m21} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m21} element
+     */
     public Double4x4 withM21(double v) {
         return new Double4x4(m00, m01, m02, m03, m10, m11, m12, m13, m20, v, m22, m23, m30, m31, m32, m33);
     }
 
-    /** {@return a copy with the {@code m22} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m22} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m22} element
+     */
     public Double4x4 withM22(double v) {
         return new Double4x4(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, v, m23, m30, m31, m32, m33);
     }
 
-    /** {@return a copy with the {@code m23} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m23} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m23} element
+     */
     public Double4x4 withM23(double v) {
         return new Double4x4(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, v, m30, m31, m32, m33);
     }
 
-    /** {@return a copy with the {@code m30} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m30} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m30} element
+     */
     public Double4x4 withM30(double v) {
         return new Double4x4(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, v, m31, m32, m33);
     }
 
-    /** {@return a copy with the {@code m31} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m31} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m31} element
+     */
     public Double4x4 withM31(double v) {
         return new Double4x4(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, v, m32, m33);
     }
 
-    /** {@return a copy with the {@code m32} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m32} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m32} element
+     */
     public Double4x4 withM32(double v) {
         return new Double4x4(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, v, m33);
     }
 
-    /** {@return a copy with the {@code m33} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m33} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m33} element
+     */
     public Double4x4 withM33(double v) {
         return new Double4x4(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, v);
     }
@@ -33936,6 +34102,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * dispatched operation. Prefer the {@code make*} factories, or the element constructor, which
      * computes the bits itself. {@code withProperties(determineProperties())} recomputes them from
      * the elements.
+     *
+     * @param properties the cached property bits, taken as given
      */
     public Double4x4 withProperties(int properties) {
         return new Double4x4(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33, properties);

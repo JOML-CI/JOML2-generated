@@ -32,7 +32,7 @@ public interface Double2 extends Double2R {
     /**
      * Add {@code other} to this vector.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 add(Double2R other) { return add(other, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -49,7 +49,7 @@ public interface Double2 extends Double2R {
     /**
      * Divide each component of this vector by {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 div(double scalar) { return div(scalar, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -57,7 +57,7 @@ public interface Double2 extends Double2R {
     /**
      * Divide this vector component-wise by {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 div(Double2R other) { return div(other, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -76,7 +76,7 @@ public interface Double2 extends Double2R {
      * {@code this * b + c} per component.
      *
      * @param b the factor to multiply this vector by
-     * @param c the vector
+     * @param c the vector to add
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 fma(double b, Double2R c) { return fma(b, c, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -97,7 +97,7 @@ public interface Double2 extends Double2R {
      * {@code this * b + c} per component.
      *
      * @param b the factor to multiply this vector by
-     * @param c the vector
+     * @param c the vector to add
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 fma(Double2R b, Double2R c) { return fma(b, c, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -117,7 +117,7 @@ public interface Double2 extends Double2R {
     /**
      * Multiply each component of this vector by {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 mul(double scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -125,7 +125,7 @@ public interface Double2 extends Double2R {
     /**
      * Multiply this vector component-wise by {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 mul(Double2R other) { return mul(other, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -149,7 +149,7 @@ public interface Double2 extends Double2R {
     /**
      * Subtract {@code other} from this vector.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 sub(Double2R other) { return sub(other, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -166,7 +166,7 @@ public interface Double2 extends Double2R {
     /**
      * Set this vector to the given values.
      *
-     * @param v the vector
+     * @param v the vector to copy
      * @return this
      */
     @Mutated Double2 set(Double2R v);
@@ -281,18 +281,29 @@ public interface Double2 extends Double2R {
     @Mutated Double2 makeZero();
 
     /**
-     * Interpolate along the cubic Bézier curve defined by this vector and the given control points.
+     * Interpolate along the cubic Bézier curve that starts at this vector, is shaped by the control
+     * points {@code p1} and {@code p2} and ends at {@code p3}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p3} at
+     * {@code t = 1}; the control points {@code p1} and {@code p2} pull it towards themselves but
+     * are generally not on the curve.
      *
      * @param p1 the first control point
      * @param p2 the second control point
-     * @param p3 the end point
+     * @param p3 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 bezier(Double2R p1, Double2R p2, Double2R p3, double t) { return bezier(p1, p2, p3, t, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Interpolate along the cubic Bézier curve defined by this vector and the given control points.
+     * Interpolate along the cubic Bézier curve that starts at this vector, is shaped by the control
+     * points ({@code p1X}, {@code p1Y}) and ({@code p2X}, {@code p2Y}) and ends at ({@code p3X},
+     * {@code p3Y}).
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p3X}, {@code p3Y})
+     * at {@code t = 1}; the control points ({@code p1X}, {@code p1Y}) and ({@code p2X},
+     * {@code p2Y}) pull it towards themselves but are generally not on the curve.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y)}
@@ -306,19 +317,27 @@ public interface Double2 extends Double2R {
     @Mutated default Double2 bezier(double p1X, double p1Y, double p2X, double p2Y, double p3X, double p3Y, double t) { return bezier(p1X, p1Y, p2X, p2Y, p3X, p3Y, t, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
-     * points.
+     * Interpolate along the quadratic Bézier curve that starts at this vector, is shaped by the
+     * control point {@code p1} and ends at {@code p2}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p2} at
+     * {@code t = 1}; the control point {@code p1} pulls it towards itself but is generally not on
+     * the curve.
      *
      * @param p1 the control point
-     * @param p2 the end point
+     * @param p2 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 bezier2(Double2R p1, Double2R p2, double t) { return bezier2(p1, p2, t, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
-     * points.
+     * Interpolate along the quadratic Bézier curve that starts at this vector, is shaped by the
+     * control point ({@code p1X}, {@code p1Y}) and ends at ({@code p2X}, {@code p2Y}).
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p2X}, {@code p2Y})
+     * at {@code t = 1}; the control point ({@code p1X}, {@code p1Y}) pulls it towards itself but is
+     * generally not on the curve.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y)}
@@ -330,19 +349,29 @@ public interface Double2 extends Double2R {
     @Mutated default Double2 bezier2(double p1X, double p1Y, double p2X, double p2Y, double t) { return bezier2(p1X, p1Y, p2X, p2Y, t, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
-     * by this vector and the given control points, at the parameter {@code t}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * quadratic Bézier curve that starts at this vector, is shaped by the control point {@code p1}
+     * and ends at {@code p2}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p2} at
+     * {@code t = 1}; the control point {@code p1} pulls it towards itself but is generally not on
+     * the curve.
      *
      * @param p1 the control point
-     * @param p2 the end point
+     * @param p2 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 bezier2Tangent(Double2R p1, Double2R p2, double t) { return bezier2Tangent(p1, p2, t, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
-     * by this vector and the given control points, at the parameter {@code t}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * quadratic Bézier curve that starts at this vector, is shaped by the control point
+     * ({@code p1X}, {@code p1Y}) and ends at ({@code p2X}, {@code p2Y}).
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p2X}, {@code p2Y})
+     * at {@code t = 1}; the control point ({@code p1X}, {@code p1Y}) pulls it towards itself but is
+     * generally not on the curve.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y)}
@@ -354,20 +383,30 @@ public interface Double2 extends Double2R {
     @Mutated default Double2 bezier2Tangent(double p1X, double p1Y, double p2X, double p2Y, double t) { return bezier2Tangent(p1X, p1Y, p2X, p2Y, t, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
-     * this vector and the given control points, at the parameter {@code t}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Bézier curve that starts at this vector, is shaped by the control points {@code p1} and
+     * {@code p2} and ends at {@code p3}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p3} at
+     * {@code t = 1}; the control points {@code p1} and {@code p2} pull it towards themselves but
+     * are generally not on the curve.
      *
      * @param p1 the first control point
      * @param p2 the second control point
-     * @param p3 the end point
+     * @param p3 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 bezierTangent(Double2R p1, Double2R p2, Double2R p3, double t) { return bezierTangent(p1, p2, p3, t, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
-     * this vector and the given control points, at the parameter {@code t}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Bézier curve that starts at this vector, is shaped by the control points ({@code p1X},
+     * {@code p1Y}) and ({@code p2X}, {@code p2Y}) and ends at ({@code p3X}, {@code p3Y}).
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p3X}, {@code p3Y})
+     * at {@code t = 1}; the control points ({@code p1X}, {@code p1Y}) and ({@code p2X},
+     * {@code p2Y}) pull it towards themselves but are generally not on the curve.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y)}
@@ -381,18 +420,38 @@ public interface Double2 extends Double2R {
     @Mutated default Double2 bezierTangent(double p1X, double p1Y, double p2X, double p2Y, double p3X, double p3Y, double t) { return bezierTangent(p1X, p1Y, p2X, p2Y, p3X, p3Y, t, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points.
+     * Interpolate along the Catmull-Rom spline segment from {@code p1} to {@code p2}, with this
+     * vector as the control point before the segment and {@code p3} as the control point after it.
+     * <p>
+     * The curve passes through {@code p1} at {@code t = 0} and through {@code p2} at {@code t = 1}.
+     * This vector and {@code p3} are the spline's neighbouring points, i.e. the point before
+     * {@code p1} and the point after {@code p2}: they only shape the tangents at the segment's two
+     * end points and are not themselves on the segment. For a spline through the points
+     * {@code p[0..n]}, the segment from {@code p[i]} to {@code p[i+1]} is therefore interpolated
+     * with {@code p[i-1]} in the role of this vector and {@code p[i]}, {@code p[i+1]},
+     * {@code p[i+2]} as the three given points.
      *
      * @param p1 the start point of the interpolated segment
      * @param p2 the end point of the interpolated segment
-     * @param p3 the outer control point after the segment
+     * @param p3 the control point after the segment, i.e. the spline point following {@code p2}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 catmullRom(Double2R p1, Double2R p2, Double2R p3, double t) { return catmullRom(p1, p2, p3, t, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points.
+     * Interpolate along the Catmull-Rom spline segment from ({@code p1X}, {@code p1Y}) to
+     * ({@code p2X}, {@code p2Y}), with this vector as the control point before the segment and
+     * ({@code p3X}, {@code p3Y}) as the control point after it.
+     * <p>
+     * The curve passes through ({@code p1X}, {@code p1Y}) at {@code t = 0} and through
+     * ({@code p2X}, {@code p2Y}) at {@code t = 1}. This vector and ({@code p3X}, {@code p3Y}) are
+     * the spline's neighbouring points, i.e. the point before ({@code p1X}, {@code p1Y}) and the
+     * point after ({@code p2X}, {@code p2Y}): they only shape the tangents at the segment's two end
+     * points and are not themselves on the segment. For a spline through the points
+     * {@code p[0..n]}, the segment from {@code p[i]} to {@code p[i+1]} is therefore interpolated
+     * with {@code p[i-1]} in the role of this vector and {@code p[i]}, {@code p[i+1]},
+     * {@code p[i+2]} as the three given points.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y)}
@@ -406,20 +465,40 @@ public interface Double2 extends Double2R {
     @Mutated default Double2 catmullRom(double p1X, double p1Y, double p2X, double p2Y, double p3X, double p3Y, double t) { return catmullRom(p1X, p1Y, p2X, p2Y, p3X, p3Y, t, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
-     * this vector and the given control points, at the parameter {@code t}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * Catmull-Rom spline segment from {@code p1} to {@code p2}, with this vector as the control
+     * point before the segment and {@code p3} as the control point after it.
+     * <p>
+     * The curve passes through {@code p1} at {@code t = 0} and through {@code p2} at {@code t = 1}.
+     * This vector and {@code p3} are the spline's neighbouring points, i.e. the point before
+     * {@code p1} and the point after {@code p2}: they only shape the tangents at the segment's two
+     * end points and are not themselves on the segment. For a spline through the points
+     * {@code p[0..n]}, the segment from {@code p[i]} to {@code p[i+1]} is therefore interpolated
+     * with {@code p[i-1]} in the role of this vector and {@code p[i]}, {@code p[i+1]},
+     * {@code p[i+2]} as the three given points.
      *
      * @param p1 the start point of the interpolated segment
      * @param p2 the end point of the interpolated segment
-     * @param p3 the outer control point after the segment
+     * @param p3 the control point after the segment, i.e. the spline point following {@code p2}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 catmullRomTangent(Double2R p1, Double2R p2, Double2R p3, double t) { return catmullRomTangent(p1, p2, p3, t, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
-     * this vector and the given control points, at the parameter {@code t}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * Catmull-Rom spline segment from ({@code p1X}, {@code p1Y}) to ({@code p2X}, {@code p2Y}),
+     * with this vector as the control point before the segment and ({@code p3X}, {@code p3Y}) as
+     * the control point after it.
+     * <p>
+     * The curve passes through ({@code p1X}, {@code p1Y}) at {@code t = 0} and through
+     * ({@code p2X}, {@code p2Y}) at {@code t = 1}. This vector and ({@code p3X}, {@code p3Y}) are
+     * the spline's neighbouring points, i.e. the point before ({@code p1X}, {@code p1Y}) and the
+     * point after ({@code p2X}, {@code p2Y}): they only shape the tangents at the segment's two end
+     * points and are not themselves on the segment. For a spline through the points
+     * {@code p[0..n]}, the segment from {@code p[i]} to {@code p[i+1]} is therefore interpolated
+     * with {@code p[i-1]} in the role of this vector and {@code p[i]}, {@code p[i+1]},
+     * {@code p[i+2]} as the three given points.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y)}
@@ -433,18 +512,27 @@ public interface Double2 extends Double2R {
     @Mutated default Double2 catmullRomTangent(double p1X, double p1Y, double p2X, double p2Y, double p3X, double p3Y, double t) { return catmullRomTangent(p1X, p1Y, p2X, p2Y, p3X, p3Y, t, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation.
+     * Interpolate along the cubic Hermite curve that starts at this vector with the tangent
+     * {@code t0} and ends at {@code v1} with the tangent {@code t1}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code v1} at
+     * {@code t = 1}; the two tangents set its direction and speed at those end points.
      *
-     * @param t0 the tangent at this vector
-     * @param v1 the endpoint
-     * @param t1 the tangent at the endpoint
+     * @param t0 the tangent at the start point, i.e. at this vector
+     * @param v1 the end point of the curve
+     * @param t1 the tangent at the end point {@code v1}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 hermite(Double2R t0, Double2R v1, Double2R t1, double t) { return hermite(t0, v1, t1, t, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation.
+     * Interpolate along the cubic Hermite curve that starts at this vector with the tangent
+     * ({@code t0X}, {@code t0Y}) and ends at ({@code v1X}, {@code v1Y}) with the tangent
+     * ({@code t1X}, {@code t1Y}).
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code v1X}, {@code v1Y})
+     * at {@code t = 1}; the two tangents set its direction and speed at those end points.
      *
      * @param t0X the {@code x} component of the vector {@code (t0X, t0Y)}
      * @param t0Y the {@code y} component of the vector {@code (t0X, t0Y)}
@@ -458,20 +546,28 @@ public interface Double2 extends Double2R {
     @Mutated default Double2 hermite(double t0X, double t0Y, double v1X, double v1Y, double t1X, double t1Y, double t) { return hermite(t0X, t0Y, v1X, v1Y, t1X, t1Y, t, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
-     * this vector and the given endpoint, at the parameter {@code t}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Hermite curve that starts at this vector with the tangent {@code t0} and ends at
+     * {@code v1} with the tangent {@code t1}.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code v1} at
+     * {@code t = 1}; the two tangents set its direction and speed at those end points.
      *
-     * @param t0 the tangent at this vector
-     * @param v1 the endpoint
-     * @param t1 the tangent at the endpoint
+     * @param t0 the tangent at the start point, i.e. at this vector
+     * @param v1 the end point of the curve
+     * @param t1 the tangent at the end point {@code v1}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 hermiteTangent(Double2R t0, Double2R v1, Double2R t1, double t) { return hermiteTangent(t0, v1, t1, t, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
-     * this vector and the given endpoint, at the parameter {@code t}.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Hermite curve that starts at this vector with the tangent ({@code t0X}, {@code t0Y})
+     * and ends at ({@code v1X}, {@code v1Y}) with the tangent ({@code t1X}, {@code t1Y}).
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code v1X}, {@code v1Y})
+     * at {@code t = 1}; the two tangents set its direction and speed at those end points.
      *
      * @param t0X the {@code x} component of the vector {@code (t0X, t0Y)}
      * @param t0Y the {@code y} component of the vector {@code (t0X, t0Y)}
@@ -487,8 +583,11 @@ public interface Double2 extends Double2R {
     /**
      * Linearly interpolate between this vector and {@code other} using the interpolation factor
      * {@code t}.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other vector
+     * @param other the vector to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -497,6 +596,9 @@ public interface Double2 extends Double2R {
     /**
      * Linearly interpolate between this vector and ({@code x}, {@code y}) using the interpolation
      * factor {@code t}.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code x}, {@code y}) (interpolation factor {@code 1}).
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
@@ -508,8 +610,11 @@ public interface Double2 extends Double2R {
     /**
      * Linearly interpolate between this vector and {@code other} using the interpolation factor
      * {@code t}.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other vector
+     * @param other the vector to interpolate towards
      * @param t the per-component interpolation factors, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -518,6 +623,9 @@ public interface Double2 extends Double2R {
     /**
      * Linearly interpolate between this vector and ({@code otherX}, {@code otherY}) using the
      * interpolation factor ({@code tX}, {@code tY}).
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code otherX}, {@code otherY}) (interpolation factor {@code 1}).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
@@ -544,8 +652,8 @@ public interface Double2 extends Double2R {
     /**
      * Add {@code b} scaled by {@code scalar} to this vector.
      *
-     * @param b the vector
-     * @param scalar the scalar value
+     * @param b the vector to scale and add
+     * @param scalar the factor to scale {@code b} by before adding
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 addScaled(Double2R b, double scalar) { return addScaled(b, scalar, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -555,7 +663,7 @@ public interface Double2 extends Double2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @param scalar the scalar value
+     * @param scalar the factor to scale ({@code x}, {@code y}) by before adding
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 addScaled(double x, double y, double scalar) { return addScaled(x, y, scalar, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -563,8 +671,8 @@ public interface Double2 extends Double2R {
     /**
      * Add {@code b} scaled by {@code c} to this vector.
      *
-     * @param b the vector
-     * @param c the vector
+     * @param b the vector to scale and add
+     * @param c the per-component factors to scale {@code b} by before adding
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 addScaled(Double2R b, Double2R c) { return addScaled(b, c, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -742,8 +850,8 @@ public interface Double2 extends Double2R {
      * orienting it against the incident direction {@code I} as judged by the reference vector
      * {@code Nref}.
      *
-     * @param I the vector
-     * @param Nref the vector
+     * @param I the incident direction
+     * @param Nref the reference vector the incident direction is tested against
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 faceforward(Double2R I, Double2R Nref) { return faceforward(I, Nref, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -848,7 +956,7 @@ public interface Double2 extends Double2R {
     /**
      * Set each component of this vector to the larger of itself and {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 max(double scalar) { return max(scalar, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -857,7 +965,7 @@ public interface Double2 extends Double2R {
      * Set each component of this vector to the larger of itself and the corresponding component of
      * {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 max(Double2R other) { return max(other, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -875,7 +983,7 @@ public interface Double2 extends Double2R {
     /**
      * Set each component of this vector to the smaller of itself and {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 min(double scalar) { return min(scalar, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -884,7 +992,7 @@ public interface Double2 extends Double2R {
      * Set each component of this vector to the smaller of itself and the corresponding component of
      * {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 min(Double2R other) { return min(other, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -1018,7 +1126,7 @@ public interface Double2 extends Double2R {
     /**
      * Project this vector onto the plane with the given normal.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the plane to project onto (must be a unit vector)
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 projectOnPlane(Double2R normal) { return projectOnPlane(normal, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -1044,7 +1152,7 @@ public interface Double2 extends Double2R {
     /**
      * Reflect this vector about the given normal.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the plane to reflect about (must be a unit vector)
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 reflect(Double2R normal) { return reflect(normal, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -1065,7 +1173,7 @@ public interface Double2 extends Double2R {
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection).
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the refracting surface (must be a unit vector)
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
      *        destination medium's
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -1217,7 +1325,7 @@ public interface Double2 extends Double2R {
     /**
      * Pre-multiply {@code mat} onto this vector, i.e. compute {@code mat * this}.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 preMul(Double2x2R mat) { return preMul(mat, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -1227,7 +1335,7 @@ public interface Double2 extends Double2R {
      * - i.e. compute {@code (mat * (this, 0)).xyz}, applying only rotation and scale and ignoring
      * translation.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 preMulDirection(Double2x3R mat) { return preMulDirection(mat, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -1237,7 +1345,7 @@ public interface Double2 extends Double2R {
      * - i.e. compute {@code (mat * (this, 1)).xyz}, applying the full affine transform including
      * translation.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2 preMulPosition(Double2x3R mat) { return preMulPosition(mat, Joml.RETURN_NEW ? Joml.double2() : this); }

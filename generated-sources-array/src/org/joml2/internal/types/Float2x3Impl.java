@@ -836,7 +836,7 @@ public class Float2x3Impl implements Float2x3 {
      * factor, or factors of very different scale) invert both factors separately and multiply the
      * inverses in reverse order instead.
      *
-     * @param other the other matrix
+     * @param other the right factor of the product
      * @param dest will hold the result
      * @return dest
      */
@@ -874,7 +874,7 @@ public class Float2x3Impl implements Float2x3 {
      * factor, or factors of very different scale) invert both factors separately and multiply the
      * inverses in reverse order instead.
      *
-     * @param other the other matrix
+     * @param other the right factor of the product
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x3 invertProduct(Float2x3R other) {
@@ -915,7 +915,7 @@ public class Float2x3Impl implements Float2x3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the right factor of the product
      * @param dest will hold the result
      * @return dest
      */
@@ -1275,7 +1275,7 @@ public class Float2x3Impl implements Float2x3 {
     /**
      * Add {@code other} to this matrix and store the result in {@code dest}.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @param dest will hold the result
      * @return dest
      */
@@ -1306,7 +1306,7 @@ public class Float2x3Impl implements Float2x3 {
     /**
      * Add {@code other} to this matrix.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x3 add(Float2x3R other) {
@@ -1340,7 +1340,7 @@ public class Float2x3Impl implements Float2x3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @param dest will hold the result
      * @return dest
      */
@@ -1718,7 +1718,7 @@ public class Float2x3Impl implements Float2x3 {
     /**
      * Subtract {@code other} from this matrix and store the result in {@code dest}.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -1749,7 +1749,7 @@ public class Float2x3Impl implements Float2x3 {
     /**
      * Subtract {@code other} from this matrix.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x3 sub(Float2x3R other) {
@@ -1783,7 +1783,7 @@ public class Float2x3Impl implements Float2x3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -1852,7 +1852,7 @@ public class Float2x3Impl implements Float2x3 {
     /**
      * Set this matrix to the given values.
      *
-     * @param v the matrix
+     * @param v the matrix to copy
      * @return this
      */
     @Mutated public Float2x3 set(Float2x3R v) {
@@ -1897,7 +1897,7 @@ public class Float2x3Impl implements Float2x3 {
      * Set this matrix to the given 2x2 matrix, copying the overlapping cells and filling the rest
      * with identity.
      *
-     * @param m the matrix
+     * @param m the matrix to copy from
      * @return this
      */
     @Mutated public Float2x3 set(Float2x2R m) {
@@ -1917,7 +1917,7 @@ public class Float2x3Impl implements Float2x3 {
     /**
      * Set this matrix to the given 3x3 matrix, copying the overlapping cells and dropping the rest.
      *
-     * @param m the matrix
+     * @param m the matrix to copy from
      * @return this
      */
     @Mutated public Float2x3 set(Float3x3R m) {
@@ -2476,8 +2476,11 @@ public class Float2x3Impl implements Float2x3 {
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -2502,8 +2505,11 @@ public class Float2x3Impl implements Float2x3 {
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -2529,10 +2535,13 @@ public class Float2x3Impl implements Float2x3 {
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
      * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -2546,6 +2555,10 @@ public class Float2x3Impl implements Float2x3 {
      * Linearly interpolate between this matrix and ({@code m00}, {@code m01}, {@code m02},
      * {@code m10}, {@code m11}, {@code m12}) using the interpolation factor {@code t} and store the
      * result in {@code dest}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m02}, {@code m10}, {@code m11}, {@code m12}) (interpolation
+     * factor {@code 1}).
      *
      * @param m00 the element in row 0, column 0 of the matrix
      * @param m01 the element in row 0, column 1 of the matrix
@@ -2575,6 +2588,10 @@ public class Float2x3Impl implements Float2x3 {
      * Linearly interpolate between this matrix and ({@code m00}, {@code m01}, {@code m02},
      * {@code m10}, {@code m11}, {@code m12}) using the interpolation factor {@code t} and store the
      * result in {@code dest}.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m02}, {@code m10}, {@code m11}, {@code m12}) (interpolation
+     * factor {@code 1}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3401,7 +3418,7 @@ public class Float2x3Impl implements Float2x3 {
      * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -3430,7 +3447,7 @@ public class Float2x3Impl implements Float2x3 {
      * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x3 preMul(Float2x3R other) {
@@ -3463,7 +3480,7 @@ public class Float2x3Impl implements Float2x3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -3652,7 +3669,7 @@ public class Float2x3Impl implements Float2x3 {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -3675,7 +3692,7 @@ public class Float2x3Impl implements Float2x3 {
      * The operand is identity-extended to this matrix's square size before the multiplication, and
      * the product is projected back onto this shape.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x3 preMul(Float2x2R other) {
@@ -3701,7 +3718,7 @@ public class Float2x3Impl implements Float2x3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -3905,7 +3922,7 @@ public class Float2x3Impl implements Float2x3 {
      * Pre-multiply the given matrix onto this matrix, i.e. compute {@code other * this} and store
      * the result in {@code dest}.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -3936,7 +3953,7 @@ public class Float2x3Impl implements Float2x3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -3990,7 +4007,7 @@ public class Float2x3Impl implements Float2x3 {
     /**
      * Set this matrix to a scaling transformation that scales by {@code v}.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return this
      */
     public @Mutated Float2x3 makeScaling(Float2R v) {
@@ -4515,7 +4532,7 @@ public class Float2x3Impl implements Float2x3 {
      * will be {@code S * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code S * M * p}, the scaling will be applied last.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -4534,7 +4551,7 @@ public class Float2x3Impl implements Float2x3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -4550,7 +4567,7 @@ public class Float2x3Impl implements Float2x3 {
      * will be {@code S * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code S * M * p}, the scaling will be applied last.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float2x3 preScale(Float2R v) {
@@ -5270,7 +5287,7 @@ public class Float2x3Impl implements Float2x3 {
      * will be {@code T * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code T * M * p}, the translation will be applied last.
      *
-     * @param v the vector
+     * @param v the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -5290,7 +5307,7 @@ public class Float2x3Impl implements Float2x3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -5306,7 +5323,7 @@ public class Float2x3Impl implements Float2x3 {
      * will be {@code T * M}. So when transforming a vector {@code p} with the new matrix by using
      * {@code T * M * p}, the translation will be applied last.
      *
-     * @param v the vector
+     * @param v the translation offsets
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float2x3 preTranslate(Float2R v) {
@@ -5877,7 +5894,7 @@ public class Float2x3Impl implements Float2x3 {
      * will be {@code M * S}. So when transforming a vector {@code p} with the new matrix by using
      * {@code M * S * p}, the scaling will be applied first.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -5896,7 +5913,7 @@ public class Float2x3Impl implements Float2x3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -5912,7 +5929,7 @@ public class Float2x3Impl implements Float2x3 {
      * will be {@code M * S}. So when transforming a vector {@code p} with the new matrix by using
      * {@code M * S * p}, the scaling will be applied first.
      *
-     * @param v the vector
+     * @param v the scale factors
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float2x3 scale(Float2R v) {
@@ -7084,9 +7101,10 @@ public class Float2x3Impl implements Float2x3 {
 
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the right operand of the product
      * @param dest will hold the result
      * @return dest
      */
@@ -7096,12 +7114,13 @@ public class Float2x3Impl implements Float2x3 {
 
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the right operand of the product
      * @param dest will hold the result
      * @return dest
      */
@@ -7150,7 +7169,8 @@ public class Float2x3Impl implements Float2x3 {
 
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -7167,7 +7187,8 @@ public class Float2x3Impl implements Float2x3 {
 
 
     /**
-     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -7191,7 +7212,7 @@ public class Float2x3Impl implements Float2x3 {
      * Transform the given direction by this matrix, ignoring any translation and store the result
      * in {@code dest}.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -7207,7 +7228,7 @@ public class Float2x3Impl implements Float2x3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -7283,7 +7304,7 @@ public class Float2x3Impl implements Float2x3 {
      * Transform the given position by this matrix, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -7299,7 +7320,7 @@ public class Float2x3Impl implements Float2x3 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the position to transform
      * @param dest will hold the result
      * @return dest
      */

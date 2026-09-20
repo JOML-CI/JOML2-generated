@@ -69,7 +69,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Add {@code other} to this dual quaternion and store the result in {@code dest}.
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to add
      * @param dest will hold the result
      * @return dest
      */
@@ -121,7 +121,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * Multiply each component of this dual quaternion by {@code scalar} and store the result in
      * {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @param dest will hold the result
      * @return dest
      */
@@ -164,7 +164,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Subtract {@code other} from this dual quaternion and store the result in {@code dest}.
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -215,7 +215,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Set this dual quaternion to the given values.
      *
-     * @param v the dual quaternion
+     * @param v the dual quaternion to copy
      * @return this
      */
     public @Mutated DoubleDualQuat set(DoubleDualQuatR v) {
@@ -285,7 +285,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * Set this dual quaternion to the rigid motion of the given rigid transform (an exact
      * conversion - both represent rotation plus translation).
      *
-     * @param r the rigid transform
+     * @param r the rigid transform to convert
      * @return this
      */
     public @Mutated DoubleDualQuat makeFromRigid(DoubleRigidR r) {
@@ -332,7 +332,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * Set this dual quaternion to the rigid motion (rotation and translation) of the given
      * transform; the scale is dropped (dual quaternions cannot represent it).
      *
-     * @param t the transform
+     * @param t the transform to convert
      * @return this
      */
     public @Mutated DoubleDualQuat makeFromTransform(DoubleTransformR t) {
@@ -447,7 +447,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      *
      * @param axis the rotation axis (must be a unit vector)
      * @param angle the angle in radians
-     * @param translation the vector
+     * @param translation the translation
      * @return this
      */
     public @Mutated DoubleDualQuat makeFromAxisAngle(Double3R axis, double angle, Double3R translation) {
@@ -517,8 +517,8 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * Set this dual quaternion to a rigid transformation that first rotates by {@code rotation} and
      * then translates by {@code translation} ({@code T * R}).
      *
-     * @param translation the vector
-     * @param rotation the quaternion
+     * @param translation the translation
+     * @param rotation the rotation
      * @return this
      */
     public @Mutated DoubleDualQuat makeTranslationRotation(Double3R translation, DoubleQuatR rotation) {
@@ -582,7 +582,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Set this dual quaternion to a pure rotation by {@code rotation} (zero translation).
      *
-     * @param rotation the quaternion
+     * @param rotation the rotation
      * @return this
      */
     public @Mutated DoubleDualQuat set(DoubleQuatR rotation) {
@@ -618,8 +618,8 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Set this dual quaternion to the given values.
      *
-     * @param rotation the quaternion
-     * @param translation the vector
+     * @param rotation the rotation
+     * @param translation the translation
      * @return this
      */
     public @Mutated DoubleDualQuat set(DoubleQuatR rotation, Double3R translation) {
@@ -664,7 +664,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Set this dual quaternion to a pure translation by {@code translation} (identity rotation).
      *
-     * @param translation the vector
+     * @param translation the translation
      * @return this
      */
     public @Mutated DoubleDualQuat set(Double3R translation) {
@@ -698,8 +698,11 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Blend this dual quaternion with {@code other} using dual-quaternion linear blending with the
      * weight {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this dual quaternion (weight {@code 0}) and ends at {@code other}
+     * (weight {@code 1}).
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to blend towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -714,6 +717,10 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * {@code otherRW}, {@code otherDX}, {@code otherDY}, {@code otherDZ}, {@code otherDW}) using
      * dual-quaternion linear blending with the weight {@code t} and store the result in
      * {@code dest}.
+     * <p>
+     * The interpolation starts at this dual quaternion (weight {@code 0}) and ends at
+     * ({@code otherRX}, {@code otherRY}, {@code otherRZ}, {@code otherRW}, {@code otherDX},
+     * {@code otherDY}, {@code otherDZ}, {@code otherDW}) (weight {@code 1}).
      *
      * @param otherRX the {@code rX} component of the dual quaternion
      *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)}
@@ -759,8 +766,11 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Linearly interpolate between this dual quaternion and {@code other} using the interpolation
      * factor {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -775,6 +785,10 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * {@code otherRZ}, {@code otherRW}, {@code otherDX}, {@code otherDY}, {@code otherDZ},
      * {@code otherDW}) using the interpolation factor {@code t} and store the result in
      * {@code dest}.
+     * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code otherRX}, {@code otherRY}, {@code otherRZ}, {@code otherRW}, {@code otherDX},
+     * {@code otherDY}, {@code otherDZ}, {@code otherDW}) (interpolation factor {@code 1}).
      *
      * @param otherRX the {@code rX} component of the dual quaternion
      *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)}
@@ -814,8 +828,11 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Screw-linearly interpolate between this dual quaternion (which must have unit length) and
      * {@code other} using the interpolation factor {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other dual quaternion (must be a unit dual quaternion)
+     * @param other the dual quaternion to interpolate towards (must be a unit dual quaternion)
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -830,6 +847,10 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * ({@code otherRX}, {@code otherRY}, {@code otherRZ}, {@code otherRW}, {@code otherDX},
      * {@code otherDY}, {@code otherDZ}, {@code otherDW}) using the interpolation factor {@code t}
      * and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code otherRX}, {@code otherRY}, {@code otherRZ}, {@code otherRW}, {@code otherDX},
+     * {@code otherDY}, {@code otherDZ}, {@code otherDW}) (interpolation factor {@code 1}).
      *
      * @param otherRX the {@code rX} component of the dual quaternion
      *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)} (the
@@ -959,7 +980,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * quaternion by using {@code Q * R * v}, the transformation of the operand will be applied
      * first.
      *
-     * @param other the other dual quaternion
+     * @param other the right operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1028,7 +1049,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * quaternion by using {@code R * Q * v}, the transformation of the operand will be applied
      * last.
      *
-     * @param other the other dual quaternion
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1093,7 +1114,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * Add {@code other} scaled by {@code weight} to this dual quaternion and store the result in
      * {@code dest}.
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to scale and add
      * @param weight the factor to scale {@code other} by before adding
      * @param dest will hold the result
      * @return dest
@@ -1173,7 +1194,8 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other}
      * and store the result in {@code dest}.
      *
-     * @param other the other dual quaternion
+     * @param other the target dual quaternion, reached by composing this dual quaternion with the
+     *        result
      * @param dest will hold the result
      * @return dest
      */
@@ -1236,7 +1258,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Compute the dot product of this dual quaternion and {@code other}.
      *
-     * @param other the other dual quaternion
+     * @param other the other operand of the dot product
      * @return the dot product of this dual quaternion and {@code other}
      */
     public double dot(DoubleDualQuatR other) {
@@ -1733,7 +1755,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * upper-left 3x3 block, which is assumed to be a rotation, and translation from its last
      * column.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated public DoubleDualQuat makeFromMatrix(Double4x4R m) {
@@ -1800,7 +1822,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * upper-left 3x3 block, which is assumed to be a rotation, and translation from its last
      * column.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated public DoubleDualQuat makeFromMatrix(Double3x4R m) {
@@ -1866,7 +1888,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * Set this dual quaternion to the rotation represented by the given matrix, with zero
      * translation.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated public DoubleDualQuat makeFromMatrix(Double3x3R m) {
@@ -2016,7 +2038,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * Set the rotation of this dual quaternion to {@code rotation} and store the result in
      * {@code dest}.
      *
-     * @param rotation the quaternion
+     * @param rotation the new rotation
      * @param dest will hold the result
      * @return dest
      */
@@ -2063,7 +2085,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * Set the translation of this dual quaternion to {@code translation} and store the result in
      * {@code dest}.
      *
-     * @param translation the vector
+     * @param translation the new translation
      * @param dest will hold the result
      * @return dest
      */
@@ -2228,7 +2250,8 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * with the new dual quaternion by using {@code Q * L * v}, the "look along" will be applied
      * first.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @param dest will hold the result
      * @return dest
@@ -2395,7 +2418,8 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Set this dual quaternion to a rotation that makes {@code +z} point along {@code dir}.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return this
      */
@@ -2762,7 +2786,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param rotation the quaternion (must be a unit quaternion)
+     * @param rotation the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -3319,7 +3343,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * with the new dual quaternion by using {@code Q * T * v}, the translation will be applied
      * first.
      *
-     * @param translation the vector
+     * @param translation the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -3368,7 +3392,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Transform {@code p} by this dual quaternion and store the result in {@code dest}.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -3406,7 +3430,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * Transform the given direction by this dual quaternion, ignoring any translation and store the
      * result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -3445,7 +3469,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * local), ignoring the translation, without materializing {@code invert()} (assumes a unit,
      * rigid dual quaternion) and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -3484,7 +3508,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * Transform {@code p} by the inverse of this dual quaternion (assumes a unit, rigid dual
      * quaternion) and store the result in {@code dest}.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -3525,7 +3549,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * Transform the given position by this dual quaternion, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -3554,7 +3578,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * materializing {@code invert()} (assumes a unit, rigid dual quaternion) and store the result
      * in {@code dest}.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -3583,7 +3607,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * Transform the given vector by the rotation part of this dual quaternion, ignoring the
      * translation and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */

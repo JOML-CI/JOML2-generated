@@ -47,7 +47,7 @@ public final class Int3Impl implements Int3 {
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -62,7 +62,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -77,7 +77,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -153,7 +153,7 @@ public final class Int3Impl implements Int3 {
      * Compute the component-wise ceiling division of this vector by {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -169,7 +169,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -185,7 +185,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -198,7 +198,7 @@ public final class Int3Impl implements Int3 {
      * Compute the component-wise ceiling division of this vector by {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -214,7 +214,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -230,7 +230,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -306,7 +306,7 @@ public final class Int3Impl implements Int3 {
      * Compute the component-wise ceiling modulus of this vector and {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -322,7 +322,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -338,7 +338,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -351,7 +351,7 @@ public final class Int3Impl implements Int3 {
      * Compute the component-wise ceiling modulus of this vector and {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -367,7 +367,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -383,7 +383,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -459,7 +459,7 @@ public final class Int3Impl implements Int3 {
      * Divide each component of this vector by {@code scalar} (integer division, truncating toward
      * zero) and store the result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -475,7 +475,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -491,7 +491,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -504,7 +504,7 @@ public final class Int3Impl implements Int3 {
      * Divide this vector component-wise by {@code other} (integer division, truncating toward zero)
      * and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -520,7 +520,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -536,7 +536,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -612,7 +612,7 @@ public final class Int3Impl implements Int3 {
      * Compute the component-wise floor division of this vector by {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -628,7 +628,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -644,7 +644,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -657,7 +657,7 @@ public final class Int3Impl implements Int3 {
      * Compute the component-wise floor division of this vector by {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -673,7 +673,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -689,7 +689,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -765,7 +765,7 @@ public final class Int3Impl implements Int3 {
      * Compute the component-wise floor modulus of this vector and {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -781,7 +781,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -797,7 +797,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -810,7 +810,7 @@ public final class Int3Impl implements Int3 {
      * Compute the component-wise floor modulus of this vector and {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -826,7 +826,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -842,7 +842,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -918,7 +918,7 @@ public final class Int3Impl implements Int3 {
      * Multiply each component of this vector by {@code scalar} and store the result in
      * {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @param dest will hold the result
      * @return dest
      */
@@ -934,7 +934,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @param dest will hold the result
      * @return dest
      */
@@ -950,7 +950,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @param dest will hold the result
      * @return dest
      */
@@ -962,7 +962,7 @@ public final class Int3Impl implements Int3 {
     /**
      * Multiply this vector component-wise by {@code other} and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -977,7 +977,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -992,7 +992,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -1120,7 +1120,7 @@ public final class Int3Impl implements Int3 {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}) and store the result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -1137,7 +1137,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -1154,7 +1154,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -1168,7 +1168,7 @@ public final class Int3Impl implements Int3 {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}) and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -1185,7 +1185,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -1202,7 +1202,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -1280,7 +1280,7 @@ public final class Int3Impl implements Int3 {
     /**
      * Subtract {@code other} from this vector and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -1295,7 +1295,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -1310,7 +1310,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -1386,7 +1386,7 @@ public final class Int3Impl implements Int3 {
      * Compute the bitwise AND of each component of this vector and {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @param dest will hold the result
      * @return dest
      */
@@ -1402,7 +1402,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @param dest will hold the result
      * @return dest
      */
@@ -1418,7 +1418,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @param dest will hold the result
      * @return dest
      */
@@ -1710,7 +1710,7 @@ public final class Int3Impl implements Int3 {
      * Compute the bitwise OR of each component of this vector and {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @param dest will hold the result
      * @return dest
      */
@@ -1726,7 +1726,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @param dest will hold the result
      * @return dest
      */
@@ -1742,7 +1742,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @param dest will hold the result
      * @return dest
      */
@@ -2211,7 +2211,7 @@ public final class Int3Impl implements Int3 {
      * Compute the bitwise XOR of each component of this vector and {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @param dest will hold the result
      * @return dest
      */
@@ -2227,7 +2227,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @param dest will hold the result
      * @return dest
      */
@@ -2243,7 +2243,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @param dest will hold the result
      * @return dest
      */
@@ -2318,7 +2318,7 @@ public final class Int3Impl implements Int3 {
     /**
      * Set this vector to the given values.
      *
-     * @param v the vector
+     * @param v the vector to copy
      * @return this
      */
     public @Mutated Int3 set(Int3R v) {
@@ -2765,10 +2765,10 @@ public final class Int3Impl implements Int3 {
 
 
     /**
-     * Compute the cross product of this vector and {@code other} and store the result in
-     * {@code dest}.
+     * Compute the cross product of this vector and {@code other}, in that order
+     * ({@code this x other}) and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the right operand of the cross product
      * @param dest will hold the result
      * @return dest
      */
@@ -2778,13 +2778,13 @@ public final class Int3Impl implements Int3 {
 
 
     /**
-     * Compute the cross product of this vector and {@code other} and store the result in
-     * {@code dest}.
+     * Compute the cross product of this vector and {@code other}, in that order
+     * ({@code this x other}) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param other the other vector
+     * @param other the right operand of the cross product
      * @param dest will hold the result
      * @return dest
      */
@@ -2794,13 +2794,13 @@ public final class Int3Impl implements Int3 {
 
 
     /**
-     * Compute the cross product of this vector and {@code other} and store the result in
-     * {@code dest}.
+     * Compute the cross product of this vector and {@code other}, in that order
+     * ({@code this x other}) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the right operand of the cross product
      * @param dest will hold the result
      * @return dest
      */
@@ -2810,8 +2810,9 @@ public final class Int3Impl implements Int3 {
 
 
     /**
-     * Compute the cross product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ})
-     * and store the result in {@code dest}.
+     * Compute the cross product of this vector and ({@code otherX}, {@code otherY},
+     * {@code otherZ}), in that order ({@code this x (otherX, otherY, otherZ)}) and store the result
+     * in {@code dest}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -2831,8 +2832,9 @@ public final class Int3Impl implements Int3 {
 
 
     /**
-     * Compute the cross product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ})
-     * and store the result in {@code dest}.
+     * Compute the cross product of this vector and ({@code otherX}, {@code otherY},
+     * {@code otherZ}), in that order ({@code this x (otherX, otherY, otherZ)}) and store the result
+     * in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
@@ -2855,8 +2857,9 @@ public final class Int3Impl implements Int3 {
 
 
     /**
-     * Compute the cross product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ})
-     * and store the result in {@code dest}.
+     * Compute the cross product of this vector and ({@code otherX}, {@code otherY},
+     * {@code otherZ}), in that order ({@code this x (otherX, otherY, otherZ)}) and store the result
+     * in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2881,7 +2884,7 @@ public final class Int3Impl implements Int3 {
     /**
      * Compute the squared distance between this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
     public int distanceSquared(Int3R other) {
@@ -2910,7 +2913,7 @@ public final class Int3Impl implements Int3 {
     /**
      * Compute the dot product of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
     public int dot(Int3R other) {
@@ -2944,7 +2947,7 @@ public final class Int3Impl implements Int3 {
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
     public int manhattanDistance(Int3R other) {
@@ -2981,7 +2984,7 @@ public final class Int3Impl implements Int3 {
      * Set each component of this vector to the larger of itself and {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -2997,7 +3000,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3013,7 +3016,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3026,7 +3029,7 @@ public final class Int3Impl implements Int3 {
      * Set each component of this vector to the larger of itself and the corresponding component of
      * {@code other} and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3042,7 +3045,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3058,7 +3061,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3134,7 +3137,7 @@ public final class Int3Impl implements Int3 {
      * Set each component of this vector to the smaller of itself and {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3150,7 +3153,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3166,7 +3169,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3179,7 +3182,7 @@ public final class Int3Impl implements Int3 {
      * Set each component of this vector to the smaller of itself and the corresponding component of
      * {@code other} and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3195,7 +3198,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3211,7 +3214,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -3338,7 +3341,7 @@ public final class Int3Impl implements Int3 {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -3354,7 +3357,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -3370,7 +3373,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -3446,7 +3449,7 @@ public final class Int3Impl implements Int3 {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -3462,7 +3465,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -3478,7 +3481,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -3608,7 +3611,7 @@ public final class Int3Impl implements Int3 {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing
      * and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -3624,7 +3627,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -3640,7 +3643,7 @@ public final class Int3Impl implements Int3 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */

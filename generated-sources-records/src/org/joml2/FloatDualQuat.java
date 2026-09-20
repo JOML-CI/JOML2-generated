@@ -44,7 +44,18 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
     /** The identity dual quaternion. */
     public static final FloatDualQuat IDENTITY = new FloatDualQuat();
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param rX the {@code rX} component
+     * @param rY the {@code rY} component
+     * @param rZ the {@code rZ} component
+     * @param rW the {@code rW} component
+     * @param dX the {@code dX} component
+     * @param dY the {@code dY} component
+     * @param dZ the {@code dZ} component
+     * @param dW the {@code dW} component
+     */
     public FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, float dY, float dZ, float dW) {
         this.rX = rX;
         this.rY = rY;
@@ -84,7 +95,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
     /**
      * Add {@code other} to this dual quaternion, returning the result as a value.
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to add
      * @return the resulting dual quaternion
      */
     public FloatDualQuat add(FloatDualQuat other) {
@@ -124,7 +135,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * Multiply each component of this dual quaternion by {@code scalar}, returning the result as a
      * value.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @return the resulting dual quaternion
      */
     public FloatDualQuat mul(float scalar) {
@@ -145,7 +156,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
     /**
      * Subtract {@code other} from this dual quaternion, returning the result as a value.
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to subtract
      * @return the resulting dual quaternion
      */
     public FloatDualQuat sub(FloatDualQuat other) {
@@ -184,7 +195,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
     /**
      * Create a new dual quaternion from the given values.
      *
-     * @param v the dual quaternion
+     * @param v the dual quaternion to copy
      * @return the resulting dual quaternion
      */
     public FloatDualQuat set(FloatDualQuat v) {
@@ -233,7 +244,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * Create the rigid motion of the given rigid transform (an exact conversion - both represent
      * rotation plus translation).
      *
-     * @param r the rigid transform
+     * @param r the rigid transform to convert
      * @return the resulting dual quaternion
      */
     public static FloatDualQuat makeFromRigid(FloatRigid r) {
@@ -271,7 +282,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * Create the rigid motion (rotation and translation) of the given transform; the scale is
      * dropped (dual quaternions cannot represent it).
      *
-     * @param t the transform
+     * @param t the transform to convert
      * @return the resulting dual quaternion
      */
     public static FloatDualQuat makeFromTransform(FloatTransform t) {
@@ -351,7 +362,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      *
      * @param axis the rotation axis (must be a unit vector)
      * @param angle the angle in radians
-     * @param translation the vector
+     * @param translation the translation
      * @return the resulting dual quaternion
      */
     public static FloatDualQuat makeFromAxisAngle(Float3 axis, float angle, Float3 translation) {
@@ -405,8 +416,8 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * Create a rigid transformation that first rotates by {@code rotation} and then translates by
      * {@code translation} ({@code T * R}).
      *
-     * @param translation the vector
-     * @param rotation the quaternion
+     * @param translation the translation
+     * @param rotation the rotation
      * @return the resulting dual quaternion
      */
     public static FloatDualQuat makeTranslationRotation(Float3 translation, FloatQuat rotation) {
@@ -455,7 +466,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * Create a new dual quaternion representing a pure rotation by {@code rotation} (zero
      * translation).
      *
-     * @param rotation the quaternion
+     * @param rotation the rotation
      * @return the resulting dual quaternion
      */
     public FloatDualQuat set(FloatQuat rotation) {
@@ -488,7 +499,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * <p>
      * Alias for {@code set}.
      *
-     * @param rotation the quaternion
+     * @param rotation the rotation
      * @return the resulting dual quaternion
      */
     public static FloatDualQuat makeRotation(FloatQuat rotation) {
@@ -520,8 +531,8 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
     /**
      * Create a new dual quaternion from the given values.
      *
-     * @param rotation the quaternion
-     * @param translation the vector
+     * @param rotation the rotation
+     * @param translation the translation
      * @return the resulting dual quaternion
      */
     public FloatDualQuat set(FloatQuat rotation, Float3 translation) {
@@ -558,7 +569,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * Create a new dual quaternion representing a pure translation by {@code translation} (identity
      * rotation).
      *
-     * @param translation the vector
+     * @param translation the translation
      * @return the resulting dual quaternion
      */
     public FloatDualQuat set(Float3 translation) {
@@ -589,7 +600,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * <p>
      * Alias for {@code set}.
      *
-     * @param translation the vector
+     * @param translation the translation
      * @return the resulting dual quaternion
      */
     public static FloatDualQuat makeTranslation(Float3 translation) {
@@ -619,8 +630,11 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
     /**
      * Blend this dual quaternion with {@code other} using dual-quaternion linear blending with the
      * weight {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this dual quaternion (weight {@code 0}) and ends at {@code other}
+     * (weight {@code 1}).
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to blend towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting dual quaternion
      */
@@ -633,6 +647,10 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * Blend this dual quaternion with ({@code otherRX}, {@code otherRY}, {@code otherRZ},
      * {@code otherRW}, {@code otherDX}, {@code otherDY}, {@code otherDZ}, {@code otherDW}) using
      * dual-quaternion linear blending with the weight {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this dual quaternion (weight {@code 0}) and ends at
+     * ({@code otherRX}, {@code otherRY}, {@code otherRZ}, {@code otherRW}, {@code otherDX},
+     * {@code otherDY}, {@code otherDZ}, {@code otherDW}) (weight {@code 1}).
      *
      * @param otherRX the {@code rX} component of the dual quaternion
      *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)}
@@ -667,8 +685,11 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
     /**
      * Linearly interpolate between this dual quaternion and {@code other} using the interpolation
      * factor {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting dual quaternion
      */
@@ -681,6 +702,10 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * Linearly interpolate between this dual quaternion and ({@code otherRX}, {@code otherRY},
      * {@code otherRZ}, {@code otherRW}, {@code otherDX}, {@code otherDY}, {@code otherDZ},
      * {@code otherDW}) using the interpolation factor {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code otherRX}, {@code otherRY}, {@code otherRZ}, {@code otherRW}, {@code otherDX},
+     * {@code otherDY}, {@code otherDZ}, {@code otherDW}) (interpolation factor {@code 1}).
      *
      * @param otherRX the {@code rX} component of the dual quaternion
      *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)}
@@ -709,8 +734,11 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
     /**
      * Screw-linearly interpolate between this dual quaternion (which must have unit length) and
      * {@code other} using the interpolation factor {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other dual quaternion (must be a unit dual quaternion)
+     * @param other the dual quaternion to interpolate towards (must be a unit dual quaternion)
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting dual quaternion
      */
@@ -724,6 +752,10 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * ({@code otherRX}, {@code otherRY}, {@code otherRZ}, {@code otherRW}, {@code otherDX},
      * {@code otherDY}, {@code otherDZ}, {@code otherDW}) using the interpolation factor {@code t},
      * returning the result as a value.
+     * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code otherRX}, {@code otherRY}, {@code otherRZ}, {@code otherRW}, {@code otherDX},
+     * {@code otherDY}, {@code otherDZ}, {@code otherDW}) (interpolation factor {@code 1}).
      *
      * @param otherRX the {@code rX} component of the dual quaternion
      *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)} (the
@@ -836,7 +868,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * quaternion by using {@code Q * R * v}, the transformation of the operand will be applied
      * first.
      *
-     * @param other the other dual quaternion
+     * @param other the right operand
      * @return the resulting dual quaternion
      */
     public FloatDualQuat mul(FloatDualQuat other) {
@@ -899,7 +931,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * quaternion by using {@code R * Q * v}, the transformation of the operand will be applied
      * last.
      *
-     * @param other the other dual quaternion
+     * @param other the left operand
      * @return the resulting dual quaternion
      */
     public FloatDualQuat preMul(FloatDualQuat other) {
@@ -958,7 +990,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * Add {@code other} scaled by {@code weight} to this dual quaternion, returning the result as a
      * value.
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to scale and add
      * @param weight the factor to scale {@code other} by before adding
      * @return the resulting dual quaternion
      */
@@ -1014,7 +1046,8 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other},
      * returning the result as a value.
      *
-     * @param other the other dual quaternion
+     * @param other the target dual quaternion, reached by composing this dual quaternion with the
+     *        result
      * @return the resulting dual quaternion
      */
     public FloatDualQuat difference(FloatDualQuat other) {
@@ -1071,7 +1104,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
     /**
      * Compute the dot product of this dual quaternion and {@code other}.
      *
-     * @param other the other dual quaternion
+     * @param other the other operand of the dot product
      * @return the dot product of this dual quaternion and {@code other}
      */
     public float dot(FloatDualQuat other) {
@@ -1444,7 +1477,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * Create the rigid motion of the given matrix: rotation from its upper-left 3x3 block, which is
      * assumed to be a rotation, and translation from its last column.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return the resulting dual quaternion
      */
     public static FloatDualQuat makeFromMatrix(Float4x4 m) {
@@ -1500,7 +1533,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * Create the rigid motion of the given matrix: rotation from its upper-left 3x3 block, which is
      * assumed to be a rotation, and translation from its last column.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return the resulting dual quaternion
      */
     public static FloatDualQuat makeFromMatrix(Float3x4 m) {
@@ -1555,7 +1588,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
     /**
      * Create the rotation represented by the given matrix, with zero translation.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return the resulting dual quaternion
      */
     public static FloatDualQuat makeFromMatrix(Float3x3 m) {
@@ -1665,7 +1698,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * Set the rotation of this dual quaternion to {@code rotation}, returning the result as a
      * value.
      *
-     * @param rotation the quaternion
+     * @param rotation the new rotation
      * @return the resulting dual quaternion
      */
     public FloatDualQuat setRotation(FloatQuat rotation) {
@@ -1700,7 +1733,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * Set the translation of this dual quaternion to {@code translation}, returning the result as a
      * value.
      *
-     * @param translation the vector
+     * @param translation the new translation
      * @return the resulting dual quaternion
      */
     public FloatDualQuat setTranslation(Float3 translation) {
@@ -1828,7 +1861,8 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * with the new dual quaternion by using {@code Q * L * v}, the "look along" will be applied
      * first.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return the resulting dual quaternion
      */
@@ -1971,7 +2005,8 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
     /**
      * Create a rotation that makes {@code +z} point along {@code dir}.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return the resulting dual quaternion
      */
@@ -2269,7 +2304,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param rotation the quaternion (must be a unit quaternion)
+     * @param rotation the rotation to apply (must be a unit quaternion)
      * @return the resulting dual quaternion
      */
     public FloatDualQuat rotate(FloatQuat rotation) {
@@ -2678,7 +2713,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * with the new dual quaternion by using {@code Q * T * v}, the translation will be applied
      * first.
      *
-     * @param translation the vector
+     * @param translation the translation offsets
      * @return the resulting dual quaternion
      */
     public FloatDualQuat translate(Float3 translation) {
@@ -2717,7 +2752,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
     /**
      * Transform {@code p} by this dual quaternion, returning the result as a value.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @return the resulting vector
      */
     public Float3 transform(Float3 p) {
@@ -2746,7 +2781,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * Transform the given direction by this dual quaternion, ignoring any translation, returning
      * the result as a value.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @return the resulting vector
      */
     public Float3 transformDirection(Float3 v) {
@@ -2776,7 +2811,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * local), ignoring the translation, without materializing {@code invert()} (assumes a unit,
      * rigid dual quaternion), returning the result as a value.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @return the resulting vector
      */
     public Float3 transformDirectionInverse(Float3 v) {
@@ -2806,7 +2841,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * Transform {@code p} by the inverse of this dual quaternion (assumes a unit, rigid dual
      * quaternion), returning the result as a value.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @return the resulting vector
      */
     public Float3 transformInverse(Float3 p) {
@@ -2843,7 +2878,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * Transform the given position by this dual quaternion, treating it as a point with an implicit
      * {@code w = 1}, returning the result as a value.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @return the resulting vector
      */
     public Float3 transformPosition(Float3 p) {
@@ -2870,7 +2905,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * materializing {@code invert()} (assumes a unit, rigid dual quaternion), returning the result
      * as a value.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @return the resulting vector
      */
     public Float3 transformPositionInverse(Float3 p) {
@@ -2897,7 +2932,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      * Transform the given vector by the rotation part of this dual quaternion, ignoring the
      * translation, returning the result as a value.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @return the resulting vector
      */
     public Float3 transformVector(Float3 v) {
@@ -2918,42 +2953,74 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
         return transformDirection(vX, vY, vZ);
     }
 
-    /** {@return a copy with the {@code rX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code rX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code rX} component
+     */
     public FloatDualQuat withRX(float v) {
         return new FloatDualQuat(v, rY, rZ, rW, dX, dY, dZ, dW);
     }
 
-    /** {@return a copy with the {@code rY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code rY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code rY} component
+     */
     public FloatDualQuat withRY(float v) {
         return new FloatDualQuat(rX, v, rZ, rW, dX, dY, dZ, dW);
     }
 
-    /** {@return a copy with the {@code rZ} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code rZ} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code rZ} component
+     */
     public FloatDualQuat withRZ(float v) {
         return new FloatDualQuat(rX, rY, v, rW, dX, dY, dZ, dW);
     }
 
-    /** {@return a copy with the {@code rW} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code rW} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code rW} component
+     */
     public FloatDualQuat withRW(float v) {
         return new FloatDualQuat(rX, rY, rZ, v, dX, dY, dZ, dW);
     }
 
-    /** {@return a copy with the {@code dX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code dX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code dX} component
+     */
     public FloatDualQuat withDX(float v) {
         return new FloatDualQuat(rX, rY, rZ, rW, v, dY, dZ, dW);
     }
 
-    /** {@return a copy with the {@code dY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code dY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code dY} component
+     */
     public FloatDualQuat withDY(float v) {
         return new FloatDualQuat(rX, rY, rZ, rW, dX, v, dZ, dW);
     }
 
-    /** {@return a copy with the {@code dZ} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code dZ} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code dZ} component
+     */
     public FloatDualQuat withDZ(float v) {
         return new FloatDualQuat(rX, rY, rZ, rW, dX, dY, v, dW);
     }
 
-    /** {@return a copy with the {@code dW} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code dW} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code dW} component
+     */
     public FloatDualQuat withDW(float v) {
         return new FloatDualQuat(rX, rY, rZ, rW, dX, dY, dZ, v);
     }

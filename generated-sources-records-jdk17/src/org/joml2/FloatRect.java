@@ -32,7 +32,14 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
     /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
     public static final int SIZE_BYTES = 16;
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param minX the {@code minX} component
+     * @param minY the {@code minY} component
+     * @param maxX the {@code maxX} component
+     * @param maxY the {@code maxY} component
+     */
     public FloatRect(float minX, float minY, float maxX, float maxY) {
         this.minX = minX;
         this.minY = minY;
@@ -61,7 +68,7 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
     /**
      * Add {@code other} to this rectangle, returning the result as a value.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to add
      * @return the resulting rectangle
      */
     public FloatRect add(FloatRect other) {
@@ -101,7 +108,7 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
     /**
      * Subtract {@code other} from this rectangle, returning the result as a value.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to subtract
      * @return the resulting rectangle
      */
     public FloatRect sub(FloatRect other) {
@@ -131,7 +138,7 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
     /**
      * Create a new rectangle from the given values.
      *
-     * @param v the rectangle
+     * @param v the rectangle to copy
      * @return the resulting rectangle
      */
     public FloatRect set(FloatRect v) {
@@ -156,7 +163,7 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
     /**
      * Set the maximum corner of this rectangle to {@code max}, returning the result as a value.
      *
-     * @param max the maximum corner
+     * @param max the maximum corner of the box
      * @return the resulting rectangle
      */
     public FloatRect setMax(Float2 max) {
@@ -180,7 +187,7 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
     /**
      * Set the minimum corner of this rectangle to {@code min}, returning the result as a value.
      *
-     * @param min the minimum corner
+     * @param min the minimum corner of the box
      * @return the resulting rectangle
      */
     public FloatRect setMin(Float2 min) {
@@ -246,8 +253,11 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
     /**
      * Linearly interpolate between this rectangle and {@code other} using the interpolation factor
      * {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this rectangle (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other rectangle
+     * @param other the rectangle to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting rectangle
      */
@@ -260,6 +270,10 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
      * Linearly interpolate between this rectangle and ({@code otherMINX}, {@code otherMINY},
      * {@code otherMAXX}, {@code otherMAXY}) using the interpolation factor {@code t}, returning the
      * result as a value.
+     * <p>
+     * The interpolation starts at this rectangle (interpolation factor {@code 0}) and ends at
+     * ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX}, {@code otherMAXY}) (interpolation
+     * factor {@code 1}).
      *
      * @param otherMINX the {@code minX} component of the rectangle
      *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
@@ -303,7 +317,7 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
      * Compute the intersection of this rectangle and {@code other} (disjoint inputs yield inverted
      * bounds - check {@code isValid()}), returning the result as a value.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to intersect with
      * @return the resulting rectangle
      */
     public FloatRect intersect(FloatRect other) {
@@ -347,7 +361,7 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
     /**
      * Translate this rectangle by {@code delta}, returning the result as a value.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @return the resulting rectangle
      */
     public FloatRect translate(Float2 delta) {
@@ -371,7 +385,7 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
     /**
      * Set this rectangle to the union of itself and {@code other}, returning the result as a value.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to include in the union
      * @return the resulting rectangle
      */
     public FloatRect union(FloatRect other) {
@@ -401,7 +415,7 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
     /**
      * Grow this rectangle to include the point {@code p}, returning the result as a value.
      *
-     * @param p the vector
+     * @param p the point to include
      * @return the resulting rectangle
      */
     public FloatRect union(Float2 p) {
@@ -459,7 +473,7 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
      * <p>
      * The result is returned as a value; {@code this} is not modified.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @return the resulting vector
      */
     public Float2 closestPointToPoint(Float2 p) {
@@ -474,8 +488,8 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
      * <p>
      * The result is returned as a value; {@code this} is not modified.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY)}
-     * @param pY the {@code y} component of the point {@code (pX, pY)}
+     * @param pX the {@code x} component of the point {@code (pX, pY)} to find the closest point to
+     * @param pY the {@code y} component of the point {@code (pX, pY)} to find the closest point to
      * @return the resulting vector
      */
     public Float2 closestPointToPoint(float pX, float pY) {
@@ -486,7 +500,7 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
     /**
      * Determine whether this rectangle contains the given point (boundary inclusive).
      *
-     * @param p the vector
+     * @param p the point to test
      * @return {@code true} if this rectangle contains the given point (boundary inclusive),
      *        {@code false} otherwise
      */
@@ -514,7 +528,7 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
     /**
      * Determine whether this rectangle completely contains {@code o}.
      *
-     * @param o the rectangle
+     * @param o the rectangle to test
      * @return {@code true} if this rectangle completely contains {@code o}, {@code false} otherwise
      */
     public boolean containsRect(FloatRect o) {
@@ -546,7 +560,7 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
      * length of the difference between the point and its per-axis clamp into the rectangle's
      * bounds; zero for a point inside or on the rectangle.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the squared distance between this rectangle and the given point, i.e. the squared
      *        length of the difference between the point and its per-axis clamp into the rectangle's
      *        bounds; zero for a point inside or on the rectangle
@@ -561,8 +575,8 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
      * length of the difference between the point and its per-axis clamp into the rectangle's
      * bounds; zero for a point inside or on the rectangle.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY)}
-     * @param pY the {@code y} component of the point {@code (pX, pY)}
+     * @param pX the {@code x} component of the point {@code (pX, pY)} to measure the distance to
+     * @param pY the {@code y} component of the point {@code (pX, pY)} to measure the distance to
      * @return the squared distance between this rectangle and the given point, i.e. the squared
      *        length of the difference between the point and its per-axis clamp into the rectangle's
      *        bounds; zero for a point inside or on the rectangle
@@ -579,7 +593,7 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
      * length of the shortest vector between any two points of the two rectangles; zero when they
      * overlap or touch.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to measure the distance to
      * @return the squared distance between this rectangle and the given rectangle, i.e. the squared
      *        length of the shortest vector between any two points of the two rectangles; zero when
      *        they overlap or touch
@@ -594,14 +608,14 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
      * length of the shortest vector between any two points of the two rectangles; zero when they
      * overlap or touch.
      *
-     * @param otherMINX the {@code minX} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
-     * @param otherMINY the {@code minY} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
-     * @param otherMAXX the {@code maxX} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
-     * @param otherMAXY the {@code maxY} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
+     * @param otherMINX the {@code minX} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
+     * @param otherMINY the {@code minY} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
+     * @param otherMAXX the {@code maxX} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
+     * @param otherMAXY the {@code maxY} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
      * @return the squared distance between this rectangle and the given rectangle, i.e. the squared
      *        length of the shortest vector between any two points of the two rectangles; zero when
      *        they overlap or touch
@@ -618,7 +632,7 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
      * difference between the point and its per-axis clamp into the rectangle's bounds; zero for a
      * point inside or on the rectangle.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the distance between this rectangle and the given point, i.e. the length of the
      *        difference between the point and its per-axis clamp into the rectangle's bounds; zero
      *        for a point inside or on the rectangle
@@ -633,8 +647,8 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
      * difference between the point and its per-axis clamp into the rectangle's bounds; zero for a
      * point inside or on the rectangle.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY)}
-     * @param pY the {@code y} component of the point {@code (pX, pY)}
+     * @param pX the {@code x} component of the point {@code (pX, pY)} to measure the distance to
+     * @param pY the {@code y} component of the point {@code (pX, pY)} to measure the distance to
      * @return the distance between this rectangle and the given point, i.e. the length of the
      *        difference between the point and its per-axis clamp into the rectangle's bounds; zero
      *        for a point inside or on the rectangle
@@ -651,7 +665,7 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
      * shortest vector between any two points of the two rectangles; zero when they overlap or
      * touch.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to measure the distance to
      * @return the distance between this rectangle and the given rectangle, i.e. the length of the
      *        shortest vector between any two points of the two rectangles; zero when they overlap
      *        or touch
@@ -666,14 +680,14 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
      * shortest vector between any two points of the two rectangles; zero when they overlap or
      * touch.
      *
-     * @param otherMINX the {@code minX} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
-     * @param otherMINY the {@code minY} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
-     * @param otherMAXX the {@code maxX} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
-     * @param otherMAXY the {@code maxY} component of the other rectangle
-     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
+     * @param otherMINX the {@code minX} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
+     * @param otherMINY the {@code minY} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
+     * @param otherMAXX the {@code maxX} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
+     * @param otherMAXY the {@code maxY} component of the rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
      * @return the distance between this rectangle and the given rectangle, i.e. the length of the
      *        shortest vector between any two points of the two rectangles; zero when they overlap
      *        or touch
@@ -739,7 +753,7 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
     /**
      * Determine whether this rectangle intersects {@code o}.
      *
-     * @param o the rectangle
+     * @param o the rectangle to test
      * @return {@code true} if this rectangle intersects {@code o}, {@code false} otherwise
      */
     public boolean intersectsRect(FloatRect o) {
@@ -787,22 +801,38 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
         return this.maxX - this.minX;
     }
 
-    /** {@return a copy with the {@code minX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code minX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code minX} component
+     */
     public FloatRect withMinX(float v) {
         return new FloatRect(v, minY, maxX, maxY);
     }
 
-    /** {@return a copy with the {@code minY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code minY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code minY} component
+     */
     public FloatRect withMinY(float v) {
         return new FloatRect(minX, v, maxX, maxY);
     }
 
-    /** {@return a copy with the {@code maxX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code maxX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code maxX} component
+     */
     public FloatRect withMaxX(float v) {
         return new FloatRect(minX, minY, v, maxY);
     }
 
-    /** {@return a copy with the {@code maxY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code maxY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code maxY} component
+     */
     public FloatRect withMaxY(float v) {
         return new FloatRect(minX, minY, maxX, v);
     }

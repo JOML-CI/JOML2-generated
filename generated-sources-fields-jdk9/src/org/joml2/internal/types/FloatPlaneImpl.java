@@ -50,7 +50,7 @@ public final class FloatPlaneImpl implements FloatPlane {
     /**
      * Set this plane to the given values.
      *
-     * @param v the plane
+     * @param v the plane to copy
      * @return this
      */
     public @Mutated FloatPlane set(FloatPlaneR v) {
@@ -79,7 +79,7 @@ public final class FloatPlaneImpl implements FloatPlane {
     /**
      * Set the normal of this plane to {@code n} and store the result in {@code dest}.
      *
-     * @param n the normal
+     * @param n the new normal
      * @param dest will hold the result
      * @return dest
      */
@@ -94,7 +94,7 @@ public final class FloatPlaneImpl implements FloatPlane {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param n the normal
+     * @param n the new normal
      * @param dest will hold the result
      * @return dest
      */
@@ -213,7 +213,7 @@ public final class FloatPlaneImpl implements FloatPlane {
      * Compute the (unsigned) distance between this plane and the given point. The plane's normal
      * need not be of unit length: the result is divided by that normal's length.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the (unsigned) distance between this plane and the given point. The plane's normal
      *        need not be of unit length: the result is divided by that normal's length
      */
@@ -226,9 +226,12 @@ public final class FloatPlaneImpl implements FloatPlane {
      * Compute the (unsigned) distance between this plane and the given point. The plane's normal
      * need not be of unit length: the result is divided by that normal's length.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the (unsigned) distance between this plane and the given point. The plane's normal
      *        need not be of unit length: the result is divided by that normal's length
      */

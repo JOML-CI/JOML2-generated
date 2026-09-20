@@ -51,7 +51,7 @@ public final class Short4Impl implements Short4 {
     /**
      * Add {@code other} to this vector and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -66,7 +66,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -81,7 +81,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -96,7 +96,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -202,7 +202,7 @@ public final class Short4Impl implements Short4 {
      * Compute the component-wise ceiling division of this vector by {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -218,7 +218,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -234,7 +234,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -250,7 +250,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -263,7 +263,7 @@ public final class Short4Impl implements Short4 {
      * Compute the component-wise ceiling division of this vector by {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -279,7 +279,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -295,7 +295,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -311,7 +311,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -417,7 +417,7 @@ public final class Short4Impl implements Short4 {
      * Compute the component-wise ceiling modulus of this vector and {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -433,7 +433,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -449,7 +449,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -465,7 +465,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -478,7 +478,7 @@ public final class Short4Impl implements Short4 {
      * Compute the component-wise ceiling modulus of this vector and {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -494,7 +494,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -510,7 +510,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -526,7 +526,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -632,7 +632,7 @@ public final class Short4Impl implements Short4 {
      * Divide each component of this vector by {@code scalar} (integer division, truncating toward
      * zero) and store the result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -648,7 +648,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -664,7 +664,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -680,7 +680,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -693,7 +693,7 @@ public final class Short4Impl implements Short4 {
      * Divide this vector component-wise by {@code other} (integer division, truncating toward zero)
      * and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -709,7 +709,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -725,7 +725,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -741,7 +741,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -851,7 +851,7 @@ public final class Short4Impl implements Short4 {
      * Compute the component-wise floor division of this vector by {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -867,7 +867,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -883,7 +883,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -899,7 +899,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -912,7 +912,7 @@ public final class Short4Impl implements Short4 {
      * Compute the component-wise floor division of this vector by {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -928,7 +928,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -944,7 +944,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -960,7 +960,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -1066,7 +1066,7 @@ public final class Short4Impl implements Short4 {
      * Compute the component-wise floor modulus of this vector and {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -1082,7 +1082,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -1098,7 +1098,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -1114,7 +1114,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -1127,7 +1127,7 @@ public final class Short4Impl implements Short4 {
      * Compute the component-wise floor modulus of this vector and {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -1143,7 +1143,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -1159,7 +1159,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -1175,7 +1175,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -1281,7 +1281,7 @@ public final class Short4Impl implements Short4 {
      * Multiply each component of this vector by {@code scalar} and store the result in
      * {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @param dest will hold the result
      * @return dest
      */
@@ -1297,7 +1297,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @param dest will hold the result
      * @return dest
      */
@@ -1313,7 +1313,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @param dest will hold the result
      * @return dest
      */
@@ -1329,7 +1329,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @param dest will hold the result
      * @return dest
      */
@@ -1341,7 +1341,7 @@ public final class Short4Impl implements Short4 {
     /**
      * Multiply this vector component-wise by {@code other} and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -1356,7 +1356,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -1371,7 +1371,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -1386,7 +1386,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -1566,7 +1566,7 @@ public final class Short4Impl implements Short4 {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}) and store the result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -1583,7 +1583,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -1600,7 +1600,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -1617,7 +1617,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @param dest will hold the result
      * @return dest
      */
@@ -1631,7 +1631,7 @@ public final class Short4Impl implements Short4 {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}) and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -1648,7 +1648,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -1665,7 +1665,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -1682,7 +1682,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @param dest will hold the result
      * @return dest
      */
@@ -1795,7 +1795,7 @@ public final class Short4Impl implements Short4 {
     /**
      * Subtract {@code other} from this vector and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -1810,7 +1810,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -1825,7 +1825,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -1840,7 +1840,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -1946,7 +1946,7 @@ public final class Short4Impl implements Short4 {
      * Compute the bitwise AND of each component of this vector and {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @param dest will hold the result
      * @return dest
      */
@@ -1962,7 +1962,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @param dest will hold the result
      * @return dest
      */
@@ -1978,7 +1978,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @param dest will hold the result
      * @return dest
      */
@@ -1994,7 +1994,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @param dest will hold the result
      * @return dest
      */
@@ -2417,7 +2417,7 @@ public final class Short4Impl implements Short4 {
      * Compute the bitwise OR of each component of this vector and {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @param dest will hold the result
      * @return dest
      */
@@ -2433,7 +2433,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @param dest will hold the result
      * @return dest
      */
@@ -2449,7 +2449,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @param dest will hold the result
      * @return dest
      */
@@ -2465,7 +2465,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @param dest will hold the result
      * @return dest
      */
@@ -3163,7 +3163,7 @@ public final class Short4Impl implements Short4 {
      * Compute the bitwise XOR of each component of this vector and {@code other} and store the
      * result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @param dest will hold the result
      * @return dest
      */
@@ -3179,7 +3179,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @param dest will hold the result
      * @return dest
      */
@@ -3195,7 +3195,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @param dest will hold the result
      * @return dest
      */
@@ -3211,7 +3211,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @param dest will hold the result
      * @return dest
      */
@@ -3316,7 +3316,7 @@ public final class Short4Impl implements Short4 {
     /**
      * Set this vector to the given values.
      *
-     * @param v the vector
+     * @param v the vector to copy
      * @return this
      */
     public @Mutated Short4 set(Short4R v) {
@@ -3907,7 +3907,7 @@ public final class Short4Impl implements Short4 {
      * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
      * result outside the {@code short} range wraps.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
     public short distanceSquared(Short4R other) {
@@ -3944,7 +3944,7 @@ public final class Short4Impl implements Short4 {
      * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
      * result outside the {@code short} range wraps.
      *
-     * @param other the other vector
+     * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
     public short dot(Short4R other) {
@@ -3990,7 +3990,7 @@ public final class Short4Impl implements Short4 {
      * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
      * result outside the {@code short} range wraps.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
     public short manhattanDistance(Short4R other) {
@@ -4034,7 +4034,7 @@ public final class Short4Impl implements Short4 {
      * Set each component of this vector to the larger of itself and {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -4050,7 +4050,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -4066,7 +4066,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -4082,7 +4082,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -4095,7 +4095,7 @@ public final class Short4Impl implements Short4 {
      * Set each component of this vector to the larger of itself and the corresponding component of
      * {@code other} and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -4111,7 +4111,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -4127,7 +4127,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -4143,7 +4143,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @param dest will hold the result
      * @return dest
      */
@@ -4253,7 +4253,7 @@ public final class Short4Impl implements Short4 {
      * Set each component of this vector to the smaller of itself and {@code scalar} and store the
      * result in {@code dest}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -4269,7 +4269,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -4285,7 +4285,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -4301,7 +4301,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -4314,7 +4314,7 @@ public final class Short4Impl implements Short4 {
      * Set each component of this vector to the smaller of itself and the corresponding component of
      * {@code other} and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -4330,7 +4330,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -4346,7 +4346,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -4362,7 +4362,7 @@ public final class Short4Impl implements Short4 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @param dest will hold the result
      * @return dest
      */
@@ -4545,7 +4545,7 @@ public final class Short4Impl implements Short4 {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -4562,7 +4562,7 @@ public final class Short4Impl implements Short4 {
      * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
      * to {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -4579,7 +4579,7 @@ public final class Short4Impl implements Short4 {
      * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
      * to {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -4596,7 +4596,7 @@ public final class Short4Impl implements Short4 {
      * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
      * to {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @param dest will hold the result
      * @return dest
      */
@@ -4705,7 +4705,7 @@ public final class Short4Impl implements Short4 {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -4722,7 +4722,7 @@ public final class Short4Impl implements Short4 {
      * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
      * to {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -4739,7 +4739,7 @@ public final class Short4Impl implements Short4 {
      * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
      * to {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -4756,7 +4756,7 @@ public final class Short4Impl implements Short4 {
      * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
      * to {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @param dest will hold the result
      * @return dest
      */
@@ -4945,7 +4945,7 @@ public final class Short4Impl implements Short4 {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing
      * and store the result in {@code dest}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -4962,7 +4962,7 @@ public final class Short4Impl implements Short4 {
      * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
      * to {@code int}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -4979,7 +4979,7 @@ public final class Short4Impl implements Short4 {
      * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
      * to {@code long}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */
@@ -4996,7 +4996,7 @@ public final class Short4Impl implements Short4 {
      * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
      * to {@code double}.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @param dest will hold the result
      * @return dest
      */

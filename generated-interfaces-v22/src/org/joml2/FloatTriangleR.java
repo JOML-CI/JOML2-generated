@@ -49,7 +49,7 @@ public interface FloatTriangleR {
     /**
      * Transform this triangle by {@code m} and store the result in {@code dest}.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -61,7 +61,7 @@ public interface FloatTriangleR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -73,7 +73,7 @@ public interface FloatTriangleR {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -88,7 +88,7 @@ public interface FloatTriangleR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -111,7 +111,7 @@ public interface FloatTriangleR {
      * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
      * accurate for thin triangles.
      *
-     * @param p the vector
+     * @param p the point whose barycentric coordinates to compute
      * @param dest will hold the result
      * @return dest
      */
@@ -130,7 +130,7 @@ public interface FloatTriangleR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the vector
+     * @param p the point whose barycentric coordinates to compute
      * @param dest will hold the result
      * @return dest
      */
@@ -185,7 +185,7 @@ public interface FloatTriangleR {
      * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
      * accurate for thin triangles.
      *
-     * @param p the vector (also receives the result)
+     * @param p the point whose barycentric coordinates to compute (also receives the result)
      * @return {@code p}
      */
     default Float3 barycentric(@Mutated Float3 p) { return barycentric(p, p); }
@@ -747,7 +747,7 @@ public interface FloatTriangleR {
      * Determine whether the projection of the given point onto this triangle's plane lies inside or
      * on this triangle (boundary inclusive). Delegates to the shared {@code Intersectionf} kernels.
      *
-     * @param p the point
+     * @param p the point to test
      * @return {@code true} if the projection of the given point onto this triangle's plane lies
      *        inside or on this triangle, {@code false} otherwise
      */
@@ -757,7 +757,7 @@ public interface FloatTriangleR {
      * Determine whether this triangle intersects the given ray. Delegates to the shared
      * {@code Intersectionf} kernels.
      *
-     * @param ray the ray
+     * @param ray the ray to test for intersection
      * @param epsilon the tolerance below which the ray counts as parallel to the triangle's plane,
      *        guarding the near-zero determinant
      * @return {@code true} if this triangle and the given ray intersect, {@code false} otherwise
@@ -768,7 +768,7 @@ public interface FloatTriangleR {
      * Determine whether this triangle intersects the given ray, front face only. Delegates to the
      * shared {@code Intersectionf} kernels.
      *
-     * @param ray the ray
+     * @param ray the ray to test for intersection
      * @param epsilon the tolerance below which the ray counts as parallel to the triangle's plane,
      *        guarding the near-zero determinant
      * @return {@code true} if the ray hits the front face of this triangle, {@code false} otherwise
@@ -791,7 +791,7 @@ public interface FloatTriangleR {
      * Compute the point on this triangle closest to the given point. Delegates to the shared
      * {@code Intersectionf} kernels.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param dest will hold the point on this triangle closest to the given point
      * @return {@code dest}
      */

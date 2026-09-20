@@ -32,7 +32,7 @@ public interface FloatPlane extends FloatPlaneR {
     /**
      * Set this plane to the given values.
      *
-     * @param v the plane
+     * @param v the plane to copy
      * @return this
      */
     @Mutated FloatPlane set(FloatPlaneR v);
@@ -51,7 +51,7 @@ public interface FloatPlane extends FloatPlaneR {
     /**
      * Set the normal of this plane to {@code n}.
      *
-     * @param n the normal
+     * @param n the new normal
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatPlane setNormal(Float3R n) { return setNormal(n, Joml.RETURN_NEW ? Joml.floatPlane() : this); }

@@ -185,7 +185,7 @@ public final class DoubleQuatOps {
      * @param destOffset the element index in {@code dest} at which the quaternion starts
      * @param src the storage holding the quaternion
      * @param srcOffset the element index in {@code src} at which the quaternion starts
-     * @param other the storage holding the other quaternion
+     * @param other the storage holding the right factor of the product
      * @param otherOffset the element index in {@code other} at which the quaternion starts
      * @return {@code dest}
      */
@@ -297,7 +297,7 @@ public final class DoubleQuatOps {
      * @param destOffset the element index in {@code dest} at which the quaternion starts
      * @param src the storage holding the quaternion
      * @param srcOffset the element index in {@code src} at which the quaternion starts
-     * @param other the storage holding the other quaternion
+     * @param other the storage holding the quaternion to add
      * @param otherOffset the element index in {@code other} at which the quaternion starts
      * @return {@code dest}
      */
@@ -449,7 +449,7 @@ public final class DoubleQuatOps {
      * @param destOffset the element index in {@code dest} at which the quaternion starts
      * @param src the storage holding the quaternion
      * @param srcOffset the element index in {@code src} at which the quaternion starts
-     * @param other the storage holding the other quaternion
+     * @param other the storage holding the quaternion to subtract
      * @param otherOffset the element index in {@code other} at which the quaternion starts
      * @return {@code dest}
      */
@@ -543,7 +543,7 @@ public final class DoubleQuatOps {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
-     * @param v the storage holding the quaternion
+     * @param v the storage holding the quaternion to copy
      * @param vOffset the element index in {@code v} at which the quaternion starts
      * @return {@code dest}
      */
@@ -645,7 +645,7 @@ public final class DoubleQuatOps {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
-     * @param m the storage holding the matrix
+     * @param m the storage holding the matrix to convert
      * @param mOffset the element index in {@code m} at which the matrix starts
      * @return {@code dest}
      */
@@ -734,7 +734,7 @@ public final class DoubleQuatOps {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
-     * @param m the storage holding the matrix
+     * @param m the storage holding the matrix to convert
      * @param mOffset the element index in {@code m} at which the matrix starts
      * @return {@code dest}
      */
@@ -823,7 +823,7 @@ public final class DoubleQuatOps {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
-     * @param m the storage holding the matrix
+     * @param m the storage holding the matrix to convert
      * @param mOffset the element index in {@code m} at which the matrix starts
      * @return {@code dest}
      */
@@ -1651,6 +1651,9 @@ public final class DoubleQuatOps {
     /**
      * Linearly interpolate between this quaternion and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -1707,12 +1710,15 @@ public final class DoubleQuatOps {
     /**
      * Linearly interpolate between this quaternion and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
      * @param src the storage holding the quaternion
      * @param srcOffset the element index in {@code src} at which the quaternion starts
-     * @param other the storage holding the other quaternion
+     * @param other the storage holding the quaternion to interpolate towards
      * @param otherOffset the element index in {@code other} at which the quaternion starts
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return {@code dest}
@@ -1765,6 +1771,9 @@ public final class DoubleQuatOps {
      * The squared length is formed at {@code double} precision, so the result is exact only while
      * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
      * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -1838,6 +1847,9 @@ public final class DoubleQuatOps {
      * The squared length is formed at {@code double} precision, so the result is exact only while
      * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
      * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -1910,6 +1922,9 @@ public final class DoubleQuatOps {
      * The squared length is formed at {@code double} precision, so the result is exact only while
      * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
      * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -1993,6 +2008,9 @@ public final class DoubleQuatOps {
      * The squared length is formed at {@code double} precision, so the result is exact only while
      * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
      * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -2074,6 +2092,9 @@ public final class DoubleQuatOps {
      * This method interpolates along the arc as given: when the two quaternions' dot product is
      * negative, the longer path around the sphere is taken. Use {@link #slerpShortest} (or negate
      * one operand) to always interpolate along the shorter arc.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -2149,6 +2170,9 @@ public final class DoubleQuatOps {
      * This method interpolates along the arc as given: when the two quaternions' dot product is
      * negative, the longer path around the sphere is taken. Use {@link #slerpShortest} (or negate
      * one operand) to always interpolate along the shorter arc.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -2218,6 +2242,9 @@ public final class DoubleQuatOps {
      * Spherically interpolate along the shortest path between this quaternion (which must have unit
      * length) and {@code target} using the interpolation factor {@code alpha} and store the result
      * in {@code dest}.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -2316,6 +2343,9 @@ public final class DoubleQuatOps {
      * Spherically interpolate along the shortest path between this quaternion (which must have unit
      * length) and {@code target} using the interpolation factor {@code alpha} and store the result
      * in {@code dest}.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -2725,7 +2755,7 @@ public final class DoubleQuatOps {
      * @param destOffset the element index in {@code dest} at which the quaternion starts
      * @param src the storage holding the quaternion
      * @param srcOffset the element index in {@code src} at which the quaternion starts
-     * @param other the storage holding the other quaternion
+     * @param other the storage holding the right operand
      * @param otherOffset the element index in {@code other} at which the quaternion starts
      * @return {@code dest}
      */
@@ -2841,7 +2871,7 @@ public final class DoubleQuatOps {
      * @param destOffset the element index in {@code dest} at which the quaternion starts
      * @param src the storage holding the quaternion
      * @param srcOffset the element index in {@code src} at which the quaternion starts
-     * @param other the storage holding the other quaternion
+     * @param other the storage holding the left operand
      * @param otherOffset the element index in {@code other} at which the quaternion starts
      * @return {@code dest}
      */
@@ -3009,7 +3039,7 @@ public final class DoubleQuatOps {
      *
      * @param src the storage holding the quaternion
      * @param srcOffset the element index in {@code src} at which the quaternion starts
-     * @param other the storage holding the other quaternion
+     * @param other the storage holding the quaternion to measure the angle to
      * @param otherOffset the element index in {@code other} at which the quaternion starts
      * @return the angle in radians between this quaternion and {@code other}
      */
@@ -3282,7 +3312,7 @@ public final class DoubleQuatOps {
      * @param destOffset the element index in {@code dest} at which the quaternion starts
      * @param src the storage holding the quaternion
      * @param srcOffset the element index in {@code src} at which the quaternion starts
-     * @param q the storage holding the quaternion
+     * @param q the storage holding the quaternion to conjugate by
      * @param qOffset the element index in {@code q} at which the quaternion starts
      * @return {@code dest}
      */
@@ -3399,7 +3429,8 @@ public final class DoubleQuatOps {
      * @param destOffset the element index in {@code dest} at which the quaternion starts
      * @param src the storage holding the quaternion
      * @param srcOffset the element index in {@code src} at which the quaternion starts
-     * @param other the storage holding the other quaternion
+     * @param other the storage holding the target quaternion, reached by composing this quaternion
+     *        with the result
      * @param otherOffset the element index in {@code other} at which the quaternion starts
      * @return {@code dest}
      */
@@ -3498,7 +3529,7 @@ public final class DoubleQuatOps {
      *
      * @param src the storage holding the quaternion
      * @param srcOffset the element index in {@code src} at which the quaternion starts
-     * @param other the storage holding the other quaternion
+     * @param other the storage holding the other operand of the dot product
      * @param otherOffset the element index in {@code other} at which the quaternion starts
      * @return the dot product of this quaternion and {@code other}
      */
@@ -5783,7 +5814,7 @@ public final class DoubleQuatOps {
      * @param destOffset the element index in {@code dest} at which the quaternion starts
      * @param src the storage holding the quaternion
      * @param srcOffset the element index in {@code src} at which the quaternion starts
-     * @param other the storage holding the other quaternion
+     * @param other the storage holding the left operand
      * @param otherOffset the element index in {@code other} at which the quaternion starts
      * @return {@code dest}
      */
@@ -6172,7 +6203,8 @@ public final class DoubleQuatOps {
      * @param destOffset the element index in {@code dest} at which the quaternion starts
      * @param src the storage holding the quaternion
      * @param srcOffset the element index in {@code src} at which the quaternion starts
-     * @param dir the storage holding the direction
+     * @param dir the storage holding the direction to look along, i.e. the direction the local
+     *        {@code +z} axis is mapped to
      * @param dirOffset the element index in {@code dir} at which the vector starts
      * @param up the storage holding the direction of "up"
      * @param upOffset the element index in {@code up} at which the vector starts
@@ -6512,7 +6544,8 @@ public final class DoubleQuatOps {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
-     * @param dir the storage holding the direction
+     * @param dir the storage holding the direction to look along, i.e. the direction the local
+     *        {@code +z} axis is mapped to
      * @param dirOffset the element index in {@code dir} at which the vector starts
      * @param up the storage holding the direction of "up"
      * @param upOffset the element index in {@code up} at which the vector starts
@@ -6727,9 +6760,9 @@ public final class DoubleQuatOps {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
-     * @param fromDir the storage holding the vector
+     * @param fromDir the storage holding the direction to rotate from (must be a unit vector)
      * @param fromDirOffset the element index in {@code fromDir} at which the vector starts
-     * @param toDir the storage holding the vector
+     * @param toDir the storage holding the direction to rotate onto (must be a unit vector)
      * @param toDirOffset the element index in {@code toDir} at which the vector starts
      * @return {@code dest}
      */
@@ -7696,9 +7729,9 @@ public final class DoubleQuatOps {
      * @param destOffset the element index in {@code dest} at which the quaternion starts
      * @param src the storage holding the quaternion
      * @param srcOffset the element index in {@code src} at which the quaternion starts
-     * @param fromDir the storage holding the vector
+     * @param fromDir the storage holding the direction to rotate from (must be a unit vector)
      * @param fromDirOffset the element index in {@code fromDir} at which the vector starts
-     * @param toDir the storage holding the vector
+     * @param toDir the storage holding the direction to rotate onto (must be a unit vector)
      * @param toDirOffset the element index in {@code toDir} at which the vector starts
      * @return {@code dest}
      */
@@ -8435,7 +8468,7 @@ public final class DoubleQuatOps {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the quaternion
      * @param srcOffset the element index in {@code src} at which the quaternion starts
-     * @param v the storage holding the vector
+     * @param v the storage holding the vector to transform
      * @param vOffset the element index in {@code v} at which the vector starts
      * @return {@code dest}
      */
@@ -8541,7 +8574,7 @@ public final class DoubleQuatOps {
      * @param destOffset the element index in {@code dest} at which the vector starts
      * @param src the storage holding the quaternion
      * @param srcOffset the element index in {@code src} at which the quaternion starts
-     * @param v the storage holding the vector
+     * @param v the storage holding the vector to transform
      * @param vOffset the element index in {@code v} at which the vector starts
      * @return {@code dest}
      */

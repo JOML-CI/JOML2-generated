@@ -73,7 +73,7 @@ public interface DoubleOBBR {
      * Set the center of this oriented bounding box to {@code c} and store the result in
      * {@code dest}.
      *
-     * @param c the vector
+     * @param c the new center
      * @param dest will hold the result
      * @return dest
      */
@@ -95,7 +95,7 @@ public interface DoubleOBBR {
      * Set the half extents of this oriented bounding box to {@code h} and store the result in
      * {@code dest}.
      *
-     * @param h the vector
+     * @param h the new half extents
      * @param dest will hold the result
      * @return dest
      */
@@ -126,7 +126,7 @@ public interface DoubleOBBR {
      * Set the orientation of this oriented bounding box to {@code q} and store the result in
      * {@code dest}.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the new orientation (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -166,7 +166,7 @@ public interface DoubleOBBR {
      * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
      * shear is approximated) and store the result in {@code dest}.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -181,7 +181,7 @@ public interface DoubleOBBR {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -190,7 +190,7 @@ public interface DoubleOBBR {
     /**
      * Translate this oriented bounding box by {@code delta} and store the result in {@code dest}.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -216,7 +216,7 @@ public interface DoubleOBBR {
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -230,9 +230,9 @@ public interface DoubleOBBR {
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
-     * @param x the {@code x} component of the point {@code (x, y, z)}
-     * @param y the {@code y} component of the point {@code (x, y, z)}
-     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param x the {@code x} component of the point {@code (x, y, z)} to find the closest point to
+     * @param y the {@code y} component of the point {@code (x, y, z)} to find the closest point to
+     * @param z the {@code z} component of the point {@code (x, y, z)} to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -244,7 +244,7 @@ public interface DoubleOBBR {
      * back to world space. For a point inside or on the box, the result is the point itself (up to
      * rounding). Assumes the box's axes are orthonormal.
      *
-     * @param p the point (also receives the result)
+     * @param p the point to find the closest point to (also receives the result)
      * @return {@code p}
      */
     default Double3 closestPointToPoint(@Mutated Double3 p) { return closestPointToPoint(p, p); }
@@ -252,7 +252,7 @@ public interface DoubleOBBR {
     /**
      * Determine whether this oriented bounding box contains the given point (boundary inclusive).
      *
-     * @param p the vector
+     * @param p the point to test
      * @return {@code true} if this oriented bounding box contains the given point (boundary
      *        inclusive), {@code false} otherwise
      */
@@ -274,7 +274,7 @@ public interface DoubleOBBR {
      * evaluated in the box's local frame; zero for a point inside or on the box. Assumes the box's
      * axes are orthonormal.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the squared distance between this oriented bounding box and the given point,
      *        evaluated in the box's local frame; zero for a point inside or on the box. Assumes the
      *        box's axes are orthonormal
@@ -286,9 +286,9 @@ public interface DoubleOBBR {
      * evaluated in the box's local frame; zero for a point inside or on the box. Assumes the box's
      * axes are orthonormal.
      *
-     * @param x the {@code x} component of the point {@code (x, y, z)}
-     * @param y the {@code y} component of the point {@code (x, y, z)}
-     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param x the {@code x} component of the point {@code (x, y, z)} to measure the distance to
+     * @param y the {@code y} component of the point {@code (x, y, z)} to measure the distance to
+     * @param z the {@code z} component of the point {@code (x, y, z)} to measure the distance to
      * @return the squared distance between this oriented bounding box and the given point,
      *        evaluated in the box's local frame; zero for a point inside or on the box. Assumes the
      *        box's axes are orthonormal
@@ -300,7 +300,7 @@ public interface DoubleOBBR {
      * box's local frame; zero for a point inside or on the box. Assumes the box's axes are
      * orthonormal.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the distance between this oriented bounding box and the given point, evaluated in the
      *        box's local frame; zero for a point inside or on the box. Assumes the box's axes are
      *        orthonormal
@@ -312,9 +312,9 @@ public interface DoubleOBBR {
      * box's local frame; zero for a point inside or on the box. Assumes the box's axes are
      * orthonormal.
      *
-     * @param x the {@code x} component of the point {@code (x, y, z)}
-     * @param y the {@code y} component of the point {@code (x, y, z)}
-     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param x the {@code x} component of the point {@code (x, y, z)} to measure the distance to
+     * @param y the {@code y} component of the point {@code (x, y, z)} to measure the distance to
+     * @param z the {@code z} component of the point {@code (x, y, z)} to measure the distance to
      * @return the distance between this oriented bounding box and the given point, evaluated in the
      *        box's local frame; zero for a point inside or on the box. Assumes the box's axes are
      *        orthonormal
@@ -367,7 +367,7 @@ public interface DoubleOBBR {
     /**
      * Determine whether this oriented bounding box intersects {@code o}.
      *
-     * @param o the oriented bounding box
+     * @param o the oriented bounding box to test for intersection
      * @return {@code true} if this oriented bounding box intersects {@code o}, {@code false}
      *        otherwise
      */

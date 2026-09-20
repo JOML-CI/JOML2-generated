@@ -38,7 +38,14 @@ public record DoubleQuat(double x, double y, double z, double w) {
     /** The identity quaternion. */
     public static final DoubleQuat IDENTITY = new DoubleQuat();
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param x the {@code x} component
+     * @param y the {@code y} component
+     * @param z the {@code z} component
+     * @param w the {@code w} component
+     */
     public DoubleQuat(double x, double y, double z, double w) {
         this.x = x;
         this.y = y;
@@ -79,7 +86,7 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * Compute the inverse of the product of this quaternion and {@code other}, i.e.
      * {@code (this * other)^-1}, returning the result as a value.
      *
-     * @param other the other quaternion
+     * @param other the right factor of the product
      * @return the resulting quaternion
      */
     public DoubleQuat invertProduct(DoubleQuat other) {
@@ -115,7 +122,7 @@ public record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Add {@code other} to this quaternion, returning the result as a value.
      *
-     * @param other the other quaternion
+     * @param other the quaternion to add
      * @return the resulting quaternion
      */
     public DoubleQuat add(DoubleQuat other) {
@@ -155,7 +162,7 @@ public record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Subtract {@code other} from this quaternion, returning the result as a value.
      *
-     * @param other the other quaternion
+     * @param other the quaternion to subtract
      * @return the resulting quaternion
      */
     public DoubleQuat sub(DoubleQuat other) {
@@ -185,7 +192,7 @@ public record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Create a new quaternion from the given values.
      *
-     * @param v the quaternion
+     * @param v the quaternion to copy
      * @return the resulting quaternion
      */
     public DoubleQuat set(DoubleQuat v) {
@@ -222,7 +229,7 @@ public record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Create the rotation (real) part of the unit dual quaternion {@code dq}.
      *
-     * @param dq the dual quaternion
+     * @param dq the dual quaternion to convert
      * @return the resulting quaternion
      */
     public static DoubleQuat makeFromDualQuat(DoubleDualQuat dq) {
@@ -260,7 +267,7 @@ public record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Create the rotation represented by the given matrix.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return the resulting quaternion
      */
     public static DoubleQuat makeFromMatrix(Double3x3 m) {
@@ -300,7 +307,7 @@ public record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Create the rotation represented by the given matrix.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return the resulting quaternion
      */
     public static DoubleQuat makeFromMatrix(Double3x4 m) {
@@ -340,7 +347,7 @@ public record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Create the rotation represented by the given matrix.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return the resulting quaternion
      */
     public static DoubleQuat makeFromMatrix(Double4x4 m) {
@@ -429,9 +436,19 @@ public record DoubleQuat(double x, double y, double z, double w) {
         return new Double3x4(Math.fma(-2.0, Math.fma(this.y, this.y, _t0), 1.0), 2.0 * Math.fma(this.x, this.y, -_t1), 2.0 * Math.fma(this.x, this.z, _t2), 0.0, 2.0 * Math.fma(this.x, this.y, _t1), Math.fma(-2.0, Math.fma(this.x, this.x, _t0), 1.0), 2.0 * Math.fma(this.y, this.z, -(this.x * this.w)), 0.0, 2.0 * Math.fma(this.x, this.z, -_t2), 2.0 * Math.fma(this.x, this.w, this.y * this.z), Math.fma(-2.0, Math.fma(this.x, this.x, this.y * this.y), 1.0), 0.0, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Result value of {@code decomposeSwingTwist}. */
+    /**
+     * Result value of {@code decomposeSwingTwist}.
+     *
+     * @param swing the swing
+     * @param twist the twist
+     */
     public record DecomposeSwingTwistResult(DoubleQuat swing, DoubleQuat twist) {
-        /** Canonical constructor. */
+        /**
+         * Canonical constructor.
+         *
+         * @param swing the swing
+         * @param twist the twist
+         */
         public DecomposeSwingTwistResult(DoubleQuat swing, DoubleQuat twist) {
             this.swing = swing;
             this.twist = twist;
@@ -594,8 +611,11 @@ public record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Linearly interpolate between this quaternion and {@code other} using the interpolation factor
      * {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other quaternion
+     * @param other the quaternion to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting quaternion
      */
@@ -608,6 +628,10 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * Linearly interpolate between this quaternion and ({@code otherX}, {@code otherY},
      * {@code otherZ}, {@code otherW}) using the interpolation factor {@code t}, returning the
      * result as a value.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) (interpolation factor
+     * {@code 1}).
      *
      * @param otherX the {@code x} component of the quaternion
      *        {@code (otherX, otherY, otherZ, otherW)}
@@ -632,6 +656,9 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * The squared length is formed at {@code double} precision, so the result is exact only while
      * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
      * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -650,6 +677,10 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * The squared length is formed at {@code double} precision, so the result is exact only while
      * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
      * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code targetX}, {@code targetY}, {@code targetZ}, {@code targetW}) (interpolation factor
+     * {@code 1}).
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -684,6 +715,9 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * The squared length is formed at {@code double} precision, so the result is exact only while
      * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
      * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -702,6 +736,10 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * The squared length is formed at {@code double} precision, so the result is exact only while
      * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
      * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code targetX}, {@code targetY}, {@code targetZ}, {@code targetW}) (interpolation factor
+     * {@code 1}).
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -745,6 +783,9 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * This method interpolates along the arc as given: when the two quaternions' dot product is
      * negative, the longer path around the sphere is taken. Use {@link #slerpShortest} (or negate
      * one operand) to always interpolate along the shorter arc.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param target the target rotation (must be a unit quaternion)
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -763,6 +804,10 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * This method interpolates along the arc as given: when the two quaternions' dot product is
      * negative, the longer path around the sphere is taken. Use {@link #slerpShortest} (or negate
      * one operand) to always interpolate along the shorter arc.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code targetX}, {@code targetY}, {@code targetZ}, {@code targetW}) (interpolation factor
+     * {@code 1}).
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)} (the quaternion must have unit length)
@@ -795,6 +840,9 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * Spherically interpolate along the shortest path between this quaternion (which must have unit
      * length) and {@code target} using the interpolation factor {@code alpha}, returning the result
      * as a value.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * {@code target} (interpolation factor {@code 1}).
      *
      * @param target the target rotation (must be a unit quaternion)
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -832,6 +880,10 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * Spherically interpolate along the shortest path between this quaternion (which must have unit
      * length) and ({@code targetX}, {@code targetY}, {@code targetZ}, {@code targetW}) using the
      * interpolation factor {@code alpha}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code targetX}, {@code targetY}, {@code targetZ}, {@code targetW}) (interpolation factor
+     * {@code 1}).
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)} (the quaternion must have unit length)
@@ -995,7 +1047,7 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * will be {@code Q * R}. So when transforming a vector {@code v} with the new quaternion by
      * using {@code Q * R * v}, the transformation of the operand will be applied first.
      *
-     * @param other the other quaternion
+     * @param other the right operand
      * @return the resulting quaternion
      */
     public DoubleQuat mul(DoubleQuat other) {
@@ -1034,7 +1086,7 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * then the new quaternion will be {@code T * Q}. So when transforming a vector {@code v} with
      * the new quaternion by using {@code T * Q * v}, the given transformation will be applied last.
      *
-     * @param other the other quaternion
+     * @param other the left operand
      * @return the resulting quaternion
      */
     public DoubleQuat preMul(DoubleQuat other) {
@@ -1086,7 +1138,7 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
      * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
-     * @param other the other quaternion
+     * @param other the quaternion to measure the angle to
      * @return the angle in radians between this quaternion and {@code other}
      */
     public double angleTo(DoubleQuat other) {
@@ -1181,7 +1233,7 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * {@code q} is the given quaternion (equal to {@code q * this * q^-1} when it has unit length),
      * returning the result as a value.
      *
-     * @param q the quaternion
+     * @param q the quaternion to conjugate by
      * @return the resulting quaternion
      */
     public DoubleQuat conjugateBy(DoubleQuat q) {
@@ -1215,7 +1267,7 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * with {@code this * D = other}, that is {@code D = this^-1 * other}, returning the result as a
      * value.
      *
-     * @param other the other quaternion
+     * @param other the target quaternion, reached by composing this quaternion with the result
      * @return the resulting quaternion
      */
     public DoubleQuat difference(DoubleQuat other) {
@@ -1249,7 +1301,7 @@ public record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Compute the dot product of this quaternion and {@code other}.
      *
-     * @param other the other quaternion
+     * @param other the other operand of the dot product
      * @return the dot product of this quaternion and {@code other}
      */
     public double dot(DoubleQuat other) {
@@ -2084,7 +2136,7 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * Identical to {@link #preMul}; the lower-case spelling is kept for JOML 1 source
      * compatibility.
      *
-     * @param other the other quaternion
+     * @param other the left operand
      * @return the resulting quaternion
      */
     public DoubleQuat premul(DoubleQuat other) {
@@ -2218,7 +2270,8 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return the resulting quaternion
      */
@@ -2360,7 +2413,8 @@ public record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Create a rotation that makes {@code +z} point along {@code dir}.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return the resulting quaternion
      */
@@ -2455,8 +2509,8 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
      * arbitrarily.
      *
-     * @param fromDir the vector
-     * @param toDir the vector
+     * @param fromDir the direction to rotate from (must be a unit vector)
+     * @param toDir the direction to rotate onto (must be a unit vector)
      * @return the resulting quaternion
      */
     public static DoubleQuat makeRotationTo(Double3 fromDir, Double3 toDir) {
@@ -2840,8 +2894,8 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
      * arbitrarily.
      *
-     * @param fromDir the vector
-     * @param toDir the vector
+     * @param fromDir the direction to rotate from (must be a unit vector)
+     * @param toDir the direction to rotate onto (must be a unit vector)
      * @return the resulting quaternion
      */
     public DoubleQuat rotateTo(Double3 fromDir, Double3 toDir) {
@@ -3187,7 +3241,7 @@ public record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Transform {@code v} by this quaternion, returning the result as a value.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @return the resulting vector
      */
     public Double3 transform(Double3 v) {
@@ -3216,7 +3270,7 @@ public record DoubleQuat(double x, double y, double z, double w) {
      * Transform {@code v} by the inverse of this quaternion (assumes a unit quaternion), returning
      * the result as a value.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @return the resulting vector
      */
     public Double3 transformInverse(Double3 v) {
@@ -3240,22 +3294,38 @@ public record DoubleQuat(double x, double y, double z, double w) {
         return new Double3(Math.fma(this.z, _t9, Math.fma(-this.y, _t10, Math.fma(this.w, _t11, vX))), Math.fma(this.x, _t10, Math.fma(-this.z, _t11, Math.fma(this.w, _t9, vY))), Math.fma(this.y, _t11, Math.fma(-this.x, _t9, Math.fma(this.w, _t10, vZ))));
     }
 
-    /** {@return a copy with the {@code x} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code x} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code x} component
+     */
     public DoubleQuat withX(double v) {
         return new DoubleQuat(v, y, z, w);
     }
 
-    /** {@return a copy with the {@code y} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code y} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code y} component
+     */
     public DoubleQuat withY(double v) {
         return new DoubleQuat(x, v, z, w);
     }
 
-    /** {@return a copy with the {@code z} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code z} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code z} component
+     */
     public DoubleQuat withZ(double v) {
         return new DoubleQuat(x, y, v, w);
     }
 
-    /** {@return a copy with the {@code w} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code w} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code w} component
+     */
     public DoubleQuat withW(double v) {
         return new DoubleQuat(x, y, z, v);
     }

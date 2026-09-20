@@ -47,7 +47,25 @@ public value record DoubleOBB(double cX, double cY, double cZ, double uXx, doubl
     /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
     public static final int SIZE_BYTES = 120;
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param cX the {@code cX} component
+     * @param cY the {@code cY} component
+     * @param cZ the {@code cZ} component
+     * @param uXx the {@code uXx} component
+     * @param uXy the {@code uXy} component
+     * @param uXz the {@code uXz} component
+     * @param uYx the {@code uYx} component
+     * @param uYy the {@code uYy} component
+     * @param uYz the {@code uYz} component
+     * @param uZx the {@code uZx} component
+     * @param uZy the {@code uZy} component
+     * @param uZz the {@code uZz} component
+     * @param hsX the {@code hsX} component
+     * @param hsY the {@code hsY} component
+     * @param hsZ the {@code hsZ} component
+     */
     public DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy, double uXz, double uYx, double uYy, double uYz, double uZx, double uZy, double uZz, double hsX, double hsY, double hsZ) {
         this.cX = cX;
         this.cY = cY;
@@ -109,7 +127,7 @@ public value record DoubleOBB(double cX, double cY, double cZ, double uXx, doubl
     /**
      * Create a new oriented bounding box from the given values.
      *
-     * @param v the oriented bounding box
+     * @param v the oriented bounding box to copy
      * @return the resulting oriented bounding box
      */
     public DoubleOBB set(DoubleOBB v) {
@@ -195,7 +213,7 @@ public value record DoubleOBB(double cX, double cY, double cZ, double uXx, doubl
     /**
      * Set the center of this oriented bounding box to {@code c}, returning the result as a value.
      *
-     * @param c the vector
+     * @param c the new center
      * @return the resulting oriented bounding box
      */
     public DoubleOBB setCenter(Double3 c) {
@@ -221,7 +239,7 @@ public value record DoubleOBB(double cX, double cY, double cZ, double uXx, doubl
      * Set the half extents of this oriented bounding box to {@code h}, returning the result as a
      * value.
      *
-     * @param h the vector
+     * @param h the new half extents
      * @return the resulting oriented bounding box
      */
     public DoubleOBB setHalfSize(Double3 h) {
@@ -258,7 +276,7 @@ public value record DoubleOBB(double cX, double cY, double cZ, double uXx, doubl
      * Set the orientation of this oriented bounding box to {@code q}, returning the result as a
      * value.
      *
-     * @param q the quaternion (must be a unit quaternion)
+     * @param q the new orientation (must be a unit quaternion)
      * @return the resulting oriented bounding box
      */
     public DoubleOBB setOrientation(DoubleQuat q) {
@@ -329,7 +347,7 @@ public value record DoubleOBB(double cX, double cY, double cZ, double uXx, doubl
      * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
      * shear is approximated), returning the result as a value.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return the resulting oriented bounding box
      */
     public DoubleOBB transform(Double3x4 m) {
@@ -366,7 +384,7 @@ public value record DoubleOBB(double cX, double cY, double cZ, double uXx, doubl
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return the resulting oriented bounding box
      */
     public DoubleOBB transform(Double4x4 m) {
@@ -385,7 +403,7 @@ public value record DoubleOBB(double cX, double cY, double cZ, double uXx, doubl
     /**
      * Translate this oriented bounding box by {@code delta}, returning the result as a value.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @return the resulting oriented bounding box
      */
     public DoubleOBB translate(Double3 delta) {
@@ -415,7 +433,7 @@ public value record DoubleOBB(double cX, double cY, double cZ, double uXx, doubl
      * <p>
      * The result is returned as a value; {@code this} is not modified.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @return the resulting vector
      */
     public Double3 closestPointToPoint(Double3 p) {
@@ -431,9 +449,12 @@ public value record DoubleOBB(double cX, double cY, double cZ, double uXx, doubl
      * <p>
      * The result is returned as a value; {@code this} is not modified.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
      * @return the resulting vector
      */
     public Double3 closestPointToPoint(double pX, double pY, double pZ) {
@@ -450,7 +471,7 @@ public value record DoubleOBB(double cX, double cY, double cZ, double uXx, doubl
     /**
      * Determine whether this oriented bounding box contains the given point (boundary inclusive).
      *
-     * @param p the vector
+     * @param p the point to test
      * @return {@code true} if this oriented bounding box contains the given point (boundary
      *        inclusive), {@code false} otherwise
      */
@@ -483,7 +504,7 @@ public value record DoubleOBB(double cX, double cY, double cZ, double uXx, doubl
      * evaluated in the box's local frame; zero for a point inside or on the box. Assumes the box's
      * axes are orthonormal.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the squared distance between this oriented bounding box and the given point,
      *        evaluated in the box's local frame; zero for a point inside or on the box. Assumes the
      *        box's axes are orthonormal
@@ -498,9 +519,12 @@ public value record DoubleOBB(double cX, double cY, double cZ, double uXx, doubl
      * evaluated in the box's local frame; zero for a point inside or on the box. Assumes the box's
      * axes are orthonormal.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the squared distance between this oriented bounding box and the given point,
      *        evaluated in the box's local frame; zero for a point inside or on the box. Assumes the
      *        box's axes are orthonormal
@@ -521,7 +545,7 @@ public value record DoubleOBB(double cX, double cY, double cZ, double uXx, doubl
      * box's local frame; zero for a point inside or on the box. Assumes the box's axes are
      * orthonormal.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the distance between this oriented bounding box and the given point, evaluated in the
      *        box's local frame; zero for a point inside or on the box. Assumes the box's axes are
      *        orthonormal
@@ -536,9 +560,12 @@ public value record DoubleOBB(double cX, double cY, double cZ, double uXx, doubl
      * box's local frame; zero for a point inside or on the box. Assumes the box's axes are
      * orthonormal.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the distance between this oriented bounding box and the given point, evaluated in the
      *        box's local frame; zero for a point inside or on the box. Assumes the box's axes are
      *        orthonormal
@@ -607,7 +634,7 @@ public value record DoubleOBB(double cX, double cY, double cZ, double uXx, doubl
     /**
      * Determine whether this oriented bounding box intersects {@code o}.
      *
-     * @param o the oriented bounding box
+     * @param o the oriented bounding box to test for intersection
      * @return {@code true} if this oriented bounding box intersects {@code o}, {@code false}
      *        otherwise
      */
@@ -713,77 +740,137 @@ public value record DoubleOBB(double cX, double cY, double cZ, double uXx, doubl
         return this.hsZ >= 0.0;
     }
 
-    /** {@return a copy with the {@code cX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code cX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code cX} component
+     */
     public DoubleOBB withCX(double v) {
         return new DoubleOBB(v, cY, cZ, uXx, uXy, uXz, uYx, uYy, uYz, uZx, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code cY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code cY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code cY} component
+     */
     public DoubleOBB withCY(double v) {
         return new DoubleOBB(cX, v, cZ, uXx, uXy, uXz, uYx, uYy, uYz, uZx, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code cZ} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code cZ} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code cZ} component
+     */
     public DoubleOBB withCZ(double v) {
         return new DoubleOBB(cX, cY, v, uXx, uXy, uXz, uYx, uYy, uYz, uZx, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code uXx} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code uXx} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code uXx} component
+     */
     public DoubleOBB withUXx(double v) {
         return new DoubleOBB(cX, cY, cZ, v, uXy, uXz, uYx, uYy, uYz, uZx, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code uXy} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code uXy} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code uXy} component
+     */
     public DoubleOBB withUXy(double v) {
         return new DoubleOBB(cX, cY, cZ, uXx, v, uXz, uYx, uYy, uYz, uZx, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code uXz} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code uXz} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code uXz} component
+     */
     public DoubleOBB withUXz(double v) {
         return new DoubleOBB(cX, cY, cZ, uXx, uXy, v, uYx, uYy, uYz, uZx, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code uYx} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code uYx} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code uYx} component
+     */
     public DoubleOBB withUYx(double v) {
         return new DoubleOBB(cX, cY, cZ, uXx, uXy, uXz, v, uYy, uYz, uZx, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code uYy} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code uYy} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code uYy} component
+     */
     public DoubleOBB withUYy(double v) {
         return new DoubleOBB(cX, cY, cZ, uXx, uXy, uXz, uYx, v, uYz, uZx, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code uYz} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code uYz} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code uYz} component
+     */
     public DoubleOBB withUYz(double v) {
         return new DoubleOBB(cX, cY, cZ, uXx, uXy, uXz, uYx, uYy, v, uZx, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code uZx} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code uZx} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code uZx} component
+     */
     public DoubleOBB withUZx(double v) {
         return new DoubleOBB(cX, cY, cZ, uXx, uXy, uXz, uYx, uYy, uYz, v, uZy, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code uZy} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code uZy} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code uZy} component
+     */
     public DoubleOBB withUZy(double v) {
         return new DoubleOBB(cX, cY, cZ, uXx, uXy, uXz, uYx, uYy, uYz, uZx, v, uZz, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code uZz} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code uZz} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code uZz} component
+     */
     public DoubleOBB withUZz(double v) {
         return new DoubleOBB(cX, cY, cZ, uXx, uXy, uXz, uYx, uYy, uYz, uZx, uZy, v, hsX, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code hsX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code hsX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code hsX} component
+     */
     public DoubleOBB withHsX(double v) {
         return new DoubleOBB(cX, cY, cZ, uXx, uXy, uXz, uYx, uYy, uYz, uZx, uZy, uZz, v, hsY, hsZ);
     }
 
-    /** {@return a copy with the {@code hsY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code hsY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code hsY} component
+     */
     public DoubleOBB withHsY(double v) {
         return new DoubleOBB(cX, cY, cZ, uXx, uXy, uXz, uYx, uYy, uYz, uZx, uZy, uZz, hsX, v, hsZ);
     }
 
-    /** {@return a copy with the {@code hsZ} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code hsZ} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code hsZ} component
+     */
     public DoubleOBB withHsZ(double v) {
         return new DoubleOBB(cX, cY, cZ, uXx, uXy, uXz, uYx, uYy, uYz, uZx, uZy, uZz, hsX, hsY, v);
     }

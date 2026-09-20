@@ -31,7 +31,7 @@ public interface DoubleRect extends DoubleRectR {
     /**
      * Add {@code other} to this rectangle.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to add
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect add(DoubleRectR other) { return add(other, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
@@ -57,7 +57,7 @@ public interface DoubleRect extends DoubleRectR {
     /**
      * Subtract {@code other} from this rectangle.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to subtract
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect sub(DoubleRectR other) { return sub(other, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
@@ -76,7 +76,7 @@ public interface DoubleRect extends DoubleRectR {
     /**
      * Set this rectangle to the given values.
      *
-     * @param v the rectangle
+     * @param v the rectangle to copy
      * @return this
      */
     @Mutated DoubleRect set(DoubleRectR v);
@@ -95,7 +95,7 @@ public interface DoubleRect extends DoubleRectR {
     /**
      * Set the maximum corner of this rectangle to {@code max}.
      *
-     * @param max the maximum corner
+     * @param max the maximum corner of the box
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect setMax(Double2R max) { return setMax(max, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
@@ -112,7 +112,7 @@ public interface DoubleRect extends DoubleRectR {
     /**
      * Set the minimum corner of this rectangle to {@code min}.
      *
-     * @param min the minimum corner
+     * @param min the minimum corner of the box
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect setMin(Double2R min) { return setMin(min, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
@@ -157,8 +157,11 @@ public interface DoubleRect extends DoubleRectR {
     /**
      * Linearly interpolate between this rectangle and {@code other} using the interpolation factor
      * {@code t}.
+     * <p>
+     * The interpolation starts at this rectangle (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other rectangle
+     * @param other the rectangle to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -167,6 +170,9 @@ public interface DoubleRect extends DoubleRectR {
     /**
      * Linearly interpolate between this rectangle and ({@code minX}, {@code minY}, {@code maxX},
      * {@code maxY}) using the interpolation factor {@code t}.
+     * <p>
+     * The interpolation starts at this rectangle (interpolation factor {@code 0}) and ends at
+     * ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) (interpolation factor {@code 1}).
      *
      * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
@@ -205,7 +211,7 @@ public interface DoubleRect extends DoubleRectR {
     /**
      * Translate this rectangle by {@code delta}.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect translate(Double2R delta) { return translate(delta, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
@@ -222,7 +228,7 @@ public interface DoubleRect extends DoubleRectR {
     /**
      * Set this rectangle to the union of itself and {@code other}.
      *
-     * @param other the other rectangle
+     * @param other the rectangle to include in the union
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect union(DoubleRectR other) { return union(other, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
@@ -242,7 +248,7 @@ public interface DoubleRect extends DoubleRectR {
     /**
      * Grow this rectangle to include the point {@code p}.
      *
-     * @param p the vector
+     * @param p the point to include
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect union(Double2R p) { return union(p, Joml.RETURN_NEW ? Joml.doubleRect() : this); }

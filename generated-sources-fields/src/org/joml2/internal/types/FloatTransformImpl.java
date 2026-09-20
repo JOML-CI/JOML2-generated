@@ -81,7 +81,7 @@ public final class FloatTransformImpl implements FloatTransform {
      *
      * @param axis the rotation axis (must be a unit vector)
      * @param angle the angle in radians
-     * @param translation the vector
+     * @param translation the translation
      * @return this
      */
     public @Mutated FloatTransform makeFromAxisAngle(Float3R axis, float angle, Float3R translation) {
@@ -130,8 +130,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * Set this transform to a rigid transformation that first rotates by {@code rotation} and then
      * translates by {@code translation} ({@code T * R}).
      *
-     * @param translation the vector
-     * @param rotation the quaternion
+     * @param translation the translation
+     * @param rotation the rotation
      * @return this
      */
     public @Mutated FloatTransform makeTranslationRotation(Float3R translation, FloatQuatR rotation) {
@@ -179,9 +179,9 @@ public final class FloatTransformImpl implements FloatTransform {
      * Set this transform to a transformation composed of the given translation, rotation and scale,
      * applied in scale-rotation-translation order.
      *
-     * @param translation the vector
-     * @param rotation the quaternion
-     * @param scale the scale factor
+     * @param translation the translation
+     * @param rotation the rotation
+     * @param scale the scale factors
      * @return this
      */
     public @Mutated FloatTransform makeTranslationRotationScale(Float3R translation, FloatQuatR rotation, Float3R scale) {
@@ -230,7 +230,7 @@ public final class FloatTransformImpl implements FloatTransform {
     /**
      * Set this transform to the given values.
      *
-     * @param v the transform
+     * @param v the transform to copy
      * @return this
      */
     public @Mutated FloatTransform set(FloatTransformR v) {
@@ -281,7 +281,7 @@ public final class FloatTransformImpl implements FloatTransform {
     /**
      * Set the rotation of this transform to {@code r} and store the result in {@code dest}.
      *
-     * @param r the quaternion
+     * @param r the new rotation
      * @param dest will hold the result
      * @return dest
      */
@@ -296,7 +296,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param r the quaternion
+     * @param r the new rotation
      * @param dest will hold the result
      * @return dest
      */
@@ -579,7 +579,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * Set this transform to the rigid motion of the unit dual quaternion {@code dq} (translation
      * and rotation from {@code dq}, scale = 1).
      *
-     * @param dq the dual quaternion
+     * @param dq the dual quaternion to convert
      * @return this
      */
     public @Mutated FloatTransform makeFromDualQuat(FloatDualQuatR dq) {
@@ -630,7 +630,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * with zero translation (scale is removed by normalizing the columns, but shear is not removed:
      * a sheared block yields a rotation quaternion that is not unit length).
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated public FloatTransform makeFromMatrix(Float3x3R m) {
@@ -699,7 +699,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * column-normalized block (scale is removed by normalizing the columns, but shear is not
      * removed: a sheared block yields a rotation quaternion that is not unit length).
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated public FloatTransform makeFromMatrix(Float3x4R m) {
@@ -768,7 +768,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * column-normalized block (scale is removed by normalizing the columns, but shear is not
      * removed: a sheared block yields a rotation quaternion that is not unit length).
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated public FloatTransform makeFromMatrix(Float4x4R m) {
@@ -835,7 +835,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * Set this transform to the given rigid transform's motion (translation and rotation), with
      * scale = 1.
      *
-     * @param r the rigid transform
+     * @param r the rigid transform to convert
      * @return this
      */
     public @Mutated FloatTransform makeFromRigid(FloatRigidR r) {
@@ -1264,7 +1264,7 @@ public final class FloatTransformImpl implements FloatTransform {
     /**
      * Set this transform to a pure rotation by {@code rotation} (zero translation, unit scale).
      *
-     * @param rotation the quaternion
+     * @param rotation the rotation
      * @return this
      */
     public @Mutated FloatTransform set(FloatQuatR rotation) {
@@ -1305,7 +1305,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * Set this transform to a pure translation by {@code translation} (identity rotation, unit
      * scale).
      *
-     * @param translation the vector
+     * @param translation the translation
      * @return this
      */
     public @Mutated FloatTransform set(Float3R translation) {
@@ -1344,8 +1344,11 @@ public final class FloatTransformImpl implements FloatTransform {
      * Interpolate between this transform and {@code other} using the interpolation factor
      * {@code t}, interpolating translation and scale linearly and the rotation via shortest-arc
      * slerp and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this transform (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other transform
+     * @param other the transform to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1360,10 +1363,13 @@ public final class FloatTransformImpl implements FloatTransform {
      * {@code t}, interpolating translation and scale linearly and the rotation via shortest-arc
      * slerp and store the result in {@code dest}.
      * <p>
+     * The interpolation starts at this transform (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other transform
+     * @param other the transform to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1379,6 +1385,11 @@ public final class FloatTransformImpl implements FloatTransform {
      * {@code otherSY}, {@code otherSZ}) using the interpolation factor {@code t}, interpolating
      * translation and scale linearly and the rotation via shortest-arc slerp and store the result
      * in {@code dest}.
+     * <p>
+     * The interpolation starts at this transform (interpolation factor {@code 0}) and ends at
+     * ({@code otherTX}, {@code otherTY}, {@code otherTZ}, {@code otherRX}, {@code otherRY},
+     * {@code otherRZ}, {@code otherRW}, {@code otherSX}, {@code otherSY}, {@code otherSZ})
+     * (interpolation factor {@code 1}).
      *
      * @param otherTX the {@code tX} component of the transform
      *        {@code (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW, otherSX, otherSY, otherSZ)}
@@ -1467,6 +1478,11 @@ public final class FloatTransformImpl implements FloatTransform {
      * {@code otherSY}, {@code otherSZ}) using the interpolation factor {@code t}, interpolating
      * translation and scale linearly and the rotation via shortest-arc slerp and store the result
      * in {@code dest}.
+     * <p>
+     * The interpolation starts at this transform (interpolation factor {@code 0}) and ends at
+     * ({@code otherTX}, {@code otherTY}, {@code otherTZ}, {@code otherRX}, {@code otherRY},
+     * {@code otherRZ}, {@code otherRW}, {@code otherSX}, {@code otherSY}, {@code otherSZ})
+     * (interpolation factor {@code 1}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1565,7 +1581,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param other the other transform
+     * @param other the right operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1590,7 +1606,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other transform
+     * @param other the right operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1741,7 +1757,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param other the other transform
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1766,7 +1782,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other transform
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1919,7 +1935,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param other the other transform
+     * @param other the target transform, reached by composing this transform with the result
      * @param dest will hold the result
      * @return dest
      */
@@ -1942,7 +1958,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param other the other transform
+     * @param other the target transform, reached by composing this transform with the result
      * @param dest will hold the result
      * @return dest
      */
@@ -3093,7 +3109,7 @@ public final class FloatTransformImpl implements FloatTransform {
     /**
      * Set this transform to a scaling transformation that scales by {@code scale}.
      *
-     * @param scale the scale factor
+     * @param scale the scale factors
      * @return this
      */
     public @Mutated FloatTransform makeScaling(Float3R scale) {
@@ -3160,7 +3176,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param rotation the quaternion (must be a unit quaternion)
+     * @param rotation the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -3186,7 +3202,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param rotation the quaternion (must be a unit quaternion)
+     * @param rotation the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -4416,7 +4432,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * transform will be {@code M * S}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * S * v}, the scaling will be applied first.
      *
-     * @param scale the scale factor
+     * @param scale the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -4435,7 +4451,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param scale the scale factor
+     * @param scale the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -4572,7 +4588,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * transform will be {@code M * T}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * T * v}, the translation will be applied first.
      *
-     * @param translation the vector
+     * @param translation the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -4592,7 +4608,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param translation the vector
+     * @param translation the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -4685,7 +4701,7 @@ public final class FloatTransformImpl implements FloatTransform {
     /**
      * Transform {@code v} by this transform and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -4700,7 +4716,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -4766,7 +4782,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * Transform the given direction by the rotation part of this transform, ignoring translation
      * and scale and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -4782,7 +4798,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -4843,7 +4859,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * ignoring translation and scale, without materializing {@code invert()} and store the result
      * in {@code dest}.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -4860,7 +4876,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -4921,7 +4937,7 @@ public final class FloatTransformImpl implements FloatTransform {
     /**
      * Transform {@code p} by the inverse of this transform and store the result in {@code dest}.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -4936,7 +4952,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -5002,7 +5018,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * Transform the given position by this transform, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -5018,7 +5034,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -5064,7 +5080,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * Transform the given position by the inverse of this transform (world to local), without
      * materializing {@code invert()} and store the result in {@code dest}.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -5080,7 +5096,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -5126,7 +5142,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * Transform the given vector by the linear part of this transform, i.e. apply its scale and
      * rotation but not its translation and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -5142,7 +5158,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -5209,7 +5225,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * i.e. undo its rotation and scale but not its translation, without materializing
      * {@code invert()} and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -5226,7 +5242,7 @@ public final class FloatTransformImpl implements FloatTransform {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */

@@ -31,7 +31,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Add {@code other} to this dual quaternion.
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to add
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat add(FloatDualQuatR other) { return add(other, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
@@ -63,7 +63,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Multiply each component of this dual quaternion by {@code scalar}.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat mul(float scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
@@ -78,7 +78,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Subtract {@code other} from this dual quaternion.
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to subtract
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat sub(FloatDualQuatR other) { return sub(other, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
@@ -110,7 +110,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Set this dual quaternion to the given values.
      *
-     * @param v the dual quaternion
+     * @param v the dual quaternion to copy
      * @return this
      */
     @Mutated FloatDualQuat set(FloatDualQuatR v);
@@ -150,7 +150,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * Set this dual quaternion to the rigid motion of the given rigid transform (an exact
      * conversion - both represent rotation plus translation).
      *
-     * @param r the rigid transform
+     * @param r the rigid transform to convert
      * @return this
      */
     @Mutated FloatDualQuat makeFromRigid(FloatRigidR r);
@@ -181,7 +181,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * Set this dual quaternion to the rigid motion (rotation and translation) of the given
      * transform; the scale is dropped (dual quaternions cannot represent it).
      *
-     * @param t the transform
+     * @param t the transform to convert
      * @return this
      */
     @Mutated FloatDualQuat makeFromTransform(FloatTransformR t);
@@ -220,7 +220,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      *
      * @param axis the rotation axis (must be a unit vector)
      * @param angle the angle in radians
-     * @param translation the vector
+     * @param translation the translation
      * @return this
      */
     @Mutated FloatDualQuat makeFromAxisAngle(Float3R axis, float angle, Float3R translation);
@@ -258,8 +258,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * Set this dual quaternion to a rigid transformation that first rotates by {@code rotation} and
      * then translates by {@code translation} ({@code T * R}).
      *
-     * @param translation the vector
-     * @param rotation the quaternion
+     * @param translation the translation
+     * @param rotation the rotation
      * @return this
      */
     @Mutated FloatDualQuat makeTranslationRotation(Float3R translation, FloatQuatR rotation);
@@ -297,7 +297,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Set this dual quaternion to a pure rotation by {@code rotation} (zero translation).
      *
-     * @param rotation the quaternion
+     * @param rotation the rotation
      * @return this
      */
     @Mutated FloatDualQuat set(FloatQuatR rotation);
@@ -319,7 +319,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * <p>
      * Alias for {@code set}.
      *
-     * @param rotation the quaternion
+     * @param rotation the rotation
      * @return this
      */
     @Mutated default FloatDualQuat makeRotation(FloatQuatR rotation) { return set(rotation); }
@@ -341,8 +341,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Set this dual quaternion to the given values.
      *
-     * @param rotation the quaternion
-     * @param translation the vector
+     * @param rotation the rotation
+     * @param translation the translation
      * @return this
      */
     @Mutated FloatDualQuat set(FloatQuatR rotation, Float3R translation);
@@ -371,7 +371,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Set this dual quaternion to a pure translation by {@code translation} (identity rotation).
      *
-     * @param translation the vector
+     * @param translation the translation
      * @return this
      */
     @Mutated FloatDualQuat set(Float3R translation);
@@ -392,7 +392,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * <p>
      * Alias for {@code set}.
      *
-     * @param translation the vector
+     * @param translation the translation
      * @return this
      */
     @Mutated default FloatDualQuat makeTranslation(Float3R translation) { return set(translation); }
@@ -413,8 +413,11 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Blend this dual quaternion with {@code other} using dual-quaternion linear blending with the
      * weight {@code t}.
+     * <p>
+     * The interpolation starts at this dual quaternion (weight {@code 0}) and ends at {@code other}
+     * (weight {@code 1}).
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to blend towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -424,6 +427,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * Blend this dual quaternion with ({@code rX}, {@code rY}, {@code rZ}, {@code rW}, {@code dX},
      * {@code dY}, {@code dZ}, {@code dW}) using dual-quaternion linear blending with the weight
      * {@code t}.
+     * <p>
+     * The interpolation starts at this dual quaternion (weight {@code 0}) and ends at ({@code rX},
+     * {@code rY}, {@code rZ}, {@code rW}, {@code dX}, {@code dY}, {@code dZ}, {@code dW}) (weight
+     * {@code 1}).
      *
      * @param rX the {@code rX} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
@@ -449,8 +456,11 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Linearly interpolate between this dual quaternion and {@code other} using the interpolation
      * factor {@code t}.
+     * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -460,6 +470,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * Linearly interpolate between this dual quaternion and ({@code rX}, {@code rY}, {@code rZ},
      * {@code rW}, {@code dX}, {@code dY}, {@code dZ}, {@code dW}) using the interpolation factor
      * {@code t}.
+     * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code rX}, {@code rY}, {@code rZ}, {@code rW}, {@code dX}, {@code dY}, {@code dZ},
+     * {@code dW}) (interpolation factor {@code 1}).
      *
      * @param rX the {@code rX} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
@@ -485,8 +499,11 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Screw-linearly interpolate between this dual quaternion (which must have unit length) and
      * {@code other} using the interpolation factor {@code t}.
+     * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other dual quaternion (must be a unit dual quaternion)
+     * @param other the dual quaternion to interpolate towards (must be a unit dual quaternion)
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -496,6 +513,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * Screw-linearly interpolate between this dual quaternion (which must have unit length) and
      * ({@code rX}, {@code rY}, {@code rZ}, {@code rW}, {@code dX}, {@code dY}, {@code dZ},
      * {@code dW}) using the interpolation factor {@code t}.
+     * <p>
+     * The interpolation starts at this dual quaternion (interpolation factor {@code 0}) and ends at
+     * ({@code rX}, {@code rY}, {@code rZ}, {@code rW}, {@code dX}, {@code dY}, {@code dZ},
+     * {@code dW}) (interpolation factor {@code 1}).
      *
      * @param rX the {@code rX} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the real part must have unit length)
@@ -526,7 +547,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * quaternion by using {@code Q * R * v}, the transformation of the operand will be applied
      * first.
      *
-     * @param other the other dual quaternion
+     * @param other the right operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat mul(FloatDualQuatR other) { return mul(other, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
@@ -568,7 +589,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * quaternion by using {@code R * Q * v}, the transformation of the operand will be applied
      * last.
      *
-     * @param other the other dual quaternion
+     * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat preMul(FloatDualQuatR other) { return preMul(other, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
@@ -605,7 +626,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Add {@code other} scaled by {@code weight} to this dual quaternion.
      *
-     * @param other the other dual quaternion
+     * @param other the dual quaternion to scale and add
      * @param weight the factor to scale {@code other} by before adding
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -649,7 +670,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * Compute the difference between this dual quaternion and {@code other}, i.e. the rigid
      * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other}.
      *
-     * @param other the other dual quaternion
+     * @param other the target dual quaternion, reached by composing this dual quaternion with the
+     *        result
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat difference(FloatDualQuatR other) { return difference(other, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
@@ -720,7 +742,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * upper-left 3x3 block, which is assumed to be a rotation, and translation from its last
      * column.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated FloatDualQuat makeFromMatrix(Float4x4R m);
@@ -730,7 +752,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * upper-left 3x3 block, which is assumed to be a rotation, and translation from its last
      * column.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated FloatDualQuat makeFromMatrix(Float3x4R m);
@@ -739,7 +761,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * Set this dual quaternion to the rotation represented by the given matrix, with zero
      * translation.
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated FloatDualQuat makeFromMatrix(Float3x3R m);
@@ -767,7 +789,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Set the rotation of this dual quaternion to {@code rotation}.
      *
-     * @param rotation the quaternion
+     * @param rotation the new rotation
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat setRotation(FloatQuatR rotation) { return setRotation(rotation, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
@@ -786,7 +808,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Set the translation of this dual quaternion to {@code translation}.
      *
-     * @param translation the vector
+     * @param translation the new translation
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat setTranslation(Float3R translation) { return setTranslation(translation, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
@@ -810,7 +832,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * with the new dual quaternion by using {@code Q * L * v}, the "look along" will be applied
      * first.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -862,7 +885,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Set this dual quaternion to a rotation that makes {@code +z} point along {@code dir}.
      *
-     * @param dir the direction
+     * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
+     *        mapped to
      * @param up the direction of "up"
      * @return this
      */
@@ -985,7 +1009,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param rotation the quaternion (must be a unit quaternion)
+     * @param rotation the rotation to apply (must be a unit quaternion)
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat rotate(FloatQuatR rotation) { return rotate(rotation, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
@@ -1183,7 +1207,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * with the new dual quaternion by using {@code Q * T * v}, the translation will be applied
      * first.
      *
-     * @param translation the vector
+     * @param translation the translation offsets
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat translate(Float3R translation) { return translate(translation, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }

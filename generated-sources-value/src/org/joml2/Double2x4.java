@@ -50,7 +50,18 @@ public value record Double2x4(double m00, double m01, double m02, double m03, do
     /** The identity matrix. */
     public static final Double2x4 IDENTITY = new Double2x4();
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param m00 the element in row 0, column 0
+     * @param m01 the element in row 0, column 1
+     * @param m02 the element in row 0, column 2
+     * @param m03 the element in row 0, column 3
+     * @param m10 the element in row 1, column 0
+     * @param m11 the element in row 1, column 1
+     * @param m12 the element in row 1, column 2
+     * @param m13 the element in row 1, column 3
+     */
     public Double2x4(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13) {
         this.m00 = m00;
         this.m01 = m01;
@@ -69,7 +80,14 @@ public value record Double2x4(double m00, double m01, double m02, double m03, do
         this(1, 0, 0, 0, 0, 1, 0, 0);
     }
 
-    /** Create a matrix from the given column vectors. */
+    /**
+     * Create a matrix from the given column vectors.
+     *
+     * @param c0 the first column
+     * @param c1 the second column
+     * @param c2 the third column
+     * @param c3 the fourth column
+     */
     public Double2x4(Double2 c0, Double2 c1, Double2 c2, Double2 c3) {
         this(c0.x(), c1.x(), c2.x(), c3.x(), c0.y(), c1.y(), c2.y(), c3.y());
     }
@@ -139,7 +157,7 @@ public value record Double2x4(double m00, double m01, double m02, double m03, do
     /**
      * Add {@code other} to this matrix, returning the result as a value.
      *
-     * @param other the other matrix
+     * @param other the matrix to add
      * @return the resulting matrix
      */
     public Double2x4 add(Double2x4 other) {
@@ -179,7 +197,7 @@ public value record Double2x4(double m00, double m01, double m02, double m03, do
     /**
      * Subtract {@code other} from this matrix, returning the result as a value.
      *
-     * @param other the other matrix
+     * @param other the matrix to subtract
      * @return the resulting matrix
      */
     public Double2x4 sub(Double2x4 other) {
@@ -209,7 +227,7 @@ public value record Double2x4(double m00, double m01, double m02, double m03, do
     /**
      * Create a new matrix from the given values.
      *
-     * @param v the matrix
+     * @param v the matrix to copy
      * @return the resulting matrix
      */
     public Double2x4 set(Double2x4 v) {
@@ -260,8 +278,11 @@ public value record Double2x4(double m00, double m01, double m02, double m03, do
     /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other matrix
+     * @param other the matrix to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting matrix
      */
@@ -274,6 +295,10 @@ public value record Double2x4(double m00, double m01, double m02, double m03, do
      * Linearly interpolate between this matrix and ({@code m00}, {@code m01}, {@code m02},
      * {@code m03}, {@code m10}, {@code m11}, {@code m12}, {@code m13}) using the interpolation
      * factor {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this matrix (interpolation factor {@code 0}) and ends at
+     * ({@code m00}, {@code m01}, {@code m02}, {@code m03}, {@code m10}, {@code m11}, {@code m12},
+     * {@code m13}) (interpolation factor {@code 1}).
      *
      * @param m00 the element in row 0, column 0 of the matrix
      * @param m01 the element in row 0, column 1 of the matrix
@@ -343,7 +368,7 @@ public value record Double2x4(double m00, double m01, double m02, double m03, do
      * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
-     * @param other the other matrix
+     * @param other the left operand
      * @return the resulting matrix
      */
     public Double2x4 preMul(Double2x4 other) {
@@ -376,9 +401,10 @@ public value record Double2x4(double m00, double m01, double m02, double m03, do
 
 
     /**
-     * Multiply this matrix by the given vector, returning the result as a value.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v}, returning the result as a value.
      *
-     * @param v the vector
+     * @param v the right operand of the product
      * @return the resulting vector
      */
     public Double2 mul(Double4 v) {
@@ -387,7 +413,8 @@ public value record Double2x4(double m00, double m01, double m02, double m03, do
 
 
     /**
-     * Multiply this matrix by the given vector, returning the result as a value.
+     * Multiply this matrix by the given vector, i.e. compute the matrix-vector product
+     * {@code this * v}, returning the result as a value.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ, vW)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ, vW)}
@@ -399,42 +426,74 @@ public value record Double2x4(double m00, double m01, double m02, double m03, do
         return new Double2(Math.fma(this.m03, vW, Math.fma(this.m02, vZ, Math.fma(this.m00, vX, this.m01 * vY))), Math.fma(this.m13, vW, Math.fma(this.m12, vZ, Math.fma(this.m10, vX, this.m11 * vY))));
     }
 
-    /** {@return a copy with the {@code m00} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m00} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m00} element
+     */
     public Double2x4 withM00(double v) {
         return new Double2x4(v, m01, m02, m03, m10, m11, m12, m13);
     }
 
-    /** {@return a copy with the {@code m01} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m01} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m01} element
+     */
     public Double2x4 withM01(double v) {
         return new Double2x4(m00, v, m02, m03, m10, m11, m12, m13);
     }
 
-    /** {@return a copy with the {@code m02} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m02} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m02} element
+     */
     public Double2x4 withM02(double v) {
         return new Double2x4(m00, m01, v, m03, m10, m11, m12, m13);
     }
 
-    /** {@return a copy with the {@code m03} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m03} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m03} element
+     */
     public Double2x4 withM03(double v) {
         return new Double2x4(m00, m01, m02, v, m10, m11, m12, m13);
     }
 
-    /** {@return a copy with the {@code m10} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m10} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m10} element
+     */
     public Double2x4 withM10(double v) {
         return new Double2x4(m00, m01, m02, m03, v, m11, m12, m13);
     }
 
-    /** {@return a copy with the {@code m11} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m11} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m11} element
+     */
     public Double2x4 withM11(double v) {
         return new Double2x4(m00, m01, m02, m03, m10, v, m12, m13);
     }
 
-    /** {@return a copy with the {@code m12} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m12} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m12} element
+     */
     public Double2x4 withM12(double v) {
         return new Double2x4(m00, m01, m02, m03, m10, m11, v, m13);
     }
 
-    /** {@return a copy with the {@code m13} element replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code m13} element replaced by {@code v}}
+     *
+     * @param v the new value of the {@code m13} element
+     */
     public Double2x4 withM13(double v) {
         return new Double2x4(m00, m01, m02, m03, m10, m11, m12, v);
     }

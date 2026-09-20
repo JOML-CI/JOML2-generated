@@ -35,7 +35,17 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
     /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
     public static final int SIZE_BYTES = 28;
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param tX the {@code tX} component
+     * @param tY the {@code tY} component
+     * @param tZ the {@code tZ} component
+     * @param rX the {@code rX} component
+     * @param rY the {@code rY} component
+     * @param rZ the {@code rZ} component
+     * @param rW the {@code rW} component
+     */
     public FloatRigid(float tX, float tY, float tZ, float rX, float rY, float rZ, float rW) {
         this.tX = tX;
         this.tY = tY;
@@ -75,7 +85,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      *
      * @param axis the rotation axis (must be a unit vector)
      * @param angle the angle in radians
-     * @param translation the vector
+     * @param translation the translation
      * @return the resulting rigid transform
      */
     public static FloatRigid makeFromAxisAngle(Float3 axis, float angle, Float3 translation) {
@@ -114,8 +124,8 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * Create a rigid transformation that first rotates by {@code rotation} and then translates by
      * {@code translation} ({@code T * R}).
      *
-     * @param translation the vector
-     * @param rotation the quaternion
+     * @param translation the translation
+     * @param rotation the rotation
      * @return the resulting rigid transform
      */
     public static FloatRigid makeTranslationRotation(Float3 translation, FloatQuat rotation) {
@@ -152,7 +162,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
     /**
      * Create a new rigid transform from the given values.
      *
-     * @param v the rigid transform
+     * @param v the rigid transform to copy
      * @return the resulting rigid transform
      */
     public FloatRigid set(FloatRigid v) {
@@ -187,7 +197,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
     /**
      * Set the rotation of this rigid transform to {@code r}, returning the result as a value.
      *
-     * @param r the quaternion
+     * @param r the new rotation
      * @return the resulting rigid transform
      */
     public FloatRigid setRotation(FloatQuat r) {
@@ -239,7 +249,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * Create the rigid motion of the unit dual quaternion {@code dq} (an exact conversion - both
      * represent rotation plus translation).
      *
-     * @param dq the dual quaternion
+     * @param dq the dual quaternion to convert
      * @return the resulting rigid transform
      */
     public static FloatRigid makeFromDualQuat(FloatDualQuat dq) {
@@ -280,7 +290,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * by normalizing the columns, but shear is not removed: a sheared block yields a rotation
      * quaternion that is not unit length).
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return the resulting rigid transform
      */
     public static FloatRigid makeFromMatrix(Float3x3 m) {
@@ -347,7 +357,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * columns, but shear is not removed: a sheared block yields a rotation quaternion that is not
      * unit length).
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return the resulting rigid transform
      */
     public static FloatRigid makeFromMatrix(Float3x4 m) {
@@ -414,7 +424,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * columns, but shear is not removed: a sheared block yields a rotation quaternion that is not
      * unit length).
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return the resulting rigid transform
      */
     public static FloatRigid makeFromMatrix(Float4x4 m) {
@@ -479,7 +489,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * Create the rigid motion (rotation and translation) of the given transform; the scale is
      * dropped (a rigid transform cannot represent it).
      *
-     * @param t the transform
+     * @param t the transform to convert
      * @return the resulting rigid transform
      */
     public static FloatRigid makeFromTransform(FloatTransform t) {
@@ -609,7 +619,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * Create a new rigid transform representing a pure rotation by {@code rotation} (zero
      * translation).
      *
-     * @param rotation the quaternion
+     * @param rotation the rotation
      * @return the resulting rigid transform
      */
     public FloatRigid set(FloatQuat rotation) {
@@ -642,7 +652,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * <p>
      * Alias for {@code set}.
      *
-     * @param rotation the quaternion
+     * @param rotation the rotation
      * @return the resulting rigid transform
      */
     public static FloatRigid makeRotation(FloatQuat rotation) {
@@ -675,7 +685,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * Create a new rigid transform representing a pure translation by {@code translation} (identity
      * rotation).
      *
-     * @param translation the vector
+     * @param translation the translation
      * @return the resulting rigid transform
      */
     public FloatRigid set(Float3 translation) {
@@ -706,7 +716,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * <p>
      * Alias for {@code set}.
      *
-     * @param translation the vector
+     * @param translation the translation
      * @return the resulting rigid transform
      */
     public static FloatRigid makeTranslation(Float3 translation) {
@@ -737,8 +747,11 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * Interpolate between this rigid transform and {@code other} using the interpolation factor
      * {@code t}, interpolating the translation linearly and the rotation via shortest-arc slerp,
      * returning the result as a value.
+     * <p>
+     * The interpolation starts at this rigid transform (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other rigid transform
+     * @param other the rigid transform to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting rigid transform
      */
@@ -791,6 +804,10 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * {@code otherTZ}, {@code otherRX}, {@code otherRY}, {@code otherRZ}, {@code otherRW}) using
      * the interpolation factor {@code t}, interpolating the translation linearly and the rotation
      * via shortest-arc slerp, returning the result as a value.
+     * <p>
+     * The interpolation starts at this rigid transform (interpolation factor {@code 0}) and ends at
+     * ({@code otherTX}, {@code otherTY}, {@code otherTZ}, {@code otherRX}, {@code otherRY},
+     * {@code otherRZ}, {@code otherRW}) (interpolation factor {@code 1}).
      *
      * @param otherTX the {@code tX} component of the rigid transform
      *        {@code (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW)}
@@ -842,7 +859,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * transform by using {@code M * R * v}, the transformation of the operand will be applied
      * first.
      *
-     * @param other the other rigid transform
+     * @param other the right operand
      * @return the resulting rigid transform
      */
     public FloatRigid mul(FloatRigid other) {
@@ -896,7 +913,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * transform will be {@code R * M}. So when transforming a vector {@code v} with the new rigid
      * transform by using {@code R * M * v}, the transformation of the operand will be applied last.
      *
-     * @param other the other rigid transform
+     * @param other the left operand
      * @return the resulting rigid transform
      */
     public FloatRigid preMul(FloatRigid other) {
@@ -944,7 +961,8 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other},
      * returning the result as a value.
      *
-     * @param other the other rigid transform
+     * @param other the target rigid transform, reached by composing this rigid transform with the
+     *        result
      * @return the resulting rigid transform
      */
     public FloatRigid difference(FloatRigid other) {
@@ -1469,7 +1487,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
-     * @param rotation the quaternion (must be a unit quaternion)
+     * @param rotation the rotation to apply (must be a unit quaternion)
      * @return the resulting rigid transform
      */
     public FloatRigid rotate(FloatQuat rotation) {
@@ -1871,7 +1889,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * with the new rigid transform by using {@code M * T * v}, the translation will be applied
      * first.
      *
-     * @param translation the vector
+     * @param translation the translation offsets
      * @return the resulting rigid transform
      */
     public FloatRigid translate(Float3 translation) {
@@ -1907,7 +1925,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
     /**
      * Transform {@code v} by this rigid transform, returning the result as a value.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @return the resulting vector
      */
     public Float3 transform(Float3 v) {
@@ -1936,7 +1954,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * Transform the given direction by the rotation part of this rigid transform, ignoring the
      * translation, returning the result as a value.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @return the resulting vector
      */
     public Float3 transformDirection(Float3 v) {
@@ -1966,7 +1984,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * local), ignoring the translation, without materializing {@code invert()}, returning the
      * result as a value.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @return the resulting vector
      */
     public Float3 transformDirectionInverse(Float3 v) {
@@ -1995,7 +2013,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
     /**
      * Transform {@code p} by the inverse of this rigid transform, returning the result as a value.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @return the resulting vector
      */
     public Float3 transformInverse(Float3 p) {
@@ -2027,7 +2045,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * Transform the given position by this rigid transform, treating it as a point with an implicit
      * {@code w = 1}, returning the result as a value.
      *
-     * @param v the vector
+     * @param v the position to transform
      * @return the resulting vector
      */
     public Float3 transformPosition(Float3 v) {
@@ -2053,7 +2071,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      * Transform the given position by the inverse of this rigid transform (world to local), without
      * materializing {@code invert()}, returning the result as a value.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @return the resulting vector
      */
     public Float3 transformPositionInverse(Float3 p) {
@@ -2074,37 +2092,65 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
         return transformInverse(pX, pY, pZ);
     }
 
-    /** {@return a copy with the {@code tX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code tX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code tX} component
+     */
     public FloatRigid withTX(float v) {
         return new FloatRigid(v, tY, tZ, rX, rY, rZ, rW);
     }
 
-    /** {@return a copy with the {@code tY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code tY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code tY} component
+     */
     public FloatRigid withTY(float v) {
         return new FloatRigid(tX, v, tZ, rX, rY, rZ, rW);
     }
 
-    /** {@return a copy with the {@code tZ} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code tZ} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code tZ} component
+     */
     public FloatRigid withTZ(float v) {
         return new FloatRigid(tX, tY, v, rX, rY, rZ, rW);
     }
 
-    /** {@return a copy with the {@code rX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code rX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code rX} component
+     */
     public FloatRigid withRX(float v) {
         return new FloatRigid(tX, tY, tZ, v, rY, rZ, rW);
     }
 
-    /** {@return a copy with the {@code rY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code rY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code rY} component
+     */
     public FloatRigid withRY(float v) {
         return new FloatRigid(tX, tY, tZ, rX, v, rZ, rW);
     }
 
-    /** {@return a copy with the {@code rZ} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code rZ} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code rZ} component
+     */
     public FloatRigid withRZ(float v) {
         return new FloatRigid(tX, tY, tZ, rX, rY, v, rW);
     }
 
-    /** {@return a copy with the {@code rW} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code rW} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code rW} component
+     */
     public FloatRigid withRW(float v) {
         return new FloatRigid(tX, tY, tZ, rX, rY, rZ, v);
     }

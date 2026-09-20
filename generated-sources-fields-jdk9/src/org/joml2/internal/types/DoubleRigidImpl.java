@@ -63,7 +63,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
      *
      * @param axis the rotation axis (must be a unit vector)
      * @param angle the angle in radians
-     * @param translation the vector
+     * @param translation the translation
      * @return this
      */
     public @Mutated DoubleRigid makeFromAxisAngle(Double3R axis, double angle, Double3R translation) {
@@ -109,8 +109,8 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * Set this rigid transform to a rigid transformation that first rotates by {@code rotation} and
      * then translates by {@code translation} ({@code T * R}).
      *
-     * @param translation the vector
-     * @param rotation the quaternion
+     * @param translation the translation
+     * @param rotation the rotation
      * @return this
      */
     public @Mutated DoubleRigid makeTranslationRotation(Double3R translation, DoubleQuatR rotation) {
@@ -154,7 +154,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
     /**
      * Set this rigid transform to the given values.
      *
-     * @param v the rigid transform
+     * @param v the rigid transform to copy
      * @return this
      */
     public @Mutated DoubleRigid set(DoubleRigidR v) {
@@ -196,7 +196,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
     /**
      * Set the rotation of this rigid transform to {@code r} and store the result in {@code dest}.
      *
-     * @param r the quaternion
+     * @param r the new rotation
      * @param dest will hold the result
      * @return dest
      */
@@ -269,7 +269,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * Set this rigid transform to the rigid motion of the unit dual quaternion {@code dq} (an exact
      * conversion - both represent rotation plus translation).
      *
-     * @param dq the dual quaternion
+     * @param dq the dual quaternion to convert
      * @return this
      */
     public @Mutated DoubleRigid makeFromDualQuat(DoubleDualQuatR dq) {
@@ -317,7 +317,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * translation (scale is removed by normalizing the columns, but shear is not removed: a sheared
      * block yields a rotation quaternion that is not unit length).
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated public DoubleRigid makeFromMatrix(Double3x3R m) {
@@ -400,7 +400,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * removed by normalizing the columns, but shear is not removed: a sheared block yields a
      * rotation quaternion that is not unit length).
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated public DoubleRigid makeFromMatrix(Double3x4R m) {
@@ -483,7 +483,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * removed by normalizing the columns, but shear is not removed: a sheared block yields a
      * rotation quaternion that is not unit length).
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return this
      */
     @Mutated public DoubleRigid makeFromMatrix(Double4x4R m) {
@@ -564,7 +564,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * Set this rigid transform to the rigid motion (rotation and translation) of the given
      * transform; the scale is dropped (a rigid transform cannot represent it).
      *
-     * @param t the transform
+     * @param t the transform to convert
      * @return this
      */
     public @Mutated DoubleRigid makeFromTransform(DoubleTransformR t) {
@@ -806,7 +806,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
     /**
      * Set this rigid transform to a pure rotation by {@code rotation} (zero translation).
      *
-     * @param rotation the quaternion
+     * @param rotation the rotation
      * @return this
      */
     public @Mutated DoubleRigid set(DoubleQuatR rotation) {
@@ -843,7 +843,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
     /**
      * Set this rigid transform to a pure translation by {@code translation} (identity rotation).
      *
-     * @param translation the vector
+     * @param translation the translation
      * @return this
      */
     public @Mutated DoubleRigid set(Double3R translation) {
@@ -879,8 +879,11 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * Interpolate between this rigid transform and {@code other} using the interpolation factor
      * {@code t}, interpolating the translation linearly and the rotation via shortest-arc slerp and
      * store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this rigid transform (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other rigid transform
+     * @param other the rigid transform to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -895,6 +898,10 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * {@code otherTZ}, {@code otherRX}, {@code otherRY}, {@code otherRZ}, {@code otherRW}) using
      * the interpolation factor {@code t}, interpolating the translation linearly and the rotation
      * via shortest-arc slerp and store the result in {@code dest}.
+     * <p>
+     * The interpolation starts at this rigid transform (interpolation factor {@code 0}) and ends at
+     * ({@code otherTX}, {@code otherTY}, {@code otherTZ}, {@code otherRX}, {@code otherRY},
+     * {@code otherRZ}, {@code otherRW}) (interpolation factor {@code 1}).
      *
      * @param otherTX the {@code tX} component of the rigid transform
      *        {@code (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW)}
@@ -976,7 +983,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * transform by using {@code M * R * v}, the transformation of the operand will be applied
      * first.
      *
-     * @param other the other rigid transform
+     * @param other the right operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1038,7 +1045,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * transform will be {@code R * M}. So when transforming a vector {@code v} with the new rigid
      * transform by using {@code R * M * v}, the transformation of the operand will be applied last.
      *
-     * @param other the other rigid transform
+     * @param other the left operand
      * @param dest will hold the result
      * @return dest
      */
@@ -1099,7 +1106,8 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other}
      * and store the result in {@code dest}.
      *
-     * @param other the other rigid transform
+     * @param other the target rigid transform, reached by composing this rigid transform with the
+     *        result
      * @param dest will hold the result
      * @return dest
      */
@@ -1763,7 +1771,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
-     * @param rotation the quaternion (must be a unit quaternion)
+     * @param rotation the rotation to apply (must be a unit quaternion)
      * @param dest will hold the result
      * @return dest
      */
@@ -2266,7 +2274,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * with the new rigid transform by using {@code M * T * v}, the translation will be applied
      * first.
      *
-     * @param translation the vector
+     * @param translation the translation offsets
      * @param dest will hold the result
      * @return dest
      */
@@ -2312,7 +2320,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
     /**
      * Transform {@code v} by this rigid transform and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2347,7 +2355,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * Transform the given direction by the rotation part of this rigid transform, ignoring the
      * translation and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2383,7 +2391,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * local), ignoring the translation, without materializing {@code invert()} and store the result
      * in {@code dest}.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2419,7 +2427,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * Transform {@code p} by the inverse of this rigid transform and store the result in
      * {@code dest}.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2457,7 +2465,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * Transform the given position by this rigid transform, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
      *
-     * @param v the vector
+     * @param v the position to transform
      * @param dest will hold the result
      * @return dest
      */
@@ -2485,7 +2493,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * Transform the given position by the inverse of this rigid transform (world to local), without
      * materializing {@code invert()} and store the result in {@code dest}.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @param dest will hold the result
      * @return dest
      */

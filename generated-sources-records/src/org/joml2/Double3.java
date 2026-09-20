@@ -36,7 +36,13 @@ public record Double3(double x, double y, double z) {
     /** The zero vector (all components 0). */
     public static final Double3 ZERO = new Double3(0, 0, 0);
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param x the {@code x} component
+     * @param y the {@code y} component
+     * @param z the {@code z} component
+     */
     public Double3(double x, double y, double z) {
         this.x = x;
         this.y = y;
@@ -50,17 +56,31 @@ public record Double3(double x, double y, double z) {
         this(0, 0, 0);
     }
 
-    /** Create a vector with all components set to {@code s}. */
+    /**
+     * Create a vector with all components set to {@code s}.
+     *
+     * @param s the value assigned to every component
+     */
     public Double3(double s) {
         this(s, s, s);
     }
 
-    /** Create a vector composed of the given parts, in order. */
+    /**
+     * Create a vector composed of the given parts, in order.
+     *
+     * @param v0 the {@code x} component
+     * @param v1 the {@code y} and {@code z} components
+     */
     public Double3(double v0, Double2 v1) {
         this(v0, v1.x(), v1.y());
     }
 
-    /** Create a vector composed of the given parts, in order. */
+    /**
+     * Create a vector composed of the given parts, in order.
+     *
+     * @param v0 the {@code x} and {@code y} components
+     * @param v1 the {@code z} component
+     */
     public Double3(Double2 v0, double v1) {
         this(v0.x(), v0.y(), v1);
     }
@@ -76,7 +96,7 @@ public record Double3(double x, double y, double z) {
     /**
      * Add {@code other} to this vector, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return the resulting vector
      */
     public Double3 add(Double3 other) {
@@ -101,7 +121,7 @@ public record Double3(double x, double y, double z) {
     /**
      * Divide each component of this vector by {@code scalar}, returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Double3 div(double scalar) {
@@ -112,7 +132,7 @@ public record Double3(double x, double y, double z) {
     /**
      * Divide this vector component-wise by {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Double3 div(Double3 other) {
@@ -139,7 +159,7 @@ public record Double3(double x, double y, double z) {
      * {@code this * b + c} per component, returning the result as a value.
      *
      * @param b the factor to multiply this vector by
-     * @param c the vector
+     * @param c the vector to add
      * @return the resulting vector
      */
     public Double3 fma(double b, Double3 c) {
@@ -168,7 +188,7 @@ public record Double3(double x, double y, double z) {
      * {@code this * b + c} per component, returning the result as a value.
      *
      * @param b the factor to multiply this vector by
-     * @param c the vector
+     * @param c the vector to add
      * @return the resulting vector
      */
     public Double3 fma(Double3 b, Double3 c) {
@@ -197,7 +217,7 @@ public record Double3(double x, double y, double z) {
     /**
      * Multiply each component of this vector by {@code scalar}, returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @return the resulting vector
      */
     public Double3 mul(double scalar) {
@@ -208,7 +228,7 @@ public record Double3(double x, double y, double z) {
     /**
      * Multiply this vector component-wise by {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return the resulting vector
      */
     public Double3 mul(Double3 other) {
@@ -243,7 +263,7 @@ public record Double3(double x, double y, double z) {
     /**
      * Subtract {@code other} from this vector, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return the resulting vector
      */
     public Double3 sub(Double3 other) {
@@ -268,7 +288,7 @@ public record Double3(double x, double y, double z) {
     /**
      * Create a new vector from the given values.
      *
-     * @param v the vector
+     * @param v the vector to copy
      * @return the resulting vector
      */
     public Double3 set(Double3 v) {
@@ -451,12 +471,16 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Interpolate along the cubic Bézier curve defined by this vector and the given control points,
-     * returning the result as a value.
+     * Interpolate along the cubic Bézier curve that starts at this vector, is shaped by the control
+     * points {@code p1} and {@code p2} and ends at {@code p3}, returning the result as a value.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p3} at
+     * {@code t = 1}; the control points {@code p1} and {@code p2} pull it towards themselves but
+     * are generally not on the curve.
      *
      * @param p1 the first control point
      * @param p2 the second control point
-     * @param p3 the end point
+     * @param p3 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting vector
      */
@@ -466,8 +490,14 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Interpolate along the cubic Bézier curve defined by this vector and the given control points,
-     * returning the result as a value.
+     * Interpolate along the cubic Bézier curve that starts at this vector, is shaped by the control
+     * points ({@code p1X}, {@code p1Y}, {@code p1Z}) and ({@code p2X}, {@code p2Y}, {@code p2Z})
+     * and ends at ({@code p3X}, {@code p3Y}, {@code p3Z}), returning the result as a value.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p3X}, {@code p3Y},
+     * {@code p3Z}) at {@code t = 1}; the control points ({@code p1X}, {@code p1Y}, {@code p1Z}) and
+     * ({@code p2X}, {@code p2Y}, {@code p2Z}) pull it towards themselves but are generally not on
+     * the curve.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
@@ -494,11 +524,15 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
-     * points, returning the result as a value.
+     * Interpolate along the quadratic Bézier curve that starts at this vector, is shaped by the
+     * control point {@code p1} and ends at {@code p2}, returning the result as a value.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p2} at
+     * {@code t = 1}; the control point {@code p1} pulls it towards itself but is generally not on
+     * the curve.
      *
      * @param p1 the control point
-     * @param p2 the end point
+     * @param p2 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting vector
      */
@@ -508,8 +542,13 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
-     * points, returning the result as a value.
+     * Interpolate along the quadratic Bézier curve that starts at this vector, is shaped by the
+     * control point ({@code p1X}, {@code p1Y}, {@code p1Z}) and ends at ({@code p2X}, {@code p2Y},
+     * {@code p2Z}), returning the result as a value.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p2X}, {@code p2Y},
+     * {@code p2Z}) at {@code t = 1}; the control point ({@code p1X}, {@code p1Y}, {@code p1Z})
+     * pulls it towards itself but is generally not on the curve.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
@@ -530,12 +569,16 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
-     * by this vector and the given control points, at the parameter {@code t}, returning the result
-     * as a value.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * quadratic Bézier curve that starts at this vector, is shaped by the control point {@code p1}
+     * and ends at {@code p2}, returning the result as a value.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p2} at
+     * {@code t = 1}; the control point {@code p1} pulls it towards itself but is generally not on
+     * the curve.
      *
      * @param p1 the control point
-     * @param p2 the end point
+     * @param p2 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting vector
      */
@@ -545,9 +588,14 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
-     * by this vector and the given control points, at the parameter {@code t}, returning the result
-     * as a value.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * quadratic Bézier curve that starts at this vector, is shaped by the control point
+     * ({@code p1X}, {@code p1Y}, {@code p1Z}) and ends at ({@code p2X}, {@code p2Y}, {@code p2Z}),
+     * returning the result as a value.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p2X}, {@code p2Y},
+     * {@code p2Z}) at {@code t = 1}; the control point ({@code p1X}, {@code p1Y}, {@code p1Z})
+     * pulls it towards itself but is generally not on the curve.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
@@ -566,13 +614,17 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
-     * this vector and the given control points, at the parameter {@code t}, returning the result as
-     * a value.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Bézier curve that starts at this vector, is shaped by the control points {@code p1} and
+     * {@code p2} and ends at {@code p3}, returning the result as a value.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code p3} at
+     * {@code t = 1}; the control points {@code p1} and {@code p2} pull it towards themselves but
+     * are generally not on the curve.
      *
      * @param p1 the first control point
      * @param p2 the second control point
-     * @param p3 the end point
+     * @param p3 the end point of the curve
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting vector
      */
@@ -582,9 +634,15 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
-     * this vector and the given control points, at the parameter {@code t}, returning the result as
-     * a value.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Bézier curve that starts at this vector, is shaped by the control points ({@code p1X},
+     * {@code p1Y}, {@code p1Z}) and ({@code p2X}, {@code p2Y}, {@code p2Z}) and ends at
+     * ({@code p3X}, {@code p3Y}, {@code p3Z}), returning the result as a value.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code p3X}, {@code p3Y},
+     * {@code p3Z}) at {@code t = 1}; the control points ({@code p1X}, {@code p1Y}, {@code p1Z}) and
+     * ({@code p2X}, {@code p2Y}, {@code p2Z}) pull it towards themselves but are generally not on
+     * the curve.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
@@ -608,12 +666,21 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points,
+     * Interpolate along the Catmull-Rom spline segment from {@code p1} to {@code p2}, with this
+     * vector as the control point before the segment and {@code p3} as the control point after it,
      * returning the result as a value.
+     * <p>
+     * The curve passes through {@code p1} at {@code t = 0} and through {@code p2} at {@code t = 1}.
+     * This vector and {@code p3} are the spline's neighbouring points, i.e. the point before
+     * {@code p1} and the point after {@code p2}: they only shape the tangents at the segment's two
+     * end points and are not themselves on the segment. For a spline through the points
+     * {@code p[0..n]}, the segment from {@code p[i]} to {@code p[i+1]} is therefore interpolated
+     * with {@code p[i-1]} in the role of this vector and {@code p[i]}, {@code p[i+1]},
+     * {@code p[i+2]} as the three given points.
      *
      * @param p1 the start point of the interpolated segment
      * @param p2 the end point of the interpolated segment
-     * @param p3 the outer control point after the segment
+     * @param p3 the control point after the segment, i.e. the spline point following {@code p2}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting vector
      */
@@ -623,8 +690,19 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points,
-     * returning the result as a value.
+     * Interpolate along the Catmull-Rom spline segment from ({@code p1X}, {@code p1Y}, {@code p1Z})
+     * to ({@code p2X}, {@code p2Y}, {@code p2Z}), with this vector as the control point before the
+     * segment and ({@code p3X}, {@code p3Y}, {@code p3Z}) as the control point after it, returning
+     * the result as a value.
+     * <p>
+     * The curve passes through ({@code p1X}, {@code p1Y}, {@code p1Z}) at {@code t = 0} and through
+     * ({@code p2X}, {@code p2Y}, {@code p2Z}) at {@code t = 1}. This vector and ({@code p3X},
+     * {@code p3Y}, {@code p3Z}) are the spline's neighbouring points, i.e. the point before
+     * ({@code p1X}, {@code p1Y}, {@code p1Z}) and the point after ({@code p2X}, {@code p2Y},
+     * {@code p2Z}): they only shape the tangents at the segment's two end points and are not
+     * themselves on the segment. For a spline through the points {@code p[0..n]}, the segment from
+     * {@code p[i]} to {@code p[i+1]} is therefore interpolated with {@code p[i-1]} in the role of
+     * this vector and {@code p[i]}, {@code p[i+1]}, {@code p[i+2]} as the three given points.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
@@ -646,13 +724,22 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
-     * this vector and the given control points, at the parameter {@code t}, returning the result as
-     * a value.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * Catmull-Rom spline segment from {@code p1} to {@code p2}, with this vector as the control
+     * point before the segment and {@code p3} as the control point after it, returning the result
+     * as a value.
+     * <p>
+     * The curve passes through {@code p1} at {@code t = 0} and through {@code p2} at {@code t = 1}.
+     * This vector and {@code p3} are the spline's neighbouring points, i.e. the point before
+     * {@code p1} and the point after {@code p2}: they only shape the tangents at the segment's two
+     * end points and are not themselves on the segment. For a spline through the points
+     * {@code p[0..n]}, the segment from {@code p[i]} to {@code p[i+1]} is therefore interpolated
+     * with {@code p[i-1]} in the role of this vector and {@code p[i]}, {@code p[i+1]},
+     * {@code p[i+2]} as the three given points.
      *
      * @param p1 the start point of the interpolated segment
      * @param p2 the end point of the interpolated segment
-     * @param p3 the outer control point after the segment
+     * @param p3 the control point after the segment, i.e. the spline point following {@code p2}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting vector
      */
@@ -662,9 +749,20 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
-     * this vector and the given control points, at the parameter {@code t}, returning the result as
-     * a value.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * Catmull-Rom spline segment from ({@code p1X}, {@code p1Y}, {@code p1Z}) to ({@code p2X},
+     * {@code p2Y}, {@code p2Z}), with this vector as the control point before the segment and
+     * ({@code p3X}, {@code p3Y}, {@code p3Z}) as the control point after it, returning the result
+     * as a value.
+     * <p>
+     * The curve passes through ({@code p1X}, {@code p1Y}, {@code p1Z}) at {@code t = 0} and through
+     * ({@code p2X}, {@code p2Y}, {@code p2Z}) at {@code t = 1}. This vector and ({@code p3X},
+     * {@code p3Y}, {@code p3Z}) are the spline's neighbouring points, i.e. the point before
+     * ({@code p1X}, {@code p1Y}, {@code p1Z}) and the point after ({@code p2X}, {@code p2Y},
+     * {@code p2Z}): they only shape the tangents at the segment's two end points and are not
+     * themselves on the segment. For a spline through the points {@code p[0..n]}, the segment from
+     * {@code p[i]} to {@code p[i+1]} is therefore interpolated with {@code p[i-1]} in the role of
+     * this vector and {@code p[i]}, {@code p[i+1]}, {@code p[i+2]} as the three given points.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
@@ -685,12 +783,16 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation,
-     * returning the result as a value.
+     * Interpolate along the cubic Hermite curve that starts at this vector with the tangent
+     * {@code t0} and ends at {@code v1} with the tangent {@code t1}, returning the result as a
+     * value.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code v1} at
+     * {@code t = 1}; the two tangents set its direction and speed at those end points.
      *
-     * @param t0 the tangent at this vector
-     * @param v1 the endpoint
-     * @param t1 the tangent at the endpoint
+     * @param t0 the tangent at the start point, i.e. at this vector
+     * @param v1 the end point of the curve
+     * @param t1 the tangent at the end point {@code v1}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting vector
      */
@@ -700,8 +802,13 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation,
-     * returning the result as a value.
+     * Interpolate along the cubic Hermite curve that starts at this vector with the tangent
+     * ({@code t0X}, {@code t0Y}, {@code t0Z}) and ends at ({@code v1X}, {@code v1Y}, {@code v1Z})
+     * with the tangent ({@code t1X}, {@code t1Y}, {@code t1Z}), returning the result as a value.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code v1X}, {@code v1Y},
+     * {@code v1Z}) at {@code t = 1}; the two tangents set its direction and speed at those end
+     * points.
      *
      * @param t0X the {@code x} component of the vector {@code (t0X, t0Y, t0Z)}
      * @param t0Y the {@code y} component of the vector {@code (t0X, t0Y, t0Z)}
@@ -727,13 +834,16 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
-     * this vector and the given endpoint, at the parameter {@code t}, returning the result as a
-     * value.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Hermite curve that starts at this vector with the tangent {@code t0} and ends at
+     * {@code v1} with the tangent {@code t1}, returning the result as a value.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through {@code v1} at
+     * {@code t = 1}; the two tangents set its direction and speed at those end points.
      *
-     * @param t0 the tangent at this vector
-     * @param v1 the endpoint
-     * @param t1 the tangent at the endpoint
+     * @param t0 the tangent at the start point, i.e. at this vector
+     * @param v1 the end point of the curve
+     * @param t1 the tangent at the end point {@code v1}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting vector
      */
@@ -743,9 +853,14 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
-     * this vector and the given endpoint, at the parameter {@code t}, returning the result as a
-     * value.
+     * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
+     * cubic Hermite curve that starts at this vector with the tangent ({@code t0X}, {@code t0Y},
+     * {@code t0Z}) and ends at ({@code v1X}, {@code v1Y}, {@code v1Z}) with the tangent
+     * ({@code t1X}, {@code t1Y}, {@code t1Z}), returning the result as a value.
+     * <p>
+     * The curve passes through this vector at {@code t = 0} and through ({@code v1X}, {@code v1Y},
+     * {@code v1Z}) at {@code t = 1}; the two tangents set its direction and speed at those end
+     * points.
      *
      * @param t0X the {@code x} component of the vector {@code (t0X, t0Y, t0Z)}
      * @param t0Y the {@code y} component of the vector {@code (t0X, t0Y, t0Z)}
@@ -772,8 +887,11 @@ public record Double3(double x, double y, double z) {
     /**
      * Linearly interpolate between this vector and {@code other} using the interpolation factor
      * {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other vector
+     * @param other the vector to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting vector
      */
@@ -785,6 +903,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Linearly interpolate between this vector and ({@code otherX}, {@code otherY}, {@code otherZ})
      * using the interpolation factor {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code otherX}, {@code otherY}, {@code otherZ}) (interpolation factor {@code 1}).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -800,8 +921,11 @@ public record Double3(double x, double y, double z) {
     /**
      * Linearly interpolate between this vector and {@code other} using the interpolation factor
      * {@code t}, returning the result as a value.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other vector
+     * @param other the vector to interpolate towards
      * @param t the per-component interpolation factors, typically within {@code [0, 1]}
      * @return the resulting vector
      */
@@ -814,6 +938,9 @@ public record Double3(double x, double y, double z) {
      * Linearly interpolate between this vector and ({@code otherX}, {@code otherY}, {@code otherZ})
      * using the interpolation factor ({@code tX}, {@code tY}, {@code tZ}), returning the result as
      * a value.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code otherX}, {@code otherY}, {@code otherZ}) (interpolation factor {@code 1}).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -851,8 +978,8 @@ public record Double3(double x, double y, double z) {
     /**
      * Add {@code b} scaled by {@code scalar} to this vector, returning the result as a value.
      *
-     * @param b the vector
-     * @param scalar the scalar value
+     * @param b the vector to scale and add
+     * @param scalar the factor to scale {@code b} by before adding
      * @return the resulting vector
      */
     public Double3 addScaled(Double3 b, double scalar) {
@@ -867,7 +994,7 @@ public record Double3(double x, double y, double z) {
      * @param bX the {@code x} component of the vector {@code (bX, bY, bZ)}
      * @param bY the {@code y} component of the vector {@code (bX, bY, bZ)}
      * @param bZ the {@code z} component of the vector {@code (bX, bY, bZ)}
-     * @param scalar the scalar value
+     * @param scalar the factor to scale ({@code bX}, {@code bY}, {@code bZ}) by before adding
      * @return the resulting vector
      */
     public Double3 addScaled(double bX, double bY, double bZ, double scalar) {
@@ -878,8 +1005,8 @@ public record Double3(double x, double y, double z) {
     /**
      * Add {@code b} scaled by {@code c} to this vector, returning the result as a value.
      *
-     * @param b the vector
-     * @param c the vector
+     * @param b the vector to scale and add
+     * @param c the per-component factors to scale {@code b} by before adding
      * @return the resulting vector
      */
     public Double3 addScaled(Double3 b, Double3 c) {
@@ -910,7 +1037,7 @@ public record Double3(double x, double y, double z) {
      * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
      * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
-     * @param other the other vector
+     * @param other the vector to measure the angle to
      * @return the angle in radians between this vector and {@code other}
      */
     public double angleBetween(Double3 other) {
@@ -1067,8 +1194,8 @@ public record Double3(double x, double y, double z) {
      * Compute the point on the line segment between {@code lineStart} and {@code lineEnd} that is
      * closest to this vector, returning the result as a value.
      *
-     * @param lineStart the vector
-     * @param lineEnd the vector
+     * @param lineStart the start point of the line segment
+     * @param lineEnd the end point of the line segment
      * @return the resulting vector
      */
     public Double3 closestPointOnLine(Double3 lineStart, Double3 lineEnd) {
@@ -1206,9 +1333,10 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Compute the cross product of this vector and {@code other}, returning the result as a value.
+     * Compute the cross product of this vector and {@code other}, in that order
+     * ({@code this x other}), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the right operand of the cross product
      * @return the resulting vector
      */
     public Double3 cross(Double3 other) {
@@ -1218,7 +1346,8 @@ public record Double3(double x, double y, double z) {
 
     /**
      * Compute the cross product of this vector and ({@code otherX}, {@code otherY},
-     * {@code otherZ}), returning the result as a value.
+     * {@code otherZ}), in that order ({@code this x (otherX, otherY, otherZ)}), returning the
+     * result as a value.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -1248,7 +1377,7 @@ public record Double3(double x, double y, double z) {
      * it stays within the {@code double} range: the magnitude of the difference vector must lie
      * roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the distance between this vector and {@code other}
      */
     public double distance(Double3 other) {
@@ -1280,7 +1409,7 @@ public record Double3(double x, double y, double z) {
     /**
      * Compute the squared distance between this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
     public double distanceSquared(Double3 other) {
@@ -1309,7 +1438,7 @@ public record Double3(double x, double y, double z) {
     /**
      * Compute the dot product of this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
     public double dot(Double3 other) {
@@ -1368,8 +1497,8 @@ public record Double3(double x, double y, double z) {
      * orienting it against the incident direction {@code I} as judged by the reference vector
      * {@code Nref}, returning the result as a value.
      *
-     * @param I the vector
-     * @param Nref the vector
+     * @param I the incident direction
+     * @param Nref the reference vector the incident direction is tested against
      * @return the resulting vector
      */
     public Double3 faceforward(Double3 I, Double3 Nref) {
@@ -1557,7 +1686,7 @@ public record Double3(double x, double y, double z) {
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
     public double manhattanDistance(Double3 other) {
@@ -1594,7 +1723,7 @@ public record Double3(double x, double y, double z) {
      * Set each component of this vector to the larger of itself and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @return the resulting vector
      */
     public Double3 max(double scalar) {
@@ -1606,7 +1735,7 @@ public record Double3(double x, double y, double z) {
      * Set each component of this vector to the larger of itself and the corresponding component of
      * {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @return the resulting vector
      */
     public Double3 max(Double3 other) {
@@ -1632,7 +1761,7 @@ public record Double3(double x, double y, double z) {
      * Set each component of this vector to the smaller of itself and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @return the resulting vector
      */
     public Double3 min(double scalar) {
@@ -1644,7 +1773,7 @@ public record Double3(double x, double y, double z) {
      * Set each component of this vector to the smaller of itself and the corresponding component of
      * {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @return the resulting vector
      */
     public Double3 min(Double3 other) {
@@ -1783,7 +1912,7 @@ public record Double3(double x, double y, double z) {
      * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
      * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
-     * @param other the other vector
+     * @param other the vector to measure the signed angle to
      * @param normal the reference axis that defines the sign of the angle
      * @return the signed angle in radians between this vector and {@code other}, positive when the
      *        rotation from this vector to {@code other} is counter-clockwise as seen from the
@@ -1935,7 +2064,7 @@ public record Double3(double x, double y, double z) {
     /**
      * Project this vector onto the plane with the given normal, returning the result as a value.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the plane to project onto (must be a unit vector)
      * @return the resulting vector
      */
     public Double3 projectOnPlane(Double3 normal) {
@@ -1974,7 +2103,7 @@ public record Double3(double x, double y, double z) {
     /**
      * Reflect this vector about the given normal, returning the result as a value.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the plane to reflect about (must be a unit vector)
      * @return the resulting vector
      */
     public Double3 reflect(Double3 normal) {
@@ -2004,7 +2133,7 @@ public record Double3(double x, double y, double z) {
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), returning the result as a value.
      *
-     * @param normal the normal (must be a unit vector)
+     * @param normal the normal of the refracting surface (must be a unit vector)
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
      *        destination medium's
      * @return the resulting vector
@@ -2305,7 +2434,7 @@ public record Double3(double x, double y, double z) {
      * Pre-multiply {@code mat} onto this vector, i.e. compute {@code mat * this}, returning the
      * result as a value.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @return the resulting vector
      */
     public Double3 preMul(Double3x3 mat) {
@@ -2318,7 +2447,7 @@ public record Double3(double x, double y, double z) {
      * - i.e. compute {@code (mat * (this, 0)).xyz}, applying only rotation and scale and ignoring
      * translation, returning the result as a value.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @return the resulting vector
      */
     public Double3 preMulDirection(Double3x4 mat) {
@@ -2331,7 +2460,7 @@ public record Double3(double x, double y, double z) {
      * - i.e. compute {@code (mat * (this, 0)).xyz}, applying only rotation and scale and ignoring
      * translation, returning the result as a value.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @return the resulting vector
      */
     public Double3 preMulDirection(Double4x4 mat) {
@@ -2344,7 +2473,7 @@ public record Double3(double x, double y, double z) {
      * - i.e. compute {@code (mat * (this, 1)).xyz}, applying the full affine transform including
      * translation, returning the result as a value.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @return the resulting vector
      */
     public Double3 preMulPosition(Double3x4 mat) {
@@ -2357,7 +2486,7 @@ public record Double3(double x, double y, double z) {
      * - i.e. compute {@code (mat * (this, 1)).xyz}, applying the full affine transform including
      * translation, returning the result as a value.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @return the resulting vector
      */
     public Double3 preMulPosition(Double4x4 mat) {
@@ -2370,7 +2499,7 @@ public record Double3(double x, double y, double z) {
      * then perform a perspective divide - i.e. compute {@code r = mat * (this, 1)} and return
      * {@code r.xyz / r.w}, returning the result as a value.
      *
-     * @param mat the matrix
+     * @param mat the matrix to apply
      * @return the resulting vector
      */
     public Double3 preMulProject(Double4x4 mat) {
@@ -2384,7 +2513,7 @@ public record Double3(double x, double y, double z) {
      * Rotate this vector by the quaternion {@code quat}, i.e. compute {@code q * this * q^-1},
      * returning the result as a value.
      *
-     * @param quat the quaternion (must be a unit quaternion)
+     * @param quat the rotation to apply (must be a unit quaternion)
      * @return the resulting vector
      */
     public Double3 rotate(DoubleQuat quat) {
@@ -2455,7 +2584,7 @@ public record Double3(double x, double y, double z) {
     /**
      * Rotate this vector by the inverse of the given rotation, returning the result as a value.
      *
-     * @param quat the quaternion (must be a unit quaternion)
+     * @param quat the rotation whose inverse to apply (must be a unit quaternion)
      * @return the resulting vector
      */
     public Double3 rotateInverse(DoubleQuat quat) {
@@ -2525,37 +2654,70 @@ public record Double3(double x, double y, double z) {
         return new Double3(Math.fma(this.x, _t0, -(this.y * _t1)), Math.fma(this.x, _t1, this.y * _t0), this.z);
     }
 
-    /** {@return a copy of this vector with the X component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the X component replaced by the given value}
+     *
+     * @param x the new value of the {@code x} component
+     */
     public Double3 withX(double x) {
         return new Double3(x, this.y(), this.z());
     }
 
-    /** {@return a copy of this vector with the Y component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the Y component replaced by the given value}
+     *
+     * @param y the new value of the {@code y} component
+     */
     public Double3 withY(double y) {
         return new Double3(this.x(), y, this.z());
     }
 
-    /** {@return a copy of this vector with the XY components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XY components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param y the new value of the {@code y} component
+     */
     public Double3 withXY(double x, double y) {
         return new Double3(x, y, this.z());
     }
 
-    /** {@return a copy of this vector with the Z component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the Z component replaced by the given value}
+     *
+     * @param z the new value of the {@code z} component
+     */
     public Double3 withZ(double z) {
         return new Double3(this.x(), this.y(), z);
     }
 
-    /** {@return a copy of this vector with the XZ components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XZ components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param z the new value of the {@code z} component
+     */
     public Double3 withXZ(double x, double z) {
         return new Double3(x, this.y(), z);
     }
 
-    /** {@return a copy of this vector with the YZ components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the YZ components replaced by the given values}
+     *
+     * @param y the new value of the {@code y} component
+     * @param z the new value of the {@code z} component
+     */
     public Double3 withYZ(double y, double z) {
         return new Double3(this.x(), y, z);
     }
 
-    /** {@return a copy of this vector with the XYZ components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XYZ components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param y the new value of the {@code y} component
+     * @param z the new value of the {@code z} component
+     */
     public Double3 withXYZ(double x, double y, double z) {
         return new Double3(x, y, z);
     }

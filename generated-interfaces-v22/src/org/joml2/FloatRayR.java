@@ -41,7 +41,7 @@ public interface FloatRayR {
     /**
      * Set the direction of this ray to {@code d} and store the result in {@code dest}.
      *
-     * @param d the vector
+     * @param d the new direction
      * @param dest will hold the result
      * @return dest
      */
@@ -53,7 +53,7 @@ public interface FloatRayR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param d the vector
+     * @param d the new direction
      * @param dest will hold the result
      * @return dest
      */
@@ -89,7 +89,7 @@ public interface FloatRayR {
     /**
      * Set the origin of this ray to {@code o} and store the result in {@code dest}.
      *
-     * @param o the vector
+     * @param o the new origin
      * @param dest will hold the result
      * @return dest
      */
@@ -101,7 +101,7 @@ public interface FloatRayR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param o the vector
+     * @param o the new origin
      * @param dest will hold the result
      * @return dest
      */
@@ -145,7 +145,7 @@ public interface FloatRayR {
     /**
      * Transform this ray by {@code m} and store the result in {@code dest}.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -157,7 +157,7 @@ public interface FloatRayR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -169,7 +169,7 @@ public interface FloatRayR {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -184,7 +184,7 @@ public interface FloatRayR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -220,7 +220,7 @@ public interface FloatRayR {
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -236,7 +236,7 @@ public interface FloatRayR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -249,9 +249,9 @@ public interface FloatRayR {
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
-     * @param x the {@code x} component of the point {@code (x, y, z)}
-     * @param y the {@code y} component of the point {@code (x, y, z)}
-     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param x the {@code x} component of the point {@code (x, y, z)} to find the closest point to
+     * @param y the {@code y} component of the point {@code (x, y, z)} to find the closest point to
+     * @param z the {@code z} component of the point {@code (x, y, z)} to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -267,9 +267,9 @@ public interface FloatRayR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param x the {@code x} component of the point {@code (x, y, z)}
-     * @param y the {@code y} component of the point {@code (x, y, z)}
-     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param x the {@code x} component of the point {@code (x, y, z)} to find the closest point to
+     * @param y the {@code y} component of the point {@code (x, y, z)} to find the closest point to
+     * @param z the {@code z} component of the point {@code (x, y, z)} to find the closest point to
      * @param dest will hold the result
      * @return dest
      */
@@ -280,7 +280,7 @@ public interface FloatRayR {
      * the point onto the ray's line, or the origin when that projection lies behind the origin. The
      * direction need not be of unit length but must not be zero.
      *
-     * @param p the point (also receives the result)
+     * @param p the point to find the closest point to (also receives the result)
      * @return {@code p}
      */
     default Float3 closestPointToPoint(@Mutated Float3 p) { return closestPointToPoint(p, p); }
@@ -290,7 +290,7 @@ public interface FloatRayR {
      * from the point to the closest point on the ray (the ray starts at its origin and extends only
      * along its direction). The direction need not be of unit length but must not be zero.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the squared distance between this ray and the given point, i.e. the squared distance
      *        from the point to the closest point on the ray (the ray starts at its origin and
      *        extends only along its direction). The direction need not be of unit length but must
@@ -303,9 +303,9 @@ public interface FloatRayR {
      * from the point to the closest point on the ray (the ray starts at its origin and extends only
      * along its direction). The direction need not be of unit length but must not be zero.
      *
-     * @param x the {@code x} component of the point {@code (x, y, z)}
-     * @param y the {@code y} component of the point {@code (x, y, z)}
-     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param x the {@code x} component of the point {@code (x, y, z)} to measure the distance to
+     * @param y the {@code y} component of the point {@code (x, y, z)} to measure the distance to
+     * @param z the {@code z} component of the point {@code (x, y, z)} to measure the distance to
      * @return the squared distance between this ray and the given point, i.e. the squared distance
      *        from the point to the closest point on the ray (the ray starts at its origin and
      *        extends only along its direction). The direction need not be of unit length but must
@@ -318,7 +318,7 @@ public interface FloatRayR {
      * to the closest point on the ray (the ray starts at its origin and extends only along its
      * direction). The direction need not be of unit length but must not be zero.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the distance between this ray and the given point, i.e. the distance from the point
      *        to the closest point on the ray (the ray starts at its origin and extends only along
      *        its direction). The direction need not be of unit length but must not be zero
@@ -330,9 +330,9 @@ public interface FloatRayR {
      * to the closest point on the ray (the ray starts at its origin and extends only along its
      * direction). The direction need not be of unit length but must not be zero.
      *
-     * @param x the {@code x} component of the point {@code (x, y, z)}
-     * @param y the {@code y} component of the point {@code (x, y, z)}
-     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param x the {@code x} component of the point {@code (x, y, z)} to measure the distance to
+     * @param y the {@code y} component of the point {@code (x, y, z)} to measure the distance to
+     * @param z the {@code z} component of the point {@code (x, y, z)} to measure the distance to
      * @return the distance between this ray and the given point, i.e. the distance from the point
      *        to the closest point on the ray (the ray starts at its origin and extends only along
      *        its direction). The direction need not be of unit length but must not be zero

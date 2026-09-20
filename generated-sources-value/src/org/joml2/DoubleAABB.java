@@ -38,7 +38,16 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
     /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
     public static final int SIZE_BYTES = 48;
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param minX the {@code minX} component
+     * @param minY the {@code minY} component
+     * @param minZ the {@code minZ} component
+     * @param maxX the {@code maxX} component
+     * @param maxY the {@code maxY} component
+     * @param maxZ the {@code maxZ} component
+     */
     public DoubleAABB(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
         this.minX = minX;
         this.minY = minY;
@@ -73,7 +82,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
     /**
      * Create a new axis-aligned bounding box from the given values.
      *
-     * @param v the axis-aligned bounding box
+     * @param v the axis-aligned bounding box to copy
      * @return the resulting axis-aligned bounding box
      */
     public DoubleAABB set(DoubleAABB v) {
@@ -107,7 +116,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * Set the maximum corner of this axis-aligned bounding box to {@code max}, returning the result
      * as a value.
      *
-     * @param max the maximum corner
+     * @param max the maximum corner of the box
      * @return the resulting axis-aligned bounding box
      */
     public DoubleAABB setMax(Double3 max) {
@@ -133,7 +142,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * Set the minimum corner of this axis-aligned bounding box to {@code min}, returning the result
      * as a value.
      *
-     * @param min the minimum corner
+     * @param min the minimum corner of the box
      * @return the resulting axis-aligned bounding box
      */
     public DoubleAABB setMin(Double3 min) {
@@ -190,7 +199,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * Transform this axis-aligned bounding box by {@code m} and set it to the axis-aligned box
      * enclosing the transformed box, returning the result as a value.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return the resulting axis-aligned bounding box
      */
     public DoubleAABB transform(Double3x4 m) {
@@ -225,7 +234,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return the resulting axis-aligned bounding box
      */
     public DoubleAABB transform(Double4x4 m) {
@@ -249,7 +258,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
     /**
      * Translate this axis-aligned bounding box by {@code delta}, returning the result as a value.
      *
-     * @param delta the vector
+     * @param delta the translation offsets
      * @return the resulting axis-aligned bounding box
      */
     public DoubleAABB translate(Double3 delta) {
@@ -275,7 +284,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * Set this axis-aligned bounding box to the union of itself and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other axis-aligned bounding box
+     * @param other the axis-aligned bounding box to include in the union
      * @return the resulting axis-aligned bounding box
      */
     public DoubleAABB union(DoubleAABB other) {
@@ -310,7 +319,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * Grow this axis-aligned bounding box to include the point {@code p}, returning the result as a
      * value.
      *
-     * @param p the vector
+     * @param p the point to include
      * @return the resulting axis-aligned bounding box
      */
     public DoubleAABB union(Double3 p) {
@@ -339,7 +348,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * <p>
      * The result is returned as a value; {@code this} is not modified.
      *
-     * @param p the point
+     * @param p the point to find the closest point to
      * @return the resulting vector
      */
     public Double3 closestPointToPoint(Double3 p) {
@@ -354,9 +363,12 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * <p>
      * The result is returned as a value; {@code this} is not modified.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to find the closest point
+     *        to
      * @return the resulting vector
      */
     public Double3 closestPointToPoint(double pX, double pY, double pZ) {
@@ -369,7 +381,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * the squared length of the shortest vector between any two points of the two boxes; zero when
      * they overlap or touch.
      *
-     * @param other the other box
+     * @param other the box to measure the distance to
      * @return the squared distance between this axis-aligned bounding box and the given box, i.e.
      *        the squared length of the shortest vector between any two points of the two boxes;
      *        zero when they overlap or touch
@@ -384,18 +396,18 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * the squared length of the shortest vector between any two points of the two boxes; zero when
      * they overlap or touch.
      *
-     * @param minX the {@code minX} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param minY the {@code minY} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param minZ the {@code minZ} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param maxX the {@code maxX} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param maxY the {@code maxY} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param maxZ the {@code maxZ} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minX the {@code minX} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param minY the {@code minY} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param minZ the {@code minZ} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param maxX the {@code maxX} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param maxY the {@code maxY} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param maxZ the {@code maxZ} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @return the squared distance between this axis-aligned bounding box and the given box, i.e.
      *        the squared length of the shortest vector between any two points of the two boxes;
      *        zero when they overlap or touch
@@ -413,7 +425,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * the squared length of the difference between the point and its per-axis clamp into the box's
      * bounds; zero for a point inside or on the box.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the squared distance between this axis-aligned bounding box and the given point, i.e.
      *        the squared length of the difference between the point and its per-axis clamp into the
      *        box's bounds; zero for a point inside or on the box
@@ -428,9 +440,12 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * the squared length of the difference between the point and its per-axis clamp into the box's
      * bounds; zero for a point inside or on the box.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the squared distance between this axis-aligned bounding box and the given point, i.e.
      *        the squared length of the difference between the point and its per-axis clamp into the
      *        box's bounds; zero for a point inside or on the box
@@ -448,7 +463,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * i.e. the square of the distance from the box to the sphere's center minus the radius, clamped
      * at zero; zero when they overlap or touch.
      *
-     * @param sphere the sphere
+     * @param sphere the sphere to measure the distance to
      * @return the squared distance between this axis-aligned bounding box and the given sphere,
      *        i.e. the square of the distance from the box to the sphere's center minus the radius,
      *        clamped at zero; zero when they overlap or touch
@@ -464,13 +479,13 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * at zero; zero when they overlap or touch.
      *
      * @param sphereX the {@code x} component of the sphere
-     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)} to measure the distance to
      * @param sphereY the {@code y} component of the sphere
-     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)} to measure the distance to
      * @param sphereZ the {@code z} component of the sphere
-     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)} to measure the distance to
      * @param sphereR the {@code r} component of the sphere
-     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)} to measure the distance to
      * @return the squared distance between this axis-aligned bounding box and the given sphere,
      *        i.e. the square of the distance from the box to the sphere's center minus the radius,
      *        clamped at zero; zero when they overlap or touch
@@ -489,8 +504,8 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * i.e. the square of the distance from the box to the sphere's center minus the radius, clamped
      * at zero; zero when they overlap or touch.
      *
-     * @param center the center point
-     * @param radius the radius
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
      * @return the squared distance between this axis-aligned bounding box and the given sphere,
      *        i.e. the square of the distance from the box to the sphere's center minus the radius,
      *        clamped at zero; zero when they overlap or touch
@@ -505,7 +520,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * length of the shortest vector between any two points of the two boxes; zero when they overlap
      * or touch.
      *
-     * @param other the other box
+     * @param other the box to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given box, i.e. the
      *        length of the shortest vector between any two points of the two boxes; zero when they
      *        overlap or touch
@@ -520,18 +535,18 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * length of the shortest vector between any two points of the two boxes; zero when they overlap
      * or touch.
      *
-     * @param minX the {@code minX} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param minY the {@code minY} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param minZ the {@code minZ} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param maxX the {@code maxX} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param maxY the {@code maxY} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @param maxZ the {@code maxZ} component of the other box
-     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minX the {@code minX} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param minY the {@code minY} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param minZ the {@code minZ} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param maxX the {@code maxX} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param maxY the {@code maxY} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
+     * @param maxZ the {@code maxZ} component of the box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)} to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given box, i.e. the
      *        length of the shortest vector between any two points of the two boxes; zero when they
      *        overlap or touch
@@ -550,7 +565,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * clamped at zero; zero when the plane intersects or touches the box. The plane's normal need
      * not be of unit length.
      *
-     * @param plane the plane
+     * @param plane the plane to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given plane, i.e. the
      *        distance from the box's center to the plane minus the box's extent along the plane
      *        normal, clamped at zero; zero when the plane intersects or touches the box. The
@@ -568,9 +583,13 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * not be of unit length.
      *
      * @param planeA the {@code a} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     *        to measure the distance to
      * @param planeB the {@code b} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     *        to measure the distance to
      * @param planeC the {@code c} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     *        to measure the distance to
      * @param planeD the {@code d} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     *        to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given plane, i.e. the
      *        distance from the box's center to the plane minus the box's extent along the plane
      *        normal, clamped at zero; zero when the plane intersects or touches the box. The
@@ -587,7 +606,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * clamped at zero; zero when the plane intersects or touches the box. The plane's normal need
      * not be of unit length.
      *
-     * @param plane the plane
+     * @param plane the plane to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given plane, i.e. the
      *        distance from the box's center to the plane minus the box's extent along the plane
      *        normal, clamped at zero; zero when the plane intersects or touches the box. The
@@ -603,7 +622,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * length of the difference between the point and its per-axis clamp into the box's bounds; zero
      * for a point inside or on the box.
      *
-     * @param p the point
+     * @param p the point to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given point, i.e. the
      *        length of the difference between the point and its per-axis clamp into the box's
      *        bounds; zero for a point inside or on the box
@@ -618,9 +637,12 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * length of the difference between the point and its per-axis clamp into the box's bounds; zero
      * for a point inside or on the box.
      *
-     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
-     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
-     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)} to measure the distance
+     *        to
      * @return the distance between this axis-aligned bounding box and the given point, i.e. the
      *        length of the difference between the point and its per-axis clamp into the box's
      *        bounds; zero for a point inside or on the box
@@ -638,7 +660,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * distance from the box to the sphere's center minus the radius, clamped at zero; zero when
      * they overlap or touch.
      *
-     * @param sphere the sphere
+     * @param sphere the sphere to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given sphere, i.e. the
      *        distance from the box to the sphere's center minus the radius, clamped at zero; zero
      *        when they overlap or touch
@@ -654,13 +676,13 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * they overlap or touch.
      *
      * @param sphereX the {@code x} component of the sphere
-     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)} to measure the distance to
      * @param sphereY the {@code y} component of the sphere
-     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)} to measure the distance to
      * @param sphereZ the {@code z} component of the sphere
-     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)} to measure the distance to
      * @param sphereR the {@code r} component of the sphere
-     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)} to measure the distance to
      * @return the distance between this axis-aligned bounding box and the given sphere, i.e. the
      *        distance from the box to the sphere's center minus the radius, clamped at zero; zero
      *        when they overlap or touch
@@ -678,8 +700,8 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * distance from the box to the sphere's center minus the radius, clamped at zero; zero when
      * they overlap or touch.
      *
-     * @param center the center point
-     * @param radius the radius
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
      * @return the distance between this axis-aligned bounding box and the given sphere, i.e. the
      *        distance from the box to the sphere's center minus the radius, clamped at zero; zero
      *        when they overlap or touch
@@ -761,7 +783,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * Determine whether this axis-aligned bounding box contains the given point (boundary
      * inclusive). Delegates to the shared {@code Intersectiond} kernels.
      *
-     * @param p the point
+     * @param p the point to test
      * @return {@code true} if the given point lies inside or on this axis-aligned bounding box,
      *        {@code false} otherwise
      */
@@ -785,7 +807,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * Determine whether this axis-aligned bounding box intersects the given axis-aligned box.
      * Delegates to the shared {@code Intersectiond} kernels.
      *
-     * @param o the other axis-aligned box
+     * @param o the axis-aligned box to test for intersection
      * @return {@code true} if this axis-aligned bounding box and the given axis-aligned box
      *        intersect, {@code false} otherwise
      */
@@ -825,7 +847,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * Determine whether this axis-aligned bounding box intersects the given sphere. Delegates to
      * the shared {@code Intersectiond} kernels.
      *
-     * @param sph the sphere
+     * @param sph the sphere to test for intersection
      * @return {@code true} if this axis-aligned bounding box and the given sphere intersect,
      *        {@code false} otherwise
      */
@@ -837,7 +859,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * Determine whether this axis-aligned bounding box intersects the given plane. Delegates to the
      * shared {@code Intersectiond} kernels.
      *
-     * @param plane the plane
+     * @param plane the plane to test for intersection
      * @return {@code true} if this axis-aligned bounding box and the given plane intersect,
      *        {@code false} otherwise
      */
@@ -849,7 +871,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * Determine whether this axis-aligned bounding box intersects the given ray. Delegates to the
      * shared {@code Intersectiond} kernels.
      *
-     * @param ray the ray
+     * @param ray the ray to test for intersection
      * @return {@code true} if this axis-aligned bounding box and the given ray intersect,
      *        {@code false} otherwise
      */
@@ -862,7 +884,7 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
      * values of <i>t</i> in the ray equation <i>p(t) = origin + t * dir</i> at the near and far
      * points of intersection. Delegates to the shared {@code Intersectiond} kernels.
      *
-     * @param ray the ray
+     * @param ray the ray to intersect
      * @return a {@link DoubleHit2} whose {@link DoubleHit2#hit() hit()} is {@code true} iff the ray
      *        intersects this axis-aligned bounding box, and whose components then hold the values
      *        of <i>t</i> in the ray equation <i>p(t) = origin + t * dir</i> at the near and far
@@ -872,32 +894,56 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
         return Intersectiond.intersectRayAabb(ray.oX(), ray.oY(), ray.oZ(), ray.dX(), ray.dY(), ray.dZ(), minX(), minY(), minZ(), maxX(), maxY(), maxZ());
     }
 
-    /** {@return a copy with the {@code minX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code minX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code minX} component
+     */
     public DoubleAABB withMinX(double v) {
         return new DoubleAABB(v, minY, minZ, maxX, maxY, maxZ);
     }
 
-    /** {@return a copy with the {@code minY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code minY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code minY} component
+     */
     public DoubleAABB withMinY(double v) {
         return new DoubleAABB(minX, v, minZ, maxX, maxY, maxZ);
     }
 
-    /** {@return a copy with the {@code minZ} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code minZ} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code minZ} component
+     */
     public DoubleAABB withMinZ(double v) {
         return new DoubleAABB(minX, minY, v, maxX, maxY, maxZ);
     }
 
-    /** {@return a copy with the {@code maxX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code maxX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code maxX} component
+     */
     public DoubleAABB withMaxX(double v) {
         return new DoubleAABB(minX, minY, minZ, v, maxY, maxZ);
     }
 
-    /** {@return a copy with the {@code maxY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code maxY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code maxY} component
+     */
     public DoubleAABB withMaxY(double v) {
         return new DoubleAABB(minX, minY, minZ, maxX, v, maxZ);
     }
 
-    /** {@return a copy with the {@code maxZ} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code maxZ} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code maxZ} component
+     */
     public DoubleAABB withMaxZ(double v) {
         return new DoubleAABB(minX, minY, minZ, maxX, maxY, v);
     }

@@ -35,7 +35,13 @@ public record Short3(short x, short y, short z) {
     /** The zero vector (all components 0). */
     public static final Short3 ZERO = new Short3((short) 0, (short) 0, (short) 0);
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param x the {@code x} component
+     * @param y the {@code y} component
+     * @param z the {@code z} component
+     */
     public Short3(short x, short y, short z) {
         this.x = x;
         this.y = y;
@@ -49,17 +55,31 @@ public record Short3(short x, short y, short z) {
         this((short) 0, (short) 0, (short) 0);
     }
 
-    /** Create a vector with all components set to {@code s}. */
+    /**
+     * Create a vector with all components set to {@code s}.
+     *
+     * @param s the value assigned to every component
+     */
     public Short3(short s) {
         this(s, s, s);
     }
 
-    /** Create a vector composed of the given parts, in order. */
+    /**
+     * Create a vector composed of the given parts, in order.
+     *
+     * @param v0 the {@code x} component
+     * @param v1 the {@code y} and {@code z} components
+     */
     public Short3(short v0, Short2 v1) {
         this(v0, v1.x(), v1.y());
     }
 
-    /** Create a vector composed of the given parts, in order. */
+    /**
+     * Create a vector composed of the given parts, in order.
+     *
+     * @param v0 the {@code x} and {@code y} components
+     * @param v1 the {@code z} component
+     */
     public Short3(Short2 v0, short v1) {
         this(v0.x(), v0.y(), v1);
     }
@@ -75,7 +95,7 @@ public record Short3(short x, short y, short z) {
     /**
      * Add {@code other} to this vector, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return the resulting vector
      */
     public Short3 add(Short3 other) {
@@ -101,7 +121,7 @@ public record Short3(short x, short y, short z) {
      * Compute the component-wise ceiling division of this vector by {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Short3 ceilDiv(short scalar) {
@@ -113,7 +133,7 @@ public record Short3(short x, short y, short z) {
      * Compute the component-wise ceiling division of this vector by {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Short3 ceilDiv(Short3 other) {
@@ -139,7 +159,7 @@ public record Short3(short x, short y, short z) {
      * Compute the component-wise ceiling modulus of this vector and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Short3 ceilMod(short scalar) {
@@ -151,7 +171,7 @@ public record Short3(short x, short y, short z) {
      * Compute the component-wise ceiling modulus of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Short3 ceilMod(Short3 other) {
@@ -177,7 +197,7 @@ public record Short3(short x, short y, short z) {
      * Divide each component of this vector by {@code scalar} (integer division, truncating toward
      * zero), returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Short3 div(short scalar) {
@@ -189,7 +209,7 @@ public record Short3(short x, short y, short z) {
      * Divide this vector component-wise by {@code other} (integer division, truncating toward
      * zero), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Short3 div(Short3 other) {
@@ -215,7 +235,7 @@ public record Short3(short x, short y, short z) {
      * Compute the component-wise floor division of this vector by {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Short3 floorDiv(short scalar) {
@@ -227,7 +247,7 @@ public record Short3(short x, short y, short z) {
      * Compute the component-wise floor division of this vector by {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Short3 floorDiv(Short3 other) {
@@ -253,7 +273,7 @@ public record Short3(short x, short y, short z) {
      * Compute the component-wise floor modulus of this vector and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Short3 floorMod(short scalar) {
@@ -265,7 +285,7 @@ public record Short3(short x, short y, short z) {
      * Compute the component-wise floor modulus of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Short3 floorMod(Short3 other) {
@@ -290,7 +310,7 @@ public record Short3(short x, short y, short z) {
     /**
      * Multiply each component of this vector by {@code scalar}, returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the factor to multiply each component by
      * @return the resulting vector
      */
     public Short3 mul(short scalar) {
@@ -301,7 +321,7 @@ public record Short3(short x, short y, short z) {
     /**
      * Multiply this vector component-wise by {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return the resulting vector
      */
     public Short3 mul(Short3 other) {
@@ -338,7 +358,7 @@ public record Short3(short x, short y, short z) {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}), returning the result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the divisor
      * @return the resulting vector
      */
     public Short3 rem(short scalar) {
@@ -351,7 +371,7 @@ public record Short3(short x, short y, short z) {
      * remainder carries the sign of the dividend, exactly Java's {@code %}, so it pairs with
      * {@code div}), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component divisors
      * @return the resulting vector
      */
     public Short3 rem(Short3 other) {
@@ -377,7 +397,7 @@ public record Short3(short x, short y, short z) {
     /**
      * Subtract {@code other} from this vector, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return the resulting vector
      */
     public Short3 sub(Short3 other) {
@@ -403,7 +423,7 @@ public record Short3(short x, short y, short z) {
      * Compute the bitwise AND of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise AND
      * @return the resulting vector
      */
     public Short3 and(Short3 other) {
@@ -472,7 +492,7 @@ public record Short3(short x, short y, short z) {
      * Compute the bitwise OR of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise OR
      * @return the resulting vector
      */
     public Short3 or(Short3 other) {
@@ -583,7 +603,7 @@ public record Short3(short x, short y, short z) {
      * Compute the bitwise XOR of each component of this vector and {@code other}, returning the
      * result as a value.
      *
-     * @param other the other vector
+     * @param other the other operand of the bitwise XOR
      * @return the resulting vector
      */
     public Short3 xor(Short3 other) {
@@ -608,7 +628,7 @@ public record Short3(short x, short y, short z) {
     /**
      * Create a new vector from the given values.
      *
-     * @param v the vector
+     * @param v the vector to copy
      * @return the resulting vector
      */
     public Short3 set(Short3 v) {
@@ -802,9 +822,10 @@ public record Short3(short x, short y, short z) {
 
 
     /**
-     * Compute the cross product of this vector and {@code other}, returning the result as a value.
+     * Compute the cross product of this vector and {@code other}, in that order
+     * ({@code this x other}), returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the right operand of the cross product
      * @return the resulting vector
      */
     public Short3 cross(Short3 other) {
@@ -814,7 +835,8 @@ public record Short3(short x, short y, short z) {
 
     /**
      * Compute the cross product of this vector and ({@code otherX}, {@code otherY},
-     * {@code otherZ}), returning the result as a value.
+     * {@code otherZ}), in that order ({@code this x (otherX, otherY, otherZ)}), returning the
+     * result as a value.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -832,7 +854,7 @@ public record Short3(short x, short y, short z) {
      * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
      * result outside the {@code short} range wraps.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
     public short distanceSquared(Short3 other) {
@@ -867,7 +889,7 @@ public record Short3(short x, short y, short z) {
      * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
      * result outside the {@code short} range wraps.
      *
-     * @param other the other vector
+     * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
     public short dot(Short3 other) {
@@ -910,7 +932,7 @@ public record Short3(short x, short y, short z) {
      * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
      * result outside the {@code short} range wraps.
      *
-     * @param other the other vector
+     * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
     public short manhattanDistance(Short3 other) {
@@ -953,7 +975,7 @@ public record Short3(short x, short y, short z) {
      * Set each component of this vector to the larger of itself and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise maximum with
      * @return the resulting vector
      */
     public Short3 max(short scalar) {
@@ -965,7 +987,7 @@ public record Short3(short x, short y, short z) {
      * Set each component of this vector to the larger of itself and the corresponding component of
      * {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise maximum with
      * @return the resulting vector
      */
     public Short3 max(Short3 other) {
@@ -991,7 +1013,7 @@ public record Short3(short x, short y, short z) {
      * Set each component of this vector to the smaller of itself and {@code scalar}, returning the
      * result as a value.
      *
-     * @param scalar the scalar value
+     * @param scalar the value to take the component-wise minimum with
      * @return the resulting vector
      */
     public Short3 min(short scalar) {
@@ -1003,7 +1025,7 @@ public record Short3(short x, short y, short z) {
      * Set each component of this vector to the smaller of itself and the corresponding component of
      * {@code other}, returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to take the component-wise minimum with
      * @return the resulting vector
      */
     public Short3 min(Short3 other) {
@@ -1039,7 +1061,7 @@ public record Short3(short x, short y, short z) {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to add
      * @return the resulting vector
      */
     public Short3 satAdd(Short3 other) {
@@ -1065,7 +1087,7 @@ public record Short3(short x, short y, short z) {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector of per-component factors
      * @return the resulting vector
      */
     public Short3 satMul(Short3 other) {
@@ -1102,7 +1124,7 @@ public record Short3(short x, short y, short z) {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing,
      * returning the result as a value.
      *
-     * @param other the other vector
+     * @param other the vector to subtract
      * @return the resulting vector
      */
     public Short3 satSub(Short3 other) {
@@ -1145,37 +1167,70 @@ public record Short3(short x, short y, short z) {
         return new Short4((short) (this.x), (short) (this.y), (short) (this.z), (short) (1));
     }
 
-    /** {@return a copy of this vector with the X component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the X component replaced by the given value}
+     *
+     * @param x the new value of the {@code x} component
+     */
     public Short3 withX(short x) {
         return new Short3(x, this.y(), this.z());
     }
 
-    /** {@return a copy of this vector with the Y component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the Y component replaced by the given value}
+     *
+     * @param y the new value of the {@code y} component
+     */
     public Short3 withY(short y) {
         return new Short3(this.x(), y, this.z());
     }
 
-    /** {@return a copy of this vector with the XY components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XY components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param y the new value of the {@code y} component
+     */
     public Short3 withXY(short x, short y) {
         return new Short3(x, y, this.z());
     }
 
-    /** {@return a copy of this vector with the Z component replaced by the given value} */
+    /**
+     * {@return a copy of this vector with the Z component replaced by the given value}
+     *
+     * @param z the new value of the {@code z} component
+     */
     public Short3 withZ(short z) {
         return new Short3(this.x(), this.y(), z);
     }
 
-    /** {@return a copy of this vector with the XZ components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XZ components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param z the new value of the {@code z} component
+     */
     public Short3 withXZ(short x, short z) {
         return new Short3(x, this.y(), z);
     }
 
-    /** {@return a copy of this vector with the YZ components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the YZ components replaced by the given values}
+     *
+     * @param y the new value of the {@code y} component
+     * @param z the new value of the {@code z} component
+     */
     public Short3 withYZ(short y, short z) {
         return new Short3(this.x(), y, z);
     }
 
-    /** {@return a copy of this vector with the XYZ components replaced by the given values} */
+    /**
+     * {@return a copy of this vector with the XYZ components replaced by the given values}
+     *
+     * @param x the new value of the {@code x} component
+     * @param y the new value of the {@code y} component
+     * @param z the new value of the {@code z} component
+     */
     public Short3 withXYZ(short x, short y, short z) {
         return new Short3(x, y, z);
     }

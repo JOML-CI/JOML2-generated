@@ -66,7 +66,7 @@ public final class FloatTriangleImpl implements FloatTriangle {
     /**
      * Set this triangle to the given values.
      *
-     * @param v the triangle
+     * @param v the triangle to copy
      * @return this
      */
     public @Mutated FloatTriangle set(FloatTriangleR v) {
@@ -137,7 +137,7 @@ public final class FloatTriangleImpl implements FloatTriangle {
     /**
      * Transform this triangle by {@code m} and store the result in {@code dest}.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -170,7 +170,7 @@ public final class FloatTriangleImpl implements FloatTriangle {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -203,7 +203,7 @@ public final class FloatTriangleImpl implements FloatTriangle {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -239,7 +239,7 @@ public final class FloatTriangleImpl implements FloatTriangle {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @param dest will hold the result
      * @return dest
      */
@@ -296,7 +296,7 @@ public final class FloatTriangleImpl implements FloatTriangle {
      * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
      * accurate for thin triangles.
      *
-     * @param p the vector
+     * @param p the point whose barycentric coordinates to compute
      * @param dest will hold the result
      * @return dest
      */
@@ -318,7 +318,7 @@ public final class FloatTriangleImpl implements FloatTriangle {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p the vector
+     * @param p the point whose barycentric coordinates to compute
      * @param dest will hold the result
      * @return dest
      */

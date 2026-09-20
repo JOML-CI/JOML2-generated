@@ -41,7 +41,20 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
     /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
     public static final int SIZE_BYTES = 40;
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor.
+     *
+     * @param tX the {@code tX} component
+     * @param tY the {@code tY} component
+     * @param tZ the {@code tZ} component
+     * @param rX the {@code rX} component
+     * @param rY the {@code rY} component
+     * @param rZ the {@code rZ} component
+     * @param rW the {@code rW} component
+     * @param sX the {@code sX} component
+     * @param sY the {@code sY} component
+     * @param sZ the {@code sZ} component
+     */
     public FloatTransform(float tX, float tY, float tZ, float rX, float rY, float rZ, float rW, float sX, float sY, float sZ) {
         this.tX = tX;
         this.tY = tY;
@@ -90,7 +103,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      *
      * @param axis the rotation axis (must be a unit vector)
      * @param angle the angle in radians
-     * @param translation the vector
+     * @param translation the translation
      * @return the resulting transform
      */
     public static FloatTransform makeFromAxisAngle(Float3 axis, float angle, Float3 translation) {
@@ -129,8 +142,8 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * Create a rigid transformation that first rotates by {@code rotation} and then translates by
      * {@code translation} ({@code T * R}).
      *
-     * @param translation the vector
-     * @param rotation the quaternion
+     * @param translation the translation
+     * @param rotation the rotation
      * @return the resulting transform
      */
     public static FloatTransform makeTranslationRotation(Float3 translation, FloatQuat rotation) {
@@ -168,9 +181,9 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * Create a transformation composed of the given translation, rotation and scale, applied in
      * scale-rotation-translation order.
      *
-     * @param translation the vector
-     * @param rotation the quaternion
-     * @param scale the scale factor
+     * @param translation the translation
+     * @param rotation the rotation
+     * @param scale the scale factors
      * @return the resulting transform
      */
     public static FloatTransform makeTranslationRotationScale(Float3 translation, FloatQuat rotation, Float3 scale) {
@@ -209,7 +222,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
     /**
      * Create a new transform from the given values.
      *
-     * @param v the transform
+     * @param v the transform to copy
      * @return the resulting transform
      */
     public FloatTransform set(FloatTransform v) {
@@ -250,7 +263,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
     /**
      * Set the rotation of this transform to {@code r}, returning the result as a value.
      *
-     * @param r the quaternion
+     * @param r the new rotation
      * @return the resulting transform
      */
     public FloatTransform setRotation(FloatQuat r) {
@@ -338,7 +351,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * Create the rigid motion of the unit dual quaternion {@code dq} (translation and rotation from
      * {@code dq}, scale = 1).
      *
-     * @param dq the dual quaternion
+     * @param dq the dual quaternion to convert
      * @return the resulting transform
      */
     public static FloatTransform makeFromDualQuat(FloatDualQuat dq) {
@@ -379,7 +392,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * translation (scale is removed by normalizing the columns, but shear is not removed: a sheared
      * block yields a rotation quaternion that is not unit length).
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return the resulting transform
      */
     public static FloatTransform makeFromMatrix(Float3x3 m) {
@@ -438,7 +451,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * column-normalized block (scale is removed by normalizing the columns, but shear is not
      * removed: a sheared block yields a rotation quaternion that is not unit length).
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return the resulting transform
      */
     public static FloatTransform makeFromMatrix(Float3x4 m) {
@@ -497,7 +510,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * column-normalized block (scale is removed by normalizing the columns, but shear is not
      * removed: a sheared block yields a rotation quaternion that is not unit length).
      *
-     * @param m the matrix
+     * @param m the matrix to convert
      * @return the resulting transform
      */
     public static FloatTransform makeFromMatrix(Float4x4 m) {
@@ -553,7 +566,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
     /**
      * Create the given rigid transform's motion (translation and rotation), with scale = 1.
      *
-     * @param r the rigid transform
+     * @param r the rigid transform to convert
      * @return the resulting transform
      */
     public static FloatTransform makeFromRigid(FloatRigid r) {
@@ -682,7 +695,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * Create a new transform representing a pure rotation by {@code rotation} (zero translation,
      * unit scale).
      *
-     * @param rotation the quaternion
+     * @param rotation the rotation
      * @return the resulting transform
      */
     public FloatTransform set(FloatQuat rotation) {
@@ -715,7 +728,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * <p>
      * Alias for {@code set}.
      *
-     * @param rotation the quaternion
+     * @param rotation the rotation
      * @return the resulting transform
      */
     public static FloatTransform makeRotation(FloatQuat rotation) {
@@ -748,7 +761,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * Create a new transform representing a pure translation by {@code translation} (identity
      * rotation, unit scale).
      *
-     * @param translation the vector
+     * @param translation the translation
      * @return the resulting transform
      */
     public FloatTransform set(Float3 translation) {
@@ -779,7 +792,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * <p>
      * Alias for {@code set}.
      *
-     * @param translation the vector
+     * @param translation the translation
      * @return the resulting transform
      */
     public static FloatTransform makeTranslation(Float3 translation) {
@@ -810,8 +823,11 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * Interpolate between this transform and {@code other} using the interpolation factor
      * {@code t}, interpolating translation and scale linearly and the rotation via shortest-arc
      * slerp, returning the result as a value.
+     * <p>
+     * The interpolation starts at this transform (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
      *
-     * @param other the other transform
+     * @param other the transform to interpolate towards
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return the resulting transform
      */
@@ -868,6 +884,11 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * {@code otherSY}, {@code otherSZ}) using the interpolation factor {@code t}, interpolating
      * translation and scale linearly and the rotation via shortest-arc slerp, returning the result
      * as a value.
+     * <p>
+     * The interpolation starts at this transform (interpolation factor {@code 0}) and ends at
+     * ({@code otherTX}, {@code otherTY}, {@code otherTZ}, {@code otherRX}, {@code otherRY},
+     * {@code otherRZ}, {@code otherRW}, {@code otherSX}, {@code otherSY}, {@code otherSZ})
+     * (interpolation factor {@code 1}).
      *
      * @param otherTX the {@code tX} component of the transform
      *        {@code (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW, otherSX, otherSY, otherSZ)}
@@ -930,7 +951,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param other the other transform
+     * @param other the right operand
      * @return the resulting transform
      */
     public FloatTransform mul(FloatTransform other) {
@@ -1004,7 +1025,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param other the other transform
+     * @param other the left operand
      * @return the resulting transform
      */
     public FloatTransform preMul(FloatTransform other) {
@@ -1078,7 +1099,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param other the other transform
+     * @param other the target transform, reached by composing this transform with the result
      * @return the resulting transform
      */
     public FloatTransform difference(FloatTransform other) {
@@ -1636,7 +1657,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
     /**
      * Create a scaling transformation that scales by {@code scale}.
      *
-     * @param scale the scale factor
+     * @param scale the scale factors
      * @return the resulting transform
      */
     public static FloatTransform makeScaling(Float3 scale) {
@@ -1683,7 +1704,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param rotation the quaternion (must be a unit quaternion)
+     * @param rotation the rotation to apply (must be a unit quaternion)
      * @return the resulting transform
      */
     public FloatTransform rotate(FloatQuat rotation) {
@@ -2148,7 +2169,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * transform will be {@code M * S}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * S * v}, the scaling will be applied first.
      *
-     * @param scale the scale factor
+     * @param scale the scale factors
      * @return the resulting transform
      */
     public FloatTransform scale(Float3 scale) {
@@ -2197,7 +2218,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * transform will be {@code M * T}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * T * v}, the translation will be applied first.
      *
-     * @param translation the vector
+     * @param translation the translation offsets
      * @return the resulting transform
      */
     public FloatTransform translate(Float3 translation) {
@@ -2235,7 +2256,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
     /**
      * Transform {@code v} by this transform, returning the result as a value.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @return the resulting vector
      */
     public Float3 transform(Float3 v) {
@@ -2267,7 +2288,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * Transform the given direction by the rotation part of this transform, ignoring translation
      * and scale, returning the result as a value.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @return the resulting vector
      */
     public Float3 transformDirection(Float3 v) {
@@ -2297,7 +2318,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * ignoring translation and scale, without materializing {@code invert()}, returning the result
      * as a value.
      *
-     * @param v the vector
+     * @param v the direction to transform
      * @return the resulting vector
      */
     public Float3 transformDirectionInverse(Float3 v) {
@@ -2326,7 +2347,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
     /**
      * Transform {@code p} by the inverse of this transform, returning the result as a value.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @return the resulting vector
      */
     public Float3 transformInverse(Float3 p) {
@@ -2358,7 +2379,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * Transform the given position by this transform, treating it as a point with an implicit
      * {@code w = 1}, returning the result as a value.
      *
-     * @param v the vector
+     * @param v the position to transform
      * @return the resulting vector
      */
     public Float3 transformPosition(Float3 v) {
@@ -2384,7 +2405,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * Transform the given position by the inverse of this transform (world to local), without
      * materializing {@code invert()}, returning the result as a value.
      *
-     * @param p the vector
+     * @param p the position to transform
      * @return the resulting vector
      */
     public Float3 transformPositionInverse(Float3 p) {
@@ -2410,7 +2431,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * Transform the given vector by the linear part of this transform, i.e. apply its scale and
      * rotation but not its translation, returning the result as a value.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @return the resulting vector
      */
     public Float3 transformVector(Float3 v) {
@@ -2443,7 +2464,7 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
      * i.e. undo its rotation and scale but not its translation, without materializing
      * {@code invert()}, returning the result as a value.
      *
-     * @param v the vector
+     * @param v the vector to transform
      * @return the resulting vector
      */
     public Float3 transformVectorInverse(Float3 v) {
@@ -2468,52 +2489,92 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
         return new Float3(Math.fma(this.rZ, _t9, Math.fma(-this.rY, _t10, Math.fma(this.rW, _t11, vX))) / this.sX, Math.fma(this.rX, _t10, Math.fma(-this.rZ, _t11, Math.fma(this.rW, _t9, vY))) / this.sY, Math.fma(this.rY, _t11, Math.fma(-this.rX, _t9, Math.fma(this.rW, _t10, vZ))) / this.sZ);
     }
 
-    /** {@return a copy with the {@code tX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code tX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code tX} component
+     */
     public FloatTransform withTX(float v) {
         return new FloatTransform(v, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ);
     }
 
-    /** {@return a copy with the {@code tY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code tY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code tY} component
+     */
     public FloatTransform withTY(float v) {
         return new FloatTransform(tX, v, tZ, rX, rY, rZ, rW, sX, sY, sZ);
     }
 
-    /** {@return a copy with the {@code tZ} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code tZ} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code tZ} component
+     */
     public FloatTransform withTZ(float v) {
         return new FloatTransform(tX, tY, v, rX, rY, rZ, rW, sX, sY, sZ);
     }
 
-    /** {@return a copy with the {@code rX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code rX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code rX} component
+     */
     public FloatTransform withRX(float v) {
         return new FloatTransform(tX, tY, tZ, v, rY, rZ, rW, sX, sY, sZ);
     }
 
-    /** {@return a copy with the {@code rY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code rY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code rY} component
+     */
     public FloatTransform withRY(float v) {
         return new FloatTransform(tX, tY, tZ, rX, v, rZ, rW, sX, sY, sZ);
     }
 
-    /** {@return a copy with the {@code rZ} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code rZ} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code rZ} component
+     */
     public FloatTransform withRZ(float v) {
         return new FloatTransform(tX, tY, tZ, rX, rY, v, rW, sX, sY, sZ);
     }
 
-    /** {@return a copy with the {@code rW} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code rW} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code rW} component
+     */
     public FloatTransform withRW(float v) {
         return new FloatTransform(tX, tY, tZ, rX, rY, rZ, v, sX, sY, sZ);
     }
 
-    /** {@return a copy with the {@code sX} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code sX} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code sX} component
+     */
     public FloatTransform withSX(float v) {
         return new FloatTransform(tX, tY, tZ, rX, rY, rZ, rW, v, sY, sZ);
     }
 
-    /** {@return a copy with the {@code sY} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code sY} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code sY} component
+     */
     public FloatTransform withSY(float v) {
         return new FloatTransform(tX, tY, tZ, rX, rY, rZ, rW, sX, v, sZ);
     }
 
-    /** {@return a copy with the {@code sZ} component replaced by {@code v}} */
+    /**
+     * {@return a copy with the {@code sZ} component replaced by {@code v}}
+     *
+     * @param v the new value of the {@code sZ} component
+     */
     public FloatTransform withSZ(float v) {
         return new FloatTransform(tX, tY, tZ, rX, rY, rZ, rW, sX, sY, v);
     }

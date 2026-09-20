@@ -31,7 +31,7 @@ public interface DoubleRay extends DoubleRayR {
     /**
      * Set this ray to the given values.
      *
-     * @param v the ray
+     * @param v the ray to copy
      * @return this
      */
     @Mutated DoubleRay set(DoubleRayR v);
@@ -52,7 +52,7 @@ public interface DoubleRay extends DoubleRayR {
     /**
      * Set the direction of this ray to {@code d}.
      *
-     * @param d the vector
+     * @param d the new direction
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRay setDirection(Double3R d) { return setDirection(d, Joml.RETURN_NEW ? Joml.doubleRay() : this); }
@@ -70,7 +70,7 @@ public interface DoubleRay extends DoubleRayR {
     /**
      * Set the origin of this ray to {@code o}.
      *
-     * @param o the vector
+     * @param o the new origin
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRay setOrigin(Double3R o) { return setOrigin(o, Joml.RETURN_NEW ? Joml.doubleRay() : this); }
@@ -97,7 +97,7 @@ public interface DoubleRay extends DoubleRayR {
     /**
      * Transform this ray by {@code m}.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRay transform(Double3x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.doubleRay() : this); }
@@ -108,7 +108,7 @@ public interface DoubleRay extends DoubleRayR {
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
-     * @param m the matrix
+     * @param m the transformation matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRay transform(Double4x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.doubleRay() : this); }
