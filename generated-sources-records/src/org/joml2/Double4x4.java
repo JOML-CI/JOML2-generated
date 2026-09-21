@@ -8894,6 +8894,21 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
         return testAabb_no(min.x(), min.y(), min.z(), max.x(), max.y(), max.z());
     }
 
+    /** Private tail of {@code testAabb_no}; reached only through it. */
+    private double testAabb_no_s5dbe62ba_tail(double _t3, double maxX, double minX, double _t4, double maxY, double minY, double _t5, double maxZ, double minZ, double _t6, double _t7, double _t8, double _t9, double _t10, double _t11, double _t12, double _t13, double _t14, double _t15, double _t16, double _t17) {
+        return Math.fma(_t3, _t3 >= 0.0 ? maxX : minX, Math.fma(_t4, _t4 >= 0.0 ? maxY : minY, Math.fma(_t5, _t5 >= 0.0 ? maxZ : minZ, this.m33 - this.m03))) < 0.0 ? 0.0 : Math.fma(_t6, _t6 >= 0.0 ? maxX : minX, Math.fma(_t7, _t7 >= 0.0 ? maxY : minY, Math.fma(_t8, _t8 >= 0.0 ? maxZ : minZ, this.m13 + this.m33))) < 0.0 ? 0.0 : testAabb_no_s5dbe62ba_tail2(_t9, maxX, minX, _t10, maxY, minY, _t11, maxZ, minZ, _t12, _t13, _t14, _t15, _t16, _t17);
+    }
+
+    /** Private tail of {@code testAabb_no}; reached only through it. */
+    private double testAabb_no_s5dbe62ba_tail2(double _t9, double maxX, double minX, double _t10, double maxY, double minY, double _t11, double maxZ, double minZ, double _t12, double _t13, double _t14, double _t15, double _t16, double _t17) {
+        return Math.fma(_t9, _t9 >= 0.0 ? maxX : minX, Math.fma(_t10, _t10 >= 0.0 ? maxY : minY, Math.fma(_t11, _t11 >= 0.0 ? maxZ : minZ, this.m33 - this.m13))) < 0.0 ? 0.0 : testAabb_no_s5dbe62ba_tail3(_t12, maxX, minX, _t13, maxY, minY, _t14, maxZ, minZ, _t15, _t16, _t17);
+    }
+
+    /** Private tail of {@code testAabb_no}; reached only through it. */
+    private double testAabb_no_s5dbe62ba_tail3(double _t12, double maxX, double minX, double _t13, double maxY, double minY, double _t14, double maxZ, double minZ, double _t15, double _t16, double _t17) {
+        return Math.fma(_t12, _t12 >= 0.0 ? maxX : minX, Math.fma(_t13, _t13 >= 0.0 ? maxY : minY, Math.fma(_t14, _t14 >= 0.0 ? maxZ : minZ, this.m23 + this.m33))) < 0.0 ? 0.0 : Math.fma(_t15, _t15 >= 0.0 ? maxX : minX, Math.fma(_t16, _t16 >= 0.0 ? maxY : minY, Math.fma(_t17, _t17 >= 0.0 ? maxZ : minZ, this.m33 - this.m23))) < 0.0 ? 0.0 : 1.0;
+    }
+
 
     /**
      * Private body of {@code testAabb} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
@@ -8918,7 +8933,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
         double _t15 = this.m30 - this.m20;
         double _t16 = this.m31 - this.m21;
         double _t17 = this.m32 - this.m22;
-        return Math.fma(_t0, _t0 >= 0.0 ? maxX : minX, Math.fma(_t1, _t1 >= 0.0 ? maxY : minY, Math.fma(_t2, _t2 >= 0.0 ? maxZ : minZ, this.m03 + this.m33))) < 0.0 ? 0.0 : Math.fma(_t3, _t3 >= 0.0 ? maxX : minX, Math.fma(_t4, _t4 >= 0.0 ? maxY : minY, Math.fma(_t5, _t5 >= 0.0 ? maxZ : minZ, this.m33 - this.m03))) < 0.0 ? 0.0 : Math.fma(_t6, _t6 >= 0.0 ? maxX : minX, Math.fma(_t7, _t7 >= 0.0 ? maxY : minY, Math.fma(_t8, _t8 >= 0.0 ? maxZ : minZ, this.m13 + this.m33))) < 0.0 ? 0.0 : Math.fma(_t9, _t9 >= 0.0 ? maxX : minX, Math.fma(_t10, _t10 >= 0.0 ? maxY : minY, Math.fma(_t11, _t11 >= 0.0 ? maxZ : minZ, this.m33 - this.m13))) < 0.0 ? 0.0 : Math.fma(_t12, _t12 >= 0.0 ? maxX : minX, Math.fma(_t13, _t13 >= 0.0 ? maxY : minY, Math.fma(_t14, _t14 >= 0.0 ? maxZ : minZ, this.m23 + this.m33))) < 0.0 ? 0.0 : Math.fma(_t15, _t15 >= 0.0 ? maxX : minX, Math.fma(_t16, _t16 >= 0.0 ? maxY : minY, Math.fma(_t17, _t17 >= 0.0 ? maxZ : minZ, this.m33 - this.m23))) < 0.0 ? 0.0 : 1.0;
+        return Math.fma(_t0, _t0 >= 0.0 ? maxX : minX, Math.fma(_t1, _t1 >= 0.0 ? maxY : minY, Math.fma(_t2, _t2 >= 0.0 ? maxZ : minZ, this.m03 + this.m33))) < 0.0 ? 0.0 : testAabb_no_s5dbe62ba_tail(_t3, maxX, minX, _t4, maxY, minY, _t5, maxZ, minZ, _t6, _t7, _t8, _t9, _t10, _t11, _t12, _t13, _t14, _t15, _t16, _t17);
     }
 
 
@@ -8937,6 +8952,21 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      */
     private double testAabb_zo(Double3 min, Double3 max) {
         return testAabb_zo(min.x(), min.y(), min.z(), max.x(), max.y(), max.z());
+    }
+
+    /** Private tail of {@code testAabb_zo}; reached only through it. */
+    private double testAabb_zo_s5dbe62ba_tail(double _t3, double maxX, double minX, double _t4, double maxY, double minY, double _t5, double maxZ, double minZ, double _t6, double _t7, double _t8, double _t9, double _t10, double _t11, double _t12, double _t13, double _t14) {
+        return Math.fma(_t3, _t3 >= 0.0 ? maxX : minX, Math.fma(_t4, _t4 >= 0.0 ? maxY : minY, Math.fma(_t5, _t5 >= 0.0 ? maxZ : minZ, this.m33 - this.m03))) < 0.0 ? 0.0 : Math.fma(_t6, _t6 >= 0.0 ? maxX : minX, Math.fma(_t7, _t7 >= 0.0 ? maxY : minY, Math.fma(_t8, _t8 >= 0.0 ? maxZ : minZ, this.m13 + this.m33))) < 0.0 ? 0.0 : testAabb_zo_s5dbe62ba_tail2(_t9, maxX, minX, _t10, maxY, minY, _t11, maxZ, minZ, _t12, _t13, _t14);
+    }
+
+    /** Private tail of {@code testAabb_zo}; reached only through it. */
+    private double testAabb_zo_s5dbe62ba_tail2(double _t9, double maxX, double minX, double _t10, double maxY, double minY, double _t11, double maxZ, double minZ, double _t12, double _t13, double _t14) {
+        return Math.fma(_t9, _t9 >= 0.0 ? maxX : minX, Math.fma(_t10, _t10 >= 0.0 ? maxY : minY, Math.fma(_t11, _t11 >= 0.0 ? maxZ : minZ, this.m33 - this.m13))) < 0.0 ? 0.0 : testAabb_zo_s5dbe62ba_tail3(maxX, minX, maxY, minY, maxZ, minZ, _t12, _t13, _t14);
+    }
+
+    /** Private tail of {@code testAabb_zo}; reached only through it. */
+    private double testAabb_zo_s5dbe62ba_tail3(double maxX, double minX, double maxY, double minY, double maxZ, double minZ, double _t12, double _t13, double _t14) {
+        return Math.fma(this.m20, this.m20 >= 0.0 ? maxX : minX, Math.fma(this.m21, this.m21 >= 0.0 ? maxY : minY, Math.fma(this.m22, this.m22 >= 0.0 ? maxZ : minZ, this.m23))) < 0.0 ? 0.0 : Math.fma(_t12, _t12 >= 0.0 ? maxX : minX, Math.fma(_t13, _t13 >= 0.0 ? maxY : minY, Math.fma(_t14, _t14 >= 0.0 ? maxZ : minZ, this.m33 - this.m23))) < 0.0 ? 0.0 : 1.0;
     }
 
 
@@ -8960,7 +8990,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
         double _t12 = this.m30 - this.m20;
         double _t13 = this.m31 - this.m21;
         double _t14 = this.m32 - this.m22;
-        return Math.fma(_t0, _t0 >= 0.0 ? maxX : minX, Math.fma(_t1, _t1 >= 0.0 ? maxY : minY, Math.fma(_t2, _t2 >= 0.0 ? maxZ : minZ, this.m03 + this.m33))) < 0.0 ? 0.0 : Math.fma(_t3, _t3 >= 0.0 ? maxX : minX, Math.fma(_t4, _t4 >= 0.0 ? maxY : minY, Math.fma(_t5, _t5 >= 0.0 ? maxZ : minZ, this.m33 - this.m03))) < 0.0 ? 0.0 : Math.fma(_t6, _t6 >= 0.0 ? maxX : minX, Math.fma(_t7, _t7 >= 0.0 ? maxY : minY, Math.fma(_t8, _t8 >= 0.0 ? maxZ : minZ, this.m13 + this.m33))) < 0.0 ? 0.0 : Math.fma(_t9, _t9 >= 0.0 ? maxX : minX, Math.fma(_t10, _t10 >= 0.0 ? maxY : minY, Math.fma(_t11, _t11 >= 0.0 ? maxZ : minZ, this.m33 - this.m13))) < 0.0 ? 0.0 : Math.fma(this.m20, this.m20 >= 0.0 ? maxX : minX, Math.fma(this.m21, this.m21 >= 0.0 ? maxY : minY, Math.fma(this.m22, this.m22 >= 0.0 ? maxZ : minZ, this.m23))) < 0.0 ? 0.0 : Math.fma(_t12, _t12 >= 0.0 ? maxX : minX, Math.fma(_t13, _t13 >= 0.0 ? maxY : minY, Math.fma(_t14, _t14 >= 0.0 ? maxZ : minZ, this.m33 - this.m23))) < 0.0 ? 0.0 : 1.0;
+        return Math.fma(_t0, _t0 >= 0.0 ? maxX : minX, Math.fma(_t1, _t1 >= 0.0 ? maxY : minY, Math.fma(_t2, _t2 >= 0.0 ? maxZ : minZ, this.m03 + this.m33))) < 0.0 ? 0.0 : testAabb_zo_s5dbe62ba_tail(_t3, maxX, minX, _t4, maxY, minY, _t5, maxZ, minZ, _t6, _t7, _t8, _t9, _t10, _t11, _t12, _t13, _t14);
     }
 
 
@@ -9089,13 +9119,18 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
         return testPoint_no(point.x(), point.y(), point.z());
     }
 
+    /** Private tail of {@code testPoint_no}; reached only through it. */
+    private double testPoint_no_s7a169938_tail(double pointX, double pointY, double pointZ) {
+        return Math.fma(pointX, this.m30 - this.m10, Math.fma(pointY, this.m31 - this.m11, Math.fma(pointZ, this.m32 - this.m12, this.m33 - this.m13))) < 0.0 ? 0.0 : Math.fma(pointX, this.m20 + this.m30, Math.fma(pointY, this.m21 + this.m31, Math.fma(pointZ, this.m22 + this.m32, this.m23 + this.m33))) < 0.0 ? 0.0 : Math.fma(pointX, this.m30 - this.m20, Math.fma(pointY, this.m31 - this.m21, Math.fma(pointZ, this.m32 - this.m22, this.m33 - this.m23))) < 0.0 ? 0.0 : 1.0;
+    }
+
 
     /**
      * Private body of {@code testPoint} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
      * through the public {@code testPoint} dispatcher.
      */
     private double testPoint_no(double pointX, double pointY, double pointZ) {
-        return Math.fma(pointX, this.m00 + this.m30, Math.fma(pointY, this.m01 + this.m31, Math.fma(pointZ, this.m02 + this.m32, this.m03 + this.m33))) < 0.0 ? 0.0 : Math.fma(pointX, this.m30 - this.m00, Math.fma(pointY, this.m31 - this.m01, Math.fma(pointZ, this.m32 - this.m02, this.m33 - this.m03))) < 0.0 ? 0.0 : Math.fma(pointX, this.m10 + this.m30, Math.fma(pointY, this.m11 + this.m31, Math.fma(pointZ, this.m12 + this.m32, this.m13 + this.m33))) < 0.0 ? 0.0 : Math.fma(pointX, this.m30 - this.m10, Math.fma(pointY, this.m31 - this.m11, Math.fma(pointZ, this.m32 - this.m12, this.m33 - this.m13))) < 0.0 ? 0.0 : Math.fma(pointX, this.m20 + this.m30, Math.fma(pointY, this.m21 + this.m31, Math.fma(pointZ, this.m22 + this.m32, this.m23 + this.m33))) < 0.0 ? 0.0 : Math.fma(pointX, this.m30 - this.m20, Math.fma(pointY, this.m31 - this.m21, Math.fma(pointZ, this.m32 - this.m22, this.m33 - this.m23))) < 0.0 ? 0.0 : 1.0;
+        return Math.fma(pointX, this.m00 + this.m30, Math.fma(pointY, this.m01 + this.m31, Math.fma(pointZ, this.m02 + this.m32, this.m03 + this.m33))) < 0.0 ? 0.0 : Math.fma(pointX, this.m30 - this.m00, Math.fma(pointY, this.m31 - this.m01, Math.fma(pointZ, this.m32 - this.m02, this.m33 - this.m03))) < 0.0 ? 0.0 : Math.fma(pointX, this.m10 + this.m30, Math.fma(pointY, this.m11 + this.m31, Math.fma(pointZ, this.m12 + this.m32, this.m13 + this.m33))) < 0.0 ? 0.0 : testPoint_no_s7a169938_tail(pointX, pointY, pointZ);
     }
 
 
@@ -9107,13 +9142,18 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
         return testPoint_zo(point.x(), point.y(), point.z());
     }
 
+    /** Private tail of {@code testPoint_zo}; reached only through it. */
+    private double testPoint_zo_s7a169938_tail(double pointX, double pointY, double pointZ) {
+        return Math.fma(pointX, this.m30 - this.m10, Math.fma(pointY, this.m31 - this.m11, Math.fma(pointZ, this.m32 - this.m12, this.m33 - this.m13))) < 0.0 ? 0.0 : Math.fma(pointX, this.m20, Math.fma(pointY, this.m21, Math.fma(pointZ, this.m22, this.m23))) < 0.0 ? 0.0 : Math.fma(pointX, this.m30 - this.m20, Math.fma(pointY, this.m31 - this.m21, Math.fma(pointZ, this.m32 - this.m22, this.m33 - this.m23))) < 0.0 ? 0.0 : 1.0;
+    }
+
 
     /**
      * Private body of {@code testPoint} for {@code DepthRange.ZERO_TO_ONE}; reached only through
      * the public {@code testPoint} dispatcher.
      */
     private double testPoint_zo(double pointX, double pointY, double pointZ) {
-        return Math.fma(pointX, this.m00 + this.m30, Math.fma(pointY, this.m01 + this.m31, Math.fma(pointZ, this.m02 + this.m32, this.m03 + this.m33))) < 0.0 ? 0.0 : Math.fma(pointX, this.m30 - this.m00, Math.fma(pointY, this.m31 - this.m01, Math.fma(pointZ, this.m32 - this.m02, this.m33 - this.m03))) < 0.0 ? 0.0 : Math.fma(pointX, this.m10 + this.m30, Math.fma(pointY, this.m11 + this.m31, Math.fma(pointZ, this.m12 + this.m32, this.m13 + this.m33))) < 0.0 ? 0.0 : Math.fma(pointX, this.m30 - this.m10, Math.fma(pointY, this.m31 - this.m11, Math.fma(pointZ, this.m32 - this.m12, this.m33 - this.m13))) < 0.0 ? 0.0 : Math.fma(pointX, this.m20, Math.fma(pointY, this.m21, Math.fma(pointZ, this.m22, this.m23))) < 0.0 ? 0.0 : Math.fma(pointX, this.m30 - this.m20, Math.fma(pointY, this.m31 - this.m21, Math.fma(pointZ, this.m32 - this.m22, this.m33 - this.m23))) < 0.0 ? 0.0 : 1.0;
+        return Math.fma(pointX, this.m00 + this.m30, Math.fma(pointY, this.m01 + this.m31, Math.fma(pointZ, this.m02 + this.m32, this.m03 + this.m33))) < 0.0 ? 0.0 : Math.fma(pointX, this.m30 - this.m00, Math.fma(pointY, this.m31 - this.m01, Math.fma(pointZ, this.m32 - this.m02, this.m33 - this.m03))) < 0.0 ? 0.0 : Math.fma(pointX, this.m10 + this.m30, Math.fma(pointY, this.m11 + this.m31, Math.fma(pointZ, this.m12 + this.m32, this.m13 + this.m33))) < 0.0 ? 0.0 : testPoint_zo_s7a169938_tail(pointX, pointY, pointZ);
     }
 
 
