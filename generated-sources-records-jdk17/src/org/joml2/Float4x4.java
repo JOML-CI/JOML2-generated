@@ -9219,6 +9219,32 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
         return testSphere_no(center.x(), center.y(), center.z(), radius);
     }
 
+    /** Private tail of {@code testSphere_no}; reached only through it. */
+    private float testSphere_no_s48e18d6a_tail(float centerX, float _t1, float centerY, float _t2, float centerZ, float _t3, float _t5, float _t6, float _t7, float _t9, float _t10, float _t11, float _t13, float _t14, float _t15, float _t17, float _t18, float _t19, float _t21, float _t22, float _t23, float _t0) {
+        float _t47 = Math.fma(centerX, _t1, Math.fma(centerY, _t2, Math.fma(centerZ, _t3, this.m03 + this.m33)));
+        float _t48 = Math.fma(centerX, _t5, Math.fma(centerY, _t6, Math.fma(centerZ, _t7, this.m33 - this.m03)));
+        float _t49 = Math.fma(centerX, _t9, Math.fma(centerY, _t10, Math.fma(centerZ, _t11, this.m13 + this.m33)));
+        float _t50 = Math.fma(centerX, _t13, Math.fma(centerY, _t14, Math.fma(centerZ, _t15, this.m33 - this.m13)));
+        float _t51 = Math.fma(centerX, _t17, Math.fma(centerY, _t18, Math.fma(centerZ, _t19, this.m23 + this.m33)));
+        float _t52 = Math.fma(centerX, _t21, Math.fma(centerY, _t22, Math.fma(centerZ, _t23, this.m33 - this.m23)));
+        return testSphere_no_s48e18d6a_tail2(_t52, _t23, _t21, _t22, _t0, _t51, _t19, _t17, _t18, _t50, _t15, _t13, _t14, _t49, _t11, _t9, _t10, _t48, _t7, _t5, _t6, _t47, _t3, _t1, _t2);
+    }
+
+    /** Private tail of {@code testSphere_no}; reached only through it. */
+    private float testSphere_no_s48e18d6a_tail2(float _t52, float _t23, float _t21, float _t22, float _t0, float _t51, float _t19, float _t17, float _t18, float _t50, float _t15, float _t13, float _t14, float _t49, float _t11, float _t9, float _t10, float _t48, float _t7, float _t5, float _t6, float _t47, float _t3, float _t1, float _t2) {
+        float _t69 = _t52 < 0.0f ? _t52 * _t52 > Math.fma(_t23, _t23, Math.fma(_t21, _t21, _t22 * _t22)) * _t0 ? 0.0f : 1.0f : 1.0f;
+        float _t71 = _t51 < 0.0f ? _t51 * _t51 > Math.fma(_t19, _t19, Math.fma(_t17, _t17, _t18 * _t18)) * _t0 ? 0.0f : _t69 : _t69;
+        float _t73 = _t50 < 0.0f ? _t50 * _t50 > Math.fma(_t15, _t15, Math.fma(_t13, _t13, _t14 * _t14)) * _t0 ? 0.0f : _t71 : _t71;
+        float _t75 = _t49 < 0.0f ? _t49 * _t49 > Math.fma(_t11, _t11, Math.fma(_t9, _t9, _t10 * _t10)) * _t0 ? 0.0f : _t73 : _t73;
+        return testSphere_no_s48e18d6a_tail3(_t48, _t7, _t5, _t6, _t0, _t75, _t47, _t3, _t1, _t2);
+    }
+
+    /** Private tail of {@code testSphere_no}; reached only through it. */
+    private float testSphere_no_s48e18d6a_tail3(float _t48, float _t7, float _t5, float _t6, float _t0, float _t75, float _t47, float _t3, float _t1, float _t2) {
+        float _t77 = _t48 < 0.0f ? _t48 * _t48 > Math.fma(_t7, _t7, Math.fma(_t5, _t5, _t6 * _t6)) * _t0 ? 0.0f : _t75 : _t75;
+        return _t47 < 0.0f ? _t47 * _t47 > Math.fma(_t3, _t3, Math.fma(_t1, _t1, _t2 * _t2)) * _t0 ? 0.0f : _t77 : _t77;
+    }
+
 
     /**
      * Private body of {@code testSphere} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
@@ -9244,18 +9270,7 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
         float _t21 = this.m30 - this.m20;
         float _t22 = this.m31 - this.m21;
         float _t23 = this.m32 - this.m22;
-        float _t47 = Math.fma(centerX, _t1, Math.fma(centerY, _t2, Math.fma(centerZ, _t3, this.m03 + this.m33)));
-        float _t48 = Math.fma(centerX, _t5, Math.fma(centerY, _t6, Math.fma(centerZ, _t7, this.m33 - this.m03)));
-        float _t49 = Math.fma(centerX, _t9, Math.fma(centerY, _t10, Math.fma(centerZ, _t11, this.m13 + this.m33)));
-        float _t50 = Math.fma(centerX, _t13, Math.fma(centerY, _t14, Math.fma(centerZ, _t15, this.m33 - this.m13)));
-        float _t51 = Math.fma(centerX, _t17, Math.fma(centerY, _t18, Math.fma(centerZ, _t19, this.m23 + this.m33)));
-        float _t52 = Math.fma(centerX, _t21, Math.fma(centerY, _t22, Math.fma(centerZ, _t23, this.m33 - this.m23)));
-        float _t69 = _t52 < 0.0f ? _t52 * _t52 > Math.fma(_t23, _t23, Math.fma(_t21, _t21, _t22 * _t22)) * _t0 ? 0.0f : 1.0f : 1.0f;
-        float _t71 = _t51 < 0.0f ? _t51 * _t51 > Math.fma(_t19, _t19, Math.fma(_t17, _t17, _t18 * _t18)) * _t0 ? 0.0f : _t69 : _t69;
-        float _t73 = _t50 < 0.0f ? _t50 * _t50 > Math.fma(_t15, _t15, Math.fma(_t13, _t13, _t14 * _t14)) * _t0 ? 0.0f : _t71 : _t71;
-        float _t75 = _t49 < 0.0f ? _t49 * _t49 > Math.fma(_t11, _t11, Math.fma(_t9, _t9, _t10 * _t10)) * _t0 ? 0.0f : _t73 : _t73;
-        float _t77 = _t48 < 0.0f ? _t48 * _t48 > Math.fma(_t7, _t7, Math.fma(_t5, _t5, _t6 * _t6)) * _t0 ? 0.0f : _t75 : _t75;
-        return _t47 < 0.0f ? _t47 * _t47 > Math.fma(_t3, _t3, Math.fma(_t1, _t1, _t2 * _t2)) * _t0 ? 0.0f : _t77 : _t77;
+        return testSphere_no_s48e18d6a_tail(centerX, _t1, centerY, _t2, centerZ, _t3, _t5, _t6, _t7, _t9, _t10, _t11, _t13, _t14, _t15, _t17, _t18, _t19, _t21, _t22, _t23, _t0);
     }
 
 
@@ -9274,6 +9289,31 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
      */
     private float testSphere_zo(Float3 center, float radius) {
         return testSphere_zo(center.x(), center.y(), center.z(), radius);
+    }
+
+    /** Private tail of {@code testSphere_zo}; reached only through it. */
+    private float testSphere_zo_s48e18d6a_tail(float centerX, float _t1, float centerY, float _t2, float centerZ, float _t3, float _t5, float _t6, float _t7, float _t9, float _t10, float _t11, float _t13, float _t14, float _t15, float _t18, float _t19, float _t20, float _t0, float _t35) {
+        float _t46 = Math.fma(centerX, _t1, Math.fma(centerY, _t2, Math.fma(centerZ, _t3, this.m03 + this.m33)));
+        float _t47 = Math.fma(centerX, _t5, Math.fma(centerY, _t6, Math.fma(centerZ, _t7, this.m33 - this.m03)));
+        float _t48 = Math.fma(centerX, _t9, Math.fma(centerY, _t10, Math.fma(centerZ, _t11, this.m13 + this.m33)));
+        float _t49 = Math.fma(centerX, _t13, Math.fma(centerY, _t14, Math.fma(centerZ, _t15, this.m33 - this.m13)));
+        float _t50 = Math.fma(centerX, _t18, Math.fma(centerY, _t19, Math.fma(centerZ, _t20, this.m33 - this.m23)));
+        float _t65 = _t50 < 0.0f ? _t50 * _t50 > Math.fma(_t20, _t20, Math.fma(_t18, _t18, _t19 * _t19)) * _t0 ? 0.0f : 1.0f : 1.0f;
+        return testSphere_zo_s48e18d6a_tail2(_t35, _t0, _t65, _t49, _t15, _t13, _t14, _t48, _t11, _t9, _t10, _t47, _t7, _t5, _t6, _t46, _t3, _t1, _t2);
+    }
+
+    /** Private tail of {@code testSphere_zo}; reached only through it. */
+    private float testSphere_zo_s48e18d6a_tail2(float _t35, float _t0, float _t65, float _t49, float _t15, float _t13, float _t14, float _t48, float _t11, float _t9, float _t10, float _t47, float _t7, float _t5, float _t6, float _t46, float _t3, float _t1, float _t2) {
+        float _t67 = _t35 < 0.0f ? _t35 * _t35 > Math.fma(this.m22, this.m22, Math.fma(this.m20, this.m20, this.m21 * this.m21)) * _t0 ? 0.0f : _t65 : _t65;
+        float _t69 = _t49 < 0.0f ? _t49 * _t49 > Math.fma(_t15, _t15, Math.fma(_t13, _t13, _t14 * _t14)) * _t0 ? 0.0f : _t67 : _t67;
+        float _t71 = _t48 < 0.0f ? _t48 * _t48 > Math.fma(_t11, _t11, Math.fma(_t9, _t9, _t10 * _t10)) * _t0 ? 0.0f : _t69 : _t69;
+        return testSphere_zo_s48e18d6a_tail3(_t47, _t7, _t5, _t6, _t0, _t71, _t46, _t3, _t1, _t2);
+    }
+
+    /** Private tail of {@code testSphere_zo}; reached only through it. */
+    private float testSphere_zo_s48e18d6a_tail3(float _t47, float _t7, float _t5, float _t6, float _t0, float _t71, float _t46, float _t3, float _t1, float _t2) {
+        float _t73 = _t47 < 0.0f ? _t47 * _t47 > Math.fma(_t7, _t7, Math.fma(_t5, _t5, _t6 * _t6)) * _t0 ? 0.0f : _t71 : _t71;
+        return _t46 < 0.0f ? _t46 * _t46 > Math.fma(_t3, _t3, Math.fma(_t1, _t1, _t2 * _t2)) * _t0 ? 0.0f : _t73 : _t73;
     }
 
 
@@ -9299,17 +9339,7 @@ public record Float4x4(float m00, float m01, float m02, float m03, float m10, fl
         float _t19 = this.m31 - this.m21;
         float _t20 = this.m32 - this.m22;
         float _t35 = Math.fma(centerX, this.m20, Math.fma(centerY, this.m21, Math.fma(centerZ, this.m22, this.m23)));
-        float _t46 = Math.fma(centerX, _t1, Math.fma(centerY, _t2, Math.fma(centerZ, _t3, this.m03 + this.m33)));
-        float _t47 = Math.fma(centerX, _t5, Math.fma(centerY, _t6, Math.fma(centerZ, _t7, this.m33 - this.m03)));
-        float _t48 = Math.fma(centerX, _t9, Math.fma(centerY, _t10, Math.fma(centerZ, _t11, this.m13 + this.m33)));
-        float _t49 = Math.fma(centerX, _t13, Math.fma(centerY, _t14, Math.fma(centerZ, _t15, this.m33 - this.m13)));
-        float _t50 = Math.fma(centerX, _t18, Math.fma(centerY, _t19, Math.fma(centerZ, _t20, this.m33 - this.m23)));
-        float _t65 = _t50 < 0.0f ? _t50 * _t50 > Math.fma(_t20, _t20, Math.fma(_t18, _t18, _t19 * _t19)) * _t0 ? 0.0f : 1.0f : 1.0f;
-        float _t67 = _t35 < 0.0f ? _t35 * _t35 > Math.fma(this.m22, this.m22, Math.fma(this.m20, this.m20, this.m21 * this.m21)) * _t0 ? 0.0f : _t65 : _t65;
-        float _t69 = _t49 < 0.0f ? _t49 * _t49 > Math.fma(_t15, _t15, Math.fma(_t13, _t13, _t14 * _t14)) * _t0 ? 0.0f : _t67 : _t67;
-        float _t71 = _t48 < 0.0f ? _t48 * _t48 > Math.fma(_t11, _t11, Math.fma(_t9, _t9, _t10 * _t10)) * _t0 ? 0.0f : _t69 : _t69;
-        float _t73 = _t47 < 0.0f ? _t47 * _t47 > Math.fma(_t7, _t7, Math.fma(_t5, _t5, _t6 * _t6)) * _t0 ? 0.0f : _t71 : _t71;
-        return _t46 < 0.0f ? _t46 * _t46 > Math.fma(_t3, _t3, Math.fma(_t1, _t1, _t2 * _t2)) * _t0 ? 0.0f : _t73 : _t73;
+        return testSphere_zo_s48e18d6a_tail(centerX, _t1, centerY, _t2, centerZ, _t3, _t5, _t6, _t7, _t9, _t10, _t11, _t13, _t14, _t15, _t18, _t19, _t20, _t0, _t35);
     }
 
 
