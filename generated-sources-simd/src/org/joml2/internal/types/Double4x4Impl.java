@@ -2606,13 +2606,11 @@ public class Double4x4Impl implements Double4x4 {
         var _col1 = _sv0.fma(VEC_0, _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, sd[6]).withLane(1, sd[10]).withLane(2, sd[2]), _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(0, sd[10]).withLane(1, sd[2]).withLane(2, sd[6])).neg()).mul(_sv1));
         var _col2 = _sv0.fma(VEC_0, _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(0, sd[9]).withLane(1, sd[1]).withLane(2, sd[5]), _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, sd[5]).withLane(1, sd[9]).withLane(2, sd[1])).neg()).mul(_sv1));
         var _sv4 = DoubleVector.broadcast(COL_SPECIES, sd[12]);
-        var _sv5 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv6 = _sv5.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_5);
-        var _sv7 = DoubleVector.broadcast(COL_SPECIES, _t15);
-        var _sv8 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
-        var _sv9 = DoubleVector.broadcast(COL_SPECIES, _t16);
-        var _sv10 = _sv9.blend(DoubleVector.broadcast(COL_SPECIES, _t17), MASK_5);
-        var _col3 = _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t14), _sv6.fma(_sv7, _sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0).blend(_sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13), _sv6.fma(_sv7.withLane(2, _t16), _sv8.withLane(2, sd[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t15);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
+        var _sv7 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
+        var _sv8 = DoubleVector.broadcast(COL_SPECIES, _t16);
+        var _col3 = _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t14), DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[0]).fma(_sv5, _sv6.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t17).withLane(2, _t17)).neg())).mul(_sv1).add(VEC_0).blend(_sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13), _sv7.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_5).fma(_sv5.withLane(2, _t16), _sv6.withLane(2, sd[4]).mul(_sv8.blend(DoubleVector.broadcast(COL_SPECIES, _t17), MASK_5)).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -2639,13 +2637,11 @@ public class Double4x4Impl implements Double4x4 {
         var _col1 = _sv0.mul(VEC_0).add(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, sd[6]).withLane(1, sd[10]).withLane(2, sd[2])).add(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(0, sd[10]).withLane(1, sd[2]).withLane(2, sd[6])).neg()).mul(_sv1));
         var _col2 = _sv0.mul(VEC_0).add(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(0, sd[9]).withLane(1, sd[1]).withLane(2, sd[5])).add(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, sd[5]).withLane(1, sd[9]).withLane(2, sd[1])).neg()).mul(_sv1));
         var _sv4 = DoubleVector.broadcast(COL_SPECIES, sd[12]);
-        var _sv5 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv6 = _sv5.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_5);
-        var _sv7 = DoubleVector.broadcast(COL_SPECIES, _t15);
-        var _sv8 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
-        var _sv9 = DoubleVector.broadcast(COL_SPECIES, _t16);
-        var _sv10 = _sv9.blend(DoubleVector.broadcast(COL_SPECIES, _t17), MASK_5);
-        var _col3 = _sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t14)).add(_sv6.mul(_sv7).add(_sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0).blend(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13)).add(_sv6.mul(_sv7.withLane(2, _t16)).add(_sv8.withLane(2, sd[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t15);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
+        var _sv7 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
+        var _sv8 = DoubleVector.broadcast(COL_SPECIES, _t16);
+        var _col3 = _sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t14)).add(DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[0]).mul(_sv5).add(_sv6.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t17).withLane(2, _t17)).neg())).mul(_sv1).add(VEC_0).blend(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13)).add(_sv7.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_5).mul(_sv5.withLane(2, _t16)).add(_sv6.withLane(2, sd[4]).mul(_sv8.blend(DoubleVector.broadcast(COL_SPECIES, _t17), MASK_5)).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -2704,13 +2700,14 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69).mul(_sv0).blend(DoubleVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t68).mul(_sv1), MASK_7);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, sd[12]);
         var _sv3 = _sv2.withLane(3, sd[8]);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv5 = _sv4.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_8);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
-        var _sv7 = _sv6.blend(_sv4, MASK_9);
-        var _col1 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_6);
-        var _col2 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_7);
-        var _col3 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_6);
+        var _sv4 = DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[0]).withLane(3, sd[0]);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
+        var _sv7 = _sv5.blend(_sv6, MASK_8);
+        var _sv8 = _sv6.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_9);
+        var _col1 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -2750,13 +2747,14 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69).mul(_sv0).blend(DoubleVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t68).mul(_sv1), MASK_7);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, sd[12]);
         var _sv3 = _sv2.withLane(3, sd[8]);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv5 = _sv4.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_8);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
-        var _sv7 = _sv6.blend(_sv4, MASK_9);
-        var _col1 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_6);
-        var _col2 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_7);
-        var _col3 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_6);
+        var _sv4 = DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[0]).withLane(3, sd[0]);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
+        var _sv7 = _sv5.blend(_sv6, MASK_8);
+        var _sv8 = _sv6.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_9);
+        var _col1 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -2855,13 +2853,14 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, _t131).withLane(2, _t133).mul(_sv0).blend(DoubleVector.zero(COL_SPECIES).withLane(1, _t134).withLane(3, _t132).mul(_sv1), MASK_7);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t57);
         var _sv3 = _sv2.withLane(3, _t61);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, _t63);
-        var _sv5 = _sv4.blend(DoubleVector.broadcast(COL_SPECIES, _t62), MASK_8);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t61);
-        var _sv7 = _sv6.blend(_sv4, MASK_9);
-        var _col1 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t105).withLane(3, _t104), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t101), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t101).withLane(2, _t104), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t102).withLane(2, _t103), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t103).withLane(2, _t106)).neg())).mul(_sv1), MASK_6);
-        var _col2 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t117), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t108).withLane(2, _t109), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t109).withLane(2, _t114)).neg())).mul(_sv0).blend(_sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t113).withLane(3, _t117), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t107), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t114).withLane(3, _t113)).neg())).mul(_sv1), MASK_7);
-        var _col3 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t115).withLane(3, _t118), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t111).withLane(3, _t110), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t116).withLane(3, _t115)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t110).withLane(2, _t118), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t111).withLane(2, _t112), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t112).withLane(2, _t116)).neg())).mul(_sv1), MASK_6);
+        var _sv4 = DoubleVector.zero(COL_SPECIES).withLane(1, _t62).withLane(2, _t62).withLane(3, _t62);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t61);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t63);
+        var _sv7 = _sv5.blend(_sv6, MASK_8);
+        var _sv8 = _sv6.blend(DoubleVector.broadcast(COL_SPECIES, _t62), MASK_9);
+        var _col1 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t105).withLane(3, _t104), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t101), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t101).withLane(2, _t104), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t102).withLane(2, _t103), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t103).withLane(2, _t106)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t117), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t108).withLane(2, _t109), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t109).withLane(2, _t114)).neg())).mul(_sv0).blend(_sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t113).withLane(3, _t117), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t107), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t114).withLane(3, _t113)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t115).withLane(3, _t118), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t111).withLane(3, _t110), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t116).withLane(3, _t115)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t110).withLane(2, _t118), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t111).withLane(2, _t112), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t112).withLane(2, _t116)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -2918,13 +2917,14 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, _t131).withLane(2, _t133).mul(_sv0).blend(DoubleVector.zero(COL_SPECIES).withLane(1, _t134).withLane(3, _t132).mul(_sv1), MASK_7);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t57);
         var _sv3 = _sv2.withLane(3, _t61);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, _t63);
-        var _sv5 = _sv4.blend(DoubleVector.broadcast(COL_SPECIES, _t62), MASK_8);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t61);
-        var _sv7 = _sv6.blend(_sv4, MASK_9);
-        var _col1 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t105).withLane(3, _t104)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t101)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t101).withLane(2, _t104)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t102).withLane(2, _t103)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t103).withLane(2, _t106)).neg())).mul(_sv1), MASK_6);
-        var _col2 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t117)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t108).withLane(2, _t109)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t109).withLane(2, _t114)).neg())).mul(_sv0).blend(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t113).withLane(3, _t117)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t107)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t114).withLane(3, _t113)).neg())).mul(_sv1), MASK_7);
-        var _col3 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t115).withLane(3, _t118)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t111).withLane(3, _t110)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t116).withLane(3, _t115)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t110).withLane(2, _t118)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t111).withLane(2, _t112)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t112).withLane(2, _t116)).neg())).mul(_sv1), MASK_6);
+        var _sv4 = DoubleVector.zero(COL_SPECIES).withLane(1, _t62).withLane(2, _t62).withLane(3, _t62);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t61);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t63);
+        var _sv7 = _sv5.blend(_sv6, MASK_8);
+        var _sv8 = _sv6.blend(DoubleVector.broadcast(COL_SPECIES, _t62), MASK_9);
+        var _col1 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t105).withLane(3, _t104)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t101)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t101).withLane(2, _t104)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t102).withLane(2, _t103)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t103).withLane(2, _t106)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t117)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t108).withLane(2, _t109)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t109).withLane(2, _t114)).neg())).mul(_sv0).blend(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t113).withLane(3, _t117)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t107)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t114).withLane(3, _t113)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t115).withLane(3, _t118)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t111).withLane(3, _t110)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t116).withLane(3, _t115)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t110).withLane(2, _t118)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t111).withLane(2, _t112)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t112).withLane(2, _t116)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -2975,13 +2975,14 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69).mul(_sv0).blend(DoubleVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t68).mul(_sv1), MASK_7);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, otherData[12]);
         var _sv3 = _sv2.withLane(3, otherData[8]);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, otherData[4]);
-        var _sv5 = _sv4.blend(DoubleVector.broadcast(COL_SPECIES, otherData[0]), MASK_8);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, otherData[8]);
-        var _sv7 = _sv6.blend(_sv4, MASK_9);
-        var _col1 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_6);
-        var _col2 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_7);
-        var _col3 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_6);
+        var _sv4 = DoubleVector.zero(COL_SPECIES).withLane(1, otherData[0]).withLane(2, otherData[0]).withLane(3, otherData[0]);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, otherData[8]);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, otherData[4]);
+        var _sv7 = _sv5.blend(_sv6, MASK_8);
+        var _sv8 = _sv6.blend(DoubleVector.broadcast(COL_SPECIES, otherData[0]), MASK_9);
+        var _col1 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -3022,13 +3023,14 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69).mul(_sv0).blend(DoubleVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t68).mul(_sv1), MASK_7);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, otherData[12]);
         var _sv3 = _sv2.withLane(3, otherData[8]);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, otherData[4]);
-        var _sv5 = _sv4.blend(DoubleVector.broadcast(COL_SPECIES, otherData[0]), MASK_8);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, otherData[8]);
-        var _sv7 = _sv6.blend(_sv4, MASK_9);
-        var _col1 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_6);
-        var _col2 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_7);
-        var _col3 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_6);
+        var _sv4 = DoubleVector.zero(COL_SPECIES).withLane(1, otherData[0]).withLane(2, otherData[0]).withLane(3, otherData[0]);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, otherData[8]);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, otherData[4]);
+        var _sv7 = _sv5.blend(_sv6, MASK_8);
+        var _sv8 = _sv6.blend(DoubleVector.broadcast(COL_SPECIES, otherData[0]), MASK_9);
+        var _col1 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -3091,13 +3093,14 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, _t79).withLane(2, _t81).mul(_sv0).blend(DoubleVector.zero(COL_SPECIES).withLane(1, _t82).withLane(3, _t80).mul(_sv1), MASK_7);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t6);
         var _sv3 = _sv2.withLane(3, _t9);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, _t11);
-        var _sv5 = _sv4.blend(DoubleVector.broadcast(COL_SPECIES, _t10), MASK_8);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t9);
-        var _sv7 = _sv6.blend(_sv4, MASK_9);
-        var _col1 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t53).withLane(3, _t52), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t54).withLane(3, _t53)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t49).withLane(2, _t52), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t50).withLane(2, _t51), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t51).withLane(2, _t54)).neg())).mul(_sv1), MASK_6);
-        var _col2 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t55).withLane(2, _t60), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t56).withLane(2, _t57), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t57).withLane(2, _t59)).neg())).mul(_sv0).blend(_sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t58).withLane(3, _t60), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t56).withLane(3, _t55), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t59).withLane(3, _t58)).neg())).mul(_sv1), MASK_7);
-        var _col3 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t72).withLane(3, _t74), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t69), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t73).withLane(3, _t72)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t69).withLane(2, _t74), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t70).withLane(2, _t71), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t71).withLane(2, _t73)).neg())).mul(_sv1), MASK_6);
+        var _sv4 = DoubleVector.zero(COL_SPECIES).withLane(1, _t10).withLane(2, _t10).withLane(3, _t10);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t9);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t11);
+        var _sv7 = _sv5.blend(_sv6, MASK_8);
+        var _sv8 = _sv6.blend(DoubleVector.broadcast(COL_SPECIES, _t10), MASK_9);
+        var _col1 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t53).withLane(3, _t52), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t54).withLane(3, _t53)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t49).withLane(2, _t52), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t50).withLane(2, _t51), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t51).withLane(2, _t54)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t55).withLane(2, _t60), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t56).withLane(2, _t57), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t57).withLane(2, _t59)).neg())).mul(_sv0).blend(_sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t58).withLane(3, _t60), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t56).withLane(3, _t55), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t59).withLane(3, _t58)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t72).withLane(3, _t74), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t69), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t73).withLane(3, _t72)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t69).withLane(2, _t74), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t70).withLane(2, _t71), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t71).withLane(2, _t73)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -3150,13 +3153,14 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, _t79).withLane(2, _t81).mul(_sv0).blend(DoubleVector.zero(COL_SPECIES).withLane(1, _t82).withLane(3, _t80).mul(_sv1), MASK_7);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t6);
         var _sv3 = _sv2.withLane(3, _t9);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, _t11);
-        var _sv5 = _sv4.blend(DoubleVector.broadcast(COL_SPECIES, _t10), MASK_8);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t9);
-        var _sv7 = _sv6.blend(_sv4, MASK_9);
-        var _col1 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t53).withLane(3, _t52)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t54).withLane(3, _t53)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t49).withLane(2, _t52)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t50).withLane(2, _t51)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t51).withLane(2, _t54)).neg())).mul(_sv1), MASK_6);
-        var _col2 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t55).withLane(2, _t60)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t56).withLane(2, _t57)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t57).withLane(2, _t59)).neg())).mul(_sv0).blend(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t58).withLane(3, _t60)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t56).withLane(3, _t55)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t59).withLane(3, _t58)).neg())).mul(_sv1), MASK_7);
-        var _col3 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t72).withLane(3, _t74)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t69)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t73).withLane(3, _t72)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t69).withLane(2, _t74)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t70).withLane(2, _t71)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t71).withLane(2, _t73)).neg())).mul(_sv1), MASK_6);
+        var _sv4 = DoubleVector.zero(COL_SPECIES).withLane(1, _t10).withLane(2, _t10).withLane(3, _t10);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t9);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t11);
+        var _sv7 = _sv5.blend(_sv6, MASK_8);
+        var _sv8 = _sv6.blend(DoubleVector.broadcast(COL_SPECIES, _t10), MASK_9);
+        var _col1 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t53).withLane(3, _t52)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t54).withLane(3, _t53)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t49).withLane(2, _t52)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t50).withLane(2, _t51)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t51).withLane(2, _t54)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t55).withLane(2, _t60)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t56).withLane(2, _t57)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t57).withLane(2, _t59)).neg())).mul(_sv0).blend(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t58).withLane(3, _t60)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t56).withLane(3, _t55)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t59).withLane(3, _t58)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t72).withLane(3, _t74)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t69)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t73).withLane(3, _t72)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t69).withLane(2, _t74)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t70).withLane(2, _t71)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t71).withLane(2, _t73)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -3219,13 +3223,14 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, _t115).withLane(2, _t117).mul(_sv0).blend(DoubleVector.zero(COL_SPECIES).withLane(1, _t118).withLane(3, _t116).mul(_sv1), MASK_7);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t42);
         var _sv3 = _sv2.withLane(3, _t45);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, _t47);
-        var _sv5 = _sv4.blend(DoubleVector.broadcast(COL_SPECIES, _t46), MASK_8);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t45);
-        var _sv7 = _sv6.blend(_sv4, MASK_9);
-        var _col1 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t89).withLane(3, _t88), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t86).withLane(3, _t85), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t90).withLane(3, _t89)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t85).withLane(2, _t88), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t86).withLane(2, _t87), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87).withLane(2, _t90)).neg())).mul(_sv1), MASK_6);
-        var _col2 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t91).withLane(2, _t96), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t92).withLane(2, _t93), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93).withLane(2, _t95)).neg())).mul(_sv0).blend(_sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t94).withLane(3, _t96), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t92).withLane(3, _t91), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t95).withLane(3, _t94)).neg())).mul(_sv1), MASK_7);
-        var _col3 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t110), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t109).withLane(3, _t108)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t105).withLane(2, _t110), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t106).withLane(2, _t107), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t109)).neg())).mul(_sv1), MASK_6);
+        var _sv4 = DoubleVector.zero(COL_SPECIES).withLane(1, _t46).withLane(2, _t46).withLane(3, _t46);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t45);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t47);
+        var _sv7 = _sv5.blend(_sv6, MASK_8);
+        var _sv8 = _sv6.blend(DoubleVector.broadcast(COL_SPECIES, _t46), MASK_9);
+        var _col1 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t89).withLane(3, _t88), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t86).withLane(3, _t85), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t90).withLane(3, _t89)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t85).withLane(2, _t88), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t86).withLane(2, _t87), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87).withLane(2, _t90)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t91).withLane(2, _t96), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t92).withLane(2, _t93), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93).withLane(2, _t95)).neg())).mul(_sv0).blend(_sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t94).withLane(3, _t96), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t92).withLane(3, _t91), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t95).withLane(3, _t94)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t110), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t109).withLane(3, _t108)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t105).withLane(2, _t110), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t106).withLane(2, _t107), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t109)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -3278,13 +3283,14 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, _t115).withLane(2, _t117).mul(_sv0).blend(DoubleVector.zero(COL_SPECIES).withLane(1, _t118).withLane(3, _t116).mul(_sv1), MASK_7);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t42);
         var _sv3 = _sv2.withLane(3, _t45);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, _t47);
-        var _sv5 = _sv4.blend(DoubleVector.broadcast(COL_SPECIES, _t46), MASK_8);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t45);
-        var _sv7 = _sv6.blend(_sv4, MASK_9);
-        var _col1 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t89).withLane(3, _t88)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t86).withLane(3, _t85)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t90).withLane(3, _t89)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t85).withLane(2, _t88)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t86).withLane(2, _t87)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87).withLane(2, _t90)).neg())).mul(_sv1), MASK_6);
-        var _col2 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t91).withLane(2, _t96)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t92).withLane(2, _t93)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93).withLane(2, _t95)).neg())).mul(_sv0).blend(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t94).withLane(3, _t96)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t92).withLane(3, _t91)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t95).withLane(3, _t94)).neg())).mul(_sv1), MASK_7);
-        var _col3 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t110)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t109).withLane(3, _t108)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t105).withLane(2, _t110)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t106).withLane(2, _t107)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t109)).neg())).mul(_sv1), MASK_6);
+        var _sv4 = DoubleVector.zero(COL_SPECIES).withLane(1, _t46).withLane(2, _t46).withLane(3, _t46);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t45);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t47);
+        var _sv7 = _sv5.blend(_sv6, MASK_8);
+        var _sv8 = _sv6.blend(DoubleVector.broadcast(COL_SPECIES, _t46), MASK_9);
+        var _col1 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t89).withLane(3, _t88)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t86).withLane(3, _t85)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t90).withLane(3, _t89)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t85).withLane(2, _t88)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t86).withLane(2, _t87)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87).withLane(2, _t90)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t91).withLane(2, _t96)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t92).withLane(2, _t93)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93).withLane(2, _t95)).neg())).mul(_sv0).blend(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t94).withLane(3, _t96)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t92).withLane(3, _t91)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t95).withLane(3, _t94)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t110)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t109).withLane(3, _t108)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t105).withLane(2, _t110)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t106).withLane(2, _t107)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t109)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -3364,13 +3370,11 @@ public class Double4x4Impl implements Double4x4 {
         var _col1 = _sv0.fma(VEC_0, _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, otherData[6]).withLane(1, otherData[10]).withLane(2, otherData[2]), _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(0, otherData[10]).withLane(1, otherData[2]).withLane(2, otherData[6])).neg()).mul(_sv1));
         var _col2 = _sv0.fma(VEC_0, _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(0, otherData[9]).withLane(1, otherData[1]).withLane(2, otherData[5]), _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, otherData[5]).withLane(1, otherData[9]).withLane(2, otherData[1])).neg()).mul(_sv1));
         var _sv4 = DoubleVector.broadcast(COL_SPECIES, otherData[12]);
-        var _sv5 = DoubleVector.broadcast(COL_SPECIES, otherData[4]);
-        var _sv6 = _sv5.blend(DoubleVector.broadcast(COL_SPECIES, otherData[0]), MASK_5);
-        var _sv7 = DoubleVector.broadcast(COL_SPECIES, _t15);
-        var _sv8 = DoubleVector.broadcast(COL_SPECIES, otherData[8]);
-        var _sv9 = DoubleVector.broadcast(COL_SPECIES, _t16);
-        var _sv10 = _sv9.blend(DoubleVector.broadcast(COL_SPECIES, _t17), MASK_5);
-        var _col3 = _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t14), _sv6.fma(_sv7, _sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0).blend(_sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13), _sv6.fma(_sv7.withLane(2, _t16), _sv8.withLane(2, otherData[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t15);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, otherData[8]);
+        var _sv7 = DoubleVector.broadcast(COL_SPECIES, otherData[4]);
+        var _sv8 = DoubleVector.broadcast(COL_SPECIES, _t16);
+        var _col3 = _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t14), DoubleVector.zero(COL_SPECIES).withLane(1, otherData[0]).withLane(2, otherData[0]).fma(_sv5, _sv6.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t17).withLane(2, _t17)).neg())).mul(_sv1).add(VEC_0).blend(_sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13), _sv7.blend(DoubleVector.broadcast(COL_SPECIES, otherData[0]), MASK_5).fma(_sv5.withLane(2, _t16), _sv6.withLane(2, otherData[4]).mul(_sv8.blend(DoubleVector.broadcast(COL_SPECIES, _t17), MASK_5)).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -3398,13 +3402,11 @@ public class Double4x4Impl implements Double4x4 {
         var _col1 = _sv0.mul(VEC_0).add(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, otherData[6]).withLane(1, otherData[10]).withLane(2, otherData[2])).add(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(0, otherData[10]).withLane(1, otherData[2]).withLane(2, otherData[6])).neg()).mul(_sv1));
         var _col2 = _sv0.mul(VEC_0).add(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(0, otherData[9]).withLane(1, otherData[1]).withLane(2, otherData[5])).add(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, otherData[5]).withLane(1, otherData[9]).withLane(2, otherData[1])).neg()).mul(_sv1));
         var _sv4 = DoubleVector.broadcast(COL_SPECIES, otherData[12]);
-        var _sv5 = DoubleVector.broadcast(COL_SPECIES, otherData[4]);
-        var _sv6 = _sv5.blend(DoubleVector.broadcast(COL_SPECIES, otherData[0]), MASK_5);
-        var _sv7 = DoubleVector.broadcast(COL_SPECIES, _t15);
-        var _sv8 = DoubleVector.broadcast(COL_SPECIES, otherData[8]);
-        var _sv9 = DoubleVector.broadcast(COL_SPECIES, _t16);
-        var _sv10 = _sv9.blend(DoubleVector.broadcast(COL_SPECIES, _t17), MASK_5);
-        var _col3 = _sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t14)).add(_sv6.mul(_sv7).add(_sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0).blend(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13)).add(_sv6.mul(_sv7.withLane(2, _t16)).add(_sv8.withLane(2, otherData[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t15);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, otherData[8]);
+        var _sv7 = DoubleVector.broadcast(COL_SPECIES, otherData[4]);
+        var _sv8 = DoubleVector.broadcast(COL_SPECIES, _t16);
+        var _col3 = _sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t14)).add(DoubleVector.zero(COL_SPECIES).withLane(1, otherData[0]).withLane(2, otherData[0]).mul(_sv5).add(_sv6.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t17).withLane(2, _t17)).neg())).mul(_sv1).add(VEC_0).blend(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13)).add(_sv7.blend(DoubleVector.broadcast(COL_SPECIES, otherData[0]), MASK_5).mul(_sv5.withLane(2, _t16)).add(_sv6.withLane(2, otherData[4]).mul(_sv8.blend(DoubleVector.broadcast(COL_SPECIES, _t17), MASK_5)).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -3485,13 +3487,11 @@ public class Double4x4Impl implements Double4x4 {
         var _col1 = _sv0.fma(VEC_0, _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, otherData[6]).withLane(1, otherData[10]).withLane(2, otherData[2]), _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(0, otherData[10]).withLane(1, otherData[2]).withLane(2, otherData[6])).neg()).mul(_sv1));
         var _col2 = _sv0.fma(VEC_0, _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(0, otherData[9]).withLane(1, otherData[1]).withLane(2, otherData[5]), _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, otherData[5]).withLane(1, otherData[9]).withLane(2, otherData[1])).neg()).mul(_sv1));
         var _sv4 = DoubleVector.broadcast(COL_SPECIES, _t3);
-        var _sv5 = DoubleVector.broadcast(COL_SPECIES, otherData[4]);
-        var _sv6 = _sv5.blend(DoubleVector.broadcast(COL_SPECIES, otherData[0]), MASK_5);
-        var _sv7 = DoubleVector.broadcast(COL_SPECIES, _t20);
-        var _sv8 = DoubleVector.broadcast(COL_SPECIES, otherData[8]);
-        var _sv9 = DoubleVector.broadcast(COL_SPECIES, _t21);
-        var _sv10 = _sv9.blend(DoubleVector.broadcast(COL_SPECIES, _t22), MASK_5);
-        var _col3 = _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t17), _sv6.fma(_sv7, _sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0).blend(_sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t15).withLane(2, _t16), _sv6.fma(_sv7.withLane(2, _t21), _sv8.withLane(2, otherData[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t20);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, otherData[8]);
+        var _sv7 = DoubleVector.broadcast(COL_SPECIES, otherData[4]);
+        var _sv8 = DoubleVector.broadcast(COL_SPECIES, _t21);
+        var _col3 = _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t17), DoubleVector.zero(COL_SPECIES).withLane(1, otherData[0]).withLane(2, otherData[0]).fma(_sv5, _sv6.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t22).withLane(2, _t22)).neg())).mul(_sv1).add(VEC_0).blend(_sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t15).withLane(2, _t16), _sv7.blend(DoubleVector.broadcast(COL_SPECIES, otherData[0]), MASK_5).fma(_sv5.withLane(2, _t21), _sv6.withLane(2, otherData[4]).mul(_sv8.blend(DoubleVector.broadcast(COL_SPECIES, _t22), MASK_5)).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -3522,13 +3522,11 @@ public class Double4x4Impl implements Double4x4 {
         var _col1 = _sv0.mul(VEC_0).add(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, otherData[6]).withLane(1, otherData[10]).withLane(2, otherData[2])).add(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(0, otherData[10]).withLane(1, otherData[2]).withLane(2, otherData[6])).neg()).mul(_sv1));
         var _col2 = _sv0.mul(VEC_0).add(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(0, otherData[9]).withLane(1, otherData[1]).withLane(2, otherData[5])).add(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, otherData[5]).withLane(1, otherData[9]).withLane(2, otherData[1])).neg()).mul(_sv1));
         var _sv4 = DoubleVector.broadcast(COL_SPECIES, _t3);
-        var _sv5 = DoubleVector.broadcast(COL_SPECIES, otherData[4]);
-        var _sv6 = _sv5.blend(DoubleVector.broadcast(COL_SPECIES, otherData[0]), MASK_5);
-        var _sv7 = DoubleVector.broadcast(COL_SPECIES, _t20);
-        var _sv8 = DoubleVector.broadcast(COL_SPECIES, otherData[8]);
-        var _sv9 = DoubleVector.broadcast(COL_SPECIES, _t21);
-        var _sv10 = _sv9.blend(DoubleVector.broadcast(COL_SPECIES, _t22), MASK_5);
-        var _col3 = _sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t17)).add(_sv6.mul(_sv7).add(_sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0).blend(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t15).withLane(2, _t16)).add(_sv6.mul(_sv7.withLane(2, _t21)).add(_sv8.withLane(2, otherData[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t20);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, otherData[8]);
+        var _sv7 = DoubleVector.broadcast(COL_SPECIES, otherData[4]);
+        var _sv8 = DoubleVector.broadcast(COL_SPECIES, _t21);
+        var _col3 = _sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t17)).add(DoubleVector.zero(COL_SPECIES).withLane(1, otherData[0]).withLane(2, otherData[0]).mul(_sv5).add(_sv6.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t22).withLane(2, _t22)).neg())).mul(_sv1).add(VEC_0).blend(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t15).withLane(2, _t16)).add(_sv7.blend(DoubleVector.broadcast(COL_SPECIES, otherData[0]), MASK_5).mul(_sv5.withLane(2, _t21)).add(_sv6.withLane(2, otherData[4]).mul(_sv8.blend(DoubleVector.broadcast(COL_SPECIES, _t22), MASK_5)).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -3656,13 +3654,11 @@ public class Double4x4Impl implements Double4x4 {
         var _col1 = _sv0.fma(VEC_0, DoubleVector.zero(COL_SPECIES).withLane(0, _t26).withLane(1, _t31).withLane(2, _t30).fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t28).withLane(1, _t25).withLane(2, _t32), DoubleVector.zero(COL_SPECIES).withLane(0, _t32).withLane(1, _t30).withLane(2, _t31).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t25).withLane(1, _t28).withLane(2, _t26)).neg()).mul(_sv1));
         var _col2 = _sv0.fma(VEC_0, DoubleVector.zero(COL_SPECIES).withLane(0, _t32).withLane(1, _t29).withLane(2, _t31).fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t27).withLane(1, _t28).withLane(2, _t24), DoubleVector.zero(COL_SPECIES).withLane(0, _t24).withLane(1, _t31).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t28).withLane(1, _t27).withLane(2, _t32)).neg()).mul(_sv1));
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t33);
-        var _sv3 = DoubleVector.broadcast(COL_SPECIES, _t32);
-        var _sv4 = _sv3.blend(DoubleVector.broadcast(COL_SPECIES, _t31), MASK_5);
-        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t51);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t28);
-        var _sv7 = DoubleVector.broadcast(COL_SPECIES, _t52);
-        var _sv8 = _sv7.blend(DoubleVector.broadcast(COL_SPECIES, _t53), MASK_5);
-        var _col3 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t50), _sv4.fma(_sv5, _sv6.mul(_sv8).neg())).mul(_sv1).withLane(3, 1.0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t49), _sv4.fma(_sv5.withLane(2, _t52), _sv6.withLane(2, _t32).mul(_sv8).neg())).mul(_sv1).neg(), MASK_6);
+        var _sv3 = DoubleVector.broadcast(COL_SPECIES, _t51);
+        var _sv4 = DoubleVector.broadcast(COL_SPECIES, _t28);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t32);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t52);
+        var _col3 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t50), DoubleVector.zero(COL_SPECIES).withLane(1, _t31).withLane(2, _t31).fma(_sv3, _sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t53).withLane(2, _t53)).neg())).mul(_sv1).add(VEC_0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t49), _sv5.blend(DoubleVector.broadcast(COL_SPECIES, _t31), MASK_5).fma(_sv3.withLane(2, _t52), _sv4.withLane(2, _t32).mul(_sv6.blend(DoubleVector.broadcast(COL_SPECIES, _t53), MASK_5)).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -3700,13 +3696,11 @@ public class Double4x4Impl implements Double4x4 {
         var _col1 = _sv0.mul(VEC_0).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t26).withLane(1, _t31).withLane(2, _t30).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t28).withLane(1, _t25).withLane(2, _t32)).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t32).withLane(1, _t30).withLane(2, _t31).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t25).withLane(1, _t28).withLane(2, _t26)).neg()).mul(_sv1));
         var _col2 = _sv0.mul(VEC_0).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t32).withLane(1, _t29).withLane(2, _t31).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t27).withLane(1, _t28).withLane(2, _t24)).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t24).withLane(1, _t31).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t28).withLane(1, _t27).withLane(2, _t32)).neg()).mul(_sv1));
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t33);
-        var _sv3 = DoubleVector.broadcast(COL_SPECIES, _t32);
-        var _sv4 = _sv3.blend(DoubleVector.broadcast(COL_SPECIES, _t31), MASK_5);
-        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t51);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t28);
-        var _sv7 = DoubleVector.broadcast(COL_SPECIES, _t52);
-        var _sv8 = _sv7.blend(DoubleVector.broadcast(COL_SPECIES, _t53), MASK_5);
-        var _col3 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t50)).add(_sv4.mul(_sv5).add(_sv6.mul(_sv8).neg())).mul(_sv1).withLane(3, 1.0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t49)).add(_sv4.mul(_sv5.withLane(2, _t52)).add(_sv6.withLane(2, _t32).mul(_sv8).neg())).mul(_sv1).neg(), MASK_6);
+        var _sv3 = DoubleVector.broadcast(COL_SPECIES, _t51);
+        var _sv4 = DoubleVector.broadcast(COL_SPECIES, _t28);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t32);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t52);
+        var _col3 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t50)).add(DoubleVector.zero(COL_SPECIES).withLane(1, _t31).withLane(2, _t31).mul(_sv3).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t53).withLane(2, _t53)).neg())).mul(_sv1).add(VEC_0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t49)).add(_sv5.blend(DoubleVector.broadcast(COL_SPECIES, _t31), MASK_5).mul(_sv3.withLane(2, _t52)).add(_sv4.withLane(2, _t32).mul(_sv6.blend(DoubleVector.broadcast(COL_SPECIES, _t53), MASK_5)).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -3744,13 +3738,11 @@ public class Double4x4Impl implements Double4x4 {
         var _col1 = _sv0.fma(VEC_0, _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, sd[6]).withLane(1, sd[10]).withLane(2, sd[2]), _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(0, sd[10]).withLane(1, sd[2]).withLane(2, sd[6])).neg()).mul(_sv1));
         var _col2 = _sv0.fma(VEC_0, _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(0, sd[9]).withLane(1, sd[1]).withLane(2, sd[5]), _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, sd[5]).withLane(1, sd[9]).withLane(2, sd[1])).neg()).mul(_sv1));
         var _sv4 = DoubleVector.broadcast(COL_SPECIES, sd[12]);
-        var _sv5 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv6 = _sv5.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_5);
-        var _sv7 = DoubleVector.broadcast(COL_SPECIES, _t15);
-        var _sv8 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
-        var _sv9 = DoubleVector.broadcast(COL_SPECIES, _t16);
-        var _sv10 = _sv9.blend(DoubleVector.broadcast(COL_SPECIES, _t17), MASK_5);
-        var _col3 = _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t14), _sv6.fma(_sv7, _sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0).blend(_sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13), _sv6.fma(_sv7.withLane(2, _t16), _sv8.withLane(2, sd[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t15);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
+        var _sv7 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
+        var _sv8 = DoubleVector.broadcast(COL_SPECIES, _t16);
+        var _col3 = _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t14), DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[0]).fma(_sv5, _sv6.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t17).withLane(2, _t17)).neg())).mul(_sv1).add(VEC_0).blend(_sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13), _sv7.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_5).fma(_sv5.withLane(2, _t16), _sv6.withLane(2, sd[4]).mul(_sv8.blend(DoubleVector.broadcast(COL_SPECIES, _t17), MASK_5)).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -3778,13 +3770,11 @@ public class Double4x4Impl implements Double4x4 {
         var _col1 = _sv0.mul(VEC_0).add(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, sd[6]).withLane(1, sd[10]).withLane(2, sd[2])).add(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(0, sd[10]).withLane(1, sd[2]).withLane(2, sd[6])).neg()).mul(_sv1));
         var _col2 = _sv0.mul(VEC_0).add(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(0, sd[9]).withLane(1, sd[1]).withLane(2, sd[5])).add(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, sd[5]).withLane(1, sd[9]).withLane(2, sd[1])).neg()).mul(_sv1));
         var _sv4 = DoubleVector.broadcast(COL_SPECIES, sd[12]);
-        var _sv5 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv6 = _sv5.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_5);
-        var _sv7 = DoubleVector.broadcast(COL_SPECIES, _t15);
-        var _sv8 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
-        var _sv9 = DoubleVector.broadcast(COL_SPECIES, _t16);
-        var _sv10 = _sv9.blend(DoubleVector.broadcast(COL_SPECIES, _t17), MASK_5);
-        var _col3 = _sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t14)).add(_sv6.mul(_sv7).add(_sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0).blend(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13)).add(_sv6.mul(_sv7.withLane(2, _t16)).add(_sv8.withLane(2, sd[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t15);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
+        var _sv7 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
+        var _sv8 = DoubleVector.broadcast(COL_SPECIES, _t16);
+        var _col3 = _sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t14)).add(DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[0]).mul(_sv5).add(_sv6.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t17).withLane(2, _t17)).neg())).mul(_sv1).add(VEC_0).blend(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t12).withLane(2, _t13)).add(_sv7.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_5).mul(_sv5.withLane(2, _t16)).add(_sv6.withLane(2, sd[4]).mul(_sv8.blend(DoubleVector.broadcast(COL_SPECIES, _t17), MASK_5)).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -3825,13 +3815,11 @@ public class Double4x4Impl implements Double4x4 {
         var _col1 = _sv0.fma(VEC_0, _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, sd[6]).withLane(1, sd[10]).withLane(2, sd[2]), _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(0, sd[10]).withLane(1, sd[2]).withLane(2, sd[6])).neg()).mul(_sv1));
         var _col2 = _sv0.fma(VEC_0, _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(0, sd[9]).withLane(1, sd[1]).withLane(2, sd[5]), _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, sd[5]).withLane(1, sd[9]).withLane(2, sd[1])).neg()).mul(_sv1));
         var _sv4 = DoubleVector.broadcast(COL_SPECIES, _t17);
-        var _sv5 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv6 = _sv5.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_5);
-        var _sv7 = DoubleVector.broadcast(COL_SPECIES, _t27);
-        var _sv8 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
-        var _sv9 = DoubleVector.broadcast(COL_SPECIES, _t28);
-        var _sv10 = _sv9.blend(DoubleVector.broadcast(COL_SPECIES, _t29), MASK_5);
-        var _col3 = _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t11), _sv6.fma(_sv7, _sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0).blend(_sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t9).withLane(2, _t10), _sv6.fma(_sv7.withLane(2, _t28), _sv8.withLane(2, sd[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t27);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
+        var _sv7 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
+        var _sv8 = DoubleVector.broadcast(COL_SPECIES, _t28);
+        var _col3 = _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t11), DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[0]).fma(_sv5, _sv6.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t29).withLane(2, _t29)).neg())).mul(_sv1).add(VEC_0).blend(_sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t9).withLane(2, _t10), _sv7.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_5).fma(_sv5.withLane(2, _t28), _sv6.withLane(2, sd[4]).mul(_sv8.blend(DoubleVector.broadcast(COL_SPECIES, _t29), MASK_5)).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -3862,13 +3850,11 @@ public class Double4x4Impl implements Double4x4 {
         var _col1 = _sv0.mul(VEC_0).add(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, sd[6]).withLane(1, sd[10]).withLane(2, sd[2])).add(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(0, sd[10]).withLane(1, sd[2]).withLane(2, sd[6])).neg()).mul(_sv1));
         var _col2 = _sv0.mul(VEC_0).add(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(0, sd[9]).withLane(1, sd[1]).withLane(2, sd[5])).add(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, sd[5]).withLane(1, sd[9]).withLane(2, sd[1])).neg()).mul(_sv1));
         var _sv4 = DoubleVector.broadcast(COL_SPECIES, _t17);
-        var _sv5 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv6 = _sv5.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_5);
-        var _sv7 = DoubleVector.broadcast(COL_SPECIES, _t27);
-        var _sv8 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
-        var _sv9 = DoubleVector.broadcast(COL_SPECIES, _t28);
-        var _sv10 = _sv9.blend(DoubleVector.broadcast(COL_SPECIES, _t29), MASK_5);
-        var _col3 = _sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t11)).add(_sv6.mul(_sv7).add(_sv8.mul(_sv10).neg())).mul(_sv1).withLane(3, 1.0).blend(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t9).withLane(2, _t10)).add(_sv6.mul(_sv7.withLane(2, _t28)).add(_sv8.withLane(2, sd[4]).mul(_sv10).neg())).mul(_sv1).neg(), MASK_6);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t27);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
+        var _sv7 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
+        var _sv8 = DoubleVector.broadcast(COL_SPECIES, _t28);
+        var _col3 = _sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t11)).add(DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[0]).mul(_sv5).add(_sv6.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t29).withLane(2, _t29)).neg())).mul(_sv1).add(VEC_0).blend(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t9).withLane(2, _t10)).add(_sv7.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_5).mul(_sv5.withLane(2, _t28)).add(_sv6.withLane(2, sd[4]).mul(_sv8.blend(DoubleVector.broadcast(COL_SPECIES, _t29), MASK_5)).neg())).mul(_sv1).neg(), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -3919,13 +3905,14 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69).mul(_sv0).blend(DoubleVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t68).mul(_sv1), MASK_7);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, sd[12]);
         var _sv3 = _sv2.withLane(3, sd[8]);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv5 = _sv4.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_8);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
-        var _sv7 = _sv6.blend(_sv4, MASK_9);
-        var _col1 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_6);
-        var _col2 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_7);
-        var _col3 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_6);
+        var _sv4 = DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[0]).withLane(3, sd[0]);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
+        var _sv7 = _sv5.blend(_sv6, MASK_8);
+        var _sv8 = _sv6.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_9);
+        var _col1 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -3966,13 +3953,14 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69).mul(_sv0).blend(DoubleVector.zero(COL_SPECIES).withLane(1, _t70).withLane(3, _t68).mul(_sv1), MASK_7);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, sd[12]);
         var _sv3 = _sv2.withLane(3, sd[8]);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv5 = _sv4.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_8);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
-        var _sv7 = _sv6.blend(_sv4, MASK_9);
-        var _col1 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_6);
-        var _col2 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_7);
-        var _col3 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_6);
+        var _sv4 = DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[0]).withLane(3, sd[0]);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
+        var _sv7 = _sv5.blend(_sv6, MASK_8);
+        var _sv8 = _sv6.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_9);
+        var _col1 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t41).withLane(3, _t40)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t38).withLane(3, _t37)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t42).withLane(3, _t41)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t37).withLane(2, _t40)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t38).withLane(2, _t39)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t39).withLane(2, _t42)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t43).withLane(2, _t53)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t44).withLane(2, _t45)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t45).withLane(2, _t50)).neg())).mul(_sv0).blend(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t49).withLane(3, _t53)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t44).withLane(3, _t43)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t50).withLane(3, _t49)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t51).withLane(3, _t54)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t47).withLane(3, _t46)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t52).withLane(3, _t51)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t46).withLane(2, _t54)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47).withLane(2, _t48)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(2, _t52)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4027,13 +4015,14 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, _t80).withLane(2, _t81).mul(_sv0).blend(DoubleVector.zero(COL_SPECIES).withLane(1, _t82).withLane(3, _t70).mul(_sv1), MASK_7);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t40);
         var _sv3 = _sv2.withLane(3, sd[8]);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv5 = _sv4.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_8);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
-        var _sv7 = _sv6.blend(_sv4, MASK_9);
-        var _col1 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t24).withLane(3, _t23), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t61).withLane(3, _t22), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t63).withLane(3, _t24)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t22).withLane(2, _t23), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t61).withLane(2, _t62), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t62).withLane(2, _t63)).neg())).mul(_sv1), MASK_6);
-        var _col2 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t25).withLane(2, _t29), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t64).withLane(2, _t65), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t65).withLane(2, _t68)).neg())).mul(_sv0).blend(_sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t27).withLane(3, _t29), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t64).withLane(3, _t25), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t68).withLane(3, _t27)).neg())).mul(_sv1), MASK_7);
-        var _col3 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t28).withLane(3, _t30), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t66).withLane(3, _t26), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t69).withLane(3, _t28)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t26).withLane(2, _t30), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t66).withLane(2, _t67), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69)).neg())).mul(_sv1), MASK_6);
+        var _sv4 = DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[0]).withLane(3, sd[0]);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
+        var _sv7 = _sv5.blend(_sv6, MASK_8);
+        var _sv8 = _sv6.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_9);
+        var _col1 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t24).withLane(3, _t23), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t61).withLane(3, _t22), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t63).withLane(3, _t24)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t22).withLane(2, _t23), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t61).withLane(2, _t62), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t62).withLane(2, _t63)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t25).withLane(2, _t29), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t64).withLane(2, _t65), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t65).withLane(2, _t68)).neg())).mul(_sv0).blend(_sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t27).withLane(3, _t29), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t64).withLane(3, _t25), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t68).withLane(3, _t27)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t28).withLane(3, _t30), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t66).withLane(3, _t26), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t69).withLane(3, _t28)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t26).withLane(2, _t30), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t66).withLane(2, _t67), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4078,13 +4067,14 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, _t80).withLane(2, _t81).mul(_sv0).blend(DoubleVector.zero(COL_SPECIES).withLane(1, _t82).withLane(3, _t70).mul(_sv1), MASK_7);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t40);
         var _sv3 = _sv2.withLane(3, sd[8]);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
-        var _sv5 = _sv4.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_8);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
-        var _sv7 = _sv6.blend(_sv4, MASK_9);
-        var _col1 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t24).withLane(3, _t23)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t61).withLane(3, _t22)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t63).withLane(3, _t24)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t22).withLane(2, _t23)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t61).withLane(2, _t62)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t62).withLane(2, _t63)).neg())).mul(_sv1), MASK_6);
-        var _col2 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t25).withLane(2, _t29)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t64).withLane(2, _t65)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t65).withLane(2, _t68)).neg())).mul(_sv0).blend(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t27).withLane(3, _t29)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t64).withLane(3, _t25)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t68).withLane(3, _t27)).neg())).mul(_sv1), MASK_7);
-        var _col3 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t28).withLane(3, _t30)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t66).withLane(3, _t26)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t69).withLane(3, _t28)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t26).withLane(2, _t30)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t66).withLane(2, _t67)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69)).neg())).mul(_sv1), MASK_6);
+        var _sv4 = DoubleVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[0]).withLane(3, sd[0]);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, sd[8]);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, sd[4]);
+        var _sv7 = _sv5.blend(_sv6, MASK_8);
+        var _sv8 = _sv6.blend(DoubleVector.broadcast(COL_SPECIES, sd[0]), MASK_9);
+        var _col1 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t24).withLane(3, _t23)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t61).withLane(3, _t22)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t63).withLane(3, _t24)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t22).withLane(2, _t23)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t61).withLane(2, _t62)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t62).withLane(2, _t63)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t25).withLane(2, _t29)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t64).withLane(2, _t65)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t65).withLane(2, _t68)).neg())).mul(_sv0).blend(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t27).withLane(3, _t29)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t64).withLane(3, _t25)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t68).withLane(3, _t27)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t28).withLane(3, _t30)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t66).withLane(3, _t26)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t69).withLane(3, _t28)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t26).withLane(2, _t30)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t66).withLane(2, _t67)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t67).withLane(2, _t69)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4151,13 +4141,14 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, _t116).withLane(2, _t117).mul(_sv0).blend(DoubleVector.zero(COL_SPECIES).withLane(1, _t118).withLane(3, _t115).mul(_sv1), MASK_7);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t47);
         var _sv3 = _sv2.withLane(3, _t41);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, _t43);
-        var _sv5 = _sv4.blend(DoubleVector.broadcast(COL_SPECIES, _t42), MASK_8);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t41);
-        var _sv7 = _sv6.blend(_sv4, MASK_9);
-        var _col1 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t87).withLane(3, _t86), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t94).withLane(3, _t85), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t96).withLane(3, _t87)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t85).withLane(2, _t86), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t94).withLane(2, _t95), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t95).withLane(2, _t96)).neg())).mul(_sv1), MASK_6);
-        var _col2 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t88).withLane(2, _t92), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t97).withLane(2, _t98), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t98).withLane(2, _t101)).neg())).mul(_sv0).blend(_sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t90).withLane(3, _t92), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t97).withLane(3, _t88), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t101).withLane(3, _t90)).neg())).mul(_sv1), MASK_7);
-        var _col3 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t91).withLane(3, _t93), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t99).withLane(3, _t89), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t91)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t89).withLane(2, _t93), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t99).withLane(2, _t100), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t100).withLane(2, _t102)).neg())).mul(_sv1), MASK_6);
+        var _sv4 = DoubleVector.zero(COL_SPECIES).withLane(1, _t42).withLane(2, _t42).withLane(3, _t42);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t41);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t43);
+        var _sv7 = _sv5.blend(_sv6, MASK_8);
+        var _sv8 = _sv6.blend(DoubleVector.broadcast(COL_SPECIES, _t42), MASK_9);
+        var _col1 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t87).withLane(3, _t86), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t94).withLane(3, _t85), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t96).withLane(3, _t87)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t85).withLane(2, _t86), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t94).withLane(2, _t95), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t95).withLane(2, _t96)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t88).withLane(2, _t92), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t97).withLane(2, _t98), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t98).withLane(2, _t101)).neg())).mul(_sv0).blend(_sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t90).withLane(3, _t92), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t97).withLane(3, _t88), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t101).withLane(3, _t90)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t91).withLane(3, _t93), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t99).withLane(3, _t89), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t91)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t89).withLane(2, _t93), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t99).withLane(2, _t100), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t100).withLane(2, _t102)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4214,13 +4205,14 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, _t116).withLane(2, _t117).mul(_sv0).blend(DoubleVector.zero(COL_SPECIES).withLane(1, _t118).withLane(3, _t115).mul(_sv1), MASK_7);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t47);
         var _sv3 = _sv2.withLane(3, _t41);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, _t43);
-        var _sv5 = _sv4.blend(DoubleVector.broadcast(COL_SPECIES, _t42), MASK_8);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t41);
-        var _sv7 = _sv6.blend(_sv4, MASK_9);
-        var _col1 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t87).withLane(3, _t86)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t94).withLane(3, _t85)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t96).withLane(3, _t87)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t85).withLane(2, _t86)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t94).withLane(2, _t95)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t95).withLane(2, _t96)).neg())).mul(_sv1), MASK_6);
-        var _col2 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t88).withLane(2, _t92)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t97).withLane(2, _t98)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t98).withLane(2, _t101)).neg())).mul(_sv0).blend(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t90).withLane(3, _t92)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t97).withLane(3, _t88)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t101).withLane(3, _t90)).neg())).mul(_sv1), MASK_7);
-        var _col3 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t91).withLane(3, _t93)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t99).withLane(3, _t89)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t91)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t89).withLane(2, _t93)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t99).withLane(2, _t100)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t100).withLane(2, _t102)).neg())).mul(_sv1), MASK_6);
+        var _sv4 = DoubleVector.zero(COL_SPECIES).withLane(1, _t42).withLane(2, _t42).withLane(3, _t42);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t41);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t43);
+        var _sv7 = _sv5.blend(_sv6, MASK_8);
+        var _sv8 = _sv6.blend(DoubleVector.broadcast(COL_SPECIES, _t42), MASK_9);
+        var _col1 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t87).withLane(3, _t86)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t94).withLane(3, _t85)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t96).withLane(3, _t87)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t85).withLane(2, _t86)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t94).withLane(2, _t95)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t95).withLane(2, _t96)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t88).withLane(2, _t92)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t97).withLane(2, _t98)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t98).withLane(2, _t101)).neg())).mul(_sv0).blend(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t90).withLane(3, _t92)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t97).withLane(3, _t88)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t101).withLane(3, _t90)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t91).withLane(3, _t93)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t99).withLane(3, _t89)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t91)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t89).withLane(2, _t93)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t99).withLane(2, _t100)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t100).withLane(2, _t102)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4409,13 +4401,14 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, _t131).withLane(2, _t133).mul(_sv0).blend(DoubleVector.zero(COL_SPECIES).withLane(1, _t134).withLane(3, _t132).mul(_sv1), MASK_7);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t57);
         var _sv3 = _sv2.withLane(3, _t61);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, _t63);
-        var _sv5 = _sv4.blend(DoubleVector.broadcast(COL_SPECIES, _t62), MASK_8);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t61);
-        var _sv7 = _sv6.blend(_sv4, MASK_9);
-        var _col1 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t105).withLane(3, _t104), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t101), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t101).withLane(2, _t104), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t102).withLane(2, _t103), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t103).withLane(2, _t106)).neg())).mul(_sv1), MASK_6);
-        var _col2 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t117), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t108).withLane(2, _t109), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t109).withLane(2, _t114)).neg())).mul(_sv0).blend(_sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t113).withLane(3, _t117), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t107), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t114).withLane(3, _t113)).neg())).mul(_sv1), MASK_7);
-        var _col3 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t115).withLane(3, _t118), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t111).withLane(3, _t110), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t116).withLane(3, _t115)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t110).withLane(2, _t118), _sv5.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t111).withLane(2, _t112), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t112).withLane(2, _t116)).neg())).mul(_sv1), MASK_6);
+        var _sv4 = DoubleVector.zero(COL_SPECIES).withLane(1, _t62).withLane(2, _t62).withLane(3, _t62);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t61);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t63);
+        var _sv7 = _sv5.blend(_sv6, MASK_8);
+        var _sv8 = _sv6.blend(DoubleVector.broadcast(COL_SPECIES, _t62), MASK_9);
+        var _col1 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t105).withLane(3, _t104), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t101), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t101).withLane(2, _t104), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t102).withLane(2, _t103), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t103).withLane(2, _t106)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t117), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t108).withLane(2, _t109), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t109).withLane(2, _t114)).neg())).mul(_sv0).blend(_sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t113).withLane(3, _t117), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t107), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t114).withLane(3, _t113)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t115).withLane(3, _t118), _sv4.fma(DoubleVector.zero(COL_SPECIES).withLane(1, _t111).withLane(3, _t110), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t116).withLane(3, _t115)).neg())).mul(_sv0).blend(_sv2.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t110).withLane(2, _t118), _sv8.fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t111).withLane(2, _t112), _sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t112).withLane(2, _t116)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4471,13 +4464,14 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, _t131).withLane(2, _t133).mul(_sv0).blend(DoubleVector.zero(COL_SPECIES).withLane(1, _t134).withLane(3, _t132).mul(_sv1), MASK_7);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t57);
         var _sv3 = _sv2.withLane(3, _t61);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, _t63);
-        var _sv5 = _sv4.blend(DoubleVector.broadcast(COL_SPECIES, _t62), MASK_8);
-        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t61);
-        var _sv7 = _sv6.blend(_sv4, MASK_9);
-        var _col1 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t105).withLane(3, _t104)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t101)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t101).withLane(2, _t104)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t102).withLane(2, _t103)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t103).withLane(2, _t106)).neg())).mul(_sv1), MASK_6);
-        var _col2 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t117)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t108).withLane(2, _t109)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t109).withLane(2, _t114)).neg())).mul(_sv0).blend(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t113).withLane(3, _t117)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t107)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t114).withLane(3, _t113)).neg())).mul(_sv1), MASK_7);
-        var _col3 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t115).withLane(3, _t118)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t111).withLane(3, _t110)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t116).withLane(3, _t115)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t110).withLane(2, _t118)).add(_sv5.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t111).withLane(2, _t112)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t112).withLane(2, _t116)).neg())).mul(_sv1), MASK_6);
+        var _sv4 = DoubleVector.zero(COL_SPECIES).withLane(1, _t62).withLane(2, _t62).withLane(3, _t62);
+        var _sv5 = DoubleVector.broadcast(COL_SPECIES, _t61);
+        var _sv6 = DoubleVector.broadcast(COL_SPECIES, _t63);
+        var _sv7 = _sv5.blend(_sv6, MASK_8);
+        var _sv8 = _sv6.blend(DoubleVector.broadcast(COL_SPECIES, _t62), MASK_9);
+        var _col1 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t105).withLane(3, _t104)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t102).withLane(3, _t101)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t106).withLane(3, _t105)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t101).withLane(2, _t104)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t102).withLane(2, _t103)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t103).withLane(2, _t106)).neg())).mul(_sv1), MASK_6);
+        var _col2 = _sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t107).withLane(2, _t117)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t108).withLane(2, _t109)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t109).withLane(2, _t114)).neg())).mul(_sv0).blend(_sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t113).withLane(3, _t117)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t108).withLane(3, _t107)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t114).withLane(3, _t113)).neg())).mul(_sv1), MASK_7);
+        var _col3 = _sv3.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t115).withLane(3, _t118)).add(_sv4.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t111).withLane(3, _t110)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(1, _t116).withLane(3, _t115)).neg())).mul(_sv0).blend(_sv2.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t110).withLane(2, _t118)).add(_sv8.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t111).withLane(2, _t112)).add(_sv7.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t112).withLane(2, _t116)).neg())).mul(_sv1), MASK_6);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -4852,12 +4846,12 @@ public class Double4x4Impl implements Double4x4 {
         var _sv3 = DoubleVector.fromArray(COL_SPECIES, sd, 8);
         var _sv4 = DoubleVector.fromArray(COL_SPECIES, sd, 12);
         var _sv5 = _sv3.rearrange(SHUF_10).blend(_sv4.rearrange(SHUF_10), MASK_7);
-        var _col0 = _sv2.blend(_sv5.rearrange(SHUF_11), MASK_9);
-        var _col1 = _sv2.rearrange(SHUF_12).blend(_sv5, MASK_9);
+        var _col0 = _sv2.blend(_sv5.rearrange(SHUF_11), MASK_8);
+        var _col1 = _sv2.rearrange(SHUF_12).blend(_sv5, MASK_8);
         var _sv6 = _sv0.rearrange(SHUF_13).blend(_sv1.rearrange(SHUF_13), MASK_7);
         var _sv7 = _sv3.rearrange(SHUF_13).blend(_sv4.rearrange(SHUF_13), MASK_7);
-        var _col2 = _sv6.blend(_sv7.rearrange(SHUF_11), MASK_9);
-        var _col3 = _sv6.rearrange(SHUF_12).blend(_sv7, MASK_9);
+        var _col2 = _sv6.blend(_sv7.rearrange(SHUF_11), MASK_8);
+        var _col3 = _sv6.rearrange(SHUF_12).blend(_sv7, MASK_8);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -5461,14 +5455,11 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 negate_orthogonal(@Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
-        var _col0 = _sv0.withLane(3, 0.0).blend(_sv0.neg(), MASK_22);
-        var _sv1 = DoubleVector.fromArray(COL_SPECIES, sd, 4);
-        var _col1 = _sv1.withLane(3, 0.0).blend(_sv1.neg(), MASK_22);
-        var _sv2 = DoubleVector.fromArray(COL_SPECIES, sd, 8);
-        var _col2 = _sv2.withLane(3, 0.0).blend(_sv2.neg(), MASK_22);
-        var _sv3 = DoubleVector.fromArray(COL_SPECIES, sd, 12);
-        var _col3 = _sv3.withLane(3, -1.0).blend(_sv3.neg(), MASK_22);
+        var _sv0 = DoubleVector.zero(COL_SPECIES);
+        var _col0 = _sv0.blend(DoubleVector.fromArray(COL_SPECIES, sd, 0).neg(), MASK_22);
+        var _col1 = _sv0.blend(DoubleVector.fromArray(COL_SPECIES, sd, 4).neg(), MASK_22);
+        var _col2 = _sv0.blend(DoubleVector.fromArray(COL_SPECIES, sd, 8).neg(), MASK_22);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(3, -1.0).blend(DoubleVector.fromArray(COL_SPECIES, sd, 12).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -5491,8 +5482,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col1 = _sv1.lanewise(VectorOperators.NEG, MASK_22);
         var _sv2 = DoubleVector.fromArray(COL_SPECIES, sd, 8);
         var _col2 = _sv2.lanewise(VectorOperators.NEG, MASK_22);
-        var _sv3 = DoubleVector.fromArray(COL_SPECIES, sd, 12);
-        var _col3 = _sv3.withLane(3, -1.0).blend(_sv3.neg(), MASK_22);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(3, -1.0).blend(DoubleVector.fromArray(COL_SPECIES, sd, 12).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -5696,8 +5686,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = _sv0;
         var _col1 = _sv0;
         var _col2 = _sv0;
-        var _sv1 = DoubleVector.fromArray(COL_SPECIES, otherData, 12);
-        var _col3 = _sv1.withLane(3, 0.0).blend(_sv1.neg(), MASK_22);
+        var _col3 = DoubleVector.zero(COL_SPECIES).blend(DoubleVector.fromArray(COL_SPECIES, otherData, 12).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -14314,7 +14303,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / (top - bottom);
         double _t3_inv = 1.0 / (zNear - zFar);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, -((left + right) * _t1_inv)).withLane(1, -((bottom + top) * _t2_inv)).withLane(2, zFar == Double.POSITIVE_INFINITY ? 1.0 : zNear == Double.POSITIVE_INFINITY ? -1.0 : -((zFar + zNear) * _t3_inv)).withLane(3, 1.0);
         var _col3 = _sv0.withLane(2, zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv);
@@ -14350,7 +14339,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / (top - bottom);
         double _t3_inv = 1.0 / (zNear - zFar);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, sd[12] - (left + right) * _t1_inv).withLane(1, sd[13] - (bottom + top) * _t2_inv).withLane(2, sd[14] + (zFar == Double.POSITIVE_INFINITY ? 1.0 : zNear == Double.POSITIVE_INFINITY ? -1.0 : -((zFar + zNear) * _t3_inv))).withLane(3, 1.0);
         var _col3 = _sv0.withLane(2, zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv);
@@ -14484,7 +14473,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / (top - bottom);
         double _t3_inv = 1.0 / (zNear - zFar);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, (left + right) * _t1_inv).withLane(1, (bottom + top) * _t2_inv).withLane(2, zFar == Double.POSITIVE_INFINITY ? -1.0 : zNear == Double.POSITIVE_INFINITY ? 1.0 : (zFar + zNear) * _t3_inv).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv);
@@ -14520,7 +14509,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / (top - bottom);
         double _t3_inv = 1.0 / (zNear - zFar);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
         var _col2 = DoubleVector.broadcast(COL_SPECIES, left + right).withLane(1, bottom + top).mul(DoubleVector.broadcast(COL_SPECIES, _t1_inv).withLane(1, _t2_inv)).withLane(2, zFar == Double.POSITIVE_INFINITY ? -1.0 : zNear == Double.POSITIVE_INFINITY ? 1.0 : (zFar + zNear) * _t3_inv).sub(DoubleVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv);
@@ -14678,7 +14667,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / (top - bottom);
         double _t3_inv = 1.0 / (zNear - zFar);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, -((left + right) * _t1_inv)).withLane(1, -((bottom + top) * _t2_inv)).withLane(2, zFar == Double.POSITIVE_INFINITY ? 1.0 : zNear == Double.POSITIVE_INFINITY ? 0.0 : -(zFar * _t3_inv)).withLane(3, 1.0);
         var _col3 = _sv0.withLane(2, zFar == Double.POSITIVE_INFINITY ? -zNear : zNear == Double.POSITIVE_INFINITY ? zFar : zFar * zNear * _t3_inv);
@@ -14714,7 +14703,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / (top - bottom);
         double _t3_inv = 1.0 / (zNear - zFar);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, sd[12] - (left + right) * _t1_inv).withLane(1, sd[13] - (bottom + top) * _t2_inv).withLane(2, sd[14] + (zFar == Double.POSITIVE_INFINITY ? 1.0 : zNear == Double.POSITIVE_INFINITY ? 0.0 : -(zFar * _t3_inv))).withLane(3, 1.0);
         var _col3 = _sv0.withLane(2, zFar == Double.POSITIVE_INFINITY ? -zNear : zNear == Double.POSITIVE_INFINITY ? zFar : zFar * zNear * _t3_inv);
@@ -14848,7 +14837,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / (top - bottom);
         double _t3_inv = 1.0 / (zNear - zFar);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, (left + right) * _t1_inv).withLane(1, (bottom + top) * _t2_inv).withLane(2, zFar == Double.POSITIVE_INFINITY ? -1.0 : zNear == Double.POSITIVE_INFINITY ? 0.0 : zFar * _t3_inv).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, zFar == Double.POSITIVE_INFINITY ? -zNear : zNear == Double.POSITIVE_INFINITY ? zFar : zFar * zNear * _t3_inv);
@@ -14884,7 +14873,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / (top - bottom);
         double _t3_inv = 1.0 / (zNear - zFar);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
         var _col2 = DoubleVector.broadcast(COL_SPECIES, left + right).withLane(1, bottom + top).mul(DoubleVector.broadcast(COL_SPECIES, _t1_inv).withLane(1, _t2_inv)).withLane(2, zFar == Double.POSITIVE_INFINITY ? -1.0 : zNear == Double.POSITIVE_INFINITY ? 0.0 : zFar * _t3_inv).sub(DoubleVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, zFar == Double.POSITIVE_INFINITY ? -zNear : zNear == Double.POSITIVE_INFINITY ? zFar : zFar * zNear * _t3_inv);
@@ -17038,7 +17027,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / (top - bottom);
         double _t3_inv = 1.0 / (zNear - zFar);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, -((left + right) * _t1_inv)).withLane(1, -((bottom + top) * _t2_inv)).withLane(2, zFar == Double.POSITIVE_INFINITY ? 1.0 : zNear == Double.POSITIVE_INFINITY ? -1.0 : -((zFar + zNear) * _t3_inv)).withLane(3, 1.0);
         var _col3 = _sv0.withLane(2, zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv);
@@ -17063,7 +17052,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / (top - bottom);
         double _t3_inv = 1.0 / (zNear - zFar);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, (left + right) * _t1_inv).withLane(1, (bottom + top) * _t2_inv).withLane(2, zFar == Double.POSITIVE_INFINITY ? -1.0 : zNear == Double.POSITIVE_INFINITY ? 1.0 : (zFar + zNear) * _t3_inv).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv);
@@ -17100,7 +17089,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / (top - bottom);
         double _t3_inv = 1.0 / (zNear - zFar);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, -((left + right) * _t1_inv)).withLane(1, -((bottom + top) * _t2_inv)).withLane(2, zFar == Double.POSITIVE_INFINITY ? 1.0 : zNear == Double.POSITIVE_INFINITY ? 0.0 : -(zFar * _t3_inv)).withLane(3, 1.0);
         var _col3 = _sv0.withLane(2, zFar == Double.POSITIVE_INFINITY ? -zNear : zNear == Double.POSITIVE_INFINITY ? zFar : zFar * zNear * _t3_inv);
@@ -17125,7 +17114,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / (top - bottom);
         double _t3_inv = 1.0 / (zNear - zFar);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0 * _t1_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t0 * _t2_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, (left + right) * _t1_inv).withLane(1, (bottom + top) * _t2_inv).withLane(2, zFar == Double.POSITIVE_INFINITY ? -1.0 : zNear == Double.POSITIVE_INFINITY ? 0.0 : zFar * _t3_inv).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, zFar == Double.POSITIVE_INFINITY ? -zNear : zNear == Double.POSITIVE_INFINITY ? zFar : zFar * zNear * _t3_inv);
@@ -18589,22 +18578,18 @@ public class Double4x4Impl implements Double4x4 {
      */
     @Mutated private Double4x4 makeOrtho_no_lh(double left, double right, double bottom, double top, double zNear, double zFar) {
         double[] dd = this.data;
-        double _t0 = right - left;
-        double _t0_inv = 1.0 / _t0;
-        double _t1 = top - bottom;
-        double _t1_inv = 1.0 / _t1;
-        double _t2 = zFar - zNear;
-        double _t2_inv = 1.0 / _t2;
-        dd[0] = _t0_inv + _t0_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t1_inv + _t1_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t2_inv + _t2_inv;
-        dd[11] = 0.0;
-        dd[12] = -((left + right) * _t0_inv);
-        dd[13] = -((bottom + top) * _t1_inv);
-        dd[14] = -((zFar + zNear) * _t2_inv);
-        dd[15] = 1.0;
+        double _t0_inv = 1.0 / (right - left);
+        double _t1_inv = 1.0 / (top - bottom);
+        double _t2_inv = 1.0 / (zFar - zNear);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
+        var _col2 = _sv0.withLane(2, _t2_inv + _t2_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, left).withLane(1, bottom).withLane(2, zFar).add(DoubleVector.zero(COL_SPECIES).withLane(0, right).withLane(1, top).withLane(2, zNear)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) this).properties = Joml.BIT_AFFINE;
         return this;
     }
@@ -18617,22 +18602,18 @@ public class Double4x4Impl implements Double4x4 {
      */
     @Mutated private Double4x4 makeOrtho_no_rh(double left, double right, double bottom, double top, double zNear, double zFar) {
         double[] dd = this.data;
-        double _t0 = right - left;
-        double _t0_inv = 1.0 / _t0;
-        double _t1 = top - bottom;
-        double _t1_inv = 1.0 / _t1;
-        double _t2 = zFar - zNear;
-        double _t2_inv = 1.0 / _t2;
-        dd[0] = _t0_inv + _t0_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t1_inv + _t1_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = -2.0 * _t2_inv;
-        dd[11] = 0.0;
-        dd[12] = -((left + right) * _t0_inv);
-        dd[13] = -((bottom + top) * _t1_inv);
-        dd[14] = -((zFar + zNear) * _t2_inv);
-        dd[15] = 1.0;
+        double _t0_inv = 1.0 / (right - left);
+        double _t1_inv = 1.0 / (top - bottom);
+        double _t2_inv = 1.0 / (zFar - zNear);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
+        var _col2 = _sv0.withLane(2, -2.0 * _t2_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, left).withLane(1, bottom).withLane(2, zFar).add(DoubleVector.zero(COL_SPECIES).withLane(0, right).withLane(1, top).withLane(2, zNear)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) this).properties = Joml.BIT_AFFINE;
         return this;
     }
@@ -18655,42 +18636,15 @@ public class Double4x4Impl implements Double4x4 {
      * {@code Handedness.LEFT_HANDED}; reached only through the public {@code makeOrtho} dispatcher.
      */
     @Mutated private Double4x4 makeOrtho_zo_lh(double left, double right, double bottom, double top, double zNear, double zFar) {
-        if (SimdMath.USE_FMA) return makeOrtho_zo_lh_fma(left, right, bottom, top, zNear, zFar);
-        return makeOrtho_zo_lh_mulAdd(left, right, bottom, top, zNear, zFar);
-    }
-
-    private Double4x4 makeOrtho_zo_lh_fma(double left, double right, double bottom, double top, double zNear, double zFar) {
         double[] dd = this.data;
         double _t0_inv = 1.0 / (right - left);
         double _t1_inv = 1.0 / (top - bottom);
         double _t2_inv = 1.0 / (zFar - zNear);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
         var _col2 = _sv0.withLane(2, _t2_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, left);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, right);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, bottom).add(_sv2.withLane(1, top)).withLane(2, zNear).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) this).properties = Joml.BIT_AFFINE;
-        return this;
-    }
-
-    private Double4x4 makeOrtho_zo_lh_mulAdd(double left, double right, double bottom, double top, double zNear, double zFar) {
-        double[] dd = this.data;
-        double _t0_inv = 1.0 / (right - left);
-        double _t1_inv = 1.0 / (top - bottom);
-        double _t2_inv = 1.0 / (zFar - zNear);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
-        var _col2 = _sv0.withLane(2, _t2_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, left);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, right);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, bottom).add(_sv2.withLane(1, top)).withLane(2, zNear).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, left).withLane(1, bottom).add(DoubleVector.broadcast(COL_SPECIES, right).withLane(1, top)).withLane(2, zNear).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -18706,42 +18660,15 @@ public class Double4x4Impl implements Double4x4 {
      * dispatcher.
      */
     @Mutated private Double4x4 makeOrtho_zo_rh(double left, double right, double bottom, double top, double zNear, double zFar) {
-        if (SimdMath.USE_FMA) return makeOrtho_zo_rh_fma(left, right, bottom, top, zNear, zFar);
-        return makeOrtho_zo_rh_mulAdd(left, right, bottom, top, zNear, zFar);
-    }
-
-    private Double4x4 makeOrtho_zo_rh_fma(double left, double right, double bottom, double top, double zNear, double zFar) {
         double[] dd = this.data;
         double _t0_inv = 1.0 / (right - left);
         double _t1_inv = 1.0 / (top - bottom);
         double _t2_inv = 1.0 / (zFar - zNear);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
         var _col2 = _sv0.withLane(2, -_t2_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, left);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, right);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, bottom).add(_sv2.withLane(1, top)).withLane(2, zNear).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) this).properties = Joml.BIT_AFFINE;
-        return this;
-    }
-
-    private Double4x4 makeOrtho_zo_rh_mulAdd(double left, double right, double bottom, double top, double zNear, double zFar) {
-        double[] dd = this.data;
-        double _t0_inv = 1.0 / (right - left);
-        double _t1_inv = 1.0 / (top - bottom);
-        double _t2_inv = 1.0 / (zFar - zNear);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
-        var _col2 = _sv0.withLane(2, -_t2_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, left);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, right);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, bottom).add(_sv2.withLane(1, top)).withLane(2, zNear).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, left).withLane(1, bottom).add(DoubleVector.broadcast(COL_SPECIES, right).withLane(1, top)).withLane(2, zNear).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -19069,7 +18996,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / (near - far);
         double _t2 = Math.tan(0.5 * fovy);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, 1.0 / (aspect * _t2)).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, 1.0 / (aspect * _t2)).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, 1.0 / _t2);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(2, far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? -1.0 : -((far + near) * _t1_inv)).withLane(3, 1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t1_inv);
@@ -19092,7 +19019,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / (near - far);
         double _t2 = Math.tan(0.5 * fovy);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, 1.0 / (aspect * _t2)).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, 1.0 / (aspect * _t2)).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, 1.0 / _t2);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(2, far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 1.0 : (far + near) * _t1_inv).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t1_inv);
@@ -19127,7 +19054,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / (near - far);
         double _t2 = Math.tan(0.5 * fovy);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, 1.0 / (aspect * _t2)).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, 1.0 / (aspect * _t2)).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, 1.0 / _t2);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(2, far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : -(far * _t1_inv)).withLane(3, 1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -near : near == Double.POSITIVE_INFINITY ? far : far * near * _t1_inv);
@@ -19150,7 +19077,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / (near - far);
         double _t2 = Math.tan(0.5 * fovy);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, 1.0 / (aspect * _t2)).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, 1.0 / (aspect * _t2)).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, 1.0 / _t2);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(2, far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : far * _t1_inv).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -near : near == Double.POSITIVE_INFINITY ? far : far * near * _t1_inv);
@@ -19284,7 +19211,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, 2.0 / (aspect * _t3)).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, 2.0 / (aspect * _t3)).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t3_inv + _t3_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(1, -((_t0 + _t1) * _t3_inv)).withLane(2, far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? -1.0 : -((far + near) * _t2_inv)).withLane(3, 1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv);
@@ -19310,7 +19237,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, 2.0 / (aspect * _t3)).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, 2.0 / (aspect * _t3)).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t3_inv + _t3_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(1, (_t0 + _t1) * _t3_inv).withLane(2, far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 1.0 : (far + near) * _t2_inv).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv);
@@ -19348,7 +19275,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, 2.0 / (aspect * _t3)).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, 2.0 / (aspect * _t3)).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t3_inv + _t3_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(1, -((_t0 + _t1) * _t3_inv)).withLane(2, far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : -(far * _t2_inv)).withLane(3, 1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -near : near == Double.POSITIVE_INFINITY ? far : far * near * _t2_inv);
@@ -19374,7 +19301,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, 2.0 / (aspect * _t3)).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, 2.0 / (aspect * _t3)).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t3_inv + _t3_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(1, (_t0 + _t1) * _t3_inv).withLane(2, far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : far * _t2_inv).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -near : near == Double.POSITIVE_INFINITY ? far : far * near * _t2_inv);
@@ -19514,7 +19441,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / (_t0 - _t1);
         double _t6_inv = 1.0 / (_t2 - _t3);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t6_inv + _t6_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, -((_t1 + _t0) * _t5_inv)).withLane(1, -((_t3 + _t2) * _t6_inv)).withLane(2, far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? -1.0 : -((far + near) * _t4_inv)).withLane(3, 1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv);
@@ -19542,7 +19469,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / (_t0 - _t1);
         double _t6_inv = 1.0 / (_t2 - _t3);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t6_inv + _t6_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, (_t1 + _t0) * _t5_inv).withLane(1, (_t3 + _t2) * _t6_inv).withLane(2, far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 1.0 : (far + near) * _t4_inv).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv);
@@ -19583,7 +19510,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / (_t0 - _t1);
         double _t6_inv = 1.0 / (_t2 - _t3);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t6_inv + _t6_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, -((_t1 + _t0) * _t5_inv)).withLane(1, -((_t3 + _t2) * _t6_inv)).withLane(2, far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : -(far * _t4_inv)).withLane(3, 1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -near : near == Double.POSITIVE_INFINITY ? far : far * near * _t4_inv);
@@ -19611,7 +19538,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / (_t0 - _t1);
         double _t6_inv = 1.0 / (_t2 - _t3);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t6_inv + _t6_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, (_t1 + _t0) * _t5_inv).withLane(1, (_t3 + _t2) * _t6_inv).withLane(2, far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : far * _t4_inv).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -near : near == Double.POSITIVE_INFINITY ? far : far * near * _t4_inv);
@@ -19811,7 +19738,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t123_inv = 1.0 / (_t117 + (_t89 + Math.fma(_t1, _t65, -(pX * _t64)) + (Math.fma(eyeX, _t64, -(pZ * _t66)) + Math.fma(eyeY, _t65, eyeZ * _t66))));
         double _t125_inv = 1.0 / (_t122 + (_t114 + Math.fma(_t1, _t92, -(pX * _t91)) + (Math.fma(eyeX, _t91, -(pZ * _t93)) + Math.fma(eyeY, _t92, eyeZ * _t93))));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42 * _t123_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42 * _t123_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t42 * _t125_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, -((_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv)).withLane(1, -((_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv)).withLane(2, _t41 == Double.POSITIVE_INFINITY ? 1.0 : _t40 == Double.POSITIVE_INFINITY ? -1.0 : -(Math.fma(_t27, _t34, _t41) * _t53_inv)).withLane(3, 1.0);
         var _col3 = _sv0.withLane(2, _t41 == Double.POSITIVE_INFINITY ? -_t42 : _t40 == Double.POSITIVE_INFINITY ? _t41 + _t41 : (_t41 + _t41) * _t40 * _t53_inv);
@@ -19887,7 +19814,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t123_inv = 1.0 / (_t117 + (_t89 + Math.fma(_t1, _t65, -(pX * _t64)) + (Math.fma(eyeX, _t64, -(pZ * _t66)) + Math.fma(eyeY, _t65, eyeZ * _t66))));
         double _t125_inv = 1.0 / (_t122 + (_t114 + Math.fma(_t1, _t92, -(pX * _t91)) + (Math.fma(eyeX, _t91, -(pZ * _t93)) + Math.fma(eyeY, _t92, eyeZ * _t93))));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42 * _t123_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42 * _t123_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t42 * _t125_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, (_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv).withLane(1, (_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv).withLane(2, _t41 == Double.POSITIVE_INFINITY ? -1.0 : _t40 == Double.POSITIVE_INFINITY ? 1.0 : Math.fma(_t27, _t34, _t41) * _t53_inv).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, _t41 == Double.POSITIVE_INFINITY ? -_t42 : _t40 == Double.POSITIVE_INFINITY ? _t41 + _t41 : (_t41 + _t41) * _t40 * _t53_inv);
@@ -19989,7 +19916,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t123_inv = 1.0 / (_t117 + (_t89 + Math.fma(_t1, _t65, -(pX * _t64)) + (Math.fma(eyeX, _t64, -(pZ * _t66)) + Math.fma(eyeY, _t65, eyeZ * _t66))));
         double _t125_inv = 1.0 / (_t122 + (_t114 + Math.fma(_t1, _t92, -(pX * _t91)) + (Math.fma(eyeX, _t91, -(pZ * _t93)) + Math.fma(eyeY, _t92, eyeZ * _t93))));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42 * _t123_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42 * _t123_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t42 * _t125_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, -((_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv)).withLane(1, -((_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv)).withLane(2, _t41 == Double.POSITIVE_INFINITY ? 1.0 : _t40 == Double.POSITIVE_INFINITY ? 0.0 : -(_t41 * _t53_inv)).withLane(3, 1.0);
         var _col3 = _sv0.withLane(2, _t41 == Double.POSITIVE_INFINITY ? -_t40 : _t40 == Double.POSITIVE_INFINITY ? _t41 : _t41 * _t40 * _t53_inv);
@@ -20065,7 +19992,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t123_inv = 1.0 / (_t117 + (_t89 + Math.fma(_t1, _t65, -(pX * _t64)) + (Math.fma(eyeX, _t64, -(pZ * _t66)) + Math.fma(eyeY, _t65, eyeZ * _t66))));
         double _t125_inv = 1.0 / (_t122 + (_t114 + Math.fma(_t1, _t92, -(pX * _t91)) + (Math.fma(eyeX, _t91, -(pZ * _t93)) + Math.fma(eyeY, _t92, eyeZ * _t93))));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42 * _t123_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42 * _t123_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t42 * _t125_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, (_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv).withLane(1, (_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv).withLane(2, _t41 == Double.POSITIVE_INFINITY ? -1.0 : _t40 == Double.POSITIVE_INFINITY ? 0.0 : _t41 * _t53_inv).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, _t41 == Double.POSITIVE_INFINITY ? -_t40 : _t40 == Double.POSITIVE_INFINITY ? _t41 : _t41 * _t40 * _t53_inv);
@@ -21143,7 +21070,7 @@ public class Double4x4Impl implements Double4x4 {
     @Mutated public Double4x4 makeScaling(double vX, double vY, double vZ) {
         double[] dd = this.data;
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, vX).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, vX).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, vY);
         var _col2 = _sv0.withLane(2, vZ);
         var _col3 = DoubleVector.zero(COL_SPECIES).withLane(3, 1.0);
@@ -21166,7 +21093,7 @@ public class Double4x4Impl implements Double4x4 {
         double[] dd = this.data;
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, s);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = _sv0.blend(_sv1, MASK_8);
+        var _col0 = _sv0.blend(_sv1, MASK_9);
         var _col1 = _sv1.withLane(1, s);
         var _col2 = _sv1.withLane(2, s);
         var _col3 = DoubleVector.zero(COL_SPECIES).withLane(3, 1.0);
@@ -21210,44 +21137,24 @@ public class Double4x4Impl implements Double4x4 {
      * @return this
      */
     @Mutated public Double4x4 makeShadow(double lightX, double lightY, double lightZ, double lightW, double planeX, double planeY, double planeZ, double planeW) {
-        if (SimdMath.USE_FMA) return makeShadow_fma(lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
-        return makeShadow_mulAdd(lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
-    }
-
-    private Double4x4 makeShadow_fma(double lightX, double lightY, double lightZ, double lightW, double planeX, double planeY, double planeZ, double planeW) {
         double[] dd = this.data;
         double _t4 = Math.fma(lightX, planeX, lightY * planeY) + Math.fma(lightZ, planeZ, lightW * planeW);
-        var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, Math.fma(-lightX, planeX, _t4)).withLane(1, -(lightY * planeX)).withLane(2, -(lightZ * planeX)).withLane(3, -(lightW * planeX));
-        var _sv0 = DoubleVector.zero(COL_SPECIES);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, planeY);
-        var _col1 = _sv0.mul(_sv1).withLane(1, Math.fma(-lightY, planeY, _t4)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, lightX).withLane(2, lightZ).withLane(3, lightW).mul(_sv1).neg(), MASK_80);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, planeZ);
-        var _col2 = _sv0.mul(_sv2).withLane(2, Math.fma(-lightZ, planeZ, _t4)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(3, lightW).mul(_sv2).neg(), MASK_81);
-        var _sv3 = DoubleVector.broadcast(COL_SPECIES, planeW);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, Math.fma(-lightW, planeW, _t4)).fma(VEC_0, _sv0.mul(_sv3)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(2, lightZ).mul(_sv3).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) this).properties = 0;
-        return this;
-    }
-
-    private Double4x4 makeShadow_mulAdd(double lightX, double lightY, double lightZ, double lightW, double planeX, double planeY, double planeZ, double planeW) {
-        double[] dd = this.data;
-        double _t4 = Math.fma(lightX, planeX, lightY * planeY) + Math.fma(lightZ, planeZ, lightW * planeW);
-        var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, Math.fma(-lightX, planeX, _t4)).withLane(1, -(lightY * planeX)).withLane(2, -(lightZ * planeX)).withLane(3, -(lightW * planeX));
-        var _sv0 = DoubleVector.zero(COL_SPECIES);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, planeY);
-        var _col1 = _sv0.mul(_sv1).withLane(1, Math.fma(-lightY, planeY, _t4)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, lightX).withLane(2, lightZ).withLane(3, lightW).mul(_sv1).neg(), MASK_80);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, planeZ);
-        var _col2 = _sv0.mul(_sv2).withLane(2, Math.fma(-lightZ, planeZ, _t4)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(3, lightW).mul(_sv2).neg(), MASK_81);
-        var _sv3 = DoubleVector.broadcast(COL_SPECIES, planeW);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, Math.fma(-lightW, planeW, _t4)).mul(VEC_0).add(_sv0.mul(_sv3)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(2, lightZ).mul(_sv3).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
+        dd[0] = Math.fma(-lightX, planeX, _t4);
+        dd[1] = -(lightY * planeX);
+        dd[2] = -(lightZ * planeX);
+        dd[3] = -(lightW * planeX);
+        dd[4] = -(lightX * planeY);
+        dd[5] = Math.fma(-lightY, planeY, _t4);
+        dd[6] = -(lightZ * planeY);
+        dd[7] = -(lightW * planeY);
+        dd[8] = -(lightX * planeZ);
+        dd[9] = -(lightY * planeZ);
+        dd[10] = Math.fma(-lightZ, planeZ, _t4);
+        dd[11] = -(lightW * planeZ);
+        dd[12] = -(lightX * planeW);
+        dd[13] = -(lightY * planeW);
+        dd[14] = -(lightZ * planeW);
+        dd[15] = Math.fma(-lightW, planeW, _t4);
         ((Double4x4Impl) this).properties = 0;
         return this;
     }
@@ -26044,13 +25951,13 @@ public class Double4x4Impl implements Double4x4 {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         if (DoubleVector.SPECIES_PREFERRED.length() >= 8) {
-            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_82, 0).intoArray(dd, 0);
-            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_82, 8).intoArray(dd, 8);
+            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_80, 0).intoArray(dd, 0);
+            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_80, 8).intoArray(dd, 8);
         } else {
-            DoubleVector.fromArray(COL_SPECIES, DATA_82, 0).intoArray(dd, 0);
-            DoubleVector.fromArray(COL_SPECIES, DATA_82, 4).intoArray(dd, 4);
-            DoubleVector.fromArray(COL_SPECIES, DATA_82, 8).intoArray(dd, 8);
-            DoubleVector.fromArray(COL_SPECIES, DATA_82, 12).intoArray(dd, 12);
+            DoubleVector.fromArray(COL_SPECIES, DATA_80, 0).intoArray(dd, 0);
+            DoubleVector.fromArray(COL_SPECIES, DATA_80, 4).intoArray(dd, 4);
+            DoubleVector.fromArray(COL_SPECIES, DATA_80, 8).intoArray(dd, 8);
+            DoubleVector.fromArray(COL_SPECIES, DATA_80, 12).intoArray(dd, 12);
         }
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -26481,13 +26388,13 @@ public class Double4x4Impl implements Double4x4 {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         if (DoubleVector.SPECIES_PREFERRED.length() >= 8) {
-            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_83, 0).intoArray(dd, 0);
-            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_83, 8).intoArray(dd, 8);
+            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_81, 0).intoArray(dd, 0);
+            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_81, 8).intoArray(dd, 8);
         } else {
-            DoubleVector.fromArray(COL_SPECIES, DATA_83, 0).intoArray(dd, 0);
-            DoubleVector.fromArray(COL_SPECIES, DATA_83, 4).intoArray(dd, 4);
-            DoubleVector.fromArray(COL_SPECIES, DATA_83, 8).intoArray(dd, 8);
-            DoubleVector.fromArray(COL_SPECIES, DATA_83, 12).intoArray(dd, 12);
+            DoubleVector.fromArray(COL_SPECIES, DATA_81, 0).intoArray(dd, 0);
+            DoubleVector.fromArray(COL_SPECIES, DATA_81, 4).intoArray(dd, 4);
+            DoubleVector.fromArray(COL_SPECIES, DATA_81, 8).intoArray(dd, 8);
+            DoubleVector.fromArray(COL_SPECIES, DATA_81, 12).intoArray(dd, 12);
         }
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -27303,22 +27210,18 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 ortho_no_lh_identity(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = right - left;
-        double _t0_inv = 1.0 / _t0;
-        double _t1 = top - bottom;
-        double _t1_inv = 1.0 / _t1;
-        double _t2 = zFar - zNear;
-        double _t2_inv = 1.0 / _t2;
-        dd[0] = _t0_inv + _t0_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t1_inv + _t1_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t2_inv + _t2_inv;
-        dd[11] = 0.0;
-        dd[12] = -((left + right) * _t0_inv);
-        dd[13] = -((bottom + top) * _t1_inv);
-        dd[14] = -((zFar + zNear) * _t2_inv);
-        dd[15] = 1.0;
+        double _t0_inv = 1.0 / (right - left);
+        double _t1_inv = 1.0 / (top - bottom);
+        double _t2_inv = 1.0 / (zFar - zNear);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
+        var _col2 = _sv0.withLane(2, _t2_inv + _t2_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, left).withLane(1, bottom).withLane(2, zFar).add(DoubleVector.zero(COL_SPECIES).withLane(0, right).withLane(1, top).withLane(2, zNear)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -27330,22 +27233,7 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code ortho} dispatcher.
      */
     private Double4x4 ortho_no_lh_identity_self(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = right - left;
-        double _t0_inv = 1.0 / _t0;
-        double _t1 = top - bottom;
-        double _t1_inv = 1.0 / _t1;
-        double _t2 = zFar - zNear;
-        double _t2_inv = 1.0 / _t2;
-        dd[0] = _t0_inv + _t0_inv;
-        dd[5] = _t1_inv + _t1_inv;
-        dd[10] = _t2_inv + _t2_inv;
-        dd[12] = -((left + right) * _t0_inv);
-        dd[13] = -((bottom + top) * _t1_inv);
-        dd[14] = -((zFar + zNear) * _t2_inv);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
-        return dest;
+        return ortho_no_lh_identity(left, right, bottom, top, zNear, zFar, dest);
     }
 
 
@@ -27366,7 +27254,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / (top - bottom);
         double _t2_inv = 1.0 / (zFar - zNear);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
         var _col2 = _sv0.withLane(2, _t2_inv + _t2_inv);
         var _col3 = DoubleVector.zero(COL_SPECIES).withLane(0, left).withLane(1, bottom).withLane(2, zFar).add(DoubleVector.zero(COL_SPECIES).withLane(0, right).withLane(1, top).withLane(2, zNear)).neg().fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv), DoubleVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0);
@@ -27385,7 +27273,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / (top - bottom);
         double _t2_inv = 1.0 / (zFar - zNear);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
         var _col2 = _sv0.withLane(2, _t2_inv + _t2_inv);
         var _col3 = DoubleVector.zero(COL_SPECIES).withLane(0, left).withLane(1, bottom).withLane(2, zFar).add(DoubleVector.zero(COL_SPECIES).withLane(0, right).withLane(1, top).withLane(2, zNear)).neg().mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).add(DoubleVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0);
@@ -27498,22 +27386,18 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 ortho_no_rh_identity(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = right - left;
-        double _t0_inv = 1.0 / _t0;
-        double _t1 = top - bottom;
-        double _t1_inv = 1.0 / _t1;
-        double _t2 = zFar - zNear;
-        double _t2_inv = 1.0 / _t2;
-        dd[0] = _t0_inv + _t0_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t1_inv + _t1_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = -2.0 * _t2_inv;
-        dd[11] = 0.0;
-        dd[12] = -((left + right) * _t0_inv);
-        dd[13] = -((bottom + top) * _t1_inv);
-        dd[14] = -((zFar + zNear) * _t2_inv);
-        dd[15] = 1.0;
+        double _t0_inv = 1.0 / (right - left);
+        double _t1_inv = 1.0 / (top - bottom);
+        double _t2_inv = 1.0 / (zFar - zNear);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
+        var _col2 = _sv0.withLane(2, -2.0 * _t2_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, left).withLane(1, bottom).withLane(2, zFar).add(DoubleVector.zero(COL_SPECIES).withLane(0, right).withLane(1, top).withLane(2, zNear)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -27525,22 +27409,7 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code ortho} dispatcher.
      */
     private Double4x4 ortho_no_rh_identity_self(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = right - left;
-        double _t0_inv = 1.0 / _t0;
-        double _t1 = top - bottom;
-        double _t1_inv = 1.0 / _t1;
-        double _t2 = zFar - zNear;
-        double _t2_inv = 1.0 / _t2;
-        dd[0] = _t0_inv + _t0_inv;
-        dd[5] = _t1_inv + _t1_inv;
-        dd[10] = -2.0 * _t2_inv;
-        dd[12] = -((left + right) * _t0_inv);
-        dd[13] = -((bottom + top) * _t1_inv);
-        dd[14] = -((zFar + zNear) * _t2_inv);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
-        return dest;
+        return ortho_no_rh_identity(left, right, bottom, top, zNear, zFar, dest);
     }
 
 
@@ -27561,7 +27430,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / (top - bottom);
         double _t2_inv = 1.0 / (zFar - zNear);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t2_inv);
         var _col3 = DoubleVector.zero(COL_SPECIES).withLane(0, left).withLane(1, bottom).withLane(2, zFar).add(DoubleVector.zero(COL_SPECIES).withLane(0, right).withLane(1, top).withLane(2, zNear)).neg().fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv), DoubleVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0);
@@ -27580,7 +27449,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / (top - bottom);
         double _t2_inv = 1.0 / (zFar - zNear);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t2_inv);
         var _col3 = DoubleVector.zero(COL_SPECIES).withLane(0, left).withLane(1, bottom).withLane(2, zFar).add(DoubleVector.zero(COL_SPECIES).withLane(0, right).withLane(1, top).withLane(2, zNear)).neg().mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).add(DoubleVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0);
@@ -27657,12 +27526,12 @@ public class Double4x4Impl implements Double4x4 {
      * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
      * through the public {@code ortho} dispatcher.
      */
-    private Double4x4 ortho_zo_lh_identity_general(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return ortho_zo_lh_identity_general_fma(left, right, bottom, top, zNear, zFar, dest, _props);
-        return ortho_zo_lh_identity_general_mulAdd(left, right, bottom, top, zNear, zFar, dest, _props);
+    private Double4x4 ortho_zo_lh_orthogonal_general(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return ortho_zo_lh_orthogonal_general_fma(left, right, bottom, top, zNear, zFar, dest, _props);
+        return ortho_zo_lh_orthogonal_general_mulAdd(left, right, bottom, top, zNear, zFar, dest, _props);
     }
 
-    private Double4x4 ortho_zo_lh_identity_general_fma(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest, int _props) {
+    private Double4x4 ortho_zo_lh_orthogonal_general_fma(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest, int _props) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0_inv = 1.0 / (right - left);
@@ -27685,7 +27554,7 @@ public class Double4x4Impl implements Double4x4 {
         return dest;
     }
 
-    private Double4x4 ortho_zo_lh_identity_general_mulAdd(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest, int _props) {
+    private Double4x4 ortho_zo_lh_orthogonal_general_mulAdd(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest, int _props) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0_inv = 1.0 / (right - left);
@@ -27714,6 +27583,41 @@ public class Double4x4Impl implements Double4x4 {
      * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
      * through the public {@code ortho} dispatcher.
      */
+    private Double4x4 ortho_zo_lh_identity(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double4x4Impl) dest).data;
+        double _t0_inv = 1.0 / (right - left);
+        double _t1_inv = 1.0 / (top - bottom);
+        double _t2_inv = 1.0 / (zFar - zNear);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
+        var _col2 = _sv0.withLane(2, _t2_inv);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, left).withLane(1, bottom).add(DoubleVector.broadcast(COL_SPECIES, right).withLane(1, top)).withLane(2, zNear).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code ortho} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho} dispatcher.
+     */
+    private Double4x4 ortho_zo_lh_identity_self(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
+        return ortho_zo_lh_identity(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+
+    /**
+     * Private body of {@code ortho} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.LEFT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho} dispatcher.
+     */
     private Double4x4 ortho_zo_lh_translation(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         if (SimdMath.USE_FMA) return ortho_zo_lh_translation_fma(left, right, bottom, top, zNear, zFar, dest);
         return ortho_zo_lh_translation_mulAdd(left, right, bottom, top, zNear, zFar, dest);
@@ -27726,7 +27630,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / (top - bottom);
         double _t2_inv = 1.0 / (zFar - zNear);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
         var _col2 = _sv0.withLane(2, _t2_inv);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, left).withLane(1, bottom).add(DoubleVector.broadcast(COL_SPECIES, right).withLane(1, top)).withLane(2, zNear).neg().fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv), DoubleVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0);
@@ -27745,7 +27649,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / (top - bottom);
         double _t2_inv = 1.0 / (zFar - zNear);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
         var _col2 = _sv0.withLane(2, _t2_inv);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, left).withLane(1, bottom).add(DoubleVector.broadcast(COL_SPECIES, right).withLane(1, top)).withLane(2, zNear).neg().mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).add(DoubleVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0);
@@ -27774,9 +27678,9 @@ public class Double4x4Impl implements Double4x4 {
      */
     private Double4x4 ortho_zo_lh(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho_zo_lh_identity_general(left, right, bottom, top, zNear, zFar, dest, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho_zo_lh_identity(left, right, bottom, top, zNear, zFar, dest);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho_zo_lh_translation(left, right, bottom, top, zNear, zFar, dest);
-        return ortho_zo_lh_identity_general(left, right, bottom, top, zNear, zFar, dest, (p & Joml.BIT_AFFINE) | 0);
+        return ortho_zo_lh_orthogonal_general(left, right, bottom, top, zNear, zFar, dest, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -27787,9 +27691,9 @@ public class Double4x4Impl implements Double4x4 {
     @Mutated private Double4x4 ortho_zo_lh(double left, double right, double bottom, double top, double zNear, double zFar) {
         if (Joml.RETURN_NEW) return ortho_zo_lh(left, right, bottom, top, zNear, zFar, Joml.double4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho_zo_lh_identity_general(left, right, bottom, top, zNear, zFar, this, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho_zo_lh_identity_self(left, right, bottom, top, zNear, zFar, this);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho_zo_lh_translation_self(left, right, bottom, top, zNear, zFar, this);
-        return ortho_zo_lh_identity_general(left, right, bottom, top, zNear, zFar, this, (p & Joml.BIT_AFFINE) | 0);
+        return ortho_zo_lh_orthogonal_general(left, right, bottom, top, zNear, zFar, this, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -27798,12 +27702,12 @@ public class Double4x4Impl implements Double4x4 {
      * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
      * through the public {@code ortho} dispatcher.
      */
-    private Double4x4 ortho_zo_rh_identity_general(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return ortho_zo_rh_identity_general_fma(left, right, bottom, top, zNear, zFar, dest, _props);
-        return ortho_zo_rh_identity_general_mulAdd(left, right, bottom, top, zNear, zFar, dest, _props);
+    private Double4x4 ortho_zo_rh_orthogonal_general(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return ortho_zo_rh_orthogonal_general_fma(left, right, bottom, top, zNear, zFar, dest, _props);
+        return ortho_zo_rh_orthogonal_general_mulAdd(left, right, bottom, top, zNear, zFar, dest, _props);
     }
 
-    private Double4x4 ortho_zo_rh_identity_general_fma(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest, int _props) {
+    private Double4x4 ortho_zo_rh_orthogonal_general_fma(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest, int _props) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0_inv = 1.0 / (right - left);
@@ -27825,7 +27729,7 @@ public class Double4x4Impl implements Double4x4 {
         return dest;
     }
 
-    private Double4x4 ortho_zo_rh_identity_general_mulAdd(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest, int _props) {
+    private Double4x4 ortho_zo_rh_orthogonal_general_mulAdd(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest, int _props) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0_inv = 1.0 / (right - left);
@@ -27853,6 +27757,41 @@ public class Double4x4Impl implements Double4x4 {
      * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
      * through the public {@code ortho} dispatcher.
      */
+    private Double4x4 ortho_zo_rh_identity(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double4x4Impl) dest).data;
+        double _t0_inv = 1.0 / (right - left);
+        double _t1_inv = 1.0 / (top - bottom);
+        double _t2_inv = 1.0 / (zFar - zNear);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
+        var _col2 = _sv0.withLane(2, -_t2_inv);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, left).withLane(1, bottom).add(DoubleVector.broadcast(COL_SPECIES, right).withLane(1, top)).withLane(2, zNear).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code ortho} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho} dispatcher.
+     */
+    private Double4x4 ortho_zo_rh_identity_self(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
+        return ortho_zo_rh_identity(left, right, bottom, top, zNear, zFar, dest);
+    }
+
+
+    /**
+     * Private body of {@code ortho} for {@code DepthRange.ZERO_TO_ONE},
+     * {@code Handedness.RIGHT_HANDED}, specialized by runtime matrix properties; reached only
+     * through the public {@code ortho} dispatcher.
+     */
     private Double4x4 ortho_zo_rh_translation(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         if (SimdMath.USE_FMA) return ortho_zo_rh_translation_fma(left, right, bottom, top, zNear, zFar, dest);
         return ortho_zo_rh_translation_mulAdd(left, right, bottom, top, zNear, zFar, dest);
@@ -27865,7 +27804,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / (top - bottom);
         double _t2_inv = 1.0 / (zFar - zNear);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
         var _col2 = _sv0.withLane(2, -_t2_inv);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, left).withLane(1, bottom).add(DoubleVector.broadcast(COL_SPECIES, right).withLane(1, top)).withLane(2, zNear).neg().fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv), DoubleVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0);
@@ -27884,7 +27823,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / (top - bottom);
         double _t2_inv = 1.0 / (zFar - zNear);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
         var _col2 = _sv0.withLane(2, -_t2_inv);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, left).withLane(1, bottom).add(DoubleVector.broadcast(COL_SPECIES, right).withLane(1, top)).withLane(2, zNear).neg().mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).add(DoubleVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0);
@@ -27913,9 +27852,9 @@ public class Double4x4Impl implements Double4x4 {
      */
     private Double4x4 ortho_zo_rh(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho_zo_rh_identity_general(left, right, bottom, top, zNear, zFar, dest, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho_zo_rh_identity(left, right, bottom, top, zNear, zFar, dest);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho_zo_rh_translation(left, right, bottom, top, zNear, zFar, dest);
-        return ortho_zo_rh_identity_general(left, right, bottom, top, zNear, zFar, dest, (p & Joml.BIT_AFFINE) | 0);
+        return ortho_zo_rh_orthogonal_general(left, right, bottom, top, zNear, zFar, dest, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -27926,9 +27865,9 @@ public class Double4x4Impl implements Double4x4 {
     @Mutated private Double4x4 ortho_zo_rh(double left, double right, double bottom, double top, double zNear, double zFar) {
         if (Joml.RETURN_NEW) return ortho_zo_rh(left, right, bottom, top, zNear, zFar, Joml.double4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho_zo_rh_identity_general(left, right, bottom, top, zNear, zFar, this, (p & Joml.BIT_AFFINE) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return ortho_zo_rh_identity_self(left, right, bottom, top, zNear, zFar, this);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return ortho_zo_rh_translation_self(left, right, bottom, top, zNear, zFar, this);
-        return ortho_zo_rh_identity_general(left, right, bottom, top, zNear, zFar, this, (p & Joml.BIT_AFFINE) | 0);
+        return ortho_zo_rh_orthogonal_general(left, right, bottom, top, zNear, zFar, this, (p & Joml.BIT_AFFINE) | 0);
     }
 
 
@@ -29158,43 +29097,35 @@ public class Double4x4Impl implements Double4x4 {
         double _t52 = sd[14] + (_t4 - sd[10]);
         double _t53 = sd[12] + (_t5 - sd[8]);
         double _t54 = sd[13] + (_t6 - sd[9]);
-        double _t55 = sd[15] + (_t7 - sd[11]);
-        double _t55_inv = 1.0 / _t55;
+        double _t55_inv = 1.0 / (sd[15] + (_t7 - sd[11]));
         double _t56 = sd[14] + (_t8 - sd[10]);
         double _t57 = sd[12] + (_t9 - sd[8]);
         double _t58 = sd[13] + (_t10 - sd[9]);
-        double _t59 = sd[15] + (_t11 - sd[11]);
-        double _t59_inv = 1.0 / _t59;
+        double _t59_inv = 1.0 / (sd[15] + (_t11 - sd[11]));
         double _t60 = sd[14] + (_t12 - sd[10]);
         double _t61 = sd[12] + (_t13 - sd[8]);
         double _t62 = sd[13] + (_t14 - sd[9]);
-        double _t63 = sd[15] + (_t15 - sd[11]);
-        double _t63_inv = 1.0 / _t63;
+        double _t63_inv = 1.0 / (sd[15] + (_t15 - sd[11]));
         double _t64 = sd[14] + (sd[10] + _t4);
         double _t65 = sd[12] + (sd[8] + _t5);
         double _t66 = sd[13] + (sd[9] + _t6);
-        double _t67 = sd[15] + (sd[11] + _t7);
-        double _t67_inv = 1.0 / _t67;
+        double _t67_inv = 1.0 / (sd[15] + (sd[11] + _t7));
         double _t68 = sd[14] + (sd[10] + _t8);
         double _t69 = sd[12] + (sd[8] + _t9);
         double _t70 = sd[13] + (sd[9] + _t10);
-        double _t71 = sd[15] + (sd[11] + _t11);
-        double _t71_inv = 1.0 / _t71;
+        double _t71_inv = 1.0 / (sd[15] + (sd[11] + _t11));
         double _t72 = sd[14] + (sd[10] + _t12);
         double _t73 = sd[12] + (sd[8] + _t13);
         double _t74 = sd[13] + (sd[9] + _t14);
-        double _t75 = sd[15] + (sd[11] + _t15);
-        double _t75_inv = 1.0 / _t75;
+        double _t75_inv = 1.0 / (sd[15] + (sd[11] + _t15));
         double _t76 = sd[14] + (_t16 - sd[10]);
         double _t77 = sd[12] + (_t17 - sd[8]);
         double _t78 = sd[13] + (_t18 - sd[9]);
-        double _t79 = sd[15] + (_t19 - sd[11]);
-        double _t79_inv = 1.0 / _t79;
+        double _t79_inv = 1.0 / (sd[15] + (_t19 - sd[11]));
         double _t80 = sd[14] + (sd[10] + _t16);
         double _t81 = sd[12] + (sd[8] + _t17);
         double _t82 = sd[13] + (sd[9] + _t18);
-        double _t83 = sd[15] + (sd[11] + _t19);
-        double _t83_inv = 1.0 / _t83;
+        double _t83_inv = 1.0 / (sd[15] + (sd[11] + _t19));
         double _t174 = viewData[12] + Math.fma(viewData[8], _t52, Math.fma(viewData[0], _t53, viewData[4] * _t54)) * _t55_inv;
         double _t175 = viewData[12] + Math.fma(viewData[8], _t56, Math.fma(viewData[0], _t57, viewData[4] * _t58)) * _t59_inv;
         double _t176 = viewData[12] + Math.fma(viewData[8], _t60, Math.fma(viewData[0], _t61, viewData[4] * _t62)) * _t63_inv;
@@ -29225,22 +29156,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t243 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t200, _t180), _t181), _t182), _t201), _t183), _t184), _t185);
         double _t244 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t202, _t186), _t187), _t188), _t203), _t189), _t190), _t191);
         double _t245 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t202, _t186), _t187), _t188), _t203), _t189), _t190), _t191);
-        double _t246 = _t240 - _t241;
-        double _t246_inv = 1.0 / _t246;
-        double _t247 = _t242 - _t243;
-        double _t247_inv = 1.0 / _t247;
-        double _t248 = _t244 - _t245;
-        double _t248_inv = 1.0 / _t248;
-        dd[0] = _t246_inv + _t246_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t247_inv + _t247_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t248_inv + _t248_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t241 + _t240) * _t246_inv);
-        dd[13] = -((_t243 + _t242) * _t247_inv);
-        dd[14] = -((_t245 + _t244) * _t248_inv);
-        dd[15] = 1.0;
+        double _t246_inv = 1.0 / (_t240 - _t241);
+        double _t247_inv = 1.0 / (_t242 - _t243);
+        double _t248_inv = 1.0 / (_t244 - _t245);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t246_inv + _t246_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t247_inv + _t247_inv);
+        var _col2 = _sv0.withLane(2, _t248_inv + _t248_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t241).withLane(1, _t243).withLane(2, _t245).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t240).withLane(1, _t242).withLane(2, _t244)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t246_inv).withLane(1, _t247_inv).withLane(2, _t248_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -29297,22 +29224,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t102 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t59, _t45), _t46), _t47), _t60), _t48), _t49), _t50);
         double _t103 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t61, _t51), _t52), _t53), _t62), _t54), _t55), _t56);
         double _t104 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t61, _t51), _t52), _t53), _t62), _t54), _t55), _t56);
-        double _t105 = _t99 - _t100;
-        double _t105_inv = 1.0 / _t105;
-        double _t106 = _t101 - _t102;
-        double _t106_inv = 1.0 / _t106;
-        double _t107 = _t103 - _t104;
-        double _t107_inv = 1.0 / _t107;
-        dd[0] = _t105_inv + _t105_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t106_inv + _t106_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t107_inv + _t107_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t100 + _t99) * _t105_inv);
-        dd[13] = -((_t102 + _t101) * _t106_inv);
-        dd[14] = -((_t104 + _t103) * _t107_inv);
-        dd[15] = 1.0;
+        double _t105_inv = 1.0 / (_t99 - _t100);
+        double _t106_inv = 1.0 / (_t101 - _t102);
+        double _t107_inv = 1.0 / (_t103 - _t104);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t105_inv + _t105_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t106_inv + _t106_inv);
+        var _col2 = _sv0.withLane(2, _t107_inv + _t107_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t100).withLane(1, _t102).withLane(2, _t104).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t99).withLane(1, _t101).withLane(2, _t103)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t105_inv).withLane(1, _t106_inv).withLane(2, _t107_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -29381,22 +29304,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t87 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t32, _t33), _t34), _t35), _t36), _t37), _t38), _t39);
         double _t88 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
         double _t89 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
-        double _t90 = _t84 - _t85;
-        double _t90_inv = 1.0 / _t90;
-        double _t91 = _t86 - _t87;
-        double _t91_inv = 1.0 / _t91;
-        double _t92 = _t88 - _t89;
-        double _t92_inv = 1.0 / _t92;
-        dd[0] = _t90_inv + _t90_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t91_inv + _t91_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t92_inv + _t92_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t85 + _t84) * _t90_inv);
-        dd[13] = -((_t87 + _t86) * _t91_inv);
-        dd[14] = -((_t89 + _t88) * _t92_inv);
-        dd[15] = 1.0;
+        double _t90_inv = 1.0 / (_t84 - _t85);
+        double _t91_inv = 1.0 / (_t86 - _t87);
+        double _t92_inv = 1.0 / (_t88 - _t89);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
+        var _col2 = _sv0.withLane(2, _t92_inv + _t92_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t85).withLane(1, _t87).withLane(2, _t89).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t84).withLane(1, _t86).withLane(2, _t88)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -29477,22 +29396,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t174 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t131, _t117), _t118), _t119), _t132), _t120), _t121), _t122);
         double _t175 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t133, _t123), _t124), _t125), _t134), _t126), _t127), _t128);
         double _t176 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t133, _t123), _t124), _t125), _t134), _t126), _t127), _t128);
-        double _t177 = _t171 - _t172;
-        double _t177_inv = 1.0 / _t177;
-        double _t178 = _t173 - _t174;
-        double _t178_inv = 1.0 / _t178;
-        double _t179 = _t175 - _t176;
-        double _t179_inv = 1.0 / _t179;
-        dd[0] = _t177_inv + _t177_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t178_inv + _t178_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t179_inv + _t179_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t172 + _t171) * _t177_inv);
-        dd[13] = -((_t174 + _t173) * _t178_inv);
-        dd[14] = -((_t176 + _t175) * _t179_inv);
-        dd[15] = 1.0;
+        double _t177_inv = 1.0 / (_t171 - _t172);
+        double _t178_inv = 1.0 / (_t173 - _t174);
+        double _t179_inv = 1.0 / (_t175 - _t176);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t177_inv + _t177_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t178_inv + _t178_inv);
+        var _col2 = _sv0.withLane(2, _t179_inv + _t179_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t172).withLane(1, _t174).withLane(2, _t176).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t171).withLane(1, _t173).withLane(2, _t175)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t177_inv).withLane(1, _t178_inv).withLane(2, _t179_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -29542,22 +29457,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t37 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
         double _t38 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
         double _t39 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t40 = _t28 - _t29;
-        double _t40_inv = 1.0 / _t40;
-        double _t41 = _t36 - _t37;
-        double _t41_inv = 1.0 / _t41;
-        double _t42 = _t38 - _t39;
-        double _t42_inv = 1.0 / _t42;
-        dd[0] = _t42_inv + _t42_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t41_inv + _t41_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t40_inv + _t40_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t39 + _t38) * _t42_inv);
-        dd[13] = -((_t37 + _t36) * _t41_inv);
-        dd[14] = -((_t29 + _t28) * _t40_inv);
-        dd[15] = 1.0;
+        double _t40_inv = 1.0 / (_t28 - _t29);
+        double _t41_inv = 1.0 / (_t36 - _t37);
+        double _t42_inv = 1.0 / (_t38 - _t39);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
+        var _col2 = _sv0.withLane(2, _t40_inv + _t40_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t39).withLane(1, _t37).withLane(2, _t29).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t38).withLane(1, _t36).withLane(2, _t28)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -29584,22 +29495,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t37 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
         double _t38 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
         double _t39 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t40 = _t28 - _t29;
-        double _t40_inv = 1.0 / _t40;
-        double _t41 = _t36 - _t37;
-        double _t41_inv = 1.0 / _t41;
-        double _t42 = _t38 - _t39;
-        double _t42_inv = 1.0 / _t42;
-        dd[0] = _t42_inv + _t42_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t41_inv + _t41_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t40_inv + _t40_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t39 + _t38) * _t42_inv);
-        dd[13] = -((_t37 + _t36) * _t41_inv);
-        dd[14] = -((_t29 + _t28) * _t40_inv);
-        dd[15] = 1.0;
+        double _t40_inv = 1.0 / (_t28 - _t29);
+        double _t41_inv = 1.0 / (_t36 - _t37);
+        double _t42_inv = 1.0 / (_t38 - _t39);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
+        var _col2 = _sv0.withLane(2, _t40_inv + _t40_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t39).withLane(1, _t37).withLane(2, _t29).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t38).withLane(1, _t36).withLane(2, _t28)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -29626,22 +29533,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t43 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t8, _t9), _t9), _t8), _t8), _t9), _t9);
         double _t44 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t6, _t7), _t6), _t7), _t6), _t7), _t6), _t7);
         double _t45 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t6, _t7), _t6), _t7), _t6), _t7), _t6), _t7);
-        double _t46 = _t34 - _t35;
-        double _t46_inv = 1.0 / _t46;
-        double _t47 = _t42 - _t43;
-        double _t47_inv = 1.0 / _t47;
-        double _t48 = _t44 - _t45;
-        double _t48_inv = 1.0 / _t48;
-        dd[0] = _t48_inv + _t48_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t47_inv + _t47_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t46_inv + _t46_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t45 + _t44) * _t48_inv);
-        dd[13] = -((_t43 + _t42) * _t47_inv);
-        dd[14] = -((_t35 + _t34) * _t46_inv);
-        dd[15] = 1.0;
+        double _t46_inv = 1.0 / (_t34 - _t35);
+        double _t47_inv = 1.0 / (_t42 - _t43);
+        double _t48_inv = 1.0 / (_t44 - _t45);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t48_inv + _t48_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t47_inv + _t47_inv);
+        var _col2 = _sv0.withLane(2, _t46_inv + _t46_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t45).withLane(1, _t43).withLane(2, _t35).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t44).withLane(1, _t42).withLane(2, _t34)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -29698,22 +29601,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t102 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t59, _t45), _t46), _t47), _t60), _t48), _t49), _t50);
         double _t103 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t61, _t51), _t52), _t53), _t62), _t54), _t55), _t56);
         double _t104 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t61, _t51), _t52), _t53), _t62), _t54), _t55), _t56);
-        double _t105 = _t99 - _t100;
-        double _t105_inv = 1.0 / _t105;
-        double _t106 = _t101 - _t102;
-        double _t106_inv = 1.0 / _t106;
-        double _t107 = _t103 - _t104;
-        double _t107_inv = 1.0 / _t107;
-        dd[0] = _t105_inv + _t105_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t106_inv + _t106_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t107_inv + _t107_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t100 + _t99) * _t105_inv);
-        dd[13] = -((_t102 + _t101) * _t106_inv);
-        dd[14] = -((_t104 + _t103) * _t107_inv);
-        dd[15] = 1.0;
+        double _t105_inv = 1.0 / (_t99 - _t100);
+        double _t106_inv = 1.0 / (_t101 - _t102);
+        double _t107_inv = 1.0 / (_t103 - _t104);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t105_inv + _t105_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t106_inv + _t106_inv);
+        var _col2 = _sv0.withLane(2, _t107_inv + _t107_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t100).withLane(1, _t102).withLane(2, _t104).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t99).withLane(1, _t101).withLane(2, _t103)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t105_inv).withLane(1, _t106_inv).withLane(2, _t107_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -29770,22 +29669,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t126 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t83, _t69), _t70), _t71), _t84), _t72), _t73), _t74);
         double _t127 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t85, _t75), _t76), _t77), _t86), _t78), _t79), _t80);
         double _t128 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t85, _t75), _t76), _t77), _t86), _t78), _t79), _t80);
-        double _t129 = _t123 - _t124;
-        double _t129_inv = 1.0 / _t129;
-        double _t130 = _t125 - _t126;
-        double _t130_inv = 1.0 / _t130;
-        double _t131 = _t127 - _t128;
-        double _t131_inv = 1.0 / _t131;
-        dd[0] = _t129_inv + _t129_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t130_inv + _t130_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t131_inv + _t131_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t124 + _t123) * _t129_inv);
-        dd[13] = -((_t126 + _t125) * _t130_inv);
-        dd[14] = -((_t128 + _t127) * _t131_inv);
-        dd[15] = 1.0;
+        double _t129_inv = 1.0 / (_t123 - _t124);
+        double _t130_inv = 1.0 / (_t125 - _t126);
+        double _t131_inv = 1.0 / (_t127 - _t128);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t129_inv + _t129_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t130_inv + _t130_inv);
+        var _col2 = _sv0.withLane(2, _t131_inv + _t131_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t124).withLane(1, _t126).withLane(2, _t128).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t123).withLane(1, _t125).withLane(2, _t127)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t129_inv).withLane(1, _t130_inv).withLane(2, _t131_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -29816,22 +29711,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t17 = -sd[3] - sd[7];
         double _t18 = -sd[1] - sd[5];
         double _t19 = -sd[2] - sd[6];
-        double _t53 = sd[15] + (_t5 - sd[11]);
-        double _t53_inv = 1.0 / _t53;
-        double _t55 = sd[15] + (_t7 - sd[11]);
-        double _t55_inv = 1.0 / _t55;
-        double _t57 = sd[15] + (_t9 - sd[11]);
-        double _t57_inv = 1.0 / _t57;
-        double _t59 = sd[15] + (sd[11] + _t5);
-        double _t59_inv = 1.0 / _t59;
-        double _t61 = sd[15] + (sd[11] + _t7);
-        double _t61_inv = 1.0 / _t61;
-        double _t63 = sd[15] + (sd[11] + _t9);
-        double _t63_inv = 1.0 / _t63;
-        double _t77 = sd[15] + (_t17 - sd[11]);
-        double _t77_inv = 1.0 / _t77;
-        double _t79 = sd[15] + (sd[11] + _t17);
-        double _t79_inv = 1.0 / _t79;
+        double _t53_inv = 1.0 / (sd[15] + (_t5 - sd[11]));
+        double _t55_inv = 1.0 / (sd[15] + (_t7 - sd[11]));
+        double _t57_inv = 1.0 / (sd[15] + (_t9 - sd[11]));
+        double _t59_inv = 1.0 / (sd[15] + (sd[11] + _t5));
+        double _t61_inv = 1.0 / (sd[15] + (sd[11] + _t7));
+        double _t63_inv = 1.0 / (sd[15] + (sd[11] + _t9));
+        double _t77_inv = 1.0 / (sd[15] + (_t17 - sd[11]));
+        double _t79_inv = 1.0 / (sd[15] + (sd[11] + _t17));
         double _t84 = (sd[12] + (_t4 - sd[8])) * _t53_inv;
         double _t85 = (sd[12] + (_t6 - sd[8])) * _t55_inv;
         double _t86 = (sd[12] + (_t8 - sd[8])) * _t57_inv;
@@ -29862,22 +29749,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t147 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t104, _t90), _t91), _t92), _t105), _t93), _t94), _t95);
         double _t148 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t106, _t96), _t97), _t98), _t107), _t99), _t100), _t101);
         double _t149 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t106, _t96), _t97), _t98), _t107), _t99), _t100), _t101);
-        double _t150 = _t144 - _t145;
-        double _t150_inv = 1.0 / _t150;
-        double _t151 = _t146 - _t147;
-        double _t151_inv = 1.0 / _t151;
-        double _t152 = _t148 - _t149;
-        double _t152_inv = 1.0 / _t152;
-        dd[0] = _t150_inv + _t150_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t151_inv + _t151_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t152_inv + _t152_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t145 + _t144) * _t150_inv);
-        dd[13] = -((_t147 + _t146) * _t151_inv);
-        dd[14] = -((_t149 + _t148) * _t152_inv);
-        dd[15] = 1.0;
+        double _t150_inv = 1.0 / (_t144 - _t145);
+        double _t151_inv = 1.0 / (_t146 - _t147);
+        double _t152_inv = 1.0 / (_t148 - _t149);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t150_inv + _t150_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t151_inv + _t151_inv);
+        var _col2 = _sv0.withLane(2, _t152_inv + _t152_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t145).withLane(1, _t147).withLane(2, _t149).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t144).withLane(1, _t146).withLane(2, _t148)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -29908,22 +29791,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t17 = -sd[3] - sd[7];
         double _t18 = -sd[1] - sd[5];
         double _t19 = -sd[2] - sd[6];
-        double _t53 = sd[15] + (_t5 - sd[11]);
-        double _t53_inv = 1.0 / _t53;
-        double _t55 = sd[15] + (_t7 - sd[11]);
-        double _t55_inv = 1.0 / _t55;
-        double _t57 = sd[15] + (_t9 - sd[11]);
-        double _t57_inv = 1.0 / _t57;
-        double _t59 = sd[15] + (sd[11] + _t5);
-        double _t59_inv = 1.0 / _t59;
-        double _t61 = sd[15] + (sd[11] + _t7);
-        double _t61_inv = 1.0 / _t61;
-        double _t63 = sd[15] + (sd[11] + _t9);
-        double _t63_inv = 1.0 / _t63;
-        double _t77 = sd[15] + (_t17 - sd[11]);
-        double _t77_inv = 1.0 / _t77;
-        double _t79 = sd[15] + (sd[11] + _t17);
-        double _t79_inv = 1.0 / _t79;
+        double _t53_inv = 1.0 / (sd[15] + (_t5 - sd[11]));
+        double _t55_inv = 1.0 / (sd[15] + (_t7 - sd[11]));
+        double _t57_inv = 1.0 / (sd[15] + (_t9 - sd[11]));
+        double _t59_inv = 1.0 / (sd[15] + (sd[11] + _t5));
+        double _t61_inv = 1.0 / (sd[15] + (sd[11] + _t7));
+        double _t63_inv = 1.0 / (sd[15] + (sd[11] + _t9));
+        double _t77_inv = 1.0 / (sd[15] + (_t17 - sd[11]));
+        double _t79_inv = 1.0 / (sd[15] + (sd[11] + _t17));
         double _t108 = viewData[12] + (sd[12] + (_t4 - sd[8])) * _t53_inv;
         double _t109 = viewData[12] + (sd[12] + (_t6 - sd[8])) * _t55_inv;
         double _t110 = viewData[12] + (sd[12] + (_t8 - sd[8])) * _t57_inv;
@@ -29954,22 +29829,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t171 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t128, _t114), _t115), _t116), _t129), _t117), _t118), _t119);
         double _t172 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t130, _t120), _t121), _t122), _t131), _t123), _t124), _t125);
         double _t173 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t130, _t120), _t121), _t122), _t131), _t123), _t124), _t125);
-        double _t174 = _t168 - _t169;
-        double _t174_inv = 1.0 / _t174;
-        double _t175 = _t170 - _t171;
-        double _t175_inv = 1.0 / _t175;
-        double _t176 = _t172 - _t173;
-        double _t176_inv = 1.0 / _t176;
-        dd[0] = _t174_inv + _t174_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t175_inv + _t175_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t176_inv + _t176_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t169 + _t168) * _t174_inv);
-        dd[13] = -((_t171 + _t170) * _t175_inv);
-        dd[14] = -((_t173 + _t172) * _t176_inv);
-        dd[15] = 1.0;
+        double _t174_inv = 1.0 / (_t168 - _t169);
+        double _t175_inv = 1.0 / (_t170 - _t171);
+        double _t176_inv = 1.0 / (_t172 - _t173);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t174_inv + _t174_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t175_inv + _t175_inv);
+        var _col2 = _sv0.withLane(2, _t176_inv + _t176_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t169).withLane(1, _t171).withLane(2, _t173).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t168).withLane(1, _t170).withLane(2, _t172)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t174_inv).withLane(1, _t175_inv).withLane(2, _t176_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -30050,11 +29921,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_general(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_general_fma(view, dest);
-        return orthoCrop_no_rh_general_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_general_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -30140,112 +30006,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t247_inv = 1.0 / (_t242 - _t243);
         double _t248_inv = 1.0 / (_t244 - _t245);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t246_inv + _t246_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t246_inv + _t246_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t247_inv + _t247_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t248_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t241);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t240);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t243).add(_sv2.withLane(1, _t242)).withLane(2, -_t245 - _t244).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t246_inv).withLane(1, _t247_inv).withLane(2, _t248_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_general_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t4 = sd[2] - sd[6];
-        double _t5 = sd[0] - sd[4];
-        double _t6 = sd[1] - sd[5];
-        double _t7 = sd[3] - sd[7];
-        double _t8 = sd[6] - sd[2];
-        double _t9 = sd[4] - sd[0];
-        double _t10 = sd[5] - sd[1];
-        double _t11 = sd[7] - sd[3];
-        double _t12 = sd[2] + sd[6];
-        double _t13 = sd[0] + sd[4];
-        double _t14 = sd[1] + sd[5];
-        double _t15 = sd[3] + sd[7];
-        double _t16 = -sd[2] - sd[6];
-        double _t17 = -sd[0] - sd[4];
-        double _t18 = -sd[1] - sd[5];
-        double _t19 = -sd[3] - sd[7];
-        double _t52 = sd[14] + (_t4 - sd[10]);
-        double _t53 = sd[12] + (_t5 - sd[8]);
-        double _t54 = sd[13] + (_t6 - sd[9]);
-        double _t55_inv = 1.0 / (sd[15] + (_t7 - sd[11]));
-        double _t56 = sd[14] + (_t8 - sd[10]);
-        double _t57 = sd[12] + (_t9 - sd[8]);
-        double _t58 = sd[13] + (_t10 - sd[9]);
-        double _t59_inv = 1.0 / (sd[15] + (_t11 - sd[11]));
-        double _t60 = sd[14] + (_t12 - sd[10]);
-        double _t61 = sd[12] + (_t13 - sd[8]);
-        double _t62 = sd[13] + (_t14 - sd[9]);
-        double _t63_inv = 1.0 / (sd[15] + (_t15 - sd[11]));
-        double _t64 = sd[14] + (sd[10] + _t4);
-        double _t65 = sd[12] + (sd[8] + _t5);
-        double _t66 = sd[13] + (sd[9] + _t6);
-        double _t67_inv = 1.0 / (sd[15] + (sd[11] + _t7));
-        double _t68 = sd[14] + (sd[10] + _t8);
-        double _t69 = sd[12] + (sd[8] + _t9);
-        double _t70 = sd[13] + (sd[9] + _t10);
-        double _t71_inv = 1.0 / (sd[15] + (sd[11] + _t11));
-        double _t72 = sd[14] + (sd[10] + _t12);
-        double _t73 = sd[12] + (sd[8] + _t13);
-        double _t74 = sd[13] + (sd[9] + _t14);
-        double _t75_inv = 1.0 / (sd[15] + (sd[11] + _t15));
-        double _t76 = sd[14] + (_t16 - sd[10]);
-        double _t77 = sd[12] + (_t17 - sd[8]);
-        double _t78 = sd[13] + (_t18 - sd[9]);
-        double _t79_inv = 1.0 / (sd[15] + (_t19 - sd[11]));
-        double _t80 = sd[14] + (sd[10] + _t16);
-        double _t81 = sd[12] + (sd[8] + _t17);
-        double _t82 = sd[13] + (sd[9] + _t18);
-        double _t83_inv = 1.0 / (sd[15] + (sd[11] + _t19));
-        double _t174 = viewData[12] + Math.fma(viewData[8], _t52, Math.fma(viewData[0], _t53, viewData[4] * _t54)) * _t55_inv;
-        double _t175 = viewData[12] + Math.fma(viewData[8], _t56, Math.fma(viewData[0], _t57, viewData[4] * _t58)) * _t59_inv;
-        double _t176 = viewData[12] + Math.fma(viewData[8], _t60, Math.fma(viewData[0], _t61, viewData[4] * _t62)) * _t63_inv;
-        double _t177 = viewData[12] + Math.fma(viewData[8], _t64, Math.fma(viewData[0], _t65, viewData[4] * _t66)) * _t67_inv;
-        double _t178 = viewData[12] + Math.fma(viewData[8], _t68, Math.fma(viewData[0], _t69, viewData[4] * _t70)) * _t71_inv;
-        double _t179 = viewData[12] + Math.fma(viewData[8], _t72, Math.fma(viewData[0], _t73, viewData[4] * _t74)) * _t75_inv;
-        double _t180 = viewData[13] + Math.fma(viewData[9], _t52, Math.fma(viewData[1], _t53, viewData[5] * _t54)) * _t55_inv;
-        double _t181 = viewData[13] + Math.fma(viewData[9], _t56, Math.fma(viewData[1], _t57, viewData[5] * _t58)) * _t59_inv;
-        double _t182 = viewData[13] + Math.fma(viewData[9], _t60, Math.fma(viewData[1], _t61, viewData[5] * _t62)) * _t63_inv;
-        double _t183 = viewData[13] + Math.fma(viewData[9], _t64, Math.fma(viewData[1], _t65, viewData[5] * _t66)) * _t67_inv;
-        double _t184 = viewData[13] + Math.fma(viewData[9], _t68, Math.fma(viewData[1], _t69, viewData[5] * _t70)) * _t71_inv;
-        double _t185 = viewData[13] + Math.fma(viewData[9], _t72, Math.fma(viewData[1], _t73, viewData[5] * _t74)) * _t75_inv;
-        double _t186 = viewData[14] + Math.fma(viewData[10], _t52, Math.fma(viewData[2], _t53, viewData[6] * _t54)) * _t55_inv;
-        double _t187 = viewData[14] + Math.fma(viewData[10], _t56, Math.fma(viewData[2], _t57, viewData[6] * _t58)) * _t59_inv;
-        double _t188 = viewData[14] + Math.fma(viewData[10], _t60, Math.fma(viewData[2], _t61, viewData[6] * _t62)) * _t63_inv;
-        double _t189 = viewData[14] + Math.fma(viewData[10], _t64, Math.fma(viewData[2], _t65, viewData[6] * _t66)) * _t67_inv;
-        double _t190 = viewData[14] + Math.fma(viewData[10], _t68, Math.fma(viewData[2], _t69, viewData[6] * _t70)) * _t71_inv;
-        double _t191 = viewData[14] + Math.fma(viewData[10], _t72, Math.fma(viewData[2], _t73, viewData[6] * _t74)) * _t75_inv;
-        double _t198 = viewData[12] + Math.fma(viewData[8], _t76, Math.fma(viewData[0], _t77, viewData[4] * _t78)) * _t79_inv;
-        double _t199 = viewData[12] + Math.fma(viewData[8], _t80, Math.fma(viewData[0], _t81, viewData[4] * _t82)) * _t83_inv;
-        double _t200 = viewData[13] + Math.fma(viewData[9], _t76, Math.fma(viewData[1], _t77, viewData[5] * _t78)) * _t79_inv;
-        double _t201 = viewData[13] + Math.fma(viewData[9], _t80, Math.fma(viewData[1], _t81, viewData[5] * _t82)) * _t83_inv;
-        double _t202 = viewData[14] + Math.fma(viewData[10], _t76, Math.fma(viewData[2], _t77, viewData[6] * _t78)) * _t79_inv;
-        double _t203 = viewData[14] + Math.fma(viewData[10], _t80, Math.fma(viewData[2], _t81, viewData[6] * _t82)) * _t83_inv;
-        double _t240 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t198, _t174), _t175), _t176), _t199), _t177), _t178), _t179);
-        double _t241 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t198, _t174), _t175), _t176), _t199), _t177), _t178), _t179);
-        double _t242 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t200, _t180), _t181), _t182), _t201), _t183), _t184), _t185);
-        double _t243 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t200, _t180), _t181), _t182), _t201), _t183), _t184), _t185);
-        double _t244 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t202, _t186), _t187), _t188), _t203), _t189), _t190), _t191);
-        double _t245 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t202, _t186), _t187), _t188), _t203), _t189), _t190), _t191);
-        double _t246_inv = 1.0 / (_t240 - _t241);
-        double _t247_inv = 1.0 / (_t242 - _t243);
-        double _t248_inv = 1.0 / (_t244 - _t245);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t246_inv + _t246_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t247_inv + _t247_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t248_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t241);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t240);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t243).add(_sv2.withLane(1, _t242)).withLane(2, -_t245 - _t244).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t246_inv).withLane(1, _t247_inv).withLane(2, _t248_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t241).withLane(1, _t243).add(DoubleVector.broadcast(COL_SPECIES, _t240).withLane(1, _t242)).withLane(2, -_t245 - _t244).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t246_inv).withLane(1, _t247_inv).withLane(2, _t248_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30261,11 +30025,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_identity(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_identity_fma(view, dest);
-        return orthoCrop_no_rh_identity_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_identity_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -30315,76 +30074,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t106_inv = 1.0 / (_t101 - _t102);
         double _t107_inv = 1.0 / (_t103 - _t104);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t105_inv + _t105_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t105_inv + _t105_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t106_inv + _t106_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t107_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t100);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t99);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t102).add(_sv2.withLane(1, _t101)).withLane(2, -_t104 - _t103).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t105_inv).withLane(1, _t106_inv).withLane(2, _t107_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_identity_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t3 = viewData[0] - viewData[4];
-        double _t4 = viewData[4] - viewData[0];
-        double _t5 = viewData[0] + viewData[4];
-        double _t6 = viewData[1] - viewData[5];
-        double _t7 = viewData[5] - viewData[1];
-        double _t8 = viewData[1] + viewData[5];
-        double _t9 = viewData[2] - viewData[6];
-        double _t10 = viewData[6] - viewData[2];
-        double _t11 = viewData[2] + viewData[6];
-        double _t12 = -viewData[0] - viewData[4];
-        double _t13 = -viewData[1] - viewData[5];
-        double _t14 = -viewData[2] - viewData[6];
-        double _t39 = viewData[12] + (_t3 - viewData[8]);
-        double _t40 = viewData[12] + (_t4 - viewData[8]);
-        double _t41 = viewData[12] + (_t5 - viewData[8]);
-        double _t42 = viewData[12] + (viewData[8] + _t3);
-        double _t43 = viewData[12] + (viewData[8] + _t4);
-        double _t44 = viewData[12] + (viewData[8] + _t5);
-        double _t45 = viewData[13] + (_t6 - viewData[9]);
-        double _t46 = viewData[13] + (_t7 - viewData[9]);
-        double _t47 = viewData[13] + (_t8 - viewData[9]);
-        double _t48 = viewData[13] + (viewData[9] + _t6);
-        double _t49 = viewData[13] + (viewData[9] + _t7);
-        double _t50 = viewData[13] + (viewData[9] + _t8);
-        double _t51 = viewData[14] + (_t9 - viewData[10]);
-        double _t52 = viewData[14] + (_t10 - viewData[10]);
-        double _t53 = viewData[14] + (_t11 - viewData[10]);
-        double _t54 = viewData[14] + (viewData[10] + _t9);
-        double _t55 = viewData[14] + (viewData[10] + _t10);
-        double _t56 = viewData[14] + (viewData[10] + _t11);
-        double _t57 = viewData[12] + (_t12 - viewData[8]);
-        double _t58 = viewData[12] + (viewData[8] + _t12);
-        double _t59 = viewData[13] + (_t13 - viewData[9]);
-        double _t60 = viewData[13] + (viewData[9] + _t13);
-        double _t61 = viewData[14] + (_t14 - viewData[10]);
-        double _t62 = viewData[14] + (viewData[10] + _t14);
-        double _t99 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t57, _t39), _t40), _t41), _t58), _t42), _t43), _t44);
-        double _t100 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t57, _t39), _t40), _t41), _t58), _t42), _t43), _t44);
-        double _t101 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t59, _t45), _t46), _t47), _t60), _t48), _t49), _t50);
-        double _t102 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t59, _t45), _t46), _t47), _t60), _t48), _t49), _t50);
-        double _t103 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t61, _t51), _t52), _t53), _t62), _t54), _t55), _t56);
-        double _t104 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t61, _t51), _t52), _t53), _t62), _t54), _t55), _t56);
-        double _t105_inv = 1.0 / (_t99 - _t100);
-        double _t106_inv = 1.0 / (_t101 - _t102);
-        double _t107_inv = 1.0 / (_t103 - _t104);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t105_inv + _t105_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t106_inv + _t106_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t107_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t100);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t99);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t102).add(_sv2.withLane(1, _t101)).withLane(2, -_t104 - _t103).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t105_inv).withLane(1, _t106_inv).withLane(2, _t107_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t100).withLane(1, _t102).add(DoubleVector.broadcast(COL_SPECIES, _t99).withLane(1, _t101)).withLane(2, -_t104 - _t103).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t105_inv).withLane(1, _t106_inv).withLane(2, _t107_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30400,11 +30093,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_translation(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_translation_fma(view, dest);
-        return orthoCrop_no_rh_translation_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_translation_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -30466,88 +30154,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t91_inv = 1.0 / (_t86 - _t87);
         double _t92_inv = 1.0 / (_t88 - _t89);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t92_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_translation_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = -1.0 + sd[12];
-        double _t1 = -1.0 + sd[13];
-        double _t2 = -1.0 + sd[14];
-        double _t3 = 1.0 + sd[12];
-        double _t4 = 1.0 + sd[13];
-        double _t5 = 1.0 + sd[14];
-        double _t6 = Math.fma(viewData[8], _t2, viewData[12]);
-        double _t7 = Math.fma(viewData[8], _t5, viewData[12]);
-        double _t8 = Math.fma(viewData[9], _t2, viewData[13]);
-        double _t9 = Math.fma(viewData[9], _t5, viewData[13]);
-        double _t10 = Math.fma(viewData[10], _t2, viewData[14]);
-        double _t11 = Math.fma(viewData[10], _t5, viewData[14]);
-        double _t12 = Math.fma(viewData[4], _t1, _t6);
-        double _t13 = Math.fma(viewData[4], _t4, _t6);
-        double _t14 = Math.fma(viewData[4], _t1, _t7);
-        double _t15 = Math.fma(viewData[4], _t4, _t7);
-        double _t16 = Math.fma(viewData[5], _t1, _t8);
-        double _t17 = Math.fma(viewData[5], _t4, _t8);
-        double _t18 = Math.fma(viewData[5], _t1, _t9);
-        double _t19 = Math.fma(viewData[5], _t4, _t9);
-        double _t20 = Math.fma(viewData[6], _t1, _t10);
-        double _t21 = Math.fma(viewData[6], _t4, _t10);
-        double _t22 = Math.fma(viewData[6], _t1, _t11);
-        double _t23 = Math.fma(viewData[6], _t4, _t11);
-        double _t24 = Math.fma(viewData[0], _t0, _t12);
-        double _t25 = Math.fma(viewData[0], _t3, _t12);
-        double _t26 = Math.fma(viewData[0], _t0, _t13);
-        double _t27 = Math.fma(viewData[0], _t3, _t13);
-        double _t28 = Math.fma(viewData[0], _t0, _t14);
-        double _t29 = Math.fma(viewData[0], _t3, _t14);
-        double _t30 = Math.fma(viewData[0], _t0, _t15);
-        double _t31 = Math.fma(viewData[0], _t3, _t15);
-        double _t32 = Math.fma(viewData[1], _t0, _t16);
-        double _t33 = Math.fma(viewData[1], _t3, _t16);
-        double _t34 = Math.fma(viewData[1], _t0, _t17);
-        double _t35 = Math.fma(viewData[1], _t3, _t17);
-        double _t36 = Math.fma(viewData[1], _t0, _t18);
-        double _t37 = Math.fma(viewData[1], _t3, _t18);
-        double _t38 = Math.fma(viewData[1], _t0, _t19);
-        double _t39 = Math.fma(viewData[1], _t3, _t19);
-        double _t40 = Math.fma(viewData[2], _t0, _t20);
-        double _t41 = Math.fma(viewData[2], _t3, _t20);
-        double _t42 = Math.fma(viewData[2], _t0, _t21);
-        double _t43 = Math.fma(viewData[2], _t3, _t21);
-        double _t44 = Math.fma(viewData[2], _t0, _t22);
-        double _t45 = Math.fma(viewData[2], _t3, _t22);
-        double _t46 = Math.fma(viewData[2], _t0, _t23);
-        double _t47 = Math.fma(viewData[2], _t3, _t23);
-        double _t84 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t24, _t25), _t26), _t27), _t28), _t29), _t30), _t31);
-        double _t85 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t24, _t25), _t26), _t27), _t28), _t29), _t30), _t31);
-        double _t86 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t32, _t33), _t34), _t35), _t36), _t37), _t38), _t39);
-        double _t87 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t32, _t33), _t34), _t35), _t36), _t37), _t38), _t39);
-        double _t88 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
-        double _t89 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
-        double _t90_inv = 1.0 / (_t84 - _t85);
-        double _t91_inv = 1.0 / (_t86 - _t87);
-        double _t92_inv = 1.0 / (_t88 - _t89);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t92_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t85).withLane(1, _t87).add(DoubleVector.broadcast(COL_SPECIES, _t84).withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30563,11 +30173,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_orthogonal(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_orthogonal_fma(view, dest);
-        return orthoCrop_no_rh_orthogonal_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_orthogonal_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -30641,100 +30246,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t178_inv = 1.0 / (_t173 - _t174);
         double _t179_inv = 1.0 / (_t175 - _t176);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t177_inv + _t177_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t177_inv + _t177_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t178_inv + _t178_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t179_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t172);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t171);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t174).add(_sv2.withLane(1, _t173)).withLane(2, -_t176 - _t175).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t177_inv).withLane(1, _t178_inv).withLane(2, _t179_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_orthogonal_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t3 = sd[0] - sd[4];
-        double _t4 = sd[1] - sd[5];
-        double _t5 = sd[2] - sd[6];
-        double _t6 = sd[4] - sd[0];
-        double _t7 = sd[5] - sd[1];
-        double _t8 = sd[6] - sd[2];
-        double _t9 = sd[0] + sd[4];
-        double _t10 = sd[1] + sd[5];
-        double _t11 = sd[2] + sd[6];
-        double _t12 = -sd[0] - sd[4];
-        double _t13 = -sd[1] - sd[5];
-        double _t14 = -sd[2] - sd[6];
-        double _t39 = sd[12] + (_t3 - sd[8]);
-        double _t40 = sd[13] + (_t4 - sd[9]);
-        double _t41 = sd[14] + (_t5 - sd[10]);
-        double _t42 = sd[12] + (_t6 - sd[8]);
-        double _t43 = sd[13] + (_t7 - sd[9]);
-        double _t44 = sd[14] + (_t8 - sd[10]);
-        double _t45 = sd[12] + (_t9 - sd[8]);
-        double _t46 = sd[13] + (_t10 - sd[9]);
-        double _t47 = sd[14] + (_t11 - sd[10]);
-        double _t48 = sd[12] + (sd[8] + _t3);
-        double _t49 = sd[13] + (sd[9] + _t4);
-        double _t50 = sd[14] + (sd[10] + _t5);
-        double _t51 = sd[12] + (sd[8] + _t6);
-        double _t52 = sd[13] + (sd[9] + _t7);
-        double _t53 = sd[14] + (sd[10] + _t8);
-        double _t54 = sd[12] + (sd[8] + _t9);
-        double _t55 = sd[13] + (sd[9] + _t10);
-        double _t56 = sd[14] + (sd[10] + _t11);
-        double _t57 = sd[12] + (_t12 - sd[8]);
-        double _t58 = sd[13] + (_t13 - sd[9]);
-        double _t59 = sd[14] + (_t14 - sd[10]);
-        double _t60 = sd[12] + (sd[8] + _t12);
-        double _t61 = sd[13] + (sd[9] + _t13);
-        double _t62 = sd[14] + (sd[10] + _t14);
-        double _t111 = Math.fma(viewData[0], _t39, Math.fma(viewData[4], _t40, Math.fma(viewData[8], _t41, viewData[12])));
-        double _t112 = Math.fma(viewData[0], _t42, Math.fma(viewData[4], _t43, Math.fma(viewData[8], _t44, viewData[12])));
-        double _t113 = Math.fma(viewData[0], _t45, Math.fma(viewData[4], _t46, Math.fma(viewData[8], _t47, viewData[12])));
-        double _t114 = Math.fma(viewData[0], _t48, Math.fma(viewData[4], _t49, Math.fma(viewData[8], _t50, viewData[12])));
-        double _t115 = Math.fma(viewData[0], _t51, Math.fma(viewData[4], _t52, Math.fma(viewData[8], _t53, viewData[12])));
-        double _t116 = Math.fma(viewData[0], _t54, Math.fma(viewData[4], _t55, Math.fma(viewData[8], _t56, viewData[12])));
-        double _t117 = Math.fma(viewData[1], _t39, Math.fma(viewData[5], _t40, Math.fma(viewData[9], _t41, viewData[13])));
-        double _t118 = Math.fma(viewData[1], _t42, Math.fma(viewData[5], _t43, Math.fma(viewData[9], _t44, viewData[13])));
-        double _t119 = Math.fma(viewData[1], _t45, Math.fma(viewData[5], _t46, Math.fma(viewData[9], _t47, viewData[13])));
-        double _t120 = Math.fma(viewData[1], _t48, Math.fma(viewData[5], _t49, Math.fma(viewData[9], _t50, viewData[13])));
-        double _t121 = Math.fma(viewData[1], _t51, Math.fma(viewData[5], _t52, Math.fma(viewData[9], _t53, viewData[13])));
-        double _t122 = Math.fma(viewData[1], _t54, Math.fma(viewData[5], _t55, Math.fma(viewData[9], _t56, viewData[13])));
-        double _t123 = Math.fma(viewData[2], _t39, Math.fma(viewData[6], _t40, Math.fma(viewData[10], _t41, viewData[14])));
-        double _t124 = Math.fma(viewData[2], _t42, Math.fma(viewData[6], _t43, Math.fma(viewData[10], _t44, viewData[14])));
-        double _t125 = Math.fma(viewData[2], _t45, Math.fma(viewData[6], _t46, Math.fma(viewData[10], _t47, viewData[14])));
-        double _t126 = Math.fma(viewData[2], _t48, Math.fma(viewData[6], _t49, Math.fma(viewData[10], _t50, viewData[14])));
-        double _t127 = Math.fma(viewData[2], _t51, Math.fma(viewData[6], _t52, Math.fma(viewData[10], _t53, viewData[14])));
-        double _t128 = Math.fma(viewData[2], _t54, Math.fma(viewData[6], _t55, Math.fma(viewData[10], _t56, viewData[14])));
-        double _t129 = Math.fma(viewData[0], _t57, Math.fma(viewData[4], _t58, Math.fma(viewData[8], _t59, viewData[12])));
-        double _t130 = Math.fma(viewData[0], _t60, Math.fma(viewData[4], _t61, Math.fma(viewData[8], _t62, viewData[12])));
-        double _t131 = Math.fma(viewData[1], _t57, Math.fma(viewData[5], _t58, Math.fma(viewData[9], _t59, viewData[13])));
-        double _t132 = Math.fma(viewData[1], _t60, Math.fma(viewData[5], _t61, Math.fma(viewData[9], _t62, viewData[13])));
-        double _t133 = Math.fma(viewData[2], _t57, Math.fma(viewData[6], _t58, Math.fma(viewData[10], _t59, viewData[14])));
-        double _t134 = Math.fma(viewData[2], _t60, Math.fma(viewData[6], _t61, Math.fma(viewData[10], _t62, viewData[14])));
-        double _t171 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t129, _t111), _t112), _t113), _t130), _t114), _t115), _t116);
-        double _t172 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t129, _t111), _t112), _t113), _t130), _t114), _t115), _t116);
-        double _t173 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t131, _t117), _t118), _t119), _t132), _t120), _t121), _t122);
-        double _t174 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t131, _t117), _t118), _t119), _t132), _t120), _t121), _t122);
-        double _t175 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t133, _t123), _t124), _t125), _t134), _t126), _t127), _t128);
-        double _t176 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t133, _t123), _t124), _t125), _t134), _t126), _t127), _t128);
-        double _t177_inv = 1.0 / (_t171 - _t172);
-        double _t178_inv = 1.0 / (_t173 - _t174);
-        double _t179_inv = 1.0 / (_t175 - _t176);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t177_inv + _t177_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t178_inv + _t178_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t179_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t172);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t171);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t174).add(_sv2.withLane(1, _t173)).withLane(2, -_t176 - _t175).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t177_inv).withLane(1, _t178_inv).withLane(2, _t179_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t172).withLane(1, _t174).add(DoubleVector.broadcast(COL_SPECIES, _t171).withLane(1, _t173)).withLane(2, -_t176 - _t175).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t177_inv).withLane(1, _t178_inv).withLane(2, _t179_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30773,11 +30288,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_identity_translation(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_identity_translation_fma(view, dest);
-        return orthoCrop_no_rh_identity_translation_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_identity_translation_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -30797,46 +30307,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / (_t36 - _t37);
         double _t42_inv = 1.0 / (_t38 - _t39);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t40_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_identity_translation_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = -1.0 + viewData[12];
-        double _t1 = 1.0 + viewData[12];
-        double _t2 = -1.0 + viewData[13];
-        double _t3 = 1.0 + viewData[13];
-        double _t4 = -1.0 + viewData[14];
-        double _t5 = 1.0 + viewData[14];
-        double _t28 = Math.max(Math.max(Math.max(Math.max(_t4, _t5), _t5), _t5), _t5);
-        double _t29 = Math.min(Math.min(Math.min(Math.min(_t4, _t5), _t5), _t5), _t5);
-        double _t36 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t37 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t38 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t39 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t40_inv = 1.0 / (_t28 - _t29);
-        double _t41_inv = 1.0 / (_t36 - _t37);
-        double _t42_inv = 1.0 / (_t38 - _t39);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t40_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t39).withLane(1, _t37).add(DoubleVector.broadcast(COL_SPECIES, _t38).withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30852,11 +30326,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_translation_identity(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_translation_identity_fma(view, dest);
-        return orthoCrop_no_rh_translation_identity_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_translation_identity_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -30876,46 +30345,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / (_t36 - _t37);
         double _t42_inv = 1.0 / (_t38 - _t39);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t40_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_translation_identity_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = -1.0 + sd[12];
-        double _t1 = 1.0 + sd[12];
-        double _t2 = -1.0 + sd[13];
-        double _t3 = 1.0 + sd[13];
-        double _t4 = -1.0 + sd[14];
-        double _t5 = 1.0 + sd[14];
-        double _t28 = Math.max(Math.max(Math.max(Math.max(_t4, _t5), _t5), _t5), _t5);
-        double _t29 = Math.min(Math.min(Math.min(Math.min(_t4, _t5), _t5), _t5), _t5);
-        double _t36 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t37 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t38 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t39 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t40_inv = 1.0 / (_t28 - _t29);
-        double _t41_inv = 1.0 / (_t36 - _t37);
-        double _t42_inv = 1.0 / (_t38 - _t39);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t40_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t39).withLane(1, _t37).add(DoubleVector.broadcast(COL_SPECIES, _t38).withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -30931,11 +30364,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_translation_translation(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_translation_translation_fma(view, dest);
-        return orthoCrop_no_rh_translation_translation_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_translation_translation_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -30955,46 +30383,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t47_inv = 1.0 / (_t42 - _t43);
         double _t48_inv = 1.0 / (_t44 - _t45);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t48_inv + _t48_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t48_inv + _t48_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t47_inv + _t47_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t46_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t45);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t44);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, -_t35 - _t34).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_translation_translation_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t6 = viewData[12] + (-1.0 + sd[12]);
-        double _t7 = viewData[12] + (1.0 + sd[12]);
-        double _t8 = viewData[13] + (-1.0 + sd[13]);
-        double _t9 = viewData[13] + (1.0 + sd[13]);
-        double _t10 = viewData[14] + (-1.0 + sd[14]);
-        double _t11 = viewData[14] + (1.0 + sd[14]);
-        double _t34 = Math.max(Math.max(Math.max(Math.max(_t10, _t11), _t11), _t11), _t11);
-        double _t35 = Math.min(Math.min(Math.min(Math.min(_t10, _t11), _t11), _t11), _t11);
-        double _t42 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t8, _t9), _t9), _t8), _t8), _t9), _t9);
-        double _t43 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t8, _t9), _t9), _t8), _t8), _t9), _t9);
-        double _t44 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t6, _t7), _t6), _t7), _t6), _t7), _t6), _t7);
-        double _t45 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t6, _t7), _t6), _t7), _t6), _t7), _t6), _t7);
-        double _t46_inv = 1.0 / (_t34 - _t35);
-        double _t47_inv = 1.0 / (_t42 - _t43);
-        double _t48_inv = 1.0 / (_t44 - _t45);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t48_inv + _t48_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t47_inv + _t47_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t46_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t45);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t44);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, -_t35 - _t34).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t45).withLane(1, _t43).add(DoubleVector.broadcast(COL_SPECIES, _t44).withLane(1, _t42)).withLane(2, -_t35 - _t34).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -31010,11 +30402,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_orthogonal_identity(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_orthogonal_identity_fma(view, dest);
-        return orthoCrop_no_rh_orthogonal_identity_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_orthogonal_identity_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -31064,76 +30451,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t106_inv = 1.0 / (_t101 - _t102);
         double _t107_inv = 1.0 / (_t103 - _t104);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t105_inv + _t105_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t105_inv + _t105_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t106_inv + _t106_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t107_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t100);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t99);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t102).add(_sv2.withLane(1, _t101)).withLane(2, -_t104 - _t103).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t105_inv).withLane(1, _t106_inv).withLane(2, _t107_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_orthogonal_identity_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t3 = sd[0] - sd[4];
-        double _t4 = sd[4] - sd[0];
-        double _t5 = sd[0] + sd[4];
-        double _t6 = sd[1] - sd[5];
-        double _t7 = sd[5] - sd[1];
-        double _t8 = sd[1] + sd[5];
-        double _t9 = sd[2] - sd[6];
-        double _t10 = sd[6] - sd[2];
-        double _t11 = sd[2] + sd[6];
-        double _t12 = -sd[0] - sd[4];
-        double _t13 = -sd[1] - sd[5];
-        double _t14 = -sd[2] - sd[6];
-        double _t39 = sd[12] + (_t3 - sd[8]);
-        double _t40 = sd[12] + (_t4 - sd[8]);
-        double _t41 = sd[12] + (_t5 - sd[8]);
-        double _t42 = sd[12] + (sd[8] + _t3);
-        double _t43 = sd[12] + (sd[8] + _t4);
-        double _t44 = sd[12] + (sd[8] + _t5);
-        double _t45 = sd[13] + (_t6 - sd[9]);
-        double _t46 = sd[13] + (_t7 - sd[9]);
-        double _t47 = sd[13] + (_t8 - sd[9]);
-        double _t48 = sd[13] + (sd[9] + _t6);
-        double _t49 = sd[13] + (sd[9] + _t7);
-        double _t50 = sd[13] + (sd[9] + _t8);
-        double _t51 = sd[14] + (_t9 - sd[10]);
-        double _t52 = sd[14] + (_t10 - sd[10]);
-        double _t53 = sd[14] + (_t11 - sd[10]);
-        double _t54 = sd[14] + (sd[10] + _t9);
-        double _t55 = sd[14] + (sd[10] + _t10);
-        double _t56 = sd[14] + (sd[10] + _t11);
-        double _t57 = sd[12] + (_t12 - sd[8]);
-        double _t58 = sd[12] + (sd[8] + _t12);
-        double _t59 = sd[13] + (_t13 - sd[9]);
-        double _t60 = sd[13] + (sd[9] + _t13);
-        double _t61 = sd[14] + (_t14 - sd[10]);
-        double _t62 = sd[14] + (sd[10] + _t14);
-        double _t99 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t57, _t39), _t40), _t41), _t58), _t42), _t43), _t44);
-        double _t100 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t57, _t39), _t40), _t41), _t58), _t42), _t43), _t44);
-        double _t101 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t59, _t45), _t46), _t47), _t60), _t48), _t49), _t50);
-        double _t102 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t59, _t45), _t46), _t47), _t60), _t48), _t49), _t50);
-        double _t103 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t61, _t51), _t52), _t53), _t62), _t54), _t55), _t56);
-        double _t104 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t61, _t51), _t52), _t53), _t62), _t54), _t55), _t56);
-        double _t105_inv = 1.0 / (_t99 - _t100);
-        double _t106_inv = 1.0 / (_t101 - _t102);
-        double _t107_inv = 1.0 / (_t103 - _t104);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t105_inv + _t105_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t106_inv + _t106_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t107_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t100);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t99);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t102).add(_sv2.withLane(1, _t101)).withLane(2, -_t104 - _t103).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t105_inv).withLane(1, _t106_inv).withLane(2, _t107_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t100).withLane(1, _t102).add(DoubleVector.broadcast(COL_SPECIES, _t99).withLane(1, _t101)).withLane(2, -_t104 - _t103).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t105_inv).withLane(1, _t106_inv).withLane(2, _t107_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -31149,11 +30470,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_orthogonal_translation(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_orthogonal_translation_fma(view, dest);
-        return orthoCrop_no_rh_orthogonal_translation_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_orthogonal_translation_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -31203,76 +30519,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t130_inv = 1.0 / (_t125 - _t126);
         double _t131_inv = 1.0 / (_t127 - _t128);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t129_inv + _t129_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t129_inv + _t129_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t130_inv + _t130_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t131_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t124);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t123);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t126).add(_sv2.withLane(1, _t125)).withLane(2, -_t128 - _t127).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t129_inv).withLane(1, _t130_inv).withLane(2, _t131_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_orthogonal_translation_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t3 = sd[0] - sd[4];
-        double _t4 = sd[4] - sd[0];
-        double _t5 = sd[0] + sd[4];
-        double _t6 = sd[1] - sd[5];
-        double _t7 = sd[5] - sd[1];
-        double _t8 = sd[1] + sd[5];
-        double _t9 = sd[2] - sd[6];
-        double _t10 = sd[6] - sd[2];
-        double _t11 = sd[2] + sd[6];
-        double _t12 = -sd[0] - sd[4];
-        double _t13 = -sd[1] - sd[5];
-        double _t14 = -sd[2] - sd[6];
-        double _t63 = viewData[12] + (sd[12] + (_t3 - sd[8]));
-        double _t64 = viewData[12] + (sd[12] + (_t4 - sd[8]));
-        double _t65 = viewData[12] + (sd[12] + (_t5 - sd[8]));
-        double _t66 = viewData[12] + (sd[12] + (sd[8] + _t3));
-        double _t67 = viewData[12] + (sd[12] + (sd[8] + _t4));
-        double _t68 = viewData[12] + (sd[12] + (sd[8] + _t5));
-        double _t69 = viewData[13] + (sd[13] + (_t6 - sd[9]));
-        double _t70 = viewData[13] + (sd[13] + (_t7 - sd[9]));
-        double _t71 = viewData[13] + (sd[13] + (_t8 - sd[9]));
-        double _t72 = viewData[13] + (sd[13] + (sd[9] + _t6));
-        double _t73 = viewData[13] + (sd[13] + (sd[9] + _t7));
-        double _t74 = viewData[13] + (sd[13] + (sd[9] + _t8));
-        double _t75 = viewData[14] + (sd[14] + (_t9 - sd[10]));
-        double _t76 = viewData[14] + (sd[14] + (_t10 - sd[10]));
-        double _t77 = viewData[14] + (sd[14] + (_t11 - sd[10]));
-        double _t78 = viewData[14] + (sd[14] + (sd[10] + _t9));
-        double _t79 = viewData[14] + (sd[14] + (sd[10] + _t10));
-        double _t80 = viewData[14] + (sd[14] + (sd[10] + _t11));
-        double _t81 = viewData[12] + (sd[12] + (_t12 - sd[8]));
-        double _t82 = viewData[12] + (sd[12] + (sd[8] + _t12));
-        double _t83 = viewData[13] + (sd[13] + (_t13 - sd[9]));
-        double _t84 = viewData[13] + (sd[13] + (sd[9] + _t13));
-        double _t85 = viewData[14] + (sd[14] + (_t14 - sd[10]));
-        double _t86 = viewData[14] + (sd[14] + (sd[10] + _t14));
-        double _t123 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t81, _t63), _t64), _t65), _t82), _t66), _t67), _t68);
-        double _t124 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t81, _t63), _t64), _t65), _t82), _t66), _t67), _t68);
-        double _t125 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t83, _t69), _t70), _t71), _t84), _t72), _t73), _t74);
-        double _t126 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t83, _t69), _t70), _t71), _t84), _t72), _t73), _t74);
-        double _t127 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t85, _t75), _t76), _t77), _t86), _t78), _t79), _t80);
-        double _t128 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t85, _t75), _t76), _t77), _t86), _t78), _t79), _t80);
-        double _t129_inv = 1.0 / (_t123 - _t124);
-        double _t130_inv = 1.0 / (_t125 - _t126);
-        double _t131_inv = 1.0 / (_t127 - _t128);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t129_inv + _t129_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t130_inv + _t130_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t131_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t124);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t123);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t126).add(_sv2.withLane(1, _t125)).withLane(2, -_t128 - _t127).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t129_inv).withLane(1, _t130_inv).withLane(2, _t131_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t124).withLane(1, _t126).add(DoubleVector.broadcast(COL_SPECIES, _t123).withLane(1, _t125)).withLane(2, -_t128 - _t127).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t129_inv).withLane(1, _t130_inv).withLane(2, _t131_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -31288,11 +30538,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_general_identity(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_general_identity_fma(view, dest);
-        return orthoCrop_no_rh_general_identity_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_general_identity_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -31354,88 +30599,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t151_inv = 1.0 / (_t146 - _t147);
         double _t152_inv = 1.0 / (_t148 - _t149);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t150_inv + _t150_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t150_inv + _t150_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t151_inv + _t151_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t152_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t145);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t144);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, -_t149 - _t148).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_general_identity_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t4 = sd[0] - sd[4];
-        double _t5 = sd[3] - sd[7];
-        double _t6 = sd[4] - sd[0];
-        double _t7 = sd[7] - sd[3];
-        double _t8 = sd[0] + sd[4];
-        double _t9 = sd[3] + sd[7];
-        double _t10 = sd[1] - sd[5];
-        double _t11 = sd[5] - sd[1];
-        double _t12 = sd[1] + sd[5];
-        double _t13 = sd[2] - sd[6];
-        double _t14 = sd[6] - sd[2];
-        double _t15 = sd[2] + sd[6];
-        double _t16 = -sd[0] - sd[4];
-        double _t17 = -sd[3] - sd[7];
-        double _t18 = -sd[1] - sd[5];
-        double _t19 = -sd[2] - sd[6];
-        double _t53_inv = 1.0 / (sd[15] + (_t5 - sd[11]));
-        double _t55_inv = 1.0 / (sd[15] + (_t7 - sd[11]));
-        double _t57_inv = 1.0 / (sd[15] + (_t9 - sd[11]));
-        double _t59_inv = 1.0 / (sd[15] + (sd[11] + _t5));
-        double _t61_inv = 1.0 / (sd[15] + (sd[11] + _t7));
-        double _t63_inv = 1.0 / (sd[15] + (sd[11] + _t9));
-        double _t77_inv = 1.0 / (sd[15] + (_t17 - sd[11]));
-        double _t79_inv = 1.0 / (sd[15] + (sd[11] + _t17));
-        double _t84 = (sd[12] + (_t4 - sd[8])) * _t53_inv;
-        double _t85 = (sd[12] + (_t6 - sd[8])) * _t55_inv;
-        double _t86 = (sd[12] + (_t8 - sd[8])) * _t57_inv;
-        double _t87 = (sd[12] + (sd[8] + _t4)) * _t59_inv;
-        double _t88 = (sd[12] + (sd[8] + _t6)) * _t61_inv;
-        double _t89 = (sd[12] + (sd[8] + _t8)) * _t63_inv;
-        double _t90 = (sd[13] + (_t10 - sd[9])) * _t53_inv;
-        double _t91 = (sd[13] + (_t11 - sd[9])) * _t55_inv;
-        double _t92 = (sd[13] + (_t12 - sd[9])) * _t57_inv;
-        double _t93 = (sd[13] + (sd[9] + _t10)) * _t59_inv;
-        double _t94 = (sd[13] + (sd[9] + _t11)) * _t61_inv;
-        double _t95 = (sd[13] + (sd[9] + _t12)) * _t63_inv;
-        double _t96 = (sd[14] + (_t13 - sd[10])) * _t53_inv;
-        double _t97 = (sd[14] + (_t14 - sd[10])) * _t55_inv;
-        double _t98 = (sd[14] + (_t15 - sd[10])) * _t57_inv;
-        double _t99 = (sd[14] + (sd[10] + _t13)) * _t59_inv;
-        double _t100 = (sd[14] + (sd[10] + _t14)) * _t61_inv;
-        double _t101 = (sd[14] + (sd[10] + _t15)) * _t63_inv;
-        double _t102 = (sd[12] + (_t16 - sd[8])) * _t77_inv;
-        double _t103 = (sd[12] + (sd[8] + _t16)) * _t79_inv;
-        double _t104 = (sd[13] + (_t18 - sd[9])) * _t77_inv;
-        double _t105 = (sd[13] + (sd[9] + _t18)) * _t79_inv;
-        double _t106 = (sd[14] + (_t19 - sd[10])) * _t77_inv;
-        double _t107 = (sd[14] + (sd[10] + _t19)) * _t79_inv;
-        double _t144 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t102, _t84), _t85), _t86), _t103), _t87), _t88), _t89);
-        double _t145 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t102, _t84), _t85), _t86), _t103), _t87), _t88), _t89);
-        double _t146 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t104, _t90), _t91), _t92), _t105), _t93), _t94), _t95);
-        double _t147 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t104, _t90), _t91), _t92), _t105), _t93), _t94), _t95);
-        double _t148 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t106, _t96), _t97), _t98), _t107), _t99), _t100), _t101);
-        double _t149 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t106, _t96), _t97), _t98), _t107), _t99), _t100), _t101);
-        double _t150_inv = 1.0 / (_t144 - _t145);
-        double _t151_inv = 1.0 / (_t146 - _t147);
-        double _t152_inv = 1.0 / (_t148 - _t149);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t150_inv + _t150_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t151_inv + _t151_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t152_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t145);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t144);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, -_t149 - _t148).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t145).withLane(1, _t147).add(DoubleVector.broadcast(COL_SPECIES, _t144).withLane(1, _t146)).withLane(2, -_t149 - _t148).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -31451,11 +30618,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_general_translation(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_general_translation_fma(view, dest);
-        return orthoCrop_no_rh_general_translation_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_general_translation_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -31517,88 +30679,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t175_inv = 1.0 / (_t170 - _t171);
         double _t176_inv = 1.0 / (_t172 - _t173);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t174_inv + _t174_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t174_inv + _t174_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t175_inv + _t175_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t176_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t169);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t168);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t171).add(_sv2.withLane(1, _t170)).withLane(2, -_t173 - _t172).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t174_inv).withLane(1, _t175_inv).withLane(2, _t176_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_general_translation_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t4 = sd[0] - sd[4];
-        double _t5 = sd[3] - sd[7];
-        double _t6 = sd[4] - sd[0];
-        double _t7 = sd[7] - sd[3];
-        double _t8 = sd[0] + sd[4];
-        double _t9 = sd[3] + sd[7];
-        double _t10 = sd[1] - sd[5];
-        double _t11 = sd[5] - sd[1];
-        double _t12 = sd[1] + sd[5];
-        double _t13 = sd[2] - sd[6];
-        double _t14 = sd[6] - sd[2];
-        double _t15 = sd[2] + sd[6];
-        double _t16 = -sd[0] - sd[4];
-        double _t17 = -sd[3] - sd[7];
-        double _t18 = -sd[1] - sd[5];
-        double _t19 = -sd[2] - sd[6];
-        double _t53_inv = 1.0 / (sd[15] + (_t5 - sd[11]));
-        double _t55_inv = 1.0 / (sd[15] + (_t7 - sd[11]));
-        double _t57_inv = 1.0 / (sd[15] + (_t9 - sd[11]));
-        double _t59_inv = 1.0 / (sd[15] + (sd[11] + _t5));
-        double _t61_inv = 1.0 / (sd[15] + (sd[11] + _t7));
-        double _t63_inv = 1.0 / (sd[15] + (sd[11] + _t9));
-        double _t77_inv = 1.0 / (sd[15] + (_t17 - sd[11]));
-        double _t79_inv = 1.0 / (sd[15] + (sd[11] + _t17));
-        double _t108 = viewData[12] + (sd[12] + (_t4 - sd[8])) * _t53_inv;
-        double _t109 = viewData[12] + (sd[12] + (_t6 - sd[8])) * _t55_inv;
-        double _t110 = viewData[12] + (sd[12] + (_t8 - sd[8])) * _t57_inv;
-        double _t111 = viewData[12] + (sd[12] + (sd[8] + _t4)) * _t59_inv;
-        double _t112 = viewData[12] + (sd[12] + (sd[8] + _t6)) * _t61_inv;
-        double _t113 = viewData[12] + (sd[12] + (sd[8] + _t8)) * _t63_inv;
-        double _t114 = viewData[13] + (sd[13] + (_t10 - sd[9])) * _t53_inv;
-        double _t115 = viewData[13] + (sd[13] + (_t11 - sd[9])) * _t55_inv;
-        double _t116 = viewData[13] + (sd[13] + (_t12 - sd[9])) * _t57_inv;
-        double _t117 = viewData[13] + (sd[13] + (sd[9] + _t10)) * _t59_inv;
-        double _t118 = viewData[13] + (sd[13] + (sd[9] + _t11)) * _t61_inv;
-        double _t119 = viewData[13] + (sd[13] + (sd[9] + _t12)) * _t63_inv;
-        double _t120 = viewData[14] + (sd[14] + (_t13 - sd[10])) * _t53_inv;
-        double _t121 = viewData[14] + (sd[14] + (_t14 - sd[10])) * _t55_inv;
-        double _t122 = viewData[14] + (sd[14] + (_t15 - sd[10])) * _t57_inv;
-        double _t123 = viewData[14] + (sd[14] + (sd[10] + _t13)) * _t59_inv;
-        double _t124 = viewData[14] + (sd[14] + (sd[10] + _t14)) * _t61_inv;
-        double _t125 = viewData[14] + (sd[14] + (sd[10] + _t15)) * _t63_inv;
-        double _t126 = viewData[12] + (sd[12] + (_t16 - sd[8])) * _t77_inv;
-        double _t127 = viewData[12] + (sd[12] + (sd[8] + _t16)) * _t79_inv;
-        double _t128 = viewData[13] + (sd[13] + (_t18 - sd[9])) * _t77_inv;
-        double _t129 = viewData[13] + (sd[13] + (sd[9] + _t18)) * _t79_inv;
-        double _t130 = viewData[14] + (sd[14] + (_t19 - sd[10])) * _t77_inv;
-        double _t131 = viewData[14] + (sd[14] + (sd[10] + _t19)) * _t79_inv;
-        double _t168 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t126, _t108), _t109), _t110), _t127), _t111), _t112), _t113);
-        double _t169 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t126, _t108), _t109), _t110), _t127), _t111), _t112), _t113);
-        double _t170 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t128, _t114), _t115), _t116), _t129), _t117), _t118), _t119);
-        double _t171 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t128, _t114), _t115), _t116), _t129), _t117), _t118), _t119);
-        double _t172 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t130, _t120), _t121), _t122), _t131), _t123), _t124), _t125);
-        double _t173 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t130, _t120), _t121), _t122), _t131), _t123), _t124), _t125);
-        double _t174_inv = 1.0 / (_t168 - _t169);
-        double _t175_inv = 1.0 / (_t170 - _t171);
-        double _t176_inv = 1.0 / (_t172 - _t173);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t174_inv + _t174_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t175_inv + _t175_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t176_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t169);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t168);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t171).add(_sv2.withLane(1, _t170)).withLane(2, -_t173 - _t172).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t174_inv).withLane(1, _t175_inv).withLane(2, _t176_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t169).withLane(1, _t171).add(DoubleVector.broadcast(COL_SPECIES, _t168).withLane(1, _t170)).withLane(2, -_t173 - _t172).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t174_inv).withLane(1, _t175_inv).withLane(2, _t176_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -31709,11 +30793,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_general(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_general_fma(view, dest);
-        return orthoCrop_zo_lh_general_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_general_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -31798,111 +30877,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t231_inv = 1.0 / (_t226 - _t227);
         double _t232_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181) - _t229);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t230_inv + _t230_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t230_inv + _t230_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t231_inv + _t231_inv);
         var _col2 = _sv0.withLane(2, _t232_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t225);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t224);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).withLane(2, _t229).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv).withLane(2, _t232_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_general_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t4 = sd[2] - sd[6];
-        double _t5 = sd[0] - sd[4];
-        double _t6 = sd[1] - sd[5];
-        double _t7 = sd[3] - sd[7];
-        double _t8 = sd[6] - sd[2];
-        double _t9 = sd[4] - sd[0];
-        double _t10 = sd[5] - sd[1];
-        double _t11 = sd[7] - sd[3];
-        double _t12 = sd[2] + sd[6];
-        double _t13 = sd[0] + sd[4];
-        double _t14 = sd[1] + sd[5];
-        double _t15 = sd[3] + sd[7];
-        double _t16 = -sd[2] - sd[6];
-        double _t17 = -sd[0] - sd[4];
-        double _t18 = -sd[1] - sd[5];
-        double _t19 = -sd[3] - sd[7];
-        double _t20 = sd[14] + _t4;
-        double _t21 = sd[12] + _t5;
-        double _t22 = sd[13] + _t6;
-        double _t23_inv = 1.0 / (sd[15] + _t7);
-        double _t24 = sd[14] + _t8;
-        double _t25 = sd[12] + _t9;
-        double _t26 = sd[13] + _t10;
-        double _t27_inv = 1.0 / (sd[15] + _t11);
-        double _t28 = sd[14] + _t12;
-        double _t29 = sd[12] + _t13;
-        double _t30 = sd[13] + _t14;
-        double _t31_inv = 1.0 / (sd[15] + _t15);
-        double _t44 = sd[14] + _t16;
-        double _t45 = sd[12] + _t17;
-        double _t46 = sd[13] + _t18;
-        double _t47_inv = 1.0 / (sd[15] + _t19);
-        double _t55 = sd[14] + (sd[10] + _t4);
-        double _t56 = sd[12] + (sd[8] + _t5);
-        double _t57 = sd[13] + (sd[9] + _t6);
-        double _t58_inv = 1.0 / (sd[15] + (sd[11] + _t7));
-        double _t59 = sd[14] + (sd[10] + _t8);
-        double _t60 = sd[12] + (sd[8] + _t9);
-        double _t61 = sd[13] + (sd[9] + _t10);
-        double _t62_inv = 1.0 / (sd[15] + (sd[11] + _t11));
-        double _t63 = sd[14] + (sd[10] + _t12);
-        double _t64 = sd[12] + (sd[8] + _t13);
-        double _t65 = sd[13] + (sd[9] + _t14);
-        double _t66_inv = 1.0 / (sd[15] + (sd[11] + _t15));
-        double _t74 = sd[14] + (sd[10] + _t16);
-        double _t75 = sd[12] + (sd[8] + _t17);
-        double _t76 = sd[13] + (sd[9] + _t18);
-        double _t77_inv = 1.0 / (sd[15] + (sd[11] + _t19));
-        double _t146 = viewData[12] + Math.fma(viewData[8], _t20, Math.fma(viewData[0], _t21, viewData[4] * _t22)) * _t23_inv;
-        double _t147 = viewData[12] + Math.fma(viewData[8], _t24, Math.fma(viewData[0], _t25, viewData[4] * _t26)) * _t27_inv;
-        double _t148 = viewData[12] + Math.fma(viewData[8], _t28, Math.fma(viewData[0], _t29, viewData[4] * _t30)) * _t31_inv;
-        double _t150 = viewData[13] + Math.fma(viewData[9], _t20, Math.fma(viewData[1], _t21, viewData[5] * _t22)) * _t23_inv;
-        double _t151 = viewData[13] + Math.fma(viewData[9], _t24, Math.fma(viewData[1], _t25, viewData[5] * _t26)) * _t27_inv;
-        double _t152 = viewData[13] + Math.fma(viewData[9], _t28, Math.fma(viewData[1], _t29, viewData[5] * _t30)) * _t31_inv;
-        double _t154 = viewData[14] + Math.fma(viewData[10], _t20, Math.fma(viewData[2], _t21, viewData[6] * _t22)) * _t23_inv;
-        double _t155 = viewData[14] + Math.fma(viewData[10], _t24, Math.fma(viewData[2], _t25, viewData[6] * _t26)) * _t27_inv;
-        double _t156 = viewData[14] + Math.fma(viewData[10], _t28, Math.fma(viewData[2], _t29, viewData[6] * _t30)) * _t31_inv;
-        double _t161 = viewData[12] + Math.fma(viewData[8], _t44, Math.fma(viewData[0], _t45, viewData[4] * _t46)) * _t47_inv;
-        double _t162 = viewData[13] + Math.fma(viewData[9], _t44, Math.fma(viewData[1], _t45, viewData[5] * _t46)) * _t47_inv;
-        double _t163 = viewData[14] + Math.fma(viewData[10], _t44, Math.fma(viewData[2], _t45, viewData[6] * _t46)) * _t47_inv;
-        double _t173 = viewData[12] + Math.fma(viewData[8], _t55, Math.fma(viewData[0], _t56, viewData[4] * _t57)) * _t58_inv;
-        double _t174 = viewData[12] + Math.fma(viewData[8], _t59, Math.fma(viewData[0], _t60, viewData[4] * _t61)) * _t62_inv;
-        double _t175 = viewData[12] + Math.fma(viewData[8], _t63, Math.fma(viewData[0], _t64, viewData[4] * _t65)) * _t66_inv;
-        double _t176 = viewData[13] + Math.fma(viewData[9], _t55, Math.fma(viewData[1], _t56, viewData[5] * _t57)) * _t58_inv;
-        double _t177 = viewData[13] + Math.fma(viewData[9], _t59, Math.fma(viewData[1], _t60, viewData[5] * _t61)) * _t62_inv;
-        double _t178 = viewData[13] + Math.fma(viewData[9], _t63, Math.fma(viewData[1], _t64, viewData[5] * _t65)) * _t66_inv;
-        double _t179 = viewData[14] + Math.fma(viewData[10], _t55, Math.fma(viewData[2], _t56, viewData[6] * _t57)) * _t58_inv;
-        double _t180 = viewData[14] + Math.fma(viewData[10], _t59, Math.fma(viewData[2], _t60, viewData[6] * _t61)) * _t62_inv;
-        double _t181 = viewData[14] + Math.fma(viewData[10], _t63, Math.fma(viewData[2], _t64, viewData[6] * _t65)) * _t66_inv;
-        double _t185 = viewData[12] + Math.fma(viewData[8], _t74, Math.fma(viewData[0], _t75, viewData[4] * _t76)) * _t77_inv;
-        double _t186 = viewData[13] + Math.fma(viewData[9], _t74, Math.fma(viewData[1], _t75, viewData[5] * _t76)) * _t77_inv;
-        double _t187 = viewData[14] + Math.fma(viewData[10], _t74, Math.fma(viewData[2], _t75, viewData[6] * _t76)) * _t77_inv;
-        double _t224 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t161, _t146), _t147), _t148), _t185), _t173), _t174), _t175);
-        double _t225 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t161, _t146), _t147), _t148), _t185), _t173), _t174), _t175);
-        double _t226 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t162, _t150), _t151), _t152), _t186), _t176), _t177), _t178);
-        double _t227 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t162, _t150), _t151), _t152), _t186), _t176), _t177), _t178);
-        double _t229 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181);
-        double _t230_inv = 1.0 / (_t224 - _t225);
-        double _t231_inv = 1.0 / (_t226 - _t227);
-        double _t232_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181) - _t229);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t230_inv + _t230_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t231_inv + _t231_inv);
-        var _col2 = _sv0.withLane(2, _t232_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t225);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t224);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).withLane(2, _t229).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv).withLane(2, _t232_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t225).withLane(1, _t227).add(DoubleVector.broadcast(COL_SPECIES, _t224).withLane(1, _t226)).withLane(2, _t229).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv).withLane(2, _t232_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -31918,11 +30896,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_identity(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_identity_fma(view, dest);
-        return orthoCrop_zo_lh_identity_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_identity_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -31971,75 +30944,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t94_inv = 1.0 / (_t89 - _t90);
         double _t95_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47) - _t92);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t94_inv + _t94_inv);
         var _col2 = _sv0.withLane(2, _t95_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).withLane(2, _t92).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv).withLane(2, _t95_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_identity_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t3 = viewData[0] - viewData[4];
-        double _t4 = viewData[4] - viewData[0];
-        double _t5 = viewData[0] + viewData[4];
-        double _t6 = viewData[1] - viewData[5];
-        double _t7 = viewData[5] - viewData[1];
-        double _t8 = viewData[1] + viewData[5];
-        double _t9 = viewData[2] - viewData[6];
-        double _t10 = viewData[6] - viewData[2];
-        double _t11 = viewData[2] + viewData[6];
-        double _t12 = -viewData[0] - viewData[4];
-        double _t13 = -viewData[1] - viewData[5];
-        double _t14 = -viewData[2] - viewData[6];
-        double _t15 = viewData[12] + _t3;
-        double _t16 = viewData[12] + _t4;
-        double _t17 = viewData[12] + _t5;
-        double _t21 = viewData[13] + _t6;
-        double _t22 = viewData[13] + _t7;
-        double _t23 = viewData[13] + _t8;
-        double _t27 = viewData[14] + _t9;
-        double _t28 = viewData[14] + _t10;
-        double _t29 = viewData[14] + _t11;
-        double _t33 = viewData[12] + _t12;
-        double _t35 = viewData[13] + _t13;
-        double _t37 = viewData[14] + _t14;
-        double _t39 = viewData[12] + (viewData[8] + _t3);
-        double _t40 = viewData[12] + (viewData[8] + _t4);
-        double _t41 = viewData[12] + (viewData[8] + _t5);
-        double _t42 = viewData[13] + (viewData[9] + _t6);
-        double _t43 = viewData[13] + (viewData[9] + _t7);
-        double _t44 = viewData[13] + (viewData[9] + _t8);
-        double _t45 = viewData[14] + (viewData[10] + _t9);
-        double _t46 = viewData[14] + (viewData[10] + _t10);
-        double _t47 = viewData[14] + (viewData[10] + _t11);
-        double _t48 = viewData[12] + (viewData[8] + _t12);
-        double _t49 = viewData[13] + (viewData[9] + _t13);
-        double _t50 = viewData[14] + (viewData[10] + _t14);
-        double _t87 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t33, _t15), _t16), _t17), _t48), _t39), _t40), _t41);
-        double _t88 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t33, _t15), _t16), _t17), _t48), _t39), _t40), _t41);
-        double _t89 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t35, _t21), _t22), _t23), _t49), _t42), _t43), _t44);
-        double _t90 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t35, _t21), _t22), _t23), _t49), _t42), _t43), _t44);
-        double _t92 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47);
-        double _t93_inv = 1.0 / (_t87 - _t88);
-        double _t94_inv = 1.0 / (_t89 - _t90);
-        double _t95_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47) - _t92);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t94_inv + _t94_inv);
-        var _col2 = _sv0.withLane(2, _t95_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).withLane(2, _t92).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv).withLane(2, _t95_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t88).withLane(1, _t90).add(DoubleVector.broadcast(COL_SPECIES, _t87).withLane(1, _t89)).withLane(2, _t92).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv).withLane(2, _t95_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -32055,11 +30963,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_translation(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_translation_fma(view, dest);
-        return orthoCrop_zo_lh_translation_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_translation_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -32119,86 +31022,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t90_inv = 1.0 / (_t85 - _t86);
         double _t91_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t31, _t32), _t33), _t34), _t43), _t44), _t45), _t46) - _t88);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t89_inv + _t89_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t89_inv + _t89_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t90_inv + _t90_inv);
         var _col2 = _sv0.withLane(2, _t91_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t83);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv).withLane(2, _t91_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_translation_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = -1.0 + sd[12];
-        double _t1 = -1.0 + sd[13];
-        double _t2 = 1.0 + sd[12];
-        double _t3 = 1.0 + sd[13];
-        double _t4 = 1.0 + sd[14];
-        double _t5 = Math.fma(sd[14], viewData[8], viewData[12]);
-        double _t6 = Math.fma(sd[14], viewData[9], viewData[13]);
-        double _t7 = Math.fma(sd[14], viewData[10], viewData[14]);
-        double _t8 = Math.fma(viewData[8], _t4, viewData[12]);
-        double _t9 = Math.fma(viewData[9], _t4, viewData[13]);
-        double _t10 = Math.fma(viewData[10], _t4, viewData[14]);
-        double _t11 = Math.fma(viewData[4], _t1, _t5);
-        double _t12 = Math.fma(viewData[4], _t3, _t5);
-        double _t13 = Math.fma(viewData[5], _t1, _t6);
-        double _t14 = Math.fma(viewData[5], _t3, _t6);
-        double _t15 = Math.fma(viewData[6], _t1, _t7);
-        double _t16 = Math.fma(viewData[6], _t3, _t7);
-        double _t17 = Math.fma(viewData[4], _t1, _t8);
-        double _t18 = Math.fma(viewData[4], _t3, _t8);
-        double _t19 = Math.fma(viewData[5], _t1, _t9);
-        double _t20 = Math.fma(viewData[5], _t3, _t9);
-        double _t21 = Math.fma(viewData[6], _t1, _t10);
-        double _t22 = Math.fma(viewData[6], _t3, _t10);
-        double _t23 = Math.fma(viewData[0], _t0, _t11);
-        double _t24 = Math.fma(viewData[0], _t2, _t11);
-        double _t25 = Math.fma(viewData[0], _t0, _t12);
-        double _t26 = Math.fma(viewData[0], _t2, _t12);
-        double _t27 = Math.fma(viewData[1], _t0, _t13);
-        double _t28 = Math.fma(viewData[1], _t2, _t13);
-        double _t29 = Math.fma(viewData[1], _t0, _t14);
-        double _t30 = Math.fma(viewData[1], _t2, _t14);
-        double _t31 = Math.fma(viewData[2], _t0, _t15);
-        double _t32 = Math.fma(viewData[2], _t2, _t15);
-        double _t33 = Math.fma(viewData[2], _t0, _t16);
-        double _t34 = Math.fma(viewData[2], _t2, _t16);
-        double _t35 = Math.fma(viewData[0], _t0, _t17);
-        double _t36 = Math.fma(viewData[0], _t2, _t17);
-        double _t37 = Math.fma(viewData[0], _t0, _t18);
-        double _t38 = Math.fma(viewData[0], _t2, _t18);
-        double _t39 = Math.fma(viewData[1], _t0, _t19);
-        double _t40 = Math.fma(viewData[1], _t2, _t19);
-        double _t41 = Math.fma(viewData[1], _t0, _t20);
-        double _t42 = Math.fma(viewData[1], _t2, _t20);
-        double _t43 = Math.fma(viewData[2], _t0, _t21);
-        double _t44 = Math.fma(viewData[2], _t2, _t21);
-        double _t45 = Math.fma(viewData[2], _t0, _t22);
-        double _t46 = Math.fma(viewData[2], _t2, _t22);
-        double _t83 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t23, _t24), _t25), _t26), _t35), _t36), _t37), _t38);
-        double _t84 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t23, _t24), _t25), _t26), _t35), _t36), _t37), _t38);
-        double _t85 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t27, _t28), _t29), _t30), _t39), _t40), _t41), _t42);
-        double _t86 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t27, _t28), _t29), _t30), _t39), _t40), _t41), _t42);
-        double _t88 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t31, _t32), _t33), _t34), _t43), _t44), _t45), _t46);
-        double _t89_inv = 1.0 / (_t83 - _t84);
-        double _t90_inv = 1.0 / (_t85 - _t86);
-        double _t91_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t31, _t32), _t33), _t34), _t43), _t44), _t45), _t46) - _t88);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t89_inv + _t89_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t90_inv + _t90_inv);
-        var _col2 = _sv0.withLane(2, _t91_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t83);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv).withLane(2, _t91_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t84).withLane(1, _t86).add(DoubleVector.broadcast(COL_SPECIES, _t83).withLane(1, _t85)).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv).withLane(2, _t91_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -32214,11 +31041,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_orthogonal(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_orthogonal_fma(view, dest);
-        return orthoCrop_zo_lh_orthogonal_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_orthogonal_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -32291,99 +31113,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t166_inv = 1.0 / (_t161 - _t162);
         double _t167_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t110, _t105), _t106), _t107), _t122), _t117), _t118), _t119) - _t164);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t165_inv + _t165_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t165_inv + _t165_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t166_inv + _t166_inv);
         var _col2 = _sv0.withLane(2, _t167_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t160);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t159);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).withLane(2, _t164).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv).withLane(2, _t167_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_orthogonal_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t3 = sd[0] - sd[4];
-        double _t4 = sd[1] - sd[5];
-        double _t5 = sd[2] - sd[6];
-        double _t6 = sd[4] - sd[0];
-        double _t7 = sd[5] - sd[1];
-        double _t8 = sd[6] - sd[2];
-        double _t9 = sd[0] + sd[4];
-        double _t10 = sd[1] + sd[5];
-        double _t11 = sd[2] + sd[6];
-        double _t12 = -sd[0] - sd[4];
-        double _t13 = -sd[1] - sd[5];
-        double _t14 = -sd[2] - sd[6];
-        double _t15 = sd[12] + _t3;
-        double _t16 = sd[13] + _t4;
-        double _t17 = sd[14] + _t5;
-        double _t18 = sd[12] + _t6;
-        double _t19 = sd[13] + _t7;
-        double _t20 = sd[14] + _t8;
-        double _t21 = sd[12] + _t9;
-        double _t22 = sd[13] + _t10;
-        double _t23 = sd[14] + _t11;
-        double _t33 = sd[12] + _t12;
-        double _t34 = sd[13] + _t13;
-        double _t35 = sd[14] + _t14;
-        double _t39 = sd[12] + (sd[8] + _t3);
-        double _t40 = sd[13] + (sd[9] + _t4);
-        double _t41 = sd[14] + (sd[10] + _t5);
-        double _t42 = sd[12] + (sd[8] + _t6);
-        double _t43 = sd[13] + (sd[9] + _t7);
-        double _t44 = sd[14] + (sd[10] + _t8);
-        double _t45 = sd[12] + (sd[8] + _t9);
-        double _t46 = sd[13] + (sd[9] + _t10);
-        double _t47 = sd[14] + (sd[10] + _t11);
-        double _t48 = sd[12] + (sd[8] + _t12);
-        double _t49 = sd[13] + (sd[9] + _t13);
-        double _t50 = sd[14] + (sd[10] + _t14);
-        double _t99 = Math.fma(viewData[0], _t15, Math.fma(viewData[4], _t16, Math.fma(viewData[8], _t17, viewData[12])));
-        double _t100 = Math.fma(viewData[0], _t18, Math.fma(viewData[4], _t19, Math.fma(viewData[8], _t20, viewData[12])));
-        double _t101 = Math.fma(viewData[0], _t21, Math.fma(viewData[4], _t22, Math.fma(viewData[8], _t23, viewData[12])));
-        double _t102 = Math.fma(viewData[1], _t15, Math.fma(viewData[5], _t16, Math.fma(viewData[9], _t17, viewData[13])));
-        double _t103 = Math.fma(viewData[1], _t18, Math.fma(viewData[5], _t19, Math.fma(viewData[9], _t20, viewData[13])));
-        double _t104 = Math.fma(viewData[1], _t21, Math.fma(viewData[5], _t22, Math.fma(viewData[9], _t23, viewData[13])));
-        double _t105 = Math.fma(viewData[2], _t15, Math.fma(viewData[6], _t16, Math.fma(viewData[10], _t17, viewData[14])));
-        double _t106 = Math.fma(viewData[2], _t18, Math.fma(viewData[6], _t19, Math.fma(viewData[10], _t20, viewData[14])));
-        double _t107 = Math.fma(viewData[2], _t21, Math.fma(viewData[6], _t22, Math.fma(viewData[10], _t23, viewData[14])));
-        double _t108 = Math.fma(viewData[0], _t33, Math.fma(viewData[4], _t34, Math.fma(viewData[8], _t35, viewData[12])));
-        double _t109 = Math.fma(viewData[1], _t33, Math.fma(viewData[5], _t34, Math.fma(viewData[9], _t35, viewData[13])));
-        double _t110 = Math.fma(viewData[2], _t33, Math.fma(viewData[6], _t34, Math.fma(viewData[10], _t35, viewData[14])));
-        double _t111 = Math.fma(viewData[0], _t39, Math.fma(viewData[4], _t40, Math.fma(viewData[8], _t41, viewData[12])));
-        double _t112 = Math.fma(viewData[0], _t42, Math.fma(viewData[4], _t43, Math.fma(viewData[8], _t44, viewData[12])));
-        double _t113 = Math.fma(viewData[0], _t45, Math.fma(viewData[4], _t46, Math.fma(viewData[8], _t47, viewData[12])));
-        double _t114 = Math.fma(viewData[1], _t39, Math.fma(viewData[5], _t40, Math.fma(viewData[9], _t41, viewData[13])));
-        double _t115 = Math.fma(viewData[1], _t42, Math.fma(viewData[5], _t43, Math.fma(viewData[9], _t44, viewData[13])));
-        double _t116 = Math.fma(viewData[1], _t45, Math.fma(viewData[5], _t46, Math.fma(viewData[9], _t47, viewData[13])));
-        double _t117 = Math.fma(viewData[2], _t39, Math.fma(viewData[6], _t40, Math.fma(viewData[10], _t41, viewData[14])));
-        double _t118 = Math.fma(viewData[2], _t42, Math.fma(viewData[6], _t43, Math.fma(viewData[10], _t44, viewData[14])));
-        double _t119 = Math.fma(viewData[2], _t45, Math.fma(viewData[6], _t46, Math.fma(viewData[10], _t47, viewData[14])));
-        double _t120 = Math.fma(viewData[0], _t48, Math.fma(viewData[4], _t49, Math.fma(viewData[8], _t50, viewData[12])));
-        double _t121 = Math.fma(viewData[1], _t48, Math.fma(viewData[5], _t49, Math.fma(viewData[9], _t50, viewData[13])));
-        double _t122 = Math.fma(viewData[2], _t48, Math.fma(viewData[6], _t49, Math.fma(viewData[10], _t50, viewData[14])));
-        double _t159 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t108, _t99), _t100), _t101), _t120), _t111), _t112), _t113);
-        double _t160 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t108, _t99), _t100), _t101), _t120), _t111), _t112), _t113);
-        double _t161 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t109, _t102), _t103), _t104), _t121), _t114), _t115), _t116);
-        double _t162 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t109, _t102), _t103), _t104), _t121), _t114), _t115), _t116);
-        double _t164 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t110, _t105), _t106), _t107), _t122), _t117), _t118), _t119);
-        double _t165_inv = 1.0 / (_t159 - _t160);
-        double _t166_inv = 1.0 / (_t161 - _t162);
-        double _t167_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t110, _t105), _t106), _t107), _t122), _t117), _t118), _t119) - _t164);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t165_inv + _t165_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t166_inv + _t166_inv);
-        var _col2 = _sv0.withLane(2, _t167_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t160);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t159);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).withLane(2, _t164).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv).withLane(2, _t167_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t160).withLane(1, _t162).add(DoubleVector.broadcast(COL_SPECIES, _t159).withLane(1, _t161)).withLane(2, _t164).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv).withLane(2, _t167_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -32409,11 +31142,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_identity_translation(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_identity_translation_fma(view, dest);
-        return orthoCrop_zo_lh_identity_translation_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_identity_translation_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -32431,44 +31159,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t40_inv = 1.0 / (_t35 - _t36);
         double _t41_inv = 1.0 / (_t37 - _t38);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t40_inv + _t40_inv);
         var _col2 = _sv0.withLane(2, _t39_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).withLane(2, _t24).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv).withLane(2, _t39_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_identity_translation_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = -1.0 + viewData[12];
-        double _t1 = 1.0 + viewData[12];
-        double _t2 = -1.0 + viewData[13];
-        double _t3 = 1.0 + viewData[13];
-        double _t4 = 1.0 + viewData[14];
-        double _t24 = Math.min(Math.min(Math.min(Math.min(viewData[14], _t4), _t4), _t4), _t4);
-        double _t35 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t36 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t37 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t38 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t39_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(viewData[14], _t4), _t4), _t4), _t4) - _t24);
-        double _t40_inv = 1.0 / (_t35 - _t36);
-        double _t41_inv = 1.0 / (_t37 - _t38);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t40_inv + _t40_inv);
-        var _col2 = _sv0.withLane(2, _t39_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).withLane(2, _t24).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv).withLane(2, _t39_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t38).withLane(1, _t36).add(DoubleVector.broadcast(COL_SPECIES, _t37).withLane(1, _t35)).withLane(2, _t24).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv).withLane(2, _t39_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -32484,11 +31178,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_translation_identity(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_translation_identity_fma(view, dest);
-        return orthoCrop_zo_lh_translation_identity_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_translation_identity_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -32506,44 +31195,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t40_inv = 1.0 / (_t35 - _t36);
         double _t41_inv = 1.0 / (_t37 - _t38);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t40_inv + _t40_inv);
         var _col2 = _sv0.withLane(2, _t39_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).withLane(2, _t24).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv).withLane(2, _t39_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_translation_identity_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = -1.0 + sd[12];
-        double _t1 = 1.0 + sd[12];
-        double _t2 = -1.0 + sd[13];
-        double _t3 = 1.0 + sd[13];
-        double _t4 = 1.0 + sd[14];
-        double _t24 = Math.min(Math.min(Math.min(Math.min(sd[14], _t4), _t4), _t4), _t4);
-        double _t35 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t36 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t37 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t38 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t39_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(sd[14], _t4), _t4), _t4), _t4) - _t24);
-        double _t40_inv = 1.0 / (_t35 - _t36);
-        double _t41_inv = 1.0 / (_t37 - _t38);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t40_inv + _t40_inv);
-        var _col2 = _sv0.withLane(2, _t39_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).withLane(2, _t24).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv).withLane(2, _t39_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t38).withLane(1, _t36).add(DoubleVector.broadcast(COL_SPECIES, _t37).withLane(1, _t35)).withLane(2, _t24).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv).withLane(2, _t39_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -32559,11 +31214,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_translation_translation(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_translation_translation_fma(view, dest);
-        return orthoCrop_zo_lh_translation_translation_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_translation_translation_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -32582,45 +31232,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t46_inv = 1.0 / (_t41 - _t42);
         double _t47_inv = 1.0 / (_t43 - _t44);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t47_inv + _t47_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t47_inv + _t47_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t46_inv + _t46_inv);
         var _col2 = _sv0.withLane(2, _t45_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t44);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t43);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).withLane(2, _t30).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv).withLane(2, _t45_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_translation_translation_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t5 = sd[14] + viewData[14];
-        double _t6 = viewData[12] + (-1.0 + sd[12]);
-        double _t7 = viewData[12] + (1.0 + sd[12]);
-        double _t8 = viewData[13] + (-1.0 + sd[13]);
-        double _t9 = viewData[13] + (1.0 + sd[13]);
-        double _t10 = viewData[14] + (1.0 + sd[14]);
-        double _t30 = Math.min(Math.min(Math.min(Math.min(_t5, _t10), _t10), _t10), _t10);
-        double _t41 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t8, _t9), _t9), _t8), _t8), _t9), _t9);
-        double _t42 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t8, _t9), _t9), _t8), _t8), _t9), _t9);
-        double _t43 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t6, _t7), _t6), _t7), _t6), _t7), _t6), _t7);
-        double _t44 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t6, _t7), _t6), _t7), _t6), _t7), _t6), _t7);
-        double _t45_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(_t5, _t10), _t10), _t10), _t10) - _t30);
-        double _t46_inv = 1.0 / (_t41 - _t42);
-        double _t47_inv = 1.0 / (_t43 - _t44);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t47_inv + _t47_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t46_inv + _t46_inv);
-        var _col2 = _sv0.withLane(2, _t45_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t44);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t43);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).withLane(2, _t30).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv).withLane(2, _t45_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t44).withLane(1, _t42).add(DoubleVector.broadcast(COL_SPECIES, _t43).withLane(1, _t41)).withLane(2, _t30).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv).withLane(2, _t45_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -32636,11 +31251,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_orthogonal_identity(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_orthogonal_identity_fma(view, dest);
-        return orthoCrop_zo_lh_orthogonal_identity_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_orthogonal_identity_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -32689,75 +31299,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t94_inv = 1.0 / (_t89 - _t90);
         double _t95_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47) - _t92);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t94_inv + _t94_inv);
         var _col2 = _sv0.withLane(2, _t95_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).withLane(2, _t92).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv).withLane(2, _t95_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_orthogonal_identity_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t3 = sd[0] - sd[4];
-        double _t4 = sd[4] - sd[0];
-        double _t5 = sd[0] + sd[4];
-        double _t6 = sd[1] - sd[5];
-        double _t7 = sd[5] - sd[1];
-        double _t8 = sd[1] + sd[5];
-        double _t9 = sd[2] - sd[6];
-        double _t10 = sd[6] - sd[2];
-        double _t11 = sd[2] + sd[6];
-        double _t12 = -sd[0] - sd[4];
-        double _t13 = -sd[1] - sd[5];
-        double _t14 = -sd[2] - sd[6];
-        double _t15 = sd[12] + _t3;
-        double _t16 = sd[12] + _t4;
-        double _t17 = sd[12] + _t5;
-        double _t21 = sd[13] + _t6;
-        double _t22 = sd[13] + _t7;
-        double _t23 = sd[13] + _t8;
-        double _t27 = sd[14] + _t9;
-        double _t28 = sd[14] + _t10;
-        double _t29 = sd[14] + _t11;
-        double _t33 = sd[12] + _t12;
-        double _t35 = sd[13] + _t13;
-        double _t37 = sd[14] + _t14;
-        double _t39 = sd[12] + (sd[8] + _t3);
-        double _t40 = sd[12] + (sd[8] + _t4);
-        double _t41 = sd[12] + (sd[8] + _t5);
-        double _t42 = sd[13] + (sd[9] + _t6);
-        double _t43 = sd[13] + (sd[9] + _t7);
-        double _t44 = sd[13] + (sd[9] + _t8);
-        double _t45 = sd[14] + (sd[10] + _t9);
-        double _t46 = sd[14] + (sd[10] + _t10);
-        double _t47 = sd[14] + (sd[10] + _t11);
-        double _t48 = sd[12] + (sd[8] + _t12);
-        double _t49 = sd[13] + (sd[9] + _t13);
-        double _t50 = sd[14] + (sd[10] + _t14);
-        double _t87 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t33, _t15), _t16), _t17), _t48), _t39), _t40), _t41);
-        double _t88 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t33, _t15), _t16), _t17), _t48), _t39), _t40), _t41);
-        double _t89 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t35, _t21), _t22), _t23), _t49), _t42), _t43), _t44);
-        double _t90 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t35, _t21), _t22), _t23), _t49), _t42), _t43), _t44);
-        double _t92 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47);
-        double _t93_inv = 1.0 / (_t87 - _t88);
-        double _t94_inv = 1.0 / (_t89 - _t90);
-        double _t95_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47) - _t92);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t94_inv + _t94_inv);
-        var _col2 = _sv0.withLane(2, _t95_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).withLane(2, _t92).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv).withLane(2, _t95_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t88).withLane(1, _t90).add(DoubleVector.broadcast(COL_SPECIES, _t87).withLane(1, _t89)).withLane(2, _t92).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv).withLane(2, _t95_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -32773,11 +31318,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_orthogonal_translation(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_orthogonal_translation_fma(view, dest);
-        return orthoCrop_zo_lh_orthogonal_translation_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_orthogonal_translation_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -32826,75 +31366,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t118_inv = 1.0 / (_t113 - _t114);
         double _t119_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t61, _t51), _t52), _t53), _t74), _t69), _t70), _t71) - _t116);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t117_inv + _t117_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t117_inv + _t117_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t118_inv + _t118_inv);
         var _col2 = _sv0.withLane(2, _t119_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t112);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t111);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).withLane(2, _t116).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv).withLane(2, _t119_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_orthogonal_translation_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t3 = sd[0] - sd[4];
-        double _t4 = sd[4] - sd[0];
-        double _t5 = sd[0] + sd[4];
-        double _t6 = sd[1] - sd[5];
-        double _t7 = sd[5] - sd[1];
-        double _t8 = sd[1] + sd[5];
-        double _t9 = sd[2] - sd[6];
-        double _t10 = sd[6] - sd[2];
-        double _t11 = sd[2] + sd[6];
-        double _t12 = -sd[0] - sd[4];
-        double _t13 = -sd[1] - sd[5];
-        double _t14 = -sd[2] - sd[6];
-        double _t39 = viewData[12] + (sd[12] + _t3);
-        double _t40 = viewData[12] + (sd[12] + _t4);
-        double _t41 = viewData[12] + (sd[12] + _t5);
-        double _t45 = viewData[13] + (sd[13] + _t6);
-        double _t46 = viewData[13] + (sd[13] + _t7);
-        double _t47 = viewData[13] + (sd[13] + _t8);
-        double _t51 = viewData[14] + (sd[14] + _t9);
-        double _t52 = viewData[14] + (sd[14] + _t10);
-        double _t53 = viewData[14] + (sd[14] + _t11);
-        double _t57 = viewData[12] + (sd[12] + _t12);
-        double _t59 = viewData[13] + (sd[13] + _t13);
-        double _t61 = viewData[14] + (sd[14] + _t14);
-        double _t63 = viewData[12] + (sd[12] + (sd[8] + _t3));
-        double _t64 = viewData[12] + (sd[12] + (sd[8] + _t4));
-        double _t65 = viewData[12] + (sd[12] + (sd[8] + _t5));
-        double _t66 = viewData[13] + (sd[13] + (sd[9] + _t6));
-        double _t67 = viewData[13] + (sd[13] + (sd[9] + _t7));
-        double _t68 = viewData[13] + (sd[13] + (sd[9] + _t8));
-        double _t69 = viewData[14] + (sd[14] + (sd[10] + _t9));
-        double _t70 = viewData[14] + (sd[14] + (sd[10] + _t10));
-        double _t71 = viewData[14] + (sd[14] + (sd[10] + _t11));
-        double _t72 = viewData[12] + (sd[12] + (sd[8] + _t12));
-        double _t73 = viewData[13] + (sd[13] + (sd[9] + _t13));
-        double _t74 = viewData[14] + (sd[14] + (sd[10] + _t14));
-        double _t111 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t57, _t39), _t40), _t41), _t72), _t63), _t64), _t65);
-        double _t112 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t57, _t39), _t40), _t41), _t72), _t63), _t64), _t65);
-        double _t113 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t59, _t45), _t46), _t47), _t73), _t66), _t67), _t68);
-        double _t114 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t59, _t45), _t46), _t47), _t73), _t66), _t67), _t68);
-        double _t116 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t61, _t51), _t52), _t53), _t74), _t69), _t70), _t71);
-        double _t117_inv = 1.0 / (_t111 - _t112);
-        double _t118_inv = 1.0 / (_t113 - _t114);
-        double _t119_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t61, _t51), _t52), _t53), _t74), _t69), _t70), _t71) - _t116);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t117_inv + _t117_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t118_inv + _t118_inv);
-        var _col2 = _sv0.withLane(2, _t119_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t112);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t111);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).withLane(2, _t116).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv).withLane(2, _t119_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t112).withLane(1, _t114).add(DoubleVector.broadcast(COL_SPECIES, _t111).withLane(1, _t113)).withLane(2, _t116).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv).withLane(2, _t119_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -32910,11 +31385,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_general_identity(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_general_identity_fma(view, dest);
-        return orthoCrop_zo_lh_general_identity_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_general_identity_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -32975,87 +31445,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t135_inv = 1.0 / (_t130 - _t131);
         double _t136_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t79, _t74), _t75), _t76), _t91), _t86), _t87), _t88) - _t133);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t134_inv + _t134_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t134_inv + _t134_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t135_inv + _t135_inv);
         var _col2 = _sv0.withLane(2, _t136_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t129);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t128);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).withLane(2, _t133).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv).withLane(2, _t136_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_general_identity_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t4 = sd[0] - sd[4];
-        double _t5 = sd[3] - sd[7];
-        double _t6 = sd[4] - sd[0];
-        double _t7 = sd[7] - sd[3];
-        double _t8 = sd[0] + sd[4];
-        double _t9 = sd[3] + sd[7];
-        double _t10 = sd[1] - sd[5];
-        double _t11 = sd[5] - sd[1];
-        double _t12 = sd[1] + sd[5];
-        double _t13 = sd[2] - sd[6];
-        double _t14 = sd[6] - sd[2];
-        double _t15 = sd[2] + sd[6];
-        double _t16 = -sd[0] - sd[4];
-        double _t17 = -sd[3] - sd[7];
-        double _t18 = -sd[1] - sd[5];
-        double _t19 = -sd[2] - sd[6];
-        double _t21_inv = 1.0 / (sd[15] + _t5);
-        double _t23_inv = 1.0 / (sd[15] + _t7);
-        double _t25_inv = 1.0 / (sd[15] + _t9);
-        double _t45_inv = 1.0 / (sd[15] + _t17);
-        double _t53_inv = 1.0 / (sd[15] + (sd[11] + _t5));
-        double _t55_inv = 1.0 / (sd[15] + (sd[11] + _t7));
-        double _t57_inv = 1.0 / (sd[15] + (sd[11] + _t9));
-        double _t65_inv = 1.0 / (sd[15] + (sd[11] + _t17));
-        double _t68 = (sd[12] + _t4) * _t21_inv;
-        double _t69 = (sd[12] + _t6) * _t23_inv;
-        double _t70 = (sd[12] + _t8) * _t25_inv;
-        double _t71 = (sd[13] + _t10) * _t21_inv;
-        double _t72 = (sd[13] + _t11) * _t23_inv;
-        double _t73 = (sd[13] + _t12) * _t25_inv;
-        double _t74 = (sd[14] + _t13) * _t21_inv;
-        double _t75 = (sd[14] + _t14) * _t23_inv;
-        double _t76 = (sd[14] + _t15) * _t25_inv;
-        double _t77 = (sd[12] + _t16) * _t45_inv;
-        double _t78 = (sd[13] + _t18) * _t45_inv;
-        double _t79 = (sd[14] + _t19) * _t45_inv;
-        double _t80 = (sd[12] + (sd[8] + _t4)) * _t53_inv;
-        double _t81 = (sd[12] + (sd[8] + _t6)) * _t55_inv;
-        double _t82 = (sd[12] + (sd[8] + _t8)) * _t57_inv;
-        double _t83 = (sd[13] + (sd[9] + _t10)) * _t53_inv;
-        double _t84 = (sd[13] + (sd[9] + _t11)) * _t55_inv;
-        double _t85 = (sd[13] + (sd[9] + _t12)) * _t57_inv;
-        double _t86 = (sd[14] + (sd[10] + _t13)) * _t53_inv;
-        double _t87 = (sd[14] + (sd[10] + _t14)) * _t55_inv;
-        double _t88 = (sd[14] + (sd[10] + _t15)) * _t57_inv;
-        double _t89 = (sd[12] + (sd[8] + _t16)) * _t65_inv;
-        double _t90 = (sd[13] + (sd[9] + _t18)) * _t65_inv;
-        double _t91 = (sd[14] + (sd[10] + _t19)) * _t65_inv;
-        double _t128 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t77, _t68), _t69), _t70), _t89), _t80), _t81), _t82);
-        double _t129 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t77, _t68), _t69), _t70), _t89), _t80), _t81), _t82);
-        double _t130 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t78, _t71), _t72), _t73), _t90), _t83), _t84), _t85);
-        double _t131 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t78, _t71), _t72), _t73), _t90), _t83), _t84), _t85);
-        double _t133 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t79, _t74), _t75), _t76), _t91), _t86), _t87), _t88);
-        double _t134_inv = 1.0 / (_t128 - _t129);
-        double _t135_inv = 1.0 / (_t130 - _t131);
-        double _t136_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t79, _t74), _t75), _t76), _t91), _t86), _t87), _t88) - _t133);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t134_inv + _t134_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t135_inv + _t135_inv);
-        var _col2 = _sv0.withLane(2, _t136_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t129);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t128);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).withLane(2, _t133).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv).withLane(2, _t136_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t129).withLane(1, _t131).add(DoubleVector.broadcast(COL_SPECIES, _t128).withLane(1, _t130)).withLane(2, _t133).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv).withLane(2, _t136_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -33071,11 +31464,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_general_translation(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_general_translation_fma(view, dest);
-        return orthoCrop_zo_lh_general_translation_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_general_translation_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -33136,87 +31524,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t159_inv = 1.0 / (_t154 - _t155);
         double _t160_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t91, _t86), _t87), _t88), _t115), _t110), _t111), _t112) - _t157);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t158_inv + _t158_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t158_inv + _t158_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t159_inv + _t159_inv);
         var _col2 = _sv0.withLane(2, _t160_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t153);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t152);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).withLane(2, _t157).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv).withLane(2, _t160_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_general_translation_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t4 = sd[0] - sd[4];
-        double _t5 = sd[3] - sd[7];
-        double _t6 = sd[4] - sd[0];
-        double _t7 = sd[7] - sd[3];
-        double _t8 = sd[0] + sd[4];
-        double _t9 = sd[3] + sd[7];
-        double _t10 = sd[1] - sd[5];
-        double _t11 = sd[5] - sd[1];
-        double _t12 = sd[1] + sd[5];
-        double _t13 = sd[2] - sd[6];
-        double _t14 = sd[6] - sd[2];
-        double _t15 = sd[2] + sd[6];
-        double _t16 = -sd[0] - sd[4];
-        double _t17 = -sd[3] - sd[7];
-        double _t18 = -sd[1] - sd[5];
-        double _t19 = -sd[2] - sd[6];
-        double _t21_inv = 1.0 / (sd[15] + _t5);
-        double _t23_inv = 1.0 / (sd[15] + _t7);
-        double _t25_inv = 1.0 / (sd[15] + _t9);
-        double _t45_inv = 1.0 / (sd[15] + _t17);
-        double _t53_inv = 1.0 / (sd[15] + (sd[11] + _t5));
-        double _t55_inv = 1.0 / (sd[15] + (sd[11] + _t7));
-        double _t57_inv = 1.0 / (sd[15] + (sd[11] + _t9));
-        double _t65_inv = 1.0 / (sd[15] + (sd[11] + _t17));
-        double _t80 = viewData[12] + (sd[12] + _t4) * _t21_inv;
-        double _t81 = viewData[12] + (sd[12] + _t6) * _t23_inv;
-        double _t82 = viewData[12] + (sd[12] + _t8) * _t25_inv;
-        double _t83 = viewData[13] + (sd[13] + _t10) * _t21_inv;
-        double _t84 = viewData[13] + (sd[13] + _t11) * _t23_inv;
-        double _t85 = viewData[13] + (sd[13] + _t12) * _t25_inv;
-        double _t86 = viewData[14] + (sd[14] + _t13) * _t21_inv;
-        double _t87 = viewData[14] + (sd[14] + _t14) * _t23_inv;
-        double _t88 = viewData[14] + (sd[14] + _t15) * _t25_inv;
-        double _t89 = viewData[12] + (sd[12] + _t16) * _t45_inv;
-        double _t90 = viewData[13] + (sd[13] + _t18) * _t45_inv;
-        double _t91 = viewData[14] + (sd[14] + _t19) * _t45_inv;
-        double _t104 = viewData[12] + (sd[12] + (sd[8] + _t4)) * _t53_inv;
-        double _t105 = viewData[12] + (sd[12] + (sd[8] + _t6)) * _t55_inv;
-        double _t106 = viewData[12] + (sd[12] + (sd[8] + _t8)) * _t57_inv;
-        double _t107 = viewData[13] + (sd[13] + (sd[9] + _t10)) * _t53_inv;
-        double _t108 = viewData[13] + (sd[13] + (sd[9] + _t11)) * _t55_inv;
-        double _t109 = viewData[13] + (sd[13] + (sd[9] + _t12)) * _t57_inv;
-        double _t110 = viewData[14] + (sd[14] + (sd[10] + _t13)) * _t53_inv;
-        double _t111 = viewData[14] + (sd[14] + (sd[10] + _t14)) * _t55_inv;
-        double _t112 = viewData[14] + (sd[14] + (sd[10] + _t15)) * _t57_inv;
-        double _t113 = viewData[12] + (sd[12] + (sd[8] + _t16)) * _t65_inv;
-        double _t114 = viewData[13] + (sd[13] + (sd[9] + _t18)) * _t65_inv;
-        double _t115 = viewData[14] + (sd[14] + (sd[10] + _t19)) * _t65_inv;
-        double _t152 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t89, _t80), _t81), _t82), _t113), _t104), _t105), _t106);
-        double _t153 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t89, _t80), _t81), _t82), _t113), _t104), _t105), _t106);
-        double _t154 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t90, _t83), _t84), _t85), _t114), _t107), _t108), _t109);
-        double _t155 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t90, _t83), _t84), _t85), _t114), _t107), _t108), _t109);
-        double _t157 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t91, _t86), _t87), _t88), _t115), _t110), _t111), _t112);
-        double _t158_inv = 1.0 / (_t152 - _t153);
-        double _t159_inv = 1.0 / (_t154 - _t155);
-        double _t160_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t91, _t86), _t87), _t88), _t115), _t110), _t111), _t112) - _t157);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t158_inv + _t158_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t159_inv + _t159_inv);
-        var _col2 = _sv0.withLane(2, _t160_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t153);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t152);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).withLane(2, _t157).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv).withLane(2, _t160_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t153).withLane(1, _t155).add(DoubleVector.broadcast(COL_SPECIES, _t152).withLane(1, _t154)).withLane(2, _t157).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv).withLane(2, _t160_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -33301,11 +31612,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_general(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_general_fma(view, dest);
-        return orthoCrop_zo_rh_general_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_general_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -33390,111 +31696,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t231_inv = 1.0 / (_t226 - _t227);
         double _t232_inv = 1.0 / (_t228 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t230_inv + _t230_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t230_inv + _t230_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t231_inv + _t231_inv);
         var _col2 = _sv0.withLane(2, -_t232_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t225);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t224);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t228).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t232_inv))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_general_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t4 = sd[2] - sd[6];
-        double _t5 = sd[0] - sd[4];
-        double _t6 = sd[1] - sd[5];
-        double _t7 = sd[3] - sd[7];
-        double _t8 = sd[6] - sd[2];
-        double _t9 = sd[4] - sd[0];
-        double _t10 = sd[5] - sd[1];
-        double _t11 = sd[7] - sd[3];
-        double _t12 = sd[2] + sd[6];
-        double _t13 = sd[0] + sd[4];
-        double _t14 = sd[1] + sd[5];
-        double _t15 = sd[3] + sd[7];
-        double _t16 = -sd[2] - sd[6];
-        double _t17 = -sd[0] - sd[4];
-        double _t18 = -sd[1] - sd[5];
-        double _t19 = -sd[3] - sd[7];
-        double _t20 = sd[14] + _t4;
-        double _t21 = sd[12] + _t5;
-        double _t22 = sd[13] + _t6;
-        double _t23_inv = 1.0 / (sd[15] + _t7);
-        double _t24 = sd[14] + _t8;
-        double _t25 = sd[12] + _t9;
-        double _t26 = sd[13] + _t10;
-        double _t27_inv = 1.0 / (sd[15] + _t11);
-        double _t28 = sd[14] + _t12;
-        double _t29 = sd[12] + _t13;
-        double _t30 = sd[13] + _t14;
-        double _t31_inv = 1.0 / (sd[15] + _t15);
-        double _t44 = sd[14] + _t16;
-        double _t45 = sd[12] + _t17;
-        double _t46 = sd[13] + _t18;
-        double _t47_inv = 1.0 / (sd[15] + _t19);
-        double _t55 = sd[14] + (sd[10] + _t4);
-        double _t56 = sd[12] + (sd[8] + _t5);
-        double _t57 = sd[13] + (sd[9] + _t6);
-        double _t58_inv = 1.0 / (sd[15] + (sd[11] + _t7));
-        double _t59 = sd[14] + (sd[10] + _t8);
-        double _t60 = sd[12] + (sd[8] + _t9);
-        double _t61 = sd[13] + (sd[9] + _t10);
-        double _t62_inv = 1.0 / (sd[15] + (sd[11] + _t11));
-        double _t63 = sd[14] + (sd[10] + _t12);
-        double _t64 = sd[12] + (sd[8] + _t13);
-        double _t65 = sd[13] + (sd[9] + _t14);
-        double _t66_inv = 1.0 / (sd[15] + (sd[11] + _t15));
-        double _t74 = sd[14] + (sd[10] + _t16);
-        double _t75 = sd[12] + (sd[8] + _t17);
-        double _t76 = sd[13] + (sd[9] + _t18);
-        double _t77_inv = 1.0 / (sd[15] + (sd[11] + _t19));
-        double _t146 = viewData[12] + Math.fma(viewData[8], _t20, Math.fma(viewData[0], _t21, viewData[4] * _t22)) * _t23_inv;
-        double _t147 = viewData[12] + Math.fma(viewData[8], _t24, Math.fma(viewData[0], _t25, viewData[4] * _t26)) * _t27_inv;
-        double _t148 = viewData[12] + Math.fma(viewData[8], _t28, Math.fma(viewData[0], _t29, viewData[4] * _t30)) * _t31_inv;
-        double _t150 = viewData[13] + Math.fma(viewData[9], _t20, Math.fma(viewData[1], _t21, viewData[5] * _t22)) * _t23_inv;
-        double _t151 = viewData[13] + Math.fma(viewData[9], _t24, Math.fma(viewData[1], _t25, viewData[5] * _t26)) * _t27_inv;
-        double _t152 = viewData[13] + Math.fma(viewData[9], _t28, Math.fma(viewData[1], _t29, viewData[5] * _t30)) * _t31_inv;
-        double _t154 = viewData[14] + Math.fma(viewData[10], _t20, Math.fma(viewData[2], _t21, viewData[6] * _t22)) * _t23_inv;
-        double _t155 = viewData[14] + Math.fma(viewData[10], _t24, Math.fma(viewData[2], _t25, viewData[6] * _t26)) * _t27_inv;
-        double _t156 = viewData[14] + Math.fma(viewData[10], _t28, Math.fma(viewData[2], _t29, viewData[6] * _t30)) * _t31_inv;
-        double _t161 = viewData[12] + Math.fma(viewData[8], _t44, Math.fma(viewData[0], _t45, viewData[4] * _t46)) * _t47_inv;
-        double _t162 = viewData[13] + Math.fma(viewData[9], _t44, Math.fma(viewData[1], _t45, viewData[5] * _t46)) * _t47_inv;
-        double _t163 = viewData[14] + Math.fma(viewData[10], _t44, Math.fma(viewData[2], _t45, viewData[6] * _t46)) * _t47_inv;
-        double _t173 = viewData[12] + Math.fma(viewData[8], _t55, Math.fma(viewData[0], _t56, viewData[4] * _t57)) * _t58_inv;
-        double _t174 = viewData[12] + Math.fma(viewData[8], _t59, Math.fma(viewData[0], _t60, viewData[4] * _t61)) * _t62_inv;
-        double _t175 = viewData[12] + Math.fma(viewData[8], _t63, Math.fma(viewData[0], _t64, viewData[4] * _t65)) * _t66_inv;
-        double _t176 = viewData[13] + Math.fma(viewData[9], _t55, Math.fma(viewData[1], _t56, viewData[5] * _t57)) * _t58_inv;
-        double _t177 = viewData[13] + Math.fma(viewData[9], _t59, Math.fma(viewData[1], _t60, viewData[5] * _t61)) * _t62_inv;
-        double _t178 = viewData[13] + Math.fma(viewData[9], _t63, Math.fma(viewData[1], _t64, viewData[5] * _t65)) * _t66_inv;
-        double _t179 = viewData[14] + Math.fma(viewData[10], _t55, Math.fma(viewData[2], _t56, viewData[6] * _t57)) * _t58_inv;
-        double _t180 = viewData[14] + Math.fma(viewData[10], _t59, Math.fma(viewData[2], _t60, viewData[6] * _t61)) * _t62_inv;
-        double _t181 = viewData[14] + Math.fma(viewData[10], _t63, Math.fma(viewData[2], _t64, viewData[6] * _t65)) * _t66_inv;
-        double _t185 = viewData[12] + Math.fma(viewData[8], _t74, Math.fma(viewData[0], _t75, viewData[4] * _t76)) * _t77_inv;
-        double _t186 = viewData[13] + Math.fma(viewData[9], _t74, Math.fma(viewData[1], _t75, viewData[5] * _t76)) * _t77_inv;
-        double _t187 = viewData[14] + Math.fma(viewData[10], _t74, Math.fma(viewData[2], _t75, viewData[6] * _t76)) * _t77_inv;
-        double _t224 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t161, _t146), _t147), _t148), _t185), _t173), _t174), _t175);
-        double _t225 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t161, _t146), _t147), _t148), _t185), _t173), _t174), _t175);
-        double _t226 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t162, _t150), _t151), _t152), _t186), _t176), _t177), _t178);
-        double _t227 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t162, _t150), _t151), _t152), _t186), _t176), _t177), _t178);
-        double _t228 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181);
-        double _t230_inv = 1.0 / (_t224 - _t225);
-        double _t231_inv = 1.0 / (_t226 - _t227);
-        double _t232_inv = 1.0 / (_t228 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181));
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t230_inv + _t230_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t231_inv + _t231_inv);
-        var _col2 = _sv0.withLane(2, -_t232_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t225);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t224);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t228).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t232_inv))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t228).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t232_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t225).withLane(1, _t227).add(DoubleVector.broadcast(COL_SPECIES, _t224).withLane(1, _t226)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -33510,11 +31715,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_identity(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_identity_fma(view, dest);
-        return orthoCrop_zo_rh_identity_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_identity_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -33563,75 +31763,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t94_inv = 1.0 / (_t89 - _t90);
         double _t95_inv = 1.0 / (_t91 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t94_inv + _t94_inv);
         var _col2 = _sv0.withLane(2, -_t95_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t91).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_identity_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t3 = viewData[0] - viewData[4];
-        double _t4 = viewData[4] - viewData[0];
-        double _t5 = viewData[0] + viewData[4];
-        double _t6 = viewData[1] - viewData[5];
-        double _t7 = viewData[5] - viewData[1];
-        double _t8 = viewData[1] + viewData[5];
-        double _t9 = viewData[2] - viewData[6];
-        double _t10 = viewData[6] - viewData[2];
-        double _t11 = viewData[2] + viewData[6];
-        double _t12 = -viewData[0] - viewData[4];
-        double _t13 = -viewData[1] - viewData[5];
-        double _t14 = -viewData[2] - viewData[6];
-        double _t15 = viewData[12] + _t3;
-        double _t16 = viewData[12] + _t4;
-        double _t17 = viewData[12] + _t5;
-        double _t21 = viewData[13] + _t6;
-        double _t22 = viewData[13] + _t7;
-        double _t23 = viewData[13] + _t8;
-        double _t27 = viewData[14] + _t9;
-        double _t28 = viewData[14] + _t10;
-        double _t29 = viewData[14] + _t11;
-        double _t33 = viewData[12] + _t12;
-        double _t35 = viewData[13] + _t13;
-        double _t37 = viewData[14] + _t14;
-        double _t39 = viewData[12] + (viewData[8] + _t3);
-        double _t40 = viewData[12] + (viewData[8] + _t4);
-        double _t41 = viewData[12] + (viewData[8] + _t5);
-        double _t42 = viewData[13] + (viewData[9] + _t6);
-        double _t43 = viewData[13] + (viewData[9] + _t7);
-        double _t44 = viewData[13] + (viewData[9] + _t8);
-        double _t45 = viewData[14] + (viewData[10] + _t9);
-        double _t46 = viewData[14] + (viewData[10] + _t10);
-        double _t47 = viewData[14] + (viewData[10] + _t11);
-        double _t48 = viewData[12] + (viewData[8] + _t12);
-        double _t49 = viewData[13] + (viewData[9] + _t13);
-        double _t50 = viewData[14] + (viewData[10] + _t14);
-        double _t87 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t33, _t15), _t16), _t17), _t48), _t39), _t40), _t41);
-        double _t88 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t33, _t15), _t16), _t17), _t48), _t39), _t40), _t41);
-        double _t89 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t35, _t21), _t22), _t23), _t49), _t42), _t43), _t44);
-        double _t90 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t35, _t21), _t22), _t23), _t49), _t42), _t43), _t44);
-        double _t91 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47);
-        double _t93_inv = 1.0 / (_t87 - _t88);
-        double _t94_inv = 1.0 / (_t89 - _t90);
-        double _t95_inv = 1.0 / (_t91 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47));
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t94_inv + _t94_inv);
-        var _col2 = _sv0.withLane(2, -_t95_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t91).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t91).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t95_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t88).withLane(1, _t90).add(DoubleVector.broadcast(COL_SPECIES, _t87).withLane(1, _t89)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -33647,11 +31782,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_translation(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_translation_fma(view, dest);
-        return orthoCrop_zo_rh_translation_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_translation_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -33711,86 +31841,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t90_inv = 1.0 / (_t85 - _t86);
         double _t91_inv = 1.0 / (_t87 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t31, _t32), _t33), _t34), _t43), _t44), _t45), _t46));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t89_inv + _t89_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t89_inv + _t89_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t90_inv + _t90_inv);
         var _col2 = _sv0.withLane(2, -_t91_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t83);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t87).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t91_inv))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_translation_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = -1.0 + sd[12];
-        double _t1 = -1.0 + sd[13];
-        double _t2 = 1.0 + sd[12];
-        double _t3 = 1.0 + sd[13];
-        double _t4 = 1.0 + sd[14];
-        double _t5 = Math.fma(sd[14], viewData[8], viewData[12]);
-        double _t6 = Math.fma(sd[14], viewData[9], viewData[13]);
-        double _t7 = Math.fma(sd[14], viewData[10], viewData[14]);
-        double _t8 = Math.fma(viewData[8], _t4, viewData[12]);
-        double _t9 = Math.fma(viewData[9], _t4, viewData[13]);
-        double _t10 = Math.fma(viewData[10], _t4, viewData[14]);
-        double _t11 = Math.fma(viewData[4], _t1, _t5);
-        double _t12 = Math.fma(viewData[4], _t3, _t5);
-        double _t13 = Math.fma(viewData[5], _t1, _t6);
-        double _t14 = Math.fma(viewData[5], _t3, _t6);
-        double _t15 = Math.fma(viewData[6], _t1, _t7);
-        double _t16 = Math.fma(viewData[6], _t3, _t7);
-        double _t17 = Math.fma(viewData[4], _t1, _t8);
-        double _t18 = Math.fma(viewData[4], _t3, _t8);
-        double _t19 = Math.fma(viewData[5], _t1, _t9);
-        double _t20 = Math.fma(viewData[5], _t3, _t9);
-        double _t21 = Math.fma(viewData[6], _t1, _t10);
-        double _t22 = Math.fma(viewData[6], _t3, _t10);
-        double _t23 = Math.fma(viewData[0], _t0, _t11);
-        double _t24 = Math.fma(viewData[0], _t2, _t11);
-        double _t25 = Math.fma(viewData[0], _t0, _t12);
-        double _t26 = Math.fma(viewData[0], _t2, _t12);
-        double _t27 = Math.fma(viewData[1], _t0, _t13);
-        double _t28 = Math.fma(viewData[1], _t2, _t13);
-        double _t29 = Math.fma(viewData[1], _t0, _t14);
-        double _t30 = Math.fma(viewData[1], _t2, _t14);
-        double _t31 = Math.fma(viewData[2], _t0, _t15);
-        double _t32 = Math.fma(viewData[2], _t2, _t15);
-        double _t33 = Math.fma(viewData[2], _t0, _t16);
-        double _t34 = Math.fma(viewData[2], _t2, _t16);
-        double _t35 = Math.fma(viewData[0], _t0, _t17);
-        double _t36 = Math.fma(viewData[0], _t2, _t17);
-        double _t37 = Math.fma(viewData[0], _t0, _t18);
-        double _t38 = Math.fma(viewData[0], _t2, _t18);
-        double _t39 = Math.fma(viewData[1], _t0, _t19);
-        double _t40 = Math.fma(viewData[1], _t2, _t19);
-        double _t41 = Math.fma(viewData[1], _t0, _t20);
-        double _t42 = Math.fma(viewData[1], _t2, _t20);
-        double _t43 = Math.fma(viewData[2], _t0, _t21);
-        double _t44 = Math.fma(viewData[2], _t2, _t21);
-        double _t45 = Math.fma(viewData[2], _t0, _t22);
-        double _t46 = Math.fma(viewData[2], _t2, _t22);
-        double _t83 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t23, _t24), _t25), _t26), _t35), _t36), _t37), _t38);
-        double _t84 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t23, _t24), _t25), _t26), _t35), _t36), _t37), _t38);
-        double _t85 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t27, _t28), _t29), _t30), _t39), _t40), _t41), _t42);
-        double _t86 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t27, _t28), _t29), _t30), _t39), _t40), _t41), _t42);
-        double _t87 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t31, _t32), _t33), _t34), _t43), _t44), _t45), _t46);
-        double _t89_inv = 1.0 / (_t83 - _t84);
-        double _t90_inv = 1.0 / (_t85 - _t86);
-        double _t91_inv = 1.0 / (_t87 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t31, _t32), _t33), _t34), _t43), _t44), _t45), _t46));
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t89_inv + _t89_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t90_inv + _t90_inv);
-        var _col2 = _sv0.withLane(2, -_t91_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t83);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t87).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t91_inv))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t87).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t91_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t84).withLane(1, _t86).add(DoubleVector.broadcast(COL_SPECIES, _t83).withLane(1, _t85)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -33806,11 +31860,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_orthogonal(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_orthogonal_fma(view, dest);
-        return orthoCrop_zo_rh_orthogonal_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_orthogonal_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -33883,99 +31932,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t166_inv = 1.0 / (_t161 - _t162);
         double _t167_inv = 1.0 / (_t163 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t110, _t105), _t106), _t107), _t122), _t117), _t118), _t119));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t165_inv + _t165_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t165_inv + _t165_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t166_inv + _t166_inv);
         var _col2 = _sv0.withLane(2, -_t167_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t160);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t159);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t163).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t167_inv))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_orthogonal_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t3 = sd[0] - sd[4];
-        double _t4 = sd[1] - sd[5];
-        double _t5 = sd[2] - sd[6];
-        double _t6 = sd[4] - sd[0];
-        double _t7 = sd[5] - sd[1];
-        double _t8 = sd[6] - sd[2];
-        double _t9 = sd[0] + sd[4];
-        double _t10 = sd[1] + sd[5];
-        double _t11 = sd[2] + sd[6];
-        double _t12 = -sd[0] - sd[4];
-        double _t13 = -sd[1] - sd[5];
-        double _t14 = -sd[2] - sd[6];
-        double _t15 = sd[12] + _t3;
-        double _t16 = sd[13] + _t4;
-        double _t17 = sd[14] + _t5;
-        double _t18 = sd[12] + _t6;
-        double _t19 = sd[13] + _t7;
-        double _t20 = sd[14] + _t8;
-        double _t21 = sd[12] + _t9;
-        double _t22 = sd[13] + _t10;
-        double _t23 = sd[14] + _t11;
-        double _t33 = sd[12] + _t12;
-        double _t34 = sd[13] + _t13;
-        double _t35 = sd[14] + _t14;
-        double _t39 = sd[12] + (sd[8] + _t3);
-        double _t40 = sd[13] + (sd[9] + _t4);
-        double _t41 = sd[14] + (sd[10] + _t5);
-        double _t42 = sd[12] + (sd[8] + _t6);
-        double _t43 = sd[13] + (sd[9] + _t7);
-        double _t44 = sd[14] + (sd[10] + _t8);
-        double _t45 = sd[12] + (sd[8] + _t9);
-        double _t46 = sd[13] + (sd[9] + _t10);
-        double _t47 = sd[14] + (sd[10] + _t11);
-        double _t48 = sd[12] + (sd[8] + _t12);
-        double _t49 = sd[13] + (sd[9] + _t13);
-        double _t50 = sd[14] + (sd[10] + _t14);
-        double _t99 = Math.fma(viewData[0], _t15, Math.fma(viewData[4], _t16, Math.fma(viewData[8], _t17, viewData[12])));
-        double _t100 = Math.fma(viewData[0], _t18, Math.fma(viewData[4], _t19, Math.fma(viewData[8], _t20, viewData[12])));
-        double _t101 = Math.fma(viewData[0], _t21, Math.fma(viewData[4], _t22, Math.fma(viewData[8], _t23, viewData[12])));
-        double _t102 = Math.fma(viewData[1], _t15, Math.fma(viewData[5], _t16, Math.fma(viewData[9], _t17, viewData[13])));
-        double _t103 = Math.fma(viewData[1], _t18, Math.fma(viewData[5], _t19, Math.fma(viewData[9], _t20, viewData[13])));
-        double _t104 = Math.fma(viewData[1], _t21, Math.fma(viewData[5], _t22, Math.fma(viewData[9], _t23, viewData[13])));
-        double _t105 = Math.fma(viewData[2], _t15, Math.fma(viewData[6], _t16, Math.fma(viewData[10], _t17, viewData[14])));
-        double _t106 = Math.fma(viewData[2], _t18, Math.fma(viewData[6], _t19, Math.fma(viewData[10], _t20, viewData[14])));
-        double _t107 = Math.fma(viewData[2], _t21, Math.fma(viewData[6], _t22, Math.fma(viewData[10], _t23, viewData[14])));
-        double _t108 = Math.fma(viewData[0], _t33, Math.fma(viewData[4], _t34, Math.fma(viewData[8], _t35, viewData[12])));
-        double _t109 = Math.fma(viewData[1], _t33, Math.fma(viewData[5], _t34, Math.fma(viewData[9], _t35, viewData[13])));
-        double _t110 = Math.fma(viewData[2], _t33, Math.fma(viewData[6], _t34, Math.fma(viewData[10], _t35, viewData[14])));
-        double _t111 = Math.fma(viewData[0], _t39, Math.fma(viewData[4], _t40, Math.fma(viewData[8], _t41, viewData[12])));
-        double _t112 = Math.fma(viewData[0], _t42, Math.fma(viewData[4], _t43, Math.fma(viewData[8], _t44, viewData[12])));
-        double _t113 = Math.fma(viewData[0], _t45, Math.fma(viewData[4], _t46, Math.fma(viewData[8], _t47, viewData[12])));
-        double _t114 = Math.fma(viewData[1], _t39, Math.fma(viewData[5], _t40, Math.fma(viewData[9], _t41, viewData[13])));
-        double _t115 = Math.fma(viewData[1], _t42, Math.fma(viewData[5], _t43, Math.fma(viewData[9], _t44, viewData[13])));
-        double _t116 = Math.fma(viewData[1], _t45, Math.fma(viewData[5], _t46, Math.fma(viewData[9], _t47, viewData[13])));
-        double _t117 = Math.fma(viewData[2], _t39, Math.fma(viewData[6], _t40, Math.fma(viewData[10], _t41, viewData[14])));
-        double _t118 = Math.fma(viewData[2], _t42, Math.fma(viewData[6], _t43, Math.fma(viewData[10], _t44, viewData[14])));
-        double _t119 = Math.fma(viewData[2], _t45, Math.fma(viewData[6], _t46, Math.fma(viewData[10], _t47, viewData[14])));
-        double _t120 = Math.fma(viewData[0], _t48, Math.fma(viewData[4], _t49, Math.fma(viewData[8], _t50, viewData[12])));
-        double _t121 = Math.fma(viewData[1], _t48, Math.fma(viewData[5], _t49, Math.fma(viewData[9], _t50, viewData[13])));
-        double _t122 = Math.fma(viewData[2], _t48, Math.fma(viewData[6], _t49, Math.fma(viewData[10], _t50, viewData[14])));
-        double _t159 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t108, _t99), _t100), _t101), _t120), _t111), _t112), _t113);
-        double _t160 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t108, _t99), _t100), _t101), _t120), _t111), _t112), _t113);
-        double _t161 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t109, _t102), _t103), _t104), _t121), _t114), _t115), _t116);
-        double _t162 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t109, _t102), _t103), _t104), _t121), _t114), _t115), _t116);
-        double _t163 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t110, _t105), _t106), _t107), _t122), _t117), _t118), _t119);
-        double _t165_inv = 1.0 / (_t159 - _t160);
-        double _t166_inv = 1.0 / (_t161 - _t162);
-        double _t167_inv = 1.0 / (_t163 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t110, _t105), _t106), _t107), _t122), _t117), _t118), _t119));
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t165_inv + _t165_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t166_inv + _t166_inv);
-        var _col2 = _sv0.withLane(2, -_t167_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t160);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t159);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t163).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t167_inv))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t163).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t167_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t160).withLane(1, _t162).add(DoubleVector.broadcast(COL_SPECIES, _t159).withLane(1, _t161)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -33995,13 +31955,13 @@ public class Double4x4Impl implements Double4x4 {
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
         if (DoubleVector.SPECIES_PREFERRED.length() >= 8) {
-            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_85, 0).intoArray(dd, 0);
-            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_85, 8).intoArray(dd, 8);
+            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_83, 0).intoArray(dd, 0);
+            DoubleVector.fromArray(DoubleVector.SPECIES_512, DATA_83, 8).intoArray(dd, 8);
         } else {
-            DoubleVector.fromArray(COL_SPECIES, DATA_85, 0).intoArray(dd, 0);
-            DoubleVector.fromArray(COL_SPECIES, DATA_85, 4).intoArray(dd, 4);
-            DoubleVector.fromArray(COL_SPECIES, DATA_85, 8).intoArray(dd, 8);
-            DoubleVector.fromArray(COL_SPECIES, DATA_85, 12).intoArray(dd, 12);
+            DoubleVector.fromArray(COL_SPECIES, DATA_83, 0).intoArray(dd, 0);
+            DoubleVector.fromArray(COL_SPECIES, DATA_83, 4).intoArray(dd, 4);
+            DoubleVector.fromArray(COL_SPECIES, DATA_83, 8).intoArray(dd, 8);
+            DoubleVector.fromArray(COL_SPECIES, DATA_83, 12).intoArray(dd, 12);
         }
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
@@ -34014,11 +31974,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_identity_translation(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_identity_translation_fma(view, dest);
-        return orthoCrop_zo_rh_identity_translation_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_identity_translation_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -34036,44 +31991,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t40_inv = 1.0 / (_t35 - _t36);
         double _t41_inv = 1.0 / (_t37 - _t38);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t40_inv + _t40_inv);
         var _col2 = _sv0.withLane(2, -_t39_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t23).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_identity_translation_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = -1.0 + viewData[12];
-        double _t1 = 1.0 + viewData[12];
-        double _t2 = -1.0 + viewData[13];
-        double _t3 = 1.0 + viewData[13];
-        double _t4 = 1.0 + viewData[14];
-        double _t23 = Math.max(Math.max(Math.max(Math.max(viewData[14], _t4), _t4), _t4), _t4);
-        double _t35 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t36 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t37 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t38 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t39_inv = 1.0 / (_t23 - Math.min(Math.min(Math.min(Math.min(viewData[14], _t4), _t4), _t4), _t4));
-        double _t40_inv = 1.0 / (_t35 - _t36);
-        double _t41_inv = 1.0 / (_t37 - _t38);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t40_inv + _t40_inv);
-        var _col2 = _sv0.withLane(2, -_t39_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t23).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t23).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t39_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t38).withLane(1, _t36).add(DoubleVector.broadcast(COL_SPECIES, _t37).withLane(1, _t35)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -34089,11 +32010,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_translation_identity(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_translation_identity_fma(view, dest);
-        return orthoCrop_zo_rh_translation_identity_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_translation_identity_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -34111,44 +32027,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t40_inv = 1.0 / (_t35 - _t36);
         double _t41_inv = 1.0 / (_t37 - _t38);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t40_inv + _t40_inv);
         var _col2 = _sv0.withLane(2, -_t39_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t23).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_translation_identity_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = -1.0 + sd[12];
-        double _t1 = 1.0 + sd[12];
-        double _t2 = -1.0 + sd[13];
-        double _t3 = 1.0 + sd[13];
-        double _t4 = 1.0 + sd[14];
-        double _t23 = Math.max(Math.max(Math.max(Math.max(sd[14], _t4), _t4), _t4), _t4);
-        double _t35 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t36 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t37 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t38 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t39_inv = 1.0 / (_t23 - Math.min(Math.min(Math.min(Math.min(sd[14], _t4), _t4), _t4), _t4));
-        double _t40_inv = 1.0 / (_t35 - _t36);
-        double _t41_inv = 1.0 / (_t37 - _t38);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t40_inv + _t40_inv);
-        var _col2 = _sv0.withLane(2, -_t39_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t23).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t23).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t39_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t38).withLane(1, _t36).add(DoubleVector.broadcast(COL_SPECIES, _t37).withLane(1, _t35)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -34164,11 +32046,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_translation_translation(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_translation_translation_fma(view, dest);
-        return orthoCrop_zo_rh_translation_translation_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_translation_translation_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -34187,45 +32064,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t46_inv = 1.0 / (_t41 - _t42);
         double _t47_inv = 1.0 / (_t43 - _t44);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t47_inv + _t47_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t47_inv + _t47_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t46_inv + _t46_inv);
         var _col2 = _sv0.withLane(2, -_t45_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t44);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t43);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t45_inv))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_translation_translation_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t5 = sd[14] + viewData[14];
-        double _t6 = viewData[12] + (-1.0 + sd[12]);
-        double _t7 = viewData[12] + (1.0 + sd[12]);
-        double _t8 = viewData[13] + (-1.0 + sd[13]);
-        double _t9 = viewData[13] + (1.0 + sd[13]);
-        double _t10 = viewData[14] + (1.0 + sd[14]);
-        double _t29 = Math.max(Math.max(Math.max(Math.max(_t5, _t10), _t10), _t10), _t10);
-        double _t41 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t8, _t9), _t9), _t8), _t8), _t9), _t9);
-        double _t42 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t8, _t9), _t9), _t8), _t8), _t9), _t9);
-        double _t43 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t6, _t7), _t6), _t7), _t6), _t7), _t6), _t7);
-        double _t44 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t6, _t7), _t6), _t7), _t6), _t7), _t6), _t7);
-        double _t45_inv = 1.0 / (_t29 - Math.min(Math.min(Math.min(Math.min(_t5, _t10), _t10), _t10), _t10));
-        double _t46_inv = 1.0 / (_t41 - _t42);
-        double _t47_inv = 1.0 / (_t43 - _t44);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t47_inv + _t47_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t46_inv + _t46_inv);
-        var _col2 = _sv0.withLane(2, -_t45_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t44);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t43);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t45_inv))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t45_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t44).withLane(1, _t42).add(DoubleVector.broadcast(COL_SPECIES, _t43).withLane(1, _t41)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -34241,11 +32083,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_orthogonal_identity(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_orthogonal_identity_fma(view, dest);
-        return orthoCrop_zo_rh_orthogonal_identity_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_orthogonal_identity_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -34294,75 +32131,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t94_inv = 1.0 / (_t89 - _t90);
         double _t95_inv = 1.0 / (_t91 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t94_inv + _t94_inv);
         var _col2 = _sv0.withLane(2, -_t95_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t91).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_orthogonal_identity_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t3 = sd[0] - sd[4];
-        double _t4 = sd[4] - sd[0];
-        double _t5 = sd[0] + sd[4];
-        double _t6 = sd[1] - sd[5];
-        double _t7 = sd[5] - sd[1];
-        double _t8 = sd[1] + sd[5];
-        double _t9 = sd[2] - sd[6];
-        double _t10 = sd[6] - sd[2];
-        double _t11 = sd[2] + sd[6];
-        double _t12 = -sd[0] - sd[4];
-        double _t13 = -sd[1] - sd[5];
-        double _t14 = -sd[2] - sd[6];
-        double _t15 = sd[12] + _t3;
-        double _t16 = sd[12] + _t4;
-        double _t17 = sd[12] + _t5;
-        double _t21 = sd[13] + _t6;
-        double _t22 = sd[13] + _t7;
-        double _t23 = sd[13] + _t8;
-        double _t27 = sd[14] + _t9;
-        double _t28 = sd[14] + _t10;
-        double _t29 = sd[14] + _t11;
-        double _t33 = sd[12] + _t12;
-        double _t35 = sd[13] + _t13;
-        double _t37 = sd[14] + _t14;
-        double _t39 = sd[12] + (sd[8] + _t3);
-        double _t40 = sd[12] + (sd[8] + _t4);
-        double _t41 = sd[12] + (sd[8] + _t5);
-        double _t42 = sd[13] + (sd[9] + _t6);
-        double _t43 = sd[13] + (sd[9] + _t7);
-        double _t44 = sd[13] + (sd[9] + _t8);
-        double _t45 = sd[14] + (sd[10] + _t9);
-        double _t46 = sd[14] + (sd[10] + _t10);
-        double _t47 = sd[14] + (sd[10] + _t11);
-        double _t48 = sd[12] + (sd[8] + _t12);
-        double _t49 = sd[13] + (sd[9] + _t13);
-        double _t50 = sd[14] + (sd[10] + _t14);
-        double _t87 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t33, _t15), _t16), _t17), _t48), _t39), _t40), _t41);
-        double _t88 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t33, _t15), _t16), _t17), _t48), _t39), _t40), _t41);
-        double _t89 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t35, _t21), _t22), _t23), _t49), _t42), _t43), _t44);
-        double _t90 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t35, _t21), _t22), _t23), _t49), _t42), _t43), _t44);
-        double _t91 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47);
-        double _t93_inv = 1.0 / (_t87 - _t88);
-        double _t94_inv = 1.0 / (_t89 - _t90);
-        double _t95_inv = 1.0 / (_t91 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47));
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t94_inv + _t94_inv);
-        var _col2 = _sv0.withLane(2, -_t95_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t91).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t91).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t95_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t88).withLane(1, _t90).add(DoubleVector.broadcast(COL_SPECIES, _t87).withLane(1, _t89)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -34378,11 +32150,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_orthogonal_translation(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_orthogonal_translation_fma(view, dest);
-        return orthoCrop_zo_rh_orthogonal_translation_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_orthogonal_translation_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -34431,75 +32198,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t118_inv = 1.0 / (_t113 - _t114);
         double _t119_inv = 1.0 / (_t115 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t61, _t51), _t52), _t53), _t74), _t69), _t70), _t71));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t117_inv + _t117_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t117_inv + _t117_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t118_inv + _t118_inv);
         var _col2 = _sv0.withLane(2, -_t119_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t112);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t111);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t115).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t119_inv))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_orthogonal_translation_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t3 = sd[0] - sd[4];
-        double _t4 = sd[4] - sd[0];
-        double _t5 = sd[0] + sd[4];
-        double _t6 = sd[1] - sd[5];
-        double _t7 = sd[5] - sd[1];
-        double _t8 = sd[1] + sd[5];
-        double _t9 = sd[2] - sd[6];
-        double _t10 = sd[6] - sd[2];
-        double _t11 = sd[2] + sd[6];
-        double _t12 = -sd[0] - sd[4];
-        double _t13 = -sd[1] - sd[5];
-        double _t14 = -sd[2] - sd[6];
-        double _t39 = viewData[12] + (sd[12] + _t3);
-        double _t40 = viewData[12] + (sd[12] + _t4);
-        double _t41 = viewData[12] + (sd[12] + _t5);
-        double _t45 = viewData[13] + (sd[13] + _t6);
-        double _t46 = viewData[13] + (sd[13] + _t7);
-        double _t47 = viewData[13] + (sd[13] + _t8);
-        double _t51 = viewData[14] + (sd[14] + _t9);
-        double _t52 = viewData[14] + (sd[14] + _t10);
-        double _t53 = viewData[14] + (sd[14] + _t11);
-        double _t57 = viewData[12] + (sd[12] + _t12);
-        double _t59 = viewData[13] + (sd[13] + _t13);
-        double _t61 = viewData[14] + (sd[14] + _t14);
-        double _t63 = viewData[12] + (sd[12] + (sd[8] + _t3));
-        double _t64 = viewData[12] + (sd[12] + (sd[8] + _t4));
-        double _t65 = viewData[12] + (sd[12] + (sd[8] + _t5));
-        double _t66 = viewData[13] + (sd[13] + (sd[9] + _t6));
-        double _t67 = viewData[13] + (sd[13] + (sd[9] + _t7));
-        double _t68 = viewData[13] + (sd[13] + (sd[9] + _t8));
-        double _t69 = viewData[14] + (sd[14] + (sd[10] + _t9));
-        double _t70 = viewData[14] + (sd[14] + (sd[10] + _t10));
-        double _t71 = viewData[14] + (sd[14] + (sd[10] + _t11));
-        double _t72 = viewData[12] + (sd[12] + (sd[8] + _t12));
-        double _t73 = viewData[13] + (sd[13] + (sd[9] + _t13));
-        double _t74 = viewData[14] + (sd[14] + (sd[10] + _t14));
-        double _t111 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t57, _t39), _t40), _t41), _t72), _t63), _t64), _t65);
-        double _t112 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t57, _t39), _t40), _t41), _t72), _t63), _t64), _t65);
-        double _t113 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t59, _t45), _t46), _t47), _t73), _t66), _t67), _t68);
-        double _t114 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t59, _t45), _t46), _t47), _t73), _t66), _t67), _t68);
-        double _t115 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t61, _t51), _t52), _t53), _t74), _t69), _t70), _t71);
-        double _t117_inv = 1.0 / (_t111 - _t112);
-        double _t118_inv = 1.0 / (_t113 - _t114);
-        double _t119_inv = 1.0 / (_t115 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t61, _t51), _t52), _t53), _t74), _t69), _t70), _t71));
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t117_inv + _t117_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t118_inv + _t118_inv);
-        var _col2 = _sv0.withLane(2, -_t119_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t112);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t111);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t115).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t119_inv))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t115).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t119_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t112).withLane(1, _t114).add(DoubleVector.broadcast(COL_SPECIES, _t111).withLane(1, _t113)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -34515,11 +32217,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_general_identity(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_general_identity_fma(view, dest);
-        return orthoCrop_zo_rh_general_identity_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_general_identity_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -34580,87 +32277,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t135_inv = 1.0 / (_t130 - _t131);
         double _t136_inv = 1.0 / (_t132 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t79, _t74), _t75), _t76), _t91), _t86), _t87), _t88));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t134_inv + _t134_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t134_inv + _t134_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t135_inv + _t135_inv);
         var _col2 = _sv0.withLane(2, -_t136_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t129);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t128);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t132).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t136_inv))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_general_identity_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t4 = sd[0] - sd[4];
-        double _t5 = sd[3] - sd[7];
-        double _t6 = sd[4] - sd[0];
-        double _t7 = sd[7] - sd[3];
-        double _t8 = sd[0] + sd[4];
-        double _t9 = sd[3] + sd[7];
-        double _t10 = sd[1] - sd[5];
-        double _t11 = sd[5] - sd[1];
-        double _t12 = sd[1] + sd[5];
-        double _t13 = sd[2] - sd[6];
-        double _t14 = sd[6] - sd[2];
-        double _t15 = sd[2] + sd[6];
-        double _t16 = -sd[0] - sd[4];
-        double _t17 = -sd[3] - sd[7];
-        double _t18 = -sd[1] - sd[5];
-        double _t19 = -sd[2] - sd[6];
-        double _t21_inv = 1.0 / (sd[15] + _t5);
-        double _t23_inv = 1.0 / (sd[15] + _t7);
-        double _t25_inv = 1.0 / (sd[15] + _t9);
-        double _t45_inv = 1.0 / (sd[15] + _t17);
-        double _t53_inv = 1.0 / (sd[15] + (sd[11] + _t5));
-        double _t55_inv = 1.0 / (sd[15] + (sd[11] + _t7));
-        double _t57_inv = 1.0 / (sd[15] + (sd[11] + _t9));
-        double _t65_inv = 1.0 / (sd[15] + (sd[11] + _t17));
-        double _t68 = (sd[12] + _t4) * _t21_inv;
-        double _t69 = (sd[12] + _t6) * _t23_inv;
-        double _t70 = (sd[12] + _t8) * _t25_inv;
-        double _t71 = (sd[13] + _t10) * _t21_inv;
-        double _t72 = (sd[13] + _t11) * _t23_inv;
-        double _t73 = (sd[13] + _t12) * _t25_inv;
-        double _t74 = (sd[14] + _t13) * _t21_inv;
-        double _t75 = (sd[14] + _t14) * _t23_inv;
-        double _t76 = (sd[14] + _t15) * _t25_inv;
-        double _t77 = (sd[12] + _t16) * _t45_inv;
-        double _t78 = (sd[13] + _t18) * _t45_inv;
-        double _t79 = (sd[14] + _t19) * _t45_inv;
-        double _t80 = (sd[12] + (sd[8] + _t4)) * _t53_inv;
-        double _t81 = (sd[12] + (sd[8] + _t6)) * _t55_inv;
-        double _t82 = (sd[12] + (sd[8] + _t8)) * _t57_inv;
-        double _t83 = (sd[13] + (sd[9] + _t10)) * _t53_inv;
-        double _t84 = (sd[13] + (sd[9] + _t11)) * _t55_inv;
-        double _t85 = (sd[13] + (sd[9] + _t12)) * _t57_inv;
-        double _t86 = (sd[14] + (sd[10] + _t13)) * _t53_inv;
-        double _t87 = (sd[14] + (sd[10] + _t14)) * _t55_inv;
-        double _t88 = (sd[14] + (sd[10] + _t15)) * _t57_inv;
-        double _t89 = (sd[12] + (sd[8] + _t16)) * _t65_inv;
-        double _t90 = (sd[13] + (sd[9] + _t18)) * _t65_inv;
-        double _t91 = (sd[14] + (sd[10] + _t19)) * _t65_inv;
-        double _t128 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t77, _t68), _t69), _t70), _t89), _t80), _t81), _t82);
-        double _t129 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t77, _t68), _t69), _t70), _t89), _t80), _t81), _t82);
-        double _t130 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t78, _t71), _t72), _t73), _t90), _t83), _t84), _t85);
-        double _t131 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t78, _t71), _t72), _t73), _t90), _t83), _t84), _t85);
-        double _t132 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t79, _t74), _t75), _t76), _t91), _t86), _t87), _t88);
-        double _t134_inv = 1.0 / (_t128 - _t129);
-        double _t135_inv = 1.0 / (_t130 - _t131);
-        double _t136_inv = 1.0 / (_t132 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t79, _t74), _t75), _t76), _t91), _t86), _t87), _t88));
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t134_inv + _t134_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t135_inv + _t135_inv);
-        var _col2 = _sv0.withLane(2, -_t136_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t129);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t128);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t132).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t136_inv))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t132).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t136_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t129).withLane(1, _t131).add(DoubleVector.broadcast(COL_SPECIES, _t128).withLane(1, _t130)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -34676,11 +32296,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_general_translation(Double4x4R view, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_general_translation_fma(view, dest);
-        return orthoCrop_zo_rh_general_translation_mulAdd(view, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_general_translation_fma(Double4x4R view, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -34741,87 +32356,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t159_inv = 1.0 / (_t154 - _t155);
         double _t160_inv = 1.0 / (_t156 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t91, _t86), _t87), _t88), _t115), _t110), _t111), _t112));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t158_inv + _t158_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t158_inv + _t158_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t159_inv + _t159_inv);
         var _col2 = _sv0.withLane(2, -_t160_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t153);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t152);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t156).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t160_inv))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_general_translation_mulAdd(Double4x4R view, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t4 = sd[0] - sd[4];
-        double _t5 = sd[3] - sd[7];
-        double _t6 = sd[4] - sd[0];
-        double _t7 = sd[7] - sd[3];
-        double _t8 = sd[0] + sd[4];
-        double _t9 = sd[3] + sd[7];
-        double _t10 = sd[1] - sd[5];
-        double _t11 = sd[5] - sd[1];
-        double _t12 = sd[1] + sd[5];
-        double _t13 = sd[2] - sd[6];
-        double _t14 = sd[6] - sd[2];
-        double _t15 = sd[2] + sd[6];
-        double _t16 = -sd[0] - sd[4];
-        double _t17 = -sd[3] - sd[7];
-        double _t18 = -sd[1] - sd[5];
-        double _t19 = -sd[2] - sd[6];
-        double _t21_inv = 1.0 / (sd[15] + _t5);
-        double _t23_inv = 1.0 / (sd[15] + _t7);
-        double _t25_inv = 1.0 / (sd[15] + _t9);
-        double _t45_inv = 1.0 / (sd[15] + _t17);
-        double _t53_inv = 1.0 / (sd[15] + (sd[11] + _t5));
-        double _t55_inv = 1.0 / (sd[15] + (sd[11] + _t7));
-        double _t57_inv = 1.0 / (sd[15] + (sd[11] + _t9));
-        double _t65_inv = 1.0 / (sd[15] + (sd[11] + _t17));
-        double _t80 = viewData[12] + (sd[12] + _t4) * _t21_inv;
-        double _t81 = viewData[12] + (sd[12] + _t6) * _t23_inv;
-        double _t82 = viewData[12] + (sd[12] + _t8) * _t25_inv;
-        double _t83 = viewData[13] + (sd[13] + _t10) * _t21_inv;
-        double _t84 = viewData[13] + (sd[13] + _t11) * _t23_inv;
-        double _t85 = viewData[13] + (sd[13] + _t12) * _t25_inv;
-        double _t86 = viewData[14] + (sd[14] + _t13) * _t21_inv;
-        double _t87 = viewData[14] + (sd[14] + _t14) * _t23_inv;
-        double _t88 = viewData[14] + (sd[14] + _t15) * _t25_inv;
-        double _t89 = viewData[12] + (sd[12] + _t16) * _t45_inv;
-        double _t90 = viewData[13] + (sd[13] + _t18) * _t45_inv;
-        double _t91 = viewData[14] + (sd[14] + _t19) * _t45_inv;
-        double _t104 = viewData[12] + (sd[12] + (sd[8] + _t4)) * _t53_inv;
-        double _t105 = viewData[12] + (sd[12] + (sd[8] + _t6)) * _t55_inv;
-        double _t106 = viewData[12] + (sd[12] + (sd[8] + _t8)) * _t57_inv;
-        double _t107 = viewData[13] + (sd[13] + (sd[9] + _t10)) * _t53_inv;
-        double _t108 = viewData[13] + (sd[13] + (sd[9] + _t11)) * _t55_inv;
-        double _t109 = viewData[13] + (sd[13] + (sd[9] + _t12)) * _t57_inv;
-        double _t110 = viewData[14] + (sd[14] + (sd[10] + _t13)) * _t53_inv;
-        double _t111 = viewData[14] + (sd[14] + (sd[10] + _t14)) * _t55_inv;
-        double _t112 = viewData[14] + (sd[14] + (sd[10] + _t15)) * _t57_inv;
-        double _t113 = viewData[12] + (sd[12] + (sd[8] + _t16)) * _t65_inv;
-        double _t114 = viewData[13] + (sd[13] + (sd[9] + _t18)) * _t65_inv;
-        double _t115 = viewData[14] + (sd[14] + (sd[10] + _t19)) * _t65_inv;
-        double _t152 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t89, _t80), _t81), _t82), _t113), _t104), _t105), _t106);
-        double _t153 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t89, _t80), _t81), _t82), _t113), _t104), _t105), _t106);
-        double _t154 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t90, _t83), _t84), _t85), _t114), _t107), _t108), _t109);
-        double _t155 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t90, _t83), _t84), _t85), _t114), _t107), _t108), _t109);
-        double _t156 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t91, _t86), _t87), _t88), _t115), _t110), _t111), _t112);
-        double _t158_inv = 1.0 / (_t152 - _t153);
-        double _t159_inv = 1.0 / (_t154 - _t155);
-        double _t160_inv = 1.0 / (_t156 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t91, _t86), _t87), _t88), _t115), _t110), _t111), _t112));
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t158_inv + _t158_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t159_inv + _t159_inv);
-        var _col2 = _sv0.withLane(2, -_t160_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t153);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t152);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t156).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t160_inv))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t156).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t160_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t153).withLane(1, _t155).add(DoubleVector.broadcast(COL_SPECIES, _t152).withLane(1, _t154)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -35178,43 +32716,35 @@ public class Double4x4Impl implements Double4x4 {
         double _t28 = Math.fma(minZ, sd[10], _t12);
         double _t29 = Math.fma(minZ, sd[8], _t13);
         double _t30 = Math.fma(minZ, sd[9], _t14);
-        double _t31 = Math.fma(minZ, sd[11], _t15);
-        double _t31_inv = 1.0 / _t31;
+        double _t31_inv = 1.0 / Math.fma(minZ, sd[11], _t15);
         double _t32 = Math.fma(minZ, sd[10], _t16);
         double _t33 = Math.fma(minZ, sd[8], _t17);
         double _t34 = Math.fma(minZ, sd[9], _t18);
-        double _t35 = Math.fma(minZ, sd[11], _t19);
-        double _t35_inv = 1.0 / _t35;
+        double _t35_inv = 1.0 / Math.fma(minZ, sd[11], _t19);
         double _t36 = Math.fma(minZ, sd[10], _t20);
         double _t37 = Math.fma(minZ, sd[8], _t21);
         double _t38 = Math.fma(minZ, sd[9], _t22);
-        double _t39 = Math.fma(minZ, sd[11], _t23);
-        double _t39_inv = 1.0 / _t39;
+        double _t39_inv = 1.0 / Math.fma(minZ, sd[11], _t23);
         double _t40 = Math.fma(minZ, sd[10], _t24);
         double _t41 = Math.fma(minZ, sd[8], _t25);
         double _t42 = Math.fma(minZ, sd[9], _t26);
-        double _t43 = Math.fma(minZ, sd[11], _t27);
-        double _t43_inv = 1.0 / _t43;
+        double _t43_inv = 1.0 / Math.fma(minZ, sd[11], _t27);
         double _t44 = Math.fma(maxZ, sd[10], _t12);
         double _t45 = Math.fma(maxZ, sd[8], _t13);
         double _t46 = Math.fma(maxZ, sd[9], _t14);
-        double _t47 = Math.fma(maxZ, sd[11], _t15);
-        double _t47_inv = 1.0 / _t47;
+        double _t47_inv = 1.0 / Math.fma(maxZ, sd[11], _t15);
         double _t48 = Math.fma(maxZ, sd[10], _t16);
         double _t49 = Math.fma(maxZ, sd[8], _t17);
         double _t50 = Math.fma(maxZ, sd[9], _t18);
-        double _t51 = Math.fma(maxZ, sd[11], _t19);
-        double _t51_inv = 1.0 / _t51;
+        double _t51_inv = 1.0 / Math.fma(maxZ, sd[11], _t19);
         double _t52 = Math.fma(maxZ, sd[10], _t20);
         double _t53 = Math.fma(maxZ, sd[8], _t21);
         double _t54 = Math.fma(maxZ, sd[9], _t22);
-        double _t55 = Math.fma(maxZ, sd[11], _t23);
-        double _t55_inv = 1.0 / _t55;
+        double _t55_inv = 1.0 / Math.fma(maxZ, sd[11], _t23);
         double _t56 = Math.fma(maxZ, sd[10], _t24);
         double _t57 = Math.fma(maxZ, sd[8], _t25);
         double _t58 = Math.fma(maxZ, sd[9], _t26);
-        double _t59 = Math.fma(maxZ, sd[11], _t27);
-        double _t59_inv = 1.0 / _t59;
+        double _t59_inv = 1.0 / Math.fma(maxZ, sd[11], _t27);
         double _t156 = viewData[12] + Math.fma(viewData[8], _t28, Math.fma(viewData[0], _t29, viewData[4] * _t30)) * _t31_inv;
         double _t157 = viewData[12] + Math.fma(viewData[8], _t32, Math.fma(viewData[0], _t33, viewData[4] * _t34)) * _t35_inv;
         double _t158 = viewData[12] + Math.fma(viewData[8], _t36, Math.fma(viewData[0], _t37, viewData[4] * _t38)) * _t39_inv;
@@ -35245,22 +32775,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t219 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t164, _t165), _t166), _t167), _t168), _t169), _t170), _t171);
         double _t220 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
         double _t221 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
-        double _t222 = _t216 - _t217;
-        double _t222_inv = 1.0 / _t222;
-        double _t223 = _t218 - _t219;
-        double _t223_inv = 1.0 / _t223;
-        double _t224 = _t220 - _t221;
-        double _t224_inv = 1.0 / _t224;
-        dd[0] = _t222_inv + _t222_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t223_inv + _t223_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t224_inv + _t224_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t217 + _t216) * _t222_inv);
-        dd[13] = -((_t219 + _t218) * _t223_inv);
-        dd[14] = -((_t221 + _t220) * _t224_inv);
-        dd[15] = 1.0;
+        double _t222_inv = 1.0 / (_t216 - _t217);
+        double _t223_inv = 1.0 / (_t218 - _t219);
+        double _t224_inv = 1.0 / (_t220 - _t221);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t222_inv + _t222_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t223_inv + _t223_inv);
+        var _col2 = _sv0.withLane(2, _t224_inv + _t224_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t217).withLane(1, _t219).withLane(2, _t221).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t216).withLane(1, _t218).withLane(2, _t220)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv).withLane(2, _t224_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -35320,22 +32846,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t84 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t29, _t30), _t31), _t32), _t33), _t34), _t35), _t36);
         double _t85 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44);
         double _t86 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44);
-        double _t87 = _t81 - _t82;
-        double _t87_inv = 1.0 / _t87;
-        double _t88 = _t83 - _t84;
-        double _t88_inv = 1.0 / _t88;
-        double _t89 = _t85 - _t86;
-        double _t89_inv = 1.0 / _t89;
-        dd[0] = _t87_inv + _t87_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t88_inv + _t88_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t89_inv + _t89_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t82 + _t81) * _t87_inv);
-        dd[13] = -((_t84 + _t83) * _t88_inv);
-        dd[14] = -((_t86 + _t85) * _t89_inv);
-        dd[15] = 1.0;
+        double _t87_inv = 1.0 / (_t81 - _t82);
+        double _t88_inv = 1.0 / (_t83 - _t84);
+        double _t89_inv = 1.0 / (_t85 - _t86);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
+        var _col2 = _sv0.withLane(2, _t89_inv + _t89_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t82).withLane(1, _t84).withLane(2, _t86).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t81).withLane(1, _t83).withLane(2, _t85)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -35404,22 +32926,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t87 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t32, _t33), _t34), _t35), _t36), _t37), _t38), _t39);
         double _t88 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
         double _t89 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
-        double _t90 = _t84 - _t85;
-        double _t90_inv = 1.0 / _t90;
-        double _t91 = _t86 - _t87;
-        double _t91_inv = 1.0 / _t91;
-        double _t92 = _t88 - _t89;
-        double _t92_inv = 1.0 / _t92;
-        dd[0] = _t90_inv + _t90_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t91_inv + _t91_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t92_inv + _t92_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t85 + _t84) * _t90_inv);
-        dd[13] = -((_t87 + _t86) * _t91_inv);
-        dd[14] = -((_t89 + _t88) * _t92_inv);
-        dd[15] = 1.0;
+        double _t90_inv = 1.0 / (_t84 - _t85);
+        double _t91_inv = 1.0 / (_t86 - _t87);
+        double _t92_inv = 1.0 / (_t88 - _t89);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
+        var _col2 = _sv0.withLane(2, _t92_inv + _t92_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t85).withLane(1, _t87).withLane(2, _t89).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t84).withLane(1, _t86).withLane(2, _t88)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -35503,22 +33021,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t156 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t101, _t102), _t103), _t104), _t105), _t106), _t107), _t108);
         double _t157 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t109, _t110), _t111), _t112), _t113), _t114), _t115), _t116);
         double _t158 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t109, _t110), _t111), _t112), _t113), _t114), _t115), _t116);
-        double _t159 = _t153 - _t154;
-        double _t159_inv = 1.0 / _t159;
-        double _t160 = _t155 - _t156;
-        double _t160_inv = 1.0 / _t160;
-        double _t161 = _t157 - _t158;
-        double _t161_inv = 1.0 / _t161;
-        dd[0] = _t159_inv + _t159_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t160_inv + _t160_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t161_inv + _t161_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t154 + _t153) * _t159_inv);
-        dd[13] = -((_t156 + _t155) * _t160_inv);
-        dd[14] = -((_t158 + _t157) * _t161_inv);
-        dd[15] = 1.0;
+        double _t159_inv = 1.0 / (_t153 - _t154);
+        double _t160_inv = 1.0 / (_t155 - _t156);
+        double _t161_inv = 1.0 / (_t157 - _t158);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t159_inv + _t159_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t160_inv + _t160_inv);
+        var _col2 = _sv0.withLane(2, _t161_inv + _t161_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t154).withLane(1, _t156).withLane(2, _t158).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t153).withLane(1, _t155).withLane(2, _t157)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv).withLane(2, _t161_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -35573,22 +33087,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t37 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
         double _t38 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
         double _t39 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t40 = _t28 - _t29;
-        double _t40_inv = 1.0 / _t40;
-        double _t41 = _t36 - _t37;
-        double _t41_inv = 1.0 / _t41;
-        double _t42 = _t38 - _t39;
-        double _t42_inv = 1.0 / _t42;
-        dd[0] = _t42_inv + _t42_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t41_inv + _t41_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t40_inv + _t40_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t39 + _t38) * _t42_inv);
-        dd[13] = -((_t37 + _t36) * _t41_inv);
-        dd[14] = -((_t29 + _t28) * _t40_inv);
-        dd[15] = 1.0;
+        double _t40_inv = 1.0 / (_t28 - _t29);
+        double _t41_inv = 1.0 / (_t36 - _t37);
+        double _t42_inv = 1.0 / (_t38 - _t39);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
+        var _col2 = _sv0.withLane(2, _t40_inv + _t40_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t39).withLane(1, _t37).withLane(2, _t29).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t38).withLane(1, _t36).withLane(2, _t28)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -35615,22 +33125,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t37 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
         double _t38 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
         double _t39 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t40 = _t28 - _t29;
-        double _t40_inv = 1.0 / _t40;
-        double _t41 = _t36 - _t37;
-        double _t41_inv = 1.0 / _t41;
-        double _t42 = _t38 - _t39;
-        double _t42_inv = 1.0 / _t42;
-        dd[0] = _t42_inv + _t42_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t41_inv + _t41_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t40_inv + _t40_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t39 + _t38) * _t42_inv);
-        dd[13] = -((_t37 + _t36) * _t41_inv);
-        dd[14] = -((_t29 + _t28) * _t40_inv);
-        dd[15] = 1.0;
+        double _t40_inv = 1.0 / (_t28 - _t29);
+        double _t41_inv = 1.0 / (_t36 - _t37);
+        double _t42_inv = 1.0 / (_t38 - _t39);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
+        var _col2 = _sv0.withLane(2, _t40_inv + _t40_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t39).withLane(1, _t37).withLane(2, _t29).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t38).withLane(1, _t36).withLane(2, _t28)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -35657,22 +33163,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t43 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t8, _t9), _t9), _t8), _t8), _t9), _t9);
         double _t44 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t6, _t7), _t6), _t7), _t6), _t7), _t6), _t7);
         double _t45 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t6, _t7), _t6), _t7), _t6), _t7), _t6), _t7);
-        double _t46 = _t34 - _t35;
-        double _t46_inv = 1.0 / _t46;
-        double _t47 = _t42 - _t43;
-        double _t47_inv = 1.0 / _t47;
-        double _t48 = _t44 - _t45;
-        double _t48_inv = 1.0 / _t48;
-        dd[0] = _t48_inv + _t48_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t47_inv + _t47_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t46_inv + _t46_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t45 + _t44) * _t48_inv);
-        dd[13] = -((_t43 + _t42) * _t47_inv);
-        dd[14] = -((_t35 + _t34) * _t46_inv);
-        dd[15] = 1.0;
+        double _t46_inv = 1.0 / (_t34 - _t35);
+        double _t47_inv = 1.0 / (_t42 - _t43);
+        double _t48_inv = 1.0 / (_t44 - _t45);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t48_inv + _t48_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t47_inv + _t47_inv);
+        var _col2 = _sv0.withLane(2, _t46_inv + _t46_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t45).withLane(1, _t43).withLane(2, _t35).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t44).withLane(1, _t42).withLane(2, _t34)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -35732,22 +33234,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t84 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t29, _t30), _t31), _t32), _t33), _t34), _t35), _t36);
         double _t85 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44);
         double _t86 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44);
-        double _t87 = _t81 - _t82;
-        double _t87_inv = 1.0 / _t87;
-        double _t88 = _t83 - _t84;
-        double _t88_inv = 1.0 / _t88;
-        double _t89 = _t85 - _t86;
-        double _t89_inv = 1.0 / _t89;
-        dd[0] = _t87_inv + _t87_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t88_inv + _t88_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t89_inv + _t89_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t82 + _t81) * _t87_inv);
-        dd[13] = -((_t84 + _t83) * _t88_inv);
-        dd[14] = -((_t86 + _t85) * _t89_inv);
-        dd[15] = 1.0;
+        double _t87_inv = 1.0 / (_t81 - _t82);
+        double _t88_inv = 1.0 / (_t83 - _t84);
+        double _t89_inv = 1.0 / (_t85 - _t86);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
+        var _col2 = _sv0.withLane(2, _t89_inv + _t89_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t82).withLane(1, _t84).withLane(2, _t86).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t81).withLane(1, _t83).withLane(2, _t85)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -35810,22 +33308,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t87 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t32, _t33), _t34), _t35), _t36), _t37), _t38), _t39);
         double _t88 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
         double _t89 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
-        double _t90 = _t84 - _t85;
-        double _t90_inv = 1.0 / _t90;
-        double _t91 = _t86 - _t87;
-        double _t91_inv = 1.0 / _t91;
-        double _t92 = _t88 - _t89;
-        double _t92_inv = 1.0 / _t92;
-        dd[0] = _t90_inv + _t90_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t91_inv + _t91_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t92_inv + _t92_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t85 + _t84) * _t90_inv);
-        dd[13] = -((_t87 + _t86) * _t91_inv);
-        dd[14] = -((_t89 + _t88) * _t92_inv);
-        dd[15] = 1.0;
+        double _t90_inv = 1.0 / (_t84 - _t85);
+        double _t91_inv = 1.0 / (_t86 - _t87);
+        double _t92_inv = 1.0 / (_t88 - _t89);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
+        var _col2 = _sv0.withLane(2, _t92_inv + _t92_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t85).withLane(1, _t87).withLane(2, _t89).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t84).withLane(1, _t86).withLane(2, _t88)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -35860,22 +33354,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t25 = _t10 - sd[6];
         double _t26 = sd[14] + sd[6] - sd[2];
         double _t27 = _t10 + sd[6];
-        double _t29 = Math.fma(minZ, sd[11], _t13);
-        double _t29_inv = 1.0 / _t29;
-        double _t31 = Math.fma(minZ, sd[11], _t15);
-        double _t31_inv = 1.0 / _t31;
-        double _t33 = Math.fma(minZ, sd[11], _t17);
-        double _t33_inv = 1.0 / _t33;
-        double _t35 = Math.fma(minZ, sd[11], _t19);
-        double _t35_inv = 1.0 / _t35;
-        double _t37 = Math.fma(maxZ, sd[11], _t13);
-        double _t37_inv = 1.0 / _t37;
-        double _t39 = Math.fma(maxZ, sd[11], _t15);
-        double _t39_inv = 1.0 / _t39;
-        double _t41 = Math.fma(maxZ, sd[11], _t17);
-        double _t41_inv = 1.0 / _t41;
-        double _t43 = Math.fma(maxZ, sd[11], _t19);
-        double _t43_inv = 1.0 / _t43;
+        double _t29_inv = 1.0 / Math.fma(minZ, sd[11], _t13);
+        double _t31_inv = 1.0 / Math.fma(minZ, sd[11], _t15);
+        double _t33_inv = 1.0 / Math.fma(minZ, sd[11], _t17);
+        double _t35_inv = 1.0 / Math.fma(minZ, sd[11], _t19);
+        double _t37_inv = 1.0 / Math.fma(maxZ, sd[11], _t13);
+        double _t39_inv = 1.0 / Math.fma(maxZ, sd[11], _t15);
+        double _t41_inv = 1.0 / Math.fma(maxZ, sd[11], _t17);
+        double _t43_inv = 1.0 / Math.fma(maxZ, sd[11], _t19);
         double _t60 = Math.fma(minZ, sd[8], _t12) * _t29_inv;
         double _t61 = Math.fma(minZ, sd[8], _t14) * _t31_inv;
         double _t62 = Math.fma(minZ, sd[8], _t16) * _t33_inv;
@@ -35906,22 +33392,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t123 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t68, _t69), _t70), _t71), _t72), _t73), _t74), _t75);
         double _t124 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83);
         double _t125 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83);
-        double _t126 = _t120 - _t121;
-        double _t126_inv = 1.0 / _t126;
-        double _t127 = _t122 - _t123;
-        double _t127_inv = 1.0 / _t127;
-        double _t128 = _t124 - _t125;
-        double _t128_inv = 1.0 / _t128;
-        dd[0] = _t126_inv + _t126_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t127_inv + _t127_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t128_inv + _t128_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t121 + _t120) * _t126_inv);
-        dd[13] = -((_t123 + _t122) * _t127_inv);
-        dd[14] = -((_t125 + _t124) * _t128_inv);
-        dd[15] = 1.0;
+        double _t126_inv = 1.0 / (_t120 - _t121);
+        double _t127_inv = 1.0 / (_t122 - _t123);
+        double _t128_inv = 1.0 / (_t124 - _t125);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t126_inv + _t126_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t127_inv + _t127_inv);
+        var _col2 = _sv0.withLane(2, _t128_inv + _t128_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t121).withLane(1, _t123).withLane(2, _t125).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t120).withLane(1, _t122).withLane(2, _t124)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv).withLane(2, _t128_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -35956,22 +33438,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t25 = _t10 - sd[6];
         double _t26 = sd[14] + sd[6] - sd[2];
         double _t27 = _t10 + sd[6];
-        double _t29 = Math.fma(minZ, sd[11], _t13);
-        double _t29_inv = 1.0 / _t29;
-        double _t31 = Math.fma(minZ, sd[11], _t15);
-        double _t31_inv = 1.0 / _t31;
-        double _t33 = Math.fma(minZ, sd[11], _t17);
-        double _t33_inv = 1.0 / _t33;
-        double _t35 = Math.fma(minZ, sd[11], _t19);
-        double _t35_inv = 1.0 / _t35;
-        double _t37 = Math.fma(maxZ, sd[11], _t13);
-        double _t37_inv = 1.0 / _t37;
-        double _t39 = Math.fma(maxZ, sd[11], _t15);
-        double _t39_inv = 1.0 / _t39;
-        double _t41 = Math.fma(maxZ, sd[11], _t17);
-        double _t41_inv = 1.0 / _t41;
-        double _t43 = Math.fma(maxZ, sd[11], _t19);
-        double _t43_inv = 1.0 / _t43;
+        double _t29_inv = 1.0 / Math.fma(minZ, sd[11], _t13);
+        double _t31_inv = 1.0 / Math.fma(minZ, sd[11], _t15);
+        double _t33_inv = 1.0 / Math.fma(minZ, sd[11], _t17);
+        double _t35_inv = 1.0 / Math.fma(minZ, sd[11], _t19);
+        double _t37_inv = 1.0 / Math.fma(maxZ, sd[11], _t13);
+        double _t39_inv = 1.0 / Math.fma(maxZ, sd[11], _t15);
+        double _t41_inv = 1.0 / Math.fma(maxZ, sd[11], _t17);
+        double _t43_inv = 1.0 / Math.fma(maxZ, sd[11], _t19);
         double _t84 = viewData[12] + Math.fma(minZ, sd[8], _t12) * _t29_inv;
         double _t85 = viewData[12] + Math.fma(minZ, sd[8], _t14) * _t31_inv;
         double _t86 = viewData[12] + Math.fma(minZ, sd[8], _t16) * _t33_inv;
@@ -36002,22 +33476,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t147 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t92, _t93), _t94), _t95), _t96), _t97), _t98), _t99);
         double _t148 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107);
         double _t149 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107);
-        double _t150 = _t144 - _t145;
-        double _t150_inv = 1.0 / _t150;
-        double _t151 = _t146 - _t147;
-        double _t151_inv = 1.0 / _t151;
-        double _t152 = _t148 - _t149;
-        double _t152_inv = 1.0 / _t152;
-        dd[0] = _t150_inv + _t150_inv;
-        VEC_24.intoArray(dd, 1);
-        dd[5] = _t151_inv + _t151_inv;
-        VEC_24.intoArray(dd, 6);
-        dd[10] = _t152_inv + _t152_inv;
-        dd[11] = 0.0;
-        dd[12] = -((_t145 + _t144) * _t150_inv);
-        dd[13] = -((_t147 + _t146) * _t151_inv);
-        dd[14] = -((_t149 + _t148) * _t152_inv);
-        dd[15] = 1.0;
+        double _t150_inv = 1.0 / (_t144 - _t145);
+        double _t151_inv = 1.0 / (_t146 - _t147);
+        double _t152_inv = 1.0 / (_t148 - _t149);
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t150_inv + _t150_inv).blend(_sv0, MASK_9);
+        var _col1 = _sv0.withLane(1, _t151_inv + _t151_inv);
+        var _col2 = _sv0.withLane(2, _t152_inv + _t152_inv);
+        var _col3 = VEC_0.blend(DoubleVector.zero(COL_SPECIES).withLane(0, _t145).withLane(1, _t147).withLane(2, _t149).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t144).withLane(1, _t146).withLane(2, _t148)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_22);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
         return dest;
     }
@@ -36098,11 +33568,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_general(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_general_fma(view, minZ, maxZ, dest);
-        return orthoCrop_no_rh_general_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_general_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -36192,116 +33657,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t223_inv = 1.0 / (_t218 - _t219);
         double _t224_inv = 1.0 / (_t220 - _t221);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t222_inv + _t222_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t222_inv + _t222_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t223_inv + _t223_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t224_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t217);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t216);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).withLane(2, -_t221 - _t220).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv).withLane(2, _t224_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_general_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t4 = sd[14] + sd[2];
-        double _t5 = sd[12] + sd[0];
-        double _t6 = sd[13] + sd[1];
-        double _t7 = sd[15] + sd[3];
-        double _t12 = sd[14] - sd[2] - sd[6];
-        double _t13 = sd[12] - sd[0] - sd[4];
-        double _t14 = sd[13] - sd[1] - sd[5];
-        double _t15 = sd[15] - sd[3] - sd[7];
-        double _t16 = _t4 - sd[6];
-        double _t17 = _t5 - sd[4];
-        double _t18 = _t6 - sd[5];
-        double _t19 = _t7 - sd[7];
-        double _t20 = sd[14] + sd[6] - sd[2];
-        double _t21 = sd[12] + sd[4] - sd[0];
-        double _t22 = sd[13] + sd[5] - sd[1];
-        double _t23 = sd[15] + sd[7] - sd[3];
-        double _t24 = _t4 + sd[6];
-        double _t25 = _t5 + sd[4];
-        double _t26 = _t6 + sd[5];
-        double _t27 = _t7 + sd[7];
-        double _t28 = Math.fma(minZ, sd[10], _t12);
-        double _t29 = Math.fma(minZ, sd[8], _t13);
-        double _t30 = Math.fma(minZ, sd[9], _t14);
-        double _t31_inv = 1.0 / Math.fma(minZ, sd[11], _t15);
-        double _t32 = Math.fma(minZ, sd[10], _t16);
-        double _t33 = Math.fma(minZ, sd[8], _t17);
-        double _t34 = Math.fma(minZ, sd[9], _t18);
-        double _t35_inv = 1.0 / Math.fma(minZ, sd[11], _t19);
-        double _t36 = Math.fma(minZ, sd[10], _t20);
-        double _t37 = Math.fma(minZ, sd[8], _t21);
-        double _t38 = Math.fma(minZ, sd[9], _t22);
-        double _t39_inv = 1.0 / Math.fma(minZ, sd[11], _t23);
-        double _t40 = Math.fma(minZ, sd[10], _t24);
-        double _t41 = Math.fma(minZ, sd[8], _t25);
-        double _t42 = Math.fma(minZ, sd[9], _t26);
-        double _t43_inv = 1.0 / Math.fma(minZ, sd[11], _t27);
-        double _t44 = Math.fma(maxZ, sd[10], _t12);
-        double _t45 = Math.fma(maxZ, sd[8], _t13);
-        double _t46 = Math.fma(maxZ, sd[9], _t14);
-        double _t47_inv = 1.0 / Math.fma(maxZ, sd[11], _t15);
-        double _t48 = Math.fma(maxZ, sd[10], _t16);
-        double _t49 = Math.fma(maxZ, sd[8], _t17);
-        double _t50 = Math.fma(maxZ, sd[9], _t18);
-        double _t51_inv = 1.0 / Math.fma(maxZ, sd[11], _t19);
-        double _t52 = Math.fma(maxZ, sd[10], _t20);
-        double _t53 = Math.fma(maxZ, sd[8], _t21);
-        double _t54 = Math.fma(maxZ, sd[9], _t22);
-        double _t55_inv = 1.0 / Math.fma(maxZ, sd[11], _t23);
-        double _t56 = Math.fma(maxZ, sd[10], _t24);
-        double _t57 = Math.fma(maxZ, sd[8], _t25);
-        double _t58 = Math.fma(maxZ, sd[9], _t26);
-        double _t59_inv = 1.0 / Math.fma(maxZ, sd[11], _t27);
-        double _t156 = viewData[12] + Math.fma(viewData[8], _t28, Math.fma(viewData[0], _t29, viewData[4] * _t30)) * _t31_inv;
-        double _t157 = viewData[12] + Math.fma(viewData[8], _t32, Math.fma(viewData[0], _t33, viewData[4] * _t34)) * _t35_inv;
-        double _t158 = viewData[12] + Math.fma(viewData[8], _t36, Math.fma(viewData[0], _t37, viewData[4] * _t38)) * _t39_inv;
-        double _t159 = viewData[12] + Math.fma(viewData[8], _t40, Math.fma(viewData[0], _t41, viewData[4] * _t42)) * _t43_inv;
-        double _t160 = viewData[12] + Math.fma(viewData[8], _t44, Math.fma(viewData[0], _t45, viewData[4] * _t46)) * _t47_inv;
-        double _t161 = viewData[12] + Math.fma(viewData[8], _t48, Math.fma(viewData[0], _t49, viewData[4] * _t50)) * _t51_inv;
-        double _t162 = viewData[12] + Math.fma(viewData[8], _t52, Math.fma(viewData[0], _t53, viewData[4] * _t54)) * _t55_inv;
-        double _t163 = viewData[12] + Math.fma(viewData[8], _t56, Math.fma(viewData[0], _t57, viewData[4] * _t58)) * _t59_inv;
-        double _t164 = viewData[13] + Math.fma(viewData[9], _t28, Math.fma(viewData[1], _t29, viewData[5] * _t30)) * _t31_inv;
-        double _t165 = viewData[13] + Math.fma(viewData[9], _t32, Math.fma(viewData[1], _t33, viewData[5] * _t34)) * _t35_inv;
-        double _t166 = viewData[13] + Math.fma(viewData[9], _t36, Math.fma(viewData[1], _t37, viewData[5] * _t38)) * _t39_inv;
-        double _t167 = viewData[13] + Math.fma(viewData[9], _t40, Math.fma(viewData[1], _t41, viewData[5] * _t42)) * _t43_inv;
-        double _t168 = viewData[13] + Math.fma(viewData[9], _t44, Math.fma(viewData[1], _t45, viewData[5] * _t46)) * _t47_inv;
-        double _t169 = viewData[13] + Math.fma(viewData[9], _t48, Math.fma(viewData[1], _t49, viewData[5] * _t50)) * _t51_inv;
-        double _t170 = viewData[13] + Math.fma(viewData[9], _t52, Math.fma(viewData[1], _t53, viewData[5] * _t54)) * _t55_inv;
-        double _t171 = viewData[13] + Math.fma(viewData[9], _t56, Math.fma(viewData[1], _t57, viewData[5] * _t58)) * _t59_inv;
-        double _t172 = viewData[14] + Math.fma(viewData[10], _t28, Math.fma(viewData[2], _t29, viewData[6] * _t30)) * _t31_inv;
-        double _t173 = viewData[14] + Math.fma(viewData[10], _t32, Math.fma(viewData[2], _t33, viewData[6] * _t34)) * _t35_inv;
-        double _t174 = viewData[14] + Math.fma(viewData[10], _t36, Math.fma(viewData[2], _t37, viewData[6] * _t38)) * _t39_inv;
-        double _t175 = viewData[14] + Math.fma(viewData[10], _t40, Math.fma(viewData[2], _t41, viewData[6] * _t42)) * _t43_inv;
-        double _t176 = viewData[14] + Math.fma(viewData[10], _t44, Math.fma(viewData[2], _t45, viewData[6] * _t46)) * _t47_inv;
-        double _t177 = viewData[14] + Math.fma(viewData[10], _t48, Math.fma(viewData[2], _t49, viewData[6] * _t50)) * _t51_inv;
-        double _t178 = viewData[14] + Math.fma(viewData[10], _t52, Math.fma(viewData[2], _t53, viewData[6] * _t54)) * _t55_inv;
-        double _t179 = viewData[14] + Math.fma(viewData[10], _t56, Math.fma(viewData[2], _t57, viewData[6] * _t58)) * _t59_inv;
-        double _t216 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t156, _t157), _t158), _t159), _t160), _t161), _t162), _t163);
-        double _t217 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t156, _t157), _t158), _t159), _t160), _t161), _t162), _t163);
-        double _t218 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t164, _t165), _t166), _t167), _t168), _t169), _t170), _t171);
-        double _t219 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t164, _t165), _t166), _t167), _t168), _t169), _t170), _t171);
-        double _t220 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
-        double _t221 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
-        double _t222_inv = 1.0 / (_t216 - _t217);
-        double _t223_inv = 1.0 / (_t218 - _t219);
-        double _t224_inv = 1.0 / (_t220 - _t221);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t222_inv + _t222_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t223_inv + _t223_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t224_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t217);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t216);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).withLane(2, -_t221 - _t220).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv).withLane(2, _t224_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t217).withLane(1, _t219).add(DoubleVector.broadcast(COL_SPECIES, _t216).withLane(1, _t218)).withLane(2, -_t221 - _t220).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv).withLane(2, _t224_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36317,11 +33676,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_identity(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_identity_fma(view, minZ, maxZ, dest);
-        return orthoCrop_no_rh_identity_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_identity_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -36374,79 +33728,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t88_inv = 1.0 / (_t83 - _t84);
         double _t89_inv = 1.0 / (_t85 - _t86);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t89_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, -_t86 - _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_identity_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t1 = viewData[12] + viewData[0];
-        double _t4 = viewData[13] + viewData[1];
-        double _t7 = viewData[14] + viewData[2];
-        double _t9 = viewData[12] - viewData[0] - viewData[4];
-        double _t10 = _t1 - viewData[4];
-        double _t11 = viewData[12] + viewData[4] - viewData[0];
-        double _t12 = _t1 + viewData[4];
-        double _t13 = viewData[13] - viewData[1] - viewData[5];
-        double _t14 = _t4 - viewData[5];
-        double _t15 = viewData[13] + viewData[5] - viewData[1];
-        double _t16 = _t4 + viewData[5];
-        double _t17 = viewData[14] - viewData[2] - viewData[6];
-        double _t18 = _t7 - viewData[6];
-        double _t19 = viewData[14] + viewData[6] - viewData[2];
-        double _t20 = _t7 + viewData[6];
-        double _t21 = Math.fma(minZ, viewData[8], _t9);
-        double _t22 = Math.fma(minZ, viewData[8], _t10);
-        double _t23 = Math.fma(minZ, viewData[8], _t11);
-        double _t24 = Math.fma(minZ, viewData[8], _t12);
-        double _t25 = Math.fma(maxZ, viewData[8], _t9);
-        double _t26 = Math.fma(maxZ, viewData[8], _t10);
-        double _t27 = Math.fma(maxZ, viewData[8], _t11);
-        double _t28 = Math.fma(maxZ, viewData[8], _t12);
-        double _t29 = Math.fma(minZ, viewData[9], _t13);
-        double _t30 = Math.fma(minZ, viewData[9], _t14);
-        double _t31 = Math.fma(minZ, viewData[9], _t15);
-        double _t32 = Math.fma(minZ, viewData[9], _t16);
-        double _t33 = Math.fma(maxZ, viewData[9], _t13);
-        double _t34 = Math.fma(maxZ, viewData[9], _t14);
-        double _t35 = Math.fma(maxZ, viewData[9], _t15);
-        double _t36 = Math.fma(maxZ, viewData[9], _t16);
-        double _t37 = Math.fma(minZ, viewData[10], _t17);
-        double _t38 = Math.fma(minZ, viewData[10], _t18);
-        double _t39 = Math.fma(minZ, viewData[10], _t19);
-        double _t40 = Math.fma(minZ, viewData[10], _t20);
-        double _t41 = Math.fma(maxZ, viewData[10], _t17);
-        double _t42 = Math.fma(maxZ, viewData[10], _t18);
-        double _t43 = Math.fma(maxZ, viewData[10], _t19);
-        double _t44 = Math.fma(maxZ, viewData[10], _t20);
-        double _t81 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
-        double _t82 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
-        double _t83 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t29, _t30), _t31), _t32), _t33), _t34), _t35), _t36);
-        double _t84 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t29, _t30), _t31), _t32), _t33), _t34), _t35), _t36);
-        double _t85 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44);
-        double _t86 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44);
-        double _t87_inv = 1.0 / (_t81 - _t82);
-        double _t88_inv = 1.0 / (_t83 - _t84);
-        double _t89_inv = 1.0 / (_t85 - _t86);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t89_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, -_t86 - _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t82).withLane(1, _t84).add(DoubleVector.broadcast(COL_SPECIES, _t81).withLane(1, _t83)).withLane(2, -_t86 - _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36462,11 +33747,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_translation(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_translation_fma(view, minZ, maxZ, dest);
-        return orthoCrop_no_rh_translation_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_translation_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -36528,88 +33808,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t91_inv = 1.0 / (_t86 - _t87);
         double _t92_inv = 1.0 / (_t88 - _t89);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t92_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_translation_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = -1.0 + sd[12];
-        double _t1 = -1.0 + sd[13];
-        double _t2 = minZ + sd[14];
-        double _t3 = 1.0 + sd[12];
-        double _t4 = 1.0 + sd[13];
-        double _t5 = maxZ + sd[14];
-        double _t6 = Math.fma(viewData[8], _t2, viewData[12]);
-        double _t7 = Math.fma(viewData[8], _t5, viewData[12]);
-        double _t8 = Math.fma(viewData[9], _t2, viewData[13]);
-        double _t9 = Math.fma(viewData[9], _t5, viewData[13]);
-        double _t10 = Math.fma(viewData[10], _t2, viewData[14]);
-        double _t11 = Math.fma(viewData[10], _t5, viewData[14]);
-        double _t12 = Math.fma(viewData[4], _t1, _t6);
-        double _t13 = Math.fma(viewData[4], _t4, _t6);
-        double _t14 = Math.fma(viewData[4], _t1, _t7);
-        double _t15 = Math.fma(viewData[4], _t4, _t7);
-        double _t16 = Math.fma(viewData[5], _t1, _t8);
-        double _t17 = Math.fma(viewData[5], _t4, _t8);
-        double _t18 = Math.fma(viewData[5], _t1, _t9);
-        double _t19 = Math.fma(viewData[5], _t4, _t9);
-        double _t20 = Math.fma(viewData[6], _t1, _t10);
-        double _t21 = Math.fma(viewData[6], _t4, _t10);
-        double _t22 = Math.fma(viewData[6], _t1, _t11);
-        double _t23 = Math.fma(viewData[6], _t4, _t11);
-        double _t24 = Math.fma(viewData[0], _t0, _t12);
-        double _t25 = Math.fma(viewData[0], _t3, _t12);
-        double _t26 = Math.fma(viewData[0], _t0, _t13);
-        double _t27 = Math.fma(viewData[0], _t3, _t13);
-        double _t28 = Math.fma(viewData[0], _t0, _t14);
-        double _t29 = Math.fma(viewData[0], _t3, _t14);
-        double _t30 = Math.fma(viewData[0], _t0, _t15);
-        double _t31 = Math.fma(viewData[0], _t3, _t15);
-        double _t32 = Math.fma(viewData[1], _t0, _t16);
-        double _t33 = Math.fma(viewData[1], _t3, _t16);
-        double _t34 = Math.fma(viewData[1], _t0, _t17);
-        double _t35 = Math.fma(viewData[1], _t3, _t17);
-        double _t36 = Math.fma(viewData[1], _t0, _t18);
-        double _t37 = Math.fma(viewData[1], _t3, _t18);
-        double _t38 = Math.fma(viewData[1], _t0, _t19);
-        double _t39 = Math.fma(viewData[1], _t3, _t19);
-        double _t40 = Math.fma(viewData[2], _t0, _t20);
-        double _t41 = Math.fma(viewData[2], _t3, _t20);
-        double _t42 = Math.fma(viewData[2], _t0, _t21);
-        double _t43 = Math.fma(viewData[2], _t3, _t21);
-        double _t44 = Math.fma(viewData[2], _t0, _t22);
-        double _t45 = Math.fma(viewData[2], _t3, _t22);
-        double _t46 = Math.fma(viewData[2], _t0, _t23);
-        double _t47 = Math.fma(viewData[2], _t3, _t23);
-        double _t84 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t24, _t25), _t26), _t27), _t28), _t29), _t30), _t31);
-        double _t85 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t24, _t25), _t26), _t27), _t28), _t29), _t30), _t31);
-        double _t86 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t32, _t33), _t34), _t35), _t36), _t37), _t38), _t39);
-        double _t87 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t32, _t33), _t34), _t35), _t36), _t37), _t38), _t39);
-        double _t88 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
-        double _t89 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
-        double _t90_inv = 1.0 / (_t84 - _t85);
-        double _t91_inv = 1.0 / (_t86 - _t87);
-        double _t92_inv = 1.0 / (_t88 - _t89);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t92_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t85).withLane(1, _t87).add(DoubleVector.broadcast(COL_SPECIES, _t84).withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36625,11 +33827,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_orthogonal(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_orthogonal_fma(view, minZ, maxZ, dest);
-        return orthoCrop_no_rh_orthogonal_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_orthogonal_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -36706,103 +33903,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t160_inv = 1.0 / (_t155 - _t156);
         double _t161_inv = 1.0 / (_t157 - _t158);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t159_inv + _t159_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t159_inv + _t159_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t160_inv + _t160_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t161_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t154);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t153);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).withLane(2, -_t158 - _t157).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv).withLane(2, _t161_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_orthogonal_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t3 = sd[12] + sd[0];
-        double _t4 = sd[13] + sd[1];
-        double _t5 = sd[14] + sd[2];
-        double _t9 = sd[12] - sd[0] - sd[4];
-        double _t10 = sd[13] - sd[1] - sd[5];
-        double _t11 = sd[14] - sd[2] - sd[6];
-        double _t12 = _t3 - sd[4];
-        double _t13 = _t4 - sd[5];
-        double _t14 = _t5 - sd[6];
-        double _t15 = sd[12] + sd[4] - sd[0];
-        double _t16 = sd[13] + sd[5] - sd[1];
-        double _t17 = sd[14] + sd[6] - sd[2];
-        double _t18 = _t3 + sd[4];
-        double _t19 = _t4 + sd[5];
-        double _t20 = _t5 + sd[6];
-        double _t21 = Math.fma(minZ, sd[8], _t9);
-        double _t22 = Math.fma(minZ, sd[9], _t10);
-        double _t23 = Math.fma(minZ, sd[10], _t11);
-        double _t24 = Math.fma(minZ, sd[8], _t12);
-        double _t25 = Math.fma(minZ, sd[9], _t13);
-        double _t26 = Math.fma(minZ, sd[10], _t14);
-        double _t27 = Math.fma(minZ, sd[8], _t15);
-        double _t28 = Math.fma(minZ, sd[9], _t16);
-        double _t29 = Math.fma(minZ, sd[10], _t17);
-        double _t30 = Math.fma(minZ, sd[8], _t18);
-        double _t31 = Math.fma(minZ, sd[9], _t19);
-        double _t32 = Math.fma(minZ, sd[10], _t20);
-        double _t33 = Math.fma(maxZ, sd[8], _t9);
-        double _t34 = Math.fma(maxZ, sd[9], _t10);
-        double _t35 = Math.fma(maxZ, sd[10], _t11);
-        double _t36 = Math.fma(maxZ, sd[8], _t12);
-        double _t37 = Math.fma(maxZ, sd[9], _t13);
-        double _t38 = Math.fma(maxZ, sd[10], _t14);
-        double _t39 = Math.fma(maxZ, sd[8], _t15);
-        double _t40 = Math.fma(maxZ, sd[9], _t16);
-        double _t41 = Math.fma(maxZ, sd[10], _t17);
-        double _t42 = Math.fma(maxZ, sd[8], _t18);
-        double _t43 = Math.fma(maxZ, sd[9], _t19);
-        double _t44 = Math.fma(maxZ, sd[10], _t20);
-        double _t93 = Math.fma(viewData[0], _t21, Math.fma(viewData[4], _t22, Math.fma(viewData[8], _t23, viewData[12])));
-        double _t94 = Math.fma(viewData[0], _t24, Math.fma(viewData[4], _t25, Math.fma(viewData[8], _t26, viewData[12])));
-        double _t95 = Math.fma(viewData[0], _t27, Math.fma(viewData[4], _t28, Math.fma(viewData[8], _t29, viewData[12])));
-        double _t96 = Math.fma(viewData[0], _t30, Math.fma(viewData[4], _t31, Math.fma(viewData[8], _t32, viewData[12])));
-        double _t97 = Math.fma(viewData[0], _t33, Math.fma(viewData[4], _t34, Math.fma(viewData[8], _t35, viewData[12])));
-        double _t98 = Math.fma(viewData[0], _t36, Math.fma(viewData[4], _t37, Math.fma(viewData[8], _t38, viewData[12])));
-        double _t99 = Math.fma(viewData[0], _t39, Math.fma(viewData[4], _t40, Math.fma(viewData[8], _t41, viewData[12])));
-        double _t100 = Math.fma(viewData[0], _t42, Math.fma(viewData[4], _t43, Math.fma(viewData[8], _t44, viewData[12])));
-        double _t101 = Math.fma(viewData[1], _t21, Math.fma(viewData[5], _t22, Math.fma(viewData[9], _t23, viewData[13])));
-        double _t102 = Math.fma(viewData[1], _t24, Math.fma(viewData[5], _t25, Math.fma(viewData[9], _t26, viewData[13])));
-        double _t103 = Math.fma(viewData[1], _t27, Math.fma(viewData[5], _t28, Math.fma(viewData[9], _t29, viewData[13])));
-        double _t104 = Math.fma(viewData[1], _t30, Math.fma(viewData[5], _t31, Math.fma(viewData[9], _t32, viewData[13])));
-        double _t105 = Math.fma(viewData[1], _t33, Math.fma(viewData[5], _t34, Math.fma(viewData[9], _t35, viewData[13])));
-        double _t106 = Math.fma(viewData[1], _t36, Math.fma(viewData[5], _t37, Math.fma(viewData[9], _t38, viewData[13])));
-        double _t107 = Math.fma(viewData[1], _t39, Math.fma(viewData[5], _t40, Math.fma(viewData[9], _t41, viewData[13])));
-        double _t108 = Math.fma(viewData[1], _t42, Math.fma(viewData[5], _t43, Math.fma(viewData[9], _t44, viewData[13])));
-        double _t109 = Math.fma(viewData[2], _t21, Math.fma(viewData[6], _t22, Math.fma(viewData[10], _t23, viewData[14])));
-        double _t110 = Math.fma(viewData[2], _t24, Math.fma(viewData[6], _t25, Math.fma(viewData[10], _t26, viewData[14])));
-        double _t111 = Math.fma(viewData[2], _t27, Math.fma(viewData[6], _t28, Math.fma(viewData[10], _t29, viewData[14])));
-        double _t112 = Math.fma(viewData[2], _t30, Math.fma(viewData[6], _t31, Math.fma(viewData[10], _t32, viewData[14])));
-        double _t113 = Math.fma(viewData[2], _t33, Math.fma(viewData[6], _t34, Math.fma(viewData[10], _t35, viewData[14])));
-        double _t114 = Math.fma(viewData[2], _t36, Math.fma(viewData[6], _t37, Math.fma(viewData[10], _t38, viewData[14])));
-        double _t115 = Math.fma(viewData[2], _t39, Math.fma(viewData[6], _t40, Math.fma(viewData[10], _t41, viewData[14])));
-        double _t116 = Math.fma(viewData[2], _t42, Math.fma(viewData[6], _t43, Math.fma(viewData[10], _t44, viewData[14])));
-        double _t153 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t93, _t94), _t95), _t96), _t97), _t98), _t99), _t100);
-        double _t154 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t93, _t94), _t95), _t96), _t97), _t98), _t99), _t100);
-        double _t155 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t101, _t102), _t103), _t104), _t105), _t106), _t107), _t108);
-        double _t156 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t101, _t102), _t103), _t104), _t105), _t106), _t107), _t108);
-        double _t157 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t109, _t110), _t111), _t112), _t113), _t114), _t115), _t116);
-        double _t158 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t109, _t110), _t111), _t112), _t113), _t114), _t115), _t116);
-        double _t159_inv = 1.0 / (_t153 - _t154);
-        double _t160_inv = 1.0 / (_t155 - _t156);
-        double _t161_inv = 1.0 / (_t157 - _t158);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t159_inv + _t159_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t160_inv + _t160_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t161_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t154);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t153);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).withLane(2, -_t158 - _t157).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv).withLane(2, _t161_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t154).withLane(1, _t156).add(DoubleVector.broadcast(COL_SPECIES, _t153).withLane(1, _t155)).withLane(2, -_t158 - _t157).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv).withLane(2, _t161_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36846,11 +33950,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_identity_translation(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_identity_translation_fma(view, minZ, maxZ, dest);
-        return orthoCrop_no_rh_identity_translation_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_identity_translation_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -36870,46 +33969,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / (_t36 - _t37);
         double _t42_inv = 1.0 / (_t38 - _t39);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t40_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_identity_translation_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = -1.0 + viewData[12];
-        double _t1 = 1.0 + viewData[12];
-        double _t2 = -1.0 + viewData[13];
-        double _t3 = 1.0 + viewData[13];
-        double _t4 = minZ + viewData[14];
-        double _t5 = maxZ + viewData[14];
-        double _t28 = Math.max(Math.max(Math.max(Math.max(_t4, _t5), _t5), _t5), _t5);
-        double _t29 = Math.min(Math.min(Math.min(Math.min(_t4, _t5), _t5), _t5), _t5);
-        double _t36 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t37 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t38 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t39 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t40_inv = 1.0 / (_t28 - _t29);
-        double _t41_inv = 1.0 / (_t36 - _t37);
-        double _t42_inv = 1.0 / (_t38 - _t39);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t40_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t39).withLane(1, _t37).add(DoubleVector.broadcast(COL_SPECIES, _t38).withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -36925,11 +33988,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_translation_identity(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_translation_identity_fma(view, minZ, maxZ, dest);
-        return orthoCrop_no_rh_translation_identity_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_translation_identity_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -36949,46 +34007,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / (_t36 - _t37);
         double _t42_inv = 1.0 / (_t38 - _t39);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t40_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_translation_identity_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = -1.0 + sd[12];
-        double _t1 = 1.0 + sd[12];
-        double _t2 = -1.0 + sd[13];
-        double _t3 = 1.0 + sd[13];
-        double _t4 = minZ + sd[14];
-        double _t5 = maxZ + sd[14];
-        double _t28 = Math.max(Math.max(Math.max(Math.max(_t4, _t5), _t5), _t5), _t5);
-        double _t29 = Math.min(Math.min(Math.min(Math.min(_t4, _t5), _t5), _t5), _t5);
-        double _t36 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t37 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t38 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t39 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t40_inv = 1.0 / (_t28 - _t29);
-        double _t41_inv = 1.0 / (_t36 - _t37);
-        double _t42_inv = 1.0 / (_t38 - _t39);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t40_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t39).withLane(1, _t37).add(DoubleVector.broadcast(COL_SPECIES, _t38).withLane(1, _t36)).withLane(2, -_t29 - _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37004,11 +34026,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_translation_translation(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_translation_translation_fma(view, minZ, maxZ, dest);
-        return orthoCrop_no_rh_translation_translation_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_translation_translation_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -37028,46 +34045,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t47_inv = 1.0 / (_t42 - _t43);
         double _t48_inv = 1.0 / (_t44 - _t45);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t48_inv + _t48_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t48_inv + _t48_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t47_inv + _t47_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t46_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t45);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t44);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, -_t35 - _t34).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_translation_translation_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t6 = viewData[12] + (-1.0 + sd[12]);
-        double _t7 = viewData[12] + (1.0 + sd[12]);
-        double _t8 = viewData[13] + (-1.0 + sd[13]);
-        double _t9 = viewData[13] + (1.0 + sd[13]);
-        double _t10 = viewData[14] + (minZ + sd[14]);
-        double _t11 = viewData[14] + (maxZ + sd[14]);
-        double _t34 = Math.max(Math.max(Math.max(Math.max(_t10, _t11), _t11), _t11), _t11);
-        double _t35 = Math.min(Math.min(Math.min(Math.min(_t10, _t11), _t11), _t11), _t11);
-        double _t42 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t8, _t9), _t9), _t8), _t8), _t9), _t9);
-        double _t43 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t8, _t9), _t9), _t8), _t8), _t9), _t9);
-        double _t44 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t6, _t7), _t6), _t7), _t6), _t7), _t6), _t7);
-        double _t45 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t6, _t7), _t6), _t7), _t6), _t7), _t6), _t7);
-        double _t46_inv = 1.0 / (_t34 - _t35);
-        double _t47_inv = 1.0 / (_t42 - _t43);
-        double _t48_inv = 1.0 / (_t44 - _t45);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t48_inv + _t48_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t47_inv + _t47_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t46_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t45);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t44);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, -_t35 - _t34).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t45).withLane(1, _t43).add(DoubleVector.broadcast(COL_SPECIES, _t44).withLane(1, _t42)).withLane(2, -_t35 - _t34).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37083,11 +34064,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_orthogonal_identity(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_orthogonal_identity_fma(view, minZ, maxZ, dest);
-        return orthoCrop_no_rh_orthogonal_identity_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_orthogonal_identity_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -37140,79 +34116,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t88_inv = 1.0 / (_t83 - _t84);
         double _t89_inv = 1.0 / (_t85 - _t86);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t89_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, -_t86 - _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_orthogonal_identity_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t1 = sd[12] + sd[0];
-        double _t4 = sd[13] + sd[1];
-        double _t7 = sd[14] + sd[2];
-        double _t9 = sd[12] - sd[0] - sd[4];
-        double _t10 = _t1 - sd[4];
-        double _t11 = sd[12] + sd[4] - sd[0];
-        double _t12 = _t1 + sd[4];
-        double _t13 = sd[13] - sd[1] - sd[5];
-        double _t14 = _t4 - sd[5];
-        double _t15 = sd[13] + sd[5] - sd[1];
-        double _t16 = _t4 + sd[5];
-        double _t17 = sd[14] - sd[2] - sd[6];
-        double _t18 = _t7 - sd[6];
-        double _t19 = sd[14] + sd[6] - sd[2];
-        double _t20 = _t7 + sd[6];
-        double _t21 = Math.fma(minZ, sd[8], _t9);
-        double _t22 = Math.fma(minZ, sd[8], _t10);
-        double _t23 = Math.fma(minZ, sd[8], _t11);
-        double _t24 = Math.fma(minZ, sd[8], _t12);
-        double _t25 = Math.fma(maxZ, sd[8], _t9);
-        double _t26 = Math.fma(maxZ, sd[8], _t10);
-        double _t27 = Math.fma(maxZ, sd[8], _t11);
-        double _t28 = Math.fma(maxZ, sd[8], _t12);
-        double _t29 = Math.fma(minZ, sd[9], _t13);
-        double _t30 = Math.fma(minZ, sd[9], _t14);
-        double _t31 = Math.fma(minZ, sd[9], _t15);
-        double _t32 = Math.fma(minZ, sd[9], _t16);
-        double _t33 = Math.fma(maxZ, sd[9], _t13);
-        double _t34 = Math.fma(maxZ, sd[9], _t14);
-        double _t35 = Math.fma(maxZ, sd[9], _t15);
-        double _t36 = Math.fma(maxZ, sd[9], _t16);
-        double _t37 = Math.fma(minZ, sd[10], _t17);
-        double _t38 = Math.fma(minZ, sd[10], _t18);
-        double _t39 = Math.fma(minZ, sd[10], _t19);
-        double _t40 = Math.fma(minZ, sd[10], _t20);
-        double _t41 = Math.fma(maxZ, sd[10], _t17);
-        double _t42 = Math.fma(maxZ, sd[10], _t18);
-        double _t43 = Math.fma(maxZ, sd[10], _t19);
-        double _t44 = Math.fma(maxZ, sd[10], _t20);
-        double _t81 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
-        double _t82 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
-        double _t83 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t29, _t30), _t31), _t32), _t33), _t34), _t35), _t36);
-        double _t84 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t29, _t30), _t31), _t32), _t33), _t34), _t35), _t36);
-        double _t85 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44);
-        double _t86 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44);
-        double _t87_inv = 1.0 / (_t81 - _t82);
-        double _t88_inv = 1.0 / (_t83 - _t84);
-        double _t89_inv = 1.0 / (_t85 - _t86);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t89_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, -_t86 - _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t82).withLane(1, _t84).add(DoubleVector.broadcast(COL_SPECIES, _t81).withLane(1, _t83)).withLane(2, -_t86 - _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37228,11 +34135,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_orthogonal_translation(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_orthogonal_translation_fma(view, minZ, maxZ, dest);
-        return orthoCrop_no_rh_orthogonal_translation_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_orthogonal_translation_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -37288,82 +34190,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t91_inv = 1.0 / (_t86 - _t87);
         double _t92_inv = 1.0 / (_t88 - _t89);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t92_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_orthogonal_translation_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = viewData[12] + sd[12];
-        double _t1 = viewData[13] + sd[13];
-        double _t2 = viewData[14] + sd[14];
-        double _t4 = _t0 + sd[0];
-        double _t7 = _t1 + sd[1];
-        double _t10 = _t2 + sd[2];
-        double _t12 = _t0 - sd[0] - sd[4];
-        double _t13 = _t4 - sd[4];
-        double _t14 = _t0 + sd[4] - sd[0];
-        double _t15 = _t4 + sd[4];
-        double _t16 = _t1 - sd[1] - sd[5];
-        double _t17 = _t7 - sd[5];
-        double _t18 = _t1 + sd[5] - sd[1];
-        double _t19 = _t7 + sd[5];
-        double _t20 = _t2 - sd[2] - sd[6];
-        double _t21 = _t10 - sd[6];
-        double _t22 = _t2 + sd[6] - sd[2];
-        double _t23 = _t10 + sd[6];
-        double _t24 = Math.fma(minZ, sd[8], _t12);
-        double _t25 = Math.fma(minZ, sd[8], _t13);
-        double _t26 = Math.fma(minZ, sd[8], _t14);
-        double _t27 = Math.fma(minZ, sd[8], _t15);
-        double _t28 = Math.fma(maxZ, sd[8], _t12);
-        double _t29 = Math.fma(maxZ, sd[8], _t13);
-        double _t30 = Math.fma(maxZ, sd[8], _t14);
-        double _t31 = Math.fma(maxZ, sd[8], _t15);
-        double _t32 = Math.fma(minZ, sd[9], _t16);
-        double _t33 = Math.fma(minZ, sd[9], _t17);
-        double _t34 = Math.fma(minZ, sd[9], _t18);
-        double _t35 = Math.fma(minZ, sd[9], _t19);
-        double _t36 = Math.fma(maxZ, sd[9], _t16);
-        double _t37 = Math.fma(maxZ, sd[9], _t17);
-        double _t38 = Math.fma(maxZ, sd[9], _t18);
-        double _t39 = Math.fma(maxZ, sd[9], _t19);
-        double _t40 = Math.fma(minZ, sd[10], _t20);
-        double _t41 = Math.fma(minZ, sd[10], _t21);
-        double _t42 = Math.fma(minZ, sd[10], _t22);
-        double _t43 = Math.fma(minZ, sd[10], _t23);
-        double _t44 = Math.fma(maxZ, sd[10], _t20);
-        double _t45 = Math.fma(maxZ, sd[10], _t21);
-        double _t46 = Math.fma(maxZ, sd[10], _t22);
-        double _t47 = Math.fma(maxZ, sd[10], _t23);
-        double _t84 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t24, _t25), _t26), _t27), _t28), _t29), _t30), _t31);
-        double _t85 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t24, _t25), _t26), _t27), _t28), _t29), _t30), _t31);
-        double _t86 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t32, _t33), _t34), _t35), _t36), _t37), _t38), _t39);
-        double _t87 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t32, _t33), _t34), _t35), _t36), _t37), _t38), _t39);
-        double _t88 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
-        double _t89 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
-        double _t90_inv = 1.0 / (_t84 - _t85);
-        double _t91_inv = 1.0 / (_t86 - _t87);
-        double _t92_inv = 1.0 / (_t88 - _t89);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t92_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t85).withLane(1, _t87).add(DoubleVector.broadcast(COL_SPECIES, _t84).withLane(1, _t86)).withLane(2, -_t89 - _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37379,11 +34209,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_general_identity(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_general_identity_fma(view, minZ, maxZ, dest);
-        return orthoCrop_no_rh_general_identity_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_general_identity_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -37449,92 +34274,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t127_inv = 1.0 / (_t122 - _t123);
         double _t128_inv = 1.0 / (_t124 - _t125);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t126_inv + _t126_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t126_inv + _t126_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t127_inv + _t127_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t128_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t121);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t120);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).withLane(2, -_t125 - _t124).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv).withLane(2, _t128_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_general_identity_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t2 = sd[12] + sd[0];
-        double _t3 = sd[15] + sd[3];
-        double _t7 = sd[13] + sd[1];
-        double _t10 = sd[14] + sd[2];
-        double _t12 = sd[12] - sd[0] - sd[4];
-        double _t13 = sd[15] - sd[3] - sd[7];
-        double _t14 = _t2 - sd[4];
-        double _t15 = _t3 - sd[7];
-        double _t16 = sd[12] + sd[4] - sd[0];
-        double _t17 = sd[15] + sd[7] - sd[3];
-        double _t18 = _t2 + sd[4];
-        double _t19 = _t3 + sd[7];
-        double _t20 = sd[13] - sd[1] - sd[5];
-        double _t21 = _t7 - sd[5];
-        double _t22 = sd[13] + sd[5] - sd[1];
-        double _t23 = _t7 + sd[5];
-        double _t24 = sd[14] - sd[2] - sd[6];
-        double _t25 = _t10 - sd[6];
-        double _t26 = sd[14] + sd[6] - sd[2];
-        double _t27 = _t10 + sd[6];
-        double _t29_inv = 1.0 / Math.fma(minZ, sd[11], _t13);
-        double _t31_inv = 1.0 / Math.fma(minZ, sd[11], _t15);
-        double _t33_inv = 1.0 / Math.fma(minZ, sd[11], _t17);
-        double _t35_inv = 1.0 / Math.fma(minZ, sd[11], _t19);
-        double _t37_inv = 1.0 / Math.fma(maxZ, sd[11], _t13);
-        double _t39_inv = 1.0 / Math.fma(maxZ, sd[11], _t15);
-        double _t41_inv = 1.0 / Math.fma(maxZ, sd[11], _t17);
-        double _t43_inv = 1.0 / Math.fma(maxZ, sd[11], _t19);
-        double _t60 = Math.fma(minZ, sd[8], _t12) * _t29_inv;
-        double _t61 = Math.fma(minZ, sd[8], _t14) * _t31_inv;
-        double _t62 = Math.fma(minZ, sd[8], _t16) * _t33_inv;
-        double _t63 = Math.fma(minZ, sd[8], _t18) * _t35_inv;
-        double _t64 = Math.fma(maxZ, sd[8], _t12) * _t37_inv;
-        double _t65 = Math.fma(maxZ, sd[8], _t14) * _t39_inv;
-        double _t66 = Math.fma(maxZ, sd[8], _t16) * _t41_inv;
-        double _t67 = Math.fma(maxZ, sd[8], _t18) * _t43_inv;
-        double _t68 = Math.fma(minZ, sd[9], _t20) * _t29_inv;
-        double _t69 = Math.fma(minZ, sd[9], _t21) * _t31_inv;
-        double _t70 = Math.fma(minZ, sd[9], _t22) * _t33_inv;
-        double _t71 = Math.fma(minZ, sd[9], _t23) * _t35_inv;
-        double _t72 = Math.fma(maxZ, sd[9], _t20) * _t37_inv;
-        double _t73 = Math.fma(maxZ, sd[9], _t21) * _t39_inv;
-        double _t74 = Math.fma(maxZ, sd[9], _t22) * _t41_inv;
-        double _t75 = Math.fma(maxZ, sd[9], _t23) * _t43_inv;
-        double _t76 = Math.fma(minZ, sd[10], _t24) * _t29_inv;
-        double _t77 = Math.fma(minZ, sd[10], _t25) * _t31_inv;
-        double _t78 = Math.fma(minZ, sd[10], _t26) * _t33_inv;
-        double _t79 = Math.fma(minZ, sd[10], _t27) * _t35_inv;
-        double _t80 = Math.fma(maxZ, sd[10], _t24) * _t37_inv;
-        double _t81 = Math.fma(maxZ, sd[10], _t25) * _t39_inv;
-        double _t82 = Math.fma(maxZ, sd[10], _t26) * _t41_inv;
-        double _t83 = Math.fma(maxZ, sd[10], _t27) * _t43_inv;
-        double _t120 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t60, _t61), _t62), _t63), _t64), _t65), _t66), _t67);
-        double _t121 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t60, _t61), _t62), _t63), _t64), _t65), _t66), _t67);
-        double _t122 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t68, _t69), _t70), _t71), _t72), _t73), _t74), _t75);
-        double _t123 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t68, _t69), _t70), _t71), _t72), _t73), _t74), _t75);
-        double _t124 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83);
-        double _t125 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83);
-        double _t126_inv = 1.0 / (_t120 - _t121);
-        double _t127_inv = 1.0 / (_t122 - _t123);
-        double _t128_inv = 1.0 / (_t124 - _t125);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t126_inv + _t126_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t127_inv + _t127_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t128_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t121);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t120);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).withLane(2, -_t125 - _t124).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv).withLane(2, _t128_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t121).withLane(1, _t123).add(DoubleVector.broadcast(COL_SPECIES, _t120).withLane(1, _t122)).withLane(2, -_t125 - _t124).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv).withLane(2, _t128_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37550,11 +34293,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_no_rh_general_translation(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_no_rh_general_translation_fma(view, minZ, maxZ, dest);
-        return orthoCrop_no_rh_general_translation_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_no_rh_general_translation_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -37620,92 +34358,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t151_inv = 1.0 / (_t146 - _t147);
         double _t152_inv = 1.0 / (_t148 - _t149);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t150_inv + _t150_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t150_inv + _t150_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t151_inv + _t151_inv);
         var _col2 = _sv0.withLane(2, -2.0 * _t152_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t145);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t144);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, -_t149 - _t148).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_no_rh_general_translation_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t2 = sd[12] + sd[0];
-        double _t3 = sd[15] + sd[3];
-        double _t7 = sd[13] + sd[1];
-        double _t10 = sd[14] + sd[2];
-        double _t12 = sd[12] - sd[0] - sd[4];
-        double _t13 = sd[15] - sd[3] - sd[7];
-        double _t14 = _t2 - sd[4];
-        double _t15 = _t3 - sd[7];
-        double _t16 = sd[12] + sd[4] - sd[0];
-        double _t17 = sd[15] + sd[7] - sd[3];
-        double _t18 = _t2 + sd[4];
-        double _t19 = _t3 + sd[7];
-        double _t20 = sd[13] - sd[1] - sd[5];
-        double _t21 = _t7 - sd[5];
-        double _t22 = sd[13] + sd[5] - sd[1];
-        double _t23 = _t7 + sd[5];
-        double _t24 = sd[14] - sd[2] - sd[6];
-        double _t25 = _t10 - sd[6];
-        double _t26 = sd[14] + sd[6] - sd[2];
-        double _t27 = _t10 + sd[6];
-        double _t29_inv = 1.0 / Math.fma(minZ, sd[11], _t13);
-        double _t31_inv = 1.0 / Math.fma(minZ, sd[11], _t15);
-        double _t33_inv = 1.0 / Math.fma(minZ, sd[11], _t17);
-        double _t35_inv = 1.0 / Math.fma(minZ, sd[11], _t19);
-        double _t37_inv = 1.0 / Math.fma(maxZ, sd[11], _t13);
-        double _t39_inv = 1.0 / Math.fma(maxZ, sd[11], _t15);
-        double _t41_inv = 1.0 / Math.fma(maxZ, sd[11], _t17);
-        double _t43_inv = 1.0 / Math.fma(maxZ, sd[11], _t19);
-        double _t84 = viewData[12] + Math.fma(minZ, sd[8], _t12) * _t29_inv;
-        double _t85 = viewData[12] + Math.fma(minZ, sd[8], _t14) * _t31_inv;
-        double _t86 = viewData[12] + Math.fma(minZ, sd[8], _t16) * _t33_inv;
-        double _t87 = viewData[12] + Math.fma(minZ, sd[8], _t18) * _t35_inv;
-        double _t88 = viewData[12] + Math.fma(maxZ, sd[8], _t12) * _t37_inv;
-        double _t89 = viewData[12] + Math.fma(maxZ, sd[8], _t14) * _t39_inv;
-        double _t90 = viewData[12] + Math.fma(maxZ, sd[8], _t16) * _t41_inv;
-        double _t91 = viewData[12] + Math.fma(maxZ, sd[8], _t18) * _t43_inv;
-        double _t92 = viewData[13] + Math.fma(minZ, sd[9], _t20) * _t29_inv;
-        double _t93 = viewData[13] + Math.fma(minZ, sd[9], _t21) * _t31_inv;
-        double _t94 = viewData[13] + Math.fma(minZ, sd[9], _t22) * _t33_inv;
-        double _t95 = viewData[13] + Math.fma(minZ, sd[9], _t23) * _t35_inv;
-        double _t96 = viewData[13] + Math.fma(maxZ, sd[9], _t20) * _t37_inv;
-        double _t97 = viewData[13] + Math.fma(maxZ, sd[9], _t21) * _t39_inv;
-        double _t98 = viewData[13] + Math.fma(maxZ, sd[9], _t22) * _t41_inv;
-        double _t99 = viewData[13] + Math.fma(maxZ, sd[9], _t23) * _t43_inv;
-        double _t100 = viewData[14] + Math.fma(minZ, sd[10], _t24) * _t29_inv;
-        double _t101 = viewData[14] + Math.fma(minZ, sd[10], _t25) * _t31_inv;
-        double _t102 = viewData[14] + Math.fma(minZ, sd[10], _t26) * _t33_inv;
-        double _t103 = viewData[14] + Math.fma(minZ, sd[10], _t27) * _t35_inv;
-        double _t104 = viewData[14] + Math.fma(maxZ, sd[10], _t24) * _t37_inv;
-        double _t105 = viewData[14] + Math.fma(maxZ, sd[10], _t25) * _t39_inv;
-        double _t106 = viewData[14] + Math.fma(maxZ, sd[10], _t26) * _t41_inv;
-        double _t107 = viewData[14] + Math.fma(maxZ, sd[10], _t27) * _t43_inv;
-        double _t144 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t84, _t85), _t86), _t87), _t88), _t89), _t90), _t91);
-        double _t145 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t84, _t85), _t86), _t87), _t88), _t89), _t90), _t91);
-        double _t146 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t92, _t93), _t94), _t95), _t96), _t97), _t98), _t99);
-        double _t147 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t92, _t93), _t94), _t95), _t96), _t97), _t98), _t99);
-        double _t148 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107);
-        double _t149 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107);
-        double _t150_inv = 1.0 / (_t144 - _t145);
-        double _t151_inv = 1.0 / (_t146 - _t147);
-        double _t152_inv = 1.0 / (_t148 - _t149);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t150_inv + _t150_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t151_inv + _t151_inv);
-        var _col2 = _sv0.withLane(2, -2.0 * _t152_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t145);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t144);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, -_t149 - _t148).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t145).withLane(1, _t147).add(DoubleVector.broadcast(COL_SPECIES, _t144).withLane(1, _t146)).withLane(2, -_t149 - _t148).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -37816,11 +34472,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_general(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_general_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_lh_general_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_general_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -37909,115 +34560,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t223_inv = 1.0 / (_t218 - _t219);
         double _t224_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179) - _t221);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t222_inv + _t222_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t222_inv + _t222_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t223_inv + _t223_inv);
         var _col2 = _sv0.withLane(2, _t224_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t217);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t216);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).withLane(2, _t221).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv).withLane(2, _t224_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_general_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t4 = sd[14] + sd[2];
-        double _t5 = sd[12] + sd[0];
-        double _t6 = sd[13] + sd[1];
-        double _t7 = sd[15] + sd[3];
-        double _t12 = sd[14] - sd[2] - sd[6];
-        double _t13 = sd[12] - sd[0] - sd[4];
-        double _t14 = sd[13] - sd[1] - sd[5];
-        double _t15 = sd[15] - sd[3] - sd[7];
-        double _t16 = _t4 - sd[6];
-        double _t17 = _t5 - sd[4];
-        double _t18 = _t6 - sd[5];
-        double _t19 = _t7 - sd[7];
-        double _t20 = sd[14] + sd[6] - sd[2];
-        double _t21 = sd[12] + sd[4] - sd[0];
-        double _t22 = sd[13] + sd[5] - sd[1];
-        double _t23 = sd[15] + sd[7] - sd[3];
-        double _t24 = _t4 + sd[6];
-        double _t25 = _t5 + sd[4];
-        double _t26 = _t6 + sd[5];
-        double _t27 = _t7 + sd[7];
-        double _t28 = Math.fma(minZ, sd[10], _t12);
-        double _t29 = Math.fma(minZ, sd[8], _t13);
-        double _t30 = Math.fma(minZ, sd[9], _t14);
-        double _t31_inv = 1.0 / Math.fma(minZ, sd[11], _t15);
-        double _t32 = Math.fma(minZ, sd[10], _t16);
-        double _t33 = Math.fma(minZ, sd[8], _t17);
-        double _t34 = Math.fma(minZ, sd[9], _t18);
-        double _t35_inv = 1.0 / Math.fma(minZ, sd[11], _t19);
-        double _t36 = Math.fma(minZ, sd[10], _t20);
-        double _t37 = Math.fma(minZ, sd[8], _t21);
-        double _t38 = Math.fma(minZ, sd[9], _t22);
-        double _t39_inv = 1.0 / Math.fma(minZ, sd[11], _t23);
-        double _t40 = Math.fma(minZ, sd[10], _t24);
-        double _t41 = Math.fma(minZ, sd[8], _t25);
-        double _t42 = Math.fma(minZ, sd[9], _t26);
-        double _t43_inv = 1.0 / Math.fma(minZ, sd[11], _t27);
-        double _t44 = Math.fma(maxZ, sd[10], _t12);
-        double _t45 = Math.fma(maxZ, sd[8], _t13);
-        double _t46 = Math.fma(maxZ, sd[9], _t14);
-        double _t47_inv = 1.0 / Math.fma(maxZ, sd[11], _t15);
-        double _t48 = Math.fma(maxZ, sd[10], _t16);
-        double _t49 = Math.fma(maxZ, sd[8], _t17);
-        double _t50 = Math.fma(maxZ, sd[9], _t18);
-        double _t51_inv = 1.0 / Math.fma(maxZ, sd[11], _t19);
-        double _t52 = Math.fma(maxZ, sd[10], _t20);
-        double _t53 = Math.fma(maxZ, sd[8], _t21);
-        double _t54 = Math.fma(maxZ, sd[9], _t22);
-        double _t55_inv = 1.0 / Math.fma(maxZ, sd[11], _t23);
-        double _t56 = Math.fma(maxZ, sd[10], _t24);
-        double _t57 = Math.fma(maxZ, sd[8], _t25);
-        double _t58 = Math.fma(maxZ, sd[9], _t26);
-        double _t59_inv = 1.0 / Math.fma(maxZ, sd[11], _t27);
-        double _t156 = viewData[12] + Math.fma(viewData[8], _t28, Math.fma(viewData[0], _t29, viewData[4] * _t30)) * _t31_inv;
-        double _t157 = viewData[12] + Math.fma(viewData[8], _t32, Math.fma(viewData[0], _t33, viewData[4] * _t34)) * _t35_inv;
-        double _t158 = viewData[12] + Math.fma(viewData[8], _t36, Math.fma(viewData[0], _t37, viewData[4] * _t38)) * _t39_inv;
-        double _t159 = viewData[12] + Math.fma(viewData[8], _t40, Math.fma(viewData[0], _t41, viewData[4] * _t42)) * _t43_inv;
-        double _t160 = viewData[12] + Math.fma(viewData[8], _t44, Math.fma(viewData[0], _t45, viewData[4] * _t46)) * _t47_inv;
-        double _t161 = viewData[12] + Math.fma(viewData[8], _t48, Math.fma(viewData[0], _t49, viewData[4] * _t50)) * _t51_inv;
-        double _t162 = viewData[12] + Math.fma(viewData[8], _t52, Math.fma(viewData[0], _t53, viewData[4] * _t54)) * _t55_inv;
-        double _t163 = viewData[12] + Math.fma(viewData[8], _t56, Math.fma(viewData[0], _t57, viewData[4] * _t58)) * _t59_inv;
-        double _t164 = viewData[13] + Math.fma(viewData[9], _t28, Math.fma(viewData[1], _t29, viewData[5] * _t30)) * _t31_inv;
-        double _t165 = viewData[13] + Math.fma(viewData[9], _t32, Math.fma(viewData[1], _t33, viewData[5] * _t34)) * _t35_inv;
-        double _t166 = viewData[13] + Math.fma(viewData[9], _t36, Math.fma(viewData[1], _t37, viewData[5] * _t38)) * _t39_inv;
-        double _t167 = viewData[13] + Math.fma(viewData[9], _t40, Math.fma(viewData[1], _t41, viewData[5] * _t42)) * _t43_inv;
-        double _t168 = viewData[13] + Math.fma(viewData[9], _t44, Math.fma(viewData[1], _t45, viewData[5] * _t46)) * _t47_inv;
-        double _t169 = viewData[13] + Math.fma(viewData[9], _t48, Math.fma(viewData[1], _t49, viewData[5] * _t50)) * _t51_inv;
-        double _t170 = viewData[13] + Math.fma(viewData[9], _t52, Math.fma(viewData[1], _t53, viewData[5] * _t54)) * _t55_inv;
-        double _t171 = viewData[13] + Math.fma(viewData[9], _t56, Math.fma(viewData[1], _t57, viewData[5] * _t58)) * _t59_inv;
-        double _t172 = viewData[14] + Math.fma(viewData[10], _t28, Math.fma(viewData[2], _t29, viewData[6] * _t30)) * _t31_inv;
-        double _t173 = viewData[14] + Math.fma(viewData[10], _t32, Math.fma(viewData[2], _t33, viewData[6] * _t34)) * _t35_inv;
-        double _t174 = viewData[14] + Math.fma(viewData[10], _t36, Math.fma(viewData[2], _t37, viewData[6] * _t38)) * _t39_inv;
-        double _t175 = viewData[14] + Math.fma(viewData[10], _t40, Math.fma(viewData[2], _t41, viewData[6] * _t42)) * _t43_inv;
-        double _t176 = viewData[14] + Math.fma(viewData[10], _t44, Math.fma(viewData[2], _t45, viewData[6] * _t46)) * _t47_inv;
-        double _t177 = viewData[14] + Math.fma(viewData[10], _t48, Math.fma(viewData[2], _t49, viewData[6] * _t50)) * _t51_inv;
-        double _t178 = viewData[14] + Math.fma(viewData[10], _t52, Math.fma(viewData[2], _t53, viewData[6] * _t54)) * _t55_inv;
-        double _t179 = viewData[14] + Math.fma(viewData[10], _t56, Math.fma(viewData[2], _t57, viewData[6] * _t58)) * _t59_inv;
-        double _t216 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t156, _t157), _t158), _t159), _t160), _t161), _t162), _t163);
-        double _t217 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t156, _t157), _t158), _t159), _t160), _t161), _t162), _t163);
-        double _t218 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t164, _t165), _t166), _t167), _t168), _t169), _t170), _t171);
-        double _t219 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t164, _t165), _t166), _t167), _t168), _t169), _t170), _t171);
-        double _t221 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
-        double _t222_inv = 1.0 / (_t216 - _t217);
-        double _t223_inv = 1.0 / (_t218 - _t219);
-        double _t224_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179) - _t221);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t222_inv + _t222_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t223_inv + _t223_inv);
-        var _col2 = _sv0.withLane(2, _t224_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t217);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t216);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).withLane(2, _t221).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv).withLane(2, _t224_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t217).withLane(1, _t219).add(DoubleVector.broadcast(COL_SPECIES, _t216).withLane(1, _t218)).withLane(2, _t221).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv).withLane(2, _t224_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -38033,11 +34579,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_identity(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_identity_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_lh_identity_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_identity_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -38089,78 +34630,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t88_inv = 1.0 / (_t83 - _t84);
         double _t89_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44) - _t86);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
         var _col2 = _sv0.withLane(2, _t89_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, _t86).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_identity_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t1 = viewData[12] + viewData[0];
-        double _t4 = viewData[13] + viewData[1];
-        double _t7 = viewData[14] + viewData[2];
-        double _t9 = viewData[12] - viewData[0] - viewData[4];
-        double _t10 = _t1 - viewData[4];
-        double _t11 = viewData[12] + viewData[4] - viewData[0];
-        double _t12 = _t1 + viewData[4];
-        double _t13 = viewData[13] - viewData[1] - viewData[5];
-        double _t14 = _t4 - viewData[5];
-        double _t15 = viewData[13] + viewData[5] - viewData[1];
-        double _t16 = _t4 + viewData[5];
-        double _t17 = viewData[14] - viewData[2] - viewData[6];
-        double _t18 = _t7 - viewData[6];
-        double _t19 = viewData[14] + viewData[6] - viewData[2];
-        double _t20 = _t7 + viewData[6];
-        double _t21 = Math.fma(minZ, viewData[8], _t9);
-        double _t22 = Math.fma(minZ, viewData[8], _t10);
-        double _t23 = Math.fma(minZ, viewData[8], _t11);
-        double _t24 = Math.fma(minZ, viewData[8], _t12);
-        double _t25 = Math.fma(maxZ, viewData[8], _t9);
-        double _t26 = Math.fma(maxZ, viewData[8], _t10);
-        double _t27 = Math.fma(maxZ, viewData[8], _t11);
-        double _t28 = Math.fma(maxZ, viewData[8], _t12);
-        double _t29 = Math.fma(minZ, viewData[9], _t13);
-        double _t30 = Math.fma(minZ, viewData[9], _t14);
-        double _t31 = Math.fma(minZ, viewData[9], _t15);
-        double _t32 = Math.fma(minZ, viewData[9], _t16);
-        double _t33 = Math.fma(maxZ, viewData[9], _t13);
-        double _t34 = Math.fma(maxZ, viewData[9], _t14);
-        double _t35 = Math.fma(maxZ, viewData[9], _t15);
-        double _t36 = Math.fma(maxZ, viewData[9], _t16);
-        double _t37 = Math.fma(minZ, viewData[10], _t17);
-        double _t38 = Math.fma(minZ, viewData[10], _t18);
-        double _t39 = Math.fma(minZ, viewData[10], _t19);
-        double _t40 = Math.fma(minZ, viewData[10], _t20);
-        double _t41 = Math.fma(maxZ, viewData[10], _t17);
-        double _t42 = Math.fma(maxZ, viewData[10], _t18);
-        double _t43 = Math.fma(maxZ, viewData[10], _t19);
-        double _t44 = Math.fma(maxZ, viewData[10], _t20);
-        double _t81 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
-        double _t82 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
-        double _t83 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t29, _t30), _t31), _t32), _t33), _t34), _t35), _t36);
-        double _t84 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t29, _t30), _t31), _t32), _t33), _t34), _t35), _t36);
-        double _t86 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44);
-        double _t87_inv = 1.0 / (_t81 - _t82);
-        double _t88_inv = 1.0 / (_t83 - _t84);
-        double _t89_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44) - _t86);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
-        var _col2 = _sv0.withLane(2, _t89_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, _t86).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t82).withLane(1, _t84).add(DoubleVector.broadcast(COL_SPECIES, _t81).withLane(1, _t83)).withLane(2, _t86).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -38176,11 +34649,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_translation(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_translation_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_lh_translation_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_translation_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -38241,87 +34709,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t91_inv = 1.0 / (_t86 - _t87);
         double _t92_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47) - _t89);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
         var _col2 = _sv0.withLane(2, _t92_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, _t89).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_translation_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = -1.0 + sd[12];
-        double _t1 = -1.0 + sd[13];
-        double _t2 = minZ + sd[14];
-        double _t3 = 1.0 + sd[12];
-        double _t4 = 1.0 + sd[13];
-        double _t5 = maxZ + sd[14];
-        double _t6 = Math.fma(viewData[8], _t2, viewData[12]);
-        double _t7 = Math.fma(viewData[8], _t5, viewData[12]);
-        double _t8 = Math.fma(viewData[9], _t2, viewData[13]);
-        double _t9 = Math.fma(viewData[9], _t5, viewData[13]);
-        double _t10 = Math.fma(viewData[10], _t2, viewData[14]);
-        double _t11 = Math.fma(viewData[10], _t5, viewData[14]);
-        double _t12 = Math.fma(viewData[4], _t1, _t6);
-        double _t13 = Math.fma(viewData[4], _t4, _t6);
-        double _t14 = Math.fma(viewData[4], _t1, _t7);
-        double _t15 = Math.fma(viewData[4], _t4, _t7);
-        double _t16 = Math.fma(viewData[5], _t1, _t8);
-        double _t17 = Math.fma(viewData[5], _t4, _t8);
-        double _t18 = Math.fma(viewData[5], _t1, _t9);
-        double _t19 = Math.fma(viewData[5], _t4, _t9);
-        double _t20 = Math.fma(viewData[6], _t1, _t10);
-        double _t21 = Math.fma(viewData[6], _t4, _t10);
-        double _t22 = Math.fma(viewData[6], _t1, _t11);
-        double _t23 = Math.fma(viewData[6], _t4, _t11);
-        double _t24 = Math.fma(viewData[0], _t0, _t12);
-        double _t25 = Math.fma(viewData[0], _t3, _t12);
-        double _t26 = Math.fma(viewData[0], _t0, _t13);
-        double _t27 = Math.fma(viewData[0], _t3, _t13);
-        double _t28 = Math.fma(viewData[0], _t0, _t14);
-        double _t29 = Math.fma(viewData[0], _t3, _t14);
-        double _t30 = Math.fma(viewData[0], _t0, _t15);
-        double _t31 = Math.fma(viewData[0], _t3, _t15);
-        double _t32 = Math.fma(viewData[1], _t0, _t16);
-        double _t33 = Math.fma(viewData[1], _t3, _t16);
-        double _t34 = Math.fma(viewData[1], _t0, _t17);
-        double _t35 = Math.fma(viewData[1], _t3, _t17);
-        double _t36 = Math.fma(viewData[1], _t0, _t18);
-        double _t37 = Math.fma(viewData[1], _t3, _t18);
-        double _t38 = Math.fma(viewData[1], _t0, _t19);
-        double _t39 = Math.fma(viewData[1], _t3, _t19);
-        double _t40 = Math.fma(viewData[2], _t0, _t20);
-        double _t41 = Math.fma(viewData[2], _t3, _t20);
-        double _t42 = Math.fma(viewData[2], _t0, _t21);
-        double _t43 = Math.fma(viewData[2], _t3, _t21);
-        double _t44 = Math.fma(viewData[2], _t0, _t22);
-        double _t45 = Math.fma(viewData[2], _t3, _t22);
-        double _t46 = Math.fma(viewData[2], _t0, _t23);
-        double _t47 = Math.fma(viewData[2], _t3, _t23);
-        double _t84 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t24, _t25), _t26), _t27), _t28), _t29), _t30), _t31);
-        double _t85 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t24, _t25), _t26), _t27), _t28), _t29), _t30), _t31);
-        double _t86 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t32, _t33), _t34), _t35), _t36), _t37), _t38), _t39);
-        double _t87 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t32, _t33), _t34), _t35), _t36), _t37), _t38), _t39);
-        double _t89 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
-        double _t90_inv = 1.0 / (_t84 - _t85);
-        double _t91_inv = 1.0 / (_t86 - _t87);
-        double _t92_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47) - _t89);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
-        var _col2 = _sv0.withLane(2, _t92_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, _t89).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t85).withLane(1, _t87).add(DoubleVector.broadcast(COL_SPECIES, _t84).withLane(1, _t86)).withLane(2, _t89).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -38337,11 +34728,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_orthogonal(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_orthogonal_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_lh_orthogonal_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_orthogonal_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -38417,102 +34803,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t160_inv = 1.0 / (_t155 - _t156);
         double _t161_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t109, _t110), _t111), _t112), _t113), _t114), _t115), _t116) - _t158);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t159_inv + _t159_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t159_inv + _t159_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t160_inv + _t160_inv);
         var _col2 = _sv0.withLane(2, _t161_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t154);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t153);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).withLane(2, _t158).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv).withLane(2, _t161_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_orthogonal_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t3 = sd[12] + sd[0];
-        double _t4 = sd[13] + sd[1];
-        double _t5 = sd[14] + sd[2];
-        double _t9 = sd[12] - sd[0] - sd[4];
-        double _t10 = sd[13] - sd[1] - sd[5];
-        double _t11 = sd[14] - sd[2] - sd[6];
-        double _t12 = _t3 - sd[4];
-        double _t13 = _t4 - sd[5];
-        double _t14 = _t5 - sd[6];
-        double _t15 = sd[12] + sd[4] - sd[0];
-        double _t16 = sd[13] + sd[5] - sd[1];
-        double _t17 = sd[14] + sd[6] - sd[2];
-        double _t18 = _t3 + sd[4];
-        double _t19 = _t4 + sd[5];
-        double _t20 = _t5 + sd[6];
-        double _t21 = Math.fma(minZ, sd[8], _t9);
-        double _t22 = Math.fma(minZ, sd[9], _t10);
-        double _t23 = Math.fma(minZ, sd[10], _t11);
-        double _t24 = Math.fma(minZ, sd[8], _t12);
-        double _t25 = Math.fma(minZ, sd[9], _t13);
-        double _t26 = Math.fma(minZ, sd[10], _t14);
-        double _t27 = Math.fma(minZ, sd[8], _t15);
-        double _t28 = Math.fma(minZ, sd[9], _t16);
-        double _t29 = Math.fma(minZ, sd[10], _t17);
-        double _t30 = Math.fma(minZ, sd[8], _t18);
-        double _t31 = Math.fma(minZ, sd[9], _t19);
-        double _t32 = Math.fma(minZ, sd[10], _t20);
-        double _t33 = Math.fma(maxZ, sd[8], _t9);
-        double _t34 = Math.fma(maxZ, sd[9], _t10);
-        double _t35 = Math.fma(maxZ, sd[10], _t11);
-        double _t36 = Math.fma(maxZ, sd[8], _t12);
-        double _t37 = Math.fma(maxZ, sd[9], _t13);
-        double _t38 = Math.fma(maxZ, sd[10], _t14);
-        double _t39 = Math.fma(maxZ, sd[8], _t15);
-        double _t40 = Math.fma(maxZ, sd[9], _t16);
-        double _t41 = Math.fma(maxZ, sd[10], _t17);
-        double _t42 = Math.fma(maxZ, sd[8], _t18);
-        double _t43 = Math.fma(maxZ, sd[9], _t19);
-        double _t44 = Math.fma(maxZ, sd[10], _t20);
-        double _t93 = Math.fma(viewData[0], _t21, Math.fma(viewData[4], _t22, Math.fma(viewData[8], _t23, viewData[12])));
-        double _t94 = Math.fma(viewData[0], _t24, Math.fma(viewData[4], _t25, Math.fma(viewData[8], _t26, viewData[12])));
-        double _t95 = Math.fma(viewData[0], _t27, Math.fma(viewData[4], _t28, Math.fma(viewData[8], _t29, viewData[12])));
-        double _t96 = Math.fma(viewData[0], _t30, Math.fma(viewData[4], _t31, Math.fma(viewData[8], _t32, viewData[12])));
-        double _t97 = Math.fma(viewData[0], _t33, Math.fma(viewData[4], _t34, Math.fma(viewData[8], _t35, viewData[12])));
-        double _t98 = Math.fma(viewData[0], _t36, Math.fma(viewData[4], _t37, Math.fma(viewData[8], _t38, viewData[12])));
-        double _t99 = Math.fma(viewData[0], _t39, Math.fma(viewData[4], _t40, Math.fma(viewData[8], _t41, viewData[12])));
-        double _t100 = Math.fma(viewData[0], _t42, Math.fma(viewData[4], _t43, Math.fma(viewData[8], _t44, viewData[12])));
-        double _t101 = Math.fma(viewData[1], _t21, Math.fma(viewData[5], _t22, Math.fma(viewData[9], _t23, viewData[13])));
-        double _t102 = Math.fma(viewData[1], _t24, Math.fma(viewData[5], _t25, Math.fma(viewData[9], _t26, viewData[13])));
-        double _t103 = Math.fma(viewData[1], _t27, Math.fma(viewData[5], _t28, Math.fma(viewData[9], _t29, viewData[13])));
-        double _t104 = Math.fma(viewData[1], _t30, Math.fma(viewData[5], _t31, Math.fma(viewData[9], _t32, viewData[13])));
-        double _t105 = Math.fma(viewData[1], _t33, Math.fma(viewData[5], _t34, Math.fma(viewData[9], _t35, viewData[13])));
-        double _t106 = Math.fma(viewData[1], _t36, Math.fma(viewData[5], _t37, Math.fma(viewData[9], _t38, viewData[13])));
-        double _t107 = Math.fma(viewData[1], _t39, Math.fma(viewData[5], _t40, Math.fma(viewData[9], _t41, viewData[13])));
-        double _t108 = Math.fma(viewData[1], _t42, Math.fma(viewData[5], _t43, Math.fma(viewData[9], _t44, viewData[13])));
-        double _t109 = Math.fma(viewData[2], _t21, Math.fma(viewData[6], _t22, Math.fma(viewData[10], _t23, viewData[14])));
-        double _t110 = Math.fma(viewData[2], _t24, Math.fma(viewData[6], _t25, Math.fma(viewData[10], _t26, viewData[14])));
-        double _t111 = Math.fma(viewData[2], _t27, Math.fma(viewData[6], _t28, Math.fma(viewData[10], _t29, viewData[14])));
-        double _t112 = Math.fma(viewData[2], _t30, Math.fma(viewData[6], _t31, Math.fma(viewData[10], _t32, viewData[14])));
-        double _t113 = Math.fma(viewData[2], _t33, Math.fma(viewData[6], _t34, Math.fma(viewData[10], _t35, viewData[14])));
-        double _t114 = Math.fma(viewData[2], _t36, Math.fma(viewData[6], _t37, Math.fma(viewData[10], _t38, viewData[14])));
-        double _t115 = Math.fma(viewData[2], _t39, Math.fma(viewData[6], _t40, Math.fma(viewData[10], _t41, viewData[14])));
-        double _t116 = Math.fma(viewData[2], _t42, Math.fma(viewData[6], _t43, Math.fma(viewData[10], _t44, viewData[14])));
-        double _t153 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t93, _t94), _t95), _t96), _t97), _t98), _t99), _t100);
-        double _t154 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t93, _t94), _t95), _t96), _t97), _t98), _t99), _t100);
-        double _t155 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t101, _t102), _t103), _t104), _t105), _t106), _t107), _t108);
-        double _t156 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t101, _t102), _t103), _t104), _t105), _t106), _t107), _t108);
-        double _t158 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t109, _t110), _t111), _t112), _t113), _t114), _t115), _t116);
-        double _t159_inv = 1.0 / (_t153 - _t154);
-        double _t160_inv = 1.0 / (_t155 - _t156);
-        double _t161_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t109, _t110), _t111), _t112), _t113), _t114), _t115), _t116) - _t158);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t159_inv + _t159_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t160_inv + _t160_inv);
-        var _col2 = _sv0.withLane(2, _t161_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t154);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t153);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).withLane(2, _t158).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv).withLane(2, _t161_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t154).withLane(1, _t156).add(DoubleVector.broadcast(COL_SPECIES, _t153).withLane(1, _t155)).withLane(2, _t158).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv).withLane(2, _t161_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -38555,11 +34849,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_identity_translation(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_identity_translation_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_lh_identity_translation_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_identity_translation_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -38578,45 +34867,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / (_t36 - _t37);
         double _t42_inv = 1.0 / (_t38 - _t39);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
         var _col2 = _sv0.withLane(2, _t40_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_identity_translation_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = -1.0 + viewData[12];
-        double _t1 = 1.0 + viewData[12];
-        double _t2 = -1.0 + viewData[13];
-        double _t3 = 1.0 + viewData[13];
-        double _t4 = minZ + viewData[14];
-        double _t5 = maxZ + viewData[14];
-        double _t29 = Math.min(Math.min(Math.min(Math.min(_t4, _t5), _t5), _t5), _t5);
-        double _t36 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t37 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t38 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t39 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t40_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(_t4, _t5), _t5), _t5), _t5) - _t29);
-        double _t41_inv = 1.0 / (_t36 - _t37);
-        double _t42_inv = 1.0 / (_t38 - _t39);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
-        var _col2 = _sv0.withLane(2, _t40_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t39).withLane(1, _t37).add(DoubleVector.broadcast(COL_SPECIES, _t38).withLane(1, _t36)).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -38632,11 +34886,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_translation_identity(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_translation_identity_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_lh_translation_identity_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_translation_identity_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -38655,45 +34904,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / (_t36 - _t37);
         double _t42_inv = 1.0 / (_t38 - _t39);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
         var _col2 = _sv0.withLane(2, _t40_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_translation_identity_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = -1.0 + sd[12];
-        double _t1 = 1.0 + sd[12];
-        double _t2 = -1.0 + sd[13];
-        double _t3 = 1.0 + sd[13];
-        double _t4 = minZ + sd[14];
-        double _t5 = maxZ + sd[14];
-        double _t29 = Math.min(Math.min(Math.min(Math.min(_t4, _t5), _t5), _t5), _t5);
-        double _t36 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t37 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t38 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t39 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t40_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(_t4, _t5), _t5), _t5), _t5) - _t29);
-        double _t41_inv = 1.0 / (_t36 - _t37);
-        double _t42_inv = 1.0 / (_t38 - _t39);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
-        var _col2 = _sv0.withLane(2, _t40_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t39).withLane(1, _t37).add(DoubleVector.broadcast(COL_SPECIES, _t38).withLane(1, _t36)).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -38709,11 +34923,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_translation_translation(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_translation_translation_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_lh_translation_translation_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_translation_translation_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -38732,45 +34941,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t47_inv = 1.0 / (_t42 - _t43);
         double _t48_inv = 1.0 / (_t44 - _t45);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t48_inv + _t48_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t48_inv + _t48_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t47_inv + _t47_inv);
         var _col2 = _sv0.withLane(2, _t46_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t45);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t44);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, _t35).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_translation_translation_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t6 = viewData[12] + (-1.0 + sd[12]);
-        double _t7 = viewData[12] + (1.0 + sd[12]);
-        double _t8 = viewData[13] + (-1.0 + sd[13]);
-        double _t9 = viewData[13] + (1.0 + sd[13]);
-        double _t10 = viewData[14] + (minZ + sd[14]);
-        double _t11 = viewData[14] + (maxZ + sd[14]);
-        double _t35 = Math.min(Math.min(Math.min(Math.min(_t10, _t11), _t11), _t11), _t11);
-        double _t42 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t8, _t9), _t9), _t8), _t8), _t9), _t9);
-        double _t43 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t8, _t9), _t9), _t8), _t8), _t9), _t9);
-        double _t44 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t6, _t7), _t6), _t7), _t6), _t7), _t6), _t7);
-        double _t45 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t6, _t7), _t6), _t7), _t6), _t7), _t6), _t7);
-        double _t46_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(_t10, _t11), _t11), _t11), _t11) - _t35);
-        double _t47_inv = 1.0 / (_t42 - _t43);
-        double _t48_inv = 1.0 / (_t44 - _t45);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t48_inv + _t48_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t47_inv + _t47_inv);
-        var _col2 = _sv0.withLane(2, _t46_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t45);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t44);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, _t35).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t45).withLane(1, _t43).add(DoubleVector.broadcast(COL_SPECIES, _t44).withLane(1, _t42)).withLane(2, _t35).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -38786,11 +34960,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_orthogonal_identity(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_orthogonal_identity_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_lh_orthogonal_identity_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_orthogonal_identity_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -38842,78 +35011,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t88_inv = 1.0 / (_t83 - _t84);
         double _t89_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44) - _t86);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
         var _col2 = _sv0.withLane(2, _t89_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, _t86).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_orthogonal_identity_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t1 = sd[12] + sd[0];
-        double _t4 = sd[13] + sd[1];
-        double _t7 = sd[14] + sd[2];
-        double _t9 = sd[12] - sd[0] - sd[4];
-        double _t10 = _t1 - sd[4];
-        double _t11 = sd[12] + sd[4] - sd[0];
-        double _t12 = _t1 + sd[4];
-        double _t13 = sd[13] - sd[1] - sd[5];
-        double _t14 = _t4 - sd[5];
-        double _t15 = sd[13] + sd[5] - sd[1];
-        double _t16 = _t4 + sd[5];
-        double _t17 = sd[14] - sd[2] - sd[6];
-        double _t18 = _t7 - sd[6];
-        double _t19 = sd[14] + sd[6] - sd[2];
-        double _t20 = _t7 + sd[6];
-        double _t21 = Math.fma(minZ, sd[8], _t9);
-        double _t22 = Math.fma(minZ, sd[8], _t10);
-        double _t23 = Math.fma(minZ, sd[8], _t11);
-        double _t24 = Math.fma(minZ, sd[8], _t12);
-        double _t25 = Math.fma(maxZ, sd[8], _t9);
-        double _t26 = Math.fma(maxZ, sd[8], _t10);
-        double _t27 = Math.fma(maxZ, sd[8], _t11);
-        double _t28 = Math.fma(maxZ, sd[8], _t12);
-        double _t29 = Math.fma(minZ, sd[9], _t13);
-        double _t30 = Math.fma(minZ, sd[9], _t14);
-        double _t31 = Math.fma(minZ, sd[9], _t15);
-        double _t32 = Math.fma(minZ, sd[9], _t16);
-        double _t33 = Math.fma(maxZ, sd[9], _t13);
-        double _t34 = Math.fma(maxZ, sd[9], _t14);
-        double _t35 = Math.fma(maxZ, sd[9], _t15);
-        double _t36 = Math.fma(maxZ, sd[9], _t16);
-        double _t37 = Math.fma(minZ, sd[10], _t17);
-        double _t38 = Math.fma(minZ, sd[10], _t18);
-        double _t39 = Math.fma(minZ, sd[10], _t19);
-        double _t40 = Math.fma(minZ, sd[10], _t20);
-        double _t41 = Math.fma(maxZ, sd[10], _t17);
-        double _t42 = Math.fma(maxZ, sd[10], _t18);
-        double _t43 = Math.fma(maxZ, sd[10], _t19);
-        double _t44 = Math.fma(maxZ, sd[10], _t20);
-        double _t81 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
-        double _t82 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
-        double _t83 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t29, _t30), _t31), _t32), _t33), _t34), _t35), _t36);
-        double _t84 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t29, _t30), _t31), _t32), _t33), _t34), _t35), _t36);
-        double _t86 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44);
-        double _t87_inv = 1.0 / (_t81 - _t82);
-        double _t88_inv = 1.0 / (_t83 - _t84);
-        double _t89_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44) - _t86);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
-        var _col2 = _sv0.withLane(2, _t89_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, _t86).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t82).withLane(1, _t84).add(DoubleVector.broadcast(COL_SPECIES, _t81).withLane(1, _t83)).withLane(2, _t86).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -38929,11 +35030,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_orthogonal_translation(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_orthogonal_translation_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_lh_orthogonal_translation_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_orthogonal_translation_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -38988,81 +35084,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t91_inv = 1.0 / (_t86 - _t87);
         double _t92_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47) - _t89);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
         var _col2 = _sv0.withLane(2, _t92_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, _t89).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_orthogonal_translation_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = viewData[12] + sd[12];
-        double _t1 = viewData[13] + sd[13];
-        double _t2 = viewData[14] + sd[14];
-        double _t4 = _t0 + sd[0];
-        double _t7 = _t1 + sd[1];
-        double _t10 = _t2 + sd[2];
-        double _t12 = _t0 - sd[0] - sd[4];
-        double _t13 = _t4 - sd[4];
-        double _t14 = _t0 + sd[4] - sd[0];
-        double _t15 = _t4 + sd[4];
-        double _t16 = _t1 - sd[1] - sd[5];
-        double _t17 = _t7 - sd[5];
-        double _t18 = _t1 + sd[5] - sd[1];
-        double _t19 = _t7 + sd[5];
-        double _t20 = _t2 - sd[2] - sd[6];
-        double _t21 = _t10 - sd[6];
-        double _t22 = _t2 + sd[6] - sd[2];
-        double _t23 = _t10 + sd[6];
-        double _t24 = Math.fma(minZ, sd[8], _t12);
-        double _t25 = Math.fma(minZ, sd[8], _t13);
-        double _t26 = Math.fma(minZ, sd[8], _t14);
-        double _t27 = Math.fma(minZ, sd[8], _t15);
-        double _t28 = Math.fma(maxZ, sd[8], _t12);
-        double _t29 = Math.fma(maxZ, sd[8], _t13);
-        double _t30 = Math.fma(maxZ, sd[8], _t14);
-        double _t31 = Math.fma(maxZ, sd[8], _t15);
-        double _t32 = Math.fma(minZ, sd[9], _t16);
-        double _t33 = Math.fma(minZ, sd[9], _t17);
-        double _t34 = Math.fma(minZ, sd[9], _t18);
-        double _t35 = Math.fma(minZ, sd[9], _t19);
-        double _t36 = Math.fma(maxZ, sd[9], _t16);
-        double _t37 = Math.fma(maxZ, sd[9], _t17);
-        double _t38 = Math.fma(maxZ, sd[9], _t18);
-        double _t39 = Math.fma(maxZ, sd[9], _t19);
-        double _t40 = Math.fma(minZ, sd[10], _t20);
-        double _t41 = Math.fma(minZ, sd[10], _t21);
-        double _t42 = Math.fma(minZ, sd[10], _t22);
-        double _t43 = Math.fma(minZ, sd[10], _t23);
-        double _t44 = Math.fma(maxZ, sd[10], _t20);
-        double _t45 = Math.fma(maxZ, sd[10], _t21);
-        double _t46 = Math.fma(maxZ, sd[10], _t22);
-        double _t47 = Math.fma(maxZ, sd[10], _t23);
-        double _t84 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t24, _t25), _t26), _t27), _t28), _t29), _t30), _t31);
-        double _t85 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t24, _t25), _t26), _t27), _t28), _t29), _t30), _t31);
-        double _t86 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t32, _t33), _t34), _t35), _t36), _t37), _t38), _t39);
-        double _t87 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t32, _t33), _t34), _t35), _t36), _t37), _t38), _t39);
-        double _t89 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
-        double _t90_inv = 1.0 / (_t84 - _t85);
-        double _t91_inv = 1.0 / (_t86 - _t87);
-        double _t92_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47) - _t89);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
-        var _col2 = _sv0.withLane(2, _t92_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, _t89).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t85).withLane(1, _t87).add(DoubleVector.broadcast(COL_SPECIES, _t84).withLane(1, _t86)).withLane(2, _t89).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39078,11 +35103,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_general_identity(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_general_identity_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_lh_general_identity_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_general_identity_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -39147,91 +35167,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t127_inv = 1.0 / (_t122 - _t123);
         double _t128_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83) - _t125);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t126_inv + _t126_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t126_inv + _t126_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t127_inv + _t127_inv);
         var _col2 = _sv0.withLane(2, _t128_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t121);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t120);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).withLane(2, _t125).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv).withLane(2, _t128_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_general_identity_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t2 = sd[12] + sd[0];
-        double _t3 = sd[15] + sd[3];
-        double _t7 = sd[13] + sd[1];
-        double _t10 = sd[14] + sd[2];
-        double _t12 = sd[12] - sd[0] - sd[4];
-        double _t13 = sd[15] - sd[3] - sd[7];
-        double _t14 = _t2 - sd[4];
-        double _t15 = _t3 - sd[7];
-        double _t16 = sd[12] + sd[4] - sd[0];
-        double _t17 = sd[15] + sd[7] - sd[3];
-        double _t18 = _t2 + sd[4];
-        double _t19 = _t3 + sd[7];
-        double _t20 = sd[13] - sd[1] - sd[5];
-        double _t21 = _t7 - sd[5];
-        double _t22 = sd[13] + sd[5] - sd[1];
-        double _t23 = _t7 + sd[5];
-        double _t24 = sd[14] - sd[2] - sd[6];
-        double _t25 = _t10 - sd[6];
-        double _t26 = sd[14] + sd[6] - sd[2];
-        double _t27 = _t10 + sd[6];
-        double _t29_inv = 1.0 / Math.fma(minZ, sd[11], _t13);
-        double _t31_inv = 1.0 / Math.fma(minZ, sd[11], _t15);
-        double _t33_inv = 1.0 / Math.fma(minZ, sd[11], _t17);
-        double _t35_inv = 1.0 / Math.fma(minZ, sd[11], _t19);
-        double _t37_inv = 1.0 / Math.fma(maxZ, sd[11], _t13);
-        double _t39_inv = 1.0 / Math.fma(maxZ, sd[11], _t15);
-        double _t41_inv = 1.0 / Math.fma(maxZ, sd[11], _t17);
-        double _t43_inv = 1.0 / Math.fma(maxZ, sd[11], _t19);
-        double _t60 = Math.fma(minZ, sd[8], _t12) * _t29_inv;
-        double _t61 = Math.fma(minZ, sd[8], _t14) * _t31_inv;
-        double _t62 = Math.fma(minZ, sd[8], _t16) * _t33_inv;
-        double _t63 = Math.fma(minZ, sd[8], _t18) * _t35_inv;
-        double _t64 = Math.fma(maxZ, sd[8], _t12) * _t37_inv;
-        double _t65 = Math.fma(maxZ, sd[8], _t14) * _t39_inv;
-        double _t66 = Math.fma(maxZ, sd[8], _t16) * _t41_inv;
-        double _t67 = Math.fma(maxZ, sd[8], _t18) * _t43_inv;
-        double _t68 = Math.fma(minZ, sd[9], _t20) * _t29_inv;
-        double _t69 = Math.fma(minZ, sd[9], _t21) * _t31_inv;
-        double _t70 = Math.fma(minZ, sd[9], _t22) * _t33_inv;
-        double _t71 = Math.fma(minZ, sd[9], _t23) * _t35_inv;
-        double _t72 = Math.fma(maxZ, sd[9], _t20) * _t37_inv;
-        double _t73 = Math.fma(maxZ, sd[9], _t21) * _t39_inv;
-        double _t74 = Math.fma(maxZ, sd[9], _t22) * _t41_inv;
-        double _t75 = Math.fma(maxZ, sd[9], _t23) * _t43_inv;
-        double _t76 = Math.fma(minZ, sd[10], _t24) * _t29_inv;
-        double _t77 = Math.fma(minZ, sd[10], _t25) * _t31_inv;
-        double _t78 = Math.fma(minZ, sd[10], _t26) * _t33_inv;
-        double _t79 = Math.fma(minZ, sd[10], _t27) * _t35_inv;
-        double _t80 = Math.fma(maxZ, sd[10], _t24) * _t37_inv;
-        double _t81 = Math.fma(maxZ, sd[10], _t25) * _t39_inv;
-        double _t82 = Math.fma(maxZ, sd[10], _t26) * _t41_inv;
-        double _t83 = Math.fma(maxZ, sd[10], _t27) * _t43_inv;
-        double _t120 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t60, _t61), _t62), _t63), _t64), _t65), _t66), _t67);
-        double _t121 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t60, _t61), _t62), _t63), _t64), _t65), _t66), _t67);
-        double _t122 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t68, _t69), _t70), _t71), _t72), _t73), _t74), _t75);
-        double _t123 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t68, _t69), _t70), _t71), _t72), _t73), _t74), _t75);
-        double _t125 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83);
-        double _t126_inv = 1.0 / (_t120 - _t121);
-        double _t127_inv = 1.0 / (_t122 - _t123);
-        double _t128_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83) - _t125);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t126_inv + _t126_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t127_inv + _t127_inv);
-        var _col2 = _sv0.withLane(2, _t128_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t121);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t120);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).withLane(2, _t125).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv).withLane(2, _t128_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t121).withLane(1, _t123).add(DoubleVector.broadcast(COL_SPECIES, _t120).withLane(1, _t122)).withLane(2, _t125).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv).withLane(2, _t128_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39247,11 +35186,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_lh_general_translation(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_lh_general_translation_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_lh_general_translation_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_lh_general_translation_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -39316,91 +35250,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t151_inv = 1.0 / (_t146 - _t147);
         double _t152_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107) - _t149);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t150_inv + _t150_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t150_inv + _t150_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t151_inv + _t151_inv);
         var _col2 = _sv0.withLane(2, _t152_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t145);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t144);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, _t149).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_lh_general_translation_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t2 = sd[12] + sd[0];
-        double _t3 = sd[15] + sd[3];
-        double _t7 = sd[13] + sd[1];
-        double _t10 = sd[14] + sd[2];
-        double _t12 = sd[12] - sd[0] - sd[4];
-        double _t13 = sd[15] - sd[3] - sd[7];
-        double _t14 = _t2 - sd[4];
-        double _t15 = _t3 - sd[7];
-        double _t16 = sd[12] + sd[4] - sd[0];
-        double _t17 = sd[15] + sd[7] - sd[3];
-        double _t18 = _t2 + sd[4];
-        double _t19 = _t3 + sd[7];
-        double _t20 = sd[13] - sd[1] - sd[5];
-        double _t21 = _t7 - sd[5];
-        double _t22 = sd[13] + sd[5] - sd[1];
-        double _t23 = _t7 + sd[5];
-        double _t24 = sd[14] - sd[2] - sd[6];
-        double _t25 = _t10 - sd[6];
-        double _t26 = sd[14] + sd[6] - sd[2];
-        double _t27 = _t10 + sd[6];
-        double _t29_inv = 1.0 / Math.fma(minZ, sd[11], _t13);
-        double _t31_inv = 1.0 / Math.fma(minZ, sd[11], _t15);
-        double _t33_inv = 1.0 / Math.fma(minZ, sd[11], _t17);
-        double _t35_inv = 1.0 / Math.fma(minZ, sd[11], _t19);
-        double _t37_inv = 1.0 / Math.fma(maxZ, sd[11], _t13);
-        double _t39_inv = 1.0 / Math.fma(maxZ, sd[11], _t15);
-        double _t41_inv = 1.0 / Math.fma(maxZ, sd[11], _t17);
-        double _t43_inv = 1.0 / Math.fma(maxZ, sd[11], _t19);
-        double _t84 = viewData[12] + Math.fma(minZ, sd[8], _t12) * _t29_inv;
-        double _t85 = viewData[12] + Math.fma(minZ, sd[8], _t14) * _t31_inv;
-        double _t86 = viewData[12] + Math.fma(minZ, sd[8], _t16) * _t33_inv;
-        double _t87 = viewData[12] + Math.fma(minZ, sd[8], _t18) * _t35_inv;
-        double _t88 = viewData[12] + Math.fma(maxZ, sd[8], _t12) * _t37_inv;
-        double _t89 = viewData[12] + Math.fma(maxZ, sd[8], _t14) * _t39_inv;
-        double _t90 = viewData[12] + Math.fma(maxZ, sd[8], _t16) * _t41_inv;
-        double _t91 = viewData[12] + Math.fma(maxZ, sd[8], _t18) * _t43_inv;
-        double _t92 = viewData[13] + Math.fma(minZ, sd[9], _t20) * _t29_inv;
-        double _t93 = viewData[13] + Math.fma(minZ, sd[9], _t21) * _t31_inv;
-        double _t94 = viewData[13] + Math.fma(minZ, sd[9], _t22) * _t33_inv;
-        double _t95 = viewData[13] + Math.fma(minZ, sd[9], _t23) * _t35_inv;
-        double _t96 = viewData[13] + Math.fma(maxZ, sd[9], _t20) * _t37_inv;
-        double _t97 = viewData[13] + Math.fma(maxZ, sd[9], _t21) * _t39_inv;
-        double _t98 = viewData[13] + Math.fma(maxZ, sd[9], _t22) * _t41_inv;
-        double _t99 = viewData[13] + Math.fma(maxZ, sd[9], _t23) * _t43_inv;
-        double _t100 = viewData[14] + Math.fma(minZ, sd[10], _t24) * _t29_inv;
-        double _t101 = viewData[14] + Math.fma(minZ, sd[10], _t25) * _t31_inv;
-        double _t102 = viewData[14] + Math.fma(minZ, sd[10], _t26) * _t33_inv;
-        double _t103 = viewData[14] + Math.fma(minZ, sd[10], _t27) * _t35_inv;
-        double _t104 = viewData[14] + Math.fma(maxZ, sd[10], _t24) * _t37_inv;
-        double _t105 = viewData[14] + Math.fma(maxZ, sd[10], _t25) * _t39_inv;
-        double _t106 = viewData[14] + Math.fma(maxZ, sd[10], _t26) * _t41_inv;
-        double _t107 = viewData[14] + Math.fma(maxZ, sd[10], _t27) * _t43_inv;
-        double _t144 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t84, _t85), _t86), _t87), _t88), _t89), _t90), _t91);
-        double _t145 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t84, _t85), _t86), _t87), _t88), _t89), _t90), _t91);
-        double _t146 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t92, _t93), _t94), _t95), _t96), _t97), _t98), _t99);
-        double _t147 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t92, _t93), _t94), _t95), _t96), _t97), _t98), _t99);
-        double _t149 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107);
-        double _t150_inv = 1.0 / (_t144 - _t145);
-        double _t151_inv = 1.0 / (_t146 - _t147);
-        double _t152_inv = 1.0 / (Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107) - _t149);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t150_inv + _t150_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t151_inv + _t151_inv);
-        var _col2 = _sv0.withLane(2, _t152_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t145);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t144);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, _t149).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_22);
+        var _col3 = VEC_0.blend(DoubleVector.broadcast(COL_SPECIES, _t145).withLane(1, _t147).add(DoubleVector.broadcast(COL_SPECIES, _t144).withLane(1, _t146)).withLane(2, _t149).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_22);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39485,11 +35338,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_general(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_general_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_rh_general_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_general_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -39578,115 +35426,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t223_inv = 1.0 / (_t218 - _t219);
         double _t224_inv = 1.0 / (_t220 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t222_inv + _t222_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t222_inv + _t222_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t223_inv + _t223_inv);
         var _col2 = _sv0.withLane(2, -_t224_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t217);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t216);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t220).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t224_inv))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_general_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t4 = sd[14] + sd[2];
-        double _t5 = sd[12] + sd[0];
-        double _t6 = sd[13] + sd[1];
-        double _t7 = sd[15] + sd[3];
-        double _t12 = sd[14] - sd[2] - sd[6];
-        double _t13 = sd[12] - sd[0] - sd[4];
-        double _t14 = sd[13] - sd[1] - sd[5];
-        double _t15 = sd[15] - sd[3] - sd[7];
-        double _t16 = _t4 - sd[6];
-        double _t17 = _t5 - sd[4];
-        double _t18 = _t6 - sd[5];
-        double _t19 = _t7 - sd[7];
-        double _t20 = sd[14] + sd[6] - sd[2];
-        double _t21 = sd[12] + sd[4] - sd[0];
-        double _t22 = sd[13] + sd[5] - sd[1];
-        double _t23 = sd[15] + sd[7] - sd[3];
-        double _t24 = _t4 + sd[6];
-        double _t25 = _t5 + sd[4];
-        double _t26 = _t6 + sd[5];
-        double _t27 = _t7 + sd[7];
-        double _t28 = Math.fma(minZ, sd[10], _t12);
-        double _t29 = Math.fma(minZ, sd[8], _t13);
-        double _t30 = Math.fma(minZ, sd[9], _t14);
-        double _t31_inv = 1.0 / Math.fma(minZ, sd[11], _t15);
-        double _t32 = Math.fma(minZ, sd[10], _t16);
-        double _t33 = Math.fma(minZ, sd[8], _t17);
-        double _t34 = Math.fma(minZ, sd[9], _t18);
-        double _t35_inv = 1.0 / Math.fma(minZ, sd[11], _t19);
-        double _t36 = Math.fma(minZ, sd[10], _t20);
-        double _t37 = Math.fma(minZ, sd[8], _t21);
-        double _t38 = Math.fma(minZ, sd[9], _t22);
-        double _t39_inv = 1.0 / Math.fma(minZ, sd[11], _t23);
-        double _t40 = Math.fma(minZ, sd[10], _t24);
-        double _t41 = Math.fma(minZ, sd[8], _t25);
-        double _t42 = Math.fma(minZ, sd[9], _t26);
-        double _t43_inv = 1.0 / Math.fma(minZ, sd[11], _t27);
-        double _t44 = Math.fma(maxZ, sd[10], _t12);
-        double _t45 = Math.fma(maxZ, sd[8], _t13);
-        double _t46 = Math.fma(maxZ, sd[9], _t14);
-        double _t47_inv = 1.0 / Math.fma(maxZ, sd[11], _t15);
-        double _t48 = Math.fma(maxZ, sd[10], _t16);
-        double _t49 = Math.fma(maxZ, sd[8], _t17);
-        double _t50 = Math.fma(maxZ, sd[9], _t18);
-        double _t51_inv = 1.0 / Math.fma(maxZ, sd[11], _t19);
-        double _t52 = Math.fma(maxZ, sd[10], _t20);
-        double _t53 = Math.fma(maxZ, sd[8], _t21);
-        double _t54 = Math.fma(maxZ, sd[9], _t22);
-        double _t55_inv = 1.0 / Math.fma(maxZ, sd[11], _t23);
-        double _t56 = Math.fma(maxZ, sd[10], _t24);
-        double _t57 = Math.fma(maxZ, sd[8], _t25);
-        double _t58 = Math.fma(maxZ, sd[9], _t26);
-        double _t59_inv = 1.0 / Math.fma(maxZ, sd[11], _t27);
-        double _t156 = viewData[12] + Math.fma(viewData[8], _t28, Math.fma(viewData[0], _t29, viewData[4] * _t30)) * _t31_inv;
-        double _t157 = viewData[12] + Math.fma(viewData[8], _t32, Math.fma(viewData[0], _t33, viewData[4] * _t34)) * _t35_inv;
-        double _t158 = viewData[12] + Math.fma(viewData[8], _t36, Math.fma(viewData[0], _t37, viewData[4] * _t38)) * _t39_inv;
-        double _t159 = viewData[12] + Math.fma(viewData[8], _t40, Math.fma(viewData[0], _t41, viewData[4] * _t42)) * _t43_inv;
-        double _t160 = viewData[12] + Math.fma(viewData[8], _t44, Math.fma(viewData[0], _t45, viewData[4] * _t46)) * _t47_inv;
-        double _t161 = viewData[12] + Math.fma(viewData[8], _t48, Math.fma(viewData[0], _t49, viewData[4] * _t50)) * _t51_inv;
-        double _t162 = viewData[12] + Math.fma(viewData[8], _t52, Math.fma(viewData[0], _t53, viewData[4] * _t54)) * _t55_inv;
-        double _t163 = viewData[12] + Math.fma(viewData[8], _t56, Math.fma(viewData[0], _t57, viewData[4] * _t58)) * _t59_inv;
-        double _t164 = viewData[13] + Math.fma(viewData[9], _t28, Math.fma(viewData[1], _t29, viewData[5] * _t30)) * _t31_inv;
-        double _t165 = viewData[13] + Math.fma(viewData[9], _t32, Math.fma(viewData[1], _t33, viewData[5] * _t34)) * _t35_inv;
-        double _t166 = viewData[13] + Math.fma(viewData[9], _t36, Math.fma(viewData[1], _t37, viewData[5] * _t38)) * _t39_inv;
-        double _t167 = viewData[13] + Math.fma(viewData[9], _t40, Math.fma(viewData[1], _t41, viewData[5] * _t42)) * _t43_inv;
-        double _t168 = viewData[13] + Math.fma(viewData[9], _t44, Math.fma(viewData[1], _t45, viewData[5] * _t46)) * _t47_inv;
-        double _t169 = viewData[13] + Math.fma(viewData[9], _t48, Math.fma(viewData[1], _t49, viewData[5] * _t50)) * _t51_inv;
-        double _t170 = viewData[13] + Math.fma(viewData[9], _t52, Math.fma(viewData[1], _t53, viewData[5] * _t54)) * _t55_inv;
-        double _t171 = viewData[13] + Math.fma(viewData[9], _t56, Math.fma(viewData[1], _t57, viewData[5] * _t58)) * _t59_inv;
-        double _t172 = viewData[14] + Math.fma(viewData[10], _t28, Math.fma(viewData[2], _t29, viewData[6] * _t30)) * _t31_inv;
-        double _t173 = viewData[14] + Math.fma(viewData[10], _t32, Math.fma(viewData[2], _t33, viewData[6] * _t34)) * _t35_inv;
-        double _t174 = viewData[14] + Math.fma(viewData[10], _t36, Math.fma(viewData[2], _t37, viewData[6] * _t38)) * _t39_inv;
-        double _t175 = viewData[14] + Math.fma(viewData[10], _t40, Math.fma(viewData[2], _t41, viewData[6] * _t42)) * _t43_inv;
-        double _t176 = viewData[14] + Math.fma(viewData[10], _t44, Math.fma(viewData[2], _t45, viewData[6] * _t46)) * _t47_inv;
-        double _t177 = viewData[14] + Math.fma(viewData[10], _t48, Math.fma(viewData[2], _t49, viewData[6] * _t50)) * _t51_inv;
-        double _t178 = viewData[14] + Math.fma(viewData[10], _t52, Math.fma(viewData[2], _t53, viewData[6] * _t54)) * _t55_inv;
-        double _t179 = viewData[14] + Math.fma(viewData[10], _t56, Math.fma(viewData[2], _t57, viewData[6] * _t58)) * _t59_inv;
-        double _t216 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t156, _t157), _t158), _t159), _t160), _t161), _t162), _t163);
-        double _t217 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t156, _t157), _t158), _t159), _t160), _t161), _t162), _t163);
-        double _t218 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t164, _t165), _t166), _t167), _t168), _t169), _t170), _t171);
-        double _t219 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t164, _t165), _t166), _t167), _t168), _t169), _t170), _t171);
-        double _t220 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
-        double _t222_inv = 1.0 / (_t216 - _t217);
-        double _t223_inv = 1.0 / (_t218 - _t219);
-        double _t224_inv = 1.0 / (_t220 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179));
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t222_inv + _t222_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t223_inv + _t223_inv);
-        var _col2 = _sv0.withLane(2, -_t224_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t217);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t216);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t220).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t224_inv))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t220).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t224_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t217).withLane(1, _t219).add(DoubleVector.broadcast(COL_SPECIES, _t216).withLane(1, _t218)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39702,11 +35445,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_identity(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_identity_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_rh_identity_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_identity_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -39758,78 +35496,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t88_inv = 1.0 / (_t83 - _t84);
         double _t89_inv = 1.0 / (_t85 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
         var _col2 = _sv0.withLane(2, -_t89_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_identity_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t1 = viewData[12] + viewData[0];
-        double _t4 = viewData[13] + viewData[1];
-        double _t7 = viewData[14] + viewData[2];
-        double _t9 = viewData[12] - viewData[0] - viewData[4];
-        double _t10 = _t1 - viewData[4];
-        double _t11 = viewData[12] + viewData[4] - viewData[0];
-        double _t12 = _t1 + viewData[4];
-        double _t13 = viewData[13] - viewData[1] - viewData[5];
-        double _t14 = _t4 - viewData[5];
-        double _t15 = viewData[13] + viewData[5] - viewData[1];
-        double _t16 = _t4 + viewData[5];
-        double _t17 = viewData[14] - viewData[2] - viewData[6];
-        double _t18 = _t7 - viewData[6];
-        double _t19 = viewData[14] + viewData[6] - viewData[2];
-        double _t20 = _t7 + viewData[6];
-        double _t21 = Math.fma(minZ, viewData[8], _t9);
-        double _t22 = Math.fma(minZ, viewData[8], _t10);
-        double _t23 = Math.fma(minZ, viewData[8], _t11);
-        double _t24 = Math.fma(minZ, viewData[8], _t12);
-        double _t25 = Math.fma(maxZ, viewData[8], _t9);
-        double _t26 = Math.fma(maxZ, viewData[8], _t10);
-        double _t27 = Math.fma(maxZ, viewData[8], _t11);
-        double _t28 = Math.fma(maxZ, viewData[8], _t12);
-        double _t29 = Math.fma(minZ, viewData[9], _t13);
-        double _t30 = Math.fma(minZ, viewData[9], _t14);
-        double _t31 = Math.fma(minZ, viewData[9], _t15);
-        double _t32 = Math.fma(minZ, viewData[9], _t16);
-        double _t33 = Math.fma(maxZ, viewData[9], _t13);
-        double _t34 = Math.fma(maxZ, viewData[9], _t14);
-        double _t35 = Math.fma(maxZ, viewData[9], _t15);
-        double _t36 = Math.fma(maxZ, viewData[9], _t16);
-        double _t37 = Math.fma(minZ, viewData[10], _t17);
-        double _t38 = Math.fma(minZ, viewData[10], _t18);
-        double _t39 = Math.fma(minZ, viewData[10], _t19);
-        double _t40 = Math.fma(minZ, viewData[10], _t20);
-        double _t41 = Math.fma(maxZ, viewData[10], _t17);
-        double _t42 = Math.fma(maxZ, viewData[10], _t18);
-        double _t43 = Math.fma(maxZ, viewData[10], _t19);
-        double _t44 = Math.fma(maxZ, viewData[10], _t20);
-        double _t81 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
-        double _t82 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
-        double _t83 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t29, _t30), _t31), _t32), _t33), _t34), _t35), _t36);
-        double _t84 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t29, _t30), _t31), _t32), _t33), _t34), _t35), _t36);
-        double _t85 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44);
-        double _t87_inv = 1.0 / (_t81 - _t82);
-        double _t88_inv = 1.0 / (_t83 - _t84);
-        double _t89_inv = 1.0 / (_t85 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44));
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
-        var _col2 = _sv0.withLane(2, -_t89_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t89_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t82).withLane(1, _t84).add(DoubleVector.broadcast(COL_SPECIES, _t81).withLane(1, _t83)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -39845,11 +35515,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_translation(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_translation_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_rh_translation_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_translation_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -39910,87 +35575,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t91_inv = 1.0 / (_t86 - _t87);
         double _t92_inv = 1.0 / (_t88 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
         var _col2 = _sv0.withLane(2, -_t92_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_translation_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = -1.0 + sd[12];
-        double _t1 = -1.0 + sd[13];
-        double _t2 = minZ + sd[14];
-        double _t3 = 1.0 + sd[12];
-        double _t4 = 1.0 + sd[13];
-        double _t5 = maxZ + sd[14];
-        double _t6 = Math.fma(viewData[8], _t2, viewData[12]);
-        double _t7 = Math.fma(viewData[8], _t5, viewData[12]);
-        double _t8 = Math.fma(viewData[9], _t2, viewData[13]);
-        double _t9 = Math.fma(viewData[9], _t5, viewData[13]);
-        double _t10 = Math.fma(viewData[10], _t2, viewData[14]);
-        double _t11 = Math.fma(viewData[10], _t5, viewData[14]);
-        double _t12 = Math.fma(viewData[4], _t1, _t6);
-        double _t13 = Math.fma(viewData[4], _t4, _t6);
-        double _t14 = Math.fma(viewData[4], _t1, _t7);
-        double _t15 = Math.fma(viewData[4], _t4, _t7);
-        double _t16 = Math.fma(viewData[5], _t1, _t8);
-        double _t17 = Math.fma(viewData[5], _t4, _t8);
-        double _t18 = Math.fma(viewData[5], _t1, _t9);
-        double _t19 = Math.fma(viewData[5], _t4, _t9);
-        double _t20 = Math.fma(viewData[6], _t1, _t10);
-        double _t21 = Math.fma(viewData[6], _t4, _t10);
-        double _t22 = Math.fma(viewData[6], _t1, _t11);
-        double _t23 = Math.fma(viewData[6], _t4, _t11);
-        double _t24 = Math.fma(viewData[0], _t0, _t12);
-        double _t25 = Math.fma(viewData[0], _t3, _t12);
-        double _t26 = Math.fma(viewData[0], _t0, _t13);
-        double _t27 = Math.fma(viewData[0], _t3, _t13);
-        double _t28 = Math.fma(viewData[0], _t0, _t14);
-        double _t29 = Math.fma(viewData[0], _t3, _t14);
-        double _t30 = Math.fma(viewData[0], _t0, _t15);
-        double _t31 = Math.fma(viewData[0], _t3, _t15);
-        double _t32 = Math.fma(viewData[1], _t0, _t16);
-        double _t33 = Math.fma(viewData[1], _t3, _t16);
-        double _t34 = Math.fma(viewData[1], _t0, _t17);
-        double _t35 = Math.fma(viewData[1], _t3, _t17);
-        double _t36 = Math.fma(viewData[1], _t0, _t18);
-        double _t37 = Math.fma(viewData[1], _t3, _t18);
-        double _t38 = Math.fma(viewData[1], _t0, _t19);
-        double _t39 = Math.fma(viewData[1], _t3, _t19);
-        double _t40 = Math.fma(viewData[2], _t0, _t20);
-        double _t41 = Math.fma(viewData[2], _t3, _t20);
-        double _t42 = Math.fma(viewData[2], _t0, _t21);
-        double _t43 = Math.fma(viewData[2], _t3, _t21);
-        double _t44 = Math.fma(viewData[2], _t0, _t22);
-        double _t45 = Math.fma(viewData[2], _t3, _t22);
-        double _t46 = Math.fma(viewData[2], _t0, _t23);
-        double _t47 = Math.fma(viewData[2], _t3, _t23);
-        double _t84 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t24, _t25), _t26), _t27), _t28), _t29), _t30), _t31);
-        double _t85 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t24, _t25), _t26), _t27), _t28), _t29), _t30), _t31);
-        double _t86 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t32, _t33), _t34), _t35), _t36), _t37), _t38), _t39);
-        double _t87 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t32, _t33), _t34), _t35), _t36), _t37), _t38), _t39);
-        double _t88 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
-        double _t90_inv = 1.0 / (_t84 - _t85);
-        double _t91_inv = 1.0 / (_t86 - _t87);
-        double _t92_inv = 1.0 / (_t88 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47));
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
-        var _col2 = _sv0.withLane(2, -_t92_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t92_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t85).withLane(1, _t87).add(DoubleVector.broadcast(COL_SPECIES, _t84).withLane(1, _t86)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40006,11 +35594,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_orthogonal(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_orthogonal_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_rh_orthogonal_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_orthogonal_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -40086,102 +35669,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t160_inv = 1.0 / (_t155 - _t156);
         double _t161_inv = 1.0 / (_t157 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t109, _t110), _t111), _t112), _t113), _t114), _t115), _t116));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t159_inv + _t159_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t159_inv + _t159_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t160_inv + _t160_inv);
         var _col2 = _sv0.withLane(2, -_t161_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t154);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t153);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t157).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t161_inv))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_orthogonal_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t3 = sd[12] + sd[0];
-        double _t4 = sd[13] + sd[1];
-        double _t5 = sd[14] + sd[2];
-        double _t9 = sd[12] - sd[0] - sd[4];
-        double _t10 = sd[13] - sd[1] - sd[5];
-        double _t11 = sd[14] - sd[2] - sd[6];
-        double _t12 = _t3 - sd[4];
-        double _t13 = _t4 - sd[5];
-        double _t14 = _t5 - sd[6];
-        double _t15 = sd[12] + sd[4] - sd[0];
-        double _t16 = sd[13] + sd[5] - sd[1];
-        double _t17 = sd[14] + sd[6] - sd[2];
-        double _t18 = _t3 + sd[4];
-        double _t19 = _t4 + sd[5];
-        double _t20 = _t5 + sd[6];
-        double _t21 = Math.fma(minZ, sd[8], _t9);
-        double _t22 = Math.fma(minZ, sd[9], _t10);
-        double _t23 = Math.fma(minZ, sd[10], _t11);
-        double _t24 = Math.fma(minZ, sd[8], _t12);
-        double _t25 = Math.fma(minZ, sd[9], _t13);
-        double _t26 = Math.fma(minZ, sd[10], _t14);
-        double _t27 = Math.fma(minZ, sd[8], _t15);
-        double _t28 = Math.fma(minZ, sd[9], _t16);
-        double _t29 = Math.fma(minZ, sd[10], _t17);
-        double _t30 = Math.fma(minZ, sd[8], _t18);
-        double _t31 = Math.fma(minZ, sd[9], _t19);
-        double _t32 = Math.fma(minZ, sd[10], _t20);
-        double _t33 = Math.fma(maxZ, sd[8], _t9);
-        double _t34 = Math.fma(maxZ, sd[9], _t10);
-        double _t35 = Math.fma(maxZ, sd[10], _t11);
-        double _t36 = Math.fma(maxZ, sd[8], _t12);
-        double _t37 = Math.fma(maxZ, sd[9], _t13);
-        double _t38 = Math.fma(maxZ, sd[10], _t14);
-        double _t39 = Math.fma(maxZ, sd[8], _t15);
-        double _t40 = Math.fma(maxZ, sd[9], _t16);
-        double _t41 = Math.fma(maxZ, sd[10], _t17);
-        double _t42 = Math.fma(maxZ, sd[8], _t18);
-        double _t43 = Math.fma(maxZ, sd[9], _t19);
-        double _t44 = Math.fma(maxZ, sd[10], _t20);
-        double _t93 = Math.fma(viewData[0], _t21, Math.fma(viewData[4], _t22, Math.fma(viewData[8], _t23, viewData[12])));
-        double _t94 = Math.fma(viewData[0], _t24, Math.fma(viewData[4], _t25, Math.fma(viewData[8], _t26, viewData[12])));
-        double _t95 = Math.fma(viewData[0], _t27, Math.fma(viewData[4], _t28, Math.fma(viewData[8], _t29, viewData[12])));
-        double _t96 = Math.fma(viewData[0], _t30, Math.fma(viewData[4], _t31, Math.fma(viewData[8], _t32, viewData[12])));
-        double _t97 = Math.fma(viewData[0], _t33, Math.fma(viewData[4], _t34, Math.fma(viewData[8], _t35, viewData[12])));
-        double _t98 = Math.fma(viewData[0], _t36, Math.fma(viewData[4], _t37, Math.fma(viewData[8], _t38, viewData[12])));
-        double _t99 = Math.fma(viewData[0], _t39, Math.fma(viewData[4], _t40, Math.fma(viewData[8], _t41, viewData[12])));
-        double _t100 = Math.fma(viewData[0], _t42, Math.fma(viewData[4], _t43, Math.fma(viewData[8], _t44, viewData[12])));
-        double _t101 = Math.fma(viewData[1], _t21, Math.fma(viewData[5], _t22, Math.fma(viewData[9], _t23, viewData[13])));
-        double _t102 = Math.fma(viewData[1], _t24, Math.fma(viewData[5], _t25, Math.fma(viewData[9], _t26, viewData[13])));
-        double _t103 = Math.fma(viewData[1], _t27, Math.fma(viewData[5], _t28, Math.fma(viewData[9], _t29, viewData[13])));
-        double _t104 = Math.fma(viewData[1], _t30, Math.fma(viewData[5], _t31, Math.fma(viewData[9], _t32, viewData[13])));
-        double _t105 = Math.fma(viewData[1], _t33, Math.fma(viewData[5], _t34, Math.fma(viewData[9], _t35, viewData[13])));
-        double _t106 = Math.fma(viewData[1], _t36, Math.fma(viewData[5], _t37, Math.fma(viewData[9], _t38, viewData[13])));
-        double _t107 = Math.fma(viewData[1], _t39, Math.fma(viewData[5], _t40, Math.fma(viewData[9], _t41, viewData[13])));
-        double _t108 = Math.fma(viewData[1], _t42, Math.fma(viewData[5], _t43, Math.fma(viewData[9], _t44, viewData[13])));
-        double _t109 = Math.fma(viewData[2], _t21, Math.fma(viewData[6], _t22, Math.fma(viewData[10], _t23, viewData[14])));
-        double _t110 = Math.fma(viewData[2], _t24, Math.fma(viewData[6], _t25, Math.fma(viewData[10], _t26, viewData[14])));
-        double _t111 = Math.fma(viewData[2], _t27, Math.fma(viewData[6], _t28, Math.fma(viewData[10], _t29, viewData[14])));
-        double _t112 = Math.fma(viewData[2], _t30, Math.fma(viewData[6], _t31, Math.fma(viewData[10], _t32, viewData[14])));
-        double _t113 = Math.fma(viewData[2], _t33, Math.fma(viewData[6], _t34, Math.fma(viewData[10], _t35, viewData[14])));
-        double _t114 = Math.fma(viewData[2], _t36, Math.fma(viewData[6], _t37, Math.fma(viewData[10], _t38, viewData[14])));
-        double _t115 = Math.fma(viewData[2], _t39, Math.fma(viewData[6], _t40, Math.fma(viewData[10], _t41, viewData[14])));
-        double _t116 = Math.fma(viewData[2], _t42, Math.fma(viewData[6], _t43, Math.fma(viewData[10], _t44, viewData[14])));
-        double _t153 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t93, _t94), _t95), _t96), _t97), _t98), _t99), _t100);
-        double _t154 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t93, _t94), _t95), _t96), _t97), _t98), _t99), _t100);
-        double _t155 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t101, _t102), _t103), _t104), _t105), _t106), _t107), _t108);
-        double _t156 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t101, _t102), _t103), _t104), _t105), _t106), _t107), _t108);
-        double _t157 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t109, _t110), _t111), _t112), _t113), _t114), _t115), _t116);
-        double _t159_inv = 1.0 / (_t153 - _t154);
-        double _t160_inv = 1.0 / (_t155 - _t156);
-        double _t161_inv = 1.0 / (_t157 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t109, _t110), _t111), _t112), _t113), _t114), _t115), _t116));
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t159_inv + _t159_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t160_inv + _t160_inv);
-        var _col2 = _sv0.withLane(2, -_t161_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t154);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t153);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t157).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t161_inv))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t157).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t161_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t154).withLane(1, _t156).add(DoubleVector.broadcast(COL_SPECIES, _t153).withLane(1, _t155)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40224,11 +35715,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_identity_translation(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_identity_translation_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_rh_identity_translation_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_identity_translation_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -40247,45 +35733,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / (_t36 - _t37);
         double _t42_inv = 1.0 / (_t38 - _t39);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
         var _col2 = _sv0.withLane(2, -_t40_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_identity_translation_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = -1.0 + viewData[12];
-        double _t1 = 1.0 + viewData[12];
-        double _t2 = -1.0 + viewData[13];
-        double _t3 = 1.0 + viewData[13];
-        double _t4 = minZ + viewData[14];
-        double _t5 = maxZ + viewData[14];
-        double _t28 = Math.max(Math.max(Math.max(Math.max(_t4, _t5), _t5), _t5), _t5);
-        double _t36 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t37 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t38 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t39 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t40_inv = 1.0 / (_t28 - Math.min(Math.min(Math.min(Math.min(_t4, _t5), _t5), _t5), _t5));
-        double _t41_inv = 1.0 / (_t36 - _t37);
-        double _t42_inv = 1.0 / (_t38 - _t39);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
-        var _col2 = _sv0.withLane(2, -_t40_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t40_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t39).withLane(1, _t37).add(DoubleVector.broadcast(COL_SPECIES, _t38).withLane(1, _t36)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40301,11 +35752,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_translation_identity(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_translation_identity_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_rh_translation_identity_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_translation_identity_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -40324,45 +35770,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / (_t36 - _t37);
         double _t42_inv = 1.0 / (_t38 - _t39);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
         var _col2 = _sv0.withLane(2, -_t40_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_translation_identity_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = -1.0 + sd[12];
-        double _t1 = 1.0 + sd[12];
-        double _t2 = -1.0 + sd[13];
-        double _t3 = 1.0 + sd[13];
-        double _t4 = minZ + sd[14];
-        double _t5 = maxZ + sd[14];
-        double _t28 = Math.max(Math.max(Math.max(Math.max(_t4, _t5), _t5), _t5), _t5);
-        double _t36 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t37 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t2, _t3), _t3), _t2), _t2), _t3), _t3);
-        double _t38 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t39 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t0, _t1), _t0), _t1), _t0), _t1), _t0), _t1);
-        double _t40_inv = 1.0 / (_t28 - Math.min(Math.min(Math.min(Math.min(_t4, _t5), _t5), _t5), _t5));
-        double _t41_inv = 1.0 / (_t36 - _t37);
-        double _t42_inv = 1.0 / (_t38 - _t39);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
-        var _col2 = _sv0.withLane(2, -_t40_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t40_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t39).withLane(1, _t37).add(DoubleVector.broadcast(COL_SPECIES, _t38).withLane(1, _t36)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40378,11 +35789,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_translation_translation(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_translation_translation_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_rh_translation_translation_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_translation_translation_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -40401,45 +35807,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t47_inv = 1.0 / (_t42 - _t43);
         double _t48_inv = 1.0 / (_t44 - _t45);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t48_inv + _t48_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t48_inv + _t48_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t47_inv + _t47_inv);
         var _col2 = _sv0.withLane(2, -_t46_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t45);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t44);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t34).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t46_inv))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_translation_translation_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t6 = viewData[12] + (-1.0 + sd[12]);
-        double _t7 = viewData[12] + (1.0 + sd[12]);
-        double _t8 = viewData[13] + (-1.0 + sd[13]);
-        double _t9 = viewData[13] + (1.0 + sd[13]);
-        double _t10 = viewData[14] + (minZ + sd[14]);
-        double _t11 = viewData[14] + (maxZ + sd[14]);
-        double _t34 = Math.max(Math.max(Math.max(Math.max(_t10, _t11), _t11), _t11), _t11);
-        double _t42 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t8, _t9), _t9), _t8), _t8), _t9), _t9);
-        double _t43 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t8, _t9), _t9), _t8), _t8), _t9), _t9);
-        double _t44 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t6, _t7), _t6), _t7), _t6), _t7), _t6), _t7);
-        double _t45 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t6, _t7), _t6), _t7), _t6), _t7), _t6), _t7);
-        double _t46_inv = 1.0 / (_t34 - Math.min(Math.min(Math.min(Math.min(_t10, _t11), _t11), _t11), _t11));
-        double _t47_inv = 1.0 / (_t42 - _t43);
-        double _t48_inv = 1.0 / (_t44 - _t45);
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t48_inv + _t48_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t47_inv + _t47_inv);
-        var _col2 = _sv0.withLane(2, -_t46_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t45);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t44);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t34).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t46_inv))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t34).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t46_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t45).withLane(1, _t43).add(DoubleVector.broadcast(COL_SPECIES, _t44).withLane(1, _t42)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40455,11 +35826,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_orthogonal_identity(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_orthogonal_identity_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_rh_orthogonal_identity_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_orthogonal_identity_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -40511,78 +35877,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t88_inv = 1.0 / (_t83 - _t84);
         double _t89_inv = 1.0 / (_t85 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
         var _col2 = _sv0.withLane(2, -_t89_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_orthogonal_identity_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t1 = sd[12] + sd[0];
-        double _t4 = sd[13] + sd[1];
-        double _t7 = sd[14] + sd[2];
-        double _t9 = sd[12] - sd[0] - sd[4];
-        double _t10 = _t1 - sd[4];
-        double _t11 = sd[12] + sd[4] - sd[0];
-        double _t12 = _t1 + sd[4];
-        double _t13 = sd[13] - sd[1] - sd[5];
-        double _t14 = _t4 - sd[5];
-        double _t15 = sd[13] + sd[5] - sd[1];
-        double _t16 = _t4 + sd[5];
-        double _t17 = sd[14] - sd[2] - sd[6];
-        double _t18 = _t7 - sd[6];
-        double _t19 = sd[14] + sd[6] - sd[2];
-        double _t20 = _t7 + sd[6];
-        double _t21 = Math.fma(minZ, sd[8], _t9);
-        double _t22 = Math.fma(minZ, sd[8], _t10);
-        double _t23 = Math.fma(minZ, sd[8], _t11);
-        double _t24 = Math.fma(minZ, sd[8], _t12);
-        double _t25 = Math.fma(maxZ, sd[8], _t9);
-        double _t26 = Math.fma(maxZ, sd[8], _t10);
-        double _t27 = Math.fma(maxZ, sd[8], _t11);
-        double _t28 = Math.fma(maxZ, sd[8], _t12);
-        double _t29 = Math.fma(minZ, sd[9], _t13);
-        double _t30 = Math.fma(minZ, sd[9], _t14);
-        double _t31 = Math.fma(minZ, sd[9], _t15);
-        double _t32 = Math.fma(minZ, sd[9], _t16);
-        double _t33 = Math.fma(maxZ, sd[9], _t13);
-        double _t34 = Math.fma(maxZ, sd[9], _t14);
-        double _t35 = Math.fma(maxZ, sd[9], _t15);
-        double _t36 = Math.fma(maxZ, sd[9], _t16);
-        double _t37 = Math.fma(minZ, sd[10], _t17);
-        double _t38 = Math.fma(minZ, sd[10], _t18);
-        double _t39 = Math.fma(minZ, sd[10], _t19);
-        double _t40 = Math.fma(minZ, sd[10], _t20);
-        double _t41 = Math.fma(maxZ, sd[10], _t17);
-        double _t42 = Math.fma(maxZ, sd[10], _t18);
-        double _t43 = Math.fma(maxZ, sd[10], _t19);
-        double _t44 = Math.fma(maxZ, sd[10], _t20);
-        double _t81 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
-        double _t82 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
-        double _t83 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t29, _t30), _t31), _t32), _t33), _t34), _t35), _t36);
-        double _t84 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t29, _t30), _t31), _t32), _t33), _t34), _t35), _t36);
-        double _t85 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44);
-        double _t87_inv = 1.0 / (_t81 - _t82);
-        double _t88_inv = 1.0 / (_t83 - _t84);
-        double _t89_inv = 1.0 / (_t85 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44));
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
-        var _col2 = _sv0.withLane(2, -_t89_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t89_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t82).withLane(1, _t84).add(DoubleVector.broadcast(COL_SPECIES, _t81).withLane(1, _t83)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40598,11 +35896,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_orthogonal_translation(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_orthogonal_translation_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_rh_orthogonal_translation_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_orthogonal_translation_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -40657,81 +35950,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t91_inv = 1.0 / (_t86 - _t87);
         double _t92_inv = 1.0 / (_t88 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
         var _col2 = _sv0.withLane(2, -_t92_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_orthogonal_translation_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = viewData[12] + sd[12];
-        double _t1 = viewData[13] + sd[13];
-        double _t2 = viewData[14] + sd[14];
-        double _t4 = _t0 + sd[0];
-        double _t7 = _t1 + sd[1];
-        double _t10 = _t2 + sd[2];
-        double _t12 = _t0 - sd[0] - sd[4];
-        double _t13 = _t4 - sd[4];
-        double _t14 = _t0 + sd[4] - sd[0];
-        double _t15 = _t4 + sd[4];
-        double _t16 = _t1 - sd[1] - sd[5];
-        double _t17 = _t7 - sd[5];
-        double _t18 = _t1 + sd[5] - sd[1];
-        double _t19 = _t7 + sd[5];
-        double _t20 = _t2 - sd[2] - sd[6];
-        double _t21 = _t10 - sd[6];
-        double _t22 = _t2 + sd[6] - sd[2];
-        double _t23 = _t10 + sd[6];
-        double _t24 = Math.fma(minZ, sd[8], _t12);
-        double _t25 = Math.fma(minZ, sd[8], _t13);
-        double _t26 = Math.fma(minZ, sd[8], _t14);
-        double _t27 = Math.fma(minZ, sd[8], _t15);
-        double _t28 = Math.fma(maxZ, sd[8], _t12);
-        double _t29 = Math.fma(maxZ, sd[8], _t13);
-        double _t30 = Math.fma(maxZ, sd[8], _t14);
-        double _t31 = Math.fma(maxZ, sd[8], _t15);
-        double _t32 = Math.fma(minZ, sd[9], _t16);
-        double _t33 = Math.fma(minZ, sd[9], _t17);
-        double _t34 = Math.fma(minZ, sd[9], _t18);
-        double _t35 = Math.fma(minZ, sd[9], _t19);
-        double _t36 = Math.fma(maxZ, sd[9], _t16);
-        double _t37 = Math.fma(maxZ, sd[9], _t17);
-        double _t38 = Math.fma(maxZ, sd[9], _t18);
-        double _t39 = Math.fma(maxZ, sd[9], _t19);
-        double _t40 = Math.fma(minZ, sd[10], _t20);
-        double _t41 = Math.fma(minZ, sd[10], _t21);
-        double _t42 = Math.fma(minZ, sd[10], _t22);
-        double _t43 = Math.fma(minZ, sd[10], _t23);
-        double _t44 = Math.fma(maxZ, sd[10], _t20);
-        double _t45 = Math.fma(maxZ, sd[10], _t21);
-        double _t46 = Math.fma(maxZ, sd[10], _t22);
-        double _t47 = Math.fma(maxZ, sd[10], _t23);
-        double _t84 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t24, _t25), _t26), _t27), _t28), _t29), _t30), _t31);
-        double _t85 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t24, _t25), _t26), _t27), _t28), _t29), _t30), _t31);
-        double _t86 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t32, _t33), _t34), _t35), _t36), _t37), _t38), _t39);
-        double _t87 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t32, _t33), _t34), _t35), _t36), _t37), _t38), _t39);
-        double _t88 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
-        double _t90_inv = 1.0 / (_t84 - _t85);
-        double _t91_inv = 1.0 / (_t86 - _t87);
-        double _t92_inv = 1.0 / (_t88 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47));
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
-        var _col2 = _sv0.withLane(2, -_t92_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t92_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t85).withLane(1, _t87).add(DoubleVector.broadcast(COL_SPECIES, _t84).withLane(1, _t86)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40747,11 +35969,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_general_identity(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_general_identity_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_rh_general_identity_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_general_identity_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -40816,91 +36033,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t127_inv = 1.0 / (_t122 - _t123);
         double _t128_inv = 1.0 / (_t124 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t126_inv + _t126_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t126_inv + _t126_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t127_inv + _t127_inv);
         var _col2 = _sv0.withLane(2, -_t128_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t121);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t120);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t124).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t128_inv))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_general_identity_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t2 = sd[12] + sd[0];
-        double _t3 = sd[15] + sd[3];
-        double _t7 = sd[13] + sd[1];
-        double _t10 = sd[14] + sd[2];
-        double _t12 = sd[12] - sd[0] - sd[4];
-        double _t13 = sd[15] - sd[3] - sd[7];
-        double _t14 = _t2 - sd[4];
-        double _t15 = _t3 - sd[7];
-        double _t16 = sd[12] + sd[4] - sd[0];
-        double _t17 = sd[15] + sd[7] - sd[3];
-        double _t18 = _t2 + sd[4];
-        double _t19 = _t3 + sd[7];
-        double _t20 = sd[13] - sd[1] - sd[5];
-        double _t21 = _t7 - sd[5];
-        double _t22 = sd[13] + sd[5] - sd[1];
-        double _t23 = _t7 + sd[5];
-        double _t24 = sd[14] - sd[2] - sd[6];
-        double _t25 = _t10 - sd[6];
-        double _t26 = sd[14] + sd[6] - sd[2];
-        double _t27 = _t10 + sd[6];
-        double _t29_inv = 1.0 / Math.fma(minZ, sd[11], _t13);
-        double _t31_inv = 1.0 / Math.fma(minZ, sd[11], _t15);
-        double _t33_inv = 1.0 / Math.fma(minZ, sd[11], _t17);
-        double _t35_inv = 1.0 / Math.fma(minZ, sd[11], _t19);
-        double _t37_inv = 1.0 / Math.fma(maxZ, sd[11], _t13);
-        double _t39_inv = 1.0 / Math.fma(maxZ, sd[11], _t15);
-        double _t41_inv = 1.0 / Math.fma(maxZ, sd[11], _t17);
-        double _t43_inv = 1.0 / Math.fma(maxZ, sd[11], _t19);
-        double _t60 = Math.fma(minZ, sd[8], _t12) * _t29_inv;
-        double _t61 = Math.fma(minZ, sd[8], _t14) * _t31_inv;
-        double _t62 = Math.fma(minZ, sd[8], _t16) * _t33_inv;
-        double _t63 = Math.fma(minZ, sd[8], _t18) * _t35_inv;
-        double _t64 = Math.fma(maxZ, sd[8], _t12) * _t37_inv;
-        double _t65 = Math.fma(maxZ, sd[8], _t14) * _t39_inv;
-        double _t66 = Math.fma(maxZ, sd[8], _t16) * _t41_inv;
-        double _t67 = Math.fma(maxZ, sd[8], _t18) * _t43_inv;
-        double _t68 = Math.fma(minZ, sd[9], _t20) * _t29_inv;
-        double _t69 = Math.fma(minZ, sd[9], _t21) * _t31_inv;
-        double _t70 = Math.fma(minZ, sd[9], _t22) * _t33_inv;
-        double _t71 = Math.fma(minZ, sd[9], _t23) * _t35_inv;
-        double _t72 = Math.fma(maxZ, sd[9], _t20) * _t37_inv;
-        double _t73 = Math.fma(maxZ, sd[9], _t21) * _t39_inv;
-        double _t74 = Math.fma(maxZ, sd[9], _t22) * _t41_inv;
-        double _t75 = Math.fma(maxZ, sd[9], _t23) * _t43_inv;
-        double _t76 = Math.fma(minZ, sd[10], _t24) * _t29_inv;
-        double _t77 = Math.fma(minZ, sd[10], _t25) * _t31_inv;
-        double _t78 = Math.fma(minZ, sd[10], _t26) * _t33_inv;
-        double _t79 = Math.fma(minZ, sd[10], _t27) * _t35_inv;
-        double _t80 = Math.fma(maxZ, sd[10], _t24) * _t37_inv;
-        double _t81 = Math.fma(maxZ, sd[10], _t25) * _t39_inv;
-        double _t82 = Math.fma(maxZ, sd[10], _t26) * _t41_inv;
-        double _t83 = Math.fma(maxZ, sd[10], _t27) * _t43_inv;
-        double _t120 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t60, _t61), _t62), _t63), _t64), _t65), _t66), _t67);
-        double _t121 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t60, _t61), _t62), _t63), _t64), _t65), _t66), _t67);
-        double _t122 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t68, _t69), _t70), _t71), _t72), _t73), _t74), _t75);
-        double _t123 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t68, _t69), _t70), _t71), _t72), _t73), _t74), _t75);
-        double _t124 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83);
-        double _t126_inv = 1.0 / (_t120 - _t121);
-        double _t127_inv = 1.0 / (_t122 - _t123);
-        double _t128_inv = 1.0 / (_t124 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83));
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t126_inv + _t126_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t127_inv + _t127_inv);
-        var _col2 = _sv0.withLane(2, -_t128_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t121);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t120);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t124).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t128_inv))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t124).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t128_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t121).withLane(1, _t123).add(DoubleVector.broadcast(COL_SPECIES, _t120).withLane(1, _t122)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -40916,11 +36052,6 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code orthoCrop} dispatcher.
      */
     private Double4x4 orthoCrop_zo_rh_general_translation(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return orthoCrop_zo_rh_general_translation_fma(view, minZ, maxZ, dest);
-        return orthoCrop_zo_rh_general_translation_mulAdd(view, minZ, maxZ, dest);
-    }
-
-    private Double4x4 orthoCrop_zo_rh_general_translation_fma(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] viewData = ((Double4x4Impl) view).data;
         double[] dd = ((Double4x4Impl) dest).data;
@@ -40985,91 +36116,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t151_inv = 1.0 / (_t146 - _t147);
         double _t152_inv = 1.0 / (_t148 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t150_inv + _t150_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t150_inv + _t150_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t151_inv + _t151_inv);
         var _col2 = _sv0.withLane(2, -_t152_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t145);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t144);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t148).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t152_inv))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv)).neg(), MASK_84);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double4x4Impl) view).properties;
-        return dest;
-    }
-
-    private Double4x4 orthoCrop_zo_rh_general_translation_mulAdd(Double4x4R view, double minZ, double maxZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] viewData = ((Double4x4Impl) view).data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t2 = sd[12] + sd[0];
-        double _t3 = sd[15] + sd[3];
-        double _t7 = sd[13] + sd[1];
-        double _t10 = sd[14] + sd[2];
-        double _t12 = sd[12] - sd[0] - sd[4];
-        double _t13 = sd[15] - sd[3] - sd[7];
-        double _t14 = _t2 - sd[4];
-        double _t15 = _t3 - sd[7];
-        double _t16 = sd[12] + sd[4] - sd[0];
-        double _t17 = sd[15] + sd[7] - sd[3];
-        double _t18 = _t2 + sd[4];
-        double _t19 = _t3 + sd[7];
-        double _t20 = sd[13] - sd[1] - sd[5];
-        double _t21 = _t7 - sd[5];
-        double _t22 = sd[13] + sd[5] - sd[1];
-        double _t23 = _t7 + sd[5];
-        double _t24 = sd[14] - sd[2] - sd[6];
-        double _t25 = _t10 - sd[6];
-        double _t26 = sd[14] + sd[6] - sd[2];
-        double _t27 = _t10 + sd[6];
-        double _t29_inv = 1.0 / Math.fma(minZ, sd[11], _t13);
-        double _t31_inv = 1.0 / Math.fma(minZ, sd[11], _t15);
-        double _t33_inv = 1.0 / Math.fma(minZ, sd[11], _t17);
-        double _t35_inv = 1.0 / Math.fma(minZ, sd[11], _t19);
-        double _t37_inv = 1.0 / Math.fma(maxZ, sd[11], _t13);
-        double _t39_inv = 1.0 / Math.fma(maxZ, sd[11], _t15);
-        double _t41_inv = 1.0 / Math.fma(maxZ, sd[11], _t17);
-        double _t43_inv = 1.0 / Math.fma(maxZ, sd[11], _t19);
-        double _t84 = viewData[12] + Math.fma(minZ, sd[8], _t12) * _t29_inv;
-        double _t85 = viewData[12] + Math.fma(minZ, sd[8], _t14) * _t31_inv;
-        double _t86 = viewData[12] + Math.fma(minZ, sd[8], _t16) * _t33_inv;
-        double _t87 = viewData[12] + Math.fma(minZ, sd[8], _t18) * _t35_inv;
-        double _t88 = viewData[12] + Math.fma(maxZ, sd[8], _t12) * _t37_inv;
-        double _t89 = viewData[12] + Math.fma(maxZ, sd[8], _t14) * _t39_inv;
-        double _t90 = viewData[12] + Math.fma(maxZ, sd[8], _t16) * _t41_inv;
-        double _t91 = viewData[12] + Math.fma(maxZ, sd[8], _t18) * _t43_inv;
-        double _t92 = viewData[13] + Math.fma(minZ, sd[9], _t20) * _t29_inv;
-        double _t93 = viewData[13] + Math.fma(minZ, sd[9], _t21) * _t31_inv;
-        double _t94 = viewData[13] + Math.fma(minZ, sd[9], _t22) * _t33_inv;
-        double _t95 = viewData[13] + Math.fma(minZ, sd[9], _t23) * _t35_inv;
-        double _t96 = viewData[13] + Math.fma(maxZ, sd[9], _t20) * _t37_inv;
-        double _t97 = viewData[13] + Math.fma(maxZ, sd[9], _t21) * _t39_inv;
-        double _t98 = viewData[13] + Math.fma(maxZ, sd[9], _t22) * _t41_inv;
-        double _t99 = viewData[13] + Math.fma(maxZ, sd[9], _t23) * _t43_inv;
-        double _t100 = viewData[14] + Math.fma(minZ, sd[10], _t24) * _t29_inv;
-        double _t101 = viewData[14] + Math.fma(minZ, sd[10], _t25) * _t31_inv;
-        double _t102 = viewData[14] + Math.fma(minZ, sd[10], _t26) * _t33_inv;
-        double _t103 = viewData[14] + Math.fma(minZ, sd[10], _t27) * _t35_inv;
-        double _t104 = viewData[14] + Math.fma(maxZ, sd[10], _t24) * _t37_inv;
-        double _t105 = viewData[14] + Math.fma(maxZ, sd[10], _t25) * _t39_inv;
-        double _t106 = viewData[14] + Math.fma(maxZ, sd[10], _t26) * _t41_inv;
-        double _t107 = viewData[14] + Math.fma(maxZ, sd[10], _t27) * _t43_inv;
-        double _t144 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t84, _t85), _t86), _t87), _t88), _t89), _t90), _t91);
-        double _t145 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t84, _t85), _t86), _t87), _t88), _t89), _t90), _t91);
-        double _t146 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t92, _t93), _t94), _t95), _t96), _t97), _t98), _t99);
-        double _t147 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t92, _t93), _t94), _t95), _t96), _t97), _t98), _t99);
-        double _t148 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107);
-        double _t150_inv = 1.0 / (_t144 - _t145);
-        double _t151_inv = 1.0 / (_t146 - _t147);
-        double _t152_inv = 1.0 / (_t148 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107));
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t150_inv + _t150_inv).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, _t151_inv + _t151_inv);
-        var _col2 = _sv0.withLane(2, -_t152_inv);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t145);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t144);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t148).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t152_inv))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv)).neg(), MASK_84);
+        var _col3 = DoubleVector.zero(COL_SPECIES).withLane(2, _t148).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t152_inv)).add(VEC_0).blend(DoubleVector.broadcast(COL_SPECIES, _t145).withLane(1, _t147).add(DoubleVector.broadcast(COL_SPECIES, _t144).withLane(1, _t146)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv)).neg(), MASK_82);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -42078,7 +37128,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, 2.0 / (aspect * _t3)).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, 2.0 / (aspect * _t3)).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t3_inv + _t3_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(1, (_t0 + _t1) * _t3_inv).withLane(2, far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 1.0 : (far + near) * _t2_inv).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv);
@@ -42116,7 +37166,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, 2.0 / (aspect * _t3)).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, 2.0 / (aspect * _t3)).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t3_inv + _t3_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, -sd[12]).withLane(1, (_t0 + _t1) * _t3_inv - sd[13]).withLane(2, (far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 1.0 : (far + near) * _t2_inv) - sd[14]).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv);
@@ -42370,7 +37420,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, 2.0 / (aspect * _t3)).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, 2.0 / (aspect * _t3)).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t3_inv + _t3_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(1, (_t0 + _t1) * _t3_inv).withLane(2, far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : far * _t2_inv).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -near : near == Double.POSITIVE_INFINITY ? far : far * near * _t2_inv);
@@ -42407,7 +37457,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, 2.0 / (aspect * _t3)).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, 2.0 / (aspect * _t3)).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t3_inv + _t3_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, -sd[12]).withLane(1, (_t0 + _t1) * _t3_inv - sd[13]).withLane(2, (far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : far * _t2_inv) - sd[14]).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -near : near == Double.POSITIVE_INFINITY ? far : far * near * _t2_inv);
@@ -43228,7 +38278,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / (_t0 - _t1);
         double _t6_inv = 1.0 / (_t2 - _t3);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t6_inv + _t6_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, -((_t1 + _t0) * _t5_inv)).withLane(1, -((_t3 + _t2) * _t6_inv)).withLane(2, far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? -1.0 : -((far + near) * _t4_inv)).withLane(3, 1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv);
@@ -43268,7 +38318,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / (_t0 - _t1);
         double _t6_inv = 1.0 / (_t2 - _t3);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t6_inv + _t6_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, sd[12] - (_t1 + _t0) * _t5_inv).withLane(1, sd[13] - (_t3 + _t2) * _t6_inv).withLane(2, sd[14] + (far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? -1.0 : -((far + near) * _t4_inv))).withLane(3, 1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv);
@@ -43412,7 +38462,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / (_t0 - _t1);
         double _t6_inv = 1.0 / (_t2 - _t3);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t6_inv + _t6_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, (_t1 + _t0) * _t5_inv).withLane(1, (_t3 + _t2) * _t6_inv).withLane(2, far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 1.0 : (far + near) * _t4_inv).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv);
@@ -43452,7 +38502,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / (_t0 - _t1);
         double _t6_inv = 1.0 / (_t2 - _t3);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t6_inv + _t6_inv);
         var _col2 = DoubleVector.broadcast(COL_SPECIES, _t1 + _t0).withLane(1, _t3 + _t2).mul(DoubleVector.broadcast(COL_SPECIES, _t5_inv).withLane(1, _t6_inv)).withLane(2, far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 1.0 : (far + near) * _t4_inv).sub(DoubleVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv);
@@ -43620,7 +38670,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / (_t0 - _t1);
         double _t6_inv = 1.0 / (_t2 - _t3);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t6_inv + _t6_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, -((_t1 + _t0) * _t5_inv)).withLane(1, -((_t3 + _t2) * _t6_inv)).withLane(2, far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : -(far * _t4_inv)).withLane(3, 1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -near : near == Double.POSITIVE_INFINITY ? far : far * near * _t4_inv);
@@ -43659,7 +38709,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / (_t0 - _t1);
         double _t6_inv = 1.0 / (_t2 - _t3);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t6_inv + _t6_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, sd[12] - (_t1 + _t0) * _t5_inv).withLane(1, sd[13] - (_t3 + _t2) * _t6_inv).withLane(2, sd[14] + (far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : -(far * _t4_inv))).withLane(3, 1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -near : near == Double.POSITIVE_INFINITY ? far : far * near * _t4_inv);
@@ -43802,7 +38852,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / (_t0 - _t1);
         double _t6_inv = 1.0 / (_t2 - _t3);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t6_inv + _t6_inv);
         var _col2 = DoubleVector.zero(COL_SPECIES).withLane(0, (_t1 + _t0) * _t5_inv).withLane(1, (_t3 + _t2) * _t6_inv).withLane(2, far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : far * _t4_inv).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -near : near == Double.POSITIVE_INFINITY ? far : far * near * _t4_inv);
@@ -43842,7 +38892,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / (_t0 - _t1);
         double _t6_inv = 1.0 / (_t2 - _t3);
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, _t5_inv + _t5_inv).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, _t6_inv + _t6_inv);
         var _col2 = DoubleVector.broadcast(COL_SPECIES, _t1 + _t0).withLane(1, _t3 + _t2).mul(DoubleVector.broadcast(COL_SPECIES, _t5_inv).withLane(1, _t6_inv)).withLane(2, far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : far * _t4_inv).sub(DoubleVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, -1.0);
         var _col3 = _sv0.withLane(2, far == Double.POSITIVE_INFINITY ? -near : near == Double.POSITIVE_INFINITY ? far : far * near * _t4_inv);
@@ -46429,7 +41479,7 @@ public class Double4x4Impl implements Double4x4 {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, vX).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, vX).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, vY);
         var _col2 = _sv0.withLane(2, vZ);
         var _col3 = DoubleVector.zero(COL_SPECIES).withLane(3, 1.0);
@@ -46456,34 +41506,13 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code preScale} dispatcher.
      */
     private Double4x4 preScale_translation(double vX, double vY, double vZ, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return preScale_translation_fma(vX, vY, vZ, dest);
-        return preScale_translation_mulAdd(vX, vY, vZ, dest);
-    }
-
-    private Double4x4 preScale_translation_fma(double vX, double vY, double vZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, vX).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, vX).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, vY);
         var _col2 = _sv0.withLane(2, vZ);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, DoubleVector.fromArray(COL_SPECIES, sd, 12).mul(DoubleVector.zero(COL_SPECIES).withLane(0, vX).withLane(1, vY).withLane(2, vZ)));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
-        return dest;
-    }
-
-    private Double4x4 preScale_translation_mulAdd(double vX, double vY, double vZ, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, vX).blend(_sv0, MASK_8);
-        var _col1 = _sv0.withLane(1, vY);
-        var _col2 = _sv0.withLane(2, vZ);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(DoubleVector.fromArray(COL_SPECIES, sd, 12).mul(DoubleVector.zero(COL_SPECIES).withLane(0, vX).withLane(1, vY).withLane(2, vZ)));
+        var _col3 = DoubleVector.fromArray(COL_SPECIES, sd, 12).mul(DoubleVector.zero(COL_SPECIES).withLane(0, vX).withLane(1, vY).withLane(2, vZ)).add(VEC_0);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -46519,7 +41548,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = _sv0.fma(VEC_0, DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(_sv1));
         var _col1 = _sv0.fma(VEC_0, DoubleVector.fromArray(COL_SPECIES, sd, 4).mul(_sv1));
         var _col2 = _sv0.fma(VEC_0, DoubleVector.fromArray(COL_SPECIES, sd, 8).mul(_sv1));
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, DoubleVector.fromArray(COL_SPECIES, sd, 12).mul(_sv1));
+        var _col3 = DoubleVector.fromArray(COL_SPECIES, sd, 12).mul(_sv1).add(VEC_0);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -46536,7 +41565,7 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = _sv0.mul(VEC_0).add(DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(_sv1));
         var _col1 = _sv0.mul(VEC_0).add(DoubleVector.fromArray(COL_SPECIES, sd, 4).mul(_sv1));
         var _col2 = _sv0.mul(VEC_0).add(DoubleVector.fromArray(COL_SPECIES, sd, 8).mul(_sv1));
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(DoubleVector.fromArray(COL_SPECIES, sd, 12).mul(_sv1));
+        var _col3 = DoubleVector.fromArray(COL_SPECIES, sd, 12).mul(_sv1).add(VEC_0);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -46672,7 +41701,7 @@ public class Double4x4Impl implements Double4x4 {
         double[] dd = ((Double4x4Impl) dest).data;
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, s);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = _sv0.blend(_sv1, MASK_8);
+        var _col0 = _sv0.blend(_sv1, MASK_9);
         var _col1 = _sv1.withLane(1, s);
         var _col2 = _sv1.withLane(2, s);
         var _col3 = _sv0.mul(DoubleVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0);
@@ -46812,11 +41841,11 @@ public class Double4x4Impl implements Double4x4 {
         double[] dd = ((Double4x4Impl) dest).data;
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, s);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = _sv0.blend(_sv1, MASK_8);
+        var _col0 = _sv0.blend(_sv1, MASK_9);
         var _col1 = _sv1.withLane(1, s);
         var _col2 = _sv1.withLane(2, s);
         var _sv2 = DoubleVector.zero(COL_SPECIES).withLane(0, pivotX).withLane(1, pivotY).withLane(2, pivotZ);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, DoubleVector.broadcast(COL_SPECIES, -s).fma(_sv2, _sv2));
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, -s).fma(_sv2, _sv2).add(VEC_0);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -46830,11 +41859,11 @@ public class Double4x4Impl implements Double4x4 {
         double[] dd = ((Double4x4Impl) dest).data;
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, s);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = _sv0.blend(_sv1, MASK_8);
+        var _col0 = _sv0.blend(_sv1, MASK_9);
         var _col1 = _sv1.withLane(1, s);
         var _col2 = _sv1.withLane(2, s);
         var _sv2 = DoubleVector.zero(COL_SPECIES).withLane(0, pivotX).withLane(1, pivotY).withLane(2, pivotZ);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(DoubleVector.broadcast(COL_SPECIES, -s).mul(_sv2).add(_sv2));
+        var _col3 = DoubleVector.broadcast(COL_SPECIES, -s).mul(_sv2).add(_sv2).add(VEC_0);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -46867,7 +41896,7 @@ public class Double4x4Impl implements Double4x4 {
         double[] dd = ((Double4x4Impl) dest).data;
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, s);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = _sv0.blend(_sv1, MASK_8);
+        var _col0 = _sv0.blend(_sv1, MASK_9);
         var _col1 = _sv1.withLane(1, s);
         var _col2 = _sv1.withLane(2, s);
         var _sv2 = DoubleVector.zero(COL_SPECIES).withLane(0, pivotX).withLane(1, pivotY).withLane(2, pivotZ);
@@ -46885,7 +41914,7 @@ public class Double4x4Impl implements Double4x4 {
         double[] dd = ((Double4x4Impl) dest).data;
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, s);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = _sv0.blend(_sv1, MASK_8);
+        var _col0 = _sv0.blend(_sv1, MASK_9);
         var _col1 = _sv1.withLane(1, s);
         var _col2 = _sv1.withLane(2, s);
         var _sv2 = DoubleVector.zero(COL_SPECIES).withLane(0, pivotX).withLane(1, pivotY).withLane(2, pivotZ);
@@ -47114,11 +42143,11 @@ public class Double4x4Impl implements Double4x4 {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, sX).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, sX).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, sY);
         var _col2 = _sv0.withLane(2, sZ);
         var _sv1 = DoubleVector.zero(COL_SPECIES).withLane(0, pivotX).withLane(1, pivotY).withLane(2, pivotZ);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.neg().fma(DoubleVector.zero(COL_SPECIES).withLane(0, sX).withLane(1, sY).withLane(2, sZ), _sv1));
+        var _col3 = _sv1.neg().fma(DoubleVector.zero(COL_SPECIES).withLane(0, sX).withLane(1, sY).withLane(2, sZ), _sv1).add(VEC_0);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -47131,11 +42160,11 @@ public class Double4x4Impl implements Double4x4 {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, sX).blend(_sv0, MASK_8);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, sX).blend(_sv0, MASK_9);
         var _col1 = _sv0.withLane(1, sY);
         var _col2 = _sv0.withLane(2, sZ);
         var _sv1 = DoubleVector.zero(COL_SPECIES).withLane(0, pivotX).withLane(1, pivotY).withLane(2, pivotZ);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.neg().mul(DoubleVector.zero(COL_SPECIES).withLane(0, sX).withLane(1, sY).withLane(2, sZ)).add(_sv1));
+        var _col3 = _sv1.neg().mul(DoubleVector.zero(COL_SPECIES).withLane(0, sX).withLane(1, sY).withLane(2, sZ)).add(_sv1).add(VEC_0);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -51503,46 +46532,25 @@ public class Double4x4Impl implements Double4x4 {
      * through the public {@code shadow} dispatcher.
      */
     private Double4x4 shadow_identity(double lightX, double lightY, double lightZ, double lightW, double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
-        if (SimdMath.USE_FMA) return shadow_identity_fma(lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW, dest);
-        return shadow_identity_mulAdd(lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW, dest);
-    }
-
-    private Double4x4 shadow_identity_fma(double lightX, double lightY, double lightZ, double lightW, double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t4 = Math.fma(lightX, planeX, lightY * planeY) + Math.fma(lightZ, planeZ, lightW * planeW);
-        var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, Math.fma(-lightX, planeX, _t4)).withLane(1, -(lightY * planeX)).withLane(2, -(lightZ * planeX)).withLane(3, -(lightW * planeX));
-        var _sv0 = DoubleVector.zero(COL_SPECIES);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, planeY);
-        var _col1 = _sv0.mul(_sv1).withLane(1, Math.fma(-lightY, planeY, _t4)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, lightX).withLane(2, lightZ).withLane(3, lightW).mul(_sv1).neg(), MASK_80);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, planeZ);
-        var _col2 = _sv0.mul(_sv2).withLane(2, Math.fma(-lightZ, planeZ, _t4)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(3, lightW).mul(_sv2).neg(), MASK_81);
-        var _sv3 = DoubleVector.broadcast(COL_SPECIES, planeW);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, Math.fma(-lightW, planeW, _t4)).fma(VEC_0, _sv0.mul(_sv3)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(2, lightZ).mul(_sv3).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
-        ((Double4x4Impl) dest).properties = 0;
-        return dest;
-    }
-
-    private Double4x4 shadow_identity_mulAdd(double lightX, double lightY, double lightZ, double lightW, double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
-        double[] sd = this.data;
-        double[] dd = ((Double4x4Impl) dest).data;
-        double _t4 = Math.fma(lightX, planeX, lightY * planeY) + Math.fma(lightZ, planeZ, lightW * planeW);
-        var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, Math.fma(-lightX, planeX, _t4)).withLane(1, -(lightY * planeX)).withLane(2, -(lightZ * planeX)).withLane(3, -(lightW * planeX));
-        var _sv0 = DoubleVector.zero(COL_SPECIES);
-        var _sv1 = DoubleVector.broadcast(COL_SPECIES, planeY);
-        var _col1 = _sv0.mul(_sv1).withLane(1, Math.fma(-lightY, planeY, _t4)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, lightX).withLane(2, lightZ).withLane(3, lightW).mul(_sv1).neg(), MASK_80);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, planeZ);
-        var _col2 = _sv0.mul(_sv2).withLane(2, Math.fma(-lightZ, planeZ, _t4)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(3, lightW).mul(_sv2).neg(), MASK_81);
-        var _sv3 = DoubleVector.broadcast(COL_SPECIES, planeW);
-        var _col3 = DoubleVector.broadcast(COL_SPECIES, Math.fma(-lightW, planeW, _t4)).mul(VEC_0).add(_sv0.mul(_sv3)).blend(DoubleVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(2, lightZ).mul(_sv3).neg(), MASK_22);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
+        dd[0] = Math.fma(-lightX, planeX, _t4);
+        dd[1] = -(lightY * planeX);
+        dd[2] = -(lightZ * planeX);
+        dd[3] = -(lightW * planeX);
+        dd[4] = -(lightX * planeY);
+        dd[5] = Math.fma(-lightY, planeY, _t4);
+        dd[6] = -(lightZ * planeY);
+        dd[7] = -(lightW * planeY);
+        dd[8] = -(lightX * planeZ);
+        dd[9] = -(lightY * planeZ);
+        dd[10] = Math.fma(-lightZ, planeZ, _t4);
+        dd[11] = -(lightW * planeZ);
+        dd[12] = -(lightX * planeW);
+        dd[13] = -(lightY * planeW);
+        dd[14] = -(lightZ * planeW);
+        dd[15] = Math.fma(-lightW, planeW, _t4);
         ((Double4x4Impl) dest).properties = 0;
         return dest;
     }
@@ -51571,12 +46579,10 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.broadcast(COL_SPECIES, -_t4).fma(VEC_0, DoubleVector.zero(COL_SPECIES).withLane(0, _t11).withLane(1, _t2 * _t4).withLane(2, _t3 * _t4).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t0 * _t4 + -lightX * planeX).withLane(1, -(lightY * planeX)).withLane(2, -(lightZ * planeX))));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, _t0);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, lightX);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, planeY);
-        var _col1 = _sv0.withLane(2, _t3).mul(DoubleVector.broadcast(COL_SPECIES, _t7)).withLane(1, _t11).add(_sv1.mul(_sv2).withLane(1, _t2 * _t7 + -lightY * planeY).blend(_sv1.withLane(2, lightZ).mul(_sv2).neg(), MASK_80)).withLane(3, -_t7);
-        var _sv3 = DoubleVector.broadcast(COL_SPECIES, planeZ);
-        var _col2 = _sv0.withLane(1, _t2).mul(DoubleVector.broadcast(COL_SPECIES, _t8)).withLane(2, _t11).add(_sv1.mul(_sv3).withLane(2, _t3 * _t8 + -lightZ * planeZ).blend(_sv1.withLane(1, lightY).mul(_sv3).neg(), MASK_81)).withLane(3, -_t8);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, _t12);
-        var _col3 = DoubleVector.fromArray(COL_SPECIES, sd, 12).fma(_sv4, DoubleVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(2, lightZ).mul(DoubleVector.broadcast(COL_SPECIES, -planeW))).withLane(3, _t12);
+        var _col1 = _sv0.withLane(2, _t3).mul(DoubleVector.broadcast(COL_SPECIES, _t7)).withLane(1, _t11).add(DoubleVector.zero(COL_SPECIES).withLane(1, _t2 * _t7 + -lightY * planeY).blend(_sv1.withLane(2, lightZ).mul(DoubleVector.broadcast(COL_SPECIES, planeY)).neg(), MASK_84)).withLane(3, -_t7);
+        var _col2 = _sv0.withLane(1, _t2).mul(DoubleVector.broadcast(COL_SPECIES, _t8)).withLane(2, _t11).add(DoubleVector.zero(COL_SPECIES).withLane(2, _t3 * _t8 + -lightZ * planeZ).blend(_sv1.withLane(1, lightY).mul(DoubleVector.broadcast(COL_SPECIES, planeZ)).neg(), MASK_85)).withLane(3, -_t8);
+        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t12);
+        var _col3 = DoubleVector.fromArray(COL_SPECIES, sd, 12).fma(_sv2, DoubleVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(2, lightZ).mul(DoubleVector.broadcast(COL_SPECIES, -planeW))).withLane(3, _t12);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -51599,12 +46605,10 @@ public class Double4x4Impl implements Double4x4 {
         var _col0 = DoubleVector.broadcast(COL_SPECIES, -_t4).mul(VEC_0).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t11).withLane(1, _t2 * _t4).withLane(2, _t3 * _t4).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t0 * _t4 + -lightX * planeX).withLane(1, -(lightY * planeX)).withLane(2, -(lightZ * planeX))));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, _t0);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, lightX);
-        var _sv2 = DoubleVector.broadcast(COL_SPECIES, planeY);
-        var _col1 = _sv0.withLane(2, _t3).mul(DoubleVector.broadcast(COL_SPECIES, _t7)).withLane(1, _t11).add(_sv1.mul(_sv2).withLane(1, _t2 * _t7 + -lightY * planeY).blend(_sv1.withLane(2, lightZ).mul(_sv2).neg(), MASK_80)).withLane(3, -_t7);
-        var _sv3 = DoubleVector.broadcast(COL_SPECIES, planeZ);
-        var _col2 = _sv0.withLane(1, _t2).mul(DoubleVector.broadcast(COL_SPECIES, _t8)).withLane(2, _t11).add(_sv1.mul(_sv3).withLane(2, _t3 * _t8 + -lightZ * planeZ).blend(_sv1.withLane(1, lightY).mul(_sv3).neg(), MASK_81)).withLane(3, -_t8);
-        var _sv4 = DoubleVector.broadcast(COL_SPECIES, _t12);
-        var _col3 = DoubleVector.fromArray(COL_SPECIES, sd, 12).mul(_sv4).add(DoubleVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(2, lightZ).mul(DoubleVector.broadcast(COL_SPECIES, -planeW))).withLane(3, _t12);
+        var _col1 = _sv0.withLane(2, _t3).mul(DoubleVector.broadcast(COL_SPECIES, _t7)).withLane(1, _t11).add(DoubleVector.zero(COL_SPECIES).withLane(1, _t2 * _t7 + -lightY * planeY).blend(_sv1.withLane(2, lightZ).mul(DoubleVector.broadcast(COL_SPECIES, planeY)).neg(), MASK_84)).withLane(3, -_t7);
+        var _col2 = _sv0.withLane(1, _t2).mul(DoubleVector.broadcast(COL_SPECIES, _t8)).withLane(2, _t11).add(DoubleVector.zero(COL_SPECIES).withLane(2, _t3 * _t8 + -lightZ * planeZ).blend(_sv1.withLane(1, lightY).mul(DoubleVector.broadcast(COL_SPECIES, planeZ)).neg(), MASK_85)).withLane(3, -_t8);
+        var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t12);
+        var _col3 = DoubleVector.fromArray(COL_SPECIES, sd, 12).mul(_sv2).add(DoubleVector.zero(COL_SPECIES).withLane(0, lightX).withLane(1, lightY).withLane(2, lightZ).mul(DoubleVector.broadcast(COL_SPECIES, -planeW))).withLane(3, _t12);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
@@ -55264,12 +50268,12 @@ public class Double4x4Impl implements Double4x4 {
     private static final VectorMask<Double> MASK_5 = VectorMask.fromValues(COL_SPECIES, false, true, true, false);
     private static final VectorMask<Double> MASK_6 = VectorMask.fromValues(COL_SPECIES, true, false, true, false);
     private static final VectorMask<Double> MASK_7 = VectorMask.fromValues(COL_SPECIES, false, true, false, true);
-    private static final VectorMask<Double> MASK_8 = VectorMask.fromValues(COL_SPECIES, false, true, true, true);
-    private static final VectorMask<Double> MASK_9 = VectorMask.fromValues(COL_SPECIES, false, false, true, true);
+    private static final VectorMask<Double> MASK_8 = VectorMask.fromValues(COL_SPECIES, false, false, true, true);
+    private static final VectorMask<Double> MASK_9 = VectorMask.fromValues(COL_SPECIES, false, true, true, true);
     private static final VectorMask<Double> MASK_22 = VectorMask.fromValues(COL_SPECIES, true, true, true, false);
-    private static final VectorMask<Double> MASK_80 = VectorMask.fromValues(COL_SPECIES, true, false, true, true);
-    private static final VectorMask<Double> MASK_81 = VectorMask.fromValues(COL_SPECIES, true, true, false, true);
-    private static final VectorMask<Double> MASK_84 = VectorMask.fromValues(COL_SPECIES, true, true, false, false);
+    private static final VectorMask<Double> MASK_82 = VectorMask.fromValues(COL_SPECIES, true, true, false, false);
+    private static final VectorMask<Double> MASK_84 = VectorMask.fromValues(COL_SPECIES, true, false, true, true);
+    private static final VectorMask<Double> MASK_85 = VectorMask.fromValues(COL_SPECIES, true, true, false, true);
     private static final DoubleVector VEC_0 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 0.0, 0.0, 1.0}, 0);
     private static final DoubleVector VEC_2 = DoubleVector.fromArray(COL_SPECIES, new double[]{1.0, 0.0, 0.0, 0.0}, 0);
     private static final DoubleVector VEC_3 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 1.0, 0.0, 0.0}, 0);
@@ -55340,8 +50344,8 @@ public class Double4x4Impl implements Double4x4 {
     private static final double[] DATA_76 = new double[] {0.0, 0.0, -1.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
     private static final double[] DATA_77 = new double[] {0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
     private static final double[] DATA_78 = new double[] {0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
-    private static final double[] DATA_82 = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 1.0};
-    private static final double[] DATA_83 = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
-    private static final double[] DATA_85 = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 1.0, 1.0};
+    private static final double[] DATA_80 = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 1.0};
+    private static final double[] DATA_81 = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
+    private static final double[] DATA_83 = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 1.0, 1.0};
 
 }
