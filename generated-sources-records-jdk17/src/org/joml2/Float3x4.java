@@ -2834,9 +2834,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * @return the resulting matrix
      */
     public static Float3x4 makeFromTransform(float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        float _t0 = 2.0f * tSX;
-        float _t1 = 2.0f * tSY;
-        float _t2 = 2.0f * tSZ;
+        float _t0 = tSX + tSX;
+        float _t1 = tSY + tSY;
+        float _t2 = tSZ + tSZ;
         float _t3 = tRZ * tRZ;
         float _t4 = tRZ * tRW;
         float _t5 = tRY * tRW;
@@ -4651,9 +4651,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * @return the resulting matrix
      */
     public static Float3x4 composeTRS(float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        float _t0 = 2.0f * scaleX;
-        float _t1 = 2.0f * scaleY;
-        float _t2 = 2.0f * scaleZ;
+        float _t0 = scaleX + scaleX;
+        float _t1 = scaleY + scaleY;
+        float _t2 = scaleZ + scaleZ;
         float _t3 = rotationZ * rotationZ;
         float _t4 = rotationZ * rotationW;
         float _t5 = rotationY * rotationW;
@@ -4725,9 +4725,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * @return the resulting matrix
      */
     public static Float3x4 composeTRSMul(float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ, Float3x4 m) {
-        float _t0 = 2.0f * scaleZ;
-        float _t1 = 2.0f * scaleX;
-        float _t2 = 2.0f * scaleY;
+        float _t0 = scaleZ + scaleZ;
+        float _t1 = scaleX + scaleX;
+        float _t2 = scaleY + scaleY;
         float _t3 = rotationY * rotationW;
         float _t4 = rotationZ * rotationZ;
         float _t5 = rotationZ * rotationW;
@@ -5829,8 +5829,8 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
         float _t12 = (1.0f / (float) Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
         float _t13 = _t0 * _t12;
         float _t14 = _t3 * _t12;
-        float _t15 = 2.0f * _t13;
-        float _t16 = 2.0f * _t14;
+        float _t15 = _t13 + _t13;
+        float _t16 = _t14 + _t14;
         float _t17 = -_t15;
         float _t19 = _t10 * _t12;
         float _t20 = _t16 * _t13;
@@ -5886,7 +5886,7 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
         float _t4 = dqRX * dqRX;
         float _t5 = dqRY * dqRZ;
         float _t6 = Math.fma(-2.0f, dqRZ * dqRZ, 1.0f);
-        return new Float3x4(Math.fma(-2.0f, _t0, _t6), Math.fma(-2.0f, _t2, 2.0f * dqRX * dqRY), 2.0f * Math.fma(dqRX, dqRZ, _t3), 2.0f * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW))), 2.0f * Math.fma(dqRX, dqRY, _t2), Math.fma(-2.0f, _t4, _t6), Math.fma(-2.0f, dqRX * dqRW, 2.0f * _t5), 2.0f * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW))), Math.fma(-2.0f, _t3, 2.0f * dqRX * dqRZ), 2.0f * Math.fma(dqRX, dqRW, _t5), Math.fma(-2.0f, _t4, Math.fma(-2.0f, _t0, 1.0f)), 2.0f * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW))), Joml.BIT_ORTHOGONAL);
+        return new Float3x4(Math.fma(-2.0f, _t0, _t6), Math.fma(-2.0f, _t2, (dqRX + dqRX) * dqRY), 2.0f * Math.fma(dqRX, dqRZ, _t3), 2.0f * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW))), 2.0f * Math.fma(dqRX, dqRY, _t2), Math.fma(-2.0f, _t4, _t6), Math.fma(-2.0f, dqRX * dqRW, _t5 + _t5), 2.0f * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW))), Math.fma(-2.0f, _t3, (dqRX + dqRX) * dqRZ), 2.0f * Math.fma(dqRX, dqRW, _t5), Math.fma(-2.0f, _t4, Math.fma(-2.0f, _t0, 1.0f)), 2.0f * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW))), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -6611,9 +6611,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * @return the resulting matrix
      */
     public static Float3x4 makeReflection(float normalX, float normalY, float normalZ) {
-        float _t6 = -(2.0f * normalX * normalY);
-        float _t7 = -(2.0f * normalX * normalZ);
-        float _t8 = -(2.0f * normalY * normalZ);
+        float _t6 = -((normalX + normalX) * normalY);
+        float _t7 = -((normalX + normalX) * normalZ);
+        float _t8 = -((normalY + normalY) * normalZ);
         return new Float3x4(Math.fma(-2.0f, normalX * normalX, 1.0f), _t6, _t7, 0.0f, _t6, Math.fma(-2.0f, normalY * normalY, 1.0f), _t8, 0.0f, _t7, _t8, Math.fma(-2.0f, normalZ * normalZ, 1.0f), 0.0f, Joml.BIT_AFFINE);
     }
 
@@ -9412,9 +9412,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
-        float _t4 = 2.0f * rotY;
-        float _t5 = 2.0f * rotZ;
-        float _t6 = 2.0f * rotX;
+        float _t4 = rotY + rotY;
+        float _t5 = rotZ + rotZ;
+        float _t6 = rotX + rotX;
         float _t7 = rotW * _t5;
         float _t8 = rotW * _t4;
         float _t9 = rotZ * _t5;
@@ -9458,9 +9458,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
-        float _t4 = 2.0f * rotY;
-        float _t5 = 2.0f * rotZ;
-        float _t6 = 2.0f * rotX;
+        float _t4 = rotY + rotY;
+        float _t5 = rotZ + rotZ;
+        float _t6 = rotX + rotX;
         float _t7 = rotW * _t5;
         float _t8 = rotW * _t4;
         float _t9 = rotZ * _t5;
@@ -9507,9 +9507,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
-        float _t4 = 2.0f * rotX;
-        float _t5 = 2.0f * rotY;
-        float _t6 = 2.0f * rotZ;
+        float _t4 = rotX + rotX;
+        float _t5 = rotY + rotY;
+        float _t6 = rotZ + rotZ;
         float _t7 = rotW * _t5;
         float _t8 = rotW * _t6;
         float _t9 = rotZ * _t6;
@@ -9556,9 +9556,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
-        float _t4 = 2.0f * rotX;
-        float _t5 = 2.0f * rotY;
-        float _t6 = 2.0f * rotZ;
+        float _t4 = rotX + rotX;
+        float _t5 = rotY + rotY;
+        float _t6 = rotZ + rotZ;
         float _t7 = rotW * _t5;
         float _t8 = rotW * _t6;
         float _t9 = rotZ * _t6;
@@ -9808,9 +9808,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
     private Float3x4 preRotateQuat_identity(float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qY;
-        float _t4 = 2.0f * qZ;
-        float _t5 = 2.0f * qX;
+        float _t3 = qY + qY;
+        float _t4 = qZ + qZ;
+        float _t5 = qX + qX;
         float _t6 = qW * _t4;
         float _t7 = qW * _t3;
         float _t8 = qW * _t5;
@@ -9826,9 +9826,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
     private Float3x4 preRotateQuat_translation(float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qY;
-        float _t4 = 2.0f * qZ;
-        float _t5 = 2.0f * qX;
+        float _t3 = qY + qY;
+        float _t4 = qZ + qZ;
+        float _t5 = qX + qX;
         float _t6 = qW * _t4;
         float _t7 = qW * _t3;
         float _t8 = qW * _t5;
@@ -9873,9 +9873,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
     private Float3x4 preRotateQuat_orthogonal(float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -9920,9 +9920,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
     private Float3x4 preRotateQuat_general(float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -10496,9 +10496,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code reflect} dispatcher.
      */
     private Float3x4 reflect_identity(float normalX, float normalY, float normalZ) {
-        float _t6 = -(2.0f * normalX * normalY);
-        float _t7 = -(2.0f * normalX * normalZ);
-        float _t8 = -(2.0f * normalY * normalZ);
+        float _t6 = -((normalX + normalX) * normalY);
+        float _t7 = -((normalX + normalX) * normalZ);
+        float _t8 = -((normalY + normalY) * normalZ);
         return new Float3x4(Math.fma(-2.0f, normalX * normalX, 1.0f), _t6, _t7, 0.0f, _t6, Math.fma(-2.0f, normalY * normalY, 1.0f), _t8, 0.0f, _t7, _t8, Math.fma(-2.0f, normalZ * normalZ, 1.0f), 0.0f, Joml.BIT_AFFINE);
     }
 
@@ -10508,9 +10508,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code reflect} dispatcher.
      */
     private Float3x4 reflect_translation(float normalX, float normalY, float normalZ) {
-        float _t6 = -(2.0f * normalX * normalY);
-        float _t7 = -(2.0f * normalX * normalZ);
-        float _t8 = -(2.0f * normalY * normalZ);
+        float _t6 = -((normalX + normalX) * normalY);
+        float _t7 = -((normalX + normalX) * normalZ);
+        float _t8 = -((normalY + normalY) * normalZ);
         return new Float3x4(Math.fma(-2.0f, normalX * normalX, 1.0f), _t6, _t7, this.m03, _t6, Math.fma(-2.0f, normalY * normalY, 1.0f), _t8, this.m13, _t7, _t8, Math.fma(-2.0f, normalZ * normalZ, 1.0f), this.m23, Joml.BIT_AFFINE);
     }
 
@@ -10543,9 +10543,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
         float _t0 = -this.m02;
         float _t1 = -this.m12;
         float _t2 = -this.m22;
-        float _t9 = 2.0f * normalX * normalZ;
-        float _t10 = 2.0f * normalX * normalY;
-        float _t11 = 2.0f * normalY * normalZ;
+        float _t9 = (normalX + normalX) * normalZ;
+        float _t10 = (normalX + normalX) * normalY;
+        float _t11 = (normalY + normalY) * normalZ;
         float _t12 = Math.fma(-2.0f, normalX * normalX, 1.0f);
         float _t13 = Math.fma(-2.0f, normalY * normalY, 1.0f);
         float _t14 = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
@@ -10628,9 +10628,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
         float _t3 = -pivotZ;
         float _t4 = -rotX;
         float _t5 = -pivotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
-        float _t8 = 2.0f * rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
+        float _t8 = rotX + rotX;
         float _t9 = rotW * _t7;
         float _t10 = rotW * _t6;
         float _t11 = rotZ * _t7;
@@ -10674,9 +10674,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
         float _t0 = -rotY;
         float _t2 = -rotX;
         float _t3 = -pivotZ;
-        float _t5 = 2.0f * rotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
+        float _t5 = rotX + rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
         float _t8 = rotW * _t6;
         float _t9 = rotW * _t7;
         float _t10 = rotW * _t5;
@@ -10726,9 +10726,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
         float _t0 = -rotY;
         float _t2 = -rotX;
         float _t3 = -pivotZ;
-        float _t5 = 2.0f * rotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
+        float _t5 = rotX + rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
         float _t8 = rotW * _t6;
         float _t9 = rotW * _t7;
         float _t10 = rotW * _t5;
@@ -10975,9 +10975,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
     private Float3x4 rotateQuat_translation(float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qY;
-        float _t4 = 2.0f * qZ;
-        float _t5 = 2.0f * qX;
+        float _t3 = qY + qY;
+        float _t4 = qZ + qZ;
+        float _t5 = qX + qX;
         float _t6 = qW * _t4;
         float _t7 = qW * _t3;
         float _t8 = qW * _t5;
@@ -11013,9 +11013,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
     private Float3x4 rotateQuat_orthogonal(float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -11060,9 +11060,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
     private Float3x4 rotateQuat_general(float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;

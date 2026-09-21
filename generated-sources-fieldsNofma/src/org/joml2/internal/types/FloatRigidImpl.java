@@ -1431,7 +1431,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = otherRX * this.rW + otherRW * this.rX + (otherRZ * this.rY - otherRY * this.rZ);
         float _buf1 = otherRX * this.rZ + otherRW * this.rY + (otherRY * this.rW - otherRZ * this.rX);
         float _buf2 = otherRY * this.rX + otherRZ * this.rW + (otherRW * this.rZ - otherRX * this.rY);
-        d.rW = otherRW * this.rW - otherRX * this.rX - otherRY * this.rY - otherRZ * this.rZ;
+        d.rW = otherRW * this.rW - otherRX * this.rX - (otherRY * this.rY + otherRZ * this.rZ);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -1480,7 +1480,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = otherRX * this.rW + otherRW * this.rX + (otherRZ * this.rY - otherRY * this.rZ);
         float _buf1 = otherRX * this.rZ + otherRW * this.rY + (otherRY * this.rW - otherRZ * this.rX);
         float _buf2 = otherRY * this.rX + otherRZ * this.rW + (otherRW * this.rZ - otherRX * this.rY);
-        d.rW = otherRW * this.rW - otherRX * this.rX - otherRY * this.rY - otherRZ * this.rZ;
+        d.rW = otherRW * this.rW - otherRX * this.rX - (otherRY * this.rY + otherRZ * this.rZ);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -1560,7 +1560,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = otherRX * this.rW + otherRW * this.rX + (otherRY * this.rZ - otherRZ * this.rY);
         float _buf1 = otherRY * this.rW + otherRZ * this.rX + (otherRW * this.rY - otherRX * this.rZ);
         float _buf2 = otherRX * this.rY + otherRW * this.rZ + (otherRZ * this.rW - otherRY * this.rX);
-        d.rW = otherRW * this.rW - otherRX * this.rX - otherRY * this.rY - otherRZ * this.rZ;
+        d.rW = otherRW * this.rW - otherRX * this.rX - (otherRY * this.rY + otherRZ * this.rZ);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -1608,7 +1608,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = otherRX * this.rW + otherRW * this.rX + (otherRY * this.rZ - otherRZ * this.rY);
         float _buf1 = otherRY * this.rW + otherRZ * this.rX + (otherRW * this.rY - otherRX * this.rZ);
         float _buf2 = otherRX * this.rY + otherRW * this.rZ + (otherRZ * this.rW - otherRY * this.rX);
-        d.rW = otherRW * this.rW - otherRX * this.rX - otherRY * this.rY - otherRZ * this.rZ;
+        d.rW = otherRW * this.rW - otherRX * this.rX - (otherRY * this.rY + otherRZ * this.rZ);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -1688,7 +1688,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = otherRX * this.rW - otherRW * this.rX + (otherRY * this.rZ - otherRZ * this.rY);
         float _buf1 = otherRY * this.rW + otherRZ * this.rX + (-(otherRW * this.rY) - otherRX * this.rZ);
         float _buf2 = otherRX * this.rY - otherRW * this.rZ + (otherRZ * this.rW - otherRY * this.rX);
-        d.rW = otherRX * this.rX + otherRW * this.rW + otherRY * this.rY + otherRZ * this.rZ;
+        d.rW = otherRX * this.rX + otherRW * this.rW - (-(otherRY * this.rY) - otherRZ * this.rZ);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -1738,7 +1738,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = otherRX * this.rW - otherRW * this.rX + (otherRY * this.rZ - otherRZ * this.rY);
         float _buf1 = otherRY * this.rW + otherRZ * this.rX + (-(otherRW * this.rY) - otherRX * this.rZ);
         float _buf2 = otherRX * this.rY - otherRW * this.rZ + (otherRZ * this.rW - otherRY * this.rX);
-        d.rW = otherRX * this.rX + otherRW * this.rW + otherRY * this.rY + otherRZ * this.rZ;
+        d.rW = otherRX * this.rX + otherRW * this.rW - (-(otherRY * this.rY) - otherRZ * this.rZ);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -2774,7 +2774,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = rotationX * this.rW + rotationW * this.rX + (rotationZ * this.rY - rotationY * this.rZ);
         float _buf1 = rotationX * this.rZ + rotationW * this.rY + (rotationY * this.rW - rotationZ * this.rX);
         float _buf2 = rotationY * this.rX + rotationZ * this.rW + (rotationW * this.rZ - rotationX * this.rY);
-        d.rW = rotationW * this.rW - rotationX * this.rX - rotationY * this.rY - rotationZ * this.rZ;
+        d.rW = rotationW * this.rW - rotationX * this.rX - (rotationY * this.rY + rotationZ * this.rZ);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -2817,7 +2817,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = rotationX * this.rW + rotationW * this.rX + (rotationZ * this.rY - rotationY * this.rZ);
         float _buf1 = rotationX * this.rZ + rotationW * this.rY + (rotationY * this.rW - rotationZ * this.rX);
         float _buf2 = rotationY * this.rX + rotationZ * this.rW + (rotationW * this.rZ - rotationX * this.rY);
-        d.rW = rotationW * this.rW - rotationX * this.rX - rotationY * this.rY - rotationZ * this.rZ;
+        d.rW = rotationW * this.rW - rotationX * this.rX - (rotationY * this.rY + rotationZ * this.rZ);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -2899,7 +2899,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = this.rX * _t1 + this.rW * _t3 + (this.rY * _t4 - this.rZ * _t5);
         float _buf1 = this.rY * _t1 + this.rZ * _t3 + (this.rW * _t5 - this.rX * _t4);
         float _buf2 = this.rX * _t5 + this.rW * _t4 + (this.rZ * _t1 - this.rY * _t3);
-        d.rW = this.rW * _t1 - this.rX * _t3 - this.rY * _t5 - this.rZ * _t4;
+        d.rW = this.rW * _t1 - this.rX * _t3 - (this.rY * _t5 + this.rZ * _t4);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -2945,7 +2945,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = this.rX * _t1 + this.rW * _t3 + (this.rY * _t4 - this.rZ * _t5);
         float _buf1 = this.rY * _t1 + this.rZ * _t3 + (this.rW * _t5 - this.rX * _t4);
         float _buf2 = this.rX * _t5 + this.rW * _t4 + (this.rZ * _t1 - this.rY * _t3);
-        d.rW = this.rW * _t1 - this.rX * _t3 - this.rY * _t5 - this.rZ * _t4;
+        d.rW = this.rW * _t1 - this.rX * _t3 - (this.rY * _t5 + this.rZ * _t4);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -3057,7 +3057,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
         float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -3109,7 +3109,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
         float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -3158,7 +3158,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
         float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -3210,7 +3210,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
         float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -3322,7 +3322,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
         float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -3374,7 +3374,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
         float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -3423,7 +3423,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
         float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -3475,7 +3475,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
         float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -3587,7 +3587,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
         float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -3639,7 +3639,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
         float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -3688,7 +3688,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
         float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -3740,7 +3740,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
         float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;

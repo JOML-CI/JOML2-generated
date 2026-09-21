@@ -947,9 +947,9 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public Float4x4 toMatrix(@Mutated Float4x4 dest) {
         Float4x4Impl d = (Float4x4Impl) dest;
-        float _t0 = 2.0f * this.sX;
-        float _t1 = 2.0f * this.sY;
-        float _t2 = 2.0f * this.sZ;
+        float _t0 = this.sX + this.sX;
+        float _t1 = this.sY + this.sY;
+        float _t2 = this.sZ + this.sZ;
         float _t3 = this.rZ * this.rZ;
         float _t4 = this.rZ * this.rW;
         float _t5 = this.rY * this.rW;
@@ -992,9 +992,9 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public Double4x4 toMatrix(@Mutated Double4x4 dest) {
         Double4x4Impl d = (Double4x4Impl) dest;
-        float _t0 = 2.0f * this.sX;
-        float _t1 = 2.0f * this.sY;
-        float _t2 = 2.0f * this.sZ;
+        float _t0 = this.sX + this.sX;
+        float _t1 = this.sY + this.sY;
+        float _t2 = this.sZ + this.sZ;
         float _t3 = this.rZ * this.rZ;
         float _t4 = this.rZ * this.rW;
         float _t5 = this.rY * this.rW;
@@ -1035,9 +1035,9 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public Float3x3 toMatrix3x3(@Mutated Float3x3 dest) {
         Float3x3Impl d = (Float3x3Impl) dest;
-        float _t0 = 2.0f * this.sX;
-        float _t1 = 2.0f * this.sY;
-        float _t2 = 2.0f * this.sZ;
+        float _t0 = this.sX + this.sX;
+        float _t1 = this.sY + this.sY;
+        float _t2 = this.sZ + this.sZ;
         float _t3 = this.rZ * this.rZ;
         float _t4 = this.rZ * this.rW;
         float _t5 = this.rY * this.rW;
@@ -1070,9 +1070,9 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public Double3x3 toMatrix3x3(@Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
-        float _t0 = 2.0f * this.sX;
-        float _t1 = 2.0f * this.sY;
-        float _t2 = 2.0f * this.sZ;
+        float _t0 = this.sX + this.sX;
+        float _t1 = this.sY + this.sY;
+        float _t2 = this.sZ + this.sZ;
         float _t3 = this.rZ * this.rZ;
         float _t4 = this.rZ * this.rW;
         float _t5 = this.rY * this.rW;
@@ -1102,9 +1102,9 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public Float3x4 toMatrix3x4(@Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = 2.0f * this.sX;
-        float _t1 = 2.0f * this.sY;
-        float _t2 = 2.0f * this.sZ;
+        float _t0 = this.sX + this.sX;
+        float _t1 = this.sY + this.sY;
+        float _t2 = this.sZ + this.sZ;
         float _t3 = this.rZ * this.rZ;
         float _t4 = this.rZ * this.rW;
         float _t5 = this.rY * this.rW;
@@ -1145,9 +1145,9 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public Double3x4 toMatrix3x4(@Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        float _t0 = 2.0f * this.sX;
-        float _t1 = 2.0f * this.sY;
-        float _t2 = 2.0f * this.sZ;
+        float _t0 = this.sX + this.sX;
+        float _t1 = this.sY + this.sY;
+        float _t2 = this.sZ + this.sZ;
         float _t3 = this.rZ * this.rZ;
         float _t4 = this.rZ * this.rW;
         float _t5 = this.rY * this.rW;
@@ -1667,7 +1667,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRZ, this.rY, -(otherRY * this.rZ));
         float _buf1 = Math.fma(otherRY, this.rW, otherRW * this.rY) + Math.fma(otherRX, this.rZ, -(otherRZ * this.rX));
         float _buf2 = Math.fma(otherRZ, this.rW, otherRW * this.rZ) + Math.fma(otherRY, this.rX, -(otherRX * this.rY));
-        d.rW = Math.fma(-otherRZ, this.rZ, Math.fma(-otherRY, this.rY, Math.fma(otherRW, this.rW, -(otherRX * this.rX))));
+        d.rW = Math.fma(otherRW, this.rW, -(otherRX * this.rX)) - Math.fma(otherRY, this.rY, otherRZ * this.rZ);
         d.sX = otherSX * this.sX;
         d.sY = otherSY * this.sY;
         d.sZ = otherSZ * this.sZ;
@@ -1733,7 +1733,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRZ, this.rY, -(otherRY * this.rZ));
         float _buf1 = Math.fma(otherRY, this.rW, otherRW * this.rY) + Math.fma(otherRX, this.rZ, -(otherRZ * this.rX));
         float _buf2 = Math.fma(otherRZ, this.rW, otherRW * this.rZ) + Math.fma(otherRY, this.rX, -(otherRX * this.rY));
-        d.rW = Math.fma(-otherRZ, this.rZ, Math.fma(-otherRY, this.rY, Math.fma(otherRW, this.rW, -(otherRX * this.rX))));
+        d.rW = Math.fma(otherRW, this.rW, -(otherRX * this.rX)) - Math.fma(otherRY, this.rY, otherRZ * this.rZ);
         d.sX = otherSX * this.sX;
         d.sY = otherSY * this.sY;
         d.sZ = otherSZ * this.sZ;
@@ -1831,21 +1831,19 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public FloatTransform preMul(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, float otherSX, float otherSY, float otherSZ, @Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
-        float _t0 = -otherRZ;
-        float _t1 = -otherRY;
-        float _t2 = otherSY * this.tY;
-        float _t3 = otherSX * this.tX;
-        float _t4 = otherSZ * this.tZ;
-        float _t14 = 2.0f * Math.fma(otherRX, _t2, -(otherRY * _t3));
-        float _t15 = 2.0f * Math.fma(otherRZ, _t3, -(otherRX * _t4));
-        float _t16 = 2.0f * Math.fma(otherRY, _t4, -(otherRZ * _t2));
-        d.tX = Math.fma(otherRY, _t14, Math.fma(_t0, _t15, Math.fma(otherRW, _t16, Math.fma(otherSX, this.tX, otherTX))));
-        d.tY = Math.fma(otherRZ, _t16, Math.fma(-otherRX, _t14, Math.fma(otherRW, _t15, Math.fma(otherSY, this.tY, otherTY))));
-        d.tZ = Math.fma(otherRX, _t15, Math.fma(_t1, _t16, Math.fma(otherRW, _t14, Math.fma(otherSZ, this.tZ, otherTZ))));
+        float _t0 = otherSY * this.tY;
+        float _t1 = otherSX * this.tX;
+        float _t2 = otherSZ * this.tZ;
+        float _t12 = 2.0f * Math.fma(otherRX, _t0, -(otherRY * _t1));
+        float _t13 = 2.0f * Math.fma(otherRZ, _t1, -(otherRX * _t2));
+        float _t14 = 2.0f * Math.fma(otherRY, _t2, -(otherRZ * _t0));
+        d.tX = Math.fma(otherRY, _t12, Math.fma(-otherRZ, _t13, Math.fma(otherRW, _t14, Math.fma(otherSX, this.tX, otherTX))));
+        d.tY = Math.fma(otherRZ, _t14, Math.fma(-otherRX, _t12, Math.fma(otherRW, _t13, Math.fma(otherSY, this.tY, otherTY))));
+        d.tZ = Math.fma(otherRX, _t13, Math.fma(-otherRY, _t14, Math.fma(otherRW, _t12, Math.fma(otherSZ, this.tZ, otherTZ))));
         float _buf0 = Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY));
         float _buf1 = Math.fma(otherRY, this.rW, otherRW * this.rY) + Math.fma(otherRZ, this.rX, -(otherRX * this.rZ));
         float _buf2 = Math.fma(otherRZ, this.rW, otherRW * this.rZ) + Math.fma(otherRX, this.rY, -(otherRY * this.rX));
-        d.rW = Math.fma(_t0, this.rZ, Math.fma(_t1, this.rY, Math.fma(otherRW, this.rW, -(otherRX * this.rX))));
+        d.rW = Math.fma(otherRW, this.rW, -(otherRX * this.rX)) - Math.fma(otherRY, this.rY, otherRZ * this.rZ);
         d.sX = otherSX * this.sX;
         d.sY = otherSY * this.sY;
         d.sZ = otherSZ * this.sZ;
@@ -1899,21 +1897,19 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public DoubleTransform preMul(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, float otherSX, float otherSY, float otherSZ, @Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
-        float _t0 = -otherRZ;
-        float _t1 = -otherRY;
-        float _t2 = otherSY * this.tY;
-        float _t3 = otherSX * this.tX;
-        float _t4 = otherSZ * this.tZ;
-        float _t14 = 2.0f * Math.fma(otherRX, _t2, -(otherRY * _t3));
-        float _t15 = 2.0f * Math.fma(otherRZ, _t3, -(otherRX * _t4));
-        float _t16 = 2.0f * Math.fma(otherRY, _t4, -(otherRZ * _t2));
-        d.tX = Math.fma(otherRY, _t14, Math.fma(_t0, _t15, Math.fma(otherRW, _t16, Math.fma(otherSX, this.tX, otherTX))));
-        d.tY = Math.fma(otherRZ, _t16, Math.fma(-otherRX, _t14, Math.fma(otherRW, _t15, Math.fma(otherSY, this.tY, otherTY))));
-        d.tZ = Math.fma(otherRX, _t15, Math.fma(_t1, _t16, Math.fma(otherRW, _t14, Math.fma(otherSZ, this.tZ, otherTZ))));
+        float _t0 = otherSY * this.tY;
+        float _t1 = otherSX * this.tX;
+        float _t2 = otherSZ * this.tZ;
+        float _t12 = 2.0f * Math.fma(otherRX, _t0, -(otherRY * _t1));
+        float _t13 = 2.0f * Math.fma(otherRZ, _t1, -(otherRX * _t2));
+        float _t14 = 2.0f * Math.fma(otherRY, _t2, -(otherRZ * _t0));
+        d.tX = Math.fma(otherRY, _t12, Math.fma(-otherRZ, _t13, Math.fma(otherRW, _t14, Math.fma(otherSX, this.tX, otherTX))));
+        d.tY = Math.fma(otherRZ, _t14, Math.fma(-otherRX, _t12, Math.fma(otherRW, _t13, Math.fma(otherSY, this.tY, otherTY))));
+        d.tZ = Math.fma(otherRX, _t13, Math.fma(-otherRY, _t14, Math.fma(otherRW, _t12, Math.fma(otherSZ, this.tZ, otherTZ))));
         float _buf0 = Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY));
         float _buf1 = Math.fma(otherRY, this.rW, otherRW * this.rY) + Math.fma(otherRZ, this.rX, -(otherRX * this.rZ));
         float _buf2 = Math.fma(otherRZ, this.rW, otherRW * this.rZ) + Math.fma(otherRX, this.rY, -(otherRY * this.rX));
-        d.rW = Math.fma(_t0, this.rZ, Math.fma(_t1, this.rY, Math.fma(otherRW, this.rW, -(otherRX * this.rX))));
+        d.rW = Math.fma(otherRW, this.rW, -(otherRX * this.rX)) - Math.fma(otherRY, this.rY, otherRZ * this.rZ);
         d.sX = otherSX * this.sX;
         d.sY = otherSY * this.sY;
         d.sZ = otherSZ * this.sZ;
@@ -2023,7 +2019,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(otherRX, this.rW, -(otherRW * this.rX)) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY));
         float _buf1 = Math.fma(otherRY, this.rW, -(otherRW * this.rY)) + Math.fma(otherRZ, this.rX, -(otherRX * this.rZ));
         float _buf2 = Math.fma(otherRX, this.rY, -(otherRY * this.rX)) + Math.fma(otherRZ, this.rW, -(otherRW * this.rZ));
-        d.rW = Math.fma(otherRZ, this.rZ, Math.fma(otherRY, this.rY, Math.fma(otherRX, this.rX, otherRW * this.rW)));
+        d.rW = Math.fma(otherRX, this.rX, otherRW * this.rW) - Math.fma(-otherRZ, this.rZ, -(otherRY * this.rY));
         d.sX = otherSX * _rcp1;
         d.sY = otherSY * _rcp2;
         d.sZ = otherSZ * _rcp0;
@@ -2093,7 +2089,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(otherRX, this.rW, -(otherRW * this.rX)) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY));
         float _buf1 = Math.fma(otherRY, this.rW, -(otherRW * this.rY)) + Math.fma(otherRZ, this.rX, -(otherRX * this.rZ));
         float _buf2 = Math.fma(otherRX, this.rY, -(otherRY * this.rX)) + Math.fma(otherRZ, this.rW, -(otherRW * this.rZ));
-        d.rW = Math.fma(otherRZ, this.rZ, Math.fma(otherRY, this.rY, Math.fma(otherRX, this.rX, otherRW * this.rW)));
+        d.rW = Math.fma(otherRX, this.rX, otherRW * this.rW) - Math.fma(-otherRZ, this.rZ, -(otherRY * this.rY));
         d.sX = otherSX * _rcp1;
         d.sY = otherSY * _rcp2;
         d.sZ = otherSZ * _rcp0;
@@ -3248,7 +3244,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(rotationX, this.rW, rotationW * this.rX) + Math.fma(rotationZ, this.rY, -(rotationY * this.rZ));
         float _buf1 = Math.fma(rotationY, this.rW, rotationW * this.rY) + Math.fma(rotationX, this.rZ, -(rotationZ * this.rX));
         float _buf2 = Math.fma(rotationZ, this.rW, rotationW * this.rZ) + Math.fma(rotationY, this.rX, -(rotationX * this.rY));
-        d.rW = Math.fma(-rotationZ, this.rZ, Math.fma(-rotationY, this.rY, Math.fma(rotationW, this.rW, -(rotationX * this.rX))));
+        d.rW = Math.fma(rotationW, this.rW, -(rotationX * this.rX)) - Math.fma(rotationY, this.rY, rotationZ * this.rZ);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -3299,7 +3295,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(rotationX, this.rW, rotationW * this.rX) + Math.fma(rotationZ, this.rY, -(rotationY * this.rZ));
         float _buf1 = Math.fma(rotationY, this.rW, rotationW * this.rY) + Math.fma(rotationX, this.rZ, -(rotationZ * this.rX));
         float _buf2 = Math.fma(rotationZ, this.rW, rotationW * this.rZ) + Math.fma(rotationY, this.rX, -(rotationX * this.rY));
-        d.rW = Math.fma(-rotationZ, this.rZ, Math.fma(-rotationY, this.rY, Math.fma(rotationW, this.rW, -(rotationX * this.rX))));
+        d.rW = Math.fma(rotationW, this.rW, -(rotationX * this.rX)) - Math.fma(rotationY, this.rY, rotationZ * this.rZ);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -3402,7 +3398,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(this.rX, _t1, this.rW * _t3) + Math.fma(this.rY, _t4, -(this.rZ * _t5));
         float _buf1 = Math.fma(this.rY, _t1, this.rW * _t5) + Math.fma(this.rZ, _t3, -(this.rX * _t4));
         float _buf2 = Math.fma(this.rZ, _t1, this.rW * _t4) + Math.fma(this.rX, _t5, -(this.rY * _t3));
-        d.rW = Math.fma(-this.rZ, _t4, Math.fma(-this.rY, _t5, Math.fma(this.rW, _t1, -(this.rX * _t3))));
+        d.rW = Math.fma(this.rW, _t1, -(this.rX * _t3)) - Math.fma(this.rY, _t5, this.rZ * _t4);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -3457,7 +3453,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(this.rX, _t1, this.rW * _t3) + Math.fma(this.rY, _t4, -(this.rZ * _t5));
         float _buf1 = Math.fma(this.rY, _t1, this.rW * _t5) + Math.fma(this.rZ, _t3, -(this.rX * _t4));
         float _buf2 = Math.fma(this.rZ, _t1, this.rW * _t4) + Math.fma(this.rX, _t5, -(this.rY * _t3));
-        d.rW = Math.fma(-this.rZ, _t4, Math.fma(-this.rY, _t5, Math.fma(this.rW, _t1, -(this.rX * _t3))));
+        d.rW = Math.fma(this.rW, _t1, -(this.rX * _t3)) - Math.fma(this.rY, _t5, this.rZ * _t4);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -3596,7 +3592,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t20, -(this.rZ * _t22));
         float _buf1 = Math.fma(this.rY, _t21, this.rW * _t22) + Math.fma(this.rZ, _t19, -(this.rX * _t20));
         float _buf2 = Math.fma(this.rZ, _t21, this.rW * _t20) + Math.fma(this.rX, _t22, -(this.rY * _t19));
-        d.rW = Math.fma(-this.rZ, _t20, Math.fma(-this.rY, _t22, Math.fma(this.rW, _t21, -(this.rX * _t19))));
+        d.rW = Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t22, this.rZ * _t20);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -3657,7 +3653,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t20, -(this.rZ * _t22));
         float _buf1 = Math.fma(this.rY, _t21, this.rW * _t22) + Math.fma(this.rZ, _t19, -(this.rX * _t20));
         float _buf2 = Math.fma(this.rZ, _t21, this.rW * _t20) + Math.fma(this.rX, _t22, -(this.rY * _t19));
-        d.rW = Math.fma(-this.rZ, _t20, Math.fma(-this.rY, _t22, Math.fma(this.rW, _t21, -(this.rX * _t19))));
+        d.rW = Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t22, this.rZ * _t20);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -3715,7 +3711,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t20, -(this.rZ * _t22));
         float _buf1 = Math.fma(this.rY, _t19, this.rW * _t22) + Math.fma(this.rZ, _t21, -(this.rX * _t20));
         float _buf2 = Math.fma(this.rZ, _t19, this.rW * _t20) + Math.fma(this.rX, _t22, -(this.rY * _t21));
-        d.rW = Math.fma(-this.rZ, _t20, Math.fma(-this.rY, _t22, Math.fma(this.rW, _t19, -(this.rX * _t21))));
+        d.rW = Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t22, this.rZ * _t20);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -3776,7 +3772,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t20, -(this.rZ * _t22));
         float _buf1 = Math.fma(this.rY, _t19, this.rW * _t22) + Math.fma(this.rZ, _t21, -(this.rX * _t20));
         float _buf2 = Math.fma(this.rZ, _t19, this.rW * _t20) + Math.fma(this.rX, _t22, -(this.rY * _t21));
-        d.rW = Math.fma(-this.rZ, _t20, Math.fma(-this.rY, _t22, Math.fma(this.rW, _t19, -(this.rX * _t21))));
+        d.rW = Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t22, this.rZ * _t20);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -3915,7 +3911,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(this.rX, _t19, this.rW * _t20) + Math.fma(this.rY, _t21, -(this.rZ * _t22));
         float _buf1 = Math.fma(this.rY, _t19, this.rW * _t22) + Math.fma(this.rZ, _t20, -(this.rX * _t21));
         float _buf2 = Math.fma(this.rZ, _t19, this.rW * _t21) + Math.fma(this.rX, _t22, -(this.rY * _t20));
-        d.rW = Math.fma(-this.rZ, _t21, Math.fma(-this.rY, _t22, Math.fma(this.rW, _t19, -(this.rX * _t20))));
+        d.rW = Math.fma(this.rW, _t19, -(this.rX * _t20)) - Math.fma(this.rY, _t22, this.rZ * _t21);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -3976,7 +3972,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(this.rX, _t19, this.rW * _t20) + Math.fma(this.rY, _t21, -(this.rZ * _t22));
         float _buf1 = Math.fma(this.rY, _t19, this.rW * _t22) + Math.fma(this.rZ, _t20, -(this.rX * _t21));
         float _buf2 = Math.fma(this.rZ, _t19, this.rW * _t21) + Math.fma(this.rX, _t22, -(this.rY * _t20));
-        d.rW = Math.fma(-this.rZ, _t21, Math.fma(-this.rY, _t22, Math.fma(this.rW, _t19, -(this.rX * _t20))));
+        d.rW = Math.fma(this.rW, _t19, -(this.rX * _t20)) - Math.fma(this.rY, _t22, this.rZ * _t21);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -4034,7 +4030,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t22, -(this.rZ * _t20));
         float _buf1 = Math.fma(this.rY, _t21, this.rW * _t20) + Math.fma(this.rZ, _t19, -(this.rX * _t22));
         float _buf2 = Math.fma(this.rZ, _t21, this.rW * _t22) + Math.fma(this.rX, _t20, -(this.rY * _t19));
-        d.rW = Math.fma(-this.rZ, _t22, Math.fma(-this.rY, _t20, Math.fma(this.rW, _t21, -(this.rX * _t19))));
+        d.rW = Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t20, this.rZ * _t22);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -4095,7 +4091,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t22, -(this.rZ * _t20));
         float _buf1 = Math.fma(this.rY, _t21, this.rW * _t20) + Math.fma(this.rZ, _t19, -(this.rX * _t22));
         float _buf2 = Math.fma(this.rZ, _t21, this.rW * _t22) + Math.fma(this.rX, _t20, -(this.rY * _t19));
-        d.rW = Math.fma(-this.rZ, _t22, Math.fma(-this.rY, _t20, Math.fma(this.rW, _t21, -(this.rX * _t19))));
+        d.rW = Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t20, this.rZ * _t22);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -4234,7 +4230,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(this.rX, _t21, this.rW * _t22) + Math.fma(this.rY, _t19, -(this.rZ * _t20));
         float _buf1 = Math.fma(this.rY, _t21, this.rW * _t20) + Math.fma(this.rZ, _t22, -(this.rX * _t19));
         float _buf2 = Math.fma(this.rZ, _t21, this.rW * _t19) + Math.fma(this.rX, _t20, -(this.rY * _t22));
-        d.rW = Math.fma(-this.rZ, _t19, Math.fma(-this.rY, _t20, Math.fma(this.rW, _t21, -(this.rX * _t22))));
+        d.rW = Math.fma(this.rW, _t21, -(this.rX * _t22)) - Math.fma(this.rY, _t20, this.rZ * _t19);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -4295,7 +4291,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(this.rX, _t21, this.rW * _t22) + Math.fma(this.rY, _t19, -(this.rZ * _t20));
         float _buf1 = Math.fma(this.rY, _t21, this.rW * _t20) + Math.fma(this.rZ, _t22, -(this.rX * _t19));
         float _buf2 = Math.fma(this.rZ, _t21, this.rW * _t19) + Math.fma(this.rX, _t20, -(this.rY * _t22));
-        d.rW = Math.fma(-this.rZ, _t19, Math.fma(-this.rY, _t20, Math.fma(this.rW, _t21, -(this.rX * _t22))));
+        d.rW = Math.fma(this.rW, _t21, -(this.rX * _t22)) - Math.fma(this.rY, _t20, this.rZ * _t19);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -4353,7 +4349,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t22, -(this.rZ * _t20));
         float _buf1 = Math.fma(this.rY, _t19, this.rW * _t20) + Math.fma(this.rZ, _t21, -(this.rX * _t22));
         float _buf2 = Math.fma(this.rZ, _t19, this.rW * _t22) + Math.fma(this.rX, _t20, -(this.rY * _t21));
-        d.rW = Math.fma(-this.rZ, _t22, Math.fma(-this.rY, _t20, Math.fma(this.rW, _t19, -(this.rX * _t21))));
+        d.rW = Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t20, this.rZ * _t22);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -4414,7 +4410,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t22, -(this.rZ * _t20));
         float _buf1 = Math.fma(this.rY, _t19, this.rW * _t20) + Math.fma(this.rZ, _t21, -(this.rX * _t22));
         float _buf2 = Math.fma(this.rZ, _t19, this.rW * _t22) + Math.fma(this.rX, _t20, -(this.rY * _t21));
-        d.rW = Math.fma(-this.rZ, _t22, Math.fma(-this.rY, _t20, Math.fma(this.rW, _t19, -(this.rX * _t21))));
+        d.rW = Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t20, this.rZ * _t22);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;

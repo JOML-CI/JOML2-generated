@@ -1854,7 +1854,7 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        return new Double2x3(2.0 * _t0_inv, 0.0, -((left + right) * _t0_inv), 0.0, 2.0 * _t1_inv, -((bottom + top) * _t1_inv), Joml.BIT_AFFINE);
+        return new Double2x3(_t0_inv + _t0_inv, 0.0, -((left + right) * _t0_inv), 0.0, _t1_inv + _t1_inv, -((bottom + top) * _t1_inv), Joml.BIT_AFFINE);
     }
 
 
@@ -1950,7 +1950,7 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
         double _t3 = Math.sin(0.5 * angle);
-        double _t5 = 2.0 * _t3 * _t3;
+        double _t5 = (_t3 + _t3) * _t3;
         return new Double2x3(_t0, -_t1, Math.fma(pivotX, _t5, pivotY * _t1), _t1, _t0, Math.fma(pivotY, _t5, -(pivotX * _t1)), Joml.BIT_ORTHOGONAL);
     }
 
@@ -1963,7 +1963,7 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
         double _t3 = Math.sin(0.5 * angle);
-        double _t5 = 2.0 * _t3 * _t3;
+        double _t5 = (_t3 + _t3) * _t3;
         return new Double2x3(_t0, -_t1, Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(this.m02, _t0, -(this.m12 * _t1)), _t1, _t0, Math.fma(this.m02, _t1, this.m12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1)), Joml.BIT_ORTHOGONAL);
     }
 
@@ -1976,7 +1976,7 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
         double _t3 = Math.sin(0.5 * angle);
-        double _t5 = 2.0 * _t3 * _t3;
+        double _t5 = (_t3 + _t3) * _t3;
         return new Double2x3(Math.fma(this.m00, _t0, -(this.m10 * _t1)), Math.fma(this.m01, _t0, -(this.m11 * _t1)), Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(this.m02, _t0, -(this.m12 * _t1)), Math.fma(this.m00, _t1, this.m10 * _t0), Math.fma(this.m01, _t1, this.m11 * _t0), Math.fma(this.m02, _t1, this.m12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1)), Joml.BIT_ORTHOGONAL);
     }
 
@@ -1989,7 +1989,7 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
         double _t3 = Math.sin(0.5 * angle);
-        double _t5 = 2.0 * _t3 * _t3;
+        double _t5 = (_t3 + _t3) * _t3;
         return new Double2x3(Math.fma(this.m00, _t0, -(this.m10 * _t1)), Math.fma(this.m01, _t0, -(this.m11 * _t1)), Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(this.m02, _t0, -(this.m12 * _t1)), Math.fma(this.m00, _t1, this.m10 * _t0), Math.fma(this.m01, _t1, this.m11 * _t0), Math.fma(this.m02, _t1, this.m12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1)), Joml.BIT_AFFINE);
     }
 
@@ -2419,7 +2419,7 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
         double _t3 = Math.sin(0.5 * angle);
-        double _t5 = 2.0 * _t3 * _t3;
+        double _t5 = (_t3 + _t3) * _t3;
         return new Double2x3(_t0, -_t1, Math.fma(pivotX, _t5, Math.fma(pivotY, _t1, this.m02)), _t1, _t0, Math.fma(pivotY, _t5, Math.fma(-pivotX, _t1, this.m12)), Joml.BIT_ORTHOGONAL);
     }
 
@@ -2432,7 +2432,7 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
         double _t3 = Math.sin(0.5 * angle);
-        double _t8 = 2.0 * _t3 * _t3;
+        double _t8 = (_t3 + _t3) * _t3;
         double _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
         double _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
         return new Double2x3(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), Math.fma(this.m00, _t9, Math.fma(this.m01, _t10, this.m02)), Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), Math.fma(this.m10, _t9, Math.fma(this.m11, _t10, this.m12)), Joml.BIT_ORTHOGONAL);
@@ -2447,7 +2447,7 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
         double _t3 = Math.sin(0.5 * angle);
-        double _t8 = 2.0 * _t3 * _t3;
+        double _t8 = (_t3 + _t3) * _t3;
         double _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
         double _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
         return new Double2x3(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), Math.fma(this.m00, _t9, Math.fma(this.m01, _t10, this.m02)), Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), Math.fma(this.m10, _t9, Math.fma(this.m11, _t10, this.m12)), Joml.BIT_AFFINE);
@@ -2822,7 +2822,7 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        return new Double2x3(2.0 * _t0_inv, 0.0, -((left + right) * _t0_inv), 0.0, 2.0 * _t1_inv, -((bottom + top) * _t1_inv), Joml.BIT_AFFINE);
+        return new Double2x3(_t0_inv + _t0_inv, 0.0, -((left + right) * _t0_inv), 0.0, _t1_inv + _t1_inv, -((bottom + top) * _t1_inv), Joml.BIT_AFFINE);
     }
 
 
@@ -2835,7 +2835,7 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        return new Double2x3(2.0 * _t0_inv, 0.0, this.m02 - (left + right) * _t0_inv, 0.0, 2.0 * _t1_inv, this.m12 - (bottom + top) * _t1_inv, Joml.BIT_AFFINE);
+        return new Double2x3(_t0_inv + _t0_inv, 0.0, this.m02 - (left + right) * _t0_inv, 0.0, _t1_inv + _t1_inv, this.m12 - (bottom + top) * _t1_inv, Joml.BIT_AFFINE);
     }
 
 
@@ -2850,7 +2850,7 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        return new Double2x3(2.0 * this.m00 * _t0_inv, 2.0 * this.m01 * _t1_inv, this.m02 - this.m00 * _t2 * _t0_inv - this.m01 * _t3 * _t1_inv, 2.0 * this.m10 * _t0_inv, 2.0 * this.m11 * _t1_inv, this.m12 - this.m10 * _t2 * _t0_inv - this.m11 * _t3 * _t1_inv, Joml.BIT_AFFINE);
+        return new Double2x3((this.m00 + this.m00) * _t0_inv, (this.m01 + this.m01) * _t1_inv, this.m02 - this.m00 * _t2 * _t0_inv - this.m01 * _t3 * _t1_inv, (this.m10 + this.m10) * _t0_inv, (this.m11 + this.m11) * _t1_inv, this.m12 - this.m10 * _t2 * _t0_inv - this.m11 * _t3 * _t1_inv, Joml.BIT_AFFINE);
     }
 
 
@@ -2865,7 +2865,7 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        return new Double2x3(2.0 * this.m00 * _t0_inv, 2.0 * this.m01 * _t1_inv, this.m02 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv), 2.0 * this.m10 * _t0_inv, 2.0 * this.m11 * _t1_inv, this.m12 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv), Joml.BIT_AFFINE);
+        return new Double2x3((this.m00 + this.m00) * _t0_inv, (this.m01 + this.m01) * _t1_inv, this.m02 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv), (this.m10 + this.m10) * _t0_inv, (this.m11 + this.m11) * _t1_inv, this.m12 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv), Joml.BIT_AFFINE);
     }
 
 

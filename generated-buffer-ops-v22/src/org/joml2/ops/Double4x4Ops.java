@@ -3554,9 +3554,9 @@ public final class Double4x4Ops {
      * @return {@code dest}
      */
     public static double[] makeFromTransform(double[] dest, int destOffset, double tTX, double tTY, double tTZ, double tRX, double tRY, double tRZ, double tRW, double tSX, double tSY, double tSZ) {
-        double _t0 = 2.0 * tSX;
-        double _t1 = 2.0 * tSY;
-        double _t2 = 2.0 * tSZ;
+        double _t0 = tSX + tSX;
+        double _t1 = tSY + tSY;
+        double _t2 = tSZ + tSZ;
         double _t3 = tRZ * tRZ;
         double _t4 = tRZ * tRW;
         double _t5 = tRY * tRW;
@@ -6893,9 +6893,9 @@ public final class Double4x4Ops {
      * @return {@code dest}
      */
     public static double[] composeTRS(double[] dest, int destOffset, double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ) {
-        double _t0 = 2.0 * scaleX;
-        double _t1 = 2.0 * scaleY;
-        double _t2 = 2.0 * scaleZ;
+        double _t0 = scaleX + scaleX;
+        double _t1 = scaleY + scaleY;
+        double _t2 = scaleZ + scaleZ;
         double _t3 = rotationZ * rotationZ;
         double _t4 = rotationZ * rotationW;
         double _t5 = rotationY * rotationW;
@@ -6968,9 +6968,9 @@ public final class Double4x4Ops {
         double _scalex = scale[scaleOffset + 0];
         double _scaley = scale[scaleOffset + 1];
         double _scalez = scale[scaleOffset + 2];
-        double _t0 = 2.0 * _scalex;
-        double _t1 = 2.0 * _scaley;
-        double _t2 = 2.0 * _scalez;
+        double _t0 = _scalex + _scalex;
+        double _t1 = _scaley + _scaley;
+        double _t2 = _scalez + _scalez;
         double _t3 = _rotationz * _rotationz;
         double _t4 = _rotationz * _rotationw;
         double _t5 = _rotationy * _rotationw;
@@ -7066,9 +7066,9 @@ public final class Double4x4Ops {
         double _m13 = m[mOffset + 13];
         double _m23 = m[mOffset + 14];
         double _m33 = m[mOffset + 15];
-        double _t0 = 2.0 * scaleZ;
-        double _t1 = 2.0 * scaleX;
-        double _t2 = 2.0 * scaleY;
+        double _t0 = scaleZ + scaleZ;
+        double _t1 = scaleX + scaleX;
+        double _t2 = scaleY + scaleY;
         double _t3 = rotationY * rotationW;
         double _t4 = rotationZ * rotationZ;
         double _t5 = rotationZ * rotationW;
@@ -7168,9 +7168,9 @@ public final class Double4x4Ops {
         double _m13 = m[mOffset + 13];
         double _m23 = m[mOffset + 14];
         double _m33 = m[mOffset + 15];
-        double _t0 = 2.0 * _scalez;
-        double _t1 = 2.0 * _scalex;
-        double _t2 = 2.0 * _scaley;
+        double _t0 = _scalez + _scalez;
+        double _t1 = _scalex + _scalex;
+        double _t2 = _scaley + _scaley;
         double _t3 = _rotationy * _rotationw;
         double _t4 = _rotationz * _rotationz;
         double _t5 = _rotationz * _rotationw;
@@ -8579,8 +8579,8 @@ public final class Double4x4Ops {
         double _t12 = (1.0 / Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
         double _t13 = _t0 * _t12;
         double _t14 = _t3 * _t12;
-        double _t15 = 2.0 * _t13;
-        double _t16 = 2.0 * _t14;
+        double _t15 = _t13 + _t13;
+        double _t16 = _t14 + _t14;
         double _t17 = -_t15;
         double _t19 = _t10 * _t12;
         double _t20 = _t16 * _t13;
@@ -8658,8 +8658,8 @@ public final class Double4x4Ops {
         double _t12 = (1.0 / Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
         double _t13 = _t0 * _t12;
         double _t14 = _t3 * _t12;
-        double _t15 = 2.0 * _t13;
-        double _t16 = 2.0 * _t14;
+        double _t15 = _t13 + _t13;
+        double _t16 = _t14 + _t14;
         double _t17 = -_t15;
         double _t19 = _t10 * _t12;
         double _t20 = _t16 * _t13;
@@ -8747,14 +8747,14 @@ public final class Double4x4Ops {
         double _t6 = Math.fma(-2.0, dqRZ * dqRZ, 1.0);
         dest[destOffset + 0] = Math.fma(-2.0, _t0, _t6);
         dest[destOffset + 1] = 2.0 * Math.fma(dqRX, dqRY, _t2);
-        dest[destOffset + 2] = Math.fma(-2.0, _t3, 2.0 * dqRX * dqRZ);
+        dest[destOffset + 2] = Math.fma(-2.0, _t3, (dqRX + dqRX) * dqRZ);
         dest[destOffset + 3] = 0.0;
-        dest[destOffset + 4] = Math.fma(-2.0, _t2, 2.0 * dqRX * dqRY);
+        dest[destOffset + 4] = Math.fma(-2.0, _t2, (dqRX + dqRX) * dqRY);
         dest[destOffset + 5] = Math.fma(-2.0, _t4, _t6);
         dest[destOffset + 6] = 2.0 * Math.fma(dqRX, dqRW, _t5);
         dest[destOffset + 7] = 0.0;
         dest[destOffset + 8] = 2.0 * Math.fma(dqRX, dqRZ, _t3);
-        dest[destOffset + 9] = Math.fma(-2.0, dqRX * dqRW, 2.0 * _t5);
+        dest[destOffset + 9] = Math.fma(-2.0, dqRX * dqRW, _t5 + _t5);
         dest[destOffset + 10] = Math.fma(-2.0, _t4, Math.fma(-2.0, _t0, 1.0));
         dest[destOffset + 11] = 0.0;
         dest[destOffset + 12] = 2.0 * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW)));
@@ -13303,9 +13303,9 @@ public final class Double4x4Ops {
      * @return {@code dest}
      */
     public static double[] makeReflection(double[] dest, int destOffset, double normalX, double normalY, double normalZ) {
-        double _t6 = -(2.0 * normalX * normalY);
-        double _t7 = -(2.0 * normalX * normalZ);
-        double _t8 = -(2.0 * normalY * normalZ);
+        double _t6 = -((normalX + normalX) * normalY);
+        double _t7 = -((normalX + normalX) * normalZ);
+        double _t8 = -((normalY + normalY) * normalZ);
         dest[destOffset + 0] = Math.fma(-2.0, normalX * normalX, 1.0);
         dest[destOffset + 1] = _t6;
         dest[destOffset + 2] = _t7;
@@ -13364,9 +13364,9 @@ public final class Double4x4Ops {
         double _normalx = normal[normalOffset + 0];
         double _normaly = normal[normalOffset + 1];
         double _normalz = normal[normalOffset + 2];
-        double _t6 = -(2.0 * _normalx * _normaly);
-        double _t7 = -(2.0 * _normalx * _normalz);
-        double _t8 = -(2.0 * _normaly * _normalz);
+        double _t6 = -((_normalx + _normalx) * _normaly);
+        double _t7 = -((_normalx + _normalx) * _normalz);
+        double _t8 = -((_normaly + _normaly) * _normalz);
         dest[destOffset + 0] = Math.fma(-2.0, _normalx * _normalx, 1.0);
         dest[destOffset + 1] = _t6;
         dest[destOffset + 2] = _t7;
@@ -14957,13 +14957,13 @@ public final class Double4x4Ops {
         double _t54 = _t3 * _t52_inv;
         double _t55 = _t52 * _t47;
         double _t58 = _t50 * _t52_inv;
-        double _t60 = 2.0 * _t45 / ((1.0 - _t45 / _t55) * _t55);
+        double _t60 = (_t45 + _t45) / ((1.0 - _t45 / _t55) * _t55);
         double _t61 = 1.0 + _t60;
-        dest[destOffset + 0] = 2.0 * _t25 * _t41_inv - _t53;
+        dest[destOffset + 0] = (_t25 + _t25) * _t41_inv - _t53;
         dest[destOffset + 1] = _t61 * _t5 * _t52_inv;
         dest[destOffset + 2] = 0.0;
         dest[destOffset + 3] = _t53;
-        dest[destOffset + 4] = 2.0 * _t26 * _t41_inv - _t54;
+        dest[destOffset + 4] = (_t26 + _t26) * _t41_inv - _t54;
         dest[destOffset + 5] = _t61 * _t3 * _t52_inv;
         dest[destOffset + 6] = 0.0;
         dest[destOffset + 7] = _t54;
@@ -15051,13 +15051,13 @@ public final class Double4x4Ops {
         double _t54 = _t3 * _t52_inv;
         double _t55 = _t52 * _t47;
         double _t58 = _t50 * _t52_inv;
-        double _t60 = 2.0 * _t45 / ((1.0 - _t45 / _t55) * _t55);
+        double _t60 = (_t45 + _t45) / ((1.0 - _t45 / _t55) * _t55);
         double _t61 = 1.0 + _t60;
-        dest[destOffset + 0] = 2.0 * _t25 * _t41_inv - _t53;
+        dest[destOffset + 0] = (_t25 + _t25) * _t41_inv - _t53;
         dest[destOffset + 1] = _t61 * _t5 * _t52_inv;
         dest[destOffset + 2] = 0.0;
         dest[destOffset + 3] = _t53;
-        dest[destOffset + 4] = 2.0 * _t26 * _t41_inv - _t54;
+        dest[destOffset + 4] = (_t26 + _t26) * _t41_inv - _t54;
         dest[destOffset + 5] = _t61 * _t3 * _t52_inv;
         dest[destOffset + 6] = 0.0;
         dest[destOffset + 7] = _t54;
@@ -20927,9 +20927,9 @@ public final class Double4x4Ops {
         double _t0 = -pivotZ;
         double _t1 = -rotY;
         double _t3 = -rotX;
-        double _t5 = 2.0 * rotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
+        double _t5 = rotX + rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
         double _t8 = rotW * _t6;
         double _t9 = rotZ * _t7;
         double _t10 = rotW * _t7;
@@ -21040,9 +21040,9 @@ public final class Double4x4Ops {
         double _t0 = -_pivotz;
         double _t1 = -_roty;
         double _t3 = -_rotx;
-        double _t5 = 2.0 * _rotx;
-        double _t6 = 2.0 * _roty;
-        double _t7 = 2.0 * _rotz;
+        double _t5 = _rotx + _rotx;
+        double _t6 = _roty + _roty;
+        double _t7 = _rotz + _rotz;
         double _t8 = _rotw * _t6;
         double _t9 = _rotz * _t7;
         double _t10 = _rotw * _t7;
@@ -21338,9 +21338,9 @@ public final class Double4x4Ops {
         double _self33 = src[srcOffset + 15];
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -21437,9 +21437,9 @@ public final class Double4x4Ops {
         double _qw = q[qOffset + 3];
         double _t0 = -_qy;
         double _t2 = -_qx;
-        double _t3 = 2.0 * _qx;
-        double _t4 = 2.0 * _qy;
-        double _t5 = 2.0 * _qz;
+        double _t3 = _qx + _qx;
+        double _t4 = _qy + _qy;
+        double _t5 = _qz + _qz;
         double _t6 = _qw * _t4;
         double _t7 = _qw * _t5;
         double _t8 = _qw * _t3;
@@ -22582,9 +22582,9 @@ public final class Double4x4Ops {
         double _t1 = -_self12;
         double _t2 = -_self22;
         double _t3 = -_self32;
-        double _t10 = 2.0 * normalX * normalZ;
-        double _t11 = 2.0 * normalX * normalY;
-        double _t12 = 2.0 * normalY * normalZ;
+        double _t10 = (normalX + normalX) * normalZ;
+        double _t11 = (normalX + normalX) * normalY;
+        double _t12 = (normalY + normalY) * normalZ;
         double _t13 = Math.fma(-2.0, normalX * normalX, 1.0);
         double _t14 = Math.fma(-2.0, normalY * normalY, 1.0);
         double _t15 = Math.fma(-2.0, normalZ * normalZ, 1.0);
@@ -22673,9 +22673,9 @@ public final class Double4x4Ops {
         double _t1 = -_self12;
         double _t2 = -_self22;
         double _t3 = -_self32;
-        double _t10 = 2.0 * _normalx * _normalz;
-        double _t11 = 2.0 * _normalx * _normaly;
-        double _t12 = 2.0 * _normaly * _normalz;
+        double _t10 = (_normalx + _normalx) * _normalz;
+        double _t11 = (_normalx + _normalx) * _normaly;
+        double _t12 = (_normaly + _normaly) * _normalz;
         double _t13 = Math.fma(-2.0, _normalx * _normalx, 1.0);
         double _t14 = Math.fma(-2.0, _normaly * _normaly, 1.0);
         double _t15 = Math.fma(-2.0, _normalz * _normalz, 1.0);
@@ -22772,9 +22772,9 @@ public final class Double4x4Ops {
         double _t0 = -rotY;
         double _t2 = -rotX;
         double _t3 = -pivotZ;
-        double _t5 = 2.0 * rotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
+        double _t5 = rotX + rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
         double _t8 = rotW * _t6;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t5;
@@ -22885,9 +22885,9 @@ public final class Double4x4Ops {
         double _t0 = -_roty;
         double _t2 = -_rotx;
         double _t3 = -_pivotz;
-        double _t5 = 2.0 * _rotx;
-        double _t6 = 2.0 * _roty;
-        double _t7 = 2.0 * _rotz;
+        double _t5 = _rotx + _rotx;
+        double _t6 = _roty + _roty;
+        double _t7 = _rotz + _rotz;
         double _t8 = _rotw * _t6;
         double _t9 = _rotw * _t7;
         double _t10 = _rotw * _t5;
@@ -23183,9 +23183,9 @@ public final class Double4x4Ops {
         double _self33 = src[srcOffset + 15];
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -23282,9 +23282,9 @@ public final class Double4x4Ops {
         double _qw = q[qOffset + 3];
         double _t0 = -_qy;
         double _t2 = -_qx;
-        double _t3 = 2.0 * _qx;
-        double _t4 = 2.0 * _qy;
-        double _t5 = 2.0 * _qz;
+        double _t3 = _qx + _qx;
+        double _t4 = _qy + _qy;
+        double _t5 = _qz + _qz;
         double _t6 = _qw * _t4;
         double _t7 = _qw * _t5;
         double _t8 = _qw * _t3;
@@ -26006,11 +26006,11 @@ public final class Double4x4Ops {
         double _t58 = Math.fma(_t0, _t3, Math.fma(-p0Y, _t4, _t50 / _t55));
         double _t60 = Math.fma(p3X, _t3, Math.fma(p3Y, _t4, _t58));
         double _t60_inv = 1.0 / _t60;
-        double _t63 = 2.0 * _t25 * _t46_inv - _t3 * _t60_inv;
-        double _t64 = 2.0 * _t26 * _t46_inv - _t4 * _t60_inv;
+        double _t63 = (_t25 + _t25) * _t46_inv - _t3 * _t60_inv;
+        double _t64 = (_t26 + _t26) * _t46_inv - _t4 * _t60_inv;
         double _t65 = _t60 * _t55;
         double _t69 = 2.0 * Math.fma(p0Y, _t3, Math.fma(_t0, _t4, _t32)) * _t46_inv - _t58 * _t60_inv;
-        double _t71 = 2.0 * _t50 / ((1.0 - _t50 / _t65) * _t65);
+        double _t71 = (_t50 + _t50) / ((1.0 - _t50 / _t65) * _t65);
         double _t72 = 1.0 + _t71;
         double _t73 = _t72 * _t3;
         double _t74 = _t72 * _t4;
@@ -26125,11 +26125,11 @@ public final class Double4x4Ops {
         double _t58 = Math.fma(_t0, _t3, Math.fma(-_p0y, _t4, _t50 / _t55));
         double _t60 = Math.fma(_p3x, _t3, Math.fma(_p3y, _t4, _t58));
         double _t60_inv = 1.0 / _t60;
-        double _t63 = 2.0 * _t25 * _t46_inv - _t3 * _t60_inv;
-        double _t64 = 2.0 * _t26 * _t46_inv - _t4 * _t60_inv;
+        double _t63 = (_t25 + _t25) * _t46_inv - _t3 * _t60_inv;
+        double _t64 = (_t26 + _t26) * _t46_inv - _t4 * _t60_inv;
         double _t65 = _t60 * _t55;
         double _t69 = 2.0 * Math.fma(_p0y, _t3, Math.fma(_t0, _t4, _t32)) * _t46_inv - _t58 * _t60_inv;
-        double _t71 = 2.0 * _t50 / ((1.0 - _t50 / _t65) * _t65);
+        double _t71 = (_t50 + _t50) / ((1.0 - _t50 / _t65) * _t65);
         double _t72 = 1.0 + _t71;
         double _t73 = _t72 * _t3;
         double _t74 = _t72 * _t4;

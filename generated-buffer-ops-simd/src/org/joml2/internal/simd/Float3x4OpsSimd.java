@@ -2274,9 +2274,9 @@ public final class Float3x4OpsSimd {
     }
 
     public static float[] composeTRSMul_fma(float[] dest, int destOffset, float[] m, int mOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        float _t0 = 2.0f * scaleZ;
-        float _t1 = 2.0f * scaleX;
-        float _t2 = 2.0f * scaleY;
+        float _t0 = scaleZ + scaleZ;
+        float _t1 = scaleX + scaleX;
+        float _t2 = scaleY + scaleY;
         float _t3 = rotationY * rotationW;
         float _t4 = rotationZ * rotationZ;
         float _t5 = rotationZ * rotationW;
@@ -2293,9 +2293,9 @@ public final class Float3x4OpsSimd {
     }
 
     public static float[] composeTRSMul_mulAdd(float[] dest, int destOffset, float[] m, int mOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        float _t0 = 2.0f * scaleZ;
-        float _t1 = 2.0f * scaleX;
-        float _t2 = 2.0f * scaleY;
+        float _t0 = scaleZ + scaleZ;
+        float _t1 = scaleX + scaleX;
+        float _t2 = scaleY + scaleY;
         float _t3 = rotationY * rotationW;
         float _t4 = rotationZ * rotationZ;
         float _t5 = rotationZ * rotationW;
@@ -2317,9 +2317,9 @@ public final class Float3x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment composeTRSMul_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment m, long mOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        float _t0 = 2.0f * scaleZ;
-        float _t1 = 2.0f * scaleX;
-        float _t2 = 2.0f * scaleY;
+        float _t0 = scaleZ + scaleZ;
+        float _t1 = scaleX + scaleX;
+        float _t2 = scaleY + scaleY;
         float _t3 = rotationY * rotationW;
         float _t4 = rotationZ * rotationZ;
         float _t5 = rotationZ * rotationW;
@@ -2336,9 +2336,9 @@ public final class Float3x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment composeTRSMul_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment m, long mOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        float _t0 = 2.0f * scaleZ;
-        float _t1 = 2.0f * scaleX;
-        float _t2 = 2.0f * scaleY;
+        float _t0 = scaleZ + scaleZ;
+        float _t1 = scaleX + scaleX;
+        float _t2 = scaleY + scaleY;
         float _t3 = rotationY * rotationW;
         float _t4 = rotationZ * rotationZ;
         float _t5 = rotationZ * rotationW;
@@ -2367,9 +2367,9 @@ public final class Float3x4OpsSimd {
         float _rotationw = rotation[rotationOffset + 3];
         float _scaley = scale[scaleOffset + 1];
         float _scalez = scale[scaleOffset + 2];
-        float _t0 = 2.0f * _scalez;
-        float _t1 = 2.0f * _scalex;
-        float _t2 = 2.0f * _scaley;
+        float _t0 = _scalez + _scalez;
+        float _t1 = _scalex + _scalex;
+        float _t2 = _scaley + _scaley;
         float _t3 = _rotationy * _rotationw;
         float _t4 = _rotationz * _rotationz;
         float _t5 = _rotationz * _rotationw;
@@ -2393,9 +2393,9 @@ public final class Float3x4OpsSimd {
         float _rotationw = rotation[rotationOffset + 3];
         float _scaley = scale[scaleOffset + 1];
         float _scalez = scale[scaleOffset + 2];
-        float _t0 = 2.0f * _scalez;
-        float _t1 = 2.0f * _scalex;
-        float _t2 = 2.0f * _scaley;
+        float _t0 = _scalez + _scalez;
+        float _t1 = _scalex + _scalex;
+        float _t2 = _scaley + _scaley;
         float _t3 = _rotationy * _rotationw;
         float _t4 = _rotationz * _rotationz;
         float _t5 = _rotationz * _rotationw;
@@ -2432,9 +2432,9 @@ public final class Float3x4OpsSimd {
         float _rotationw = UnsafeOpsHolder.U.getFloat(_rotationBase + 12L);
         float _scaley = UnsafeOpsHolder.U.getFloat(_scaleBase + 4L);
         float _scalez = UnsafeOpsHolder.U.getFloat(_scaleBase + 8L);
-        float _t0 = 2.0f * _scalez;
-        float _t1 = 2.0f * _scalex;
-        float _t2 = 2.0f * _scaley;
+        float _t0 = _scalez + _scalez;
+        float _t1 = _scalex + _scalex;
+        float _t2 = _scaley + _scaley;
         float _t3 = _rotationy * _rotationw;
         float _t4 = _rotationz * _rotationz;
         float _t5 = _rotationz * _rotationw;
@@ -2458,9 +2458,9 @@ public final class Float3x4OpsSimd {
         float _rotationw = rotation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 12L);
         float _scaley = scale.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, scaleOffset + 4L);
         float _scalez = scale.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, scaleOffset + 8L);
-        float _t0 = 2.0f * _scalez;
-        float _t1 = 2.0f * _scalex;
-        float _t2 = 2.0f * _scaley;
+        float _t0 = _scalez + _scalez;
+        float _t1 = _scalex + _scalex;
+        float _t2 = _scaley + _scaley;
         float _t3 = _rotationy * _rotationw;
         float _t4 = _rotationz * _rotationz;
         float _t5 = _rotationz * _rotationw;
@@ -2492,9 +2492,9 @@ public final class Float3x4OpsSimd {
         float _rotationw = UnsafeOpsHolder.U.getFloat(_rotationBase + 12L);
         float _scaley = UnsafeOpsHolder.U.getFloat(_scaleBase + 4L);
         float _scalez = UnsafeOpsHolder.U.getFloat(_scaleBase + 8L);
-        float _t0 = 2.0f * _scalez;
-        float _t1 = 2.0f * _scalex;
-        float _t2 = 2.0f * _scaley;
+        float _t0 = _scalez + _scalez;
+        float _t1 = _scalex + _scalex;
+        float _t2 = _scaley + _scaley;
         float _t3 = _rotationy * _rotationw;
         float _t4 = _rotationz * _rotationz;
         float _t5 = _rotationz * _rotationw;
@@ -2518,9 +2518,9 @@ public final class Float3x4OpsSimd {
         float _rotationw = rotation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 12L);
         float _scaley = scale.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, scaleOffset + 4L);
         float _scalez = scale.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, scaleOffset + 8L);
-        float _t0 = 2.0f * _scalez;
-        float _t1 = 2.0f * _scalex;
-        float _t2 = 2.0f * _scaley;
+        float _t0 = _scalez + _scalez;
+        float _t1 = _scalex + _scalex;
+        float _t2 = _scaley + _scaley;
         float _t3 = _rotationy * _rotationw;
         float _t4 = _rotationz * _rotationz;
         float _t5 = _rotationz * _rotationw;
@@ -3849,9 +3849,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
-        float _t4 = 2.0f * rotX;
-        float _t5 = 2.0f * rotY;
-        float _t6 = 2.0f * rotZ;
+        float _t4 = rotX + rotX;
+        float _t5 = rotY + rotY;
+        float _t6 = rotZ + rotZ;
         float _t7 = rotW * _t5;
         float _t8 = rotW * _t6;
         float _t9 = rotZ * _t6;
@@ -3879,9 +3879,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
-        float _t4 = 2.0f * rotX;
-        float _t5 = 2.0f * rotY;
-        float _t6 = 2.0f * rotZ;
+        float _t4 = rotX + rotX;
+        float _t5 = rotY + rotY;
+        float _t6 = rotZ + rotZ;
         float _t7 = rotW * _t5;
         float _t8 = rotW * _t6;
         float _t9 = rotZ * _t6;
@@ -3914,9 +3914,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
-        float _t4 = 2.0f * rotX;
-        float _t5 = 2.0f * rotY;
-        float _t6 = 2.0f * rotZ;
+        float _t4 = rotX + rotX;
+        float _t5 = rotY + rotY;
+        float _t6 = rotZ + rotZ;
         float _t7 = rotW * _t5;
         float _t8 = rotW * _t6;
         float _t9 = rotZ * _t6;
@@ -3944,9 +3944,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
-        float _t4 = 2.0f * rotX;
-        float _t5 = 2.0f * rotY;
-        float _t6 = 2.0f * rotZ;
+        float _t4 = rotX + rotX;
+        float _t5 = rotY + rotY;
+        float _t6 = rotZ + rotZ;
         float _t7 = rotW * _t5;
         float _t8 = rotW * _t6;
         float _t9 = rotZ * _t6;
@@ -3986,9 +3986,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -_roty;
         float _t2 = -_pivotz;
         float _t3 = -_rotx;
-        float _t4 = 2.0f * _rotx;
-        float _t5 = 2.0f * _roty;
-        float _t6 = 2.0f * _rotz;
+        float _t4 = _rotx + _rotx;
+        float _t5 = _roty + _roty;
+        float _t6 = _rotz + _rotz;
         float _t7 = _rotw * _t5;
         float _t8 = _rotw * _t6;
         float _t9 = _rotz * _t6;
@@ -4023,9 +4023,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -_roty;
         float _t2 = -_pivotz;
         float _t3 = -_rotx;
-        float _t4 = 2.0f * _rotx;
-        float _t5 = 2.0f * _roty;
-        float _t6 = 2.0f * _rotz;
+        float _t4 = _rotx + _rotx;
+        float _t5 = _roty + _roty;
+        float _t6 = _rotz + _rotz;
         float _t7 = _rotw * _t5;
         float _t8 = _rotw * _t6;
         float _t9 = _rotz * _t6;
@@ -4072,9 +4072,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -_roty;
         float _t2 = -_pivotz;
         float _t3 = -_rotx;
-        float _t4 = 2.0f * _rotx;
-        float _t5 = 2.0f * _roty;
-        float _t6 = 2.0f * _rotz;
+        float _t4 = _rotx + _rotx;
+        float _t5 = _roty + _roty;
+        float _t6 = _rotz + _rotz;
         float _t7 = _rotw * _t5;
         float _t8 = _rotw * _t6;
         float _t9 = _rotz * _t6;
@@ -4109,9 +4109,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -_roty;
         float _t2 = -_pivotz;
         float _t3 = -_rotx;
-        float _t4 = 2.0f * _rotx;
-        float _t5 = 2.0f * _roty;
-        float _t6 = 2.0f * _rotz;
+        float _t4 = _rotx + _rotx;
+        float _t5 = _roty + _roty;
+        float _t6 = _rotz + _rotz;
         float _t7 = _rotw * _t5;
         float _t8 = _rotw * _t6;
         float _t9 = _rotz * _t6;
@@ -4153,9 +4153,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -_roty;
         float _t2 = -_pivotz;
         float _t3 = -_rotx;
-        float _t4 = 2.0f * _rotx;
-        float _t5 = 2.0f * _roty;
-        float _t6 = 2.0f * _rotz;
+        float _t4 = _rotx + _rotx;
+        float _t5 = _roty + _roty;
+        float _t6 = _rotz + _rotz;
         float _t7 = _rotw * _t5;
         float _t8 = _rotw * _t6;
         float _t9 = _rotz * _t6;
@@ -4190,9 +4190,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -_roty;
         float _t2 = -_pivotz;
         float _t3 = -_rotx;
-        float _t4 = 2.0f * _rotx;
-        float _t5 = 2.0f * _roty;
-        float _t6 = 2.0f * _rotz;
+        float _t4 = _rotx + _rotx;
+        float _t5 = _roty + _roty;
+        float _t6 = _rotz + _rotz;
         float _t7 = _rotw * _t5;
         float _t8 = _rotw * _t6;
         float _t9 = _rotz * _t6;
@@ -4464,9 +4464,9 @@ public final class Float3x4OpsSimd {
     public static float[] preRotateQuat_fma(float[] dest, int destOffset, float[] src, int srcOffset, float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -4486,9 +4486,9 @@ public final class Float3x4OpsSimd {
     public static float[] preRotateQuat_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -4513,9 +4513,9 @@ public final class Float3x4OpsSimd {
     public static java.lang.foreign.MemorySegment preRotateQuat_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -4535,9 +4535,9 @@ public final class Float3x4OpsSimd {
     public static java.lang.foreign.MemorySegment preRotateQuat_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -4566,9 +4566,9 @@ public final class Float3x4OpsSimd {
         float _qw = q[qOffset + 3];
         float _t0 = -_qy;
         float _t2 = -_qx;
-        float _t3 = 2.0f * _qx;
-        float _t4 = 2.0f * _qy;
-        float _t5 = 2.0f * _qz;
+        float _t3 = _qx + _qx;
+        float _t4 = _qy + _qy;
+        float _t5 = _qz + _qz;
         float _t6 = _qw * _t4;
         float _t7 = _qw * _t5;
         float _t8 = _qw * _t3;
@@ -4592,9 +4592,9 @@ public final class Float3x4OpsSimd {
         float _qw = q[qOffset + 3];
         float _t0 = -_qy;
         float _t2 = -_qx;
-        float _t3 = 2.0f * _qx;
-        float _t4 = 2.0f * _qy;
-        float _t5 = 2.0f * _qz;
+        float _t3 = _qx + _qx;
+        float _t4 = _qy + _qy;
+        float _t5 = _qz + _qz;
         float _t6 = _qw * _t4;
         float _t7 = _qw * _t5;
         float _t8 = _qw * _t3;
@@ -4629,9 +4629,9 @@ public final class Float3x4OpsSimd {
         float _qw = UnsafeOpsHolder.U.getFloat(_qBase + 12L);
         float _t0 = -_qy;
         float _t2 = -_qx;
-        float _t3 = 2.0f * _qx;
-        float _t4 = 2.0f * _qy;
-        float _t5 = 2.0f * _qz;
+        float _t3 = _qx + _qx;
+        float _t4 = _qy + _qy;
+        float _t5 = _qz + _qz;
         float _t6 = _qw * _t4;
         float _t7 = _qw * _t5;
         float _t8 = _qw * _t3;
@@ -4655,9 +4655,9 @@ public final class Float3x4OpsSimd {
         float _qw = q.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, qOffset + 12L);
         float _t0 = -_qy;
         float _t2 = -_qx;
-        float _t3 = 2.0f * _qx;
-        float _t4 = 2.0f * _qy;
-        float _t5 = 2.0f * _qz;
+        float _t3 = _qx + _qx;
+        float _t4 = _qy + _qy;
+        float _t5 = _qz + _qz;
         float _t6 = _qw * _t4;
         float _t7 = _qw * _t5;
         float _t8 = _qw * _t3;
@@ -4687,9 +4687,9 @@ public final class Float3x4OpsSimd {
         float _qw = UnsafeOpsHolder.U.getFloat(_qBase + 12L);
         float _t0 = -_qy;
         float _t2 = -_qx;
-        float _t3 = 2.0f * _qx;
-        float _t4 = 2.0f * _qy;
-        float _t5 = 2.0f * _qz;
+        float _t3 = _qx + _qx;
+        float _t4 = _qy + _qy;
+        float _t5 = _qz + _qz;
         float _t6 = _qw * _t4;
         float _t7 = _qw * _t5;
         float _t8 = _qw * _t3;
@@ -4713,9 +4713,9 @@ public final class Float3x4OpsSimd {
         float _qw = q.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, qOffset + 12L);
         float _t0 = -_qy;
         float _t2 = -_qx;
-        float _t3 = 2.0f * _qx;
-        float _t4 = 2.0f * _qy;
-        float _t5 = 2.0f * _qz;
+        float _t3 = _qx + _qx;
+        float _t4 = _qy + _qy;
+        float _t5 = _qz + _qz;
         float _t6 = _qw * _t4;
         float _t7 = _qw * _t5;
         float _t8 = _qw * _t3;
@@ -5342,9 +5342,9 @@ public final class Float3x4OpsSimd {
         float _self21 = src[srcOffset + 9];
         float _self22 = src[srcOffset + 10];
         float _t2 = -_self22;
-        float _t9 = 2.0f * normalX * normalZ;
-        float _t10 = 2.0f * normalX * normalY;
-        float _t11 = 2.0f * normalY * normalZ;
+        float _t9 = (normalX + normalX) * normalZ;
+        float _t10 = (normalX + normalX) * normalY;
+        float _t11 = (normalY + normalY) * normalZ;
         float _t12 = Math.fma(-2.0f, normalX * normalX, 1.0f);
         float _t13 = Math.fma(-2.0f, normalY * normalY, 1.0f);
         float _t14 = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
@@ -5369,9 +5369,9 @@ public final class Float3x4OpsSimd {
         float _self21 = src[srcOffset + 9];
         float _self22 = src[srcOffset + 10];
         float _t2 = -_self22;
-        float _t9 = 2.0f * normalX * normalZ;
-        float _t10 = 2.0f * normalX * normalY;
-        float _t11 = 2.0f * normalY * normalZ;
+        float _t9 = (normalX + normalX) * normalZ;
+        float _t10 = (normalX + normalX) * normalY;
+        float _t11 = (normalY + normalY) * normalZ;
         float _t12 = Math.fma(-2.0f, normalX * normalX, 1.0f);
         float _t13 = Math.fma(-2.0f, normalY * normalY, 1.0f);
         float _t14 = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
@@ -5407,9 +5407,9 @@ public final class Float3x4OpsSimd {
         float _self21 = UnsafeOpsHolder.U.getFloat(_srcBase + 36L);
         float _self22 = UnsafeOpsHolder.U.getFloat(_srcBase + 40L);
         float _t2 = -_self22;
-        float _t9 = 2.0f * normalX * normalZ;
-        float _t10 = 2.0f * normalX * normalY;
-        float _t11 = 2.0f * normalY * normalZ;
+        float _t9 = (normalX + normalX) * normalZ;
+        float _t10 = (normalX + normalX) * normalY;
+        float _t11 = (normalY + normalY) * normalZ;
         float _t12 = Math.fma(-2.0f, normalX * normalX, 1.0f);
         float _t13 = Math.fma(-2.0f, normalY * normalY, 1.0f);
         float _t14 = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
@@ -5434,9 +5434,9 @@ public final class Float3x4OpsSimd {
         float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
         float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
         float _t2 = -_self22;
-        float _t9 = 2.0f * normalX * normalZ;
-        float _t10 = 2.0f * normalX * normalY;
-        float _t11 = 2.0f * normalY * normalZ;
+        float _t9 = (normalX + normalX) * normalZ;
+        float _t10 = (normalX + normalX) * normalY;
+        float _t11 = (normalY + normalY) * normalZ;
         float _t12 = Math.fma(-2.0f, normalX * normalX, 1.0f);
         float _t13 = Math.fma(-2.0f, normalY * normalY, 1.0f);
         float _t14 = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
@@ -5467,9 +5467,9 @@ public final class Float3x4OpsSimd {
         float _self21 = UnsafeOpsHolder.U.getFloat(_srcBase + 36L);
         float _self22 = UnsafeOpsHolder.U.getFloat(_srcBase + 40L);
         float _t2 = -_self22;
-        float _t9 = 2.0f * normalX * normalZ;
-        float _t10 = 2.0f * normalX * normalY;
-        float _t11 = 2.0f * normalY * normalZ;
+        float _t9 = (normalX + normalX) * normalZ;
+        float _t10 = (normalX + normalX) * normalY;
+        float _t11 = (normalY + normalY) * normalZ;
         float _t12 = Math.fma(-2.0f, normalX * normalX, 1.0f);
         float _t13 = Math.fma(-2.0f, normalY * normalY, 1.0f);
         float _t14 = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
@@ -5494,9 +5494,9 @@ public final class Float3x4OpsSimd {
         float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
         float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
         float _t2 = -_self22;
-        float _t9 = 2.0f * normalX * normalZ;
-        float _t10 = 2.0f * normalX * normalY;
-        float _t11 = 2.0f * normalY * normalZ;
+        float _t9 = (normalX + normalX) * normalZ;
+        float _t10 = (normalX + normalX) * normalY;
+        float _t11 = (normalY + normalY) * normalZ;
         float _t12 = Math.fma(-2.0f, normalX * normalX, 1.0f);
         float _t13 = Math.fma(-2.0f, normalY * normalY, 1.0f);
         float _t14 = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
@@ -5529,9 +5529,9 @@ public final class Float3x4OpsSimd {
         float _normalz = normal[normalOffset + 2];
         float _normaly = normal[normalOffset + 1];
         float _t2 = -_self22;
-        float _t9 = 2.0f * _normalx * _normalz;
-        float _t10 = 2.0f * _normalx * _normaly;
-        float _t11 = 2.0f * _normaly * _normalz;
+        float _t9 = (_normalx + _normalx) * _normalz;
+        float _t10 = (_normalx + _normalx) * _normaly;
+        float _t11 = (_normaly + _normaly) * _normalz;
         float _t12 = Math.fma(-2.0f, _normalx * _normalx, 1.0f);
         float _t13 = Math.fma(-2.0f, _normaly * _normaly, 1.0f);
         float _t14 = Math.fma(-2.0f, _normalz * _normalz, 1.0f);
@@ -5559,9 +5559,9 @@ public final class Float3x4OpsSimd {
         float _normalz = normal[normalOffset + 2];
         float _normaly = normal[normalOffset + 1];
         float _t2 = -_self22;
-        float _t9 = 2.0f * _normalx * _normalz;
-        float _t10 = 2.0f * _normalx * _normaly;
-        float _t11 = 2.0f * _normaly * _normalz;
+        float _t9 = (_normalx + _normalx) * _normalz;
+        float _t10 = (_normalx + _normalx) * _normaly;
+        float _t11 = (_normaly + _normaly) * _normalz;
         float _t12 = Math.fma(-2.0f, _normalx * _normalx, 1.0f);
         float _t13 = Math.fma(-2.0f, _normaly * _normaly, 1.0f);
         float _t14 = Math.fma(-2.0f, _normalz * _normalz, 1.0f);
@@ -5601,9 +5601,9 @@ public final class Float3x4OpsSimd {
         float _normalz = UnsafeOpsHolder.U.getFloat(_normalBase + 8L);
         float _normaly = UnsafeOpsHolder.U.getFloat(_normalBase + 4L);
         float _t2 = -_self22;
-        float _t9 = 2.0f * _normalx * _normalz;
-        float _t10 = 2.0f * _normalx * _normaly;
-        float _t11 = 2.0f * _normaly * _normalz;
+        float _t9 = (_normalx + _normalx) * _normalz;
+        float _t10 = (_normalx + _normalx) * _normaly;
+        float _t11 = (_normaly + _normaly) * _normalz;
         float _t12 = Math.fma(-2.0f, _normalx * _normalx, 1.0f);
         float _t13 = Math.fma(-2.0f, _normaly * _normaly, 1.0f);
         float _t14 = Math.fma(-2.0f, _normalz * _normalz, 1.0f);
@@ -5631,9 +5631,9 @@ public final class Float3x4OpsSimd {
         float _normalz = normal.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, normalOffset + 8L);
         float _normaly = normal.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, normalOffset + 4L);
         float _t2 = -_self22;
-        float _t9 = 2.0f * _normalx * _normalz;
-        float _t10 = 2.0f * _normalx * _normaly;
-        float _t11 = 2.0f * _normaly * _normalz;
+        float _t9 = (_normalx + _normalx) * _normalz;
+        float _t10 = (_normalx + _normalx) * _normaly;
+        float _t11 = (_normaly + _normaly) * _normalz;
         float _t12 = Math.fma(-2.0f, _normalx * _normalx, 1.0f);
         float _t13 = Math.fma(-2.0f, _normaly * _normaly, 1.0f);
         float _t14 = Math.fma(-2.0f, _normalz * _normalz, 1.0f);
@@ -5668,9 +5668,9 @@ public final class Float3x4OpsSimd {
         float _normalz = UnsafeOpsHolder.U.getFloat(_normalBase + 8L);
         float _normaly = UnsafeOpsHolder.U.getFloat(_normalBase + 4L);
         float _t2 = -_self22;
-        float _t9 = 2.0f * _normalx * _normalz;
-        float _t10 = 2.0f * _normalx * _normaly;
-        float _t11 = 2.0f * _normaly * _normalz;
+        float _t9 = (_normalx + _normalx) * _normalz;
+        float _t10 = (_normalx + _normalx) * _normaly;
+        float _t11 = (_normaly + _normaly) * _normalz;
         float _t12 = Math.fma(-2.0f, _normalx * _normalx, 1.0f);
         float _t13 = Math.fma(-2.0f, _normaly * _normaly, 1.0f);
         float _t14 = Math.fma(-2.0f, _normalz * _normalz, 1.0f);
@@ -5698,9 +5698,9 @@ public final class Float3x4OpsSimd {
         float _normalz = normal.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, normalOffset + 8L);
         float _normaly = normal.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, normalOffset + 4L);
         float _t2 = -_self22;
-        float _t9 = 2.0f * _normalx * _normalz;
-        float _t10 = 2.0f * _normalx * _normaly;
-        float _t11 = 2.0f * _normaly * _normalz;
+        float _t9 = (_normalx + _normalx) * _normalz;
+        float _t10 = (_normalx + _normalx) * _normaly;
+        float _t11 = (_normaly + _normaly) * _normalz;
         float _t12 = Math.fma(-2.0f, _normalx * _normalx, 1.0f);
         float _t13 = Math.fma(-2.0f, _normaly * _normaly, 1.0f);
         float _t14 = Math.fma(-2.0f, _normalz * _normalz, 1.0f);
@@ -5732,9 +5732,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -rotY;
         float _t2 = -rotX;
         float _t3 = -pivotZ;
-        float _t5 = 2.0f * rotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
+        float _t5 = rotX + rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
         float _t8 = rotW * _t6;
         float _t9 = rotW * _t7;
         float _t10 = rotW * _t5;
@@ -5780,9 +5780,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -rotY;
         float _t2 = -rotX;
         float _t3 = -pivotZ;
-        float _t5 = 2.0f * rotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
+        float _t5 = rotX + rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
         float _t8 = rotW * _t6;
         float _t9 = rotW * _t7;
         float _t10 = rotW * _t5;
@@ -5839,9 +5839,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -rotY;
         float _t2 = -rotX;
         float _t3 = -pivotZ;
-        float _t5 = 2.0f * rotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
+        float _t5 = rotX + rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
         float _t8 = rotW * _t6;
         float _t9 = rotW * _t7;
         float _t10 = rotW * _t5;
@@ -5887,9 +5887,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -rotY;
         float _t2 = -rotX;
         float _t3 = -pivotZ;
-        float _t5 = 2.0f * rotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
+        float _t5 = rotX + rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
         float _t8 = rotW * _t6;
         float _t9 = rotW * _t7;
         float _t10 = rotW * _t5;
@@ -5941,9 +5941,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -rotY;
         float _t2 = -rotX;
         float _t3 = -pivotZ;
-        float _t5 = 2.0f * rotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
+        float _t5 = rotX + rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
         float _t8 = rotW * _t6;
         float _t9 = rotW * _t7;
         float _t10 = rotW * _t5;
@@ -5989,9 +5989,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -rotY;
         float _t2 = -rotX;
         float _t3 = -pivotZ;
-        float _t5 = 2.0f * rotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
+        float _t5 = rotX + rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
         float _t8 = rotW * _t6;
         float _t9 = rotW * _t7;
         float _t10 = rotW * _t5;
@@ -6049,9 +6049,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -_roty;
         float _t2 = -_rotx;
         float _t3 = -_pivotz;
-        float _t5 = 2.0f * _rotx;
-        float _t6 = 2.0f * _roty;
-        float _t7 = 2.0f * _rotz;
+        float _t5 = _rotx + _rotx;
+        float _t6 = _roty + _roty;
+        float _t7 = _rotz + _rotz;
         float _t8 = _rotw * _t6;
         float _t9 = _rotw * _t7;
         float _t10 = _rotw * _t5;
@@ -6104,9 +6104,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -_roty;
         float _t2 = -_rotx;
         float _t3 = -_pivotz;
-        float _t5 = 2.0f * _rotx;
-        float _t6 = 2.0f * _roty;
-        float _t7 = 2.0f * _rotz;
+        float _t5 = _rotx + _rotx;
+        float _t6 = _roty + _roty;
+        float _t7 = _rotz + _rotz;
         float _t8 = _rotw * _t6;
         float _t9 = _rotw * _t7;
         float _t10 = _rotw * _t5;
@@ -6172,9 +6172,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -_roty;
         float _t2 = -_rotx;
         float _t3 = -_pivotz;
-        float _t5 = 2.0f * _rotx;
-        float _t6 = 2.0f * _roty;
-        float _t7 = 2.0f * _rotz;
+        float _t5 = _rotx + _rotx;
+        float _t6 = _roty + _roty;
+        float _t7 = _rotz + _rotz;
         float _t8 = _rotw * _t6;
         float _t9 = _rotw * _t7;
         float _t10 = _rotw * _t5;
@@ -6227,9 +6227,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -_roty;
         float _t2 = -_rotx;
         float _t3 = -_pivotz;
-        float _t5 = 2.0f * _rotx;
-        float _t6 = 2.0f * _roty;
-        float _t7 = 2.0f * _rotz;
+        float _t5 = _rotx + _rotx;
+        float _t6 = _roty + _roty;
+        float _t7 = _rotz + _rotz;
         float _t8 = _rotw * _t6;
         float _t9 = _rotw * _t7;
         float _t10 = _rotw * _t5;
@@ -6290,9 +6290,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -_roty;
         float _t2 = -_rotx;
         float _t3 = -_pivotz;
-        float _t5 = 2.0f * _rotx;
-        float _t6 = 2.0f * _roty;
-        float _t7 = 2.0f * _rotz;
+        float _t5 = _rotx + _rotx;
+        float _t6 = _roty + _roty;
+        float _t7 = _rotz + _rotz;
         float _t8 = _rotw * _t6;
         float _t9 = _rotw * _t7;
         float _t10 = _rotw * _t5;
@@ -6345,9 +6345,9 @@ public final class Float3x4OpsSimd {
         float _t0 = -_roty;
         float _t2 = -_rotx;
         float _t3 = -_pivotz;
-        float _t5 = 2.0f * _rotx;
-        float _t6 = 2.0f * _roty;
-        float _t7 = 2.0f * _rotz;
+        float _t5 = _rotx + _rotx;
+        float _t6 = _roty + _roty;
+        float _t7 = _rotz + _rotz;
         float _t8 = _rotw * _t6;
         float _t9 = _rotw * _t7;
         float _t10 = _rotw * _t5;

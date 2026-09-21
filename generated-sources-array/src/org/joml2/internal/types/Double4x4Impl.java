@@ -6005,9 +6005,9 @@ public class Double4x4Impl implements Double4x4 {
      */
     @Mutated public Double4x4 makeFromTransform(double tTX, double tTY, double tTZ, double tRX, double tRY, double tRZ, double tRW, double tSX, double tSY, double tSZ) {
         double[] dd = this.data;
-        double _t0 = 2.0 * tSX;
-        double _t1 = 2.0 * tSY;
-        double _t2 = 2.0 * tSZ;
+        double _t0 = tSX + tSX;
+        double _t1 = tSY + tSY;
+        double _t2 = tSZ + tSZ;
         double _t3 = tRZ * tRZ;
         double _t4 = tRZ * tRW;
         double _t5 = tRY * tRW;
@@ -8662,9 +8662,9 @@ public class Double4x4Impl implements Double4x4 {
     private Double3 frustumRayDir_no_orthogonal(double x, double y, @Mutated Double3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = 2.0 * sd[2];
-        dd[1] = 2.0 * sd[6];
-        dd[2] = 2.0 * sd[10];
+        dd[0] = sd[2] + sd[2];
+        dd[1] = sd[6] + sd[6];
+        dd[2] = sd[10] + sd[10];
         return dest;
     }
 
@@ -15040,9 +15040,9 @@ public class Double4x4Impl implements Double4x4 {
      */
     @Mutated public Double4x4 composeTRS(double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ) {
         double[] dd = this.data;
-        double _t0 = 2.0 * scaleX;
-        double _t1 = 2.0 * scaleY;
-        double _t2 = 2.0 * scaleZ;
+        double _t0 = scaleX + scaleX;
+        double _t1 = scaleY + scaleY;
+        double _t2 = scaleZ + scaleZ;
         double _t3 = rotationZ * rotationZ;
         double _t4 = rotationZ * rotationW;
         double _t5 = rotationY * rotationW;
@@ -15113,9 +15113,9 @@ public class Double4x4Impl implements Double4x4 {
     @Mutated public Double4x4 composeTRSMul(double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ, Double4x4R m) {
         double[] dd = this.data;
         double[] mData = ((Double4x4Impl) m).data;
-        double _t0 = 2.0 * scaleZ;
-        double _t1 = 2.0 * scaleX;
-        double _t2 = 2.0 * scaleY;
+        double _t0 = scaleZ + scaleZ;
+        double _t1 = scaleX + scaleX;
+        double _t2 = scaleY + scaleY;
         double _t3 = rotationY * rotationW;
         double _t4 = rotationZ * rotationZ;
         double _t5 = rotationZ * rotationW;
@@ -15165,7 +15165,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_no_lh_identity(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -15186,7 +15186,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? 2.0 * zFar : 2.0 * zFar * zNear * _t3_inv;
+        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -15201,7 +15201,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_no_lh_identity_self(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -15214,7 +15214,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[9] = -((bottom + top) * _t2_inv);
         dd[10] = zFar == Double.POSITIVE_INFINITY ? 1.0 : zNear == Double.POSITIVE_INFINITY ? -1.0 : -((zFar + zNear) * _t3_inv);
         dd[11] = 1.0;
-        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? 2.0 * zFar : 2.0 * zFar * zNear * _t3_inv;
+        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -15229,7 +15229,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_no_lh_translation(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -15250,7 +15250,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? 2.0 * zFar : 2.0 * zFar * zNear * _t3_inv;
+        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -15265,7 +15265,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_no_lh_translation_self(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -15280,7 +15280,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? 2.0 * zFar : 2.0 * zFar * zNear * _t3_inv;
+        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -15295,7 +15295,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_no_lh_orthogonal(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -15311,10 +15311,10 @@ public class Double4x4Impl implements Double4x4 {
         } else {
             if (zNear == Double.POSITIVE_INFINITY) {
                 _t16 = -1.0;
-                _t17 = 2.0 * zFar;
+                _t17 = zFar + zFar;
             } else {
                 _t16 = -((zFar + zNear) * _t4_inv);
-                _t17 = 2.0 * zFar * zNear * _t4_inv;
+                _t17 = (zFar + zFar) * zNear * _t4_inv;
             }
         }
         double _buf0 = sd[0] * _t0 * _t1_inv;
@@ -15355,7 +15355,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_no_lh_orthogonal_self(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -15371,10 +15371,10 @@ public class Double4x4Impl implements Double4x4 {
         } else {
             if (zNear == Double.POSITIVE_INFINITY) {
                 _t16 = -1.0;
-                _t17 = 2.0 * zFar;
+                _t17 = zFar + zFar;
             } else {
                 _t16 = -((zFar + zNear) * _t4_inv);
-                _t17 = 2.0 * zFar * zNear * _t4_inv;
+                _t17 = (zFar + zFar) * zNear * _t4_inv;
             }
         }
         double _buf0 = sd[0] * _t0 * _t1_inv;
@@ -15413,7 +15413,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_no_lh_general(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -15429,10 +15429,10 @@ public class Double4x4Impl implements Double4x4 {
         } else {
             if (zNear == Double.POSITIVE_INFINITY) {
                 _t16 = -1.0;
-                _t17 = 2.0 * zFar;
+                _t17 = zFar + zFar;
             } else {
                 _t16 = -((zFar + zNear) * _t4_inv);
-                _t17 = 2.0 * zFar * zNear * _t4_inv;
+                _t17 = (zFar + zFar) * zNear * _t4_inv;
             }
         }
         double _buf0 = sd[0] * _t0 * _t1_inv;
@@ -15503,7 +15503,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_no_rh_identity(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -15524,7 +15524,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = -1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? 2.0 * zFar : 2.0 * zFar * zNear * _t3_inv;
+        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -15539,7 +15539,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_no_rh_identity_self(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -15552,7 +15552,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[9] = (bottom + top) * _t2_inv;
         dd[10] = zFar == Double.POSITIVE_INFINITY ? -1.0 : zNear == Double.POSITIVE_INFINITY ? 1.0 : (zFar + zNear) * _t3_inv;
         dd[11] = -1.0;
-        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? 2.0 * zFar : 2.0 * zFar * zNear * _t3_inv;
+        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -15567,7 +15567,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_no_rh_translation(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -15588,7 +15588,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = -1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? 2.0 * zFar : 2.0 * zFar * zNear * _t3_inv;
+        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -15603,7 +15603,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_no_rh_translation_self(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -15618,7 +15618,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = -1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? 2.0 * zFar : 2.0 * zFar * zNear * _t3_inv;
+        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -15633,7 +15633,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_no_rh_orthogonal(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -15649,10 +15649,10 @@ public class Double4x4Impl implements Double4x4 {
         } else {
             if (zNear == Double.POSITIVE_INFINITY) {
                 _t14 = 1.0;
-                _t16 = 2.0 * zFar;
+                _t16 = zFar + zFar;
             } else {
                 _t14 = (zFar + zNear) * _t4_inv;
-                _t16 = 2.0 * zFar * zNear * _t4_inv;
+                _t16 = (zFar + zFar) * zNear * _t4_inv;
             }
         }
         double _buf0 = sd[0] * _t0 * _t1_inv;
@@ -15693,7 +15693,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_no_rh_orthogonal_self(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -15709,10 +15709,10 @@ public class Double4x4Impl implements Double4x4 {
         } else {
             if (zNear == Double.POSITIVE_INFINITY) {
                 _t14 = 1.0;
-                _t16 = 2.0 * zFar;
+                _t16 = zFar + zFar;
             } else {
                 _t14 = (zFar + zNear) * _t4_inv;
-                _t16 = 2.0 * zFar * zNear * _t4_inv;
+                _t16 = (zFar + zFar) * zNear * _t4_inv;
             }
         }
         double _buf0 = sd[0] * _t0 * _t1_inv;
@@ -15751,7 +15751,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_no_rh_affine(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -15767,10 +15767,10 @@ public class Double4x4Impl implements Double4x4 {
         } else {
             if (zNear == Double.POSITIVE_INFINITY) {
                 _t14 = 1.0;
-                _t16 = 2.0 * zFar;
+                _t16 = zFar + zFar;
             } else {
                 _t14 = (zFar + zNear) * _t4_inv;
-                _t16 = 2.0 * zFar * zNear * _t4_inv;
+                _t16 = (zFar + zFar) * zNear * _t4_inv;
             }
         }
         double _buf0 = sd[0] * _t0 * _t1_inv;
@@ -15811,7 +15811,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_no_rh_affine_self(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -15827,10 +15827,10 @@ public class Double4x4Impl implements Double4x4 {
         } else {
             if (zNear == Double.POSITIVE_INFINITY) {
                 _t14 = 1.0;
-                _t16 = 2.0 * zFar;
+                _t16 = zFar + zFar;
             } else {
                 _t14 = (zFar + zNear) * _t4_inv;
-                _t16 = 2.0 * zFar * zNear * _t4_inv;
+                _t16 = (zFar + zFar) * zNear * _t4_inv;
             }
         }
         double _buf0 = sd[0] * _t0 * _t1_inv;
@@ -15869,7 +15869,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_no_rh_general(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -15885,10 +15885,10 @@ public class Double4x4Impl implements Double4x4 {
         } else {
             if (zNear == Double.POSITIVE_INFINITY) {
                 _t14 = 1.0;
-                _t16 = 2.0 * zFar;
+                _t16 = zFar + zFar;
             } else {
                 _t14 = (zFar + zNear) * _t4_inv;
-                _t16 = 2.0 * zFar * zNear * _t4_inv;
+                _t16 = (zFar + zFar) * zNear * _t4_inv;
             }
         }
         double _buf0 = sd[0] * _t0 * _t1_inv;
@@ -15985,7 +15985,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_zo_lh_identity(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -16021,7 +16021,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_zo_lh_identity_self(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -16049,7 +16049,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_zo_lh_translation(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -16085,7 +16085,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_zo_lh_translation_self(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -16115,7 +16115,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_zo_lh_orthogonal(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -16175,7 +16175,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_zo_lh_orthogonal_self(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -16233,7 +16233,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_zo_lh_general(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -16323,7 +16323,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_zo_rh_identity(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -16359,7 +16359,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_zo_rh_identity_self(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -16387,7 +16387,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_zo_rh_translation(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -16423,7 +16423,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_zo_rh_translation_self(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -16453,7 +16453,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_zo_rh_orthogonal(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -16513,7 +16513,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_zo_rh_orthogonal_self(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -16571,7 +16571,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_zo_rh_affine(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -16631,7 +16631,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_zo_rh_affine_self(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -16689,7 +16689,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 frustum_zo_rh_general(double left, double right, double bottom, double top, double zNear, double zFar, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -19105,8 +19105,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t12 = (1.0 / Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
         double _t13 = _t0 * _t12;
         double _t14 = _t3 * _t12;
-        double _t15 = 2.0 * _t13;
-        double _t16 = 2.0 * _t14;
+        double _t15 = _t13 + _t13;
+        double _t16 = _t14 + _t14;
         double _t17 = -_t15;
         double _t19 = _t10 * _t12;
         double _t20 = _t16 * _t13;
@@ -19183,14 +19183,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t6 = Math.fma(-2.0, dqRZ * dqRZ, 1.0);
         dd[0] = Math.fma(-2.0, _t0, _t6);
         dd[1] = 2.0 * Math.fma(dqRX, dqRY, _t2);
-        dd[2] = Math.fma(-2.0, _t3, 2.0 * dqRX * dqRZ);
+        dd[2] = Math.fma(-2.0, _t3, (dqRX + dqRX) * dqRZ);
         dd[3] = 0.0;
-        dd[4] = Math.fma(-2.0, _t2, 2.0 * dqRX * dqRY);
+        dd[4] = Math.fma(-2.0, _t2, (dqRX + dqRX) * dqRY);
         dd[5] = Math.fma(-2.0, _t4, _t6);
         dd[6] = 2.0 * Math.fma(dqRX, dqRW, _t5);
         dd[7] = 0.0;
         dd[8] = 2.0 * Math.fma(dqRX, dqRZ, _t3);
-        dd[9] = Math.fma(-2.0, dqRX * dqRW, 2.0 * _t5);
+        dd[9] = Math.fma(-2.0, dqRX * dqRW, _t5 + _t5);
         dd[10] = Math.fma(-2.0, _t4, Math.fma(-2.0, _t0, 1.0));
         dd[11] = 0.0;
         dd[12] = 2.0 * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW)));
@@ -19209,7 +19209,7 @@ public class Double4x4Impl implements Double4x4 {
      */
     @Mutated private Double4x4 makeFrustum_no_lh(double left, double right, double bottom, double top, double zNear, double zFar) {
         double[] dd = this.data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -19230,7 +19230,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? 2.0 * zFar : 2.0 * zFar * zNear * _t3_inv;
+        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) this).properties = 0;
         return this;
@@ -19244,7 +19244,7 @@ public class Double4x4Impl implements Double4x4 {
      */
     @Mutated private Double4x4 makeFrustum_no_rh(double left, double right, double bottom, double top, double zNear, double zFar) {
         double[] dd = this.data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -19265,7 +19265,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = -1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? 2.0 * zFar : 2.0 * zFar * zNear * _t3_inv;
+        dd[14] = zFar == Double.POSITIVE_INFINITY ? -_t0 : zNear == Double.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) this).properties = 0;
         return this;
@@ -19291,7 +19291,7 @@ public class Double4x4Impl implements Double4x4 {
      */
     @Mutated private Double4x4 makeFrustum_zo_lh(double left, double right, double bottom, double top, double zNear, double zFar) {
         double[] dd = this.data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -19326,7 +19326,7 @@ public class Double4x4Impl implements Double4x4 {
      */
     @Mutated private Double4x4 makeFrustum_zo_rh(double left, double right, double bottom, double top, double zNear, double zFar) {
         double[] dd = this.data;
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -21174,17 +21174,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t2_inv;
+        dd[10] = _t2_inv + _t2_inv;
         dd[11] = 0.0;
         dd[12] = -((left + right) * _t0_inv);
         dd[13] = -((bottom + top) * _t1_inv);
@@ -21208,12 +21208,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -21253,12 +21253,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -21287,12 +21287,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -21419,12 +21419,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -21451,12 +21451,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -21495,12 +21495,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -21527,12 +21527,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -21664,7 +21664,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t1_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t1_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) this).properties = 0;
         return this;
@@ -21695,7 +21695,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = -1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t1_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t1_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) this).properties = 0;
         return this;
@@ -21902,7 +21902,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -21911,7 +21911,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t2_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) this).properties = 0;
         return this;
@@ -21936,7 +21936,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -21945,7 +21945,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = -1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t2_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) this).properties = 0;
         return this;
@@ -21982,7 +21982,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -22016,7 +22016,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -22161,12 +22161,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
+        dd[0] = _t5_inv + _t5_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t6_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = -((_t1 + _t0) * _t5_inv);
@@ -22175,7 +22175,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t4_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) this).properties = 0;
         return this;
@@ -22199,12 +22199,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
+        dd[0] = _t5_inv + _t5_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t6_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = (_t1 + _t0) * _t5_inv;
@@ -22213,7 +22213,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = -1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t4_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) this).properties = 0;
         return this;
@@ -22250,12 +22250,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
+        dd[0] = _t5_inv + _t5_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t6_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = -((_t1 + _t0) * _t5_inv);
@@ -22288,12 +22288,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
+        dd[0] = _t5_inv + _t5_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t6_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = (_t1 + _t0) * _t5_inv;
@@ -22469,7 +22469,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t36 = (1.0 / Math.sqrt(_t35));
         double _t40 = _t27 * _t34;
         double _t41 = Math.fma(_t27, _t34, nearFarDist);
-        double _t42 = 2.0 * _t40;
+        double _t42 = _t40 + _t40;
         double _t44, _t45, _t46;
         if (_t35 > 0.0) {
             _t44 = _t26 * _t36;
@@ -22526,7 +22526,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = _t41 == Double.POSITIVE_INFINITY ? -_t42 : _t40 == Double.POSITIVE_INFINITY ? 2.0 * _t41 : 2.0 * _t41 * _t40 * _t53_inv;
+        dd[14] = _t41 == Double.POSITIVE_INFINITY ? -_t42 : _t40 == Double.POSITIVE_INFINITY ? _t41 + _t41 : (_t41 + _t41) * _t40 * _t53_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) this).properties = 0;
         return this;
@@ -22569,7 +22569,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t36 = (1.0 / Math.sqrt(_t35));
         double _t40 = _t27 * _t34;
         double _t41 = Math.fma(_t27, _t34, nearFarDist);
-        double _t42 = 2.0 * _t40;
+        double _t42 = _t40 + _t40;
         double _t44, _t45, _t46;
         if (_t35 > 0.0) {
             _t44 = _t25 * _t36;
@@ -22626,7 +22626,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = -1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = _t41 == Double.POSITIVE_INFINITY ? -_t42 : _t40 == Double.POSITIVE_INFINITY ? 2.0 * _t41 : 2.0 * _t41 * _t40 * _t53_inv;
+        dd[14] = _t41 == Double.POSITIVE_INFINITY ? -_t42 : _t40 == Double.POSITIVE_INFINITY ? _t41 + _t41 : (_t41 + _t41) * _t40 * _t53_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) this).properties = 0;
         return this;
@@ -22695,7 +22695,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t36 = (1.0 / Math.sqrt(_t35));
         double _t40 = _t27 * _t34;
         double _t41 = Math.fma(_t27, _t34, nearFarDist);
-        double _t42 = 2.0 * _t40;
+        double _t42 = _t40 + _t40;
         double _t44, _t45, _t46;
         if (_t35 > 0.0) {
             _t44 = _t26 * _t36;
@@ -22795,7 +22795,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t36 = (1.0 / Math.sqrt(_t35));
         double _t40 = _t27 * _t34;
         double _t41 = Math.fma(_t27, _t34, nearFarDist);
-        double _t42 = 2.0 * _t40;
+        double _t42 = _t40 + _t40;
         double _t44, _t45, _t46;
         if (_t35 > 0.0) {
             _t44 = _t25 * _t36;
@@ -23409,9 +23409,9 @@ public class Double4x4Impl implements Double4x4 {
      */
     @Mutated public Double4x4 makeReflection(double normalX, double normalY, double normalZ) {
         double[] dd = this.data;
-        double _t6 = -(2.0 * normalX * normalY);
-        double _t7 = -(2.0 * normalX * normalZ);
-        double _t8 = -(2.0 * normalY * normalZ);
+        double _t6 = -((normalX + normalX) * normalY);
+        double _t7 = -((normalX + normalX) * normalZ);
+        double _t8 = -((normalY + normalY) * normalZ);
         dd[0] = Math.fma(-2.0, normalX * normalX, 1.0);
         dd[1] = _t6;
         dd[2] = _t7;
@@ -24244,13 +24244,13 @@ public class Double4x4Impl implements Double4x4 {
         double _t54 = _t3 * _t52_inv;
         double _t55 = _t52 * _t47;
         double _t58 = _t50 * _t52_inv;
-        double _t60 = 2.0 * _t45 / ((1.0 - _t45 / _t55) * _t55);
+        double _t60 = (_t45 + _t45) / ((1.0 - _t45 / _t55) * _t55);
         double _t61 = 1.0 + _t60;
-        dd[0] = 2.0 * _t25 * _t41_inv - _t53;
+        dd[0] = (_t25 + _t25) * _t41_inv - _t53;
         dd[1] = _t61 * _t5 * _t52_inv;
         dd[2] = 0.0;
         dd[3] = _t53;
-        dd[4] = 2.0 * _t26 * _t41_inv - _t54;
+        dd[4] = (_t26 + _t26) * _t41_inv - _t54;
         dd[5] = _t61 * _t3 * _t52_inv;
         dd[6] = 0.0;
         dd[7] = _t54;
@@ -35758,19 +35758,19 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         dd[0] = 1.0;
         dd[1] = 0.0;
-        dd[2] = 2.0 * planeX * _t5_inv;
+        dd[2] = (planeX + planeX) * _t5_inv;
         dd[3] = 0.0;
         dd[4] = 0.0;
         dd[5] = 1.0;
-        dd[6] = 2.0 * planeY * _t5_inv;
+        dd[6] = (planeY + planeY) * _t5_inv;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * planeZ * _t5_inv;
+        dd[10] = (planeZ + planeZ) * _t5_inv;
         dd[11] = 0.0;
         dd[12] = sd[12];
         dd[13] = sd[13];
-        dd[14] = 2.0 * planeW * _t5_inv - 1.0;
+        dd[14] = (planeW + planeW) * _t5_inv - 1.0;
         dd[15] = 1.0;
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -35787,12 +35787,12 @@ public class Double4x4Impl implements Double4x4 {
         double[] dd = ((Double4x4Impl) dest).data;
         double _t5 = Math.fma(planeX, planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0, Math.fma(planeY, planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0, planeZ));
         double _t5_inv = 1.0 / _t5;
-        dd[2] = 2.0 * planeX * _t5_inv;
-        dd[6] = 2.0 * planeY * _t5_inv;
-        dd[10] = 2.0 * planeZ * _t5_inv;
+        dd[2] = (planeX + planeX) * _t5_inv;
+        dd[6] = (planeY + planeY) * _t5_inv;
+        dd[10] = (planeZ + planeZ) * _t5_inv;
         dd[12] = sd[12];
         dd[13] = sd[13];
-        dd[14] = 2.0 * planeW * _t5_inv - 1.0;
+        dd[14] = (planeW + planeW) * _t5_inv - 1.0;
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -35806,7 +35806,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 obliqueZ_no_lh_orthogonal(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * sd[14];
+        double _t0 = sd[14] + sd[14];
         double _t15 = Math.fma(planeW, 1.0 - sd[10], sd[14] * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - sd[8]) / sd[0] + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - sd[9]) / sd[5])));
         double _t15_inv = 1.0 / _t15;
         dd[0] = sd[0];
@@ -35838,7 +35838,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 obliqueZ_no_lh_orthogonal_self(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * sd[14];
+        double _t0 = sd[14] + sd[14];
         double _t15 = Math.fma(planeW, 1.0 - sd[10], sd[14] * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - sd[8]) / sd[0] + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - sd[9]) / sd[5])));
         double _t15_inv = 1.0 / _t15;
         dd[0] = sd[0];
@@ -35866,7 +35866,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 obliqueZ_no_lh_affine(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * sd[14];
+        double _t0 = sd[14] + sd[14];
         double _t15 = Math.fma(planeW, 1.0 - sd[10], sd[14] * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - sd[8]) / sd[0] + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - sd[9]) / sd[5])));
         double _t15_inv = 1.0 / _t15;
         dd[0] = sd[0];
@@ -35898,7 +35898,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 obliqueZ_no_lh_affine_self(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * sd[14];
+        double _t0 = sd[14] + sd[14];
         double _t15 = Math.fma(planeW, 1.0 - sd[10], sd[14] * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - sd[8]) / sd[0] + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - sd[9]) / sd[5])));
         double _t15_inv = 1.0 / _t15;
         dd[0] = sd[0];
@@ -35926,7 +35926,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 obliqueZ_no_lh_general(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * sd[14];
+        double _t0 = sd[14] + sd[14];
         double _t15 = Math.fma(planeW, 1.0 - sd[10], sd[14] * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - sd[8]) / sd[0] + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - sd[9]) / sd[5])));
         double _t15_inv = 1.0 / _t15;
         dd[0] = sd[0];
@@ -36067,7 +36067,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 obliqueZ_no_rh_translation(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t1 = 2.0 * sd[14];
+        double _t1 = sd[14] + sd[14];
         double _t9 = Math.fma(2.0, planeW, sd[14] * Math.fma(planeX, planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0, Math.fma(planeY, planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0, -planeZ)));
         double _t9_inv = 1.0 / _t9;
         dd[0] = 1.0;
@@ -36099,7 +36099,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 obliqueZ_no_rh_translation_self(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t1 = 2.0 * sd[14];
+        double _t1 = sd[14] + sd[14];
         double _t9 = Math.fma(2.0, planeW, sd[14] * Math.fma(planeX, planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0, Math.fma(planeY, planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0, -planeZ)));
         double _t9_inv = 1.0 / _t9;
         dd[2] = planeX * _t1 * _t9_inv;
@@ -36121,7 +36121,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 obliqueZ_no_rh_orthogonal(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * sd[14];
+        double _t0 = sd[14] + sd[14];
         double _t15 = Math.fma(planeW, 1.0 + sd[10], sd[14] * (planeX * (sd[8] + (planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0)) / sd[0] + planeY * (sd[9] + (planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0)) / sd[5] - planeZ));
         double _t15_inv = 1.0 / _t15;
         dd[0] = sd[0];
@@ -36153,7 +36153,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 obliqueZ_no_rh_orthogonal_self(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * sd[14];
+        double _t0 = sd[14] + sd[14];
         double _t15 = Math.fma(planeW, 1.0 + sd[10], sd[14] * (planeX * (sd[8] + (planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0)) / sd[0] + planeY * (sd[9] + (planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0)) / sd[5] - planeZ));
         double _t15_inv = 1.0 / _t15;
         dd[0] = sd[0];
@@ -36181,7 +36181,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 obliqueZ_no_rh_affine(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * sd[14];
+        double _t0 = sd[14] + sd[14];
         double _t15 = Math.fma(planeW, 1.0 + sd[10], sd[14] * (planeX * (sd[8] + (planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0)) / sd[0] + planeY * (sd[9] + (planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0)) / sd[5] - planeZ));
         double _t15_inv = 1.0 / _t15;
         dd[0] = sd[0];
@@ -36213,7 +36213,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 obliqueZ_no_rh_affine_self(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * sd[14];
+        double _t0 = sd[14] + sd[14];
         double _t15 = Math.fma(planeW, 1.0 + sd[10], sd[14] * (planeX * (sd[8] + (planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0)) / sd[0] + planeY * (sd[9] + (planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0)) / sd[5] - planeZ));
         double _t15_inv = 1.0 / _t15;
         dd[0] = sd[0];
@@ -36241,7 +36241,7 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 obliqueZ_no_rh_general(double planeX, double planeY, double planeZ, double planeW, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t0 = 2.0 * sd[14];
+        double _t0 = sd[14] + sd[14];
         double _t15 = Math.fma(planeW, 1.0 + sd[10], sd[14] * (planeX * (sd[8] + (planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0)) / sd[0] + planeY * (sd[9] + (planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0)) / sd[5] - planeZ));
         double _t15_inv = 1.0 / _t15;
         dd[0] = sd[0];
@@ -37531,17 +37531,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t2_inv;
+        dd[10] = _t2_inv + _t2_inv;
         dd[11] = 0.0;
         dd[12] = -((left + right) * _t0_inv);
         dd[13] = -((bottom + top) * _t1_inv);
@@ -37566,9 +37566,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
-        dd[5] = 2.0 * _t1_inv;
-        dd[10] = 2.0 * _t2_inv;
+        dd[0] = _t0_inv + _t0_inv;
+        dd[5] = _t1_inv + _t1_inv;
+        dd[10] = _t2_inv + _t2_inv;
         dd[12] = -((left + right) * _t0_inv);
         dd[13] = -((bottom + top) * _t1_inv);
         dd[14] = -((zFar + zNear) * _t2_inv);
@@ -37591,17 +37591,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t2_inv;
+        dd[10] = _t2_inv + _t2_inv;
         dd[11] = 0.0;
         dd[12] = sd[12] - (left + right) * _t0_inv;
         dd[13] = sd[13] - (bottom + top) * _t1_inv;
@@ -37626,9 +37626,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
-        dd[5] = 2.0 * _t1_inv;
-        dd[10] = 2.0 * _t2_inv;
+        dd[0] = _t0_inv + _t0_inv;
+        dd[5] = _t1_inv + _t1_inv;
+        dd[10] = _t2_inv + _t2_inv;
         dd[12] = sd[12] - (left + right) * _t0_inv;
         dd[13] = sd[13] - (bottom + top) * _t1_inv;
         dd[14] = sd[14] - (zFar + zNear) * _t2_inv;
@@ -37654,17 +37654,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = left + right;
         double _t4 = bottom + top;
         double _t5 = zFar + zNear;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         dd[7] = 0.0;
-        double _buf6 = 2.0 * sd[8] * _t2_inv;
-        double _buf7 = 2.0 * sd[9] * _t2_inv;
-        double _buf8 = 2.0 * sd[10] * _t2_inv;
+        double _buf6 = (sd[8] + sd[8]) * _t2_inv;
+        double _buf7 = (sd[9] + sd[9]) * _t2_inv;
+        double _buf8 = (sd[10] + sd[10]) * _t2_inv;
         dd[11] = 0.0;
         dd[12] = sd[12] - sd[0] * _t3 * _t0_inv - sd[4] * _t4 * _t1_inv - sd[8] * _t5 * _t2_inv;
         dd[13] = sd[13] - sd[1] * _t3 * _t0_inv - sd[5] * _t4 * _t1_inv - sd[9] * _t5 * _t2_inv;
@@ -37701,15 +37701,15 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = left + right;
         double _t4 = bottom + top;
         double _t5 = zFar + zNear;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
-        double _buf6 = 2.0 * sd[8] * _t2_inv;
-        double _buf7 = 2.0 * sd[9] * _t2_inv;
-        double _buf8 = 2.0 * sd[10] * _t2_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
+        double _buf6 = (sd[8] + sd[8]) * _t2_inv;
+        double _buf7 = (sd[9] + sd[9]) * _t2_inv;
+        double _buf8 = (sd[10] + sd[10]) * _t2_inv;
         dd[12] = sd[12] - sd[0] * _t3 * _t0_inv - sd[4] * _t4 * _t1_inv - sd[8] * _t5 * _t2_inv;
         dd[13] = sd[13] - sd[1] * _t3 * _t0_inv - sd[5] * _t4 * _t1_inv - sd[9] * _t5 * _t2_inv;
         dd[14] = sd[14] - sd[2] * _t3 * _t0_inv - sd[6] * _t4 * _t1_inv - sd[10] * _t5 * _t2_inv;
@@ -37744,17 +37744,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = left + right;
         double _t4 = bottom + top;
         double _t5 = zFar + zNear;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         dd[7] = 0.0;
-        double _buf6 = 2.0 * sd[8] * _t2_inv;
-        double _buf7 = 2.0 * sd[9] * _t2_inv;
-        double _buf8 = 2.0 * sd[10] * _t2_inv;
+        double _buf6 = (sd[8] + sd[8]) * _t2_inv;
+        double _buf7 = (sd[9] + sd[9]) * _t2_inv;
+        double _buf8 = (sd[10] + sd[10]) * _t2_inv;
         dd[11] = 0.0;
         dd[12] = sd[12] + (-(sd[0] * _t3 * _t0_inv) - sd[4] * _t4 * _t1_inv - sd[8] * _t5 * _t2_inv);
         dd[13] = sd[13] + (-(sd[1] * _t3 * _t0_inv) - sd[5] * _t4 * _t1_inv - sd[9] * _t5 * _t2_inv);
@@ -37791,15 +37791,15 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = left + right;
         double _t4 = bottom + top;
         double _t5 = zFar + zNear;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
-        double _buf6 = 2.0 * sd[8] * _t2_inv;
-        double _buf7 = 2.0 * sd[9] * _t2_inv;
-        double _buf8 = 2.0 * sd[10] * _t2_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
+        double _buf6 = (sd[8] + sd[8]) * _t2_inv;
+        double _buf7 = (sd[9] + sd[9]) * _t2_inv;
+        double _buf8 = (sd[10] + sd[10]) * _t2_inv;
         dd[12] = sd[12] + (-(sd[0] * _t3 * _t0_inv) - sd[4] * _t4 * _t1_inv - sd[8] * _t5 * _t2_inv);
         dd[13] = sd[13] + (-(sd[1] * _t3 * _t0_inv) - sd[5] * _t4 * _t1_inv - sd[9] * _t5 * _t2_inv);
         dd[14] = sd[14] + (-(sd[2] * _t3 * _t0_inv) - sd[6] * _t4 * _t1_inv - sd[10] * _t5 * _t2_inv);
@@ -37834,18 +37834,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = left + right;
         double _t4 = bottom + top;
         double _t5 = zFar + zNear;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[3] * _t0_inv;
-        double _buf4 = 2.0 * sd[4] * _t1_inv;
-        double _buf5 = 2.0 * sd[5] * _t1_inv;
-        double _buf6 = 2.0 * sd[6] * _t1_inv;
-        double _buf7 = 2.0 * sd[7] * _t1_inv;
-        double _buf8 = 2.0 * sd[8] * _t2_inv;
-        double _buf9 = 2.0 * sd[9] * _t2_inv;
-        double _buf10 = 2.0 * sd[10] * _t2_inv;
-        double _buf11 = 2.0 * sd[11] * _t2_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[3] + sd[3]) * _t0_inv;
+        double _buf4 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf5 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf6 = (sd[6] + sd[6]) * _t1_inv;
+        double _buf7 = (sd[7] + sd[7]) * _t1_inv;
+        double _buf8 = (sd[8] + sd[8]) * _t2_inv;
+        double _buf9 = (sd[9] + sd[9]) * _t2_inv;
+        double _buf10 = (sd[10] + sd[10]) * _t2_inv;
+        double _buf11 = (sd[11] + sd[11]) * _t2_inv;
         dd[12] = sd[12] + (-(sd[0] * _t3 * _t0_inv) - sd[4] * _t4 * _t1_inv - sd[8] * _t5 * _t2_inv);
         dd[13] = sd[13] + (-(sd[1] * _t3 * _t0_inv) - sd[5] * _t4 * _t1_inv - sd[9] * _t5 * _t2_inv);
         dd[14] = sd[14] + (-(sd[2] * _t3 * _t0_inv) - sd[6] * _t4 * _t1_inv - sd[10] * _t5 * _t2_inv);
@@ -37910,12 +37910,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -37945,8 +37945,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
-        dd[5] = 2.0 * _t1_inv;
+        dd[0] = _t0_inv + _t0_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[10] = -2.0 * _t2_inv;
         dd[12] = -((left + right) * _t0_inv);
         dd[13] = -((bottom + top) * _t1_inv);
@@ -37970,12 +37970,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -38005,8 +38005,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
-        dd[5] = 2.0 * _t1_inv;
+        dd[0] = _t0_inv + _t0_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[10] = -2.0 * _t2_inv;
         dd[12] = sd[12] - (left + right) * _t0_inv;
         dd[13] = sd[13] - (bottom + top) * _t1_inv;
@@ -38033,13 +38033,13 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = left + right;
         double _t4 = bottom + top;
         double _t5 = zFar + zNear;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         dd[7] = 0.0;
         double _buf6 = -2.0 * sd[8] * _t2_inv;
         double _buf7 = -2.0 * sd[9] * _t2_inv;
@@ -38080,12 +38080,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = left + right;
         double _t4 = bottom + top;
         double _t5 = zFar + zNear;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         double _buf6 = -2.0 * sd[8] * _t2_inv;
         double _buf7 = -2.0 * sd[9] * _t2_inv;
         double _buf8 = -2.0 * sd[10] * _t2_inv;
@@ -38123,13 +38123,13 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = left + right;
         double _t4 = bottom + top;
         double _t5 = zFar + zNear;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         dd[7] = 0.0;
         double _buf6 = -2.0 * sd[8] * _t2_inv;
         double _buf7 = -2.0 * sd[9] * _t2_inv;
@@ -38170,12 +38170,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = left + right;
         double _t4 = bottom + top;
         double _t5 = zFar + zNear;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         double _buf6 = -2.0 * sd[8] * _t2_inv;
         double _buf7 = -2.0 * sd[9] * _t2_inv;
         double _buf8 = -2.0 * sd[10] * _t2_inv;
@@ -38213,14 +38213,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = left + right;
         double _t4 = bottom + top;
         double _t5 = zFar + zNear;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[3] * _t0_inv;
-        double _buf4 = 2.0 * sd[4] * _t1_inv;
-        double _buf5 = 2.0 * sd[5] * _t1_inv;
-        double _buf6 = 2.0 * sd[6] * _t1_inv;
-        double _buf7 = 2.0 * sd[7] * _t1_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[3] + sd[3]) * _t0_inv;
+        double _buf4 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf5 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf6 = (sd[6] + sd[6]) * _t1_inv;
+        double _buf7 = (sd[7] + sd[7]) * _t1_inv;
         double _buf8 = -2.0 * sd[8] * _t2_inv;
         double _buf9 = -2.0 * sd[9] * _t2_inv;
         double _buf10 = -2.0 * sd[10] * _t2_inv;
@@ -38313,12 +38313,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -38348,8 +38348,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
-        dd[5] = 2.0 * _t1_inv;
+        dd[0] = _t0_inv + _t0_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[10] = 1.0 * _t2_inv;
         dd[12] = -((left + right) * _t0_inv);
         dd[13] = -((bottom + top) * _t1_inv);
@@ -38373,12 +38373,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -38408,8 +38408,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
-        dd[5] = 2.0 * _t1_inv;
+        dd[0] = _t0_inv + _t0_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[10] = 1.0 * _t2_inv;
         dd[12] = sd[12] - (left + right) * _t0_inv;
         dd[13] = sd[13] - (bottom + top) * _t1_inv;
@@ -38435,13 +38435,13 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / _t2;
         double _t3 = left + right;
         double _t4 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         dd[7] = 0.0;
         double _buf6 = sd[8] * _t2_inv;
         double _buf7 = sd[9] * _t2_inv;
@@ -38481,12 +38481,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / _t2;
         double _t3 = left + right;
         double _t4 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         double _buf6 = sd[8] * _t2_inv;
         double _buf7 = sd[9] * _t2_inv;
         double _buf8 = sd[10] * _t2_inv;
@@ -38523,13 +38523,13 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / _t2;
         double _t3 = left + right;
         double _t4 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         dd[7] = 0.0;
         double _buf6 = sd[8] * _t2_inv;
         double _buf7 = sd[9] * _t2_inv;
@@ -38569,12 +38569,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / _t2;
         double _t3 = left + right;
         double _t4 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         double _buf6 = sd[8] * _t2_inv;
         double _buf7 = sd[9] * _t2_inv;
         double _buf8 = sd[10] * _t2_inv;
@@ -38611,14 +38611,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / _t2;
         double _t3 = left + right;
         double _t4 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[3] * _t0_inv;
-        double _buf4 = 2.0 * sd[4] * _t1_inv;
-        double _buf5 = 2.0 * sd[5] * _t1_inv;
-        double _buf6 = 2.0 * sd[6] * _t1_inv;
-        double _buf7 = 2.0 * sd[7] * _t1_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[3] + sd[3]) * _t0_inv;
+        double _buf4 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf5 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf6 = (sd[6] + sd[6]) * _t1_inv;
+        double _buf7 = (sd[7] + sd[7]) * _t1_inv;
         double _buf8 = sd[8] * _t2_inv;
         double _buf9 = sd[9] * _t2_inv;
         double _buf10 = sd[10] * _t2_inv;
@@ -38687,12 +38687,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -38722,8 +38722,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
-        dd[5] = 2.0 * _t1_inv;
+        dd[0] = _t0_inv + _t0_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[10] = -1.0 * _t2_inv;
         dd[12] = -((left + right) * _t0_inv);
         dd[13] = -((bottom + top) * _t1_inv);
@@ -38747,12 +38747,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -38782,8 +38782,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dd[0] = 2.0 * _t0_inv;
-        dd[5] = 2.0 * _t1_inv;
+        dd[0] = _t0_inv + _t0_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[10] = -1.0 * _t2_inv;
         dd[12] = sd[12] - (left + right) * _t0_inv;
         dd[13] = sd[13] - (bottom + top) * _t1_inv;
@@ -38809,13 +38809,13 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / _t2;
         double _t3 = left + right;
         double _t4 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         dd[7] = 0.0;
         double _buf6 = -(sd[8] * _t2_inv);
         double _buf7 = -(sd[9] * _t2_inv);
@@ -38855,12 +38855,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / _t2;
         double _t3 = left + right;
         double _t4 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         double _buf6 = -(sd[8] * _t2_inv);
         double _buf7 = -(sd[9] * _t2_inv);
         double _buf8 = -(sd[10] * _t2_inv);
@@ -38897,13 +38897,13 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / _t2;
         double _t3 = left + right;
         double _t4 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         dd[7] = 0.0;
         double _buf6 = -(sd[8] * _t2_inv);
         double _buf7 = -(sd[9] * _t2_inv);
@@ -38943,12 +38943,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / _t2;
         double _t3 = left + right;
         double _t4 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         double _buf6 = -(sd[8] * _t2_inv);
         double _buf7 = -(sd[9] * _t2_inv);
         double _buf8 = -(sd[10] * _t2_inv);
@@ -38985,14 +38985,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t2_inv = 1.0 / _t2;
         double _t3 = left + right;
         double _t4 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[3] * _t0_inv;
-        double _buf4 = 2.0 * sd[4] * _t1_inv;
-        double _buf5 = 2.0 * sd[5] * _t1_inv;
-        double _buf6 = 2.0 * sd[6] * _t1_inv;
-        double _buf7 = 2.0 * sd[7] * _t1_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[3] + sd[3]) * _t0_inv;
+        double _buf4 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf5 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf6 = (sd[6] + sd[6]) * _t1_inv;
+        double _buf7 = (sd[7] + sd[7]) * _t1_inv;
         double _buf8 = -(sd[8] * _t2_inv);
         double _buf9 = -(sd[9] * _t2_inv);
         double _buf10 = -(sd[10] * _t2_inv);
@@ -39299,12 +39299,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -39332,8 +39332,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
-        dd[5] = 2.0 * _t1_inv;
+        dd[0] = _t0_inv + _t0_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[12] = -((left + right) * _t0_inv);
         dd[13] = -((bottom + top) * _t1_inv);
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
@@ -39353,12 +39353,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -39386,8 +39386,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
-        dd[5] = 2.0 * _t1_inv;
+        dd[0] = _t0_inv + _t0_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[12] = sd[12] - (left + right) * _t0_inv;
         dd[13] = sd[13] - (bottom + top) * _t1_inv;
         dd[14] = sd[14];
@@ -39410,13 +39410,13 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         dd[7] = 0.0;
         dd[8] = sd[8];
         dd[9] = sd[9];
@@ -39451,12 +39451,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         dd[8] = sd[8];
         dd[9] = sd[9];
         dd[10] = sd[10];
@@ -39488,13 +39488,13 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         dd[7] = 0.0;
         dd[8] = sd[8];
         dd[9] = sd[9];
@@ -39529,12 +39529,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         dd[8] = sd[8];
         dd[9] = sd[9];
         dd[10] = sd[10];
@@ -39566,14 +39566,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[3] * _t0_inv;
-        double _buf4 = 2.0 * sd[4] * _t1_inv;
-        double _buf5 = 2.0 * sd[5] * _t1_inv;
-        double _buf6 = 2.0 * sd[6] * _t1_inv;
-        double _buf7 = 2.0 * sd[7] * _t1_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[3] + sd[3]) * _t0_inv;
+        double _buf4 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf5 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf6 = (sd[6] + sd[6]) * _t1_inv;
+        double _buf7 = (sd[7] + sd[7]) * _t1_inv;
         dd[8] = sd[8];
         dd[9] = sd[9];
         dd[10] = sd[10];
@@ -39636,12 +39636,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -39669,8 +39669,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
-        dd[5] = 2.0 * _t1_inv;
+        dd[0] = _t0_inv + _t0_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[10] = -1.0;
         dd[12] = -((left + right) * _t0_inv);
         dd[13] = -((bottom + top) * _t1_inv);
@@ -39691,12 +39691,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -39724,8 +39724,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
-        dd[5] = 2.0 * _t1_inv;
+        dd[0] = _t0_inv + _t0_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[10] = -1.0;
         dd[12] = sd[12] - (left + right) * _t0_inv;
         dd[13] = sd[13] - (bottom + top) * _t1_inv;
@@ -39749,13 +39749,13 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         dd[7] = 0.0;
         dd[8] = -sd[8];
         dd[9] = -sd[9];
@@ -39790,12 +39790,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         dd[8] = -sd[8];
         dd[9] = -sd[9];
         dd[10] = -sd[10];
@@ -39827,13 +39827,13 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         dd[7] = 0.0;
         dd[8] = -sd[8];
         dd[9] = -sd[9];
@@ -39868,12 +39868,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         dd[8] = -sd[8];
         dd[9] = -sd[9];
         dd[10] = -sd[10];
@@ -39905,14 +39905,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[3] * _t0_inv;
-        double _buf4 = 2.0 * sd[4] * _t1_inv;
-        double _buf5 = 2.0 * sd[5] * _t1_inv;
-        double _buf6 = 2.0 * sd[6] * _t1_inv;
-        double _buf7 = 2.0 * sd[7] * _t1_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[3] + sd[3]) * _t0_inv;
+        double _buf4 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf5 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf6 = (sd[6] + sd[6]) * _t1_inv;
+        double _buf7 = (sd[7] + sd[7]) * _t1_inv;
         dd[8] = -sd[8];
         dd[9] = -sd[9];
         dd[10] = -sd[10];
@@ -39999,12 +39999,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -40032,8 +40032,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
-        dd[5] = 2.0 * _t1_inv;
+        dd[0] = _t0_inv + _t0_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[10] = 0.5;
         dd[12] = -((left + right) * _t0_inv);
         dd[13] = -((bottom + top) * _t1_inv);
@@ -40055,12 +40055,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -40088,8 +40088,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
-        dd[5] = 2.0 * _t1_inv;
+        dd[0] = _t0_inv + _t0_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[10] = 0.5;
         dd[12] = sd[12] - (left + right) * _t0_inv;
         dd[13] = sd[13] - (bottom + top) * _t1_inv;
@@ -40113,13 +40113,13 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         dd[7] = 0.0;
         double _buf6 = 0.5 * sd[8];
         double _buf7 = 0.5 * sd[9];
@@ -40157,12 +40157,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         double _buf6 = 0.5 * sd[8];
         double _buf7 = 0.5 * sd[9];
         double _buf8 = 0.5 * sd[10];
@@ -40197,14 +40197,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[3] * _t0_inv;
-        double _buf4 = 2.0 * sd[4] * _t1_inv;
-        double _buf5 = 2.0 * sd[5] * _t1_inv;
-        double _buf6 = 2.0 * sd[6] * _t1_inv;
-        double _buf7 = 2.0 * sd[7] * _t1_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[3] + sd[3]) * _t0_inv;
+        double _buf4 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf5 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf6 = (sd[6] + sd[6]) * _t1_inv;
+        double _buf7 = (sd[7] + sd[7]) * _t1_inv;
         double _buf8 = 0.5 * sd[8];
         double _buf9 = 0.5 * sd[9];
         double _buf10 = 0.5 * sd[10];
@@ -40269,12 +40269,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -40302,8 +40302,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
-        dd[5] = 2.0 * _t1_inv;
+        dd[0] = _t0_inv + _t0_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[10] = -0.5;
         dd[12] = -((left + right) * _t0_inv);
         dd[13] = -((bottom + top) * _t1_inv);
@@ -40325,12 +40325,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
+        dd[0] = _t0_inv + _t0_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t1_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -40358,8 +40358,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dd[0] = 2.0 * _t0_inv;
-        dd[5] = 2.0 * _t1_inv;
+        dd[0] = _t0_inv + _t0_inv;
+        dd[5] = _t1_inv + _t1_inv;
         dd[10] = -0.5;
         dd[12] = sd[12] - (left + right) * _t0_inv;
         dd[13] = sd[13] - (bottom + top) * _t1_inv;
@@ -40383,13 +40383,13 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         dd[7] = 0.0;
         double _buf6 = -0.5 * sd[8];
         double _buf7 = -0.5 * sd[9];
@@ -40427,12 +40427,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[4] * _t1_inv;
-        double _buf4 = 2.0 * sd[5] * _t1_inv;
-        double _buf5 = 2.0 * sd[6] * _t1_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t1_inv;
         double _buf6 = -0.5 * sd[8];
         double _buf7 = -0.5 * sd[9];
         double _buf8 = -0.5 * sd[10];
@@ -40467,14 +40467,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        double _buf0 = 2.0 * sd[0] * _t0_inv;
-        double _buf1 = 2.0 * sd[1] * _t0_inv;
-        double _buf2 = 2.0 * sd[2] * _t0_inv;
-        double _buf3 = 2.0 * sd[3] * _t0_inv;
-        double _buf4 = 2.0 * sd[4] * _t1_inv;
-        double _buf5 = 2.0 * sd[5] * _t1_inv;
-        double _buf6 = 2.0 * sd[6] * _t1_inv;
-        double _buf7 = 2.0 * sd[7] * _t1_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
+        double _buf3 = (sd[3] + sd[3]) * _t0_inv;
+        double _buf4 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf5 = (sd[5] + sd[5]) * _t1_inv;
+        double _buf6 = (sd[6] + sd[6]) * _t1_inv;
+        double _buf7 = (sd[7] + sd[7]) * _t1_inv;
         double _buf8 = -0.5 * sd[8];
         double _buf9 = -0.5 * sd[9];
         double _buf10 = -0.5 * sd[10];
@@ -40852,17 +40852,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t247_inv = 1.0 / _t247;
         double _t248 = _t244 - _t245;
         double _t248_inv = 1.0 / _t248;
-        dd[0] = 2.0 * _t246_inv;
+        dd[0] = _t246_inv + _t246_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t247_inv;
+        dd[5] = _t247_inv + _t247_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t248_inv;
+        dd[10] = _t248_inv + _t248_inv;
         dd[11] = 0.0;
         dd[12] = -((_t241 + _t240) * _t246_inv);
         dd[13] = -((_t243 + _t242) * _t247_inv);
@@ -40930,17 +40930,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t106_inv = 1.0 / _t106;
         double _t107 = _t103 - _t104;
         double _t107_inv = 1.0 / _t107;
-        dd[0] = 2.0 * _t105_inv;
+        dd[0] = _t105_inv + _t105_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t106_inv;
+        dd[5] = _t106_inv + _t106_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t107_inv;
+        dd[10] = _t107_inv + _t107_inv;
         dd[11] = 0.0;
         dd[12] = -((_t100 + _t99) * _t105_inv);
         dd[13] = -((_t102 + _t101) * _t106_inv);
@@ -41020,17 +41020,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t91_inv = 1.0 / _t91;
         double _t92 = _t88 - _t89;
         double _t92_inv = 1.0 / _t92;
-        dd[0] = 2.0 * _t90_inv;
+        dd[0] = _t90_inv + _t90_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t91_inv;
+        dd[5] = _t91_inv + _t91_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t92_inv;
+        dd[10] = _t92_inv + _t92_inv;
         dd[11] = 0.0;
         dd[12] = -((_t85 + _t84) * _t90_inv);
         dd[13] = -((_t87 + _t86) * _t91_inv);
@@ -41122,17 +41122,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t178_inv = 1.0 / _t178;
         double _t179 = _t175 - _t176;
         double _t179_inv = 1.0 / _t179;
-        dd[0] = 2.0 * _t177_inv;
+        dd[0] = _t177_inv + _t177_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t178_inv;
+        dd[5] = _t178_inv + _t178_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t179_inv;
+        dd[10] = _t179_inv + _t179_inv;
         dd[11] = 0.0;
         dd[12] = -((_t172 + _t171) * _t177_inv);
         dd[13] = -((_t174 + _t173) * _t178_inv);
@@ -41200,17 +41200,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / _t41;
         double _t42 = _t38 - _t39;
         double _t42_inv = 1.0 / _t42;
-        dd[0] = 2.0 * _t42_inv;
+        dd[0] = _t42_inv + _t42_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t41_inv;
+        dd[5] = _t41_inv + _t41_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t40_inv;
+        dd[10] = _t40_inv + _t40_inv;
         dd[11] = 0.0;
         dd[12] = -((_t39 + _t38) * _t42_inv);
         dd[13] = -((_t37 + _t36) * _t41_inv);
@@ -41248,17 +41248,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / _t41;
         double _t42 = _t38 - _t39;
         double _t42_inv = 1.0 / _t42;
-        dd[0] = 2.0 * _t42_inv;
+        dd[0] = _t42_inv + _t42_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t41_inv;
+        dd[5] = _t41_inv + _t41_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t40_inv;
+        dd[10] = _t40_inv + _t40_inv;
         dd[11] = 0.0;
         dd[12] = -((_t39 + _t38) * _t42_inv);
         dd[13] = -((_t37 + _t36) * _t41_inv);
@@ -41296,17 +41296,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t47_inv = 1.0 / _t47;
         double _t48 = _t44 - _t45;
         double _t48_inv = 1.0 / _t48;
-        dd[0] = 2.0 * _t48_inv;
+        dd[0] = _t48_inv + _t48_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t47_inv;
+        dd[5] = _t47_inv + _t47_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t46_inv;
+        dd[10] = _t46_inv + _t46_inv;
         dd[11] = 0.0;
         dd[12] = -((_t45 + _t44) * _t48_inv);
         dd[13] = -((_t43 + _t42) * _t47_inv);
@@ -41374,17 +41374,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t106_inv = 1.0 / _t106;
         double _t107 = _t103 - _t104;
         double _t107_inv = 1.0 / _t107;
-        dd[0] = 2.0 * _t105_inv;
+        dd[0] = _t105_inv + _t105_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t106_inv;
+        dd[5] = _t106_inv + _t106_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t107_inv;
+        dd[10] = _t107_inv + _t107_inv;
         dd[11] = 0.0;
         dd[12] = -((_t100 + _t99) * _t105_inv);
         dd[13] = -((_t102 + _t101) * _t106_inv);
@@ -41452,17 +41452,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t130_inv = 1.0 / _t130;
         double _t131 = _t127 - _t128;
         double _t131_inv = 1.0 / _t131;
-        dd[0] = 2.0 * _t129_inv;
+        dd[0] = _t129_inv + _t129_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t130_inv;
+        dd[5] = _t130_inv + _t130_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t131_inv;
+        dd[10] = _t131_inv + _t131_inv;
         dd[11] = 0.0;
         dd[12] = -((_t124 + _t123) * _t129_inv);
         dd[13] = -((_t126 + _t125) * _t130_inv);
@@ -41550,17 +41550,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t151_inv = 1.0 / _t151;
         double _t152 = _t148 - _t149;
         double _t152_inv = 1.0 / _t152;
-        dd[0] = 2.0 * _t150_inv;
+        dd[0] = _t150_inv + _t150_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t151_inv;
+        dd[5] = _t151_inv + _t151_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t152_inv;
+        dd[10] = _t152_inv + _t152_inv;
         dd[11] = 0.0;
         dd[12] = -((_t145 + _t144) * _t150_inv);
         dd[13] = -((_t147 + _t146) * _t151_inv);
@@ -41648,17 +41648,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t175_inv = 1.0 / _t175;
         double _t176 = _t172 - _t173;
         double _t176_inv = 1.0 / _t176;
-        dd[0] = 2.0 * _t174_inv;
+        dd[0] = _t174_inv + _t174_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t175_inv;
+        dd[5] = _t175_inv + _t175_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t176_inv;
+        dd[10] = _t176_inv + _t176_inv;
         dd[11] = 0.0;
         dd[12] = -((_t169 + _t168) * _t174_inv);
         dd[13] = -((_t171 + _t170) * _t175_inv);
@@ -41839,12 +41839,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t247_inv = 1.0 / _t247;
         double _t248 = _t244 - _t245;
         double _t248_inv = 1.0 / _t248;
-        dd[0] = 2.0 * _t246_inv;
+        dd[0] = _t246_inv + _t246_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t247_inv;
+        dd[5] = _t247_inv + _t247_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -41917,12 +41917,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t106_inv = 1.0 / _t106;
         double _t107 = _t103 - _t104;
         double _t107_inv = 1.0 / _t107;
-        dd[0] = 2.0 * _t105_inv;
+        dd[0] = _t105_inv + _t105_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t106_inv;
+        dd[5] = _t106_inv + _t106_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -42007,12 +42007,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t91_inv = 1.0 / _t91;
         double _t92 = _t88 - _t89;
         double _t92_inv = 1.0 / _t92;
-        dd[0] = 2.0 * _t90_inv;
+        dd[0] = _t90_inv + _t90_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t91_inv;
+        dd[5] = _t91_inv + _t91_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -42109,12 +42109,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t178_inv = 1.0 / _t178;
         double _t179 = _t175 - _t176;
         double _t179_inv = 1.0 / _t179;
-        dd[0] = 2.0 * _t177_inv;
+        dd[0] = _t177_inv + _t177_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t178_inv;
+        dd[5] = _t178_inv + _t178_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -42187,12 +42187,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / _t41;
         double _t42 = _t38 - _t39;
         double _t42_inv = 1.0 / _t42;
-        dd[0] = 2.0 * _t42_inv;
+        dd[0] = _t42_inv + _t42_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t41_inv;
+        dd[5] = _t41_inv + _t41_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -42235,12 +42235,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / _t41;
         double _t42 = _t38 - _t39;
         double _t42_inv = 1.0 / _t42;
-        dd[0] = 2.0 * _t42_inv;
+        dd[0] = _t42_inv + _t42_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t41_inv;
+        dd[5] = _t41_inv + _t41_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -42283,12 +42283,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t47_inv = 1.0 / _t47;
         double _t48 = _t44 - _t45;
         double _t48_inv = 1.0 / _t48;
-        dd[0] = 2.0 * _t48_inv;
+        dd[0] = _t48_inv + _t48_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t47_inv;
+        dd[5] = _t47_inv + _t47_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -42361,12 +42361,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t106_inv = 1.0 / _t106;
         double _t107 = _t103 - _t104;
         double _t107_inv = 1.0 / _t107;
-        dd[0] = 2.0 * _t105_inv;
+        dd[0] = _t105_inv + _t105_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t106_inv;
+        dd[5] = _t106_inv + _t106_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -42439,12 +42439,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t130_inv = 1.0 / _t130;
         double _t131 = _t127 - _t128;
         double _t131_inv = 1.0 / _t131;
-        dd[0] = 2.0 * _t129_inv;
+        dd[0] = _t129_inv + _t129_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t130_inv;
+        dd[5] = _t130_inv + _t130_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -42537,12 +42537,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t151_inv = 1.0 / _t151;
         double _t152 = _t148 - _t149;
         double _t152_inv = 1.0 / _t152;
-        dd[0] = 2.0 * _t150_inv;
+        dd[0] = _t150_inv + _t150_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t151_inv;
+        dd[5] = _t151_inv + _t151_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -42635,12 +42635,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t175_inv = 1.0 / _t175;
         double _t176 = _t172 - _t173;
         double _t176_inv = 1.0 / _t176;
-        dd[0] = 2.0 * _t174_inv;
+        dd[0] = _t174_inv + _t174_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t175_inv;
+        dd[5] = _t175_inv + _t175_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -42851,12 +42851,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t231_inv = 1.0 / _t231;
         double _t232 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181) - _t229;
         double _t232_inv = 1.0 / _t232;
-        dd[0] = 2.0 * _t230_inv;
+        dd[0] = _t230_inv + _t230_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t231_inv;
+        dd[5] = _t231_inv + _t231_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -42928,12 +42928,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t94_inv = 1.0 / _t94;
         double _t95 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47) - _t92;
         double _t95_inv = 1.0 / _t95;
-        dd[0] = 2.0 * _t93_inv;
+        dd[0] = _t93_inv + _t93_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t94_inv;
+        dd[5] = _t94_inv + _t94_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -43016,12 +43016,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t90_inv = 1.0 / _t90;
         double _t91 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t31, _t32), _t33), _t34), _t43), _t44), _t45), _t46) - _t88;
         double _t91_inv = 1.0 / _t91;
-        dd[0] = 2.0 * _t89_inv;
+        dd[0] = _t89_inv + _t89_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t90_inv;
+        dd[5] = _t90_inv + _t90_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -43117,12 +43117,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t166_inv = 1.0 / _t166;
         double _t167 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t110, _t105), _t106), _t107), _t122), _t117), _t118), _t119) - _t164;
         double _t167_inv = 1.0 / _t167;
-        dd[0] = 2.0 * _t165_inv;
+        dd[0] = _t165_inv + _t165_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t166_inv;
+        dd[5] = _t166_inv + _t166_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -43173,12 +43173,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t40_inv = 1.0 / _t40;
         double _t41 = _t37 - _t38;
         double _t41_inv = 1.0 / _t41;
-        dd[0] = 2.0 * _t41_inv;
+        dd[0] = _t41_inv + _t41_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t40_inv;
+        dd[5] = _t40_inv + _t40_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -43219,12 +43219,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t40_inv = 1.0 / _t40;
         double _t41 = _t37 - _t38;
         double _t41_inv = 1.0 / _t41;
-        dd[0] = 2.0 * _t41_inv;
+        dd[0] = _t41_inv + _t41_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t40_inv;
+        dd[5] = _t40_inv + _t40_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -43266,12 +43266,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t46_inv = 1.0 / _t46;
         double _t47 = _t43 - _t44;
         double _t47_inv = 1.0 / _t47;
-        dd[0] = 2.0 * _t47_inv;
+        dd[0] = _t47_inv + _t47_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t46_inv;
+        dd[5] = _t46_inv + _t46_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -43343,12 +43343,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t94_inv = 1.0 / _t94;
         double _t95 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47) - _t92;
         double _t95_inv = 1.0 / _t95;
-        dd[0] = 2.0 * _t93_inv;
+        dd[0] = _t93_inv + _t93_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t94_inv;
+        dd[5] = _t94_inv + _t94_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -43420,12 +43420,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t118_inv = 1.0 / _t118;
         double _t119 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t61, _t51), _t52), _t53), _t74), _t69), _t70), _t71) - _t116;
         double _t119_inv = 1.0 / _t119;
-        dd[0] = 2.0 * _t117_inv;
+        dd[0] = _t117_inv + _t117_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t118_inv;
+        dd[5] = _t118_inv + _t118_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -43517,12 +43517,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t135_inv = 1.0 / _t135;
         double _t136 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t79, _t74), _t75), _t76), _t91), _t86), _t87), _t88) - _t133;
         double _t136_inv = 1.0 / _t136;
-        dd[0] = 2.0 * _t134_inv;
+        dd[0] = _t134_inv + _t134_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t135_inv;
+        dd[5] = _t135_inv + _t135_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -43614,12 +43614,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t159_inv = 1.0 / _t159;
         double _t160 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t91, _t86), _t87), _t88), _t115), _t110), _t111), _t112) - _t157;
         double _t160_inv = 1.0 / _t160;
-        dd[0] = 2.0 * _t158_inv;
+        dd[0] = _t158_inv + _t158_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t159_inv;
+        dd[5] = _t159_inv + _t159_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -43804,12 +43804,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t231_inv = 1.0 / _t231;
         double _t232 = _t228 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181);
         double _t232_inv = 1.0 / _t232;
-        dd[0] = 2.0 * _t230_inv;
+        dd[0] = _t230_inv + _t230_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t231_inv;
+        dd[5] = _t231_inv + _t231_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -43881,12 +43881,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t94_inv = 1.0 / _t94;
         double _t95 = _t91 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47);
         double _t95_inv = 1.0 / _t95;
-        dd[0] = 2.0 * _t93_inv;
+        dd[0] = _t93_inv + _t93_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t94_inv;
+        dd[5] = _t94_inv + _t94_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -43969,12 +43969,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t90_inv = 1.0 / _t90;
         double _t91 = _t87 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t31, _t32), _t33), _t34), _t43), _t44), _t45), _t46);
         double _t91_inv = 1.0 / _t91;
-        dd[0] = 2.0 * _t89_inv;
+        dd[0] = _t89_inv + _t89_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t90_inv;
+        dd[5] = _t90_inv + _t90_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -44070,12 +44070,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t166_inv = 1.0 / _t166;
         double _t167 = _t163 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t110, _t105), _t106), _t107), _t122), _t117), _t118), _t119);
         double _t167_inv = 1.0 / _t167;
-        dd[0] = 2.0 * _t165_inv;
+        dd[0] = _t165_inv + _t165_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t166_inv;
+        dd[5] = _t166_inv + _t166_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -44146,12 +44146,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t40_inv = 1.0 / _t40;
         double _t41 = _t37 - _t38;
         double _t41_inv = 1.0 / _t41;
-        dd[0] = 2.0 * _t41_inv;
+        dd[0] = _t41_inv + _t41_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t40_inv;
+        dd[5] = _t40_inv + _t40_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -44192,12 +44192,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t40_inv = 1.0 / _t40;
         double _t41 = _t37 - _t38;
         double _t41_inv = 1.0 / _t41;
-        dd[0] = 2.0 * _t41_inv;
+        dd[0] = _t41_inv + _t41_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t40_inv;
+        dd[5] = _t40_inv + _t40_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -44239,12 +44239,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t46_inv = 1.0 / _t46;
         double _t47 = _t43 - _t44;
         double _t47_inv = 1.0 / _t47;
-        dd[0] = 2.0 * _t47_inv;
+        dd[0] = _t47_inv + _t47_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t46_inv;
+        dd[5] = _t46_inv + _t46_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -44316,12 +44316,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t94_inv = 1.0 / _t94;
         double _t95 = _t91 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t27), _t28), _t29), _t50), _t45), _t46), _t47);
         double _t95_inv = 1.0 / _t95;
-        dd[0] = 2.0 * _t93_inv;
+        dd[0] = _t93_inv + _t93_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t94_inv;
+        dd[5] = _t94_inv + _t94_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -44393,12 +44393,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t118_inv = 1.0 / _t118;
         double _t119 = _t115 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t61, _t51), _t52), _t53), _t74), _t69), _t70), _t71);
         double _t119_inv = 1.0 / _t119;
-        dd[0] = 2.0 * _t117_inv;
+        dd[0] = _t117_inv + _t117_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t118_inv;
+        dd[5] = _t118_inv + _t118_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -44490,12 +44490,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t135_inv = 1.0 / _t135;
         double _t136 = _t132 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t79, _t74), _t75), _t76), _t91), _t86), _t87), _t88);
         double _t136_inv = 1.0 / _t136;
-        dd[0] = 2.0 * _t134_inv;
+        dd[0] = _t134_inv + _t134_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t135_inv;
+        dd[5] = _t135_inv + _t135_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -44587,12 +44587,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t159_inv = 1.0 / _t159;
         double _t160 = _t156 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t91, _t86), _t87), _t88), _t115), _t110), _t111), _t112);
         double _t160_inv = 1.0 / _t160;
-        dd[0] = 2.0 * _t158_inv;
+        dd[0] = _t158_inv + _t158_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t159_inv;
+        dd[5] = _t159_inv + _t159_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -45028,17 +45028,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t223_inv = 1.0 / _t223;
         double _t224 = _t220 - _t221;
         double _t224_inv = 1.0 / _t224;
-        dd[0] = 2.0 * _t222_inv;
+        dd[0] = _t222_inv + _t222_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t223_inv;
+        dd[5] = _t223_inv + _t223_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t224_inv;
+        dd[10] = _t224_inv + _t224_inv;
         dd[11] = 0.0;
         dd[12] = -((_t217 + _t216) * _t222_inv);
         dd[13] = -((_t219 + _t218) * _t223_inv);
@@ -45109,17 +45109,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t88_inv = 1.0 / _t88;
         double _t89 = _t85 - _t86;
         double _t89_inv = 1.0 / _t89;
-        dd[0] = 2.0 * _t87_inv;
+        dd[0] = _t87_inv + _t87_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t88_inv;
+        dd[5] = _t88_inv + _t88_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t89_inv;
+        dd[10] = _t89_inv + _t89_inv;
         dd[11] = 0.0;
         dd[12] = -((_t82 + _t81) * _t87_inv);
         dd[13] = -((_t84 + _t83) * _t88_inv);
@@ -45199,17 +45199,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t91_inv = 1.0 / _t91;
         double _t92 = _t88 - _t89;
         double _t92_inv = 1.0 / _t92;
-        dd[0] = 2.0 * _t90_inv;
+        dd[0] = _t90_inv + _t90_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t91_inv;
+        dd[5] = _t91_inv + _t91_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t92_inv;
+        dd[10] = _t92_inv + _t92_inv;
         dd[11] = 0.0;
         dd[12] = -((_t85 + _t84) * _t90_inv);
         dd[13] = -((_t87 + _t86) * _t91_inv);
@@ -45304,17 +45304,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t160_inv = 1.0 / _t160;
         double _t161 = _t157 - _t158;
         double _t161_inv = 1.0 / _t161;
-        dd[0] = 2.0 * _t159_inv;
+        dd[0] = _t159_inv + _t159_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t160_inv;
+        dd[5] = _t160_inv + _t160_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t161_inv;
+        dd[10] = _t161_inv + _t161_inv;
         dd[11] = 0.0;
         dd[12] = -((_t154 + _t153) * _t159_inv);
         dd[13] = -((_t156 + _t155) * _t160_inv);
@@ -45348,7 +45348,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t8_inv;
+        dd[10] = _t8_inv + _t8_inv;
         dd[11] = 0.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
@@ -45386,17 +45386,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / _t41;
         double _t42 = _t38 - _t39;
         double _t42_inv = 1.0 / _t42;
-        dd[0] = 2.0 * _t42_inv;
+        dd[0] = _t42_inv + _t42_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t41_inv;
+        dd[5] = _t41_inv + _t41_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t40_inv;
+        dd[10] = _t40_inv + _t40_inv;
         dd[11] = 0.0;
         dd[12] = -((_t39 + _t38) * _t42_inv);
         dd[13] = -((_t37 + _t36) * _t41_inv);
@@ -45434,17 +45434,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / _t41;
         double _t42 = _t38 - _t39;
         double _t42_inv = 1.0 / _t42;
-        dd[0] = 2.0 * _t42_inv;
+        dd[0] = _t42_inv + _t42_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t41_inv;
+        dd[5] = _t41_inv + _t41_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t40_inv;
+        dd[10] = _t40_inv + _t40_inv;
         dd[11] = 0.0;
         dd[12] = -((_t39 + _t38) * _t42_inv);
         dd[13] = -((_t37 + _t36) * _t41_inv);
@@ -45482,17 +45482,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t47_inv = 1.0 / _t47;
         double _t48 = _t44 - _t45;
         double _t48_inv = 1.0 / _t48;
-        dd[0] = 2.0 * _t48_inv;
+        dd[0] = _t48_inv + _t48_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t47_inv;
+        dd[5] = _t47_inv + _t47_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t46_inv;
+        dd[10] = _t46_inv + _t46_inv;
         dd[11] = 0.0;
         dd[12] = -((_t45 + _t44) * _t48_inv);
         dd[13] = -((_t43 + _t42) * _t47_inv);
@@ -45563,17 +45563,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t88_inv = 1.0 / _t88;
         double _t89 = _t85 - _t86;
         double _t89_inv = 1.0 / _t89;
-        dd[0] = 2.0 * _t87_inv;
+        dd[0] = _t87_inv + _t87_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t88_inv;
+        dd[5] = _t88_inv + _t88_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t89_inv;
+        dd[10] = _t89_inv + _t89_inv;
         dd[11] = 0.0;
         dd[12] = -((_t82 + _t81) * _t87_inv);
         dd[13] = -((_t84 + _t83) * _t88_inv);
@@ -45647,17 +45647,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t91_inv = 1.0 / _t91;
         double _t92 = _t88 - _t89;
         double _t92_inv = 1.0 / _t92;
-        dd[0] = 2.0 * _t90_inv;
+        dd[0] = _t90_inv + _t90_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t91_inv;
+        dd[5] = _t91_inv + _t91_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t92_inv;
+        dd[10] = _t92_inv + _t92_inv;
         dd[11] = 0.0;
         dd[12] = -((_t85 + _t84) * _t90_inv);
         dd[13] = -((_t87 + _t86) * _t91_inv);
@@ -45749,17 +45749,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t127_inv = 1.0 / _t127;
         double _t128 = _t124 - _t125;
         double _t128_inv = 1.0 / _t128;
-        dd[0] = 2.0 * _t126_inv;
+        dd[0] = _t126_inv + _t126_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t127_inv;
+        dd[5] = _t127_inv + _t127_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t128_inv;
+        dd[10] = _t128_inv + _t128_inv;
         dd[11] = 0.0;
         dd[12] = -((_t121 + _t120) * _t126_inv);
         dd[13] = -((_t123 + _t122) * _t127_inv);
@@ -45851,17 +45851,17 @@ public class Double4x4Impl implements Double4x4 {
         double _t151_inv = 1.0 / _t151;
         double _t152 = _t148 - _t149;
         double _t152_inv = 1.0 / _t152;
-        dd[0] = 2.0 * _t150_inv;
+        dd[0] = _t150_inv + _t150_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t151_inv;
+        dd[5] = _t151_inv + _t151_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 2.0 * _t152_inv;
+        dd[10] = _t152_inv + _t152_inv;
         dd[11] = 0.0;
         dd[12] = -((_t145 + _t144) * _t150_inv);
         dd[13] = -((_t147 + _t146) * _t151_inv);
@@ -46046,12 +46046,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t223_inv = 1.0 / _t223;
         double _t224 = _t220 - _t221;
         double _t224_inv = 1.0 / _t224;
-        dd[0] = 2.0 * _t222_inv;
+        dd[0] = _t222_inv + _t222_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t223_inv;
+        dd[5] = _t223_inv + _t223_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -46127,12 +46127,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t88_inv = 1.0 / _t88;
         double _t89 = _t85 - _t86;
         double _t89_inv = 1.0 / _t89;
-        dd[0] = 2.0 * _t87_inv;
+        dd[0] = _t87_inv + _t87_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t88_inv;
+        dd[5] = _t88_inv + _t88_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -46217,12 +46217,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t91_inv = 1.0 / _t91;
         double _t92 = _t88 - _t89;
         double _t92_inv = 1.0 / _t92;
-        dd[0] = 2.0 * _t90_inv;
+        dd[0] = _t90_inv + _t90_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t91_inv;
+        dd[5] = _t91_inv + _t91_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -46322,12 +46322,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t160_inv = 1.0 / _t160;
         double _t161 = _t157 - _t158;
         double _t161_inv = 1.0 / _t161;
-        dd[0] = 2.0 * _t159_inv;
+        dd[0] = _t159_inv + _t159_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t160_inv;
+        dd[5] = _t160_inv + _t160_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -46404,12 +46404,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / _t41;
         double _t42 = _t38 - _t39;
         double _t42_inv = 1.0 / _t42;
-        dd[0] = 2.0 * _t42_inv;
+        dd[0] = _t42_inv + _t42_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t41_inv;
+        dd[5] = _t41_inv + _t41_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -46452,12 +46452,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / _t41;
         double _t42 = _t38 - _t39;
         double _t42_inv = 1.0 / _t42;
-        dd[0] = 2.0 * _t42_inv;
+        dd[0] = _t42_inv + _t42_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t41_inv;
+        dd[5] = _t41_inv + _t41_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -46500,12 +46500,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t47_inv = 1.0 / _t47;
         double _t48 = _t44 - _t45;
         double _t48_inv = 1.0 / _t48;
-        dd[0] = 2.0 * _t48_inv;
+        dd[0] = _t48_inv + _t48_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t47_inv;
+        dd[5] = _t47_inv + _t47_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -46581,12 +46581,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t88_inv = 1.0 / _t88;
         double _t89 = _t85 - _t86;
         double _t89_inv = 1.0 / _t89;
-        dd[0] = 2.0 * _t87_inv;
+        dd[0] = _t87_inv + _t87_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t88_inv;
+        dd[5] = _t88_inv + _t88_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -46665,12 +46665,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t91_inv = 1.0 / _t91;
         double _t92 = _t88 - _t89;
         double _t92_inv = 1.0 / _t92;
-        dd[0] = 2.0 * _t90_inv;
+        dd[0] = _t90_inv + _t90_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t91_inv;
+        dd[5] = _t91_inv + _t91_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -46767,12 +46767,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t127_inv = 1.0 / _t127;
         double _t128 = _t124 - _t125;
         double _t128_inv = 1.0 / _t128;
-        dd[0] = 2.0 * _t126_inv;
+        dd[0] = _t126_inv + _t126_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t127_inv;
+        dd[5] = _t127_inv + _t127_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -46869,12 +46869,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t151_inv = 1.0 / _t151;
         double _t152 = _t148 - _t149;
         double _t152_inv = 1.0 / _t152;
-        dd[0] = 2.0 * _t150_inv;
+        dd[0] = _t150_inv + _t150_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t151_inv;
+        dd[5] = _t151_inv + _t151_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -47089,12 +47089,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t223_inv = 1.0 / _t223;
         double _t224 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179) - _t221;
         double _t224_inv = 1.0 / _t224;
-        dd[0] = 2.0 * _t222_inv;
+        dd[0] = _t222_inv + _t222_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t223_inv;
+        dd[5] = _t223_inv + _t223_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -47169,12 +47169,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t88_inv = 1.0 / _t88;
         double _t89 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44) - _t86;
         double _t89_inv = 1.0 / _t89;
-        dd[0] = 2.0 * _t87_inv;
+        dd[0] = _t87_inv + _t87_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t88_inv;
+        dd[5] = _t88_inv + _t88_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -47258,12 +47258,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t91_inv = 1.0 / _t91;
         double _t92 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47) - _t89;
         double _t92_inv = 1.0 / _t92;
-        dd[0] = 2.0 * _t90_inv;
+        dd[0] = _t90_inv + _t90_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t91_inv;
+        dd[5] = _t91_inv + _t91_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -47362,12 +47362,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t160_inv = 1.0 / _t160;
         double _t161 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t109, _t110), _t111), _t112), _t113), _t114), _t115), _t116) - _t158;
         double _t161_inv = 1.0 / _t161;
-        dd[0] = 2.0 * _t159_inv;
+        dd[0] = _t159_inv + _t159_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t160_inv;
+        dd[5] = _t160_inv + _t160_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -47442,12 +47442,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / _t41;
         double _t42 = _t38 - _t39;
         double _t42_inv = 1.0 / _t42;
-        dd[0] = 2.0 * _t42_inv;
+        dd[0] = _t42_inv + _t42_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t41_inv;
+        dd[5] = _t41_inv + _t41_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -47489,12 +47489,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / _t41;
         double _t42 = _t38 - _t39;
         double _t42_inv = 1.0 / _t42;
-        dd[0] = 2.0 * _t42_inv;
+        dd[0] = _t42_inv + _t42_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t41_inv;
+        dd[5] = _t41_inv + _t41_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -47536,12 +47536,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t47_inv = 1.0 / _t47;
         double _t48 = _t44 - _t45;
         double _t48_inv = 1.0 / _t48;
-        dd[0] = 2.0 * _t48_inv;
+        dd[0] = _t48_inv + _t48_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t47_inv;
+        dd[5] = _t47_inv + _t47_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -47616,12 +47616,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t88_inv = 1.0 / _t88;
         double _t89 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44) - _t86;
         double _t89_inv = 1.0 / _t89;
-        dd[0] = 2.0 * _t87_inv;
+        dd[0] = _t87_inv + _t87_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t88_inv;
+        dd[5] = _t88_inv + _t88_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -47699,12 +47699,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t91_inv = 1.0 / _t91;
         double _t92 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47) - _t89;
         double _t92_inv = 1.0 / _t92;
-        dd[0] = 2.0 * _t90_inv;
+        dd[0] = _t90_inv + _t90_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t91_inv;
+        dd[5] = _t91_inv + _t91_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -47800,12 +47800,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t127_inv = 1.0 / _t127;
         double _t128 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83) - _t125;
         double _t128_inv = 1.0 / _t128;
-        dd[0] = 2.0 * _t126_inv;
+        dd[0] = _t126_inv + _t126_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t127_inv;
+        dd[5] = _t127_inv + _t127_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -47901,12 +47901,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t151_inv = 1.0 / _t151;
         double _t152 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107) - _t149;
         double _t152_inv = 1.0 / _t152;
-        dd[0] = 2.0 * _t150_inv;
+        dd[0] = _t150_inv + _t150_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t151_inv;
+        dd[5] = _t151_inv + _t151_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -48095,12 +48095,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t223_inv = 1.0 / _t223;
         double _t224 = _t220 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
         double _t224_inv = 1.0 / _t224;
-        dd[0] = 2.0 * _t222_inv;
+        dd[0] = _t222_inv + _t222_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t223_inv;
+        dd[5] = _t223_inv + _t223_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -48175,12 +48175,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t88_inv = 1.0 / _t88;
         double _t89 = _t85 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44);
         double _t89_inv = 1.0 / _t89;
-        dd[0] = 2.0 * _t87_inv;
+        dd[0] = _t87_inv + _t87_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t88_inv;
+        dd[5] = _t88_inv + _t88_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -48264,12 +48264,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t91_inv = 1.0 / _t91;
         double _t92 = _t88 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
         double _t92_inv = 1.0 / _t92;
-        dd[0] = 2.0 * _t90_inv;
+        dd[0] = _t90_inv + _t90_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t91_inv;
+        dd[5] = _t91_inv + _t91_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -48368,12 +48368,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t160_inv = 1.0 / _t160;
         double _t161 = _t157 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t109, _t110), _t111), _t112), _t113), _t114), _t115), _t116);
         double _t161_inv = 1.0 / _t161;
-        dd[0] = 2.0 * _t159_inv;
+        dd[0] = _t159_inv + _t159_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t160_inv;
+        dd[5] = _t160_inv + _t160_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -48448,12 +48448,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / _t41;
         double _t42 = _t38 - _t39;
         double _t42_inv = 1.0 / _t42;
-        dd[0] = 2.0 * _t42_inv;
+        dd[0] = _t42_inv + _t42_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t41_inv;
+        dd[5] = _t41_inv + _t41_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -48495,12 +48495,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t41_inv = 1.0 / _t41;
         double _t42 = _t38 - _t39;
         double _t42_inv = 1.0 / _t42;
-        dd[0] = 2.0 * _t42_inv;
+        dd[0] = _t42_inv + _t42_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t41_inv;
+        dd[5] = _t41_inv + _t41_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -48542,12 +48542,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t47_inv = 1.0 / _t47;
         double _t48 = _t44 - _t45;
         double _t48_inv = 1.0 / _t48;
-        dd[0] = 2.0 * _t48_inv;
+        dd[0] = _t48_inv + _t48_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t47_inv;
+        dd[5] = _t47_inv + _t47_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -48622,12 +48622,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t88_inv = 1.0 / _t88;
         double _t89 = _t85 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t37, _t38), _t39), _t40), _t41), _t42), _t43), _t44);
         double _t89_inv = 1.0 / _t89;
-        dd[0] = 2.0 * _t87_inv;
+        dd[0] = _t87_inv + _t87_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t88_inv;
+        dd[5] = _t88_inv + _t88_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -48705,12 +48705,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t91_inv = 1.0 / _t91;
         double _t92 = _t88 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
         double _t92_inv = 1.0 / _t92;
-        dd[0] = 2.0 * _t90_inv;
+        dd[0] = _t90_inv + _t90_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t91_inv;
+        dd[5] = _t91_inv + _t91_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -48806,12 +48806,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t127_inv = 1.0 / _t127;
         double _t128 = _t124 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83);
         double _t128_inv = 1.0 / _t128;
-        dd[0] = 2.0 * _t126_inv;
+        dd[0] = _t126_inv + _t126_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t127_inv;
+        dd[5] = _t127_inv + _t127_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -48907,12 +48907,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t151_inv = 1.0 / _t151;
         double _t152 = _t148 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107);
         double _t152_inv = 1.0 / _t152;
-        dd[0] = 2.0 * _t150_inv;
+        dd[0] = _t150_inv + _t150_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t151_inv;
+        dd[5] = _t151_inv + _t151_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -49236,7 +49236,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t1_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t1_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -49258,7 +49258,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[5] = 1.0 / _t2;
         dd[10] = far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? -1.0 : -((far + near) * _t1_inv);
         dd[11] = 1.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t1_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t1_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -49290,7 +49290,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t1_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t1_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -49316,7 +49316,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t1_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t1_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -49340,14 +49340,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t15, _t16;
         if (far == Double.POSITIVE_INFINITY) {
             _t15 = 1.0;
-            _t16 = -(2.0 * near);
+            _t16 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t15 = -1.0;
-                _t16 = 2.0 * far;
+                _t16 = far + far;
             } else {
                 _t15 = -((far + near) * _t2_inv);
-                _t16 = 2.0 * far * near * _t2_inv;
+                _t16 = (far + far) * near * _t2_inv;
             }
         }
         dd[0] = sd[0] * _t9_inv;
@@ -49391,14 +49391,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t15, _t16;
         if (far == Double.POSITIVE_INFINITY) {
             _t15 = 1.0;
-            _t16 = -(2.0 * near);
+            _t16 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t15 = -1.0;
-                _t16 = 2.0 * far;
+                _t16 = far + far;
             } else {
                 _t15 = -((far + near) * _t2_inv);
-                _t16 = 2.0 * far * near * _t2_inv;
+                _t16 = (far + far) * near * _t2_inv;
             }
         }
         dd[0] = sd[0] * _t9_inv;
@@ -49440,14 +49440,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t15, _t16;
         if (far == Double.POSITIVE_INFINITY) {
             _t15 = 1.0;
-            _t16 = -(2.0 * near);
+            _t16 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t15 = -1.0;
-                _t16 = 2.0 * far;
+                _t16 = far + far;
             } else {
                 _t15 = -((far + near) * _t2_inv);
-                _t16 = 2.0 * far * near * _t2_inv;
+                _t16 = (far + far) * near * _t2_inv;
             }
         }
         dd[0] = sd[0] * _t9_inv;
@@ -49529,7 +49529,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = -1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t1_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t1_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -49551,7 +49551,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[5] = 1.0 / _t2;
         dd[10] = far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 1.0 : (far + near) * _t1_inv;
         dd[11] = -1.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t1_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t1_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -49583,7 +49583,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = -1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t1_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t1_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -49609,7 +49609,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = -1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t1_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t1_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -49633,14 +49633,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t13, _t15;
         if (far == Double.POSITIVE_INFINITY) {
             _t13 = -1.0;
-            _t15 = -(2.0 * near);
+            _t15 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t13 = 1.0;
-                _t15 = 2.0 * far;
+                _t15 = far + far;
             } else {
                 _t13 = (far + near) * _t2_inv;
-                _t15 = 2.0 * far * near * _t2_inv;
+                _t15 = (far + far) * near * _t2_inv;
             }
         }
         dd[0] = sd[0] * _t9_inv;
@@ -49684,14 +49684,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t13, _t15;
         if (far == Double.POSITIVE_INFINITY) {
             _t13 = -1.0;
-            _t15 = -(2.0 * near);
+            _t15 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t13 = 1.0;
-                _t15 = 2.0 * far;
+                _t15 = far + far;
             } else {
                 _t13 = (far + near) * _t2_inv;
-                _t15 = 2.0 * far * near * _t2_inv;
+                _t15 = (far + far) * near * _t2_inv;
             }
         }
         dd[0] = sd[0] * _t9_inv;
@@ -49733,14 +49733,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t13, _t15;
         if (far == Double.POSITIVE_INFINITY) {
             _t13 = -1.0;
-            _t15 = -(2.0 * near);
+            _t15 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t13 = 1.0;
-                _t15 = 2.0 * far;
+                _t15 = far + far;
             } else {
                 _t13 = (far + near) * _t2_inv;
-                _t15 = 2.0 * far * near * _t2_inv;
+                _t15 = (far + far) * near * _t2_inv;
             }
         }
         dd[0] = sd[0] * _t9_inv;
@@ -50682,7 +50682,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -50691,7 +50691,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t2_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -50714,11 +50714,11 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
         dd[0] = 2.0 / (aspect * _t3);
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[9] = -((_t0 + _t1) * _t3_inv);
         dd[10] = far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? -1.0 : -((far + near) * _t2_inv);
         dd[11] = 1.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t2_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -50744,7 +50744,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = sd[12];
@@ -50753,7 +50753,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t2_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -50776,14 +50776,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
         dd[0] = 2.0 / (aspect * _t3);
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[8] = sd[12];
         dd[9] = sd[13] - (_t0 + _t1) * _t3_inv;
         dd[10] = sd[14] + (far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? -1.0 : -((far + near) * _t2_inv));
         dd[11] = 1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t2_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -50810,23 +50810,23 @@ public class Double4x4Impl implements Double4x4 {
         double _t17, _t18;
         if (far == Double.POSITIVE_INFINITY) {
             _t17 = 1.0;
-            _t18 = -(2.0 * near);
+            _t18 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t17 = -1.0;
-                _t18 = 2.0 * far;
+                _t18 = far + far;
             } else {
                 _t17 = -((far + near) * _t3_inv);
-                _t18 = 2.0 * far * near * _t3_inv;
+                _t18 = (far + far) * near * _t3_inv;
             }
         }
-        dd[0] = 2.0 * sd[0] * _t11_inv;
-        dd[1] = 2.0 * sd[1] * _t11_inv;
-        dd[2] = 2.0 * sd[2] * _t11_inv;
+        dd[0] = (sd[0] + sd[0]) * _t11_inv;
+        dd[1] = (sd[1] + sd[1]) * _t11_inv;
+        dd[2] = (sd[2] + sd[2]) * _t11_inv;
         dd[3] = 0.0;
-        double _buf0 = 2.0 * sd[4] * _t8_inv;
-        double _buf1 = 2.0 * sd[5] * _t8_inv;
-        double _buf2 = 2.0 * sd[6] * _t8_inv;
+        double _buf0 = (sd[4] + sd[4]) * _t8_inv;
+        double _buf1 = (sd[5] + sd[5]) * _t8_inv;
+        double _buf2 = (sd[6] + sd[6]) * _t8_inv;
         dd[7] = 0.0;
         double _buf3 = Math.fma(sd[8], _t17, sd[12] - sd[4] * _t9 * _t8_inv);
         double _buf4 = Math.fma(sd[9], _t17, sd[13] - sd[5] * _t9 * _t8_inv);
@@ -50868,22 +50868,22 @@ public class Double4x4Impl implements Double4x4 {
         double _t17, _t18;
         if (far == Double.POSITIVE_INFINITY) {
             _t17 = 1.0;
-            _t18 = -(2.0 * near);
+            _t18 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t17 = -1.0;
-                _t18 = 2.0 * far;
+                _t18 = far + far;
             } else {
                 _t17 = -((far + near) * _t3_inv);
-                _t18 = 2.0 * far * near * _t3_inv;
+                _t18 = (far + far) * near * _t3_inv;
             }
         }
-        dd[0] = 2.0 * sd[0] * _t11_inv;
-        dd[1] = 2.0 * sd[1] * _t11_inv;
-        dd[2] = 2.0 * sd[2] * _t11_inv;
-        double _buf0 = 2.0 * sd[4] * _t8_inv;
-        double _buf1 = 2.0 * sd[5] * _t8_inv;
-        double _buf2 = 2.0 * sd[6] * _t8_inv;
+        dd[0] = (sd[0] + sd[0]) * _t11_inv;
+        dd[1] = (sd[1] + sd[1]) * _t11_inv;
+        dd[2] = (sd[2] + sd[2]) * _t11_inv;
+        double _buf0 = (sd[4] + sd[4]) * _t8_inv;
+        double _buf1 = (sd[5] + sd[5]) * _t8_inv;
+        double _buf2 = (sd[6] + sd[6]) * _t8_inv;
         double _buf3 = Math.fma(sd[8], _t17, sd[12] - sd[4] * _t9 * _t8_inv);
         double _buf4 = Math.fma(sd[9], _t17, sd[13] - sd[5] * _t9 * _t8_inv);
         double _buf5 = Math.fma(sd[10], _t17, sd[14] - sd[6] * _t9 * _t8_inv);
@@ -50923,24 +50923,24 @@ public class Double4x4Impl implements Double4x4 {
         double _t17, _t18;
         if (far == Double.POSITIVE_INFINITY) {
             _t17 = 1.0;
-            _t18 = -(2.0 * near);
+            _t18 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t17 = -1.0;
-                _t18 = 2.0 * far;
+                _t18 = far + far;
             } else {
                 _t17 = -((far + near) * _t3_inv);
-                _t18 = 2.0 * far * near * _t3_inv;
+                _t18 = (far + far) * near * _t3_inv;
             }
         }
-        dd[0] = 2.0 * sd[0] * _t11_inv;
-        dd[1] = 2.0 * sd[1] * _t11_inv;
-        dd[2] = 2.0 * sd[2] * _t11_inv;
-        dd[3] = 2.0 * sd[3] * _t11_inv;
-        double _buf0 = 2.0 * sd[4] * _t8_inv;
-        double _buf1 = 2.0 * sd[5] * _t8_inv;
-        double _buf2 = 2.0 * sd[6] * _t8_inv;
-        double _buf3 = 2.0 * sd[7] * _t8_inv;
+        dd[0] = (sd[0] + sd[0]) * _t11_inv;
+        dd[1] = (sd[1] + sd[1]) * _t11_inv;
+        dd[2] = (sd[2] + sd[2]) * _t11_inv;
+        dd[3] = (sd[3] + sd[3]) * _t11_inv;
+        double _buf0 = (sd[4] + sd[4]) * _t8_inv;
+        double _buf1 = (sd[5] + sd[5]) * _t8_inv;
+        double _buf2 = (sd[6] + sd[6]) * _t8_inv;
+        double _buf3 = (sd[7] + sd[7]) * _t8_inv;
         double _buf4 = Math.fma(sd[8], _t17, sd[12] - sd[4] * _t9 * _t8_inv);
         double _buf5 = Math.fma(sd[9], _t17, sd[13] - sd[5] * _t9 * _t8_inv);
         double _buf6 = Math.fma(sd[10], _t17, sd[14] - sd[6] * _t9 * _t8_inv);
@@ -51010,7 +51010,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -51019,7 +51019,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = -1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t2_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -51042,11 +51042,11 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
         dd[0] = 2.0 / (aspect * _t3);
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[9] = (_t0 + _t1) * _t3_inv;
         dd[10] = far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 1.0 : (far + near) * _t2_inv;
         dd[11] = -1.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t2_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -51072,7 +51072,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = -sd[12];
@@ -51081,7 +51081,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = -1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t2_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -51104,14 +51104,14 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
         dd[0] = 2.0 / (aspect * _t3);
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[8] = -sd[12];
         dd[9] = (_t0 + _t1) * _t3_inv - sd[13];
         dd[10] = (far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 1.0 : (far + near) * _t2_inv) - sd[14];
         dd[11] = -1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t2_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -51138,23 +51138,23 @@ public class Double4x4Impl implements Double4x4 {
         double _t15, _t17;
         if (far == Double.POSITIVE_INFINITY) {
             _t15 = -1.0;
-            _t17 = -(2.0 * near);
+            _t17 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t15 = 1.0;
-                _t17 = 2.0 * far;
+                _t17 = far + far;
             } else {
                 _t15 = (far + near) * _t3_inv;
-                _t17 = 2.0 * far * near * _t3_inv;
+                _t17 = (far + far) * near * _t3_inv;
             }
         }
-        dd[0] = 2.0 * sd[0] * _t11_inv;
-        dd[1] = 2.0 * sd[1] * _t11_inv;
-        dd[2] = 2.0 * sd[2] * _t11_inv;
+        dd[0] = (sd[0] + sd[0]) * _t11_inv;
+        dd[1] = (sd[1] + sd[1]) * _t11_inv;
+        dd[2] = (sd[2] + sd[2]) * _t11_inv;
         dd[3] = 0.0;
-        double _buf0 = 2.0 * sd[4] * _t8_inv;
-        double _buf1 = 2.0 * sd[5] * _t8_inv;
-        double _buf2 = 2.0 * sd[6] * _t8_inv;
+        double _buf0 = (sd[4] + sd[4]) * _t8_inv;
+        double _buf1 = (sd[5] + sd[5]) * _t8_inv;
+        double _buf2 = (sd[6] + sd[6]) * _t8_inv;
         dd[7] = 0.0;
         double _buf3 = Math.fma(sd[8], _t15, sd[4] * _t9 * _t8_inv - sd[12]);
         double _buf4 = Math.fma(sd[9], _t15, sd[5] * _t9 * _t8_inv - sd[13]);
@@ -51196,22 +51196,22 @@ public class Double4x4Impl implements Double4x4 {
         double _t15, _t17;
         if (far == Double.POSITIVE_INFINITY) {
             _t15 = -1.0;
-            _t17 = -(2.0 * near);
+            _t17 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t15 = 1.0;
-                _t17 = 2.0 * far;
+                _t17 = far + far;
             } else {
                 _t15 = (far + near) * _t3_inv;
-                _t17 = 2.0 * far * near * _t3_inv;
+                _t17 = (far + far) * near * _t3_inv;
             }
         }
-        dd[0] = 2.0 * sd[0] * _t11_inv;
-        dd[1] = 2.0 * sd[1] * _t11_inv;
-        dd[2] = 2.0 * sd[2] * _t11_inv;
-        double _buf0 = 2.0 * sd[4] * _t8_inv;
-        double _buf1 = 2.0 * sd[5] * _t8_inv;
-        double _buf2 = 2.0 * sd[6] * _t8_inv;
+        dd[0] = (sd[0] + sd[0]) * _t11_inv;
+        dd[1] = (sd[1] + sd[1]) * _t11_inv;
+        dd[2] = (sd[2] + sd[2]) * _t11_inv;
+        double _buf0 = (sd[4] + sd[4]) * _t8_inv;
+        double _buf1 = (sd[5] + sd[5]) * _t8_inv;
+        double _buf2 = (sd[6] + sd[6]) * _t8_inv;
         double _buf3 = Math.fma(sd[8], _t15, sd[4] * _t9 * _t8_inv - sd[12]);
         double _buf4 = Math.fma(sd[9], _t15, sd[5] * _t9 * _t8_inv - sd[13]);
         double _buf5 = Math.fma(sd[10], _t15, sd[6] * _t9 * _t8_inv - sd[14]);
@@ -51251,24 +51251,24 @@ public class Double4x4Impl implements Double4x4 {
         double _t15, _t17;
         if (far == Double.POSITIVE_INFINITY) {
             _t15 = -1.0;
-            _t17 = -(2.0 * near);
+            _t17 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t15 = 1.0;
-                _t17 = 2.0 * far;
+                _t17 = far + far;
             } else {
                 _t15 = (far + near) * _t3_inv;
-                _t17 = 2.0 * far * near * _t3_inv;
+                _t17 = (far + far) * near * _t3_inv;
             }
         }
-        dd[0] = 2.0 * sd[0] * _t11_inv;
-        dd[1] = 2.0 * sd[1] * _t11_inv;
-        dd[2] = 2.0 * sd[2] * _t11_inv;
-        dd[3] = 2.0 * sd[3] * _t11_inv;
-        double _buf0 = 2.0 * sd[4] * _t8_inv;
-        double _buf1 = 2.0 * sd[5] * _t8_inv;
-        double _buf2 = 2.0 * sd[6] * _t8_inv;
-        double _buf3 = 2.0 * sd[7] * _t8_inv;
+        dd[0] = (sd[0] + sd[0]) * _t11_inv;
+        dd[1] = (sd[1] + sd[1]) * _t11_inv;
+        dd[2] = (sd[2] + sd[2]) * _t11_inv;
+        dd[3] = (sd[3] + sd[3]) * _t11_inv;
+        double _buf0 = (sd[4] + sd[4]) * _t8_inv;
+        double _buf1 = (sd[5] + sd[5]) * _t8_inv;
+        double _buf2 = (sd[6] + sd[6]) * _t8_inv;
+        double _buf3 = (sd[7] + sd[7]) * _t8_inv;
         double _buf4 = Math.fma(sd[8], _t15, sd[4] * _t9 * _t8_inv - sd[12]);
         double _buf5 = Math.fma(sd[9], _t15, sd[5] * _t9 * _t8_inv - sd[13]);
         double _buf6 = Math.fma(sd[10], _t15, sd[6] * _t9 * _t8_inv - sd[14]);
@@ -51362,7 +51362,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -51393,7 +51393,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
         dd[0] = 2.0 / (aspect * _t3);
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[9] = -((_t0 + _t1) * _t3_inv);
         dd[10] = far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : -(far * _t2_inv);
         dd[11] = 1.0;
@@ -51423,7 +51423,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = sd[12];
@@ -51454,7 +51454,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
         dd[0] = 2.0 / (aspect * _t3);
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[8] = sd[12];
         dd[9] = sd[13] - (_t0 + _t1) * _t3_inv;
         dd[10] = sd[14] + (far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : -(far * _t2_inv));
@@ -51498,13 +51498,13 @@ public class Double4x4Impl implements Double4x4 {
                 _t13 = far * near * _t2_inv;
             }
         }
-        dd[0] = 2.0 * sd[0] * _t8_inv;
-        dd[1] = 2.0 * sd[1] * _t8_inv;
-        dd[2] = 2.0 * sd[2] * _t8_inv;
+        dd[0] = (sd[0] + sd[0]) * _t8_inv;
+        dd[1] = (sd[1] + sd[1]) * _t8_inv;
+        dd[2] = (sd[2] + sd[2]) * _t8_inv;
         dd[3] = 0.0;
-        double _buf0 = 2.0 * sd[4] * _t4_inv;
-        double _buf1 = 2.0 * sd[5] * _t4_inv;
-        double _buf2 = 2.0 * sd[6] * _t4_inv;
+        double _buf0 = (sd[4] + sd[4]) * _t4_inv;
+        double _buf1 = (sd[5] + sd[5]) * _t4_inv;
+        double _buf2 = (sd[6] + sd[6]) * _t4_inv;
         dd[7] = 0.0;
         double _buf3 = Math.fma(sd[8], _t12, sd[12] - sd[4] * _t6 * _t4_inv);
         double _buf4 = Math.fma(sd[9], _t12, sd[13] - sd[5] * _t6 * _t4_inv);
@@ -51555,12 +51555,12 @@ public class Double4x4Impl implements Double4x4 {
                 _t13 = far * near * _t2_inv;
             }
         }
-        dd[0] = 2.0 * sd[0] * _t8_inv;
-        dd[1] = 2.0 * sd[1] * _t8_inv;
-        dd[2] = 2.0 * sd[2] * _t8_inv;
-        double _buf0 = 2.0 * sd[4] * _t4_inv;
-        double _buf1 = 2.0 * sd[5] * _t4_inv;
-        double _buf2 = 2.0 * sd[6] * _t4_inv;
+        dd[0] = (sd[0] + sd[0]) * _t8_inv;
+        dd[1] = (sd[1] + sd[1]) * _t8_inv;
+        dd[2] = (sd[2] + sd[2]) * _t8_inv;
+        double _buf0 = (sd[4] + sd[4]) * _t4_inv;
+        double _buf1 = (sd[5] + sd[5]) * _t4_inv;
+        double _buf2 = (sd[6] + sd[6]) * _t4_inv;
         double _buf3 = Math.fma(sd[8], _t12, sd[12] - sd[4] * _t6 * _t4_inv);
         double _buf4 = Math.fma(sd[9], _t12, sd[13] - sd[5] * _t6 * _t4_inv);
         double _buf5 = Math.fma(sd[10], _t12, sd[14] - sd[6] * _t6 * _t4_inv);
@@ -51610,14 +51610,14 @@ public class Double4x4Impl implements Double4x4 {
                 _t13 = far * near * _t2_inv;
             }
         }
-        dd[0] = 2.0 * sd[0] * _t8_inv;
-        dd[1] = 2.0 * sd[1] * _t8_inv;
-        dd[2] = 2.0 * sd[2] * _t8_inv;
-        dd[3] = 2.0 * sd[3] * _t8_inv;
-        double _buf0 = 2.0 * sd[4] * _t4_inv;
-        double _buf1 = 2.0 * sd[5] * _t4_inv;
-        double _buf2 = 2.0 * sd[6] * _t4_inv;
-        double _buf3 = 2.0 * sd[7] * _t4_inv;
+        dd[0] = (sd[0] + sd[0]) * _t8_inv;
+        dd[1] = (sd[1] + sd[1]) * _t8_inv;
+        dd[2] = (sd[2] + sd[2]) * _t8_inv;
+        dd[3] = (sd[3] + sd[3]) * _t8_inv;
+        double _buf0 = (sd[4] + sd[4]) * _t4_inv;
+        double _buf1 = (sd[5] + sd[5]) * _t4_inv;
+        double _buf2 = (sd[6] + sd[6]) * _t4_inv;
+        double _buf3 = (sd[7] + sd[7]) * _t4_inv;
         double _buf4 = Math.fma(sd[8], _t12, sd[12] - sd[4] * _t6 * _t4_inv);
         double _buf5 = Math.fma(sd[9], _t12, sd[13] - sd[5] * _t6 * _t4_inv);
         double _buf6 = Math.fma(sd[10], _t12, sd[14] - sd[6] * _t6 * _t4_inv);
@@ -51687,7 +51687,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = 0.0;
@@ -51718,7 +51718,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
         dd[0] = 2.0 / (aspect * _t3);
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[9] = (_t0 + _t1) * _t3_inv;
         dd[10] = far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : far * _t2_inv;
         dd[11] = -1.0;
@@ -51748,7 +51748,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = -sd[12];
@@ -51779,7 +51779,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
         dd[0] = 2.0 / (aspect * _t3);
-        dd[5] = 2.0 * _t3_inv;
+        dd[5] = _t3_inv + _t3_inv;
         dd[8] = -sd[12];
         dd[9] = (_t0 + _t1) * _t3_inv - sd[13];
         dd[10] = (far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : far * _t2_inv) - sd[14];
@@ -51823,13 +51823,13 @@ public class Double4x4Impl implements Double4x4 {
                 _t12 = far * near * _t2_inv;
             }
         }
-        dd[0] = 2.0 * sd[0] * _t7_inv;
-        dd[1] = 2.0 * sd[1] * _t7_inv;
-        dd[2] = 2.0 * sd[2] * _t7_inv;
+        dd[0] = (sd[0] + sd[0]) * _t7_inv;
+        dd[1] = (sd[1] + sd[1]) * _t7_inv;
+        dd[2] = (sd[2] + sd[2]) * _t7_inv;
         dd[3] = 0.0;
-        double _buf0 = 2.0 * sd[4] * _t4_inv;
-        double _buf1 = 2.0 * sd[5] * _t4_inv;
-        double _buf2 = 2.0 * sd[6] * _t4_inv;
+        double _buf0 = (sd[4] + sd[4]) * _t4_inv;
+        double _buf1 = (sd[5] + sd[5]) * _t4_inv;
+        double _buf2 = (sd[6] + sd[6]) * _t4_inv;
         dd[7] = 0.0;
         double _buf3 = Math.fma(sd[8], _t11, sd[4] * _t6 * _t4_inv - sd[12]);
         double _buf4 = Math.fma(sd[9], _t11, sd[5] * _t6 * _t4_inv - sd[13]);
@@ -51880,12 +51880,12 @@ public class Double4x4Impl implements Double4x4 {
                 _t12 = far * near * _t2_inv;
             }
         }
-        dd[0] = 2.0 * sd[0] * _t7_inv;
-        dd[1] = 2.0 * sd[1] * _t7_inv;
-        dd[2] = 2.0 * sd[2] * _t7_inv;
-        double _buf0 = 2.0 * sd[4] * _t4_inv;
-        double _buf1 = 2.0 * sd[5] * _t4_inv;
-        double _buf2 = 2.0 * sd[6] * _t4_inv;
+        dd[0] = (sd[0] + sd[0]) * _t7_inv;
+        dd[1] = (sd[1] + sd[1]) * _t7_inv;
+        dd[2] = (sd[2] + sd[2]) * _t7_inv;
+        double _buf0 = (sd[4] + sd[4]) * _t4_inv;
+        double _buf1 = (sd[5] + sd[5]) * _t4_inv;
+        double _buf2 = (sd[6] + sd[6]) * _t4_inv;
         double _buf3 = Math.fma(sd[8], _t11, sd[4] * _t6 * _t4_inv - sd[12]);
         double _buf4 = Math.fma(sd[9], _t11, sd[5] * _t6 * _t4_inv - sd[13]);
         double _buf5 = Math.fma(sd[10], _t11, sd[6] * _t6 * _t4_inv - sd[14]);
@@ -51935,14 +51935,14 @@ public class Double4x4Impl implements Double4x4 {
                 _t12 = far * near * _t2_inv;
             }
         }
-        dd[0] = 2.0 * sd[0] * _t7_inv;
-        dd[1] = 2.0 * sd[1] * _t7_inv;
-        dd[2] = 2.0 * sd[2] * _t7_inv;
-        dd[3] = 2.0 * sd[3] * _t7_inv;
-        double _buf0 = 2.0 * sd[4] * _t4_inv;
-        double _buf1 = 2.0 * sd[5] * _t4_inv;
-        double _buf2 = 2.0 * sd[6] * _t4_inv;
-        double _buf3 = 2.0 * sd[7] * _t4_inv;
+        dd[0] = (sd[0] + sd[0]) * _t7_inv;
+        dd[1] = (sd[1] + sd[1]) * _t7_inv;
+        dd[2] = (sd[2] + sd[2]) * _t7_inv;
+        dd[3] = (sd[3] + sd[3]) * _t7_inv;
+        double _buf0 = (sd[4] + sd[4]) * _t4_inv;
+        double _buf1 = (sd[5] + sd[5]) * _t4_inv;
+        double _buf2 = (sd[6] + sd[6]) * _t4_inv;
+        double _buf3 = (sd[7] + sd[7]) * _t4_inv;
         double _buf4 = Math.fma(sd[8], _t11, sd[4] * _t6 * _t4_inv - sd[12]);
         double _buf5 = Math.fma(sd[9], _t11, sd[5] * _t6 * _t4_inv - sd[13]);
         double _buf6 = Math.fma(sd[10], _t11, sd[6] * _t6 * _t4_inv - sd[14]);
@@ -52277,7 +52277,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 0.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t0_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv;
         dd[15] = 1.0;
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -52296,7 +52296,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t0 = near - far;
         double _t0_inv = 1.0 / _t0;
         dd[10] = far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? -1.0 : -((far + near) * _t0_inv);
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t0_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv;
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -52326,7 +52326,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 0.0;
         dd[12] = sd[12];
         dd[13] = sd[13];
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t0_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv;
         dd[15] = 1.0;
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -52347,7 +52347,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[10] = far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? -1.0 : -((far + near) * _t0_inv);
         dd[12] = sd[12];
         dd[13] = sd[13];
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t0_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv;
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -52377,7 +52377,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 0.0;
         dd[12] = sd[12];
         dd[13] = sd[13];
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t0_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv;
         dd[15] = 1.0;
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -52406,7 +52406,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[10] = far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? -1.0 : -((far + near) * _t0_inv);
         dd[12] = sd[12];
         dd[13] = sd[13];
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t0_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv;
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -52436,7 +52436,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = sd[11];
         dd[12] = sd[12];
         dd[13] = sd[13];
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t0_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv;
         dd[15] = sd[15];
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -52496,7 +52496,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 0.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t0_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv;
         dd[15] = 1.0;
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -52515,7 +52515,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t0 = near - far;
         double _t0_inv = 1.0 / _t0;
         dd[10] = far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 1.0 : (far + near) * _t0_inv;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t0_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv;
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -52545,7 +52545,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 0.0;
         dd[12] = sd[12];
         dd[13] = sd[13];
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t0_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv;
         dd[15] = 1.0;
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -52566,7 +52566,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[10] = far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 1.0 : (far + near) * _t0_inv;
         dd[12] = sd[12];
         dd[13] = sd[13];
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t0_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv;
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -52596,7 +52596,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 0.0;
         dd[12] = sd[12];
         dd[13] = sd[13];
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t0_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv;
         dd[15] = 1.0;
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -52625,7 +52625,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[10] = far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 1.0 : (far + near) * _t0_inv;
         dd[12] = sd[12];
         dd[13] = sd[13];
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t0_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv;
         ((Double4x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -52655,7 +52655,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = sd[11];
         dd[12] = sd[12];
         dd[13] = sd[13];
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t0_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv;
         dd[15] = sd[15];
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -53388,12 +53388,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
+        dd[0] = _t5_inv + _t5_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t6_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = -((_t1 + _t0) * _t5_inv);
@@ -53402,7 +53402,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t4_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -53428,13 +53428,13 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
-        dd[5] = 2.0 * _t6_inv;
+        dd[0] = _t5_inv + _t5_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[8] = -((_t1 + _t0) * _t5_inv);
         dd[9] = -((_t3 + _t2) * _t6_inv);
         dd[10] = far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? -1.0 : -((far + near) * _t4_inv);
         dd[11] = 1.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t4_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -53459,12 +53459,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
+        dd[0] = _t5_inv + _t5_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t6_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = sd[12] - (_t1 + _t0) * _t5_inv;
@@ -53473,7 +53473,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = 1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t4_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -53499,15 +53499,15 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
-        dd[5] = 2.0 * _t6_inv;
+        dd[0] = _t5_inv + _t5_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[8] = sd[12] - (_t1 + _t0) * _t5_inv;
         dd[9] = sd[13] - (_t3 + _t2) * _t6_inv;
         dd[10] = sd[14] + (far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? -1.0 : -((far + near) * _t4_inv));
         dd[11] = 1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t4_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -53537,23 +53537,23 @@ public class Double4x4Impl implements Double4x4 {
         double _t20, _t21;
         if (far == Double.POSITIVE_INFINITY) {
             _t20 = 1.0;
-            _t21 = -(2.0 * near);
+            _t21 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t20 = -1.0;
-                _t21 = 2.0 * far;
+                _t21 = far + far;
             } else {
                 _t20 = -((far + near) * _t5_inv);
-                _t21 = 2.0 * far * near * _t5_inv;
+                _t21 = (far + far) * near * _t5_inv;
             }
         }
-        double _buf0 = 2.0 * sd[0] * _t10_inv;
-        double _buf1 = 2.0 * sd[1] * _t10_inv;
-        double _buf2 = 2.0 * sd[2] * _t10_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t10_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t10_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t10_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t11_inv;
-        double _buf4 = 2.0 * sd[5] * _t11_inv;
-        double _buf5 = 2.0 * sd[6] * _t11_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t11_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t11_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t11_inv;
         dd[7] = 0.0;
         double _buf6 = Math.fma(sd[8], _t20, sd[12] - sd[0] * _t12 * _t10_inv - sd[4] * _t13 * _t11_inv);
         double _buf7 = Math.fma(sd[9], _t20, sd[13] - sd[1] * _t12 * _t10_inv - sd[5] * _t13 * _t11_inv);
@@ -53601,22 +53601,22 @@ public class Double4x4Impl implements Double4x4 {
         double _t20, _t21;
         if (far == Double.POSITIVE_INFINITY) {
             _t20 = 1.0;
-            _t21 = -(2.0 * near);
+            _t21 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t20 = -1.0;
-                _t21 = 2.0 * far;
+                _t21 = far + far;
             } else {
                 _t20 = -((far + near) * _t5_inv);
-                _t21 = 2.0 * far * near * _t5_inv;
+                _t21 = (far + far) * near * _t5_inv;
             }
         }
-        double _buf0 = 2.0 * sd[0] * _t10_inv;
-        double _buf1 = 2.0 * sd[1] * _t10_inv;
-        double _buf2 = 2.0 * sd[2] * _t10_inv;
-        double _buf3 = 2.0 * sd[4] * _t11_inv;
-        double _buf4 = 2.0 * sd[5] * _t11_inv;
-        double _buf5 = 2.0 * sd[6] * _t11_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t10_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t10_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t10_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t11_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t11_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t11_inv;
         double _buf6 = Math.fma(sd[8], _t20, sd[12] - sd[0] * _t12 * _t10_inv - sd[4] * _t13 * _t11_inv);
         double _buf7 = Math.fma(sd[9], _t20, sd[13] - sd[1] * _t12 * _t10_inv - sd[5] * _t13 * _t11_inv);
         double _buf8 = Math.fma(sd[10], _t20, sd[14] - sd[2] * _t12 * _t10_inv - sd[6] * _t13 * _t11_inv);
@@ -53662,24 +53662,24 @@ public class Double4x4Impl implements Double4x4 {
         double _t20, _t21;
         if (far == Double.POSITIVE_INFINITY) {
             _t20 = 1.0;
-            _t21 = -(2.0 * near);
+            _t21 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t20 = -1.0;
-                _t21 = 2.0 * far;
+                _t21 = far + far;
             } else {
                 _t20 = -((far + near) * _t5_inv);
-                _t21 = 2.0 * far * near * _t5_inv;
+                _t21 = (far + far) * near * _t5_inv;
             }
         }
-        double _buf0 = 2.0 * sd[0] * _t10_inv;
-        double _buf1 = 2.0 * sd[1] * _t10_inv;
-        double _buf2 = 2.0 * sd[2] * _t10_inv;
-        double _buf3 = 2.0 * sd[3] * _t10_inv;
-        double _buf4 = 2.0 * sd[4] * _t11_inv;
-        double _buf5 = 2.0 * sd[5] * _t11_inv;
-        double _buf6 = 2.0 * sd[6] * _t11_inv;
-        double _buf7 = 2.0 * sd[7] * _t11_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t10_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t10_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t10_inv;
+        double _buf3 = (sd[3] + sd[3]) * _t10_inv;
+        double _buf4 = (sd[4] + sd[4]) * _t11_inv;
+        double _buf5 = (sd[5] + sd[5]) * _t11_inv;
+        double _buf6 = (sd[6] + sd[6]) * _t11_inv;
+        double _buf7 = (sd[7] + sd[7]) * _t11_inv;
         double _buf8 = Math.fma(sd[8], _t20, sd[12] - sd[0] * _t12 * _t10_inv - sd[4] * _t13 * _t11_inv);
         double _buf9 = Math.fma(sd[9], _t20, sd[13] - sd[1] * _t12 * _t10_inv - sd[5] * _t13 * _t11_inv);
         double _buf10 = Math.fma(sd[10], _t20, sd[14] - sd[2] * _t12 * _t10_inv - sd[6] * _t13 * _t11_inv);
@@ -53752,12 +53752,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
+        dd[0] = _t5_inv + _t5_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t6_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = (_t1 + _t0) * _t5_inv;
@@ -53766,7 +53766,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = -1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t4_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -53792,13 +53792,13 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
-        dd[5] = 2.0 * _t6_inv;
+        dd[0] = _t5_inv + _t5_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[8] = (_t1 + _t0) * _t5_inv;
         dd[9] = (_t3 + _t2) * _t6_inv;
         dd[10] = far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 1.0 : (far + near) * _t4_inv;
         dd[11] = -1.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t4_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -53823,12 +53823,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
+        dd[0] = _t5_inv + _t5_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t6_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = (_t1 + _t0) * _t5_inv - sd[12];
@@ -53837,7 +53837,7 @@ public class Double4x4Impl implements Double4x4 {
         dd[11] = -1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t4_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -53863,15 +53863,15 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
-        dd[5] = 2.0 * _t6_inv;
+        dd[0] = _t5_inv + _t5_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[8] = (_t1 + _t0) * _t5_inv - sd[12];
         dd[9] = (_t3 + _t2) * _t6_inv - sd[13];
         dd[10] = (far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 1.0 : (far + near) * _t4_inv) - sd[14];
         dd[11] = -1.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
-        dd[14] = far == Double.POSITIVE_INFINITY ? -(2.0 * near) : near == Double.POSITIVE_INFINITY ? 2.0 * far : 2.0 * far * near * _t4_inv;
+        dd[14] = far == Double.POSITIVE_INFINITY ? -(near + near) : near == Double.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv;
         dd[15] = 0.0;
         ((Double4x4Impl) dest).properties = 0;
         return dest;
@@ -53901,23 +53901,23 @@ public class Double4x4Impl implements Double4x4 {
         double _t18, _t20;
         if (far == Double.POSITIVE_INFINITY) {
             _t18 = -1.0;
-            _t20 = -(2.0 * near);
+            _t20 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t18 = 1.0;
-                _t20 = 2.0 * far;
+                _t20 = far + far;
             } else {
                 _t18 = (far + near) * _t5_inv;
-                _t20 = 2.0 * far * near * _t5_inv;
+                _t20 = (far + far) * near * _t5_inv;
             }
         }
-        double _buf0 = 2.0 * sd[0] * _t10_inv;
-        double _buf1 = 2.0 * sd[1] * _t10_inv;
-        double _buf2 = 2.0 * sd[2] * _t10_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t10_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t10_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t10_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t11_inv;
-        double _buf4 = 2.0 * sd[5] * _t11_inv;
-        double _buf5 = 2.0 * sd[6] * _t11_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t11_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t11_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t11_inv;
         dd[7] = 0.0;
         double _buf6 = Math.fma(sd[8], _t18, sd[0] * _t12 * _t10_inv - sd[12] + sd[4] * _t13 * _t11_inv);
         double _buf7 = Math.fma(sd[9], _t18, sd[1] * _t12 * _t10_inv - sd[13] + sd[5] * _t13 * _t11_inv);
@@ -53965,22 +53965,22 @@ public class Double4x4Impl implements Double4x4 {
         double _t18, _t20;
         if (far == Double.POSITIVE_INFINITY) {
             _t18 = -1.0;
-            _t20 = -(2.0 * near);
+            _t20 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t18 = 1.0;
-                _t20 = 2.0 * far;
+                _t20 = far + far;
             } else {
                 _t18 = (far + near) * _t5_inv;
-                _t20 = 2.0 * far * near * _t5_inv;
+                _t20 = (far + far) * near * _t5_inv;
             }
         }
-        double _buf0 = 2.0 * sd[0] * _t10_inv;
-        double _buf1 = 2.0 * sd[1] * _t10_inv;
-        double _buf2 = 2.0 * sd[2] * _t10_inv;
-        double _buf3 = 2.0 * sd[4] * _t11_inv;
-        double _buf4 = 2.0 * sd[5] * _t11_inv;
-        double _buf5 = 2.0 * sd[6] * _t11_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t10_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t10_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t10_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t11_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t11_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t11_inv;
         double _buf6 = Math.fma(sd[8], _t18, sd[0] * _t12 * _t10_inv - sd[12] + sd[4] * _t13 * _t11_inv);
         double _buf7 = Math.fma(sd[9], _t18, sd[1] * _t12 * _t10_inv - sd[13] + sd[5] * _t13 * _t11_inv);
         double _buf8 = Math.fma(sd[10], _t18, sd[2] * _t12 * _t10_inv - sd[14] + sd[6] * _t13 * _t11_inv);
@@ -54026,23 +54026,23 @@ public class Double4x4Impl implements Double4x4 {
         double _t18, _t20;
         if (far == Double.POSITIVE_INFINITY) {
             _t18 = -1.0;
-            _t20 = -(2.0 * near);
+            _t20 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t18 = 1.0;
-                _t20 = 2.0 * far;
+                _t20 = far + far;
             } else {
                 _t18 = (far + near) * _t5_inv;
-                _t20 = 2.0 * far * near * _t5_inv;
+                _t20 = (far + far) * near * _t5_inv;
             }
         }
-        double _buf0 = 2.0 * sd[0] * _t10_inv;
-        double _buf1 = 2.0 * sd[1] * _t10_inv;
-        double _buf2 = 2.0 * sd[2] * _t10_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t10_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t10_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t10_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t11_inv;
-        double _buf4 = 2.0 * sd[5] * _t11_inv;
-        double _buf5 = 2.0 * sd[6] * _t11_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t11_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t11_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t11_inv;
         dd[7] = 0.0;
         double _buf6 = Math.fma(sd[8], _t18, sd[0] * _t12 * _t10_inv + sd[4] * _t13 * _t11_inv - sd[12]);
         double _buf7 = Math.fma(sd[9], _t18, sd[1] * _t12 * _t10_inv + sd[5] * _t13 * _t11_inv - sd[13]);
@@ -54090,22 +54090,22 @@ public class Double4x4Impl implements Double4x4 {
         double _t18, _t20;
         if (far == Double.POSITIVE_INFINITY) {
             _t18 = -1.0;
-            _t20 = -(2.0 * near);
+            _t20 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t18 = 1.0;
-                _t20 = 2.0 * far;
+                _t20 = far + far;
             } else {
                 _t18 = (far + near) * _t5_inv;
-                _t20 = 2.0 * far * near * _t5_inv;
+                _t20 = (far + far) * near * _t5_inv;
             }
         }
-        double _buf0 = 2.0 * sd[0] * _t10_inv;
-        double _buf1 = 2.0 * sd[1] * _t10_inv;
-        double _buf2 = 2.0 * sd[2] * _t10_inv;
-        double _buf3 = 2.0 * sd[4] * _t11_inv;
-        double _buf4 = 2.0 * sd[5] * _t11_inv;
-        double _buf5 = 2.0 * sd[6] * _t11_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t10_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t10_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t10_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t11_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t11_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t11_inv;
         double _buf6 = Math.fma(sd[8], _t18, sd[0] * _t12 * _t10_inv + sd[4] * _t13 * _t11_inv - sd[12]);
         double _buf7 = Math.fma(sd[9], _t18, sd[1] * _t12 * _t10_inv + sd[5] * _t13 * _t11_inv - sd[13]);
         double _buf8 = Math.fma(sd[10], _t18, sd[2] * _t12 * _t10_inv + sd[6] * _t13 * _t11_inv - sd[14]);
@@ -54151,24 +54151,24 @@ public class Double4x4Impl implements Double4x4 {
         double _t18, _t20;
         if (far == Double.POSITIVE_INFINITY) {
             _t18 = -1.0;
-            _t20 = -(2.0 * near);
+            _t20 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t18 = 1.0;
-                _t20 = 2.0 * far;
+                _t20 = far + far;
             } else {
                 _t18 = (far + near) * _t5_inv;
-                _t20 = 2.0 * far * near * _t5_inv;
+                _t20 = (far + far) * near * _t5_inv;
             }
         }
-        double _buf0 = 2.0 * sd[0] * _t10_inv;
-        double _buf1 = 2.0 * sd[1] * _t10_inv;
-        double _buf2 = 2.0 * sd[2] * _t10_inv;
-        double _buf3 = 2.0 * sd[3] * _t10_inv;
-        double _buf4 = 2.0 * sd[4] * _t11_inv;
-        double _buf5 = 2.0 * sd[5] * _t11_inv;
-        double _buf6 = 2.0 * sd[6] * _t11_inv;
-        double _buf7 = 2.0 * sd[7] * _t11_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t10_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t10_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t10_inv;
+        double _buf3 = (sd[3] + sd[3]) * _t10_inv;
+        double _buf4 = (sd[4] + sd[4]) * _t11_inv;
+        double _buf5 = (sd[5] + sd[5]) * _t11_inv;
+        double _buf6 = (sd[6] + sd[6]) * _t11_inv;
+        double _buf7 = (sd[7] + sd[7]) * _t11_inv;
         double _buf8 = Math.fma(sd[8], _t18, sd[0] * _t12 * _t10_inv + sd[4] * _t13 * _t11_inv - sd[12]);
         double _buf9 = Math.fma(sd[9], _t18, sd[1] * _t12 * _t10_inv + sd[5] * _t13 * _t11_inv - sd[13]);
         double _buf10 = Math.fma(sd[10], _t18, sd[2] * _t12 * _t10_inv + sd[6] * _t13 * _t11_inv - sd[14]);
@@ -54267,12 +54267,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
+        dd[0] = _t5_inv + _t5_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t6_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = -((_t1 + _t0) * _t5_inv);
@@ -54306,8 +54306,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
-        dd[5] = 2.0 * _t6_inv;
+        dd[0] = _t5_inv + _t5_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[8] = -((_t1 + _t0) * _t5_inv);
         dd[9] = -((_t3 + _t2) * _t6_inv);
         dd[10] = far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : -(far * _t4_inv);
@@ -54337,12 +54337,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
+        dd[0] = _t5_inv + _t5_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t6_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = sd[12] - (_t1 + _t0) * _t5_inv;
@@ -54376,8 +54376,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
-        dd[5] = 2.0 * _t6_inv;
+        dd[0] = _t5_inv + _t5_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[8] = sd[12] - (_t1 + _t0) * _t5_inv;
         dd[9] = sd[13] - (_t3 + _t2) * _t6_inv;
         dd[10] = sd[14] + (far == Double.POSITIVE_INFINITY ? 1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : -(far * _t4_inv));
@@ -54424,13 +54424,13 @@ public class Double4x4Impl implements Double4x4 {
                 _t16 = far * near * _t4_inv;
             }
         }
-        double _buf0 = 2.0 * sd[0] * _t6_inv;
-        double _buf1 = 2.0 * sd[1] * _t6_inv;
-        double _buf2 = 2.0 * sd[2] * _t6_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t6_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t6_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t6_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t7_inv;
-        double _buf4 = 2.0 * sd[5] * _t7_inv;
-        double _buf5 = 2.0 * sd[6] * _t7_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t7_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t7_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t7_inv;
         dd[7] = 0.0;
         double _buf6 = Math.fma(sd[8], _t15, sd[12] - sd[0] * _t9 * _t6_inv - sd[4] * _t10 * _t7_inv);
         double _buf7 = Math.fma(sd[9], _t15, sd[13] - sd[1] * _t9 * _t6_inv - sd[5] * _t10 * _t7_inv);
@@ -54487,12 +54487,12 @@ public class Double4x4Impl implements Double4x4 {
                 _t16 = far * near * _t4_inv;
             }
         }
-        double _buf0 = 2.0 * sd[0] * _t6_inv;
-        double _buf1 = 2.0 * sd[1] * _t6_inv;
-        double _buf2 = 2.0 * sd[2] * _t6_inv;
-        double _buf3 = 2.0 * sd[4] * _t7_inv;
-        double _buf4 = 2.0 * sd[5] * _t7_inv;
-        double _buf5 = 2.0 * sd[6] * _t7_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t6_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t6_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t6_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t7_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t7_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t7_inv;
         double _buf6 = Math.fma(sd[8], _t15, sd[12] - sd[0] * _t9 * _t6_inv - sd[4] * _t10 * _t7_inv);
         double _buf7 = Math.fma(sd[9], _t15, sd[13] - sd[1] * _t9 * _t6_inv - sd[5] * _t10 * _t7_inv);
         double _buf8 = Math.fma(sd[10], _t15, sd[14] - sd[2] * _t9 * _t6_inv - sd[6] * _t10 * _t7_inv);
@@ -54548,14 +54548,14 @@ public class Double4x4Impl implements Double4x4 {
                 _t16 = far * near * _t4_inv;
             }
         }
-        double _buf0 = 2.0 * sd[0] * _t6_inv;
-        double _buf1 = 2.0 * sd[1] * _t6_inv;
-        double _buf2 = 2.0 * sd[2] * _t6_inv;
-        double _buf3 = 2.0 * sd[3] * _t6_inv;
-        double _buf4 = 2.0 * sd[4] * _t7_inv;
-        double _buf5 = 2.0 * sd[5] * _t7_inv;
-        double _buf6 = 2.0 * sd[6] * _t7_inv;
-        double _buf7 = 2.0 * sd[7] * _t7_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t6_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t6_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t6_inv;
+        double _buf3 = (sd[3] + sd[3]) * _t6_inv;
+        double _buf4 = (sd[4] + sd[4]) * _t7_inv;
+        double _buf5 = (sd[5] + sd[5]) * _t7_inv;
+        double _buf6 = (sd[6] + sd[6]) * _t7_inv;
+        double _buf7 = (sd[7] + sd[7]) * _t7_inv;
         double _buf8 = Math.fma(sd[8], _t15, sd[12] - sd[0] * _t9 * _t6_inv - sd[4] * _t10 * _t7_inv);
         double _buf9 = Math.fma(sd[9], _t15, sd[13] - sd[1] * _t9 * _t6_inv - sd[5] * _t10 * _t7_inv);
         double _buf10 = Math.fma(sd[10], _t15, sd[14] - sd[2] * _t9 * _t6_inv - sd[6] * _t10 * _t7_inv);
@@ -54628,12 +54628,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
+        dd[0] = _t5_inv + _t5_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t6_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = (_t1 + _t0) * _t5_inv;
@@ -54668,8 +54668,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
-        dd[5] = 2.0 * _t6_inv;
+        dd[0] = _t5_inv + _t5_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[8] = (_t1 + _t0) * _t5_inv;
         dd[9] = (_t3 + _t2) * _t6_inv;
         dd[10] = far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : far * _t4_inv;
@@ -54699,12 +54699,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
+        dd[0] = _t5_inv + _t5_inv;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = 0.0;
-        dd[5] = 2.0 * _t6_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[6] = 0.0;
         dd[7] = 0.0;
         dd[8] = (_t1 + _t0) * _t5_inv - sd[12];
@@ -54739,8 +54739,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t5_inv = 1.0 / _t5;
         double _t6 = _t2 - _t3;
         double _t6_inv = 1.0 / _t6;
-        dd[0] = 2.0 * _t5_inv;
-        dd[5] = 2.0 * _t6_inv;
+        dd[0] = _t5_inv + _t5_inv;
+        dd[5] = _t6_inv + _t6_inv;
         dd[8] = (_t1 + _t0) * _t5_inv - sd[12];
         dd[9] = (_t3 + _t2) * _t6_inv - sd[13];
         dd[10] = (far == Double.POSITIVE_INFINITY ? -1.0 : near == Double.POSITIVE_INFINITY ? 0.0 : far * _t4_inv) - sd[14];
@@ -54787,13 +54787,13 @@ public class Double4x4Impl implements Double4x4 {
                 _t15 = far * near * _t4_inv;
             }
         }
-        double _buf0 = 2.0 * sd[0] * _t6_inv;
-        double _buf1 = 2.0 * sd[1] * _t6_inv;
-        double _buf2 = 2.0 * sd[2] * _t6_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t6_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t6_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t6_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t7_inv;
-        double _buf4 = 2.0 * sd[5] * _t7_inv;
-        double _buf5 = 2.0 * sd[6] * _t7_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t7_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t7_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t7_inv;
         dd[7] = 0.0;
         double _buf6 = Math.fma(sd[8], _t14, sd[0] * _t9 * _t6_inv - sd[12] + sd[4] * _t10 * _t7_inv);
         double _buf7 = Math.fma(sd[9], _t14, sd[1] * _t9 * _t6_inv - sd[13] + sd[5] * _t10 * _t7_inv);
@@ -54851,12 +54851,12 @@ public class Double4x4Impl implements Double4x4 {
                 _t15 = far * near * _t4_inv;
             }
         }
-        double _buf0 = 2.0 * sd[0] * _t6_inv;
-        double _buf1 = 2.0 * sd[1] * _t6_inv;
-        double _buf2 = 2.0 * sd[2] * _t6_inv;
-        double _buf3 = 2.0 * sd[4] * _t7_inv;
-        double _buf4 = 2.0 * sd[5] * _t7_inv;
-        double _buf5 = 2.0 * sd[6] * _t7_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t6_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t6_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t6_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t7_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t7_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t7_inv;
         double _buf6 = Math.fma(sd[8], _t14, sd[0] * _t9 * _t6_inv - sd[12] + sd[4] * _t10 * _t7_inv);
         double _buf7 = Math.fma(sd[9], _t14, sd[1] * _t9 * _t6_inv - sd[13] + sd[5] * _t10 * _t7_inv);
         double _buf8 = Math.fma(sd[10], _t14, sd[2] * _t9 * _t6_inv - sd[14] + sd[6] * _t10 * _t7_inv);
@@ -54912,13 +54912,13 @@ public class Double4x4Impl implements Double4x4 {
                 _t15 = far * near * _t4_inv;
             }
         }
-        double _buf0 = 2.0 * sd[0] * _t6_inv;
-        double _buf1 = 2.0 * sd[1] * _t6_inv;
-        double _buf2 = 2.0 * sd[2] * _t6_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t6_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t6_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t6_inv;
         dd[3] = 0.0;
-        double _buf3 = 2.0 * sd[4] * _t7_inv;
-        double _buf4 = 2.0 * sd[5] * _t7_inv;
-        double _buf5 = 2.0 * sd[6] * _t7_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t7_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t7_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t7_inv;
         dd[7] = 0.0;
         double _buf6 = Math.fma(sd[8], _t14, sd[0] * _t9 * _t6_inv + sd[4] * _t10 * _t7_inv - sd[12]);
         double _buf7 = Math.fma(sd[9], _t14, sd[1] * _t9 * _t6_inv + sd[5] * _t10 * _t7_inv - sd[13]);
@@ -54976,12 +54976,12 @@ public class Double4x4Impl implements Double4x4 {
                 _t15 = far * near * _t4_inv;
             }
         }
-        double _buf0 = 2.0 * sd[0] * _t6_inv;
-        double _buf1 = 2.0 * sd[1] * _t6_inv;
-        double _buf2 = 2.0 * sd[2] * _t6_inv;
-        double _buf3 = 2.0 * sd[4] * _t7_inv;
-        double _buf4 = 2.0 * sd[5] * _t7_inv;
-        double _buf5 = 2.0 * sd[6] * _t7_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t6_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t6_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t6_inv;
+        double _buf3 = (sd[4] + sd[4]) * _t7_inv;
+        double _buf4 = (sd[5] + sd[5]) * _t7_inv;
+        double _buf5 = (sd[6] + sd[6]) * _t7_inv;
         double _buf6 = Math.fma(sd[8], _t14, sd[0] * _t9 * _t6_inv + sd[4] * _t10 * _t7_inv - sd[12]);
         double _buf7 = Math.fma(sd[9], _t14, sd[1] * _t9 * _t6_inv + sd[5] * _t10 * _t7_inv - sd[13]);
         double _buf8 = Math.fma(sd[10], _t14, sd[2] * _t9 * _t6_inv + sd[6] * _t10 * _t7_inv - sd[14]);
@@ -55037,14 +55037,14 @@ public class Double4x4Impl implements Double4x4 {
                 _t15 = far * near * _t4_inv;
             }
         }
-        double _buf0 = 2.0 * sd[0] * _t6_inv;
-        double _buf1 = 2.0 * sd[1] * _t6_inv;
-        double _buf2 = 2.0 * sd[2] * _t6_inv;
-        double _buf3 = 2.0 * sd[3] * _t6_inv;
-        double _buf4 = 2.0 * sd[4] * _t7_inv;
-        double _buf5 = 2.0 * sd[5] * _t7_inv;
-        double _buf6 = 2.0 * sd[6] * _t7_inv;
-        double _buf7 = 2.0 * sd[7] * _t7_inv;
+        double _buf0 = (sd[0] + sd[0]) * _t6_inv;
+        double _buf1 = (sd[1] + sd[1]) * _t6_inv;
+        double _buf2 = (sd[2] + sd[2]) * _t6_inv;
+        double _buf3 = (sd[3] + sd[3]) * _t6_inv;
+        double _buf4 = (sd[4] + sd[4]) * _t7_inv;
+        double _buf5 = (sd[5] + sd[5]) * _t7_inv;
+        double _buf6 = (sd[6] + sd[6]) * _t7_inv;
+        double _buf7 = (sd[7] + sd[7]) * _t7_inv;
         double _buf8 = Math.fma(sd[8], _t14, sd[0] * _t9 * _t6_inv + sd[4] * _t10 * _t7_inv - sd[12]);
         double _buf9 = Math.fma(sd[9], _t14, sd[1] * _t9 * _t6_inv + sd[5] * _t10 * _t7_inv - sd[13]);
         double _buf10 = Math.fma(sd[10], _t14, sd[2] * _t9 * _t6_inv + sd[6] * _t10 * _t7_inv - sd[14]);
@@ -55776,9 +55776,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotX;
-        double _t5 = 2.0 * rotY;
-        double _t6 = 2.0 * rotZ;
+        double _t4 = rotX + rotX;
+        double _t5 = rotY + rotY;
+        double _t6 = rotZ + rotZ;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t6;
         double _t9 = rotZ * _t6;
@@ -55832,9 +55832,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotX;
-        double _t5 = 2.0 * rotY;
-        double _t6 = 2.0 * rotZ;
+        double _t4 = rotX + rotX;
+        double _t5 = rotY + rotY;
+        double _t6 = rotZ + rotZ;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t6;
         double _t9 = rotZ * _t6;
@@ -55884,9 +55884,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotY;
-        double _t5 = 2.0 * rotZ;
-        double _t6 = 2.0 * rotX;
+        double _t4 = rotY + rotY;
+        double _t5 = rotZ + rotZ;
+        double _t6 = rotX + rotX;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t4;
         double _t9 = rotZ * _t5;
@@ -55929,9 +55929,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotY;
-        double _t5 = 2.0 * rotZ;
-        double _t6 = 2.0 * rotX;
+        double _t4 = rotY + rotY;
+        double _t5 = rotZ + rotZ;
+        double _t6 = rotX + rotX;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t4;
         double _t9 = rotZ * _t5;
@@ -55970,9 +55970,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotY;
-        double _t5 = 2.0 * rotZ;
-        double _t6 = 2.0 * rotX;
+        double _t4 = rotY + rotY;
+        double _t5 = rotZ + rotZ;
+        double _t6 = rotX + rotX;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t4;
         double _t9 = rotZ * _t5;
@@ -56020,9 +56020,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotY;
-        double _t5 = 2.0 * rotZ;
-        double _t6 = 2.0 * rotX;
+        double _t4 = rotY + rotY;
+        double _t5 = rotZ + rotZ;
+        double _t6 = rotX + rotX;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t4;
         double _t9 = rotZ * _t5;
@@ -56066,9 +56066,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t0 = -pivotZ;
         double _t1 = -rotY;
         double _t3 = -rotX;
-        double _t5 = 2.0 * rotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
+        double _t5 = rotX + rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
         double _t8 = rotW * _t6;
         double _t9 = rotZ * _t7;
         double _t10 = rotW * _t7;
@@ -56618,9 +56618,9 @@ public class Double4x4Impl implements Double4x4 {
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -56672,9 +56672,9 @@ public class Double4x4Impl implements Double4x4 {
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -56722,9 +56722,9 @@ public class Double4x4Impl implements Double4x4 {
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qY;
-        double _t4 = 2.0 * qZ;
-        double _t5 = 2.0 * qX;
+        double _t3 = qY + qY;
+        double _t4 = qZ + qZ;
+        double _t5 = qX + qX;
         double _t6 = qW * _t4;
         double _t7 = qW * _t3;
         double _t8 = qW * _t5;
@@ -56759,9 +56759,9 @@ public class Double4x4Impl implements Double4x4 {
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qY;
-        double _t4 = 2.0 * qZ;
-        double _t5 = 2.0 * qX;
+        double _t3 = qY + qY;
+        double _t4 = qZ + qZ;
+        double _t5 = qX + qX;
         double _t6 = qW * _t4;
         double _t7 = qW * _t3;
         double _t8 = qW * _t5;
@@ -56789,9 +56789,9 @@ public class Double4x4Impl implements Double4x4 {
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qY;
-        double _t4 = 2.0 * qZ;
-        double _t5 = 2.0 * qX;
+        double _t3 = qY + qY;
+        double _t4 = qZ + qZ;
+        double _t5 = qX + qX;
         double _t6 = qW * _t4;
         double _t7 = qW * _t3;
         double _t8 = qW * _t5;
@@ -56837,9 +56837,9 @@ public class Double4x4Impl implements Double4x4 {
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qY;
-        double _t4 = 2.0 * qZ;
-        double _t5 = 2.0 * qX;
+        double _t3 = qY + qY;
+        double _t4 = qZ + qZ;
+        double _t5 = qX + qX;
         double _t6 = qW * _t4;
         double _t7 = qW * _t3;
         double _t8 = qW * _t5;
@@ -56881,9 +56881,9 @@ public class Double4x4Impl implements Double4x4 {
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -59206,9 +59206,9 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 reflect_identity(double normalX, double normalY, double normalZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t6 = -(2.0 * normalX * normalY);
-        double _t7 = -(2.0 * normalX * normalZ);
-        double _t8 = -(2.0 * normalY * normalZ);
+        double _t6 = -((normalX + normalX) * normalY);
+        double _t7 = -((normalX + normalX) * normalZ);
+        double _t8 = -((normalY + normalY) * normalZ);
         dd[0] = Math.fma(-2.0, normalX * normalX, 1.0);
         dd[1] = _t6;
         dd[2] = _t7;
@@ -59237,9 +59237,9 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 reflect_identity_self(double normalX, double normalY, double normalZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t6 = -(2.0 * normalX * normalY);
-        double _t7 = -(2.0 * normalX * normalZ);
-        double _t8 = -(2.0 * normalY * normalZ);
+        double _t6 = -((normalX + normalX) * normalY);
+        double _t7 = -((normalX + normalX) * normalZ);
+        double _t8 = -((normalY + normalY) * normalZ);
         dd[0] = Math.fma(-2.0, normalX * normalX, 1.0);
         dd[1] = _t6;
         dd[2] = _t7;
@@ -59261,9 +59261,9 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 reflect_translation(double normalX, double normalY, double normalZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t6 = -(2.0 * normalX * normalY);
-        double _t7 = -(2.0 * normalX * normalZ);
-        double _t8 = -(2.0 * normalY * normalZ);
+        double _t6 = -((normalX + normalX) * normalY);
+        double _t7 = -((normalX + normalX) * normalZ);
+        double _t8 = -((normalY + normalY) * normalZ);
         dd[0] = Math.fma(-2.0, normalX * normalX, 1.0);
         dd[1] = _t6;
         dd[2] = _t7;
@@ -59292,9 +59292,9 @@ public class Double4x4Impl implements Double4x4 {
     private Double4x4 reflect_translation_self(double normalX, double normalY, double normalZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        double _t6 = -(2.0 * normalX * normalY);
-        double _t7 = -(2.0 * normalX * normalZ);
-        double _t8 = -(2.0 * normalY * normalZ);
+        double _t6 = -((normalX + normalX) * normalY);
+        double _t7 = -((normalX + normalX) * normalZ);
+        double _t8 = -((normalY + normalY) * normalZ);
         dd[0] = Math.fma(-2.0, normalX * normalX, 1.0);
         dd[1] = _t6;
         dd[2] = _t7;
@@ -59322,9 +59322,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t0 = -sd[8];
         double _t1 = -sd[9];
         double _t2 = -sd[10];
-        double _t9 = 2.0 * normalX * normalZ;
-        double _t10 = 2.0 * normalX * normalY;
-        double _t11 = 2.0 * normalY * normalZ;
+        double _t9 = (normalX + normalX) * normalZ;
+        double _t10 = (normalX + normalX) * normalY;
+        double _t11 = (normalY + normalY) * normalZ;
         double _t12 = Math.fma(-2.0, normalX * normalX, 1.0);
         double _t13 = Math.fma(-2.0, normalY * normalY, 1.0);
         double _t14 = Math.fma(-2.0, normalZ * normalZ, 1.0);
@@ -59365,9 +59365,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t0 = -sd[8];
         double _t1 = -sd[9];
         double _t2 = -sd[10];
-        double _t9 = 2.0 * normalX * normalZ;
-        double _t10 = 2.0 * normalX * normalY;
-        double _t11 = 2.0 * normalY * normalZ;
+        double _t9 = (normalX + normalX) * normalZ;
+        double _t10 = (normalX + normalX) * normalY;
+        double _t11 = (normalY + normalY) * normalZ;
         double _t12 = Math.fma(-2.0, normalX * normalX, 1.0);
         double _t13 = Math.fma(-2.0, normalY * normalY, 1.0);
         double _t14 = Math.fma(-2.0, normalZ * normalZ, 1.0);
@@ -59405,9 +59405,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t1 = -sd[9];
         double _t2 = -sd[10];
         double _t3 = -sd[11];
-        double _t10 = 2.0 * normalX * normalZ;
-        double _t11 = 2.0 * normalX * normalY;
-        double _t12 = 2.0 * normalY * normalZ;
+        double _t10 = (normalX + normalX) * normalZ;
+        double _t11 = (normalX + normalX) * normalY;
+        double _t12 = (normalY + normalY) * normalZ;
         double _t13 = Math.fma(-2.0, normalX * normalX, 1.0);
         double _t14 = Math.fma(-2.0, normalY * normalY, 1.0);
         double _t15 = Math.fma(-2.0, normalZ * normalZ, 1.0);
@@ -59544,9 +59544,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t0 = -rotY;
         double _t2 = -rotX;
         double _t3 = -pivotZ;
-        double _t5 = 2.0 * rotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
+        double _t5 = rotX + rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
         double _t8 = rotW * _t6;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t5;
@@ -59604,9 +59604,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t0 = -rotY;
         double _t2 = -rotX;
         double _t3 = -pivotZ;
-        double _t5 = 2.0 * rotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
+        double _t5 = rotX + rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
         double _t8 = rotW * _t6;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t5;
@@ -59680,9 +59680,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = -pivotZ;
         double _t4 = -rotX;
         double _t5 = -pivotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
-        double _t8 = 2.0 * rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
+        double _t8 = rotX + rotX;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t6;
         double _t11 = rotZ * _t7;
@@ -59727,9 +59727,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t3 = -pivotZ;
         double _t4 = -rotX;
         double _t5 = -pivotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
-        double _t8 = 2.0 * rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
+        double _t8 = rotX + rotX;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t6;
         double _t11 = rotZ * _t7;
@@ -59768,9 +59768,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t0 = -rotY;
         double _t2 = -rotX;
         double _t3 = -pivotZ;
-        double _t5 = 2.0 * rotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
+        double _t5 = rotX + rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
         double _t8 = rotW * _t6;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t5;
@@ -60254,9 +60254,9 @@ public class Double4x4Impl implements Double4x4 {
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -60306,9 +60306,9 @@ public class Double4x4Impl implements Double4x4 {
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -60372,9 +60372,9 @@ public class Double4x4Impl implements Double4x4 {
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qY;
-        double _t4 = 2.0 * qZ;
-        double _t5 = 2.0 * qX;
+        double _t3 = qY + qY;
+        double _t4 = qZ + qZ;
+        double _t5 = qX + qX;
         double _t6 = qW * _t4;
         double _t7 = qW * _t3;
         double _t8 = qW * _t5;
@@ -60409,9 +60409,9 @@ public class Double4x4Impl implements Double4x4 {
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qY;
-        double _t4 = 2.0 * qZ;
-        double _t5 = 2.0 * qX;
+        double _t3 = qY + qY;
+        double _t4 = qZ + qZ;
+        double _t5 = qX + qX;
         double _t6 = qW * _t4;
         double _t7 = qW * _t3;
         double _t8 = qW * _t5;
@@ -60442,9 +60442,9 @@ public class Double4x4Impl implements Double4x4 {
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -65724,13 +65724,13 @@ public class Double4x4Impl implements Double4x4 {
         double _t54 = _t3 * _t52_inv;
         double _t55 = _t52 * _t47;
         double _t58 = _t50 * _t52_inv;
-        double _t60 = 2.0 * _t45 / ((1.0 - _t45 / _t55) * _t55);
+        double _t60 = (_t45 + _t45) / ((1.0 - _t45 / _t55) * _t55);
         double _t61 = 1.0 + _t60;
-        dd[0] = 2.0 * _t25 * _t41_inv - _t53;
+        dd[0] = (_t25 + _t25) * _t41_inv - _t53;
         dd[1] = _t61 * _t5 * _t52_inv;
         dd[2] = 0.0;
         dd[3] = _t53;
-        dd[4] = 2.0 * _t26 * _t41_inv - _t54;
+        dd[4] = (_t26 + _t26) * _t41_inv - _t54;
         dd[5] = _t61 * _t3 * _t52_inv;
         dd[6] = 0.0;
         dd[7] = _t54;
@@ -65777,12 +65777,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t54 = _t3 * _t52_inv;
         double _t55 = _t52 * _t47;
         double _t58 = _t50 * _t52_inv;
-        double _t60 = 2.0 * _t45 / ((1.0 - _t45 / _t55) * _t55);
+        double _t60 = (_t45 + _t45) / ((1.0 - _t45 / _t55) * _t55);
         double _t61 = 1.0 + _t60;
-        dd[0] = 2.0 * _t25 * _t41_inv - _t53;
+        dd[0] = (_t25 + _t25) * _t41_inv - _t53;
         dd[1] = _t61 * _t5 * _t52_inv;
         dd[3] = _t53;
-        dd[4] = 2.0 * _t26 * _t41_inv - _t54;
+        dd[4] = (_t26 + _t26) * _t41_inv - _t54;
         dd[5] = _t61 * _t3 * _t52_inv;
         dd[7] = _t54;
         dd[12] = 2.0 * Math.fma(p0Y, _t5, Math.fma(_t0, _t3, _t30)) * _t41_inv - _t58;
@@ -65821,10 +65821,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t56_inv = 1.0 / _t56;
         double _t57 = _t5 * _t56_inv;
         double _t58 = _t3 * _t56_inv;
-        double _t59 = 2.0 * _t25 * _t43_inv - _t57;
-        double _t60 = 2.0 * _t26 * _t43_inv - _t58;
+        double _t59 = (_t25 + _t25) * _t43_inv - _t57;
+        double _t60 = (_t26 + _t26) * _t43_inv - _t58;
         double _t61 = _t56 * _t51;
-        double _t65 = 2.0 * _t47 / ((1.0 - _t47 / _t61) * _t61);
+        double _t65 = (_t47 + _t47) / ((1.0 - _t47 / _t61) * _t61);
         double _t66 = 1.0 + _t65;
         double _t67 = _t66 * _t5;
         double _t68 = _t66 * _t3;
@@ -65879,10 +65879,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t56_inv = 1.0 / _t56;
         double _t57 = _t5 * _t56_inv;
         double _t58 = _t3 * _t56_inv;
-        double _t59 = 2.0 * _t25 * _t43_inv - _t57;
-        double _t60 = 2.0 * _t26 * _t43_inv - _t58;
+        double _t59 = (_t25 + _t25) * _t43_inv - _t57;
+        double _t60 = (_t26 + _t26) * _t43_inv - _t58;
         double _t61 = _t56 * _t51;
-        double _t65 = 2.0 * _t47 / ((1.0 - _t47 / _t61) * _t61);
+        double _t65 = (_t47 + _t47) / ((1.0 - _t47 / _t61) * _t61);
         double _t66 = 1.0 + _t65;
         double _t67 = _t66 * _t5;
         double _t68 = _t66 * _t3;
@@ -65929,10 +65929,10 @@ public class Double4x4Impl implements Double4x4 {
         double _t54 = Math.fma(_t0, _t5, Math.fma(-p0Y, _t3, _t47 / _t51));
         double _t56 = Math.fma(p3X, _t5, Math.fma(p3Y, _t3, _t54));
         double _t56_inv = 1.0 / _t56;
-        double _t59 = 2.0 * _t25 * _t43_inv - _t5 * _t56_inv;
-        double _t60 = 2.0 * _t26 * _t43_inv - _t3 * _t56_inv;
+        double _t59 = (_t25 + _t25) * _t43_inv - _t5 * _t56_inv;
+        double _t60 = (_t26 + _t26) * _t43_inv - _t3 * _t56_inv;
         double _t61 = _t56 * _t51;
-        double _t65 = 2.0 * _t47 / ((1.0 - _t47 / _t61) * _t61);
+        double _t65 = (_t47 + _t47) / ((1.0 - _t47 / _t61) * _t61);
         double _t66 = 1.0 + _t65;
         double _t67 = _t66 * _t5;
         double _t68 = _t66 * _t3;
@@ -65991,11 +65991,11 @@ public class Double4x4Impl implements Double4x4 {
         double _t58 = Math.fma(_t0, _t3, Math.fma(-p0Y, _t4, _t50 / _t55));
         double _t60 = Math.fma(p3X, _t3, Math.fma(p3Y, _t4, _t58));
         double _t60_inv = 1.0 / _t60;
-        double _t63 = 2.0 * _t25 * _t46_inv - _t3 * _t60_inv;
-        double _t64 = 2.0 * _t26 * _t46_inv - _t4 * _t60_inv;
+        double _t63 = (_t25 + _t25) * _t46_inv - _t3 * _t60_inv;
+        double _t64 = (_t26 + _t26) * _t46_inv - _t4 * _t60_inv;
         double _t65 = _t60 * _t55;
         double _t69 = 2.0 * Math.fma(p0Y, _t3, Math.fma(_t0, _t4, _t32)) * _t46_inv - _t58 * _t60_inv;
-        double _t71 = 2.0 * _t50 / ((1.0 - _t50 / _t65) * _t65);
+        double _t71 = (_t50 + _t50) / ((1.0 - _t50 / _t65) * _t65);
         double _t72 = 1.0 + _t71;
         double _t73 = _t72 * _t3;
         double _t74 = _t72 * _t4;
@@ -66766,9 +66766,9 @@ public class Double4x4Impl implements Double4x4 {
         rayOriginData[0] = sd[12] + (-sd[0] - sd[4] - sd[8]) + sd[0] * _t2 * _rcp0 + sd[4] * _t3 * _rcp1;
         rayOriginData[1] = sd[13] + (-sd[1] - sd[5] - sd[9]) + sd[1] * _t2 * _rcp0 + sd[5] * _t3 * _rcp1;
         rayOriginData[2] = sd[14] + (-sd[2] - sd[6] - sd[10]) + sd[2] * _t2 * _rcp0 + sd[6] * _t3 * _rcp1;
-        rayDirData[0] = 2.0 * sd[8];
-        rayDirData[1] = 2.0 * sd[9];
-        rayDirData[2] = 2.0 * sd[10];
+        rayDirData[0] = sd[8] + sd[8];
+        rayDirData[1] = sd[9] + sd[9];
+        rayDirData[2] = sd[10] + sd[10];
     }
 
 
@@ -67145,9 +67145,9 @@ public class Double4x4Impl implements Double4x4 {
         rayOriginData[0] = _t0 - sd[1] + Math.fma(_t0, sd[12], _t1) + (Math.fma(-sd[1], sd[13], sd[0] * _t8 * _rcp0) + Math.fma(_t1, sd[14], sd[1] * _t9 * _rcp1));
         rayOriginData[1] = _t2 - sd[5] + Math.fma(_t2, sd[12], _t3) + (Math.fma(-sd[5], sd[13], sd[4] * _t8 * _rcp0) + Math.fma(_t3, sd[14], sd[5] * _t9 * _rcp1));
         rayOriginData[2] = _t4 - sd[9] + Math.fma(_t4, sd[12], _t5) + (Math.fma(-sd[9], sd[13], sd[8] * _t8 * _rcp0) + Math.fma(_t5, sd[14], sd[9] * _t9 * _rcp1));
-        rayDirData[0] = 2.0 * sd[2];
-        rayDirData[1] = 2.0 * sd[6];
-        rayDirData[2] = 2.0 * sd[10];
+        rayDirData[0] = sd[2] + sd[2];
+        rayDirData[1] = sd[6] + sd[6];
+        rayDirData[2] = sd[10] + sd[10];
     }
 
 

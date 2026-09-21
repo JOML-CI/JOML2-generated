@@ -2386,9 +2386,9 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * @return the resulting matrix
      */
     public static Float3x3 makeFromTransform(float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        float _t0 = 2.0f * tSX;
-        float _t1 = 2.0f * tSY;
-        float _t2 = 2.0f * tSZ;
+        float _t0 = tSX + tSX;
+        float _t1 = tSY + tSY;
+        float _t2 = tSZ + tSZ;
         float _t3 = tRZ * tRZ;
         float _t4 = tRZ * tRW;
         float _t5 = tRY * tRW;
@@ -4334,7 +4334,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t4 = dqRX * dqRX;
         float _t5 = dqRY * dqRZ;
         float _t6 = Math.fma(-2.0f, dqRZ * dqRZ, 1.0f);
-        return new Float3x3(Math.fma(-2.0f, _t0, _t6), Math.fma(-2.0f, _t2, 2.0f * dqRX * dqRY), 2.0f * Math.fma(dqRX, dqRZ, _t3), 2.0f * Math.fma(dqRX, dqRY, _t2), Math.fma(-2.0f, _t4, _t6), Math.fma(-2.0f, dqRX * dqRW, 2.0f * _t5), Math.fma(-2.0f, _t3, 2.0f * dqRX * dqRZ), 2.0f * Math.fma(dqRX, dqRW, _t5), Math.fma(-2.0f, _t4, Math.fma(-2.0f, _t0, 1.0f)), 0);
+        return new Float3x3(Math.fma(-2.0f, _t0, _t6), Math.fma(-2.0f, _t2, (dqRX + dqRX) * dqRY), 2.0f * Math.fma(dqRX, dqRZ, _t3), 2.0f * Math.fma(dqRX, dqRY, _t2), Math.fma(-2.0f, _t4, _t6), Math.fma(-2.0f, dqRX * dqRW, _t5 + _t5), Math.fma(-2.0f, _t3, (dqRX + dqRX) * dqRZ), 2.0f * Math.fma(dqRX, dqRW, _t5), Math.fma(-2.0f, _t4, Math.fma(-2.0f, _t0, 1.0f)), 0);
     }
 
 
@@ -4730,7 +4730,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        return new Float3x3(2.0f * _t0_inv, 0.0f, -((left + right) * _t0_inv), 0.0f, 2.0f * _t1_inv, -((bottom + top) * _t1_inv), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float3x3(_t0_inv + _t0_inv, 0.0f, -((left + right) * _t0_inv), 0.0f, _t1_inv + _t1_inv, -((bottom + top) * _t1_inv), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -4838,7 +4838,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
         float _t3 = (float) Math.sin(0.5f * angle);
-        float _t5 = 2.0f * _t3 * _t3;
+        float _t5 = (_t3 + _t3) * _t3;
         return new Float3x3(_t0, -_t1, Math.fma(pivotX, _t5, pivotY * _t1), _t1, _t0, Math.fma(pivotY, _t5, -(pivotX * _t1)), 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
     }
 
@@ -4851,7 +4851,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
         float _t3 = (float) Math.sin(0.5f * angle);
-        float _t5 = 2.0f * _t3 * _t3;
+        float _t5 = (_t3 + _t3) * _t3;
         return new Float3x3(_t0, -_t1, Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(this.m02, _t0, -(this.m12 * _t1)), _t1, _t0, Math.fma(this.m02, _t1, this.m12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1)), 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
     }
 
@@ -4864,7 +4864,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
         float _t3 = (float) Math.sin(0.5f * angle);
-        float _t5 = 2.0f * _t3 * _t3;
+        float _t5 = (_t3 + _t3) * _t3;
         return new Float3x3(Math.fma(this.m00, _t0, -(this.m10 * _t1)), Math.fma(this.m01, _t0, -(this.m11 * _t1)), Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(this.m02, _t0, -(this.m12 * _t1)), Math.fma(this.m00, _t1, this.m10 * _t0), Math.fma(this.m01, _t1, this.m11 * _t0), Math.fma(this.m02, _t1, this.m12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1)), 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
     }
 
@@ -4877,7 +4877,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
         float _t3 = (float) Math.sin(0.5f * angle);
-        float _t5 = 2.0f * _t3 * _t3;
+        float _t5 = (_t3 + _t3) * _t3;
         return new Float3x3(Math.fma(this.m00, _t0, -(this.m10 * _t1)), Math.fma(this.m01, _t0, -(this.m11 * _t1)), Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(this.m02, _t0, -(this.m12 * _t1)), Math.fma(this.m00, _t1, this.m10 * _t0), Math.fma(this.m01, _t1, this.m11 * _t0), Math.fma(this.m02, _t1, this.m12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1)), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
@@ -4890,7 +4890,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cos(angle);
         float _t3 = (float) Math.sin(0.5f * angle);
-        float _t8 = 2.0f * _t3 * _t3;
+        float _t8 = (_t3 + _t3) * _t3;
         float _t9 = Math.fma(pivotX, _t8, pivotY * _t0);
         float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t0));
         return new Float3x3(Math.fma(this.m20, _t9, Math.fma(this.m00, _t1, -(this.m10 * _t0))), Math.fma(this.m21, _t9, Math.fma(this.m01, _t1, -(this.m11 * _t0))), Math.fma(this.m22, _t9, Math.fma(this.m02, _t1, -(this.m12 * _t0))), Math.fma(this.m20, _t10, Math.fma(this.m00, _t0, this.m10 * _t1)), Math.fma(this.m21, _t10, Math.fma(this.m01, _t0, this.m11 * _t1)), Math.fma(this.m22, _t10, Math.fma(this.m02, _t0, this.m12 * _t1)), this.m20, this.m21, this.m22, 0);
@@ -5716,7 +5716,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
         float _t3 = (float) Math.sin(0.5f * angle);
-        float _t5 = 2.0f * _t3 * _t3;
+        float _t5 = (_t3 + _t3) * _t3;
         return new Float3x3(_t0, -_t1, Math.fma(pivotX, _t5, Math.fma(pivotY, _t1, this.m02)), _t1, _t0, Math.fma(pivotY, _t5, Math.fma(-pivotX, _t1, this.m12)), 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
     }
 
@@ -5729,7 +5729,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
         float _t3 = (float) Math.sin(0.5f * angle);
-        float _t8 = 2.0f * _t3 * _t3;
+        float _t8 = (_t3 + _t3) * _t3;
         float _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
         float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
         return new Float3x3(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), Math.fma(this.m00, _t9, Math.fma(this.m01, _t10, this.m02)), Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), Math.fma(this.m10, _t9, Math.fma(this.m11, _t10, this.m12)), 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
@@ -5744,7 +5744,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
         float _t3 = (float) Math.sin(0.5f * angle);
-        float _t8 = 2.0f * _t3 * _t3;
+        float _t8 = (_t3 + _t3) * _t3;
         float _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
         float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
         return new Float3x3(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), Math.fma(this.m00, _t9, Math.fma(this.m01, _t10, this.m02)), Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), Math.fma(this.m10, _t9, Math.fma(this.m11, _t10, this.m12)), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
@@ -5759,7 +5759,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
         float _t3 = (float) Math.sin(0.5f * angle);
-        float _t8 = 2.0f * _t3 * _t3;
+        float _t8 = (_t3 + _t3) * _t3;
         float _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
         float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
         return new Float3x3(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), Math.fma(this.m00, _t9, Math.fma(this.m01, _t10, this.m02)), Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), Math.fma(this.m10, _t9, Math.fma(this.m11, _t10, this.m12)), Math.fma(this.m20, _t0, this.m21 * _t1), Math.fma(this.m21, _t0, -(this.m20 * _t1)), Math.fma(this.m20, _t9, Math.fma(this.m21, _t10, this.m22)), 0);
@@ -7905,7 +7905,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        return new Float3x3(2.0f * _t0_inv, 0.0f, -((left + right) * _t0_inv), 0.0f, 2.0f * _t1_inv, -((bottom + top) * _t1_inv), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float3x3(_t0_inv + _t0_inv, 0.0f, -((left + right) * _t0_inv), 0.0f, _t1_inv + _t1_inv, -((bottom + top) * _t1_inv), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -7918,7 +7918,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        return new Float3x3(2.0f * _t0_inv, 0.0f, this.m02 - (left + right) * _t0_inv, 0.0f, 2.0f * _t1_inv, this.m12 - (bottom + top) * _t1_inv, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float3x3(_t0_inv + _t0_inv, 0.0f, this.m02 - (left + right) * _t0_inv, 0.0f, _t1_inv + _t1_inv, this.m12 - (bottom + top) * _t1_inv, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -7933,7 +7933,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = left + right;
         float _t3 = bottom + top;
-        return new Float3x3(2.0f * this.m00 * _t0_inv, 2.0f * this.m01 * _t1_inv, this.m02 - this.m00 * _t2 * _t0_inv - this.m01 * _t3 * _t1_inv, 2.0f * this.m10 * _t0_inv, 2.0f * this.m11 * _t1_inv, this.m12 - this.m10 * _t2 * _t0_inv - this.m11 * _t3 * _t1_inv, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float3x3((this.m00 + this.m00) * _t0_inv, (this.m01 + this.m01) * _t1_inv, this.m02 - this.m00 * _t2 * _t0_inv - this.m01 * _t3 * _t1_inv, (this.m10 + this.m10) * _t0_inv, (this.m11 + this.m11) * _t1_inv, this.m12 - this.m10 * _t2 * _t0_inv - this.m11 * _t3 * _t1_inv, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -7948,7 +7948,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = left + right;
         float _t3 = bottom + top;
-        return new Float3x3(2.0f * this.m00 * _t0_inv, 2.0f * this.m01 * _t1_inv, this.m02 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv), 2.0f * this.m10 * _t0_inv, 2.0f * this.m11 * _t1_inv, this.m12 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float3x3((this.m00 + this.m00) * _t0_inv, (this.m01 + this.m01) * _t1_inv, this.m02 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv), (this.m10 + this.m10) * _t0_inv, (this.m11 + this.m11) * _t1_inv, this.m12 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -7963,7 +7963,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = left + right;
         float _t3 = bottom + top;
-        return new Float3x3(2.0f * this.m00 * _t0_inv, 2.0f * this.m01 * _t1_inv, this.m02 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv), 2.0f * this.m10 * _t0_inv, 2.0f * this.m11 * _t1_inv, this.m12 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv), 2.0f * this.m20 * _t0_inv, 2.0f * this.m21 * _t1_inv, this.m22 + (-(this.m20 * _t2 * _t0_inv) - this.m21 * _t3 * _t1_inv), 0);
+        return new Float3x3((this.m00 + this.m00) * _t0_inv, (this.m01 + this.m01) * _t1_inv, this.m02 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv), (this.m10 + this.m10) * _t0_inv, (this.m11 + this.m11) * _t1_inv, this.m12 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv), (this.m20 + this.m20) * _t0_inv, (this.m21 + this.m21) * _t1_inv, this.m22 + (-(this.m20 * _t2 * _t0_inv) - this.m21 * _t3 * _t1_inv), 0);
     }
 
 

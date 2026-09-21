@@ -145,14 +145,14 @@ public final class Double4OpsSimd {
 
     public static double[] bezier2_fma(double[] dest, int destOffset, double[] src, int srcOffset, double[] p1, int p1Offset, double[] p2, int p2Offset, double t) {
         double _t1 = 1.0 - t;
-        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, p2, p2Offset).fma(DoubleVector.broadcast(SIMD_SPECIES, t * t), DoubleVector.fromArray(SIMD_SPECIES, p1, p1Offset).fma(DoubleVector.broadcast(SIMD_SPECIES, 2.0 * t * _t1), DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t1))));
+        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, p2, p2Offset).fma(DoubleVector.broadcast(SIMD_SPECIES, t * t), DoubleVector.fromArray(SIMD_SPECIES, p1, p1Offset).fma(DoubleVector.broadcast(SIMD_SPECIES, (t + t) * _t1), DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t1))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
 
     public static double[] bezier2_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double[] p1, int p1Offset, double[] p2, int p2Offset, double t) {
         double _t1 = 1.0 - t;
-        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, p2, p2Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, t * t)).add(DoubleVector.fromArray(SIMD_SPECIES, p1, p1Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, 2.0 * t * _t1)).add(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t1))));
+        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, p2, p2Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, t * t)).add(DoubleVector.fromArray(SIMD_SPECIES, p1, p1Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, (t + t) * _t1)).add(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t1))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -164,14 +164,14 @@ public final class Double4OpsSimd {
 
     public static double[] bezier2Tangent_fma(double[] dest, int destOffset, double[] src, int srcOffset, double[] p1, int p1Offset, double[] p2, int p2Offset, double t) {
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, p1, p1Offset);
-        var _c0 = _sv0.sub(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset)).fma(DoubleVector.broadcast(SIMD_SPECIES, 2.0 * (1.0 - t)), DoubleVector.fromArray(SIMD_SPECIES, p2, p2Offset).sub(_sv0).mul(DoubleVector.broadcast(SIMD_SPECIES, 2.0 * t)));
+        var _c0 = _sv0.sub(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset)).fma(DoubleVector.broadcast(SIMD_SPECIES, 2.0 * (1.0 - t)), DoubleVector.fromArray(SIMD_SPECIES, p2, p2Offset).sub(_sv0).mul(DoubleVector.broadcast(SIMD_SPECIES, t + t)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
 
     public static double[] bezier2Tangent_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double[] p1, int p1Offset, double[] p2, int p2Offset, double t) {
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, p1, p1Offset);
-        var _c0 = _sv0.sub(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset)).mul(DoubleVector.broadcast(SIMD_SPECIES, 2.0 * (1.0 - t))).add(DoubleVector.fromArray(SIMD_SPECIES, p2, p2Offset).sub(_sv0).mul(DoubleVector.broadcast(SIMD_SPECIES, 2.0 * t)));
+        var _c0 = _sv0.sub(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset)).mul(DoubleVector.broadcast(SIMD_SPECIES, 2.0 * (1.0 - t))).add(DoubleVector.fromArray(SIMD_SPECIES, p2, p2Offset).sub(_sv0).mul(DoubleVector.broadcast(SIMD_SPECIES, t + t)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -265,7 +265,7 @@ public final class Double4OpsSimd {
     public static double[] hermite_fma(double[] dest, int destOffset, double[] src, int srcOffset, double[] t0, int t0Offset, double[] v1, int v1Offset, double[] t1, int t1Offset, double t) {
         double _t0 = t * t;
         double _t2 = t * _t0;
-        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(2.0, _t2, Math.fma(-3.0, _t0, 1.0))), DoubleVector.fromArray(SIMD_SPECIES, t0, t0Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(t - 2.0, _t0, t)))).add(DoubleVector.fromArray(SIMD_SPECIES, t1, t1Offset).fma(DoubleVector.broadcast(SIMD_SPECIES, t * Math.fma(t, t, -t)), DoubleVector.fromArray(SIMD_SPECIES, v1, v1Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(3.0, _t0, -(2.0 * _t2))))));
+        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(2.0, _t2, Math.fma(-3.0, _t0, 1.0))), DoubleVector.fromArray(SIMD_SPECIES, t0, t0Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(t - 2.0, _t0, t)))).add(DoubleVector.fromArray(SIMD_SPECIES, t1, t1Offset).fma(DoubleVector.broadcast(SIMD_SPECIES, t * Math.fma(t, t, -t)), DoubleVector.fromArray(SIMD_SPECIES, v1, v1Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(3.0, _t0, -(_t2 + _t2))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -273,7 +273,7 @@ public final class Double4OpsSimd {
     public static double[] hermite_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double[] t0, int t0Offset, double[] v1, int v1Offset, double[] t1, int t1Offset, double t) {
         double _t0 = t * t;
         double _t2 = t * _t0;
-        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(2.0, _t2, Math.fma(-3.0, _t0, 1.0)))).add(DoubleVector.fromArray(SIMD_SPECIES, t0, t0Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(t - 2.0, _t0, t)))).add(DoubleVector.fromArray(SIMD_SPECIES, t1, t1Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, t * Math.fma(t, t, -t))).add(DoubleVector.fromArray(SIMD_SPECIES, v1, v1Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(3.0, _t0, -(2.0 * _t2))))));
+        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(2.0, _t2, Math.fma(-3.0, _t0, 1.0)))).add(DoubleVector.fromArray(SIMD_SPECIES, t0, t0Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(t - 2.0, _t0, t)))).add(DoubleVector.fromArray(SIMD_SPECIES, t1, t1Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, t * Math.fma(t, t, -t))).add(DoubleVector.fromArray(SIMD_SPECIES, v1, v1Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(3.0, _t0, -(_t2 + _t2))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -285,14 +285,14 @@ public final class Double4OpsSimd {
 
     public static double[] hermiteTangent_fma(double[] dest, int destOffset, double[] src, int srcOffset, double[] t0, int t0Offset, double[] v1, int v1Offset, double[] t1, int t1Offset, double t) {
         double _t0 = t * t;
-        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).fma(DoubleVector.broadcast(SIMD_SPECIES, 6.0 * Math.fma(t, t, -t)), DoubleVector.fromArray(SIMD_SPECIES, t0, t0Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(3.0, _t0, Math.fma(-4.0, t, 1.0))))).add(DoubleVector.fromArray(SIMD_SPECIES, t1, t1Offset).fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(3.0, _t0, -(2.0 * t))), DoubleVector.fromArray(SIMD_SPECIES, v1, v1Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, 6.0 * Math.fma(-t, t, t)))));
+        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).fma(DoubleVector.broadcast(SIMD_SPECIES, 6.0 * Math.fma(t, t, -t)), DoubleVector.fromArray(SIMD_SPECIES, t0, t0Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(3.0, _t0, Math.fma(-4.0, t, 1.0))))).add(DoubleVector.fromArray(SIMD_SPECIES, t1, t1Offset).fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(3.0, _t0, -(t + t))), DoubleVector.fromArray(SIMD_SPECIES, v1, v1Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, 6.0 * Math.fma(-t, t, t)))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
 
     public static double[] hermiteTangent_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double[] t0, int t0Offset, double[] v1, int v1Offset, double[] t1, int t1Offset, double t) {
         double _t0 = t * t;
-        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(DoubleVector.broadcast(SIMD_SPECIES, 6.0 * Math.fma(t, t, -t))).add(DoubleVector.fromArray(SIMD_SPECIES, t0, t0Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(3.0, _t0, Math.fma(-4.0, t, 1.0))))).add(DoubleVector.fromArray(SIMD_SPECIES, t1, t1Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(3.0, _t0, -(2.0 * t)))).add(DoubleVector.fromArray(SIMD_SPECIES, v1, v1Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, 6.0 * Math.fma(-t, t, t)))));
+        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(DoubleVector.broadcast(SIMD_SPECIES, 6.0 * Math.fma(t, t, -t))).add(DoubleVector.fromArray(SIMD_SPECIES, t0, t0Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(3.0, _t0, Math.fma(-4.0, t, 1.0))))).add(DoubleVector.fromArray(SIMD_SPECIES, t1, t1Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(3.0, _t0, -(t + t)))).add(DoubleVector.fromArray(SIMD_SPECIES, v1, v1Offset).mul(DoubleVector.broadcast(SIMD_SPECIES, 6.0 * Math.fma(-t, t, t)))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }

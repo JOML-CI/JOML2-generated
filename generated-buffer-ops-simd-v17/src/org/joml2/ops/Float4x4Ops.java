@@ -2998,9 +2998,9 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] makeFromTransform(float[] dest, int destOffset, float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        float _t0 = 2.0f * tSX;
-        float _t1 = 2.0f * tSY;
-        float _t2 = 2.0f * tSZ;
+        float _t0 = tSX + tSX;
+        float _t1 = tSY + tSY;
+        float _t2 = tSZ + tSZ;
         float _t3 = tRZ * tRZ;
         float _t4 = tRZ * tRW;
         float _t5 = tRY * tRW;
@@ -5517,9 +5517,9 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] composeTRS(float[] dest, int destOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        float _t0 = 2.0f * scaleX;
-        float _t1 = 2.0f * scaleY;
-        float _t2 = 2.0f * scaleZ;
+        float _t0 = scaleX + scaleX;
+        float _t1 = scaleY + scaleY;
+        float _t2 = scaleZ + scaleZ;
         float _t3 = rotationZ * rotationZ;
         float _t4 = rotationZ * rotationW;
         float _t5 = rotationY * rotationW;
@@ -5586,9 +5586,9 @@ public final class Float4x4Ops {
         float _scalex = scale[scaleOffset + 0];
         float _scaley = scale[scaleOffset + 1];
         float _scalez = scale[scaleOffset + 2];
-        float _t0 = 2.0f * _scalex;
-        float _t1 = 2.0f * _scaley;
-        float _t2 = 2.0f * _scalez;
+        float _t0 = _scalex + _scalex;
+        float _t1 = _scaley + _scaley;
+        float _t2 = _scalez + _scalez;
         float _t3 = _rotationz * _rotationz;
         float _t4 = _rotationz * _rotationw;
         float _t5 = _rotationy * _rotationw;
@@ -5678,9 +5678,9 @@ public final class Float4x4Ops {
         float _m13 = m[mOffset + 13];
         float _m23 = m[mOffset + 14];
         float _m33 = m[mOffset + 15];
-        float _t0 = 2.0f * scaleZ;
-        float _t1 = 2.0f * scaleX;
-        float _t2 = 2.0f * scaleY;
+        float _t0 = scaleZ + scaleZ;
+        float _t1 = scaleX + scaleX;
+        float _t2 = scaleY + scaleY;
         float _t3 = rotationY * rotationW;
         float _t4 = rotationZ * rotationZ;
         float _t5 = rotationZ * rotationW;
@@ -5774,9 +5774,9 @@ public final class Float4x4Ops {
         float _m13 = m[mOffset + 13];
         float _m23 = m[mOffset + 14];
         float _m33 = m[mOffset + 15];
-        float _t0 = 2.0f * _scalez;
-        float _t1 = 2.0f * _scalex;
-        float _t2 = 2.0f * _scaley;
+        float _t0 = _scalez + _scalez;
+        float _t1 = _scalex + _scalex;
+        float _t2 = _scaley + _scaley;
         float _t3 = _rotationy * _rotationw;
         float _t4 = _rotationz * _rotationz;
         float _t5 = _rotationz * _rotationw;
@@ -6954,8 +6954,8 @@ public final class Float4x4Ops {
         float _t12 = (1.0f / (float) Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
         float _t13 = _t0 * _t12;
         float _t14 = _t3 * _t12;
-        float _t15 = 2.0f * _t13;
-        float _t16 = 2.0f * _t14;
+        float _t15 = _t13 + _t13;
+        float _t16 = _t14 + _t14;
         float _t17 = -_t15;
         float _t19 = _t10 * _t12;
         float _t20 = _t16 * _t13;
@@ -7027,8 +7027,8 @@ public final class Float4x4Ops {
         float _t12 = (1.0f / (float) Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
         float _t13 = _t0 * _t12;
         float _t14 = _t3 * _t12;
-        float _t15 = 2.0f * _t13;
-        float _t16 = 2.0f * _t14;
+        float _t15 = _t13 + _t13;
+        float _t16 = _t14 + _t14;
         float _t17 = -_t15;
         float _t19 = _t10 * _t12;
         float _t20 = _t16 * _t13;
@@ -7110,14 +7110,14 @@ public final class Float4x4Ops {
         float _t6 = Math.fma(-2.0f, dqRZ * dqRZ, 1.0f);
         dest[destOffset + 0] = Math.fma(-2.0f, _t0, _t6);
         dest[destOffset + 1] = 2.0f * Math.fma(dqRX, dqRY, _t2);
-        dest[destOffset + 2] = Math.fma(-2.0f, _t3, 2.0f * dqRX * dqRZ);
+        dest[destOffset + 2] = Math.fma(-2.0f, _t3, (dqRX + dqRX) * dqRZ);
         dest[destOffset + 3] = 0.0f;
-        dest[destOffset + 4] = Math.fma(-2.0f, _t2, 2.0f * dqRX * dqRY);
+        dest[destOffset + 4] = Math.fma(-2.0f, _t2, (dqRX + dqRX) * dqRY);
         dest[destOffset + 5] = Math.fma(-2.0f, _t4, _t6);
         dest[destOffset + 6] = 2.0f * Math.fma(dqRX, dqRW, _t5);
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 2.0f * Math.fma(dqRX, dqRZ, _t3);
-        dest[destOffset + 9] = Math.fma(-2.0f, dqRX * dqRW, 2.0f * _t5);
+        dest[destOffset + 9] = Math.fma(-2.0f, dqRX * dqRW, _t5 + _t5);
         dest[destOffset + 10] = Math.fma(-2.0f, _t4, Math.fma(-2.0f, _t0, 1.0f));
         dest[destOffset + 11] = 0.0f;
         dest[destOffset + 12] = 2.0f * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW)));
@@ -11210,9 +11210,9 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] makeReflection(float[] dest, int destOffset, float normalX, float normalY, float normalZ) {
-        float _t6 = -(2.0f * normalX * normalY);
-        float _t7 = -(2.0f * normalX * normalZ);
-        float _t8 = -(2.0f * normalY * normalZ);
+        float _t6 = -((normalX + normalX) * normalY);
+        float _t7 = -((normalX + normalX) * normalZ);
+        float _t8 = -((normalY + normalY) * normalZ);
         dest[destOffset + 0] = Math.fma(-2.0f, normalX * normalX, 1.0f);
         dest[destOffset + 1] = _t6;
         dest[destOffset + 2] = _t7;
@@ -11265,9 +11265,9 @@ public final class Float4x4Ops {
         float _normalx = normal[normalOffset + 0];
         float _normaly = normal[normalOffset + 1];
         float _normalz = normal[normalOffset + 2];
-        float _t6 = -(2.0f * _normalx * _normaly);
-        float _t7 = -(2.0f * _normalx * _normalz);
-        float _t8 = -(2.0f * _normaly * _normalz);
+        float _t6 = -((_normalx + _normalx) * _normaly);
+        float _t7 = -((_normalx + _normalx) * _normalz);
+        float _t8 = -((_normaly + _normaly) * _normalz);
         dest[destOffset + 0] = Math.fma(-2.0f, _normalx * _normalx, 1.0f);
         dest[destOffset + 1] = _t6;
         dest[destOffset + 2] = _t7;
@@ -12708,13 +12708,13 @@ public final class Float4x4Ops {
         float _t54 = _t3 * _t52_inv;
         float _t55 = _t52 * _t47;
         float _t58 = _t50 * _t52_inv;
-        float _t60 = 2.0f * _t45 / ((1.0f - _t45 / _t55) * _t55);
+        float _t60 = (_t45 + _t45) / ((1.0f - _t45 / _t55) * _t55);
         float _t61 = 1.0f + _t60;
-        dest[destOffset + 0] = 2.0f * _t25 * _t41_inv - _t53;
+        dest[destOffset + 0] = (_t25 + _t25) * _t41_inv - _t53;
         dest[destOffset + 1] = _t61 * _t5 * _t52_inv;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = _t53;
-        dest[destOffset + 4] = 2.0f * _t26 * _t41_inv - _t54;
+        dest[destOffset + 4] = (_t26 + _t26) * _t41_inv - _t54;
         dest[destOffset + 5] = _t61 * _t3 * _t52_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = _t54;
@@ -12796,13 +12796,13 @@ public final class Float4x4Ops {
         float _t54 = _t3 * _t52_inv;
         float _t55 = _t52 * _t47;
         float _t58 = _t50 * _t52_inv;
-        float _t60 = 2.0f * _t45 / ((1.0f - _t45 / _t55) * _t55);
+        float _t60 = (_t45 + _t45) / ((1.0f - _t45 / _t55) * _t55);
         float _t61 = 1.0f + _t60;
-        dest[destOffset + 0] = 2.0f * _t25 * _t41_inv - _t53;
+        dest[destOffset + 0] = (_t25 + _t25) * _t41_inv - _t53;
         dest[destOffset + 1] = _t61 * _t5 * _t52_inv;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = _t53;
-        dest[destOffset + 4] = 2.0f * _t26 * _t41_inv - _t54;
+        dest[destOffset + 4] = (_t26 + _t26) * _t41_inv - _t54;
         dest[destOffset + 5] = _t61 * _t3 * _t52_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = _t54;
@@ -16630,9 +16630,9 @@ public final class Float4x4Ops {
         float _t0 = -pivotZ;
         float _t1 = -rotY;
         float _t3 = -rotX;
-        float _t5 = 2.0f * rotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
+        float _t5 = rotX + rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
         float _t8 = rotW * _t6;
         float _t9 = rotZ * _t7;
         float _t10 = rotW * _t7;
@@ -16737,9 +16737,9 @@ public final class Float4x4Ops {
         float _t0 = -_pivotz;
         float _t1 = -_roty;
         float _t3 = -_rotx;
-        float _t5 = 2.0f * _rotx;
-        float _t6 = 2.0f * _roty;
-        float _t7 = 2.0f * _rotz;
+        float _t5 = _rotx + _rotx;
+        float _t6 = _roty + _roty;
+        float _t7 = _rotz + _rotz;
         float _t8 = _rotw * _t6;
         float _t9 = _rotz * _t7;
         float _t10 = _rotw * _t7;
@@ -17017,9 +17017,9 @@ public final class Float4x4Ops {
         float _self33 = src[srcOffset + 15];
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -17110,9 +17110,9 @@ public final class Float4x4Ops {
         float _qw = q[qOffset + 3];
         float _t0 = -_qy;
         float _t2 = -_qx;
-        float _t3 = 2.0f * _qx;
-        float _t4 = 2.0f * _qy;
-        float _t5 = 2.0f * _qz;
+        float _t3 = _qx + _qx;
+        float _t4 = _qy + _qy;
+        float _t5 = _qz + _qz;
         float _t6 = _qw * _t4;
         float _t7 = _qw * _t5;
         float _t8 = _qw * _t3;
@@ -19928,11 +19928,11 @@ public final class Float4x4Ops {
         float _t58 = Math.fma(_t0, _t3, Math.fma(-p0Y, _t4, _t50 / _t55));
         float _t60 = Math.fma(p3X, _t3, Math.fma(p3Y, _t4, _t58));
         float _t60_inv = 1.0f / _t60;
-        float _t63 = 2.0f * _t25 * _t46_inv - _t3 * _t60_inv;
-        float _t64 = 2.0f * _t26 * _t46_inv - _t4 * _t60_inv;
+        float _t63 = (_t25 + _t25) * _t46_inv - _t3 * _t60_inv;
+        float _t64 = (_t26 + _t26) * _t46_inv - _t4 * _t60_inv;
         float _t65 = _t60 * _t55;
         float _t69 = 2.0f * Math.fma(p0Y, _t3, Math.fma(_t0, _t4, _t32)) * _t46_inv - _t58 * _t60_inv;
-        float _t71 = 2.0f * _t50 / ((1.0f - _t50 / _t65) * _t65);
+        float _t71 = (_t50 + _t50) / ((1.0f - _t50 / _t65) * _t65);
         float _t72 = 1.0f + _t71;
         float _t73 = _t72 * _t3;
         float _t74 = _t72 * _t4;
@@ -20041,11 +20041,11 @@ public final class Float4x4Ops {
         float _t58 = Math.fma(_t0, _t3, Math.fma(-_p0y, _t4, _t50 / _t55));
         float _t60 = Math.fma(_p3x, _t3, Math.fma(_p3y, _t4, _t58));
         float _t60_inv = 1.0f / _t60;
-        float _t63 = 2.0f * _t25 * _t46_inv - _t3 * _t60_inv;
-        float _t64 = 2.0f * _t26 * _t46_inv - _t4 * _t60_inv;
+        float _t63 = (_t25 + _t25) * _t46_inv - _t3 * _t60_inv;
+        float _t64 = (_t26 + _t26) * _t46_inv - _t4 * _t60_inv;
         float _t65 = _t60 * _t55;
         float _t69 = 2.0f * Math.fma(_p0y, _t3, Math.fma(_t0, _t4, _t32)) * _t46_inv - _t58 * _t60_inv;
-        float _t71 = 2.0f * _t50 / ((1.0f - _t50 / _t65) * _t65);
+        float _t71 = (_t50 + _t50) / ((1.0f - _t50 / _t65) * _t65);
         float _t72 = 1.0f + _t71;
         float _t73 = _t72 * _t3;
         float _t74 = _t72 * _t4;

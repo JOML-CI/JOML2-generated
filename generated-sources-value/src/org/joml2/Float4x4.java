@@ -3678,9 +3678,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * @return the resulting matrix
      */
     public static Float4x4 makeFromTransform(float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        float _t0 = 2.0f * tSX;
-        float _t1 = 2.0f * tSY;
-        float _t2 = 2.0f * tSZ;
+        float _t0 = tSX + tSX;
+        float _t1 = tSY + tSY;
+        float _t2 = tSZ + tSZ;
         float _t3 = tRZ * tRZ;
         float _t4 = tRZ * tRW;
         float _t5 = tRY * tRW;
@@ -5824,7 +5824,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * dispatcher.
      */
     private Float3 frustumRayDir_no_orthogonal(float x, float y) {
-        return new Float3(2.0f * this.m20, 2.0f * this.m21, 2.0f * this.m22);
+        return new Float3(this.m20 + this.m20, this.m21 + this.m21, this.m22 + this.m22);
     }
 
     /** Private tail of {@code frustumRayDir_no_affine}; reached only through it. */
@@ -8766,9 +8766,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * @return the resulting matrix
      */
     public static Float4x4 composeTRS(float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        float _t0 = 2.0f * scaleX;
-        float _t1 = 2.0f * scaleY;
-        float _t2 = 2.0f * scaleZ;
+        float _t0 = scaleX + scaleX;
+        float _t1 = scaleY + scaleY;
+        float _t2 = scaleZ + scaleZ;
         float _t3 = rotationZ * rotationZ;
         float _t4 = rotationZ * rotationW;
         float _t5 = rotationY * rotationW;
@@ -8840,9 +8840,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * @return the resulting matrix
      */
     public static Float4x4 composeTRSMul(float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ, Float4x4 m) {
-        float _t0 = 2.0f * scaleZ;
-        float _t1 = 2.0f * scaleX;
-        float _t2 = 2.0f * scaleY;
+        float _t0 = scaleZ + scaleZ;
+        float _t1 = scaleX + scaleX;
+        float _t2 = scaleY + scaleY;
         float _t3 = rotationY * rotationW;
         float _t4 = rotationZ * rotationZ;
         float _t5 = rotationZ * rotationW;
@@ -8865,14 +8865,14 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_no_lh_identity(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
         float _t2_inv = 1.0f / _t2;
         float _t3 = zNear - zFar;
         float _t3_inv = 1.0f / _t3;
-        return new Float4x4(_t0 * _t1_inv, 0.0f, -((left + right) * _t1_inv), 0.0f, 0.0f, _t0 * _t2_inv, -((bottom + top) * _t2_inv), 0.0f, 0.0f, 0.0f, zFar == Float.POSITIVE_INFINITY ? 1.0f : zNear == Float.POSITIVE_INFINITY ? -1.0f : -((zFar + zNear) * _t3_inv), zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? 2.0f * zFar : 2.0f * zFar * zNear * _t3_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(_t0 * _t1_inv, 0.0f, -((left + right) * _t1_inv), 0.0f, 0.0f, _t0 * _t2_inv, -((bottom + top) * _t2_inv), 0.0f, 0.0f, 0.0f, zFar == Float.POSITIVE_INFINITY ? 1.0f : zNear == Float.POSITIVE_INFINITY ? -1.0f : -((zFar + zNear) * _t3_inv), zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
     }
 
 
@@ -8882,14 +8882,14 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_no_lh_translation(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
         float _t2_inv = 1.0f / _t2;
         float _t3 = zNear - zFar;
         float _t3_inv = 1.0f / _t3;
-        return new Float4x4(_t0 * _t1_inv, 0.0f, this.m03 - (left + right) * _t1_inv, 0.0f, 0.0f, _t0 * _t2_inv, this.m13 - (bottom + top) * _t2_inv, 0.0f, 0.0f, 0.0f, this.m23 + (zFar == Float.POSITIVE_INFINITY ? 1.0f : zNear == Float.POSITIVE_INFINITY ? -1.0f : -((zFar + zNear) * _t3_inv)), zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? 2.0f * zFar : 2.0f * zFar * zNear * _t3_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(_t0 * _t1_inv, 0.0f, this.m03 - (left + right) * _t1_inv, 0.0f, 0.0f, _t0 * _t2_inv, this.m13 - (bottom + top) * _t2_inv, 0.0f, 0.0f, 0.0f, this.m23 + (zFar == Float.POSITIVE_INFINITY ? 1.0f : zNear == Float.POSITIVE_INFINITY ? -1.0f : -((zFar + zNear) * _t3_inv)), zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
     }
 
     /** Private per-column body of {@code frustum_no_lh_orthogonal}; reached only through it. */
@@ -8919,7 +8919,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_no_lh_orthogonal(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -8935,10 +8935,10 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         } else {
             if (zNear == Float.POSITIVE_INFINITY) {
                 _t16 = -1.0f;
-                _t17 = 2.0f * zFar;
+                _t17 = zFar + zFar;
             } else {
                 _t16 = -((zFar + zNear) * _t4_inv);
-                _t17 = 2.0f * zFar * zNear * _t4_inv;
+                _t17 = (zFar + zFar) * zNear * _t4_inv;
             }
         }
         return new Float4x4(frustum_no_lh_orthogonal_s64bdd61e_c0(_t0, _t1_inv), frustum_no_lh_orthogonal_s64bdd61e_c1(_t0, _t2_inv), frustum_no_lh_orthogonal_s64bdd61e_c2(_t16, _t5, _t1_inv, _t6, _t2_inv), frustum_no_lh_orthogonal_s64bdd61e_c3(_t17), 0);
@@ -8971,7 +8971,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_no_lh_general(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -8987,10 +8987,10 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         } else {
             if (zNear == Float.POSITIVE_INFINITY) {
                 _t16 = -1.0f;
-                _t17 = 2.0f * zFar;
+                _t17 = zFar + zFar;
             } else {
                 _t16 = -((zFar + zNear) * _t4_inv);
-                _t17 = 2.0f * zFar * zNear * _t4_inv;
+                _t17 = (zFar + zFar) * zNear * _t4_inv;
             }
         }
         return new Float4x4(frustum_no_lh_general_s64bdd61e_c0(_t0, _t1_inv), frustum_no_lh_general_s64bdd61e_c1(_t0, _t2_inv), frustum_no_lh_general_s64bdd61e_c2(_t16, _t5, _t1_inv, _t6, _t2_inv), frustum_no_lh_general_s64bdd61e_c3(_t17), 0);
@@ -9016,14 +9016,14 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_no_rh_identity(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
         float _t2_inv = 1.0f / _t2;
         float _t3 = zNear - zFar;
         float _t3_inv = 1.0f / _t3;
-        return new Float4x4(_t0 * _t1_inv, 0.0f, (left + right) * _t1_inv, 0.0f, 0.0f, _t0 * _t2_inv, (bottom + top) * _t2_inv, 0.0f, 0.0f, 0.0f, zFar == Float.POSITIVE_INFINITY ? -1.0f : zNear == Float.POSITIVE_INFINITY ? 1.0f : (zFar + zNear) * _t3_inv, zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? 2.0f * zFar : 2.0f * zFar * zNear * _t3_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(_t0 * _t1_inv, 0.0f, (left + right) * _t1_inv, 0.0f, 0.0f, _t0 * _t2_inv, (bottom + top) * _t2_inv, 0.0f, 0.0f, 0.0f, zFar == Float.POSITIVE_INFINITY ? -1.0f : zNear == Float.POSITIVE_INFINITY ? 1.0f : (zFar + zNear) * _t3_inv, zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
     }
 
 
@@ -9033,14 +9033,14 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_no_rh_translation(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
         float _t2_inv = 1.0f / _t2;
         float _t3 = zNear - zFar;
         float _t3_inv = 1.0f / _t3;
-        return new Float4x4(_t0 * _t1_inv, 0.0f, (left + right) * _t1_inv - this.m03, 0.0f, 0.0f, _t0 * _t2_inv, (bottom + top) * _t2_inv - this.m13, 0.0f, 0.0f, 0.0f, (zFar == Float.POSITIVE_INFINITY ? -1.0f : zNear == Float.POSITIVE_INFINITY ? 1.0f : (zFar + zNear) * _t3_inv) - this.m23, zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? 2.0f * zFar : 2.0f * zFar * zNear * _t3_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(_t0 * _t1_inv, 0.0f, (left + right) * _t1_inv - this.m03, 0.0f, 0.0f, _t0 * _t2_inv, (bottom + top) * _t2_inv - this.m13, 0.0f, 0.0f, 0.0f, (zFar == Float.POSITIVE_INFINITY ? -1.0f : zNear == Float.POSITIVE_INFINITY ? 1.0f : (zFar + zNear) * _t3_inv) - this.m23, zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
     }
 
     /** Private per-column body of {@code frustum_no_rh_orthogonal}; reached only through it. */
@@ -9070,7 +9070,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_no_rh_orthogonal(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -9086,10 +9086,10 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         } else {
             if (zNear == Float.POSITIVE_INFINITY) {
                 _t14 = 1.0f;
-                _t16 = 2.0f * zFar;
+                _t16 = zFar + zFar;
             } else {
                 _t14 = (zFar + zNear) * _t4_inv;
-                _t16 = 2.0f * zFar * zNear * _t4_inv;
+                _t16 = (zFar + zFar) * zNear * _t4_inv;
             }
         }
         return new Float4x4(frustum_no_rh_orthogonal_s64bdd61e_c0(_t0, _t1_inv), frustum_no_rh_orthogonal_s64bdd61e_c1(_t0, _t2_inv), frustum_no_rh_orthogonal_s64bdd61e_c2(_t14, _t5, _t1_inv, _t6, _t2_inv), frustum_no_rh_orthogonal_s64bdd61e_c3(_t16), 0);
@@ -9122,7 +9122,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_no_rh_affine(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -9138,10 +9138,10 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         } else {
             if (zNear == Float.POSITIVE_INFINITY) {
                 _t14 = 1.0f;
-                _t16 = 2.0f * zFar;
+                _t16 = zFar + zFar;
             } else {
                 _t14 = (zFar + zNear) * _t4_inv;
-                _t16 = 2.0f * zFar * zNear * _t4_inv;
+                _t16 = (zFar + zFar) * zNear * _t4_inv;
             }
         }
         return new Float4x4(frustum_no_rh_affine_s64bdd61e_c0(_t0, _t1_inv), frustum_no_rh_affine_s64bdd61e_c1(_t0, _t2_inv), frustum_no_rh_affine_s64bdd61e_c2(_t14, _t5, _t1_inv, _t6, _t2_inv), frustum_no_rh_affine_s64bdd61e_c3(_t16), 0);
@@ -9174,7 +9174,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_no_rh_general(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -9190,10 +9190,10 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         } else {
             if (zNear == Float.POSITIVE_INFINITY) {
                 _t14 = 1.0f;
-                _t16 = 2.0f * zFar;
+                _t16 = zFar + zFar;
             } else {
                 _t14 = (zFar + zNear) * _t4_inv;
-                _t16 = 2.0f * zFar * zNear * _t4_inv;
+                _t16 = (zFar + zFar) * zNear * _t4_inv;
             }
         }
         return new Float4x4(frustum_no_rh_general_s64bdd61e_c0(_t0, _t1_inv), frustum_no_rh_general_s64bdd61e_c1(_t0, _t2_inv), frustum_no_rh_general_s64bdd61e_c2(_t14, _t5, _t1_inv, _t6, _t2_inv), frustum_no_rh_general_s64bdd61e_c3(_t16), 0);
@@ -9232,7 +9232,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_zo_lh_identity(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -9249,7 +9249,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_zo_lh_translation(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -9286,7 +9286,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_zo_lh_orthogonal(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -9338,7 +9338,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_zo_lh_general(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -9383,7 +9383,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_zo_rh_identity(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -9400,7 +9400,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_zo_rh_translation(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -9437,7 +9437,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_zo_rh_orthogonal(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -9489,7 +9489,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_zo_rh_affine(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -9541,7 +9541,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code frustum} dispatcher.
      */
     private Float4x4 frustum_zo_rh_general(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -11065,8 +11065,8 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t12 = (1.0f / (float) Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
         float _t13 = _t0 * _t12;
         float _t14 = _t3 * _t12;
-        float _t15 = 2.0f * _t13;
-        float _t16 = 2.0f * _t14;
+        float _t15 = _t13 + _t13;
+        float _t16 = _t14 + _t14;
         float _t17 = -_t15;
         float _t19 = _t10 * _t12;
         float _t20 = _t16 * _t13;
@@ -11122,7 +11122,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t4 = dqRX * dqRX;
         float _t5 = dqRY * dqRZ;
         float _t6 = Math.fma(-2.0f, dqRZ * dqRZ, 1.0f);
-        return new Float4x4(Math.fma(-2.0f, _t0, _t6), Math.fma(-2.0f, _t2, 2.0f * dqRX * dqRY), 2.0f * Math.fma(dqRX, dqRZ, _t3), 2.0f * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW))), 2.0f * Math.fma(dqRX, dqRY, _t2), Math.fma(-2.0f, _t4, _t6), Math.fma(-2.0f, dqRX * dqRW, 2.0f * _t5), 2.0f * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW))), Math.fma(-2.0f, _t3, 2.0f * dqRX * dqRZ), 2.0f * Math.fma(dqRX, dqRW, _t5), Math.fma(-2.0f, _t4, Math.fma(-2.0f, _t0, 1.0f)), 2.0f * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW))), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
+        return new Float4x4(Math.fma(-2.0f, _t0, _t6), Math.fma(-2.0f, _t2, (dqRX + dqRX) * dqRY), 2.0f * Math.fma(dqRX, dqRZ, _t3), 2.0f * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW))), 2.0f * Math.fma(dqRX, dqRY, _t2), Math.fma(-2.0f, _t4, _t6), Math.fma(-2.0f, dqRX * dqRW, _t5 + _t5), 2.0f * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW))), Math.fma(-2.0f, _t3, (dqRX + dqRX) * dqRZ), 2.0f * Math.fma(dqRX, dqRW, _t5), Math.fma(-2.0f, _t4, Math.fma(-2.0f, _t0, 1.0f)), 2.0f * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW))), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -11132,14 +11132,14 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * dispatcher.
      */
     private static Float4x4 makeFrustum_no_lh(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
         float _t2_inv = 1.0f / _t2;
         float _t3 = zNear - zFar;
         float _t3_inv = 1.0f / _t3;
-        return new Float4x4(_t0 * _t1_inv, 0.0f, -((left + right) * _t1_inv), 0.0f, 0.0f, _t0 * _t2_inv, -((bottom + top) * _t2_inv), 0.0f, 0.0f, 0.0f, zFar == Float.POSITIVE_INFINITY ? 1.0f : zNear == Float.POSITIVE_INFINITY ? -1.0f : -((zFar + zNear) * _t3_inv), zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? 2.0f * zFar : 2.0f * zFar * zNear * _t3_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(_t0 * _t1_inv, 0.0f, -((left + right) * _t1_inv), 0.0f, 0.0f, _t0 * _t2_inv, -((bottom + top) * _t2_inv), 0.0f, 0.0f, 0.0f, zFar == Float.POSITIVE_INFINITY ? 1.0f : zNear == Float.POSITIVE_INFINITY ? -1.0f : -((zFar + zNear) * _t3_inv), zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
     }
 
 
@@ -11149,14 +11149,14 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * dispatcher.
      */
     private static Float4x4 makeFrustum_no_rh(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
         float _t2_inv = 1.0f / _t2;
         float _t3 = zNear - zFar;
         float _t3_inv = 1.0f / _t3;
-        return new Float4x4(_t0 * _t1_inv, 0.0f, (left + right) * _t1_inv, 0.0f, 0.0f, _t0 * _t2_inv, (bottom + top) * _t2_inv, 0.0f, 0.0f, 0.0f, zFar == Float.POSITIVE_INFINITY ? -1.0f : zNear == Float.POSITIVE_INFINITY ? 1.0f : (zFar + zNear) * _t3_inv, zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? 2.0f * zFar : 2.0f * zFar * zNear * _t3_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(_t0 * _t1_inv, 0.0f, (left + right) * _t1_inv, 0.0f, 0.0f, _t0 * _t2_inv, (bottom + top) * _t2_inv, 0.0f, 0.0f, 0.0f, zFar == Float.POSITIVE_INFINITY ? -1.0f : zNear == Float.POSITIVE_INFINITY ? 1.0f : (zFar + zNear) * _t3_inv, zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t3_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
     }
 
 
@@ -11178,7 +11178,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * dispatcher.
      */
     private static Float4x4 makeFrustum_zo_lh(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -11195,7 +11195,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * dispatcher.
      */
     private static Float4x4 makeFrustum_zo_rh(float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -12061,7 +12061,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = zFar - zNear;
         float _t2_inv = 1.0f / _t2;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, 2.0f * _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, 2.0f * _t2_inv, -((zFar + zNear) * _t2_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, _t1_inv + _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, _t2_inv + _t2_inv, -((zFar + zNear) * _t2_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -12077,7 +12077,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = zFar - zNear;
         float _t2_inv = 1.0f / _t2;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, 2.0f * _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, -2.0f * _t2_inv, -((zFar + zNear) * _t2_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, _t1_inv + _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, -2.0f * _t2_inv, -((zFar + zNear) * _t2_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -12104,7 +12104,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = zFar - zNear;
         float _t2_inv = 1.0f / _t2;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, 2.0f * _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, 1.0f * _t2_inv, -(zNear * _t2_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, _t1_inv + _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, 1.0f * _t2_inv, -(zNear * _t2_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -12120,7 +12120,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = zFar - zNear;
         float _t2_inv = 1.0f / _t2;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, 2.0f * _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, -1.0f * _t2_inv, -(zNear * _t2_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, _t1_inv + _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, -1.0f * _t2_inv, -(zNear * _t2_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -12234,7 +12234,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, 2.0f * _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, _t1_inv + _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -12248,7 +12248,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, 2.0f * _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, _t1_inv + _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -12274,7 +12274,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, 2.0f * _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, _t1_inv + _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -12288,7 +12288,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, 2.0f * _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, _t1_inv + _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -12393,7 +12393,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1 = near - far;
         float _t1_inv = 1.0f / _t1;
         float _t2 = (float) Math.tan(0.5f * fovy);
-        return new Float4x4(1.0f / (aspect * _t2), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f / _t2, 0.0f, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t1_inv), far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t1_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(1.0f / (aspect * _t2), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f / _t2, 0.0f, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t1_inv), far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t1_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
     }
 
 
@@ -12406,7 +12406,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1 = near - far;
         float _t1_inv = 1.0f / _t1;
         float _t2 = (float) Math.tan(0.5f * fovy);
-        return new Float4x4(1.0f / (aspect * _t2), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f / _t2, 0.0f, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t1_inv, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t1_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(1.0f / (aspect * _t2), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f / _t2, 0.0f, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t1_inv, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t1_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
     }
 
 
@@ -12568,7 +12568,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t2_inv = 1.0f / _t2;
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
-        return new Float4x4(2.0f / (aspect * _t3), 0.0f, 0.0f, 0.0f, 0.0f, 2.0f * _t3_inv, -((_t0 + _t1) * _t3_inv), 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t2_inv), far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t2_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(2.0f / (aspect * _t3), 0.0f, 0.0f, 0.0f, 0.0f, _t3_inv + _t3_inv, -((_t0 + _t1) * _t3_inv), 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t2_inv), far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
     }
 
 
@@ -12584,7 +12584,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t2_inv = 1.0f / _t2;
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
-        return new Float4x4(2.0f / (aspect * _t3), 0.0f, 0.0f, 0.0f, 0.0f, 2.0f * _t3_inv, (_t0 + _t1) * _t3_inv, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t2_inv, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t2_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(2.0f / (aspect * _t3), 0.0f, 0.0f, 0.0f, 0.0f, _t3_inv + _t3_inv, (_t0 + _t1) * _t3_inv, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t2_inv, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
     }
 
 
@@ -12612,7 +12612,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t2_inv = 1.0f / _t2;
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
-        return new Float4x4(2.0f / (aspect * _t3), 0.0f, 0.0f, 0.0f, 0.0f, 2.0f * _t3_inv, -((_t0 + _t1) * _t3_inv), 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t2_inv), far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(2.0f / (aspect * _t3), 0.0f, 0.0f, 0.0f, 0.0f, _t3_inv + _t3_inv, -((_t0 + _t1) * _t3_inv), 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t2_inv), far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
     }
 
 
@@ -12628,7 +12628,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t2_inv = 1.0f / _t2;
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
-        return new Float4x4(2.0f / (aspect * _t3), 0.0f, 0.0f, 0.0f, 0.0f, 2.0f * _t3_inv, (_t0 + _t1) * _t3_inv, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t2_inv, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(2.0f / (aspect * _t3), 0.0f, 0.0f, 0.0f, 0.0f, _t3_inv + _t3_inv, (_t0 + _t1) * _t3_inv, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t2_inv, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
     }
 
 
@@ -12760,7 +12760,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t5_inv = 1.0f / _t5;
         float _t6 = _t2 - _t3;
         float _t6_inv = 1.0f / _t6;
-        return new Float4x4(2.0f * _t5_inv, 0.0f, -((_t1 + _t0) * _t5_inv), 0.0f, 0.0f, 2.0f * _t6_inv, -((_t3 + _t2) * _t6_inv), 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t4_inv), far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t4_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(_t5_inv + _t5_inv, 0.0f, -((_t1 + _t0) * _t5_inv), 0.0f, 0.0f, _t6_inv + _t6_inv, -((_t3 + _t2) * _t6_inv), 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t4_inv), far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
     }
 
 
@@ -12780,7 +12780,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t5_inv = 1.0f / _t5;
         float _t6 = _t2 - _t3;
         float _t6_inv = 1.0f / _t6;
-        return new Float4x4(2.0f * _t5_inv, 0.0f, (_t1 + _t0) * _t5_inv, 0.0f, 0.0f, 2.0f * _t6_inv, (_t3 + _t2) * _t6_inv, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t4_inv, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t4_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(_t5_inv + _t5_inv, 0.0f, (_t1 + _t0) * _t5_inv, 0.0f, 0.0f, _t6_inv + _t6_inv, (_t3 + _t2) * _t6_inv, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t4_inv, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
     }
 
 
@@ -12813,7 +12813,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t5_inv = 1.0f / _t5;
         float _t6 = _t2 - _t3;
         float _t6_inv = 1.0f / _t6;
-        return new Float4x4(2.0f * _t5_inv, 0.0f, -((_t1 + _t0) * _t5_inv), 0.0f, 0.0f, 2.0f * _t6_inv, -((_t3 + _t2) * _t6_inv), 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t4_inv), far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(_t5_inv + _t5_inv, 0.0f, -((_t1 + _t0) * _t5_inv), 0.0f, 0.0f, _t6_inv + _t6_inv, -((_t3 + _t2) * _t6_inv), 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t4_inv), far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
     }
 
 
@@ -12833,7 +12833,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t5_inv = 1.0f / _t5;
         float _t6 = _t2 - _t3;
         float _t6_inv = 1.0f / _t6;
-        return new Float4x4(2.0f * _t5_inv, 0.0f, (_t1 + _t0) * _t5_inv, 0.0f, 0.0f, 2.0f * _t6_inv, (_t3 + _t2) * _t6_inv, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t4_inv, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(_t5_inv + _t5_inv, 0.0f, (_t1 + _t0) * _t5_inv, 0.0f, 0.0f, _t6_inv + _t6_inv, (_t3 + _t2) * _t6_inv, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t4_inv, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
     }
 
 
@@ -12996,7 +12996,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t36 = (1.0f / (float) Math.sqrt(_t35));
         float _t40 = _t27 * _t34;
         float _t41 = Math.fma(_t27, _t34, nearFarDist);
-        float _t42 = 2.0f * _t40;
+        float _t42 = _t40 + _t40;
         float _t44, _t45, _t46;
         if (_t35 > 0.0f) {
             _t44 = _t26 * _t36;
@@ -13039,7 +13039,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t123_inv = 1.0f / _t123;
         float _t125 = _t122 + (_t114 + Math.fma(_t1, _t92, -(pX * _t91)) + (Math.fma(eyeX, _t91, -(pZ * _t93)) + Math.fma(eyeY, _t92, eyeZ * _t93)));
         float _t125_inv = 1.0f / _t125;
-        return new Float4x4(_t42 * _t123_inv, 0.0f, -((_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv), 0.0f, 0.0f, _t42 * _t125_inv, -((_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv), 0.0f, 0.0f, 0.0f, _t41 == Float.POSITIVE_INFINITY ? 1.0f : _t40 == Float.POSITIVE_INFINITY ? -1.0f : -(Math.fma(_t27, _t34, _t41) * _t53_inv), _t41 == Float.POSITIVE_INFINITY ? -_t42 : _t40 == Float.POSITIVE_INFINITY ? 2.0f * _t41 : 2.0f * _t41 * _t40 * _t53_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(_t42 * _t123_inv, 0.0f, -((_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv), 0.0f, 0.0f, _t42 * _t125_inv, -((_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv), 0.0f, 0.0f, 0.0f, _t41 == Float.POSITIVE_INFINITY ? 1.0f : _t40 == Float.POSITIVE_INFINITY ? -1.0f : -(Math.fma(_t27, _t34, _t41) * _t53_inv), _t41 == Float.POSITIVE_INFINITY ? -_t42 : _t40 == Float.POSITIVE_INFINITY ? _t41 + _t41 : (_t41 + _t41) * _t40 * _t53_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
     }
 
 
@@ -13078,7 +13078,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t36 = (1.0f / (float) Math.sqrt(_t35));
         float _t40 = _t27 * _t34;
         float _t41 = Math.fma(_t27, _t34, nearFarDist);
-        float _t42 = 2.0f * _t40;
+        float _t42 = _t40 + _t40;
         float _t44, _t45, _t46;
         if (_t35 > 0.0f) {
             _t44 = _t25 * _t36;
@@ -13121,7 +13121,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t123_inv = 1.0f / _t123;
         float _t125 = _t122 + (_t114 + Math.fma(_t1, _t92, -(pX * _t91)) + (Math.fma(eyeX, _t91, -(pZ * _t93)) + Math.fma(eyeY, _t92, eyeZ * _t93)));
         float _t125_inv = 1.0f / _t125;
-        return new Float4x4(_t42 * _t123_inv, 0.0f, (_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv, 0.0f, 0.0f, _t42 * _t125_inv, (_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv, 0.0f, 0.0f, 0.0f, _t41 == Float.POSITIVE_INFINITY ? -1.0f : _t40 == Float.POSITIVE_INFINITY ? 1.0f : Math.fma(_t27, _t34, _t41) * _t53_inv, _t41 == Float.POSITIVE_INFINITY ? -_t42 : _t40 == Float.POSITIVE_INFINITY ? 2.0f * _t41 : 2.0f * _t41 * _t40 * _t53_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(_t42 * _t123_inv, 0.0f, (_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv, 0.0f, 0.0f, _t42 * _t125_inv, (_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv, 0.0f, 0.0f, 0.0f, _t41 == Float.POSITIVE_INFINITY ? -1.0f : _t40 == Float.POSITIVE_INFINITY ? 1.0f : Math.fma(_t27, _t34, _t41) * _t53_inv, _t41 == Float.POSITIVE_INFINITY ? -_t42 : _t40 == Float.POSITIVE_INFINITY ? _t41 + _t41 : (_t41 + _t41) * _t40 * _t53_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
     }
 
 
@@ -13186,7 +13186,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t36 = (1.0f / (float) Math.sqrt(_t35));
         float _t40 = _t27 * _t34;
         float _t41 = Math.fma(_t27, _t34, nearFarDist);
-        float _t42 = 2.0f * _t40;
+        float _t42 = _t40 + _t40;
         float _t44, _t45, _t46;
         if (_t35 > 0.0f) {
             _t44 = _t26 * _t36;
@@ -13268,7 +13268,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t36 = (1.0f / (float) Math.sqrt(_t35));
         float _t40 = _t27 * _t34;
         float _t41 = Math.fma(_t27, _t34, nearFarDist);
-        float _t42 = 2.0f * _t40;
+        float _t42 = _t40 + _t40;
         float _t44, _t45, _t46;
         if (_t35 > 0.0f) {
             _t44 = _t25 * _t36;
@@ -13810,9 +13810,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * @return the resulting matrix
      */
     public static Float4x4 makeReflection(float normalX, float normalY, float normalZ) {
-        float _t6 = -(2.0f * normalX * normalY);
-        float _t7 = -(2.0f * normalX * normalZ);
-        float _t8 = -(2.0f * normalY * normalZ);
+        float _t6 = -((normalX + normalX) * normalY);
+        float _t7 = -((normalX + normalX) * normalZ);
+        float _t8 = -((normalY + normalY) * normalZ);
         return new Float4x4(Math.fma(-2.0f, normalX * normalX, 1.0f), _t6, _t7, 0.0f, _t6, Math.fma(-2.0f, normalY * normalY, 1.0f), _t8, 0.0f, _t7, _t8, Math.fma(-2.0f, normalZ * normalZ, 1.0f), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
@@ -14301,9 +14301,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t54 = _t3 * _t52_inv;
         float _t55 = _t52 * _t47;
         float _t58 = _t50 * _t52_inv;
-        float _t60 = 2.0f * _t45 / ((1.0f - _t45 / _t55) * _t55);
+        float _t60 = (_t45 + _t45) / ((1.0f - _t45 / _t55) * _t55);
         float _t61 = 1.0f + _t60;
-        return new Float4x4(2.0f * _t25 * _t41_inv - _t53, 2.0f * _t26 * _t41_inv - _t54, 0.0f, 2.0f * Math.fma(p0Y, _t5, Math.fma(_t0, _t3, _t30)) * _t41_inv - _t58, _t61 * _t5 * _t52_inv, _t61 * _t3 * _t52_inv, 0.0f, _t61 * _t50 * _t52_inv - _t60, 0.0f, 0.0f, 1.0f, 0.0f, _t53, _t54, 0.0f, _t58, 0);
+        return new Float4x4((_t25 + _t25) * _t41_inv - _t53, (_t26 + _t26) * _t41_inv - _t54, 0.0f, 2.0f * Math.fma(p0Y, _t5, Math.fma(_t0, _t3, _t30)) * _t41_inv - _t58, _t61 * _t5 * _t52_inv, _t61 * _t3 * _t52_inv, 0.0f, _t61 * _t50 * _t52_inv - _t60, 0.0f, 0.0f, 1.0f, 0.0f, _t53, _t54, 0.0f, _t58, 0);
     }
 
 
@@ -17406,7 +17406,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
     private Float4x4 obliqueZ_no_lh_translation(float planeX, float planeY, float planeZ, float planeW) {
         float _t5 = Math.fma(planeX, planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f, Math.fma(planeY, planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f, planeZ));
         float _t5_inv = 1.0f / _t5;
-        return new Float4x4(1.0f, 0.0f, 0.0f, this.m03, 0.0f, 1.0f, 0.0f, this.m13, 2.0f * planeX * _t5_inv, 2.0f * planeY * _t5_inv, 2.0f * planeZ * _t5_inv, 2.0f * planeW * _t5_inv - 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(1.0f, 0.0f, 0.0f, this.m03, 0.0f, 1.0f, 0.0f, this.m13, (planeX + planeX) * _t5_inv, (planeY + planeY) * _t5_inv, (planeZ + planeZ) * _t5_inv, (planeW + planeW) * _t5_inv - 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -17416,7 +17416,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code obliqueZ} dispatcher.
      */
     private Float4x4 obliqueZ_no_lh_orthogonal(float planeX, float planeY, float planeZ, float planeW) {
-        float _t0 = 2.0f * this.m23;
+        float _t0 = this.m23 + this.m23;
         float _t15 = Math.fma(planeW, 1.0f - this.m22, this.m23 * (planeZ + (planeX * ((planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f) - this.m02) / this.m00 + planeY * ((planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f) - this.m12) / this.m11)));
         float _t15_inv = 1.0f / _t15;
         return new Float4x4(this.m00, this.m01, this.m02, this.m03, this.m10, this.m11, this.m12, this.m13, planeX * _t0 * _t15_inv, planeY * _t0 * _t15_inv, planeZ * _t0 * _t15_inv, -1.0f + planeW * _t0 * _t15_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
@@ -17429,7 +17429,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code obliqueZ} dispatcher.
      */
     private Float4x4 obliqueZ_no_lh_affine(float planeX, float planeY, float planeZ, float planeW) {
-        float _t0 = 2.0f * this.m23;
+        float _t0 = this.m23 + this.m23;
         float _t15 = Math.fma(planeW, 1.0f - this.m22, this.m23 * (planeZ + (planeX * ((planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f) - this.m02) / this.m00 + planeY * ((planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f) - this.m12) / this.m11)));
         float _t15_inv = 1.0f / _t15;
         return new Float4x4(this.m00, this.m01, this.m02, this.m03, this.m10, this.m11, this.m12, this.m13, planeX * _t0 * _t15_inv, planeY * _t0 * _t15_inv, planeZ * _t0 * _t15_inv, planeW * _t0 * _t15_inv - 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
@@ -17442,7 +17442,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code obliqueZ} dispatcher.
      */
     private Float4x4 obliqueZ_no_lh_general(float planeX, float planeY, float planeZ, float planeW) {
-        float _t0 = 2.0f * this.m23;
+        float _t0 = this.m23 + this.m23;
         float _t15 = Math.fma(planeW, 1.0f - this.m22, this.m23 * (planeZ + (planeX * ((planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f) - this.m02) / this.m00 + planeY * ((planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f) - this.m12) / this.m11)));
         float _t15_inv = 1.0f / _t15;
         return new Float4x4(this.m00, this.m01, this.m02, this.m03, this.m10, this.m11, this.m12, this.m13, planeX * _t0 * _t15_inv - this.m30, planeY * _t0 * _t15_inv - this.m31, planeZ * _t0 * _t15_inv - this.m32, planeW * _t0 * _t15_inv - this.m33, this.m30, this.m31, this.m32, this.m33, 0);
@@ -17497,7 +17497,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code obliqueZ} dispatcher.
      */
     private Float4x4 obliqueZ_no_rh_translation(float planeX, float planeY, float planeZ, float planeW) {
-        float _t1 = 2.0f * this.m23;
+        float _t1 = this.m23 + this.m23;
         float _t9 = Math.fma(2.0f, planeW, this.m23 * Math.fma(planeX, planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f, Math.fma(planeY, planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f, -planeZ)));
         float _t9_inv = 1.0f / _t9;
         return new Float4x4(1.0f, 0.0f, 0.0f, this.m03, 0.0f, 1.0f, 0.0f, this.m13, planeX * _t1 * _t9_inv, planeY * _t1 * _t9_inv, planeZ * _t1 * _t9_inv, planeW * _t1 * _t9_inv - 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
@@ -17510,7 +17510,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code obliqueZ} dispatcher.
      */
     private Float4x4 obliqueZ_no_rh_orthogonal(float planeX, float planeY, float planeZ, float planeW) {
-        float _t0 = 2.0f * this.m23;
+        float _t0 = this.m23 + this.m23;
         float _t15 = Math.fma(planeW, 1.0f + this.m22, this.m23 * (planeX * (this.m02 + (planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f)) / this.m00 + planeY * (this.m12 + (planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f)) / this.m11 - planeZ));
         float _t15_inv = 1.0f / _t15;
         return new Float4x4(this.m00, this.m01, this.m02, this.m03, this.m10, this.m11, this.m12, this.m13, planeX * _t0 * _t15_inv, planeY * _t0 * _t15_inv, planeZ * _t0 * _t15_inv, -1.0f + planeW * _t0 * _t15_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
@@ -17523,7 +17523,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code obliqueZ} dispatcher.
      */
     private Float4x4 obliqueZ_no_rh_affine(float planeX, float planeY, float planeZ, float planeW) {
-        float _t0 = 2.0f * this.m23;
+        float _t0 = this.m23 + this.m23;
         float _t15 = Math.fma(planeW, 1.0f + this.m22, this.m23 * (planeX * (this.m02 + (planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f)) / this.m00 + planeY * (this.m12 + (planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f)) / this.m11 - planeZ));
         float _t15_inv = 1.0f / _t15;
         return new Float4x4(this.m00, this.m01, this.m02, this.m03, this.m10, this.m11, this.m12, this.m13, planeX * _t0 * _t15_inv, planeY * _t0 * _t15_inv, planeZ * _t0 * _t15_inv, planeW * _t0 * _t15_inv - 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
@@ -17536,7 +17536,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code obliqueZ} dispatcher.
      */
     private Float4x4 obliqueZ_no_rh_general(float planeX, float planeY, float planeZ, float planeW) {
-        float _t0 = 2.0f * this.m23;
+        float _t0 = this.m23 + this.m23;
         float _t15 = Math.fma(planeW, 1.0f + this.m22, this.m23 * (planeX * (this.m02 + (planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f)) / this.m00 + planeY * (this.m12 + (planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f)) / this.m11 - planeZ));
         float _t15_inv = 1.0f / _t15;
         return new Float4x4(this.m00, this.m01, this.m02, this.m03, this.m10, this.m11, this.m12, this.m13, planeX * _t0 * _t15_inv - this.m30, planeY * _t0 * _t15_inv - this.m31, planeZ * _t0 * _t15_inv - this.m32, planeW * _t0 * _t15_inv - this.m33, this.m30, this.m31, this.m32, this.m33, 0);
@@ -18092,7 +18092,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = zFar - zNear;
         float _t2_inv = 1.0f / _t2;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, 2.0f * _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, 2.0f * _t2_inv, -((zFar + zNear) * _t2_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, _t1_inv + _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, _t2_inv + _t2_inv, -((zFar + zNear) * _t2_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -18108,22 +18108,22 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = zFar - zNear;
         float _t2_inv = 1.0f / _t2;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, this.m03 - (left + right) * _t0_inv, 0.0f, 2.0f * _t1_inv, 0.0f, this.m13 - (bottom + top) * _t1_inv, 0.0f, 0.0f, 2.0f * _t2_inv, this.m23 - (zFar + zNear) * _t2_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, this.m03 - (left + right) * _t0_inv, 0.0f, _t1_inv + _t1_inv, 0.0f, this.m13 - (bottom + top) * _t1_inv, 0.0f, 0.0f, _t2_inv + _t2_inv, this.m23 - (zFar + zNear) * _t2_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
     /** Private per-column body of {@code ortho_no_lh_orthogonal}; reached only through it. */
     private Float4 ortho_no_lh_orthogonal_s64bdd61e_c0(float _t0_inv) {
-        return new Float4(2.0f * this.m00 * _t0_inv, 2.0f * this.m10 * _t0_inv, 2.0f * this.m20 * _t0_inv, 0.0f);
+        return new Float4((this.m00 + this.m00) * _t0_inv, (this.m10 + this.m10) * _t0_inv, (this.m20 + this.m20) * _t0_inv, 0.0f);
     }
 
     /** Private per-column body of {@code ortho_no_lh_orthogonal}; reached only through it. */
     private Float4 ortho_no_lh_orthogonal_s64bdd61e_c1(float _t1_inv) {
-        return new Float4(2.0f * this.m01 * _t1_inv, 2.0f * this.m11 * _t1_inv, 2.0f * this.m21 * _t1_inv, 0.0f);
+        return new Float4((this.m01 + this.m01) * _t1_inv, (this.m11 + this.m11) * _t1_inv, (this.m21 + this.m21) * _t1_inv, 0.0f);
     }
 
     /** Private per-column body of {@code ortho_no_lh_orthogonal}; reached only through it. */
     private Float4 ortho_no_lh_orthogonal_s64bdd61e_c2(float _t2_inv) {
-        return new Float4(2.0f * this.m02 * _t2_inv, 2.0f * this.m12 * _t2_inv, 2.0f * this.m22 * _t2_inv, 0.0f);
+        return new Float4((this.m02 + this.m02) * _t2_inv, (this.m12 + this.m12) * _t2_inv, (this.m22 + this.m22) * _t2_inv, 0.0f);
     }
 
     /** Private per-column body of {@code ortho_no_lh_orthogonal}; reached only through it. */
@@ -18152,17 +18152,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code ortho_no_lh_affine}; reached only through it. */
     private Float4 ortho_no_lh_affine_s64bdd61e_c0(float _t0_inv) {
-        return new Float4(2.0f * this.m00 * _t0_inv, 2.0f * this.m10 * _t0_inv, 2.0f * this.m20 * _t0_inv, 0.0f);
+        return new Float4((this.m00 + this.m00) * _t0_inv, (this.m10 + this.m10) * _t0_inv, (this.m20 + this.m20) * _t0_inv, 0.0f);
     }
 
     /** Private per-column body of {@code ortho_no_lh_affine}; reached only through it. */
     private Float4 ortho_no_lh_affine_s64bdd61e_c1(float _t1_inv) {
-        return new Float4(2.0f * this.m01 * _t1_inv, 2.0f * this.m11 * _t1_inv, 2.0f * this.m21 * _t1_inv, 0.0f);
+        return new Float4((this.m01 + this.m01) * _t1_inv, (this.m11 + this.m11) * _t1_inv, (this.m21 + this.m21) * _t1_inv, 0.0f);
     }
 
     /** Private per-column body of {@code ortho_no_lh_affine}; reached only through it. */
     private Float4 ortho_no_lh_affine_s64bdd61e_c2(float _t2_inv) {
-        return new Float4(2.0f * this.m02 * _t2_inv, 2.0f * this.m12 * _t2_inv, 2.0f * this.m22 * _t2_inv, 0.0f);
+        return new Float4((this.m02 + this.m02) * _t2_inv, (this.m12 + this.m12) * _t2_inv, (this.m22 + this.m22) * _t2_inv, 0.0f);
     }
 
     /** Private per-column body of {@code ortho_no_lh_affine}; reached only through it. */
@@ -18191,17 +18191,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code ortho_no_lh_general}; reached only through it. */
     private Float4 ortho_no_lh_general_s64bdd61e_c0(float _t0_inv) {
-        return new Float4(2.0f * this.m00 * _t0_inv, 2.0f * this.m10 * _t0_inv, 2.0f * this.m20 * _t0_inv, 2.0f * this.m30 * _t0_inv);
+        return new Float4((this.m00 + this.m00) * _t0_inv, (this.m10 + this.m10) * _t0_inv, (this.m20 + this.m20) * _t0_inv, (this.m30 + this.m30) * _t0_inv);
     }
 
     /** Private per-column body of {@code ortho_no_lh_general}; reached only through it. */
     private Float4 ortho_no_lh_general_s64bdd61e_c1(float _t1_inv) {
-        return new Float4(2.0f * this.m01 * _t1_inv, 2.0f * this.m11 * _t1_inv, 2.0f * this.m21 * _t1_inv, 2.0f * this.m31 * _t1_inv);
+        return new Float4((this.m01 + this.m01) * _t1_inv, (this.m11 + this.m11) * _t1_inv, (this.m21 + this.m21) * _t1_inv, (this.m31 + this.m31) * _t1_inv);
     }
 
     /** Private per-column body of {@code ortho_no_lh_general}; reached only through it. */
     private Float4 ortho_no_lh_general_s64bdd61e_c2(float _t2_inv) {
-        return new Float4(2.0f * this.m02 * _t2_inv, 2.0f * this.m12 * _t2_inv, 2.0f * this.m22 * _t2_inv, 2.0f * this.m32 * _t2_inv);
+        return new Float4((this.m02 + this.m02) * _t2_inv, (this.m12 + this.m12) * _t2_inv, (this.m22 + this.m22) * _t2_inv, (this.m32 + this.m32) * _t2_inv);
     }
 
     /** Private per-column body of {@code ortho_no_lh_general}; reached only through it. */
@@ -18255,7 +18255,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = zFar - zNear;
         float _t2_inv = 1.0f / _t2;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, 2.0f * _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, -2.0f * _t2_inv, -((zFar + zNear) * _t2_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, _t1_inv + _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, -2.0f * _t2_inv, -((zFar + zNear) * _t2_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -18271,17 +18271,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = zFar - zNear;
         float _t2_inv = 1.0f / _t2;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, this.m03 - (left + right) * _t0_inv, 0.0f, 2.0f * _t1_inv, 0.0f, this.m13 - (bottom + top) * _t1_inv, 0.0f, 0.0f, -2.0f * _t2_inv, this.m23 - (zFar + zNear) * _t2_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, this.m03 - (left + right) * _t0_inv, 0.0f, _t1_inv + _t1_inv, 0.0f, this.m13 - (bottom + top) * _t1_inv, 0.0f, 0.0f, -2.0f * _t2_inv, this.m23 - (zFar + zNear) * _t2_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
     /** Private per-column body of {@code ortho_no_rh_orthogonal}; reached only through it. */
     private Float4 ortho_no_rh_orthogonal_s64bdd61e_c0(float _t0_inv) {
-        return new Float4(2.0f * this.m00 * _t0_inv, 2.0f * this.m10 * _t0_inv, 2.0f * this.m20 * _t0_inv, 0.0f);
+        return new Float4((this.m00 + this.m00) * _t0_inv, (this.m10 + this.m10) * _t0_inv, (this.m20 + this.m20) * _t0_inv, 0.0f);
     }
 
     /** Private per-column body of {@code ortho_no_rh_orthogonal}; reached only through it. */
     private Float4 ortho_no_rh_orthogonal_s64bdd61e_c1(float _t1_inv) {
-        return new Float4(2.0f * this.m01 * _t1_inv, 2.0f * this.m11 * _t1_inv, 2.0f * this.m21 * _t1_inv, 0.0f);
+        return new Float4((this.m01 + this.m01) * _t1_inv, (this.m11 + this.m11) * _t1_inv, (this.m21 + this.m21) * _t1_inv, 0.0f);
     }
 
     /** Private per-column body of {@code ortho_no_rh_orthogonal}; reached only through it. */
@@ -18315,12 +18315,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code ortho_no_rh_affine}; reached only through it. */
     private Float4 ortho_no_rh_affine_s64bdd61e_c0(float _t0_inv) {
-        return new Float4(2.0f * this.m00 * _t0_inv, 2.0f * this.m10 * _t0_inv, 2.0f * this.m20 * _t0_inv, 0.0f);
+        return new Float4((this.m00 + this.m00) * _t0_inv, (this.m10 + this.m10) * _t0_inv, (this.m20 + this.m20) * _t0_inv, 0.0f);
     }
 
     /** Private per-column body of {@code ortho_no_rh_affine}; reached only through it. */
     private Float4 ortho_no_rh_affine_s64bdd61e_c1(float _t1_inv) {
-        return new Float4(2.0f * this.m01 * _t1_inv, 2.0f * this.m11 * _t1_inv, 2.0f * this.m21 * _t1_inv, 0.0f);
+        return new Float4((this.m01 + this.m01) * _t1_inv, (this.m11 + this.m11) * _t1_inv, (this.m21 + this.m21) * _t1_inv, 0.0f);
     }
 
     /** Private per-column body of {@code ortho_no_rh_affine}; reached only through it. */
@@ -18354,12 +18354,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code ortho_no_rh_general}; reached only through it. */
     private Float4 ortho_no_rh_general_s64bdd61e_c0(float _t0_inv) {
-        return new Float4(2.0f * this.m00 * _t0_inv, 2.0f * this.m10 * _t0_inv, 2.0f * this.m20 * _t0_inv, 2.0f * this.m30 * _t0_inv);
+        return new Float4((this.m00 + this.m00) * _t0_inv, (this.m10 + this.m10) * _t0_inv, (this.m20 + this.m20) * _t0_inv, (this.m30 + this.m30) * _t0_inv);
     }
 
     /** Private per-column body of {@code ortho_no_rh_general}; reached only through it. */
     private Float4 ortho_no_rh_general_s64bdd61e_c1(float _t1_inv) {
-        return new Float4(2.0f * this.m01 * _t1_inv, 2.0f * this.m11 * _t1_inv, 2.0f * this.m21 * _t1_inv, 2.0f * this.m31 * _t1_inv);
+        return new Float4((this.m01 + this.m01) * _t1_inv, (this.m11 + this.m11) * _t1_inv, (this.m21 + this.m21) * _t1_inv, (this.m31 + this.m31) * _t1_inv);
     }
 
     /** Private per-column body of {@code ortho_no_rh_general}; reached only through it. */
@@ -18430,7 +18430,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = zFar - zNear;
         float _t2_inv = 1.0f / _t2;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, 2.0f * _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, 1.0f * _t2_inv, -(zNear * _t2_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, _t1_inv + _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, 1.0f * _t2_inv, -(zNear * _t2_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -18446,7 +18446,27 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = zFar - zNear;
         float _t2_inv = 1.0f / _t2;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, this.m03 - (left + right) * _t0_inv, 0.0f, 2.0f * _t1_inv, 0.0f, this.m13 - (bottom + top) * _t1_inv, 0.0f, 0.0f, 1.0f * _t2_inv, this.m23 - zNear * _t2_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, this.m03 - (left + right) * _t0_inv, 0.0f, _t1_inv + _t1_inv, 0.0f, this.m13 - (bottom + top) * _t1_inv, 0.0f, 0.0f, 1.0f * _t2_inv, this.m23 - zNear * _t2_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+    }
+
+    /** Private per-column body of {@code ortho_zo_lh_orthogonal}; reached only through it. */
+    private Float4 ortho_zo_lh_orthogonal_s64bdd61e_c0(float _t0_inv) {
+        return new Float4((this.m00 + this.m00) * _t0_inv, (this.m10 + this.m10) * _t0_inv, (this.m20 + this.m20) * _t0_inv, 0.0f);
+    }
+
+    /** Private per-column body of {@code ortho_zo_lh_orthogonal}; reached only through it. */
+    private Float4 ortho_zo_lh_orthogonal_s64bdd61e_c1(float _t1_inv) {
+        return new Float4((this.m01 + this.m01) * _t1_inv, (this.m11 + this.m11) * _t1_inv, (this.m21 + this.m21) * _t1_inv, 0.0f);
+    }
+
+    /** Private per-column body of {@code ortho_zo_lh_orthogonal}; reached only through it. */
+    private Float4 ortho_zo_lh_orthogonal_s64bdd61e_c2(float _t2_inv) {
+        return new Float4(this.m02 * _t2_inv, this.m12 * _t2_inv, this.m22 * _t2_inv, 0.0f);
+    }
+
+    /** Private per-column body of {@code ortho_zo_lh_orthogonal}; reached only through it. */
+    private Float4 ortho_zo_lh_orthogonal_s64bdd61e_c3(float _t3, float _t0_inv, float _t4, float _t1_inv, float zNear, float _t2_inv) {
+        return new Float4(this.m03 - this.m00 * _t3 * _t0_inv - this.m01 * _t4 * _t1_inv - zNear * this.m02 * _t2_inv, this.m13 - this.m10 * _t3 * _t0_inv - this.m11 * _t4 * _t1_inv - zNear * this.m12 * _t2_inv, this.m23 - this.m20 * _t3 * _t0_inv - this.m21 * _t4 * _t1_inv - zNear * this.m22 * _t2_inv, 1.0f);
     }
 
 
@@ -18464,17 +18484,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t2_inv = 1.0f / _t2;
         float _t3 = left + right;
         float _t4 = bottom + top;
-        return new Float4x4(2.0f * this.m00 * _t0_inv, 2.0f * this.m01 * _t1_inv, this.m02 * _t2_inv, this.m03 - this.m00 * _t3 * _t0_inv - this.m01 * _t4 * _t1_inv - zNear * this.m02 * _t2_inv, 2.0f * this.m10 * _t0_inv, 2.0f * this.m11 * _t1_inv, this.m12 * _t2_inv, this.m13 - this.m10 * _t3 * _t0_inv - this.m11 * _t4 * _t1_inv - zNear * this.m12 * _t2_inv, 2.0f * this.m20 * _t0_inv, 2.0f * this.m21 * _t1_inv, this.m22 * _t2_inv, this.m23 - this.m20 * _t3 * _t0_inv - this.m21 * _t4 * _t1_inv - zNear * this.m22 * _t2_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(ortho_zo_lh_orthogonal_s64bdd61e_c0(_t0_inv), ortho_zo_lh_orthogonal_s64bdd61e_c1(_t1_inv), ortho_zo_lh_orthogonal_s64bdd61e_c2(_t2_inv), ortho_zo_lh_orthogonal_s64bdd61e_c3(_t3, _t0_inv, _t4, _t1_inv, zNear, _t2_inv), Joml.BIT_AFFINE);
     }
 
     /** Private per-column body of {@code ortho_zo_lh_affine}; reached only through it. */
     private Float4 ortho_zo_lh_affine_s64bdd61e_c0(float _t0_inv) {
-        return new Float4(2.0f * this.m00 * _t0_inv, 2.0f * this.m10 * _t0_inv, 2.0f * this.m20 * _t0_inv, 0.0f);
+        return new Float4((this.m00 + this.m00) * _t0_inv, (this.m10 + this.m10) * _t0_inv, (this.m20 + this.m20) * _t0_inv, 0.0f);
     }
 
     /** Private per-column body of {@code ortho_zo_lh_affine}; reached only through it. */
     private Float4 ortho_zo_lh_affine_s64bdd61e_c1(float _t1_inv) {
-        return new Float4(2.0f * this.m01 * _t1_inv, 2.0f * this.m11 * _t1_inv, 2.0f * this.m21 * _t1_inv, 0.0f);
+        return new Float4((this.m01 + this.m01) * _t1_inv, (this.m11 + this.m11) * _t1_inv, (this.m21 + this.m21) * _t1_inv, 0.0f);
     }
 
     /** Private per-column body of {@code ortho_zo_lh_affine}; reached only through it. */
@@ -18507,12 +18527,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code ortho_zo_lh_general}; reached only through it. */
     private Float4 ortho_zo_lh_general_s64bdd61e_c0(float _t0_inv) {
-        return new Float4(2.0f * this.m00 * _t0_inv, 2.0f * this.m10 * _t0_inv, 2.0f * this.m20 * _t0_inv, 2.0f * this.m30 * _t0_inv);
+        return new Float4((this.m00 + this.m00) * _t0_inv, (this.m10 + this.m10) * _t0_inv, (this.m20 + this.m20) * _t0_inv, (this.m30 + this.m30) * _t0_inv);
     }
 
     /** Private per-column body of {@code ortho_zo_lh_general}; reached only through it. */
     private Float4 ortho_zo_lh_general_s64bdd61e_c1(float _t1_inv) {
-        return new Float4(2.0f * this.m01 * _t1_inv, 2.0f * this.m11 * _t1_inv, 2.0f * this.m21 * _t1_inv, 2.0f * this.m31 * _t1_inv);
+        return new Float4((this.m01 + this.m01) * _t1_inv, (this.m11 + this.m11) * _t1_inv, (this.m21 + this.m21) * _t1_inv, (this.m31 + this.m31) * _t1_inv);
     }
 
     /** Private per-column body of {@code ortho_zo_lh_general}; reached only through it. */
@@ -18570,7 +18590,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = zFar - zNear;
         float _t2_inv = 1.0f / _t2;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, 2.0f * _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, -1.0f * _t2_inv, -(zNear * _t2_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, _t1_inv + _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, -1.0f * _t2_inv, -(zNear * _t2_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -18586,17 +18606,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = zFar - zNear;
         float _t2_inv = 1.0f / _t2;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, this.m03 - (left + right) * _t0_inv, 0.0f, 2.0f * _t1_inv, 0.0f, this.m13 - (bottom + top) * _t1_inv, 0.0f, 0.0f, -1.0f * _t2_inv, this.m23 - zNear * _t2_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, this.m03 - (left + right) * _t0_inv, 0.0f, _t1_inv + _t1_inv, 0.0f, this.m13 - (bottom + top) * _t1_inv, 0.0f, 0.0f, -1.0f * _t2_inv, this.m23 - zNear * _t2_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
     /** Private per-column body of {@code ortho_zo_rh_orthogonal}; reached only through it. */
     private Float4 ortho_zo_rh_orthogonal_s64bdd61e_c0(float _t0_inv) {
-        return new Float4(2.0f * this.m00 * _t0_inv, 2.0f * this.m10 * _t0_inv, 2.0f * this.m20 * _t0_inv, 0.0f);
+        return new Float4((this.m00 + this.m00) * _t0_inv, (this.m10 + this.m10) * _t0_inv, (this.m20 + this.m20) * _t0_inv, 0.0f);
     }
 
     /** Private per-column body of {@code ortho_zo_rh_orthogonal}; reached only through it. */
     private Float4 ortho_zo_rh_orthogonal_s64bdd61e_c1(float _t1_inv) {
-        return new Float4(2.0f * this.m01 * _t1_inv, 2.0f * this.m11 * _t1_inv, 2.0f * this.m21 * _t1_inv, 0.0f);
+        return new Float4((this.m01 + this.m01) * _t1_inv, (this.m11 + this.m11) * _t1_inv, (this.m21 + this.m21) * _t1_inv, 0.0f);
     }
 
     /** Private per-column body of {@code ortho_zo_rh_orthogonal}; reached only through it. */
@@ -18629,12 +18649,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code ortho_zo_rh_affine}; reached only through it. */
     private Float4 ortho_zo_rh_affine_s64bdd61e_c0(float _t0_inv) {
-        return new Float4(2.0f * this.m00 * _t0_inv, 2.0f * this.m10 * _t0_inv, 2.0f * this.m20 * _t0_inv, 0.0f);
+        return new Float4((this.m00 + this.m00) * _t0_inv, (this.m10 + this.m10) * _t0_inv, (this.m20 + this.m20) * _t0_inv, 0.0f);
     }
 
     /** Private per-column body of {@code ortho_zo_rh_affine}; reached only through it. */
     private Float4 ortho_zo_rh_affine_s64bdd61e_c1(float _t1_inv) {
-        return new Float4(2.0f * this.m01 * _t1_inv, 2.0f * this.m11 * _t1_inv, 2.0f * this.m21 * _t1_inv, 0.0f);
+        return new Float4((this.m01 + this.m01) * _t1_inv, (this.m11 + this.m11) * _t1_inv, (this.m21 + this.m21) * _t1_inv, 0.0f);
     }
 
     /** Private per-column body of {@code ortho_zo_rh_affine}; reached only through it. */
@@ -18667,12 +18687,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code ortho_zo_rh_general}; reached only through it. */
     private Float4 ortho_zo_rh_general_s64bdd61e_c0(float _t0_inv) {
-        return new Float4(2.0f * this.m00 * _t0_inv, 2.0f * this.m10 * _t0_inv, 2.0f * this.m20 * _t0_inv, 2.0f * this.m30 * _t0_inv);
+        return new Float4((this.m00 + this.m00) * _t0_inv, (this.m10 + this.m10) * _t0_inv, (this.m20 + this.m20) * _t0_inv, (this.m30 + this.m30) * _t0_inv);
     }
 
     /** Private per-column body of {@code ortho_zo_rh_general}; reached only through it. */
     private Float4 ortho_zo_rh_general_s64bdd61e_c1(float _t1_inv) {
-        return new Float4(2.0f * this.m01 * _t1_inv, 2.0f * this.m11 * _t1_inv, 2.0f * this.m21 * _t1_inv, 2.0f * this.m31 * _t1_inv);
+        return new Float4((this.m01 + this.m01) * _t1_inv, (this.m11 + this.m11) * _t1_inv, (this.m21 + this.m21) * _t1_inv, (this.m31 + this.m31) * _t1_inv);
     }
 
     /** Private per-column body of {@code ortho_zo_rh_general}; reached only through it. */
@@ -18848,7 +18868,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, 2.0f * _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, _t1_inv + _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -18862,7 +18882,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, this.m03 - (left + right) * _t0_inv, 0.0f, 2.0f * _t1_inv, 0.0f, this.m13 - (bottom + top) * _t1_inv, 0.0f, 0.0f, 1.0f, this.m23, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, this.m03 - (left + right) * _t0_inv, 0.0f, _t1_inv + _t1_inv, 0.0f, this.m13 - (bottom + top) * _t1_inv, 0.0f, 0.0f, 1.0f, this.m23, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -18878,7 +18898,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = left + right;
         float _t3 = bottom + top;
-        return new Float4x4(2.0f * this.m00 * _t0_inv, 2.0f * this.m01 * _t1_inv, this.m02, this.m03 - this.m00 * _t2 * _t0_inv - this.m01 * _t3 * _t1_inv, 2.0f * this.m10 * _t0_inv, 2.0f * this.m11 * _t1_inv, this.m12, this.m13 - this.m10 * _t2 * _t0_inv - this.m11 * _t3 * _t1_inv, 2.0f * this.m20 * _t0_inv, 2.0f * this.m21 * _t1_inv, this.m22, this.m23 - this.m20 * _t2 * _t0_inv - this.m21 * _t3 * _t1_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4((this.m00 + this.m00) * _t0_inv, (this.m01 + this.m01) * _t1_inv, this.m02, this.m03 - this.m00 * _t2 * _t0_inv - this.m01 * _t3 * _t1_inv, (this.m10 + this.m10) * _t0_inv, (this.m11 + this.m11) * _t1_inv, this.m12, this.m13 - this.m10 * _t2 * _t0_inv - this.m11 * _t3 * _t1_inv, (this.m20 + this.m20) * _t0_inv, (this.m21 + this.m21) * _t1_inv, this.m22, this.m23 - this.m20 * _t2 * _t0_inv - this.m21 * _t3 * _t1_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -18894,7 +18914,27 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = left + right;
         float _t3 = bottom + top;
-        return new Float4x4(2.0f * this.m00 * _t0_inv, 2.0f * this.m01 * _t1_inv, this.m02, this.m03 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv), 2.0f * this.m10 * _t0_inv, 2.0f * this.m11 * _t1_inv, this.m12, this.m13 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv), 2.0f * this.m20 * _t0_inv, 2.0f * this.m21 * _t1_inv, this.m22, this.m23 + (-(this.m20 * _t2 * _t0_inv) - this.m21 * _t3 * _t1_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4((this.m00 + this.m00) * _t0_inv, (this.m01 + this.m01) * _t1_inv, this.m02, this.m03 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv), (this.m10 + this.m10) * _t0_inv, (this.m11 + this.m11) * _t1_inv, this.m12, this.m13 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv), (this.m20 + this.m20) * _t0_inv, (this.m21 + this.m21) * _t1_inv, this.m22, this.m23 + (-(this.m20 * _t2 * _t0_inv) - this.m21 * _t3 * _t1_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+    }
+
+    /** Private per-column body of {@code ortho2D_no_lh_general}; reached only through it. */
+    private Float4 ortho2D_no_lh_general_s39fc0d01_c0(float _t0_inv) {
+        return new Float4((this.m00 + this.m00) * _t0_inv, (this.m10 + this.m10) * _t0_inv, (this.m20 + this.m20) * _t0_inv, (this.m30 + this.m30) * _t0_inv);
+    }
+
+    /** Private per-column body of {@code ortho2D_no_lh_general}; reached only through it. */
+    private Float4 ortho2D_no_lh_general_s39fc0d01_c1(float _t1_inv) {
+        return new Float4((this.m01 + this.m01) * _t1_inv, (this.m11 + this.m11) * _t1_inv, (this.m21 + this.m21) * _t1_inv, (this.m31 + this.m31) * _t1_inv);
+    }
+
+    /** Private per-column body of {@code ortho2D_no_lh_general}; reached only through it. */
+    private Float4 ortho2D_no_lh_general_s39fc0d01_c2() {
+        return new Float4(this.m02, this.m12, this.m22, this.m32);
+    }
+
+    /** Private per-column body of {@code ortho2D_no_lh_general}; reached only through it. */
+    private Float4 ortho2D_no_lh_general_s39fc0d01_c3(float _t2, float _t0_inv, float _t3, float _t1_inv) {
+        return new Float4(this.m03 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv), this.m13 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv), this.m23 + (-(this.m20 * _t2 * _t0_inv) - this.m21 * _t3 * _t1_inv), this.m33 + (-(this.m30 * _t2 * _t0_inv) - this.m31 * _t3 * _t1_inv));
     }
 
 
@@ -18910,7 +18950,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = left + right;
         float _t3 = bottom + top;
-        return new Float4x4(2.0f * this.m00 * _t0_inv, 2.0f * this.m01 * _t1_inv, this.m02, this.m03 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv), 2.0f * this.m10 * _t0_inv, 2.0f * this.m11 * _t1_inv, this.m12, this.m13 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv), 2.0f * this.m20 * _t0_inv, 2.0f * this.m21 * _t1_inv, this.m22, this.m23 + (-(this.m20 * _t2 * _t0_inv) - this.m21 * _t3 * _t1_inv), 2.0f * this.m30 * _t0_inv, 2.0f * this.m31 * _t1_inv, this.m32, this.m33 + (-(this.m30 * _t2 * _t0_inv) - this.m31 * _t3 * _t1_inv), 0);
+        return new Float4x4(ortho2D_no_lh_general_s39fc0d01_c0(_t0_inv), ortho2D_no_lh_general_s39fc0d01_c1(_t1_inv), ortho2D_no_lh_general_s39fc0d01_c2(), ortho2D_no_lh_general_s39fc0d01_c3(_t2, _t0_inv, _t3, _t1_inv), 0);
     }
 
 
@@ -18938,7 +18978,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, 2.0f * _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, _t1_inv + _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -18952,7 +18992,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, this.m03 - (left + right) * _t0_inv, 0.0f, 2.0f * _t1_inv, 0.0f, this.m13 - (bottom + top) * _t1_inv, 0.0f, 0.0f, -1.0f, this.m23, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, this.m03 - (left + right) * _t0_inv, 0.0f, _t1_inv + _t1_inv, 0.0f, this.m13 - (bottom + top) * _t1_inv, 0.0f, 0.0f, -1.0f, this.m23, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -18968,7 +19008,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = left + right;
         float _t3 = bottom + top;
-        return new Float4x4(2.0f * this.m00 * _t0_inv, 2.0f * this.m01 * _t1_inv, -this.m02, this.m03 - this.m00 * _t2 * _t0_inv - this.m01 * _t3 * _t1_inv, 2.0f * this.m10 * _t0_inv, 2.0f * this.m11 * _t1_inv, -this.m12, this.m13 - this.m10 * _t2 * _t0_inv - this.m11 * _t3 * _t1_inv, 2.0f * this.m20 * _t0_inv, 2.0f * this.m21 * _t1_inv, -this.m22, this.m23 - this.m20 * _t2 * _t0_inv - this.m21 * _t3 * _t1_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4((this.m00 + this.m00) * _t0_inv, (this.m01 + this.m01) * _t1_inv, -this.m02, this.m03 - this.m00 * _t2 * _t0_inv - this.m01 * _t3 * _t1_inv, (this.m10 + this.m10) * _t0_inv, (this.m11 + this.m11) * _t1_inv, -this.m12, this.m13 - this.m10 * _t2 * _t0_inv - this.m11 * _t3 * _t1_inv, (this.m20 + this.m20) * _t0_inv, (this.m21 + this.m21) * _t1_inv, -this.m22, this.m23 - this.m20 * _t2 * _t0_inv - this.m21 * _t3 * _t1_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -18984,7 +19024,27 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = left + right;
         float _t3 = bottom + top;
-        return new Float4x4(2.0f * this.m00 * _t0_inv, 2.0f * this.m01 * _t1_inv, -this.m02, this.m03 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv), 2.0f * this.m10 * _t0_inv, 2.0f * this.m11 * _t1_inv, -this.m12, this.m13 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv), 2.0f * this.m20 * _t0_inv, 2.0f * this.m21 * _t1_inv, -this.m22, this.m23 + (-(this.m20 * _t2 * _t0_inv) - this.m21 * _t3 * _t1_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4((this.m00 + this.m00) * _t0_inv, (this.m01 + this.m01) * _t1_inv, -this.m02, this.m03 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv), (this.m10 + this.m10) * _t0_inv, (this.m11 + this.m11) * _t1_inv, -this.m12, this.m13 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv), (this.m20 + this.m20) * _t0_inv, (this.m21 + this.m21) * _t1_inv, -this.m22, this.m23 + (-(this.m20 * _t2 * _t0_inv) - this.m21 * _t3 * _t1_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+    }
+
+    /** Private per-column body of {@code ortho2D_no_rh_general}; reached only through it. */
+    private Float4 ortho2D_no_rh_general_s39fc0d01_c0(float _t0_inv) {
+        return new Float4((this.m00 + this.m00) * _t0_inv, (this.m10 + this.m10) * _t0_inv, (this.m20 + this.m20) * _t0_inv, (this.m30 + this.m30) * _t0_inv);
+    }
+
+    /** Private per-column body of {@code ortho2D_no_rh_general}; reached only through it. */
+    private Float4 ortho2D_no_rh_general_s39fc0d01_c1(float _t1_inv) {
+        return new Float4((this.m01 + this.m01) * _t1_inv, (this.m11 + this.m11) * _t1_inv, (this.m21 + this.m21) * _t1_inv, (this.m31 + this.m31) * _t1_inv);
+    }
+
+    /** Private per-column body of {@code ortho2D_no_rh_general}; reached only through it. */
+    private Float4 ortho2D_no_rh_general_s39fc0d01_c2() {
+        return new Float4(-this.m02, -this.m12, -this.m22, -this.m32);
+    }
+
+    /** Private per-column body of {@code ortho2D_no_rh_general}; reached only through it. */
+    private Float4 ortho2D_no_rh_general_s39fc0d01_c3(float _t2, float _t0_inv, float _t3, float _t1_inv) {
+        return new Float4(this.m03 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv), this.m13 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv), this.m23 + (-(this.m20 * _t2 * _t0_inv) - this.m21 * _t3 * _t1_inv), this.m33 + (-(this.m30 * _t2 * _t0_inv) - this.m31 * _t3 * _t1_inv));
     }
 
 
@@ -19000,7 +19060,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = left + right;
         float _t3 = bottom + top;
-        return new Float4x4(2.0f * this.m00 * _t0_inv, 2.0f * this.m01 * _t1_inv, -this.m02, this.m03 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv), 2.0f * this.m10 * _t0_inv, 2.0f * this.m11 * _t1_inv, -this.m12, this.m13 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv), 2.0f * this.m20 * _t0_inv, 2.0f * this.m21 * _t1_inv, -this.m22, this.m23 + (-(this.m20 * _t2 * _t0_inv) - this.m21 * _t3 * _t1_inv), 2.0f * this.m30 * _t0_inv, 2.0f * this.m31 * _t1_inv, -this.m32, this.m33 + (-(this.m30 * _t2 * _t0_inv) - this.m31 * _t3 * _t1_inv), 0);
+        return new Float4x4(ortho2D_no_rh_general_s39fc0d01_c0(_t0_inv), ortho2D_no_rh_general_s39fc0d01_c1(_t1_inv), ortho2D_no_rh_general_s39fc0d01_c2(), ortho2D_no_rh_general_s39fc0d01_c3(_t2, _t0_inv, _t3, _t1_inv), 0);
     }
 
 
@@ -19040,7 +19100,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, 2.0f * _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, _t1_inv + _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -19054,7 +19114,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, this.m03 - (left + right) * _t0_inv, 0.0f, 2.0f * _t1_inv, 0.0f, this.m13 - (bottom + top) * _t1_inv, 0.0f, 0.0f, 0.5f, 0.5f + this.m23, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, this.m03 - (left + right) * _t0_inv, 0.0f, _t1_inv + _t1_inv, 0.0f, this.m13 - (bottom + top) * _t1_inv, 0.0f, 0.0f, 0.5f, 0.5f + this.m23, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -19070,17 +19130,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = left + right;
         float _t3 = bottom + top;
-        return new Float4x4(2.0f * this.m00 * _t0_inv, 2.0f * this.m01 * _t1_inv, 0.5f * this.m02, Math.fma(0.5f, this.m02, this.m03 - this.m00 * _t2 * _t0_inv - this.m01 * _t3 * _t1_inv), 2.0f * this.m10 * _t0_inv, 2.0f * this.m11 * _t1_inv, 0.5f * this.m12, Math.fma(0.5f, this.m12, this.m13 - this.m10 * _t2 * _t0_inv - this.m11 * _t3 * _t1_inv), 2.0f * this.m20 * _t0_inv, 2.0f * this.m21 * _t1_inv, 0.5f * this.m22, Math.fma(0.5f, this.m22, this.m23 - this.m20 * _t2 * _t0_inv - this.m21 * _t3 * _t1_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4((this.m00 + this.m00) * _t0_inv, (this.m01 + this.m01) * _t1_inv, 0.5f * this.m02, Math.fma(0.5f, this.m02, this.m03 - this.m00 * _t2 * _t0_inv - this.m01 * _t3 * _t1_inv), (this.m10 + this.m10) * _t0_inv, (this.m11 + this.m11) * _t1_inv, 0.5f * this.m12, Math.fma(0.5f, this.m12, this.m13 - this.m10 * _t2 * _t0_inv - this.m11 * _t3 * _t1_inv), (this.m20 + this.m20) * _t0_inv, (this.m21 + this.m21) * _t1_inv, 0.5f * this.m22, Math.fma(0.5f, this.m22, this.m23 - this.m20 * _t2 * _t0_inv - this.m21 * _t3 * _t1_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
     /** Private per-column body of {@code ortho2D_zo_lh_general}; reached only through it. */
     private Float4 ortho2D_zo_lh_general_s39fc0d01_c0(float _t0_inv) {
-        return new Float4(2.0f * this.m00 * _t0_inv, 2.0f * this.m10 * _t0_inv, 2.0f * this.m20 * _t0_inv, 2.0f * this.m30 * _t0_inv);
+        return new Float4((this.m00 + this.m00) * _t0_inv, (this.m10 + this.m10) * _t0_inv, (this.m20 + this.m20) * _t0_inv, (this.m30 + this.m30) * _t0_inv);
     }
 
     /** Private per-column body of {@code ortho2D_zo_lh_general}; reached only through it. */
     private Float4 ortho2D_zo_lh_general_s39fc0d01_c1(float _t1_inv) {
-        return new Float4(2.0f * this.m01 * _t1_inv, 2.0f * this.m11 * _t1_inv, 2.0f * this.m21 * _t1_inv, 2.0f * this.m31 * _t1_inv);
+        return new Float4((this.m01 + this.m01) * _t1_inv, (this.m11 + this.m11) * _t1_inv, (this.m21 + this.m21) * _t1_inv, (this.m31 + this.m31) * _t1_inv);
     }
 
     /** Private per-column body of {@code ortho2D_zo_lh_general}; reached only through it. */
@@ -19133,7 +19193,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, 2.0f * _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, -((left + right) * _t0_inv), 0.0f, _t1_inv + _t1_inv, 0.0f, -((bottom + top) * _t1_inv), 0.0f, 0.0f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -19147,7 +19207,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        return new Float4x4(2.0f * _t0_inv, 0.0f, 0.0f, this.m03 - (left + right) * _t0_inv, 0.0f, 2.0f * _t1_inv, 0.0f, this.m13 - (bottom + top) * _t1_inv, 0.0f, 0.0f, -0.5f, 0.5f + this.m23, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(_t0_inv + _t0_inv, 0.0f, 0.0f, this.m03 - (left + right) * _t0_inv, 0.0f, _t1_inv + _t1_inv, 0.0f, this.m13 - (bottom + top) * _t1_inv, 0.0f, 0.0f, -0.5f, 0.5f + this.m23, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -19163,17 +19223,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1_inv = 1.0f / _t1;
         float _t2 = left + right;
         float _t3 = bottom + top;
-        return new Float4x4(2.0f * this.m00 * _t0_inv, 2.0f * this.m01 * _t1_inv, -0.5f * this.m02, Math.fma(0.5f, this.m02, this.m03 - this.m00 * _t2 * _t0_inv - this.m01 * _t3 * _t1_inv), 2.0f * this.m10 * _t0_inv, 2.0f * this.m11 * _t1_inv, -0.5f * this.m12, Math.fma(0.5f, this.m12, this.m13 - this.m10 * _t2 * _t0_inv - this.m11 * _t3 * _t1_inv), 2.0f * this.m20 * _t0_inv, 2.0f * this.m21 * _t1_inv, -0.5f * this.m22, Math.fma(0.5f, this.m22, this.m23 - this.m20 * _t2 * _t0_inv - this.m21 * _t3 * _t1_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4((this.m00 + this.m00) * _t0_inv, (this.m01 + this.m01) * _t1_inv, -0.5f * this.m02, Math.fma(0.5f, this.m02, this.m03 - this.m00 * _t2 * _t0_inv - this.m01 * _t3 * _t1_inv), (this.m10 + this.m10) * _t0_inv, (this.m11 + this.m11) * _t1_inv, -0.5f * this.m12, Math.fma(0.5f, this.m12, this.m13 - this.m10 * _t2 * _t0_inv - this.m11 * _t3 * _t1_inv), (this.m20 + this.m20) * _t0_inv, (this.m21 + this.m21) * _t1_inv, -0.5f * this.m22, Math.fma(0.5f, this.m22, this.m23 - this.m20 * _t2 * _t0_inv - this.m21 * _t3 * _t1_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
     /** Private per-column body of {@code ortho2D_zo_rh_general}; reached only through it. */
     private Float4 ortho2D_zo_rh_general_s39fc0d01_c0(float _t0_inv) {
-        return new Float4(2.0f * this.m00 * _t0_inv, 2.0f * this.m10 * _t0_inv, 2.0f * this.m20 * _t0_inv, 2.0f * this.m30 * _t0_inv);
+        return new Float4((this.m00 + this.m00) * _t0_inv, (this.m10 + this.m10) * _t0_inv, (this.m20 + this.m20) * _t0_inv, (this.m30 + this.m30) * _t0_inv);
     }
 
     /** Private per-column body of {@code ortho2D_zo_rh_general}; reached only through it. */
     private Float4 ortho2D_zo_rh_general_s39fc0d01_c1(float _t1_inv) {
-        return new Float4(2.0f * this.m01 * _t1_inv, 2.0f * this.m11 * _t1_inv, 2.0f * this.m21 * _t1_inv, 2.0f * this.m31 * _t1_inv);
+        return new Float4((this.m01 + this.m01) * _t1_inv, (this.m11 + this.m11) * _t1_inv, (this.m21 + this.m21) * _t1_inv, (this.m31 + this.m31) * _t1_inv);
     }
 
     /** Private per-column body of {@code ortho2D_zo_rh_general}; reached only through it. */
@@ -19396,7 +19456,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t247_inv = 1.0f / _t247;
         float _t248 = _t244 - _t245;
         float _t248_inv = 1.0f / _t248;
-        return new Float4x4(2.0f * _t246_inv, 0.0f, 0.0f, -((_t241 + _t240) * _t246_inv), 0.0f, 2.0f * _t247_inv, 0.0f, -((_t243 + _t242) * _t247_inv), 0.0f, 0.0f, 2.0f * _t248_inv, -((_t245 + _t244) * _t248_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t246_inv + _t246_inv, 0.0f, 0.0f, -((_t241 + _t240) * _t246_inv), 0.0f, _t247_inv + _t247_inv, 0.0f, -((_t243 + _t242) * _t247_inv), 0.0f, 0.0f, _t248_inv + _t248_inv, -((_t245 + _t244) * _t248_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_lh_identity}; reached only through it. */
@@ -19454,7 +19514,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t106_inv = 1.0f / _t106;
         float _t107 = _t103 - _t104;
         float _t107_inv = 1.0f / _t107;
-        return new Float4x4(2.0f * _t105_inv, 0.0f, 0.0f, -((_t100 + _t99) * _t105_inv), 0.0f, 2.0f * _t106_inv, 0.0f, -((_t102 + _t101) * _t106_inv), 0.0f, 0.0f, 2.0f * _t107_inv, -((_t104 + _t103) * _t107_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t105_inv + _t105_inv, 0.0f, 0.0f, -((_t100 + _t99) * _t105_inv), 0.0f, _t106_inv + _t106_inv, 0.0f, -((_t102 + _t101) * _t106_inv), 0.0f, 0.0f, _t107_inv + _t107_inv, -((_t104 + _t103) * _t107_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_lh_translation}; reached only through it. */
@@ -19516,7 +19576,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t91_inv = 1.0f / _t91;
         float _t92 = _t88 - _t89;
         float _t92_inv = 1.0f / _t92;
-        return new Float4x4(2.0f * _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, 2.0f * _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, 2.0f * _t92_inv, -((_t89 + _t88) * _t92_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t90_inv + _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, _t91_inv + _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, _t92_inv + _t92_inv, -((_t89 + _t88) * _t92_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_lh_orthogonal}; reached only through it. */
@@ -19580,7 +19640,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t178_inv = 1.0f / _t178;
         float _t179 = _t175 - _t176;
         float _t179_inv = 1.0f / _t179;
-        return new Float4x4(2.0f * _t177_inv, 0.0f, 0.0f, -((_t172 + _t171) * _t177_inv), 0.0f, 2.0f * _t178_inv, 0.0f, -((_t174 + _t173) * _t178_inv), 0.0f, 0.0f, 2.0f * _t179_inv, -((_t176 + _t175) * _t179_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t177_inv + _t177_inv, 0.0f, 0.0f, -((_t172 + _t171) * _t177_inv), 0.0f, _t178_inv + _t178_inv, 0.0f, -((_t174 + _t173) * _t178_inv), 0.0f, 0.0f, _t179_inv + _t179_inv, -((_t176 + _t175) * _t179_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -19595,17 +19655,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_no_lh_identity_translation}; reached only through it. */
     private Float4 orthoCrop_no_lh_identity_translation_s5244511_c0(float _t42_inv) {
-        return new Float4(2.0f * _t42_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t42_inv + _t42_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_lh_identity_translation}; reached only through it. */
     private Float4 orthoCrop_no_lh_identity_translation_s5244511_c1(float _t41_inv) {
-        return new Float4(0.0f, 2.0f * _t41_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t41_inv + _t41_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_lh_identity_translation}; reached only through it. */
     private Float4 orthoCrop_no_lh_identity_translation_s5244511_c2(float _t40_inv) {
-        return new Float4(0.0f, 0.0f, 2.0f * _t40_inv, 0.0f);
+        return new Float4(0.0f, 0.0f, _t40_inv + _t40_inv, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_lh_identity_translation}; reached only through it. */
@@ -19643,17 +19703,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_no_lh_translation_identity}; reached only through it. */
     private Float4 orthoCrop_no_lh_translation_identity_s5244511_c0(float _t42_inv) {
-        return new Float4(2.0f * _t42_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t42_inv + _t42_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_lh_translation_identity}; reached only through it. */
     private Float4 orthoCrop_no_lh_translation_identity_s5244511_c1(float _t41_inv) {
-        return new Float4(0.0f, 2.0f * _t41_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t41_inv + _t41_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_lh_translation_identity}; reached only through it. */
     private Float4 orthoCrop_no_lh_translation_identity_s5244511_c2(float _t40_inv) {
-        return new Float4(0.0f, 0.0f, 2.0f * _t40_inv, 0.0f);
+        return new Float4(0.0f, 0.0f, _t40_inv + _t40_inv, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_lh_translation_identity}; reached only through it. */
@@ -19691,17 +19751,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_no_lh_translation_translation}; reached only through it. */
     private Float4 orthoCrop_no_lh_translation_translation_s5244511_c0(float _t48_inv) {
-        return new Float4(2.0f * _t48_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t48_inv + _t48_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_lh_translation_translation}; reached only through it. */
     private Float4 orthoCrop_no_lh_translation_translation_s5244511_c1(float _t47_inv) {
-        return new Float4(0.0f, 2.0f * _t47_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t47_inv + _t47_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_lh_translation_translation}; reached only through it. */
     private Float4 orthoCrop_no_lh_translation_translation_s5244511_c2(float _t46_inv) {
-        return new Float4(0.0f, 0.0f, 2.0f * _t46_inv, 0.0f);
+        return new Float4(0.0f, 0.0f, _t46_inv + _t46_inv, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_lh_translation_translation}; reached only through it. */
@@ -19792,7 +19852,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t106_inv = 1.0f / _t106;
         float _t107 = _t103 - _t104;
         float _t107_inv = 1.0f / _t107;
-        return new Float4x4(2.0f * _t105_inv, 0.0f, 0.0f, -((_t100 + _t99) * _t105_inv), 0.0f, 2.0f * _t106_inv, 0.0f, -((_t102 + _t101) * _t106_inv), 0.0f, 0.0f, 2.0f * _t107_inv, -((_t104 + _t103) * _t107_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t105_inv + _t105_inv, 0.0f, 0.0f, -((_t100 + _t99) * _t105_inv), 0.0f, _t106_inv + _t106_inv, 0.0f, -((_t102 + _t101) * _t106_inv), 0.0f, 0.0f, _t107_inv + _t107_inv, -((_t104 + _t103) * _t107_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_lh_orthogonal_translation}; reached only through it. */
@@ -19850,7 +19910,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t130_inv = 1.0f / _t130;
         float _t131 = _t127 - _t128;
         float _t131_inv = 1.0f / _t131;
-        return new Float4x4(2.0f * _t129_inv, 0.0f, 0.0f, -((_t124 + _t123) * _t129_inv), 0.0f, 2.0f * _t130_inv, 0.0f, -((_t126 + _t125) * _t130_inv), 0.0f, 0.0f, 2.0f * _t131_inv, -((_t128 + _t127) * _t131_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t129_inv + _t129_inv, 0.0f, 0.0f, -((_t124 + _t123) * _t129_inv), 0.0f, _t130_inv + _t130_inv, 0.0f, -((_t126 + _t125) * _t130_inv), 0.0f, 0.0f, _t131_inv + _t131_inv, -((_t128 + _t127) * _t131_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_lh_general_identity}; reached only through it. */
@@ -19916,7 +19976,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t151_inv = 1.0f / _t151;
         float _t152 = _t148 - _t149;
         float _t152_inv = 1.0f / _t152;
-        return new Float4x4(2.0f * _t150_inv, 0.0f, 0.0f, -((_t145 + _t144) * _t150_inv), 0.0f, 2.0f * _t151_inv, 0.0f, -((_t147 + _t146) * _t151_inv), 0.0f, 0.0f, 2.0f * _t152_inv, -((_t149 + _t148) * _t152_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t150_inv + _t150_inv, 0.0f, 0.0f, -((_t145 + _t144) * _t150_inv), 0.0f, _t151_inv + _t151_inv, 0.0f, -((_t147 + _t146) * _t151_inv), 0.0f, 0.0f, _t152_inv + _t152_inv, -((_t149 + _t148) * _t152_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_lh_general_translation}; reached only through it. */
@@ -19982,7 +20042,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t175_inv = 1.0f / _t175;
         float _t176 = _t172 - _t173;
         float _t176_inv = 1.0f / _t176;
-        return new Float4x4(2.0f * _t174_inv, 0.0f, 0.0f, -((_t169 + _t168) * _t174_inv), 0.0f, 2.0f * _t175_inv, 0.0f, -((_t171 + _t170) * _t175_inv), 0.0f, 0.0f, 2.0f * _t176_inv, -((_t173 + _t172) * _t176_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t174_inv + _t174_inv, 0.0f, 0.0f, -((_t169 + _t168) * _t174_inv), 0.0f, _t175_inv + _t175_inv, 0.0f, -((_t171 + _t170) * _t175_inv), 0.0f, 0.0f, _t176_inv + _t176_inv, -((_t173 + _t172) * _t176_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -20092,7 +20152,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t247_inv = 1.0f / _t247;
         float _t248 = _t244 - _t245;
         float _t248_inv = 1.0f / _t248;
-        return new Float4x4(2.0f * _t246_inv, 0.0f, 0.0f, -((_t241 + _t240) * _t246_inv), 0.0f, 2.0f * _t247_inv, 0.0f, -((_t243 + _t242) * _t247_inv), 0.0f, 0.0f, -2.0f * _t248_inv, -((-_t245 - _t244) * _t248_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t246_inv + _t246_inv, 0.0f, 0.0f, -((_t241 + _t240) * _t246_inv), 0.0f, _t247_inv + _t247_inv, 0.0f, -((_t243 + _t242) * _t247_inv), 0.0f, 0.0f, -2.0f * _t248_inv, -((-_t245 - _t244) * _t248_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_rh_identity}; reached only through it. */
@@ -20150,7 +20210,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t106_inv = 1.0f / _t106;
         float _t107 = _t103 - _t104;
         float _t107_inv = 1.0f / _t107;
-        return new Float4x4(2.0f * _t105_inv, 0.0f, 0.0f, -((_t100 + _t99) * _t105_inv), 0.0f, 2.0f * _t106_inv, 0.0f, -((_t102 + _t101) * _t106_inv), 0.0f, 0.0f, -2.0f * _t107_inv, -((-_t104 - _t103) * _t107_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t105_inv + _t105_inv, 0.0f, 0.0f, -((_t100 + _t99) * _t105_inv), 0.0f, _t106_inv + _t106_inv, 0.0f, -((_t102 + _t101) * _t106_inv), 0.0f, 0.0f, -2.0f * _t107_inv, -((-_t104 - _t103) * _t107_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_rh_translation}; reached only through it. */
@@ -20212,7 +20272,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t91_inv = 1.0f / _t91;
         float _t92 = _t88 - _t89;
         float _t92_inv = 1.0f / _t92;
-        return new Float4x4(2.0f * _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, 2.0f * _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, -2.0f * _t92_inv, -((-_t89 - _t88) * _t92_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t90_inv + _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, _t91_inv + _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, -2.0f * _t92_inv, -((-_t89 - _t88) * _t92_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_rh_orthogonal}; reached only through it. */
@@ -20276,7 +20336,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t178_inv = 1.0f / _t178;
         float _t179 = _t175 - _t176;
         float _t179_inv = 1.0f / _t179;
-        return new Float4x4(2.0f * _t177_inv, 0.0f, 0.0f, -((_t172 + _t171) * _t177_inv), 0.0f, 2.0f * _t178_inv, 0.0f, -((_t174 + _t173) * _t178_inv), 0.0f, 0.0f, -2.0f * _t179_inv, -((-_t176 - _t175) * _t179_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t177_inv + _t177_inv, 0.0f, 0.0f, -((_t172 + _t171) * _t177_inv), 0.0f, _t178_inv + _t178_inv, 0.0f, -((_t174 + _t173) * _t178_inv), 0.0f, 0.0f, -2.0f * _t179_inv, -((-_t176 - _t175) * _t179_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -20291,12 +20351,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_no_rh_identity_translation}; reached only through it. */
     private Float4 orthoCrop_no_rh_identity_translation_s5244511_c0(float _t42_inv) {
-        return new Float4(2.0f * _t42_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t42_inv + _t42_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_rh_identity_translation}; reached only through it. */
     private Float4 orthoCrop_no_rh_identity_translation_s5244511_c1(float _t41_inv) {
-        return new Float4(0.0f, 2.0f * _t41_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t41_inv + _t41_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_rh_identity_translation}; reached only through it. */
@@ -20339,12 +20399,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_no_rh_translation_identity}; reached only through it. */
     private Float4 orthoCrop_no_rh_translation_identity_s5244511_c0(float _t42_inv) {
-        return new Float4(2.0f * _t42_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t42_inv + _t42_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_rh_translation_identity}; reached only through it. */
     private Float4 orthoCrop_no_rh_translation_identity_s5244511_c1(float _t41_inv) {
-        return new Float4(0.0f, 2.0f * _t41_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t41_inv + _t41_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_rh_translation_identity}; reached only through it. */
@@ -20387,12 +20447,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_no_rh_translation_translation}; reached only through it. */
     private Float4 orthoCrop_no_rh_translation_translation_s5244511_c0(float _t48_inv) {
-        return new Float4(2.0f * _t48_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t48_inv + _t48_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_rh_translation_translation}; reached only through it. */
     private Float4 orthoCrop_no_rh_translation_translation_s5244511_c1(float _t47_inv) {
-        return new Float4(0.0f, 2.0f * _t47_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t47_inv + _t47_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_rh_translation_translation}; reached only through it. */
@@ -20488,7 +20548,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t106_inv = 1.0f / _t106;
         float _t107 = _t103 - _t104;
         float _t107_inv = 1.0f / _t107;
-        return new Float4x4(2.0f * _t105_inv, 0.0f, 0.0f, -((_t100 + _t99) * _t105_inv), 0.0f, 2.0f * _t106_inv, 0.0f, -((_t102 + _t101) * _t106_inv), 0.0f, 0.0f, -2.0f * _t107_inv, -((-_t104 - _t103) * _t107_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t105_inv + _t105_inv, 0.0f, 0.0f, -((_t100 + _t99) * _t105_inv), 0.0f, _t106_inv + _t106_inv, 0.0f, -((_t102 + _t101) * _t106_inv), 0.0f, 0.0f, -2.0f * _t107_inv, -((-_t104 - _t103) * _t107_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_rh_orthogonal_translation}; reached only through it. */
@@ -20546,7 +20606,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t130_inv = 1.0f / _t130;
         float _t131 = _t127 - _t128;
         float _t131_inv = 1.0f / _t131;
-        return new Float4x4(2.0f * _t129_inv, 0.0f, 0.0f, -((_t124 + _t123) * _t129_inv), 0.0f, 2.0f * _t130_inv, 0.0f, -((_t126 + _t125) * _t130_inv), 0.0f, 0.0f, -2.0f * _t131_inv, -((-_t128 - _t127) * _t131_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t129_inv + _t129_inv, 0.0f, 0.0f, -((_t124 + _t123) * _t129_inv), 0.0f, _t130_inv + _t130_inv, 0.0f, -((_t126 + _t125) * _t130_inv), 0.0f, 0.0f, -2.0f * _t131_inv, -((-_t128 - _t127) * _t131_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_rh_general_identity}; reached only through it. */
@@ -20612,7 +20672,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t151_inv = 1.0f / _t151;
         float _t152 = _t148 - _t149;
         float _t152_inv = 1.0f / _t152;
-        return new Float4x4(2.0f * _t150_inv, 0.0f, 0.0f, -((_t145 + _t144) * _t150_inv), 0.0f, 2.0f * _t151_inv, 0.0f, -((_t147 + _t146) * _t151_inv), 0.0f, 0.0f, -2.0f * _t152_inv, -((-_t149 - _t148) * _t152_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t150_inv + _t150_inv, 0.0f, 0.0f, -((_t145 + _t144) * _t150_inv), 0.0f, _t151_inv + _t151_inv, 0.0f, -((_t147 + _t146) * _t151_inv), 0.0f, 0.0f, -2.0f * _t152_inv, -((-_t149 - _t148) * _t152_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_rh_general_translation}; reached only through it. */
@@ -20678,7 +20738,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t175_inv = 1.0f / _t175;
         float _t176 = _t172 - _t173;
         float _t176_inv = 1.0f / _t176;
-        return new Float4x4(2.0f * _t174_inv, 0.0f, 0.0f, -((_t169 + _t168) * _t174_inv), 0.0f, 2.0f * _t175_inv, 0.0f, -((_t171 + _t170) * _t175_inv), 0.0f, 0.0f, -2.0f * _t176_inv, -((-_t173 - _t172) * _t176_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t174_inv + _t174_inv, 0.0f, 0.0f, -((_t169 + _t168) * _t174_inv), 0.0f, _t175_inv + _t175_inv, 0.0f, -((_t171 + _t170) * _t175_inv), 0.0f, 0.0f, -2.0f * _t176_inv, -((-_t173 - _t172) * _t176_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -20800,7 +20860,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t231_inv = 1.0f / _t231;
         float _t232 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t229;
         float _t232_inv = 1.0f / _t232;
-        return new Float4x4(2.0f * _t230_inv, 0.0f, 0.0f, -((_t225 + _t224) * _t230_inv), 0.0f, 2.0f * _t231_inv, 0.0f, -((_t227 + _t226) * _t231_inv), 0.0f, 0.0f, 1.0f * _t232_inv, -(_t229 * _t232_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t230_inv + _t230_inv, 0.0f, 0.0f, -((_t225 + _t224) * _t230_inv), 0.0f, _t231_inv + _t231_inv, 0.0f, -((_t227 + _t226) * _t231_inv), 0.0f, 0.0f, 1.0f * _t232_inv, -(_t229 * _t232_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_identity}; reached only through it. */
@@ -20857,7 +20917,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t94_inv = 1.0f / _t94;
         float _t95 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t92;
         float _t95_inv = 1.0f / _t95;
-        return new Float4x4(2.0f * _t93_inv, 0.0f, 0.0f, -((_t88 + _t87) * _t93_inv), 0.0f, 2.0f * _t94_inv, 0.0f, -((_t90 + _t89) * _t94_inv), 0.0f, 0.0f, 1.0f * _t95_inv, -(_t92 * _t95_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t93_inv + _t93_inv, 0.0f, 0.0f, -((_t88 + _t87) * _t93_inv), 0.0f, _t94_inv + _t94_inv, 0.0f, -((_t90 + _t89) * _t94_inv), 0.0f, 0.0f, 1.0f * _t95_inv, -(_t92 * _t95_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_translation}; reached only through it. */
@@ -20917,7 +20977,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t90_inv = 1.0f / _t90;
         float _t91 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t88;
         float _t91_inv = 1.0f / _t91;
-        return new Float4x4(2.0f * _t89_inv, 0.0f, 0.0f, -((_t84 + _t83) * _t89_inv), 0.0f, 2.0f * _t90_inv, 0.0f, -((_t86 + _t85) * _t90_inv), 0.0f, 0.0f, 1.0f * _t91_inv, -(_t88 * _t91_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t89_inv + _t89_inv, 0.0f, 0.0f, -((_t84 + _t83) * _t89_inv), 0.0f, _t90_inv + _t90_inv, 0.0f, -((_t86 + _t85) * _t90_inv), 0.0f, 0.0f, 1.0f * _t91_inv, -(_t88 * _t91_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_orthogonal}; reached only through it. */
@@ -20980,7 +21040,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t166_inv = 1.0f / _t166;
         float _t167 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t164;
         float _t167_inv = 1.0f / _t167;
-        return new Float4x4(2.0f * _t165_inv, 0.0f, 0.0f, -((_t160 + _t159) * _t165_inv), 0.0f, 2.0f * _t166_inv, 0.0f, -((_t162 + _t161) * _t166_inv), 0.0f, 0.0f, 1.0f * _t167_inv, -(_t164 * _t167_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t165_inv + _t165_inv, 0.0f, 0.0f, -((_t160 + _t159) * _t165_inv), 0.0f, _t166_inv + _t166_inv, 0.0f, -((_t162 + _t161) * _t166_inv), 0.0f, 0.0f, 1.0f * _t167_inv, -(_t164 * _t167_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -20995,12 +21055,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_zo_lh_identity_translation}; reached only through it. */
     private Float4 orthoCrop_zo_lh_identity_translation_s5244511_c0(float _t41_inv) {
-        return new Float4(2.0f * _t41_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t41_inv + _t41_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_lh_identity_translation}; reached only through it. */
     private Float4 orthoCrop_zo_lh_identity_translation_s5244511_c1(float _t40_inv) {
-        return new Float4(0.0f, 2.0f * _t40_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t40_inv + _t40_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_lh_identity_translation}; reached only through it. */
@@ -21041,12 +21101,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_identity}; reached only through it. */
     private Float4 orthoCrop_zo_lh_translation_identity_s5244511_c0(float _t41_inv) {
-        return new Float4(2.0f * _t41_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t41_inv + _t41_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_identity}; reached only through it. */
     private Float4 orthoCrop_zo_lh_translation_identity_s5244511_c1(float _t40_inv) {
-        return new Float4(0.0f, 2.0f * _t40_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t40_inv + _t40_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_identity}; reached only through it. */
@@ -21087,12 +21147,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_translation}; reached only through it. */
     private Float4 orthoCrop_zo_lh_translation_translation_s5244511_c0(float _t47_inv) {
-        return new Float4(2.0f * _t47_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t47_inv + _t47_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_translation}; reached only through it. */
     private Float4 orthoCrop_zo_lh_translation_translation_s5244511_c1(float _t46_inv) {
-        return new Float4(0.0f, 2.0f * _t46_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t46_inv + _t46_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_translation}; reached only through it. */
@@ -21186,7 +21246,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t94_inv = 1.0f / _t94;
         float _t95 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t92;
         float _t95_inv = 1.0f / _t95;
-        return new Float4x4(2.0f * _t93_inv, 0.0f, 0.0f, -((_t88 + _t87) * _t93_inv), 0.0f, 2.0f * _t94_inv, 0.0f, -((_t90 + _t89) * _t94_inv), 0.0f, 0.0f, 1.0f * _t95_inv, -(_t92 * _t95_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t93_inv + _t93_inv, 0.0f, 0.0f, -((_t88 + _t87) * _t93_inv), 0.0f, _t94_inv + _t94_inv, 0.0f, -((_t90 + _t89) * _t94_inv), 0.0f, 0.0f, 1.0f * _t95_inv, -(_t92 * _t95_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_orthogonal_translation}; reached only through it. */
@@ -21243,7 +21303,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t118_inv = 1.0f / _t118;
         float _t119 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t116;
         float _t119_inv = 1.0f / _t119;
-        return new Float4x4(2.0f * _t117_inv, 0.0f, 0.0f, -((_t112 + _t111) * _t117_inv), 0.0f, 2.0f * _t118_inv, 0.0f, -((_t114 + _t113) * _t118_inv), 0.0f, 0.0f, 1.0f * _t119_inv, -(_t116 * _t119_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t117_inv + _t117_inv, 0.0f, 0.0f, -((_t112 + _t111) * _t117_inv), 0.0f, _t118_inv + _t118_inv, 0.0f, -((_t114 + _t113) * _t118_inv), 0.0f, 0.0f, 1.0f * _t119_inv, -(_t116 * _t119_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_general_identity}; reached only through it. */
@@ -21308,7 +21368,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t135_inv = 1.0f / _t135;
         float _t136 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t133;
         float _t136_inv = 1.0f / _t136;
-        return new Float4x4(2.0f * _t134_inv, 0.0f, 0.0f, -((_t129 + _t128) * _t134_inv), 0.0f, 2.0f * _t135_inv, 0.0f, -((_t131 + _t130) * _t135_inv), 0.0f, 0.0f, 1.0f * _t136_inv, -(_t133 * _t136_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t134_inv + _t134_inv, 0.0f, 0.0f, -((_t129 + _t128) * _t134_inv), 0.0f, _t135_inv + _t135_inv, 0.0f, -((_t131 + _t130) * _t135_inv), 0.0f, 0.0f, 1.0f * _t136_inv, -(_t133 * _t136_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_general_translation}; reached only through it. */
@@ -21373,7 +21433,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t159_inv = 1.0f / _t159;
         float _t160 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t157;
         float _t160_inv = 1.0f / _t160;
-        return new Float4x4(2.0f * _t158_inv, 0.0f, 0.0f, -((_t153 + _t152) * _t158_inv), 0.0f, 2.0f * _t159_inv, 0.0f, -((_t155 + _t154) * _t159_inv), 0.0f, 0.0f, 1.0f * _t160_inv, -(_t157 * _t160_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t158_inv + _t158_inv, 0.0f, 0.0f, -((_t153 + _t152) * _t158_inv), 0.0f, _t159_inv + _t159_inv, 0.0f, -((_t155 + _t154) * _t159_inv), 0.0f, 0.0f, 1.0f * _t160_inv, -(_t157 * _t160_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -21482,7 +21542,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t231_inv = 1.0f / _t231;
         float _t232 = _t228 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         float _t232_inv = 1.0f / _t232;
-        return new Float4x4(2.0f * _t230_inv, 0.0f, 0.0f, -((_t225 + _t224) * _t230_inv), 0.0f, 2.0f * _t231_inv, 0.0f, -((_t227 + _t226) * _t231_inv), 0.0f, 0.0f, -1.0f * _t232_inv, _t228 * _t232_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t230_inv + _t230_inv, 0.0f, 0.0f, -((_t225 + _t224) * _t230_inv), 0.0f, _t231_inv + _t231_inv, 0.0f, -((_t227 + _t226) * _t231_inv), 0.0f, 0.0f, -1.0f * _t232_inv, _t228 * _t232_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_identity}; reached only through it. */
@@ -21539,7 +21599,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t94_inv = 1.0f / _t94;
         float _t95 = _t91 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         float _t95_inv = 1.0f / _t95;
-        return new Float4x4(2.0f * _t93_inv, 0.0f, 0.0f, -((_t88 + _t87) * _t93_inv), 0.0f, 2.0f * _t94_inv, 0.0f, -((_t90 + _t89) * _t94_inv), 0.0f, 0.0f, -1.0f * _t95_inv, _t91 * _t95_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t93_inv + _t93_inv, 0.0f, 0.0f, -((_t88 + _t87) * _t93_inv), 0.0f, _t94_inv + _t94_inv, 0.0f, -((_t90 + _t89) * _t94_inv), 0.0f, 0.0f, -1.0f * _t95_inv, _t91 * _t95_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_translation}; reached only through it. */
@@ -21599,7 +21659,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t90_inv = 1.0f / _t90;
         float _t91 = _t87 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         float _t91_inv = 1.0f / _t91;
-        return new Float4x4(2.0f * _t89_inv, 0.0f, 0.0f, -((_t84 + _t83) * _t89_inv), 0.0f, 2.0f * _t90_inv, 0.0f, -((_t86 + _t85) * _t90_inv), 0.0f, 0.0f, -1.0f * _t91_inv, _t87 * _t91_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t89_inv + _t89_inv, 0.0f, 0.0f, -((_t84 + _t83) * _t89_inv), 0.0f, _t90_inv + _t90_inv, 0.0f, -((_t86 + _t85) * _t90_inv), 0.0f, 0.0f, -1.0f * _t91_inv, _t87 * _t91_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_orthogonal}; reached only through it. */
@@ -21662,7 +21722,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t166_inv = 1.0f / _t166;
         float _t167 = _t163 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         float _t167_inv = 1.0f / _t167;
-        return new Float4x4(2.0f * _t165_inv, 0.0f, 0.0f, -((_t160 + _t159) * _t165_inv), 0.0f, 2.0f * _t166_inv, 0.0f, -((_t162 + _t161) * _t166_inv), 0.0f, 0.0f, -1.0f * _t167_inv, _t163 * _t167_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t165_inv + _t165_inv, 0.0f, 0.0f, -((_t160 + _t159) * _t165_inv), 0.0f, _t166_inv + _t166_inv, 0.0f, -((_t162 + _t161) * _t166_inv), 0.0f, 0.0f, -1.0f * _t167_inv, _t163 * _t167_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -21677,12 +21737,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_zo_rh_identity_translation}; reached only through it. */
     private Float4 orthoCrop_zo_rh_identity_translation_s5244511_c0(float _t41_inv) {
-        return new Float4(2.0f * _t41_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t41_inv + _t41_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_rh_identity_translation}; reached only through it. */
     private Float4 orthoCrop_zo_rh_identity_translation_s5244511_c1(float _t40_inv) {
-        return new Float4(0.0f, 2.0f * _t40_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t40_inv + _t40_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_rh_identity_translation}; reached only through it. */
@@ -21723,12 +21783,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_identity}; reached only through it. */
     private Float4 orthoCrop_zo_rh_translation_identity_s5244511_c0(float _t41_inv) {
-        return new Float4(2.0f * _t41_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t41_inv + _t41_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_identity}; reached only through it. */
     private Float4 orthoCrop_zo_rh_translation_identity_s5244511_c1(float _t40_inv) {
-        return new Float4(0.0f, 2.0f * _t40_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t40_inv + _t40_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_identity}; reached only through it. */
@@ -21769,12 +21829,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_translation}; reached only through it. */
     private Float4 orthoCrop_zo_rh_translation_translation_s5244511_c0(float _t47_inv) {
-        return new Float4(2.0f * _t47_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t47_inv + _t47_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_translation}; reached only through it. */
     private Float4 orthoCrop_zo_rh_translation_translation_s5244511_c1(float _t46_inv) {
-        return new Float4(0.0f, 2.0f * _t46_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t46_inv + _t46_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_translation}; reached only through it. */
@@ -21868,7 +21928,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t94_inv = 1.0f / _t94;
         float _t95 = _t91 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         float _t95_inv = 1.0f / _t95;
-        return new Float4x4(2.0f * _t93_inv, 0.0f, 0.0f, -((_t88 + _t87) * _t93_inv), 0.0f, 2.0f * _t94_inv, 0.0f, -((_t90 + _t89) * _t94_inv), 0.0f, 0.0f, -1.0f * _t95_inv, _t91 * _t95_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t93_inv + _t93_inv, 0.0f, 0.0f, -((_t88 + _t87) * _t93_inv), 0.0f, _t94_inv + _t94_inv, 0.0f, -((_t90 + _t89) * _t94_inv), 0.0f, 0.0f, -1.0f * _t95_inv, _t91 * _t95_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_orthogonal_translation}; reached only through it. */
@@ -21925,7 +21985,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t118_inv = 1.0f / _t118;
         float _t119 = _t115 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         float _t119_inv = 1.0f / _t119;
-        return new Float4x4(2.0f * _t117_inv, 0.0f, 0.0f, -((_t112 + _t111) * _t117_inv), 0.0f, 2.0f * _t118_inv, 0.0f, -((_t114 + _t113) * _t118_inv), 0.0f, 0.0f, -1.0f * _t119_inv, _t115 * _t119_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t117_inv + _t117_inv, 0.0f, 0.0f, -((_t112 + _t111) * _t117_inv), 0.0f, _t118_inv + _t118_inv, 0.0f, -((_t114 + _t113) * _t118_inv), 0.0f, 0.0f, -1.0f * _t119_inv, _t115 * _t119_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_general_identity}; reached only through it. */
@@ -21990,7 +22050,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t135_inv = 1.0f / _t135;
         float _t136 = _t132 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         float _t136_inv = 1.0f / _t136;
-        return new Float4x4(2.0f * _t134_inv, 0.0f, 0.0f, -((_t129 + _t128) * _t134_inv), 0.0f, 2.0f * _t135_inv, 0.0f, -((_t131 + _t130) * _t135_inv), 0.0f, 0.0f, -1.0f * _t136_inv, _t132 * _t136_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t134_inv + _t134_inv, 0.0f, 0.0f, -((_t129 + _t128) * _t134_inv), 0.0f, _t135_inv + _t135_inv, 0.0f, -((_t131 + _t130) * _t135_inv), 0.0f, 0.0f, -1.0f * _t136_inv, _t132 * _t136_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_general_translation}; reached only through it. */
@@ -22055,7 +22115,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t159_inv = 1.0f / _t159;
         float _t160 = _t156 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         float _t160_inv = 1.0f / _t160;
-        return new Float4x4(2.0f * _t158_inv, 0.0f, 0.0f, -((_t153 + _t152) * _t158_inv), 0.0f, 2.0f * _t159_inv, 0.0f, -((_t155 + _t154) * _t159_inv), 0.0f, 0.0f, -1.0f * _t160_inv, _t156 * _t160_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t158_inv + _t158_inv, 0.0f, 0.0f, -((_t153 + _t152) * _t158_inv), 0.0f, _t159_inv + _t159_inv, 0.0f, -((_t155 + _t154) * _t159_inv), 0.0f, 0.0f, -1.0f * _t160_inv, _t156 * _t160_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -22294,7 +22354,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t223_inv = 1.0f / _t223;
         float _t224 = _t220 - _t221;
         float _t224_inv = 1.0f / _t224;
-        return new Float4x4(2.0f * _t222_inv, 0.0f, 0.0f, -((_t217 + _t216) * _t222_inv), 0.0f, 2.0f * _t223_inv, 0.0f, -((_t219 + _t218) * _t223_inv), 0.0f, 0.0f, 2.0f * _t224_inv, -((_t221 + _t220) * _t224_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t222_inv + _t222_inv, 0.0f, 0.0f, -((_t217 + _t216) * _t222_inv), 0.0f, _t223_inv + _t223_inv, 0.0f, -((_t219 + _t218) * _t223_inv), 0.0f, 0.0f, _t224_inv + _t224_inv, -((_t221 + _t220) * _t224_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_lh_identity}; reached only through it. */
@@ -22355,7 +22415,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t88_inv = 1.0f / _t88;
         float _t89 = _t85 - _t86;
         float _t89_inv = 1.0f / _t89;
-        return new Float4x4(2.0f * _t87_inv, 0.0f, 0.0f, -((_t82 + _t81) * _t87_inv), 0.0f, 2.0f * _t88_inv, 0.0f, -((_t84 + _t83) * _t88_inv), 0.0f, 0.0f, 2.0f * _t89_inv, -((_t86 + _t85) * _t89_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t87_inv + _t87_inv, 0.0f, 0.0f, -((_t82 + _t81) * _t87_inv), 0.0f, _t88_inv + _t88_inv, 0.0f, -((_t84 + _t83) * _t88_inv), 0.0f, 0.0f, _t89_inv + _t89_inv, -((_t86 + _t85) * _t89_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_lh_translation}; reached only through it. */
@@ -22417,7 +22477,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t91_inv = 1.0f / _t91;
         float _t92 = _t88 - _t89;
         float _t92_inv = 1.0f / _t92;
-        return new Float4x4(2.0f * _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, 2.0f * _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, 2.0f * _t92_inv, -((_t89 + _t88) * _t92_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t90_inv + _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, _t91_inv + _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, _t92_inv + _t92_inv, -((_t89 + _t88) * _t92_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_lh_orthogonal}; reached only through it. */
@@ -22484,7 +22544,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t160_inv = 1.0f / _t160;
         float _t161 = _t157 - _t158;
         float _t161_inv = 1.0f / _t161;
-        return new Float4x4(2.0f * _t159_inv, 0.0f, 0.0f, -((_t154 + _t153) * _t159_inv), 0.0f, 2.0f * _t160_inv, 0.0f, -((_t156 + _t155) * _t160_inv), 0.0f, 0.0f, 2.0f * _t161_inv, -((_t158 + _t157) * _t161_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t159_inv + _t159_inv, 0.0f, 0.0f, -((_t154 + _t153) * _t159_inv), 0.0f, _t160_inv + _t160_inv, 0.0f, -((_t156 + _t155) * _t160_inv), 0.0f, 0.0f, _t161_inv + _t161_inv, -((_t158 + _t157) * _t161_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -22498,22 +22558,22 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t7 = Math.min(Math.min(Math.min(Math.min(minZ, maxZ), maxZ), maxZ), maxZ);
         float _t8 = _t6 - _t7;
         float _t8_inv = 1.0f / _t8;
-        return new Float4x4(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.0f * _t8_inv, -((_t7 + _t6) * _t8_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, _t8_inv + _t8_inv, -((_t7 + _t6) * _t8_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private per-column body of {@code orthoCrop_no_lh_identity_translation}; reached only through it. */
     private Float4 orthoCrop_no_lh_identity_translation_s25f1e53f_c0(float _t42_inv) {
-        return new Float4(2.0f * _t42_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t42_inv + _t42_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_lh_identity_translation}; reached only through it. */
     private Float4 orthoCrop_no_lh_identity_translation_s25f1e53f_c1(float _t41_inv) {
-        return new Float4(0.0f, 2.0f * _t41_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t41_inv + _t41_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_lh_identity_translation}; reached only through it. */
     private Float4 orthoCrop_no_lh_identity_translation_s25f1e53f_c2(float _t40_inv) {
-        return new Float4(0.0f, 0.0f, 2.0f * _t40_inv, 0.0f);
+        return new Float4(0.0f, 0.0f, _t40_inv + _t40_inv, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_lh_identity_translation}; reached only through it. */
@@ -22551,17 +22611,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_no_lh_translation_identity}; reached only through it. */
     private Float4 orthoCrop_no_lh_translation_identity_s25f1e53f_c0(float _t42_inv) {
-        return new Float4(2.0f * _t42_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t42_inv + _t42_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_lh_translation_identity}; reached only through it. */
     private Float4 orthoCrop_no_lh_translation_identity_s25f1e53f_c1(float _t41_inv) {
-        return new Float4(0.0f, 2.0f * _t41_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t41_inv + _t41_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_lh_translation_identity}; reached only through it. */
     private Float4 orthoCrop_no_lh_translation_identity_s25f1e53f_c2(float _t40_inv) {
-        return new Float4(0.0f, 0.0f, 2.0f * _t40_inv, 0.0f);
+        return new Float4(0.0f, 0.0f, _t40_inv + _t40_inv, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_lh_translation_identity}; reached only through it. */
@@ -22599,17 +22659,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_no_lh_translation_translation}; reached only through it. */
     private Float4 orthoCrop_no_lh_translation_translation_s25f1e53f_c0(float _t48_inv) {
-        return new Float4(2.0f * _t48_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t48_inv + _t48_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_lh_translation_translation}; reached only through it. */
     private Float4 orthoCrop_no_lh_translation_translation_s25f1e53f_c1(float _t47_inv) {
-        return new Float4(0.0f, 2.0f * _t47_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t47_inv + _t47_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_lh_translation_translation}; reached only through it. */
     private Float4 orthoCrop_no_lh_translation_translation_s25f1e53f_c2(float _t46_inv) {
-        return new Float4(0.0f, 0.0f, 2.0f * _t46_inv, 0.0f);
+        return new Float4(0.0f, 0.0f, _t46_inv + _t46_inv, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_lh_translation_translation}; reached only through it. */
@@ -22703,7 +22763,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t88_inv = 1.0f / _t88;
         float _t89 = _t85 - _t86;
         float _t89_inv = 1.0f / _t89;
-        return new Float4x4(2.0f * _t87_inv, 0.0f, 0.0f, -((_t82 + _t81) * _t87_inv), 0.0f, 2.0f * _t88_inv, 0.0f, -((_t84 + _t83) * _t88_inv), 0.0f, 0.0f, 2.0f * _t89_inv, -((_t86 + _t85) * _t89_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t87_inv + _t87_inv, 0.0f, 0.0f, -((_t82 + _t81) * _t87_inv), 0.0f, _t88_inv + _t88_inv, 0.0f, -((_t84 + _t83) * _t88_inv), 0.0f, 0.0f, _t89_inv + _t89_inv, -((_t86 + _t85) * _t89_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_lh_orthogonal_translation}; reached only through it. */
@@ -22767,7 +22827,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t91_inv = 1.0f / _t91;
         float _t92 = _t88 - _t89;
         float _t92_inv = 1.0f / _t92;
-        return new Float4x4(2.0f * _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, 2.0f * _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, 2.0f * _t92_inv, -((_t89 + _t88) * _t92_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t90_inv + _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, _t91_inv + _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, _t92_inv + _t92_inv, -((_t89 + _t88) * _t92_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_lh_general_identity}; reached only through it. */
@@ -22837,7 +22897,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t127_inv = 1.0f / _t127;
         float _t128 = _t124 - _t125;
         float _t128_inv = 1.0f / _t128;
-        return new Float4x4(2.0f * _t126_inv, 0.0f, 0.0f, -((_t121 + _t120) * _t126_inv), 0.0f, 2.0f * _t127_inv, 0.0f, -((_t123 + _t122) * _t127_inv), 0.0f, 0.0f, 2.0f * _t128_inv, -((_t125 + _t124) * _t128_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t126_inv + _t126_inv, 0.0f, 0.0f, -((_t121 + _t120) * _t126_inv), 0.0f, _t127_inv + _t127_inv, 0.0f, -((_t123 + _t122) * _t127_inv), 0.0f, 0.0f, _t128_inv + _t128_inv, -((_t125 + _t124) * _t128_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_lh_general_translation}; reached only through it. */
@@ -22907,7 +22967,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t151_inv = 1.0f / _t151;
         float _t152 = _t148 - _t149;
         float _t152_inv = 1.0f / _t152;
-        return new Float4x4(2.0f * _t150_inv, 0.0f, 0.0f, -((_t145 + _t144) * _t150_inv), 0.0f, 2.0f * _t151_inv, 0.0f, -((_t147 + _t146) * _t151_inv), 0.0f, 0.0f, 2.0f * _t152_inv, -((_t149 + _t148) * _t152_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t150_inv + _t150_inv, 0.0f, 0.0f, -((_t145 + _t144) * _t150_inv), 0.0f, _t151_inv + _t151_inv, 0.0f, -((_t147 + _t146) * _t151_inv), 0.0f, 0.0f, _t152_inv + _t152_inv, -((_t149 + _t148) * _t152_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -23021,7 +23081,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t223_inv = 1.0f / _t223;
         float _t224 = _t220 - _t221;
         float _t224_inv = 1.0f / _t224;
-        return new Float4x4(2.0f * _t222_inv, 0.0f, 0.0f, -((_t217 + _t216) * _t222_inv), 0.0f, 2.0f * _t223_inv, 0.0f, -((_t219 + _t218) * _t223_inv), 0.0f, 0.0f, -2.0f * _t224_inv, -((-_t221 - _t220) * _t224_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t222_inv + _t222_inv, 0.0f, 0.0f, -((_t217 + _t216) * _t222_inv), 0.0f, _t223_inv + _t223_inv, 0.0f, -((_t219 + _t218) * _t223_inv), 0.0f, 0.0f, -2.0f * _t224_inv, -((-_t221 - _t220) * _t224_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_rh_identity}; reached only through it. */
@@ -23082,7 +23142,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t88_inv = 1.0f / _t88;
         float _t89 = _t85 - _t86;
         float _t89_inv = 1.0f / _t89;
-        return new Float4x4(2.0f * _t87_inv, 0.0f, 0.0f, -((_t82 + _t81) * _t87_inv), 0.0f, 2.0f * _t88_inv, 0.0f, -((_t84 + _t83) * _t88_inv), 0.0f, 0.0f, -2.0f * _t89_inv, -((-_t86 - _t85) * _t89_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t87_inv + _t87_inv, 0.0f, 0.0f, -((_t82 + _t81) * _t87_inv), 0.0f, _t88_inv + _t88_inv, 0.0f, -((_t84 + _t83) * _t88_inv), 0.0f, 0.0f, -2.0f * _t89_inv, -((-_t86 - _t85) * _t89_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_rh_translation}; reached only through it. */
@@ -23144,7 +23204,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t91_inv = 1.0f / _t91;
         float _t92 = _t88 - _t89;
         float _t92_inv = 1.0f / _t92;
-        return new Float4x4(2.0f * _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, 2.0f * _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, -2.0f * _t92_inv, -((-_t89 - _t88) * _t92_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t90_inv + _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, _t91_inv + _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, -2.0f * _t92_inv, -((-_t89 - _t88) * _t92_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_rh_orthogonal}; reached only through it. */
@@ -23211,7 +23271,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t160_inv = 1.0f / _t160;
         float _t161 = _t157 - _t158;
         float _t161_inv = 1.0f / _t161;
-        return new Float4x4(2.0f * _t159_inv, 0.0f, 0.0f, -((_t154 + _t153) * _t159_inv), 0.0f, 2.0f * _t160_inv, 0.0f, -((_t156 + _t155) * _t160_inv), 0.0f, 0.0f, -2.0f * _t161_inv, -((-_t158 - _t157) * _t161_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t159_inv + _t159_inv, 0.0f, 0.0f, -((_t154 + _t153) * _t159_inv), 0.0f, _t160_inv + _t160_inv, 0.0f, -((_t156 + _t155) * _t160_inv), 0.0f, 0.0f, -2.0f * _t161_inv, -((-_t158 - _t157) * _t161_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -23230,12 +23290,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_no_rh_identity_translation}; reached only through it. */
     private Float4 orthoCrop_no_rh_identity_translation_s25f1e53f_c0(float _t42_inv) {
-        return new Float4(2.0f * _t42_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t42_inv + _t42_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_rh_identity_translation}; reached only through it. */
     private Float4 orthoCrop_no_rh_identity_translation_s25f1e53f_c1(float _t41_inv) {
-        return new Float4(0.0f, 2.0f * _t41_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t41_inv + _t41_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_rh_identity_translation}; reached only through it. */
@@ -23278,12 +23338,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_no_rh_translation_identity}; reached only through it. */
     private Float4 orthoCrop_no_rh_translation_identity_s25f1e53f_c0(float _t42_inv) {
-        return new Float4(2.0f * _t42_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t42_inv + _t42_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_rh_translation_identity}; reached only through it. */
     private Float4 orthoCrop_no_rh_translation_identity_s25f1e53f_c1(float _t41_inv) {
-        return new Float4(0.0f, 2.0f * _t41_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t41_inv + _t41_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_rh_translation_identity}; reached only through it. */
@@ -23326,12 +23386,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_no_rh_translation_translation}; reached only through it. */
     private Float4 orthoCrop_no_rh_translation_translation_s25f1e53f_c0(float _t48_inv) {
-        return new Float4(2.0f * _t48_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t48_inv + _t48_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_rh_translation_translation}; reached only through it. */
     private Float4 orthoCrop_no_rh_translation_translation_s25f1e53f_c1(float _t47_inv) {
-        return new Float4(0.0f, 2.0f * _t47_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t47_inv + _t47_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_no_rh_translation_translation}; reached only through it. */
@@ -23430,7 +23490,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t88_inv = 1.0f / _t88;
         float _t89 = _t85 - _t86;
         float _t89_inv = 1.0f / _t89;
-        return new Float4x4(2.0f * _t87_inv, 0.0f, 0.0f, -((_t82 + _t81) * _t87_inv), 0.0f, 2.0f * _t88_inv, 0.0f, -((_t84 + _t83) * _t88_inv), 0.0f, 0.0f, -2.0f * _t89_inv, -((-_t86 - _t85) * _t89_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t87_inv + _t87_inv, 0.0f, 0.0f, -((_t82 + _t81) * _t87_inv), 0.0f, _t88_inv + _t88_inv, 0.0f, -((_t84 + _t83) * _t88_inv), 0.0f, 0.0f, -2.0f * _t89_inv, -((-_t86 - _t85) * _t89_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_rh_orthogonal_translation}; reached only through it. */
@@ -23494,7 +23554,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t91_inv = 1.0f / _t91;
         float _t92 = _t88 - _t89;
         float _t92_inv = 1.0f / _t92;
-        return new Float4x4(2.0f * _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, 2.0f * _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, -2.0f * _t92_inv, -((-_t89 - _t88) * _t92_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t90_inv + _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, _t91_inv + _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, -2.0f * _t92_inv, -((-_t89 - _t88) * _t92_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_rh_general_identity}; reached only through it. */
@@ -23564,7 +23624,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t127_inv = 1.0f / _t127;
         float _t128 = _t124 - _t125;
         float _t128_inv = 1.0f / _t128;
-        return new Float4x4(2.0f * _t126_inv, 0.0f, 0.0f, -((_t121 + _t120) * _t126_inv), 0.0f, 2.0f * _t127_inv, 0.0f, -((_t123 + _t122) * _t127_inv), 0.0f, 0.0f, -2.0f * _t128_inv, -((-_t125 - _t124) * _t128_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t126_inv + _t126_inv, 0.0f, 0.0f, -((_t121 + _t120) * _t126_inv), 0.0f, _t127_inv + _t127_inv, 0.0f, -((_t123 + _t122) * _t127_inv), 0.0f, 0.0f, -2.0f * _t128_inv, -((-_t125 - _t124) * _t128_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_no_rh_general_translation}; reached only through it. */
@@ -23634,7 +23694,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t151_inv = 1.0f / _t151;
         float _t152 = _t148 - _t149;
         float _t152_inv = 1.0f / _t152;
-        return new Float4x4(2.0f * _t150_inv, 0.0f, 0.0f, -((_t145 + _t144) * _t150_inv), 0.0f, 2.0f * _t151_inv, 0.0f, -((_t147 + _t146) * _t151_inv), 0.0f, 0.0f, -2.0f * _t152_inv, -((-_t149 - _t148) * _t152_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t150_inv + _t150_inv, 0.0f, 0.0f, -((_t145 + _t144) * _t150_inv), 0.0f, _t151_inv + _t151_inv, 0.0f, -((_t147 + _t146) * _t151_inv), 0.0f, 0.0f, -2.0f * _t152_inv, -((-_t149 - _t148) * _t152_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -23760,7 +23820,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t223_inv = 1.0f / _t223;
         float _t224 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t221;
         float _t224_inv = 1.0f / _t224;
-        return new Float4x4(2.0f * _t222_inv, 0.0f, 0.0f, -((_t217 + _t216) * _t222_inv), 0.0f, 2.0f * _t223_inv, 0.0f, -((_t219 + _t218) * _t223_inv), 0.0f, 0.0f, 1.0f * _t224_inv, -(_t221 * _t224_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t222_inv + _t222_inv, 0.0f, 0.0f, -((_t217 + _t216) * _t222_inv), 0.0f, _t223_inv + _t223_inv, 0.0f, -((_t219 + _t218) * _t223_inv), 0.0f, 0.0f, 1.0f * _t224_inv, -(_t221 * _t224_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_identity}; reached only through it. */
@@ -23820,7 +23880,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t88_inv = 1.0f / _t88;
         float _t89 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t86;
         float _t89_inv = 1.0f / _t89;
-        return new Float4x4(2.0f * _t87_inv, 0.0f, 0.0f, -((_t82 + _t81) * _t87_inv), 0.0f, 2.0f * _t88_inv, 0.0f, -((_t84 + _t83) * _t88_inv), 0.0f, 0.0f, 1.0f * _t89_inv, -(_t86 * _t89_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t87_inv + _t87_inv, 0.0f, 0.0f, -((_t82 + _t81) * _t87_inv), 0.0f, _t88_inv + _t88_inv, 0.0f, -((_t84 + _t83) * _t88_inv), 0.0f, 0.0f, 1.0f * _t89_inv, -(_t86 * _t89_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_translation}; reached only through it. */
@@ -23881,7 +23941,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t91_inv = 1.0f / _t91;
         float _t92 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t89;
         float _t92_inv = 1.0f / _t92;
-        return new Float4x4(2.0f * _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, 2.0f * _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, 1.0f * _t92_inv, -(_t89 * _t92_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t90_inv + _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, _t91_inv + _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, 1.0f * _t92_inv, -(_t89 * _t92_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_orthogonal}; reached only through it. */
@@ -23947,7 +24007,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t160_inv = 1.0f / _t160;
         float _t161 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t158;
         float _t161_inv = 1.0f / _t161;
-        return new Float4x4(2.0f * _t159_inv, 0.0f, 0.0f, -((_t154 + _t153) * _t159_inv), 0.0f, 2.0f * _t160_inv, 0.0f, -((_t156 + _t155) * _t160_inv), 0.0f, 0.0f, 1.0f * _t161_inv, -(_t158 * _t161_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t159_inv + _t159_inv, 0.0f, 0.0f, -((_t154 + _t153) * _t159_inv), 0.0f, _t160_inv + _t160_inv, 0.0f, -((_t156 + _t155) * _t160_inv), 0.0f, 0.0f, 1.0f * _t161_inv, -(_t158 * _t161_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -23965,12 +24025,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_zo_lh_identity_translation}; reached only through it. */
     private Float4 orthoCrop_zo_lh_identity_translation_s25f1e53f_c0(float _t42_inv) {
-        return new Float4(2.0f * _t42_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t42_inv + _t42_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_lh_identity_translation}; reached only through it. */
     private Float4 orthoCrop_zo_lh_identity_translation_s25f1e53f_c1(float _t41_inv) {
-        return new Float4(0.0f, 2.0f * _t41_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t41_inv + _t41_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_lh_identity_translation}; reached only through it. */
@@ -24012,12 +24072,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_identity}; reached only through it. */
     private Float4 orthoCrop_zo_lh_translation_identity_s25f1e53f_c0(float _t42_inv) {
-        return new Float4(2.0f * _t42_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t42_inv + _t42_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_identity}; reached only through it. */
     private Float4 orthoCrop_zo_lh_translation_identity_s25f1e53f_c1(float _t41_inv) {
-        return new Float4(0.0f, 2.0f * _t41_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t41_inv + _t41_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_identity}; reached only through it. */
@@ -24059,12 +24119,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_translation}; reached only through it. */
     private Float4 orthoCrop_zo_lh_translation_translation_s25f1e53f_c0(float _t48_inv) {
-        return new Float4(2.0f * _t48_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t48_inv + _t48_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_translation}; reached only through it. */
     private Float4 orthoCrop_zo_lh_translation_translation_s25f1e53f_c1(float _t47_inv) {
-        return new Float4(0.0f, 2.0f * _t47_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t47_inv + _t47_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_translation}; reached only through it. */
@@ -24161,7 +24221,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t88_inv = 1.0f / _t88;
         float _t89 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t86;
         float _t89_inv = 1.0f / _t89;
-        return new Float4x4(2.0f * _t87_inv, 0.0f, 0.0f, -((_t82 + _t81) * _t87_inv), 0.0f, 2.0f * _t88_inv, 0.0f, -((_t84 + _t83) * _t88_inv), 0.0f, 0.0f, 1.0f * _t89_inv, -(_t86 * _t89_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t87_inv + _t87_inv, 0.0f, 0.0f, -((_t82 + _t81) * _t87_inv), 0.0f, _t88_inv + _t88_inv, 0.0f, -((_t84 + _t83) * _t88_inv), 0.0f, 0.0f, 1.0f * _t89_inv, -(_t86 * _t89_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_orthogonal_translation}; reached only through it. */
@@ -24224,7 +24284,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t91_inv = 1.0f / _t91;
         float _t92 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t89;
         float _t92_inv = 1.0f / _t92;
-        return new Float4x4(2.0f * _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, 2.0f * _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, 1.0f * _t92_inv, -(_t89 * _t92_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t90_inv + _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, _t91_inv + _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, 1.0f * _t92_inv, -(_t89 * _t92_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_general_identity}; reached only through it. */
@@ -24293,7 +24353,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t127_inv = 1.0f / _t127;
         float _t128 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t125;
         float _t128_inv = 1.0f / _t128;
-        return new Float4x4(2.0f * _t126_inv, 0.0f, 0.0f, -((_t121 + _t120) * _t126_inv), 0.0f, 2.0f * _t127_inv, 0.0f, -((_t123 + _t122) * _t127_inv), 0.0f, 0.0f, 1.0f * _t128_inv, -(_t125 * _t128_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t126_inv + _t126_inv, 0.0f, 0.0f, -((_t121 + _t120) * _t126_inv), 0.0f, _t127_inv + _t127_inv, 0.0f, -((_t123 + _t122) * _t127_inv), 0.0f, 0.0f, 1.0f * _t128_inv, -(_t125 * _t128_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_general_translation}; reached only through it. */
@@ -24362,7 +24422,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t151_inv = 1.0f / _t151;
         float _t152 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t149;
         float _t152_inv = 1.0f / _t152;
-        return new Float4x4(2.0f * _t150_inv, 0.0f, 0.0f, -((_t145 + _t144) * _t150_inv), 0.0f, 2.0f * _t151_inv, 0.0f, -((_t147 + _t146) * _t151_inv), 0.0f, 0.0f, 1.0f * _t152_inv, -(_t149 * _t152_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t150_inv + _t150_inv, 0.0f, 0.0f, -((_t145 + _t144) * _t150_inv), 0.0f, _t151_inv + _t151_inv, 0.0f, -((_t147 + _t146) * _t151_inv), 0.0f, 0.0f, 1.0f * _t152_inv, -(_t149 * _t152_inv), 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -24475,7 +24535,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t223_inv = 1.0f / _t223;
         float _t224 = _t220 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         float _t224_inv = 1.0f / _t224;
-        return new Float4x4(2.0f * _t222_inv, 0.0f, 0.0f, -((_t217 + _t216) * _t222_inv), 0.0f, 2.0f * _t223_inv, 0.0f, -((_t219 + _t218) * _t223_inv), 0.0f, 0.0f, -1.0f * _t224_inv, _t220 * _t224_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t222_inv + _t222_inv, 0.0f, 0.0f, -((_t217 + _t216) * _t222_inv), 0.0f, _t223_inv + _t223_inv, 0.0f, -((_t219 + _t218) * _t223_inv), 0.0f, 0.0f, -1.0f * _t224_inv, _t220 * _t224_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_identity}; reached only through it. */
@@ -24535,7 +24595,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t88_inv = 1.0f / _t88;
         float _t89 = _t85 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         float _t89_inv = 1.0f / _t89;
-        return new Float4x4(2.0f * _t87_inv, 0.0f, 0.0f, -((_t82 + _t81) * _t87_inv), 0.0f, 2.0f * _t88_inv, 0.0f, -((_t84 + _t83) * _t88_inv), 0.0f, 0.0f, -1.0f * _t89_inv, _t85 * _t89_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t87_inv + _t87_inv, 0.0f, 0.0f, -((_t82 + _t81) * _t87_inv), 0.0f, _t88_inv + _t88_inv, 0.0f, -((_t84 + _t83) * _t88_inv), 0.0f, 0.0f, -1.0f * _t89_inv, _t85 * _t89_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_translation}; reached only through it. */
@@ -24596,7 +24656,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t91_inv = 1.0f / _t91;
         float _t92 = _t88 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         float _t92_inv = 1.0f / _t92;
-        return new Float4x4(2.0f * _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, 2.0f * _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, -1.0f * _t92_inv, _t88 * _t92_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t90_inv + _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, _t91_inv + _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, -1.0f * _t92_inv, _t88 * _t92_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_orthogonal}; reached only through it. */
@@ -24662,7 +24722,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t160_inv = 1.0f / _t160;
         float _t161 = _t157 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         float _t161_inv = 1.0f / _t161;
-        return new Float4x4(2.0f * _t159_inv, 0.0f, 0.0f, -((_t154 + _t153) * _t159_inv), 0.0f, 2.0f * _t160_inv, 0.0f, -((_t156 + _t155) * _t160_inv), 0.0f, 0.0f, -1.0f * _t161_inv, _t157 * _t161_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t159_inv + _t159_inv, 0.0f, 0.0f, -((_t154 + _t153) * _t159_inv), 0.0f, _t160_inv + _t160_inv, 0.0f, -((_t156 + _t155) * _t160_inv), 0.0f, 0.0f, -1.0f * _t161_inv, _t157 * _t161_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -24680,12 +24740,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_zo_rh_identity_translation}; reached only through it. */
     private Float4 orthoCrop_zo_rh_identity_translation_s25f1e53f_c0(float _t42_inv) {
-        return new Float4(2.0f * _t42_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t42_inv + _t42_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_rh_identity_translation}; reached only through it. */
     private Float4 orthoCrop_zo_rh_identity_translation_s25f1e53f_c1(float _t41_inv) {
-        return new Float4(0.0f, 2.0f * _t41_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t41_inv + _t41_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_rh_identity_translation}; reached only through it. */
@@ -24727,12 +24787,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_identity}; reached only through it. */
     private Float4 orthoCrop_zo_rh_translation_identity_s25f1e53f_c0(float _t42_inv) {
-        return new Float4(2.0f * _t42_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t42_inv + _t42_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_identity}; reached only through it. */
     private Float4 orthoCrop_zo_rh_translation_identity_s25f1e53f_c1(float _t41_inv) {
-        return new Float4(0.0f, 2.0f * _t41_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t41_inv + _t41_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_identity}; reached only through it. */
@@ -24774,12 +24834,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_translation}; reached only through it. */
     private Float4 orthoCrop_zo_rh_translation_translation_s25f1e53f_c0(float _t48_inv) {
-        return new Float4(2.0f * _t48_inv, 0.0f, 0.0f, 0.0f);
+        return new Float4(_t48_inv + _t48_inv, 0.0f, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_translation}; reached only through it. */
     private Float4 orthoCrop_zo_rh_translation_translation_s25f1e53f_c1(float _t47_inv) {
-        return new Float4(0.0f, 2.0f * _t47_inv, 0.0f, 0.0f);
+        return new Float4(0.0f, _t47_inv + _t47_inv, 0.0f, 0.0f);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_translation}; reached only through it. */
@@ -24876,7 +24936,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t88_inv = 1.0f / _t88;
         float _t89 = _t85 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         float _t89_inv = 1.0f / _t89;
-        return new Float4x4(2.0f * _t87_inv, 0.0f, 0.0f, -((_t82 + _t81) * _t87_inv), 0.0f, 2.0f * _t88_inv, 0.0f, -((_t84 + _t83) * _t88_inv), 0.0f, 0.0f, -1.0f * _t89_inv, _t85 * _t89_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t87_inv + _t87_inv, 0.0f, 0.0f, -((_t82 + _t81) * _t87_inv), 0.0f, _t88_inv + _t88_inv, 0.0f, -((_t84 + _t83) * _t88_inv), 0.0f, 0.0f, -1.0f * _t89_inv, _t85 * _t89_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_orthogonal_translation}; reached only through it. */
@@ -24939,7 +24999,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t91_inv = 1.0f / _t91;
         float _t92 = _t88 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         float _t92_inv = 1.0f / _t92;
-        return new Float4x4(2.0f * _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, 2.0f * _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, -1.0f * _t92_inv, _t88 * _t92_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t90_inv + _t90_inv, 0.0f, 0.0f, -((_t85 + _t84) * _t90_inv), 0.0f, _t91_inv + _t91_inv, 0.0f, -((_t87 + _t86) * _t91_inv), 0.0f, 0.0f, -1.0f * _t92_inv, _t88 * _t92_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_general_identity}; reached only through it. */
@@ -25008,7 +25068,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t127_inv = 1.0f / _t127;
         float _t128 = _t124 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         float _t128_inv = 1.0f / _t128;
-        return new Float4x4(2.0f * _t126_inv, 0.0f, 0.0f, -((_t121 + _t120) * _t126_inv), 0.0f, 2.0f * _t127_inv, 0.0f, -((_t123 + _t122) * _t127_inv), 0.0f, 0.0f, -1.0f * _t128_inv, _t124 * _t128_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t126_inv + _t126_inv, 0.0f, 0.0f, -((_t121 + _t120) * _t126_inv), 0.0f, _t127_inv + _t127_inv, 0.0f, -((_t123 + _t122) * _t127_inv), 0.0f, 0.0f, -1.0f * _t128_inv, _t124 * _t128_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_general_translation}; reached only through it. */
@@ -25077,7 +25137,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t151_inv = 1.0f / _t151;
         float _t152 = _t148 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         float _t152_inv = 1.0f / _t152;
-        return new Float4x4(2.0f * _t150_inv, 0.0f, 0.0f, -((_t145 + _t144) * _t150_inv), 0.0f, 2.0f * _t151_inv, 0.0f, -((_t147 + _t146) * _t151_inv), 0.0f, 0.0f, -1.0f * _t152_inv, _t148 * _t152_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
+        return new Float4x4(_t150_inv + _t150_inv, 0.0f, 0.0f, -((_t145 + _t144) * _t150_inv), 0.0f, _t151_inv + _t151_inv, 0.0f, -((_t147 + _t146) * _t151_inv), 0.0f, 0.0f, -1.0f * _t152_inv, _t148 * _t152_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -25237,7 +25297,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1 = near - far;
         float _t1_inv = 1.0f / _t1;
         float _t2 = (float) Math.tan(0.5f * fovy);
-        return new Float4x4(1.0f / (aspect * _t2), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f / _t2, 0.0f, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t1_inv), far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t1_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(1.0f / (aspect * _t2), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f / _t2, 0.0f, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t1_inv), far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t1_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
     }
 
 
@@ -25250,7 +25310,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1 = near - far;
         float _t1_inv = 1.0f / _t1;
         float _t2 = (float) Math.tan(0.5f * fovy);
-        return new Float4x4(1.0f / (aspect * _t2), 0.0f, this.m03, 0.0f, 0.0f, 1.0f / _t2, this.m13, 0.0f, 0.0f, 0.0f, this.m23 + (far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t1_inv)), far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t1_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(1.0f / (aspect * _t2), 0.0f, this.m03, 0.0f, 0.0f, 1.0f / _t2, this.m13, 0.0f, 0.0f, 0.0f, this.m23 + (far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t1_inv)), far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t1_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
     }
 
 
@@ -25269,14 +25329,14 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t15, _t16;
         if (far == Float.POSITIVE_INFINITY) {
             _t15 = 1.0f;
-            _t16 = -(2.0f * near);
+            _t16 = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 _t15 = -1.0f;
-                _t16 = 2.0f * far;
+                _t16 = far + far;
             } else {
                 _t15 = -((far + near) * _t2_inv);
-                _t16 = 2.0f * far * near * _t2_inv;
+                _t16 = (far + far) * near * _t2_inv;
             }
         }
         return new Float4x4(this.m00 * _t9_inv, this.m01 * _t6_inv, Math.fma(this.m02, _t15, this.m03), this.m02 * _t16, this.m10 * _t9_inv, this.m11 * _t6_inv, Math.fma(this.m12, _t15, this.m13), this.m12 * _t16, this.m20 * _t9_inv, this.m21 * _t6_inv, Math.fma(this.m22, _t15, this.m23), this.m22 * _t16, 0.0f, 0.0f, 1.0f, 0.0f, 0);
@@ -25298,14 +25358,14 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t15, _t16;
         if (far == Float.POSITIVE_INFINITY) {
             _t15 = 1.0f;
-            _t16 = -(2.0f * near);
+            _t16 = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 _t15 = -1.0f;
-                _t16 = 2.0f * far;
+                _t16 = far + far;
             } else {
                 _t15 = -((far + near) * _t2_inv);
-                _t16 = 2.0f * far * near * _t2_inv;
+                _t16 = (far + far) * near * _t2_inv;
             }
         }
         return new Float4x4(this.m00 * _t9_inv, this.m01 * _t6_inv, Math.fma(this.m02, _t15, this.m03), this.m02 * _t16, this.m10 * _t9_inv, this.m11 * _t6_inv, Math.fma(this.m12, _t15, this.m13), this.m12 * _t16, this.m20 * _t9_inv, this.m21 * _t6_inv, Math.fma(this.m22, _t15, this.m23), this.m22 * _t16, this.m30 * _t9_inv, this.m31 * _t6_inv, Math.fma(this.m32, _t15, this.m33), this.m32 * _t16, 0);
@@ -25335,7 +25395,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1 = near - far;
         float _t1_inv = 1.0f / _t1;
         float _t2 = (float) Math.tan(0.5f * fovy);
-        return new Float4x4(1.0f / (aspect * _t2), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f / _t2, 0.0f, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t1_inv, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t1_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(1.0f / (aspect * _t2), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f / _t2, 0.0f, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t1_inv, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t1_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
     }
 
 
@@ -25348,7 +25408,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1 = near - far;
         float _t1_inv = 1.0f / _t1;
         float _t2 = (float) Math.tan(0.5f * fovy);
-        return new Float4x4(1.0f / (aspect * _t2), 0.0f, -this.m03, 0.0f, 0.0f, 1.0f / _t2, -this.m13, 0.0f, 0.0f, 0.0f, (far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t1_inv) - this.m23, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t1_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(1.0f / (aspect * _t2), 0.0f, -this.m03, 0.0f, 0.0f, 1.0f / _t2, -this.m13, 0.0f, 0.0f, 0.0f, (far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t1_inv) - this.m23, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t1_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
     }
 
 
@@ -25367,14 +25427,14 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t13, _t15;
         if (far == Float.POSITIVE_INFINITY) {
             _t13 = -1.0f;
-            _t15 = -(2.0f * near);
+            _t15 = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 _t13 = 1.0f;
-                _t15 = 2.0f * far;
+                _t15 = far + far;
             } else {
                 _t13 = (far + near) * _t2_inv;
-                _t15 = 2.0f * far * near * _t2_inv;
+                _t15 = (far + far) * near * _t2_inv;
             }
         }
         return new Float4x4(this.m00 * _t9_inv, this.m01 * _t6_inv, Math.fma(this.m02, _t13, -this.m03), this.m02 * _t15, this.m10 * _t9_inv, this.m11 * _t6_inv, Math.fma(this.m12, _t13, -this.m13), this.m12 * _t15, this.m20 * _t9_inv, this.m21 * _t6_inv, Math.fma(this.m22, _t13, -this.m23), this.m22 * _t15, 0.0f, 0.0f, -1.0f, 0.0f, 0);
@@ -25396,14 +25456,14 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t13, _t15;
         if (far == Float.POSITIVE_INFINITY) {
             _t13 = -1.0f;
-            _t15 = -(2.0f * near);
+            _t15 = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 _t13 = 1.0f;
-                _t15 = 2.0f * far;
+                _t15 = far + far;
             } else {
                 _t13 = (far + near) * _t2_inv;
-                _t15 = 2.0f * far * near * _t2_inv;
+                _t15 = (far + far) * near * _t2_inv;
             }
         }
         return new Float4x4(this.m00 * _t9_inv, this.m01 * _t6_inv, Math.fma(this.m02, _t13, -this.m03), this.m02 * _t15, this.m10 * _t9_inv, this.m11 * _t6_inv, Math.fma(this.m12, _t13, -this.m13), this.m12 * _t15, this.m20 * _t9_inv, this.m21 * _t6_inv, Math.fma(this.m22, _t13, -this.m23), this.m22 * _t15, this.m30 * _t9_inv, this.m31 * _t6_inv, Math.fma(this.m32, _t13, -this.m33), this.m32 * _t15, 0);
@@ -25772,7 +25832,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t2_inv = 1.0f / _t2;
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
-        return new Float4x4(2.0f / (aspect * _t3), 0.0f, 0.0f, 0.0f, 0.0f, 2.0f * _t3_inv, -((_t0 + _t1) * _t3_inv), 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t2_inv), far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t2_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(2.0f / (aspect * _t3), 0.0f, 0.0f, 0.0f, 0.0f, _t3_inv + _t3_inv, -((_t0 + _t1) * _t3_inv), 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t2_inv), far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
     }
 
 
@@ -25788,17 +25848,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t2_inv = 1.0f / _t2;
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
-        return new Float4x4(2.0f / (aspect * _t3), 0.0f, this.m03, 0.0f, 0.0f, 2.0f * _t3_inv, this.m13 - (_t0 + _t1) * _t3_inv, 0.0f, 0.0f, 0.0f, this.m23 + (far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t2_inv)), far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t2_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(2.0f / (aspect * _t3), 0.0f, this.m03, 0.0f, 0.0f, _t3_inv + _t3_inv, this.m13 - (_t0 + _t1) * _t3_inv, 0.0f, 0.0f, 0.0f, this.m23 + (far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t2_inv)), far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
     }
 
     /** Private per-column body of {@code perspectiveFovRange_no_lh_orthogonal}; reached only through it. */
     private Float4 perspectiveFovRange_no_lh_orthogonal_s7c0acce3_c0(float _t11_inv) {
-        return new Float4(2.0f * this.m00 * _t11_inv, 2.0f * this.m10 * _t11_inv, 2.0f * this.m20 * _t11_inv, 0.0f);
+        return new Float4((this.m00 + this.m00) * _t11_inv, (this.m10 + this.m10) * _t11_inv, (this.m20 + this.m20) * _t11_inv, 0.0f);
     }
 
     /** Private per-column body of {@code perspectiveFovRange_no_lh_orthogonal}; reached only through it. */
     private Float4 perspectiveFovRange_no_lh_orthogonal_s7c0acce3_c1(float _t8_inv) {
-        return new Float4(2.0f * this.m01 * _t8_inv, 2.0f * this.m11 * _t8_inv, 2.0f * this.m21 * _t8_inv, 0.0f);
+        return new Float4((this.m01 + this.m01) * _t8_inv, (this.m11 + this.m11) * _t8_inv, (this.m21 + this.m21) * _t8_inv, 0.0f);
     }
 
     /** Private per-column body of {@code perspectiveFovRange_no_lh_orthogonal}; reached only through it. */
@@ -25830,14 +25890,14 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t17, _t18;
         if (far == Float.POSITIVE_INFINITY) {
             _t17 = 1.0f;
-            _t18 = -(2.0f * near);
+            _t18 = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 _t17 = -1.0f;
-                _t18 = 2.0f * far;
+                _t18 = far + far;
             } else {
                 _t17 = -((far + near) * _t3_inv);
-                _t18 = 2.0f * far * near * _t3_inv;
+                _t18 = (far + far) * near * _t3_inv;
             }
         }
         return new Float4x4(perspectiveFovRange_no_lh_orthogonal_s7c0acce3_c0(_t11_inv), perspectiveFovRange_no_lh_orthogonal_s7c0acce3_c1(_t8_inv), perspectiveFovRange_no_lh_orthogonal_s7c0acce3_c2(_t17, _t9, _t8_inv), perspectiveFovRange_no_lh_orthogonal_s7c0acce3_c3(_t18), 0);
@@ -25845,12 +25905,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code perspectiveFovRange_no_lh_general}; reached only through it. */
     private Float4 perspectiveFovRange_no_lh_general_s7c0acce3_c0(float _t11_inv) {
-        return new Float4(2.0f * this.m00 * _t11_inv, 2.0f * this.m10 * _t11_inv, 2.0f * this.m20 * _t11_inv, 2.0f * this.m30 * _t11_inv);
+        return new Float4((this.m00 + this.m00) * _t11_inv, (this.m10 + this.m10) * _t11_inv, (this.m20 + this.m20) * _t11_inv, (this.m30 + this.m30) * _t11_inv);
     }
 
     /** Private per-column body of {@code perspectiveFovRange_no_lh_general}; reached only through it. */
     private Float4 perspectiveFovRange_no_lh_general_s7c0acce3_c1(float _t8_inv) {
-        return new Float4(2.0f * this.m01 * _t8_inv, 2.0f * this.m11 * _t8_inv, 2.0f * this.m21 * _t8_inv, 2.0f * this.m31 * _t8_inv);
+        return new Float4((this.m01 + this.m01) * _t8_inv, (this.m11 + this.m11) * _t8_inv, (this.m21 + this.m21) * _t8_inv, (this.m31 + this.m31) * _t8_inv);
     }
 
     /** Private per-column body of {@code perspectiveFovRange_no_lh_general}; reached only through it. */
@@ -25882,14 +25942,14 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t17, _t18;
         if (far == Float.POSITIVE_INFINITY) {
             _t17 = 1.0f;
-            _t18 = -(2.0f * near);
+            _t18 = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 _t17 = -1.0f;
-                _t18 = 2.0f * far;
+                _t18 = far + far;
             } else {
                 _t17 = -((far + near) * _t3_inv);
-                _t18 = 2.0f * far * near * _t3_inv;
+                _t18 = (far + far) * near * _t3_inv;
             }
         }
         return new Float4x4(perspectiveFovRange_no_lh_general_s7c0acce3_c0(_t11_inv), perspectiveFovRange_no_lh_general_s7c0acce3_c1(_t8_inv), perspectiveFovRange_no_lh_general_s7c0acce3_c2(_t17, _t9, _t8_inv), perspectiveFovRange_no_lh_general_s7c0acce3_c3(_t18), 0);
@@ -25922,7 +25982,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t2_inv = 1.0f / _t2;
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
-        return new Float4x4(2.0f / (aspect * _t3), 0.0f, 0.0f, 0.0f, 0.0f, 2.0f * _t3_inv, (_t0 + _t1) * _t3_inv, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t2_inv, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t2_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(2.0f / (aspect * _t3), 0.0f, 0.0f, 0.0f, 0.0f, _t3_inv + _t3_inv, (_t0 + _t1) * _t3_inv, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t2_inv, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
     }
 
 
@@ -25938,17 +25998,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t2_inv = 1.0f / _t2;
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
-        return new Float4x4(2.0f / (aspect * _t3), 0.0f, -this.m03, 0.0f, 0.0f, 2.0f * _t3_inv, (_t0 + _t1) * _t3_inv - this.m13, 0.0f, 0.0f, 0.0f, (far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t2_inv) - this.m23, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t2_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(2.0f / (aspect * _t3), 0.0f, -this.m03, 0.0f, 0.0f, _t3_inv + _t3_inv, (_t0 + _t1) * _t3_inv - this.m13, 0.0f, 0.0f, 0.0f, (far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t2_inv) - this.m23, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
     }
 
     /** Private per-column body of {@code perspectiveFovRange_no_rh_orthogonal}; reached only through it. */
     private Float4 perspectiveFovRange_no_rh_orthogonal_s7c0acce3_c0(float _t11_inv) {
-        return new Float4(2.0f * this.m00 * _t11_inv, 2.0f * this.m10 * _t11_inv, 2.0f * this.m20 * _t11_inv, 0.0f);
+        return new Float4((this.m00 + this.m00) * _t11_inv, (this.m10 + this.m10) * _t11_inv, (this.m20 + this.m20) * _t11_inv, 0.0f);
     }
 
     /** Private per-column body of {@code perspectiveFovRange_no_rh_orthogonal}; reached only through it. */
     private Float4 perspectiveFovRange_no_rh_orthogonal_s7c0acce3_c1(float _t8_inv) {
-        return new Float4(2.0f * this.m01 * _t8_inv, 2.0f * this.m11 * _t8_inv, 2.0f * this.m21 * _t8_inv, 0.0f);
+        return new Float4((this.m01 + this.m01) * _t8_inv, (this.m11 + this.m11) * _t8_inv, (this.m21 + this.m21) * _t8_inv, 0.0f);
     }
 
     /** Private per-column body of {@code perspectiveFovRange_no_rh_orthogonal}; reached only through it. */
@@ -25980,14 +26040,14 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t15, _t17;
         if (far == Float.POSITIVE_INFINITY) {
             _t15 = -1.0f;
-            _t17 = -(2.0f * near);
+            _t17 = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 _t15 = 1.0f;
-                _t17 = 2.0f * far;
+                _t17 = far + far;
             } else {
                 _t15 = (far + near) * _t3_inv;
-                _t17 = 2.0f * far * near * _t3_inv;
+                _t17 = (far + far) * near * _t3_inv;
             }
         }
         return new Float4x4(perspectiveFovRange_no_rh_orthogonal_s7c0acce3_c0(_t11_inv), perspectiveFovRange_no_rh_orthogonal_s7c0acce3_c1(_t8_inv), perspectiveFovRange_no_rh_orthogonal_s7c0acce3_c2(_t15, _t9, _t8_inv), perspectiveFovRange_no_rh_orthogonal_s7c0acce3_c3(_t17), 0);
@@ -25995,12 +26055,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code perspectiveFovRange_no_rh_general}; reached only through it. */
     private Float4 perspectiveFovRange_no_rh_general_s7c0acce3_c0(float _t11_inv) {
-        return new Float4(2.0f * this.m00 * _t11_inv, 2.0f * this.m10 * _t11_inv, 2.0f * this.m20 * _t11_inv, 2.0f * this.m30 * _t11_inv);
+        return new Float4((this.m00 + this.m00) * _t11_inv, (this.m10 + this.m10) * _t11_inv, (this.m20 + this.m20) * _t11_inv, (this.m30 + this.m30) * _t11_inv);
     }
 
     /** Private per-column body of {@code perspectiveFovRange_no_rh_general}; reached only through it. */
     private Float4 perspectiveFovRange_no_rh_general_s7c0acce3_c1(float _t8_inv) {
-        return new Float4(2.0f * this.m01 * _t8_inv, 2.0f * this.m11 * _t8_inv, 2.0f * this.m21 * _t8_inv, 2.0f * this.m31 * _t8_inv);
+        return new Float4((this.m01 + this.m01) * _t8_inv, (this.m11 + this.m11) * _t8_inv, (this.m21 + this.m21) * _t8_inv, (this.m31 + this.m31) * _t8_inv);
     }
 
     /** Private per-column body of {@code perspectiveFovRange_no_rh_general}; reached only through it. */
@@ -26032,14 +26092,14 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t15, _t17;
         if (far == Float.POSITIVE_INFINITY) {
             _t15 = -1.0f;
-            _t17 = -(2.0f * near);
+            _t17 = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 _t15 = 1.0f;
-                _t17 = 2.0f * far;
+                _t17 = far + far;
             } else {
                 _t15 = (far + near) * _t3_inv;
-                _t17 = 2.0f * far * near * _t3_inv;
+                _t17 = (far + far) * near * _t3_inv;
             }
         }
         return new Float4x4(perspectiveFovRange_no_rh_general_s7c0acce3_c0(_t11_inv), perspectiveFovRange_no_rh_general_s7c0acce3_c1(_t8_inv), perspectiveFovRange_no_rh_general_s7c0acce3_c2(_t15, _t9, _t8_inv), perspectiveFovRange_no_rh_general_s7c0acce3_c3(_t17), 0);
@@ -26084,7 +26144,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t2_inv = 1.0f / _t2;
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
-        return new Float4x4(2.0f / (aspect * _t3), 0.0f, 0.0f, 0.0f, 0.0f, 2.0f * _t3_inv, -((_t0 + _t1) * _t3_inv), 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t2_inv), far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(2.0f / (aspect * _t3), 0.0f, 0.0f, 0.0f, 0.0f, _t3_inv + _t3_inv, -((_t0 + _t1) * _t3_inv), 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t2_inv), far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
     }
 
 
@@ -26100,7 +26160,27 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t2_inv = 1.0f / _t2;
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
-        return new Float4x4(2.0f / (aspect * _t3), 0.0f, this.m03, 0.0f, 0.0f, 2.0f * _t3_inv, this.m13 - (_t0 + _t1) * _t3_inv, 0.0f, 0.0f, 0.0f, this.m23 + (far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t2_inv)), far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(2.0f / (aspect * _t3), 0.0f, this.m03, 0.0f, 0.0f, _t3_inv + _t3_inv, this.m13 - (_t0 + _t1) * _t3_inv, 0.0f, 0.0f, 0.0f, this.m23 + (far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t2_inv)), far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+    }
+
+    /** Private per-column body of {@code perspectiveFovRange_zo_lh_orthogonal}; reached only through it. */
+    private Float4 perspectiveFovRange_zo_lh_orthogonal_s7c0acce3_c0(float _t8_inv) {
+        return new Float4((this.m00 + this.m00) * _t8_inv, (this.m10 + this.m10) * _t8_inv, (this.m20 + this.m20) * _t8_inv, 0.0f);
+    }
+
+    /** Private per-column body of {@code perspectiveFovRange_zo_lh_orthogonal}; reached only through it. */
+    private Float4 perspectiveFovRange_zo_lh_orthogonal_s7c0acce3_c1(float _t4_inv) {
+        return new Float4((this.m01 + this.m01) * _t4_inv, (this.m11 + this.m11) * _t4_inv, (this.m21 + this.m21) * _t4_inv, 0.0f);
+    }
+
+    /** Private per-column body of {@code perspectiveFovRange_zo_lh_orthogonal}; reached only through it. */
+    private Float4 perspectiveFovRange_zo_lh_orthogonal_s7c0acce3_c2(float _t12, float _t6, float _t4_inv) {
+        return new Float4(Math.fma(this.m02, _t12, this.m03 - this.m01 * _t6 * _t4_inv), Math.fma(this.m12, _t12, this.m13 - this.m11 * _t6 * _t4_inv), Math.fma(this.m22, _t12, this.m23 - this.m21 * _t6 * _t4_inv), 1.0f);
+    }
+
+    /** Private per-column body of {@code perspectiveFovRange_zo_lh_orthogonal}; reached only through it. */
+    private Float4 perspectiveFovRange_zo_lh_orthogonal_s7c0acce3_c3(float _t13) {
+        return new Float4(this.m02 * _t13, this.m12 * _t13, this.m22 * _t13, 0.0f);
     }
 
 
@@ -26132,17 +26212,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
                 _t13 = far * near * _t2_inv;
             }
         }
-        return new Float4x4(2.0f * this.m00 * _t8_inv, 2.0f * this.m01 * _t4_inv, Math.fma(this.m02, _t12, this.m03 - this.m01 * _t6 * _t4_inv), this.m02 * _t13, 2.0f * this.m10 * _t8_inv, 2.0f * this.m11 * _t4_inv, Math.fma(this.m12, _t12, this.m13 - this.m11 * _t6 * _t4_inv), this.m12 * _t13, 2.0f * this.m20 * _t8_inv, 2.0f * this.m21 * _t4_inv, Math.fma(this.m22, _t12, this.m23 - this.m21 * _t6 * _t4_inv), this.m22 * _t13, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(perspectiveFovRange_zo_lh_orthogonal_s7c0acce3_c0(_t8_inv), perspectiveFovRange_zo_lh_orthogonal_s7c0acce3_c1(_t4_inv), perspectiveFovRange_zo_lh_orthogonal_s7c0acce3_c2(_t12, _t6, _t4_inv), perspectiveFovRange_zo_lh_orthogonal_s7c0acce3_c3(_t13), 0);
     }
 
     /** Private per-column body of {@code perspectiveFovRange_zo_lh_general}; reached only through it. */
     private Float4 perspectiveFovRange_zo_lh_general_s7c0acce3_c0(float _t8_inv) {
-        return new Float4(2.0f * this.m00 * _t8_inv, 2.0f * this.m10 * _t8_inv, 2.0f * this.m20 * _t8_inv, 2.0f * this.m30 * _t8_inv);
+        return new Float4((this.m00 + this.m00) * _t8_inv, (this.m10 + this.m10) * _t8_inv, (this.m20 + this.m20) * _t8_inv, (this.m30 + this.m30) * _t8_inv);
     }
 
     /** Private per-column body of {@code perspectiveFovRange_zo_lh_general}; reached only through it. */
     private Float4 perspectiveFovRange_zo_lh_general_s7c0acce3_c1(float _t4_inv) {
-        return new Float4(2.0f * this.m01 * _t4_inv, 2.0f * this.m11 * _t4_inv, 2.0f * this.m21 * _t4_inv, 2.0f * this.m31 * _t4_inv);
+        return new Float4((this.m01 + this.m01) * _t4_inv, (this.m11 + this.m11) * _t4_inv, (this.m21 + this.m21) * _t4_inv, (this.m31 + this.m31) * _t4_inv);
     }
 
     /** Private per-column body of {@code perspectiveFovRange_zo_lh_general}; reached only through it. */
@@ -26214,7 +26294,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t2_inv = 1.0f / _t2;
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
-        return new Float4x4(2.0f / (aspect * _t3), 0.0f, 0.0f, 0.0f, 0.0f, 2.0f * _t3_inv, (_t0 + _t1) * _t3_inv, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t2_inv, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(2.0f / (aspect * _t3), 0.0f, 0.0f, 0.0f, 0.0f, _t3_inv + _t3_inv, (_t0 + _t1) * _t3_inv, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t2_inv, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
     }
 
 
@@ -26230,7 +26310,27 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t2_inv = 1.0f / _t2;
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
-        return new Float4x4(2.0f / (aspect * _t3), 0.0f, -this.m03, 0.0f, 0.0f, 2.0f * _t3_inv, (_t0 + _t1) * _t3_inv - this.m13, 0.0f, 0.0f, 0.0f, (far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t2_inv) - this.m23, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(2.0f / (aspect * _t3), 0.0f, -this.m03, 0.0f, 0.0f, _t3_inv + _t3_inv, (_t0 + _t1) * _t3_inv - this.m13, 0.0f, 0.0f, 0.0f, (far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t2_inv) - this.m23, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+    }
+
+    /** Private per-column body of {@code perspectiveFovRange_zo_rh_orthogonal}; reached only through it. */
+    private Float4 perspectiveFovRange_zo_rh_orthogonal_s7c0acce3_c0(float _t7_inv) {
+        return new Float4((this.m00 + this.m00) * _t7_inv, (this.m10 + this.m10) * _t7_inv, (this.m20 + this.m20) * _t7_inv, 0.0f);
+    }
+
+    /** Private per-column body of {@code perspectiveFovRange_zo_rh_orthogonal}; reached only through it. */
+    private Float4 perspectiveFovRange_zo_rh_orthogonal_s7c0acce3_c1(float _t4_inv) {
+        return new Float4((this.m01 + this.m01) * _t4_inv, (this.m11 + this.m11) * _t4_inv, (this.m21 + this.m21) * _t4_inv, 0.0f);
+    }
+
+    /** Private per-column body of {@code perspectiveFovRange_zo_rh_orthogonal}; reached only through it. */
+    private Float4 perspectiveFovRange_zo_rh_orthogonal_s7c0acce3_c2(float _t11, float _t6, float _t4_inv) {
+        return new Float4(Math.fma(this.m02, _t11, this.m01 * _t6 * _t4_inv - this.m03), Math.fma(this.m12, _t11, this.m11 * _t6 * _t4_inv - this.m13), Math.fma(this.m22, _t11, this.m21 * _t6 * _t4_inv - this.m23), -1.0f);
+    }
+
+    /** Private per-column body of {@code perspectiveFovRange_zo_rh_orthogonal}; reached only through it. */
+    private Float4 perspectiveFovRange_zo_rh_orthogonal_s7c0acce3_c3(float _t12) {
+        return new Float4(this.m02 * _t12, this.m12 * _t12, this.m22 * _t12, 0.0f);
     }
 
 
@@ -26262,17 +26362,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
                 _t12 = far * near * _t2_inv;
             }
         }
-        return new Float4x4(2.0f * this.m00 * _t7_inv, 2.0f * this.m01 * _t4_inv, Math.fma(this.m02, _t11, this.m01 * _t6 * _t4_inv - this.m03), this.m02 * _t12, 2.0f * this.m10 * _t7_inv, 2.0f * this.m11 * _t4_inv, Math.fma(this.m12, _t11, this.m11 * _t6 * _t4_inv - this.m13), this.m12 * _t12, 2.0f * this.m20 * _t7_inv, 2.0f * this.m21 * _t4_inv, Math.fma(this.m22, _t11, this.m21 * _t6 * _t4_inv - this.m23), this.m22 * _t12, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(perspectiveFovRange_zo_rh_orthogonal_s7c0acce3_c0(_t7_inv), perspectiveFovRange_zo_rh_orthogonal_s7c0acce3_c1(_t4_inv), perspectiveFovRange_zo_rh_orthogonal_s7c0acce3_c2(_t11, _t6, _t4_inv), perspectiveFovRange_zo_rh_orthogonal_s7c0acce3_c3(_t12), 0);
     }
 
     /** Private per-column body of {@code perspectiveFovRange_zo_rh_general}; reached only through it. */
     private Float4 perspectiveFovRange_zo_rh_general_s7c0acce3_c0(float _t7_inv) {
-        return new Float4(2.0f * this.m00 * _t7_inv, 2.0f * this.m10 * _t7_inv, 2.0f * this.m20 * _t7_inv, 2.0f * this.m30 * _t7_inv);
+        return new Float4((this.m00 + this.m00) * _t7_inv, (this.m10 + this.m10) * _t7_inv, (this.m20 + this.m20) * _t7_inv, (this.m30 + this.m30) * _t7_inv);
     }
 
     /** Private per-column body of {@code perspectiveFovRange_zo_rh_general}; reached only through it. */
     private Float4 perspectiveFovRange_zo_rh_general_s7c0acce3_c1(float _t4_inv) {
-        return new Float4(2.0f * this.m01 * _t4_inv, 2.0f * this.m11 * _t4_inv, 2.0f * this.m21 * _t4_inv, 2.0f * this.m31 * _t4_inv);
+        return new Float4((this.m01 + this.m01) * _t4_inv, (this.m11 + this.m11) * _t4_inv, (this.m21 + this.m21) * _t4_inv, (this.m31 + this.m31) * _t4_inv);
     }
 
     /** Private per-column body of {@code perspectiveFovRange_zo_rh_general}; reached only through it. */
@@ -26468,7 +26568,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
     private Float4x4 perspectiveFrustumSlice_no_lh_identity(float near, float far) {
         float _t0 = near - far;
         float _t0_inv = 1.0f / _t0;
-        return new Float4x4(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t0_inv), far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t0_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t0_inv), far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -26480,7 +26580,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
     private Float4x4 perspectiveFrustumSlice_no_lh_translation(float near, float far) {
         float _t0 = near - far;
         float _t0_inv = 1.0f / _t0;
-        return new Float4x4(1.0f, 0.0f, 0.0f, this.m03, 0.0f, 1.0f, 0.0f, this.m13, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t0_inv), far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t0_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(1.0f, 0.0f, 0.0f, this.m03, 0.0f, 1.0f, 0.0f, this.m13, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t0_inv), far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -26492,7 +26592,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
     private Float4x4 perspectiveFrustumSlice_no_lh_orthogonal(float near, float far) {
         float _t0 = near - far;
         float _t0_inv = 1.0f / _t0;
-        return new Float4x4(this.m00, this.m01, this.m02, this.m03, this.m10, this.m11, this.m12, this.m13, this.m20, this.m21, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t0_inv), far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t0_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(this.m00, this.m01, this.m02, this.m03, this.m10, this.m11, this.m12, this.m13, this.m20, this.m21, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t0_inv), far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -26504,7 +26604,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
     private Float4x4 perspectiveFrustumSlice_no_lh_general(float near, float far) {
         float _t0 = near - far;
         float _t0_inv = 1.0f / _t0;
-        return new Float4x4(this.m00, this.m01, this.m02, this.m03, this.m10, this.m11, this.m12, this.m13, this.m20, this.m21, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t0_inv), far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t0_inv, this.m30, this.m31, this.m32, this.m33, 0);
+        return new Float4x4(this.m00, this.m01, this.m02, this.m03, this.m10, this.m11, this.m12, this.m13, this.m20, this.m21, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t0_inv), far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv, this.m30, this.m31, this.m32, this.m33, 0);
     }
 
 
@@ -26530,7 +26630,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
     private Float4x4 perspectiveFrustumSlice_no_rh_identity(float near, float far) {
         float _t0 = near - far;
         float _t0_inv = 1.0f / _t0;
-        return new Float4x4(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t0_inv, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t0_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t0_inv, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -26542,7 +26642,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
     private Float4x4 perspectiveFrustumSlice_no_rh_translation(float near, float far) {
         float _t0 = near - far;
         float _t0_inv = 1.0f / _t0;
-        return new Float4x4(1.0f, 0.0f, 0.0f, this.m03, 0.0f, 1.0f, 0.0f, this.m13, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t0_inv, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t0_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(1.0f, 0.0f, 0.0f, this.m03, 0.0f, 1.0f, 0.0f, this.m13, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t0_inv, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -26554,7 +26654,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
     private Float4x4 perspectiveFrustumSlice_no_rh_orthogonal(float near, float far) {
         float _t0 = near - far;
         float _t0_inv = 1.0f / _t0;
-        return new Float4x4(this.m00, this.m01, this.m02, this.m03, this.m10, this.m11, this.m12, this.m13, this.m20, this.m21, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t0_inv, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t0_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(this.m00, this.m01, this.m02, this.m03, this.m10, this.m11, this.m12, this.m13, this.m20, this.m21, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t0_inv, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -26566,7 +26666,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
     private Float4x4 perspectiveFrustumSlice_no_rh_general(float near, float far) {
         float _t0 = near - far;
         float _t0_inv = 1.0f / _t0;
-        return new Float4x4(this.m00, this.m01, this.m02, this.m03, this.m10, this.m11, this.m12, this.m13, this.m20, this.m21, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t0_inv, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t0_inv, this.m30, this.m31, this.m32, this.m33, 0);
+        return new Float4x4(this.m00, this.m01, this.m02, this.m03, this.m10, this.m11, this.m12, this.m13, this.m20, this.m21, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t0_inv, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv, this.m30, this.m31, this.m32, this.m33, 0);
     }
 
 
@@ -26848,7 +26948,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t5_inv = 1.0f / _t5;
         float _t6 = _t2 - _t3;
         float _t6_inv = 1.0f / _t6;
-        return new Float4x4(2.0f * _t5_inv, 0.0f, -((_t1 + _t0) * _t5_inv), 0.0f, 0.0f, 2.0f * _t6_inv, -((_t3 + _t2) * _t6_inv), 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t4_inv), far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t4_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(_t5_inv + _t5_inv, 0.0f, -((_t1 + _t0) * _t5_inv), 0.0f, 0.0f, _t6_inv + _t6_inv, -((_t3 + _t2) * _t6_inv), 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t4_inv), far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
     }
 
 
@@ -26868,17 +26968,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t5_inv = 1.0f / _t5;
         float _t6 = _t2 - _t3;
         float _t6_inv = 1.0f / _t6;
-        return new Float4x4(2.0f * _t5_inv, 0.0f, this.m03 - (_t1 + _t0) * _t5_inv, 0.0f, 0.0f, 2.0f * _t6_inv, this.m13 - (_t3 + _t2) * _t6_inv, 0.0f, 0.0f, 0.0f, this.m23 + (far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t4_inv)), far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t4_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(_t5_inv + _t5_inv, 0.0f, this.m03 - (_t1 + _t0) * _t5_inv, 0.0f, 0.0f, _t6_inv + _t6_inv, this.m13 - (_t3 + _t2) * _t6_inv, 0.0f, 0.0f, 0.0f, this.m23 + (far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t4_inv)), far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_no_lh_orthogonal}; reached only through it. */
     private Float4 perspectiveOffCenterFov_no_lh_orthogonal_s5e0ee76f_c0(float _t10_inv) {
-        return new Float4(2.0f * this.m00 * _t10_inv, 2.0f * this.m10 * _t10_inv, 2.0f * this.m20 * _t10_inv, 0.0f);
+        return new Float4((this.m00 + this.m00) * _t10_inv, (this.m10 + this.m10) * _t10_inv, (this.m20 + this.m20) * _t10_inv, 0.0f);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_no_lh_orthogonal}; reached only through it. */
     private Float4 perspectiveOffCenterFov_no_lh_orthogonal_s5e0ee76f_c1(float _t11_inv) {
-        return new Float4(2.0f * this.m01 * _t11_inv, 2.0f * this.m11 * _t11_inv, 2.0f * this.m21 * _t11_inv, 0.0f);
+        return new Float4((this.m01 + this.m01) * _t11_inv, (this.m11 + this.m11) * _t11_inv, (this.m21 + this.m21) * _t11_inv, 0.0f);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_no_lh_orthogonal}; reached only through it. */
@@ -26913,14 +27013,14 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t20, _t21;
         if (far == Float.POSITIVE_INFINITY) {
             _t20 = 1.0f;
-            _t21 = -(2.0f * near);
+            _t21 = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 _t20 = -1.0f;
-                _t21 = 2.0f * far;
+                _t21 = far + far;
             } else {
                 _t20 = -((far + near) * _t5_inv);
-                _t21 = 2.0f * far * near * _t5_inv;
+                _t21 = (far + far) * near * _t5_inv;
             }
         }
         return new Float4x4(perspectiveOffCenterFov_no_lh_orthogonal_s5e0ee76f_c0(_t10_inv), perspectiveOffCenterFov_no_lh_orthogonal_s5e0ee76f_c1(_t11_inv), perspectiveOffCenterFov_no_lh_orthogonal_s5e0ee76f_c2(_t20, _t12, _t10_inv, _t13, _t11_inv), perspectiveOffCenterFov_no_lh_orthogonal_s5e0ee76f_c3(_t21), 0);
@@ -26928,12 +27028,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code perspectiveOffCenterFov_no_lh_general}; reached only through it. */
     private Float4 perspectiveOffCenterFov_no_lh_general_s5e0ee76f_c0(float _t10_inv) {
-        return new Float4(2.0f * this.m00 * _t10_inv, 2.0f * this.m10 * _t10_inv, 2.0f * this.m20 * _t10_inv, 2.0f * this.m30 * _t10_inv);
+        return new Float4((this.m00 + this.m00) * _t10_inv, (this.m10 + this.m10) * _t10_inv, (this.m20 + this.m20) * _t10_inv, (this.m30 + this.m30) * _t10_inv);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_no_lh_general}; reached only through it. */
     private Float4 perspectiveOffCenterFov_no_lh_general_s5e0ee76f_c1(float _t11_inv) {
-        return new Float4(2.0f * this.m01 * _t11_inv, 2.0f * this.m11 * _t11_inv, 2.0f * this.m21 * _t11_inv, 2.0f * this.m31 * _t11_inv);
+        return new Float4((this.m01 + this.m01) * _t11_inv, (this.m11 + this.m11) * _t11_inv, (this.m21 + this.m21) * _t11_inv, (this.m31 + this.m31) * _t11_inv);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_no_lh_general}; reached only through it. */
@@ -26968,14 +27068,14 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t20, _t21;
         if (far == Float.POSITIVE_INFINITY) {
             _t20 = 1.0f;
-            _t21 = -(2.0f * near);
+            _t21 = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 _t20 = -1.0f;
-                _t21 = 2.0f * far;
+                _t21 = far + far;
             } else {
                 _t20 = -((far + near) * _t5_inv);
-                _t21 = 2.0f * far * near * _t5_inv;
+                _t21 = (far + far) * near * _t5_inv;
             }
         }
         return new Float4x4(perspectiveOffCenterFov_no_lh_general_s5e0ee76f_c0(_t10_inv), perspectiveOffCenterFov_no_lh_general_s5e0ee76f_c1(_t11_inv), perspectiveOffCenterFov_no_lh_general_s5e0ee76f_c2(_t20, _t12, _t10_inv, _t13, _t11_inv), perspectiveOffCenterFov_no_lh_general_s5e0ee76f_c3(_t21), 0);
@@ -27012,7 +27112,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t5_inv = 1.0f / _t5;
         float _t6 = _t2 - _t3;
         float _t6_inv = 1.0f / _t6;
-        return new Float4x4(2.0f * _t5_inv, 0.0f, (_t1 + _t0) * _t5_inv, 0.0f, 0.0f, 2.0f * _t6_inv, (_t3 + _t2) * _t6_inv, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t4_inv, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t4_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(_t5_inv + _t5_inv, 0.0f, (_t1 + _t0) * _t5_inv, 0.0f, 0.0f, _t6_inv + _t6_inv, (_t3 + _t2) * _t6_inv, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t4_inv, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
     }
 
 
@@ -27032,17 +27132,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t5_inv = 1.0f / _t5;
         float _t6 = _t2 - _t3;
         float _t6_inv = 1.0f / _t6;
-        return new Float4x4(2.0f * _t5_inv, 0.0f, (_t1 + _t0) * _t5_inv - this.m03, 0.0f, 0.0f, 2.0f * _t6_inv, (_t3 + _t2) * _t6_inv - this.m13, 0.0f, 0.0f, 0.0f, (far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t4_inv) - this.m23, far == Float.POSITIVE_INFINITY ? -(2.0f * near) : near == Float.POSITIVE_INFINITY ? 2.0f * far : 2.0f * far * near * _t4_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(_t5_inv + _t5_inv, 0.0f, (_t1 + _t0) * _t5_inv - this.m03, 0.0f, 0.0f, _t6_inv + _t6_inv, (_t3 + _t2) * _t6_inv - this.m13, 0.0f, 0.0f, 0.0f, (far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t4_inv) - this.m23, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t4_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_no_rh_orthogonal}; reached only through it. */
     private Float4 perspectiveOffCenterFov_no_rh_orthogonal_s5e0ee76f_c0(float _t10_inv) {
-        return new Float4(2.0f * this.m00 * _t10_inv, 2.0f * this.m10 * _t10_inv, 2.0f * this.m20 * _t10_inv, 0.0f);
+        return new Float4((this.m00 + this.m00) * _t10_inv, (this.m10 + this.m10) * _t10_inv, (this.m20 + this.m20) * _t10_inv, 0.0f);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_no_rh_orthogonal}; reached only through it. */
     private Float4 perspectiveOffCenterFov_no_rh_orthogonal_s5e0ee76f_c1(float _t11_inv) {
-        return new Float4(2.0f * this.m01 * _t11_inv, 2.0f * this.m11 * _t11_inv, 2.0f * this.m21 * _t11_inv, 0.0f);
+        return new Float4((this.m01 + this.m01) * _t11_inv, (this.m11 + this.m11) * _t11_inv, (this.m21 + this.m21) * _t11_inv, 0.0f);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_no_rh_orthogonal}; reached only through it. */
@@ -27077,14 +27177,14 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t18, _t20;
         if (far == Float.POSITIVE_INFINITY) {
             _t18 = -1.0f;
-            _t20 = -(2.0f * near);
+            _t20 = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 _t18 = 1.0f;
-                _t20 = 2.0f * far;
+                _t20 = far + far;
             } else {
                 _t18 = (far + near) * _t5_inv;
-                _t20 = 2.0f * far * near * _t5_inv;
+                _t20 = (far + far) * near * _t5_inv;
             }
         }
         return new Float4x4(perspectiveOffCenterFov_no_rh_orthogonal_s5e0ee76f_c0(_t10_inv), perspectiveOffCenterFov_no_rh_orthogonal_s5e0ee76f_c1(_t11_inv), perspectiveOffCenterFov_no_rh_orthogonal_s5e0ee76f_c2(_t18, _t12, _t10_inv, _t13, _t11_inv), perspectiveOffCenterFov_no_rh_orthogonal_s5e0ee76f_c3(_t20), 0);
@@ -27092,12 +27192,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code perspectiveOffCenterFov_no_rh_affine}; reached only through it. */
     private Float4 perspectiveOffCenterFov_no_rh_affine_s5e0ee76f_c0(float _t10_inv) {
-        return new Float4(2.0f * this.m00 * _t10_inv, 2.0f * this.m10 * _t10_inv, 2.0f * this.m20 * _t10_inv, 0.0f);
+        return new Float4((this.m00 + this.m00) * _t10_inv, (this.m10 + this.m10) * _t10_inv, (this.m20 + this.m20) * _t10_inv, 0.0f);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_no_rh_affine}; reached only through it. */
     private Float4 perspectiveOffCenterFov_no_rh_affine_s5e0ee76f_c1(float _t11_inv) {
-        return new Float4(2.0f * this.m01 * _t11_inv, 2.0f * this.m11 * _t11_inv, 2.0f * this.m21 * _t11_inv, 0.0f);
+        return new Float4((this.m01 + this.m01) * _t11_inv, (this.m11 + this.m11) * _t11_inv, (this.m21 + this.m21) * _t11_inv, 0.0f);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_no_rh_affine}; reached only through it. */
@@ -27132,14 +27232,14 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t18, _t20;
         if (far == Float.POSITIVE_INFINITY) {
             _t18 = -1.0f;
-            _t20 = -(2.0f * near);
+            _t20 = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 _t18 = 1.0f;
-                _t20 = 2.0f * far;
+                _t20 = far + far;
             } else {
                 _t18 = (far + near) * _t5_inv;
-                _t20 = 2.0f * far * near * _t5_inv;
+                _t20 = (far + far) * near * _t5_inv;
             }
         }
         return new Float4x4(perspectiveOffCenterFov_no_rh_affine_s5e0ee76f_c0(_t10_inv), perspectiveOffCenterFov_no_rh_affine_s5e0ee76f_c1(_t11_inv), perspectiveOffCenterFov_no_rh_affine_s5e0ee76f_c2(_t18, _t12, _t10_inv, _t13, _t11_inv), perspectiveOffCenterFov_no_rh_affine_s5e0ee76f_c3(_t20), 0);
@@ -27147,12 +27247,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code perspectiveOffCenterFov_no_rh_general}; reached only through it. */
     private Float4 perspectiveOffCenterFov_no_rh_general_s5e0ee76f_c0(float _t10_inv) {
-        return new Float4(2.0f * this.m00 * _t10_inv, 2.0f * this.m10 * _t10_inv, 2.0f * this.m20 * _t10_inv, 2.0f * this.m30 * _t10_inv);
+        return new Float4((this.m00 + this.m00) * _t10_inv, (this.m10 + this.m10) * _t10_inv, (this.m20 + this.m20) * _t10_inv, (this.m30 + this.m30) * _t10_inv);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_no_rh_general}; reached only through it. */
     private Float4 perspectiveOffCenterFov_no_rh_general_s5e0ee76f_c1(float _t11_inv) {
-        return new Float4(2.0f * this.m01 * _t11_inv, 2.0f * this.m11 * _t11_inv, 2.0f * this.m21 * _t11_inv, 2.0f * this.m31 * _t11_inv);
+        return new Float4((this.m01 + this.m01) * _t11_inv, (this.m11 + this.m11) * _t11_inv, (this.m21 + this.m21) * _t11_inv, (this.m31 + this.m31) * _t11_inv);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_no_rh_general}; reached only through it. */
@@ -27187,14 +27287,14 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t18, _t20;
         if (far == Float.POSITIVE_INFINITY) {
             _t18 = -1.0f;
-            _t20 = -(2.0f * near);
+            _t20 = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 _t18 = 1.0f;
-                _t20 = 2.0f * far;
+                _t20 = far + far;
             } else {
                 _t18 = (far + near) * _t5_inv;
-                _t20 = 2.0f * far * near * _t5_inv;
+                _t20 = (far + far) * near * _t5_inv;
             }
         }
         return new Float4x4(perspectiveOffCenterFov_no_rh_general_s5e0ee76f_c0(_t10_inv), perspectiveOffCenterFov_no_rh_general_s5e0ee76f_c1(_t11_inv), perspectiveOffCenterFov_no_rh_general_s5e0ee76f_c2(_t18, _t12, _t10_inv, _t13, _t11_inv), perspectiveOffCenterFov_no_rh_general_s5e0ee76f_c3(_t20), 0);
@@ -27244,7 +27344,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t5_inv = 1.0f / _t5;
         float _t6 = _t2 - _t3;
         float _t6_inv = 1.0f / _t6;
-        return new Float4x4(2.0f * _t5_inv, 0.0f, -((_t1 + _t0) * _t5_inv), 0.0f, 0.0f, 2.0f * _t6_inv, -((_t3 + _t2) * _t6_inv), 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t4_inv), far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(_t5_inv + _t5_inv, 0.0f, -((_t1 + _t0) * _t5_inv), 0.0f, 0.0f, _t6_inv + _t6_inv, -((_t3 + _t2) * _t6_inv), 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t4_inv), far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
     }
 
 
@@ -27264,17 +27364,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t5_inv = 1.0f / _t5;
         float _t6 = _t2 - _t3;
         float _t6_inv = 1.0f / _t6;
-        return new Float4x4(2.0f * _t5_inv, 0.0f, this.m03 - (_t1 + _t0) * _t5_inv, 0.0f, 0.0f, 2.0f * _t6_inv, this.m13 - (_t3 + _t2) * _t6_inv, 0.0f, 0.0f, 0.0f, this.m23 + (far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t4_inv)), far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
+        return new Float4x4(_t5_inv + _t5_inv, 0.0f, this.m03 - (_t1 + _t0) * _t5_inv, 0.0f, 0.0f, _t6_inv + _t6_inv, this.m13 - (_t3 + _t2) * _t6_inv, 0.0f, 0.0f, 0.0f, this.m23 + (far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t4_inv)), far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv, 0.0f, 0.0f, 1.0f, 0.0f, 0);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_zo_lh_orthogonal}; reached only through it. */
     private Float4 perspectiveOffCenterFov_zo_lh_orthogonal_s5e0ee76f_c0(float _t6_inv) {
-        return new Float4(2.0f * this.m00 * _t6_inv, 2.0f * this.m10 * _t6_inv, 2.0f * this.m20 * _t6_inv, 0.0f);
+        return new Float4((this.m00 + this.m00) * _t6_inv, (this.m10 + this.m10) * _t6_inv, (this.m20 + this.m20) * _t6_inv, 0.0f);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_zo_lh_orthogonal}; reached only through it. */
     private Float4 perspectiveOffCenterFov_zo_lh_orthogonal_s5e0ee76f_c1(float _t7_inv) {
-        return new Float4(2.0f * this.m01 * _t7_inv, 2.0f * this.m11 * _t7_inv, 2.0f * this.m21 * _t7_inv, 0.0f);
+        return new Float4((this.m01 + this.m01) * _t7_inv, (this.m11 + this.m11) * _t7_inv, (this.m21 + this.m21) * _t7_inv, 0.0f);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_zo_lh_orthogonal}; reached only through it. */
@@ -27324,12 +27424,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code perspectiveOffCenterFov_zo_lh_general}; reached only through it. */
     private Float4 perspectiveOffCenterFov_zo_lh_general_s5e0ee76f_c0(float _t6_inv) {
-        return new Float4(2.0f * this.m00 * _t6_inv, 2.0f * this.m10 * _t6_inv, 2.0f * this.m20 * _t6_inv, 2.0f * this.m30 * _t6_inv);
+        return new Float4((this.m00 + this.m00) * _t6_inv, (this.m10 + this.m10) * _t6_inv, (this.m20 + this.m20) * _t6_inv, (this.m30 + this.m30) * _t6_inv);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_zo_lh_general}; reached only through it. */
     private Float4 perspectiveOffCenterFov_zo_lh_general_s5e0ee76f_c1(float _t7_inv) {
-        return new Float4(2.0f * this.m01 * _t7_inv, 2.0f * this.m11 * _t7_inv, 2.0f * this.m21 * _t7_inv, 2.0f * this.m31 * _t7_inv);
+        return new Float4((this.m01 + this.m01) * _t7_inv, (this.m11 + this.m11) * _t7_inv, (this.m21 + this.m21) * _t7_inv, (this.m31 + this.m31) * _t7_inv);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_zo_lh_general}; reached only through it. */
@@ -27408,7 +27508,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t5_inv = 1.0f / _t5;
         float _t6 = _t2 - _t3;
         float _t6_inv = 1.0f / _t6;
-        return new Float4x4(2.0f * _t5_inv, 0.0f, (_t1 + _t0) * _t5_inv, 0.0f, 0.0f, 2.0f * _t6_inv, (_t3 + _t2) * _t6_inv, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t4_inv, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(_t5_inv + _t5_inv, 0.0f, (_t1 + _t0) * _t5_inv, 0.0f, 0.0f, _t6_inv + _t6_inv, (_t3 + _t2) * _t6_inv, 0.0f, 0.0f, 0.0f, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t4_inv, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
     }
 
 
@@ -27428,17 +27528,17 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t5_inv = 1.0f / _t5;
         float _t6 = _t2 - _t3;
         float _t6_inv = 1.0f / _t6;
-        return new Float4x4(2.0f * _t5_inv, 0.0f, (_t1 + _t0) * _t5_inv - this.m03, 0.0f, 0.0f, 2.0f * _t6_inv, (_t3 + _t2) * _t6_inv - this.m13, 0.0f, 0.0f, 0.0f, (far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t4_inv) - this.m23, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
+        return new Float4x4(_t5_inv + _t5_inv, 0.0f, (_t1 + _t0) * _t5_inv - this.m03, 0.0f, 0.0f, _t6_inv + _t6_inv, (_t3 + _t2) * _t6_inv - this.m13, 0.0f, 0.0f, 0.0f, (far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t4_inv) - this.m23, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv, 0.0f, 0.0f, -1.0f, 0.0f, 0);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_zo_rh_orthogonal}; reached only through it. */
     private Float4 perspectiveOffCenterFov_zo_rh_orthogonal_s5e0ee76f_c0(float _t6_inv) {
-        return new Float4(2.0f * this.m00 * _t6_inv, 2.0f * this.m10 * _t6_inv, 2.0f * this.m20 * _t6_inv, 0.0f);
+        return new Float4((this.m00 + this.m00) * _t6_inv, (this.m10 + this.m10) * _t6_inv, (this.m20 + this.m20) * _t6_inv, 0.0f);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_zo_rh_orthogonal}; reached only through it. */
     private Float4 perspectiveOffCenterFov_zo_rh_orthogonal_s5e0ee76f_c1(float _t7_inv) {
-        return new Float4(2.0f * this.m01 * _t7_inv, 2.0f * this.m11 * _t7_inv, 2.0f * this.m21 * _t7_inv, 0.0f);
+        return new Float4((this.m01 + this.m01) * _t7_inv, (this.m11 + this.m11) * _t7_inv, (this.m21 + this.m21) * _t7_inv, 0.0f);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_zo_rh_orthogonal}; reached only through it. */
@@ -27488,12 +27588,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code perspectiveOffCenterFov_zo_rh_affine}; reached only through it. */
     private Float4 perspectiveOffCenterFov_zo_rh_affine_s5e0ee76f_c0(float _t6_inv) {
-        return new Float4(2.0f * this.m00 * _t6_inv, 2.0f * this.m10 * _t6_inv, 2.0f * this.m20 * _t6_inv, 0.0f);
+        return new Float4((this.m00 + this.m00) * _t6_inv, (this.m10 + this.m10) * _t6_inv, (this.m20 + this.m20) * _t6_inv, 0.0f);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_zo_rh_affine}; reached only through it. */
     private Float4 perspectiveOffCenterFov_zo_rh_affine_s5e0ee76f_c1(float _t7_inv) {
-        return new Float4(2.0f * this.m01 * _t7_inv, 2.0f * this.m11 * _t7_inv, 2.0f * this.m21 * _t7_inv, 0.0f);
+        return new Float4((this.m01 + this.m01) * _t7_inv, (this.m11 + this.m11) * _t7_inv, (this.m21 + this.m21) * _t7_inv, 0.0f);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_zo_rh_affine}; reached only through it. */
@@ -27543,12 +27643,12 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
     /** Private per-column body of {@code perspectiveOffCenterFov_zo_rh_general}; reached only through it. */
     private Float4 perspectiveOffCenterFov_zo_rh_general_s5e0ee76f_c0(float _t6_inv) {
-        return new Float4(2.0f * this.m00 * _t6_inv, 2.0f * this.m10 * _t6_inv, 2.0f * this.m20 * _t6_inv, 2.0f * this.m30 * _t6_inv);
+        return new Float4((this.m00 + this.m00) * _t6_inv, (this.m10 + this.m10) * _t6_inv, (this.m20 + this.m20) * _t6_inv, (this.m30 + this.m30) * _t6_inv);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_zo_rh_general}; reached only through it. */
     private Float4 perspectiveOffCenterFov_zo_rh_general_s5e0ee76f_c1(float _t7_inv) {
-        return new Float4(2.0f * this.m01 * _t7_inv, 2.0f * this.m11 * _t7_inv, 2.0f * this.m21 * _t7_inv, 2.0f * this.m31 * _t7_inv);
+        return new Float4((this.m01 + this.m01) * _t7_inv, (this.m11 + this.m11) * _t7_inv, (this.m21 + this.m21) * _t7_inv, (this.m31 + this.m31) * _t7_inv);
     }
 
     /** Private per-column body of {@code perspectiveOffCenterFov_zo_rh_general}; reached only through it. */
@@ -27870,9 +27970,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
-        float _t4 = 2.0f * rotY;
-        float _t5 = 2.0f * rotZ;
-        float _t6 = 2.0f * rotX;
+        float _t4 = rotY + rotY;
+        float _t5 = rotZ + rotZ;
+        float _t6 = rotX + rotX;
         float _t7 = rotW * _t5;
         float _t8 = rotW * _t4;
         float _t9 = rotZ * _t5;
@@ -27916,9 +28016,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
-        float _t4 = 2.0f * rotY;
-        float _t5 = 2.0f * rotZ;
-        float _t6 = 2.0f * rotX;
+        float _t4 = rotY + rotY;
+        float _t5 = rotZ + rotZ;
+        float _t6 = rotX + rotX;
         float _t7 = rotW * _t5;
         float _t8 = rotW * _t4;
         float _t9 = rotZ * _t5;
@@ -27965,9 +28065,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
-        float _t4 = 2.0f * rotX;
-        float _t5 = 2.0f * rotY;
-        float _t6 = 2.0f * rotZ;
+        float _t4 = rotX + rotX;
+        float _t5 = rotY + rotY;
+        float _t6 = rotZ + rotZ;
         float _t7 = rotW * _t5;
         float _t8 = rotW * _t6;
         float _t9 = rotZ * _t6;
@@ -28014,9 +28114,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
-        float _t4 = 2.0f * rotX;
-        float _t5 = 2.0f * rotY;
-        float _t6 = 2.0f * rotZ;
+        float _t4 = rotX + rotX;
+        float _t5 = rotY + rotY;
+        float _t6 = rotZ + rotZ;
         float _t7 = rotW * _t5;
         float _t8 = rotW * _t6;
         float _t9 = rotZ * _t6;
@@ -28043,9 +28143,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0 = -pivotZ;
         float _t1 = -rotY;
         float _t3 = -rotX;
-        float _t5 = 2.0f * rotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
+        float _t5 = rotX + rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
         float _t8 = rotW * _t6;
         float _t9 = rotZ * _t7;
         float _t10 = rotW * _t7;
@@ -28344,9 +28444,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
     private Float4x4 preRotateQuat_identity(float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qY;
-        float _t4 = 2.0f * qZ;
-        float _t5 = 2.0f * qX;
+        float _t3 = qY + qY;
+        float _t4 = qZ + qZ;
+        float _t5 = qX + qX;
         float _t6 = qW * _t4;
         float _t7 = qW * _t3;
         float _t8 = qW * _t5;
@@ -28362,9 +28462,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
     private Float4x4 preRotateQuat_translation(float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qY;
-        float _t4 = 2.0f * qZ;
-        float _t5 = 2.0f * qX;
+        float _t3 = qY + qY;
+        float _t4 = qZ + qZ;
+        float _t5 = qX + qX;
         float _t6 = qW * _t4;
         float _t7 = qW * _t3;
         float _t8 = qW * _t5;
@@ -28409,9 +28509,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
     private Float4x4 preRotateQuat_orthogonal(float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -28456,9 +28556,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
     private Float4x4 preRotateQuat_affine(float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -28503,9 +28603,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
     private Float4x4 preRotateQuat_general(float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -29376,9 +29476,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code reflect} dispatcher.
      */
     private Float4x4 reflect_identity(float normalX, float normalY, float normalZ) {
-        float _t6 = -(2.0f * normalX * normalY);
-        float _t7 = -(2.0f * normalX * normalZ);
-        float _t8 = -(2.0f * normalY * normalZ);
+        float _t6 = -((normalX + normalX) * normalY);
+        float _t7 = -((normalX + normalX) * normalZ);
+        float _t8 = -((normalY + normalY) * normalZ);
         return new Float4x4(Math.fma(-2.0f, normalX * normalX, 1.0f), _t6, _t7, 0.0f, _t6, Math.fma(-2.0f, normalY * normalY, 1.0f), _t8, 0.0f, _t7, _t8, Math.fma(-2.0f, normalZ * normalZ, 1.0f), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
@@ -29388,9 +29488,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code reflect} dispatcher.
      */
     private Float4x4 reflect_translation(float normalX, float normalY, float normalZ) {
-        float _t6 = -(2.0f * normalX * normalY);
-        float _t7 = -(2.0f * normalX * normalZ);
-        float _t8 = -(2.0f * normalY * normalZ);
+        float _t6 = -((normalX + normalX) * normalY);
+        float _t7 = -((normalX + normalX) * normalZ);
+        float _t8 = -((normalY + normalY) * normalZ);
         return new Float4x4(Math.fma(-2.0f, normalX * normalX, 1.0f), _t6, _t7, this.m03, _t6, Math.fma(-2.0f, normalY * normalY, 1.0f), _t8, this.m13, _t7, _t8, Math.fma(-2.0f, normalZ * normalZ, 1.0f), this.m23, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
@@ -29423,9 +29523,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0 = -this.m02;
         float _t1 = -this.m12;
         float _t2 = -this.m22;
-        float _t9 = 2.0f * normalX * normalZ;
-        float _t10 = 2.0f * normalX * normalY;
-        float _t11 = 2.0f * normalY * normalZ;
+        float _t9 = (normalX + normalX) * normalZ;
+        float _t10 = (normalX + normalX) * normalY;
+        float _t11 = (normalY + normalY) * normalZ;
         float _t12 = Math.fma(-2.0f, normalX * normalX, 1.0f);
         float _t13 = Math.fma(-2.0f, normalY * normalY, 1.0f);
         float _t14 = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
@@ -29462,9 +29562,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t1 = -this.m12;
         float _t2 = -this.m22;
         float _t3 = -this.m32;
-        float _t10 = 2.0f * normalX * normalZ;
-        float _t11 = 2.0f * normalX * normalY;
-        float _t12 = 2.0f * normalY * normalZ;
+        float _t10 = (normalX + normalX) * normalZ;
+        float _t11 = (normalX + normalX) * normalY;
+        float _t12 = (normalY + normalY) * normalZ;
         float _t13 = Math.fma(-2.0f, normalX * normalX, 1.0f);
         float _t14 = Math.fma(-2.0f, normalY * normalY, 1.0f);
         float _t15 = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
@@ -29537,9 +29637,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t3 = -pivotZ;
         float _t4 = -rotX;
         float _t5 = -pivotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
-        float _t8 = 2.0f * rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
+        float _t8 = rotX + rotX;
         float _t9 = rotW * _t7;
         float _t10 = rotW * _t6;
         float _t11 = rotZ * _t7;
@@ -29583,9 +29683,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0 = -rotY;
         float _t2 = -rotX;
         float _t3 = -pivotZ;
-        float _t5 = 2.0f * rotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
+        float _t5 = rotX + rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
         float _t8 = rotW * _t6;
         float _t9 = rotW * _t7;
         float _t10 = rotW * _t5;
@@ -29635,9 +29735,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0 = -rotY;
         float _t2 = -rotX;
         float _t3 = -pivotZ;
-        float _t5 = 2.0f * rotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
+        float _t5 = rotX + rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
         float _t8 = rotW * _t6;
         float _t9 = rotW * _t7;
         float _t10 = rotW * _t5;
@@ -29687,9 +29787,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t0 = -rotY;
         float _t2 = -rotX;
         float _t3 = -pivotZ;
-        float _t5 = 2.0f * rotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
+        float _t5 = rotX + rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
         float _t8 = rotW * _t6;
         float _t9 = rotW * _t7;
         float _t10 = rotW * _t5;
@@ -29982,9 +30082,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
     private Float4x4 rotateQuat_translation(float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qY;
-        float _t4 = 2.0f * qZ;
-        float _t5 = 2.0f * qX;
+        float _t3 = qY + qY;
+        float _t4 = qZ + qZ;
+        float _t5 = qX + qX;
         float _t6 = qW * _t4;
         float _t7 = qW * _t3;
         float _t8 = qW * _t5;
@@ -30020,9 +30120,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
     private Float4x4 rotateQuat_orthogonal(float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -30067,9 +30167,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
     private Float4x4 rotateQuat_affine(float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -30114,9 +30214,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
     private Float4x4 rotateQuat_general(float qX, float qY, float qZ, float qW) {
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -32599,9 +32699,9 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t54 = _t3 * _t52_inv;
         float _t55 = _t52 * _t47;
         float _t58 = _t50 * _t52_inv;
-        float _t60 = 2.0f * _t45 / ((1.0f - _t45 / _t55) * _t55);
+        float _t60 = (_t45 + _t45) / ((1.0f - _t45 / _t55) * _t55);
         float _t61 = 1.0f + _t60;
-        return new Float4x4(2.0f * _t25 * _t41_inv - _t53, 2.0f * _t26 * _t41_inv - _t54, 0.0f, 2.0f * Math.fma(p0Y, _t5, Math.fma(_t0, _t3, _t30)) * _t41_inv - _t58, _t61 * _t5 * _t52_inv, _t61 * _t3 * _t52_inv, 0.0f, _t61 * _t50 * _t52_inv - _t60, 0.0f, 0.0f, 1.0f, 0.0f, _t53, _t54, 0.0f, _t58, 0);
+        return new Float4x4((_t25 + _t25) * _t41_inv - _t53, (_t26 + _t26) * _t41_inv - _t54, 0.0f, 2.0f * Math.fma(p0Y, _t5, Math.fma(_t0, _t3, _t30)) * _t41_inv - _t58, _t61 * _t5 * _t52_inv, _t61 * _t3 * _t52_inv, 0.0f, _t61 * _t50 * _t52_inv - _t60, 0.0f, 0.0f, 1.0f, 0.0f, _t53, _t54, 0.0f, _t58, 0);
     }
 
 
@@ -32631,10 +32731,10 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t56_inv = 1.0f / _t56;
         float _t57 = _t5 * _t56_inv;
         float _t58 = _t3 * _t56_inv;
-        float _t59 = 2.0f * _t25 * _t43_inv - _t57;
-        float _t60 = 2.0f * _t26 * _t43_inv - _t58;
+        float _t59 = (_t25 + _t25) * _t43_inv - _t57;
+        float _t60 = (_t26 + _t26) * _t43_inv - _t58;
         float _t61 = _t56 * _t51;
-        float _t65 = 2.0f * _t47 / ((1.0f - _t47 / _t61) * _t61);
+        float _t65 = (_t47 + _t47) / ((1.0f - _t47 / _t61) * _t61);
         float _t66 = 1.0f + _t65;
         float _t67 = _t66 * _t5;
         float _t68 = _t66 * _t3;
@@ -32666,10 +32766,10 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t54 = Math.fma(_t0, _t5, Math.fma(-p0Y, _t3, _t47 / _t51));
         float _t56 = Math.fma(p3X, _t5, Math.fma(p3Y, _t3, _t54));
         float _t56_inv = 1.0f / _t56;
-        float _t59 = 2.0f * _t25 * _t43_inv - _t5 * _t56_inv;
-        float _t60 = 2.0f * _t26 * _t43_inv - _t3 * _t56_inv;
+        float _t59 = (_t25 + _t25) * _t43_inv - _t5 * _t56_inv;
+        float _t60 = (_t26 + _t26) * _t43_inv - _t3 * _t56_inv;
         float _t61 = _t56 * _t51;
-        float _t65 = 2.0f * _t47 / ((1.0f - _t47 / _t61) * _t61);
+        float _t65 = (_t47 + _t47) / ((1.0f - _t47 / _t61) * _t61);
         float _t66 = 1.0f + _t65;
         float _t67 = _t66 * _t5;
         float _t68 = _t66 * _t3;
@@ -32701,11 +32801,11 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         float _t58 = Math.fma(_t0, _t3, Math.fma(-p0Y, _t4, _t50 / _t55));
         float _t60 = Math.fma(p3X, _t3, Math.fma(p3Y, _t4, _t58));
         float _t60_inv = 1.0f / _t60;
-        float _t63 = 2.0f * _t25 * _t46_inv - _t3 * _t60_inv;
-        float _t64 = 2.0f * _t26 * _t46_inv - _t4 * _t60_inv;
+        float _t63 = (_t25 + _t25) * _t46_inv - _t3 * _t60_inv;
+        float _t64 = (_t26 + _t26) * _t46_inv - _t4 * _t60_inv;
         float _t65 = _t60 * _t55;
         float _t69 = 2.0f * Math.fma(p0Y, _t3, Math.fma(_t0, _t4, _t32)) * _t46_inv - _t58 * _t60_inv;
-        float _t71 = 2.0f * _t50 / ((1.0f - _t50 / _t65) * _t65);
+        float _t71 = (_t50 + _t50) / ((1.0f - _t50 / _t65) * _t65);
         float _t72 = 1.0f + _t71;
         float _t73 = _t72 * _t3;
         float _t74 = _t72 * _t4;

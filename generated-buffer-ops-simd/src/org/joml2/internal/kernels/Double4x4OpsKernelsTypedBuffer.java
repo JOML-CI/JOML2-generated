@@ -2140,9 +2140,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.makeFromTransform_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
             return dest;
         }
-        double _t0 = 2.0 * tSX;
-        double _t1 = 2.0 * tSY;
-        double _t2 = 2.0 * tSZ;
+        double _t0 = tSX + tSX;
+        double _t1 = tSY + tSY;
+        double _t2 = tSZ + tSZ;
         double _t3 = tRZ * tRZ;
         double _t4 = tRZ * tRW;
         double _t5 = tRY * tRW;
@@ -5304,9 +5304,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.composeTRS_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
             return dest;
         }
-        double _t0 = 2.0 * scaleX;
-        double _t1 = 2.0 * scaleY;
-        double _t2 = 2.0 * scaleZ;
+        double _t0 = scaleX + scaleX;
+        double _t1 = scaleY + scaleY;
+        double _t2 = scaleZ + scaleZ;
         double _t3 = rotationZ * rotationZ;
         double _t4 = rotationZ * rotationW;
         double _t5 = rotationY * rotationW;
@@ -5357,9 +5357,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _scalex = scale.get(scaleOffset + 0);
         double _scaley = scale.get(scaleOffset + 1);
         double _scalez = scale.get(scaleOffset + 2);
-        double _t0 = 2.0 * _scalex;
-        double _t1 = 2.0 * _scaley;
-        double _t2 = 2.0 * _scalez;
+        double _t0 = _scalex + _scalex;
+        double _t1 = _scaley + _scaley;
+        double _t2 = _scalez + _scalez;
         double _t3 = _rotationz * _rotationz;
         double _t4 = _rotationz * _rotationw;
         double _t5 = _rotationy * _rotationw;
@@ -5414,9 +5414,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _m13 = m.get(mOffset + 13);
         double _m23 = m.get(mOffset + 14);
         double _m33 = m.get(mOffset + 15);
-        double _t0 = 2.0 * scaleZ;
-        double _t1 = 2.0 * scaleX;
-        double _t2 = 2.0 * scaleY;
+        double _t0 = scaleZ + scaleZ;
+        double _t1 = scaleX + scaleX;
+        double _t2 = scaleY + scaleY;
         double _t3 = rotationY * rotationW;
         double _t4 = rotationZ * rotationZ;
         double _t5 = rotationZ * rotationW;
@@ -5493,9 +5493,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _m13 = m.get(mOffset + 13);
         double _m23 = m.get(mOffset + 14);
         double _m33 = m.get(mOffset + 15);
-        double _t0 = 2.0 * _scalez;
-        double _t1 = 2.0 * _scalex;
-        double _t2 = 2.0 * _scaley;
+        double _t0 = _scalez + _scalez;
+        double _t1 = _scalex + _scalex;
+        double _t2 = _scaley + _scaley;
         double _t3 = _rotationy * _rotationw;
         double _t4 = _rotationz * _rotationz;
         double _t5 = _rotationz * _rotationw;
@@ -5556,7 +5556,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -5572,10 +5572,10 @@ public final class Double4x4OpsKernelsTypedBuffer {
         } else {
             if (zNear == Double.POSITIVE_INFINITY) {
                 _t16 = -1.0;
-                _t17 = 2.0 * zFar;
+                _t17 = zFar + zFar;
             } else {
                 _t16 = -((zFar + zNear) * _t4_inv);
-                _t17 = 2.0 * zFar * zNear * _t4_inv;
+                _t17 = (zFar + zFar) * zNear * _t4_inv;
             }
         }
         dest.put(destOffset + 0, _self00 * _t0 * _t1_inv);
@@ -5626,7 +5626,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -5642,10 +5642,10 @@ public final class Double4x4OpsKernelsTypedBuffer {
         } else {
             if (zNear == Double.POSITIVE_INFINITY) {
                 _t14 = 1.0;
-                _t16 = 2.0 * zFar;
+                _t16 = zFar + zFar;
             } else {
                 _t14 = (zFar + zNear) * _t4_inv;
-                _t16 = 2.0 * zFar * zNear * _t4_inv;
+                _t16 = (zFar + zFar) * zNear * _t4_inv;
             }
         }
         dest.put(destOffset + 0, _self00 * _t0 * _t1_inv);
@@ -5703,7 +5703,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -5773,7 +5773,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -6852,8 +6852,8 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t12 = (1.0 / Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
         double _t13 = _t0 * _t12;
         double _t14 = _t3 * _t12;
-        double _t15 = 2.0 * _t13;
-        double _t16 = 2.0 * _t14;
+        double _t15 = _t13 + _t13;
+        double _t16 = _t14 + _t14;
         double _t17 = -_t15;
         double _t19 = _t10 * _t12;
         double _t20 = _t16 * _t13;
@@ -6910,8 +6910,8 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t12 = (1.0 / Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
         double _t13 = _t0 * _t12;
         double _t14 = _t3 * _t12;
-        double _t15 = 2.0 * _t13;
-        double _t16 = 2.0 * _t14;
+        double _t15 = _t13 + _t13;
+        double _t16 = _t14 + _t14;
         double _t17 = -_t15;
         double _t19 = _t10 * _t12;
         double _t20 = _t16 * _t13;
@@ -6960,14 +6960,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t6 = Math.fma(-2.0, dqRZ * dqRZ, 1.0);
         dest.put(destOffset + 0, Math.fma(-2.0, _t0, _t6));
         dest.put(destOffset + 1, 2.0 * Math.fma(dqRX, dqRY, _t2));
-        dest.put(destOffset + 2, Math.fma(-2.0, _t3, 2.0 * dqRX * dqRZ));
+        dest.put(destOffset + 2, Math.fma(-2.0, _t3, (dqRX + dqRX) * dqRZ));
         dest.put(destOffset + 3, 0.0);
-        dest.put(destOffset + 4, Math.fma(-2.0, _t2, 2.0 * dqRX * dqRY));
+        dest.put(destOffset + 4, Math.fma(-2.0, _t2, (dqRX + dqRX) * dqRY));
         dest.put(destOffset + 5, Math.fma(-2.0, _t4, _t6));
         dest.put(destOffset + 6, 2.0 * Math.fma(dqRX, dqRW, _t5));
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 2.0 * Math.fma(dqRX, dqRZ, _t3));
-        dest.put(destOffset + 9, Math.fma(-2.0, dqRX * dqRW, 2.0 * _t5));
+        dest.put(destOffset + 9, Math.fma(-2.0, dqRX * dqRW, _t5 + _t5));
         dest.put(destOffset + 10, Math.fma(-2.0, _t4, Math.fma(-2.0, _t0, 1.0)));
         dest.put(destOffset + 11, 0.0);
         dest.put(destOffset + 12, 2.0 * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW))));
@@ -6997,7 +6997,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.makeFrustum_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
             return dest;
         }
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -7010,10 +7010,10 @@ public final class Double4x4OpsKernelsTypedBuffer {
         } else {
             if (zNear == Double.POSITIVE_INFINITY) {
                 dest.put(destOffset + 10, -1.0);
-                dest.put(destOffset + 14, 2.0 * zFar);
+                dest.put(destOffset + 14, zFar + zFar);
             } else {
                 dest.put(destOffset + 10, -((zFar + zNear) * _t3_inv));
-                dest.put(destOffset + 14, 2.0 * zFar * zNear * _t3_inv);
+                dest.put(destOffset + 14, (zFar + zFar) * zNear * _t3_inv);
             }
         }
         dest.put(destOffset + 0, _t0 * _t1_inv);
@@ -7053,7 +7053,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.makeFrustum_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
             return dest;
         }
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -7066,10 +7066,10 @@ public final class Double4x4OpsKernelsTypedBuffer {
         } else {
             if (zNear == Double.POSITIVE_INFINITY) {
                 dest.put(destOffset + 10, 1.0);
-                dest.put(destOffset + 14, 2.0 * zFar);
+                dest.put(destOffset + 14, zFar + zFar);
             } else {
                 dest.put(destOffset + 10, (zFar + zNear) * _t3_inv);
-                dest.put(destOffset + 14, 2.0 * zFar * zNear * _t3_inv);
+                dest.put(destOffset + 14, (zFar + zFar) * zNear * _t3_inv);
             }
         }
         dest.put(destOffset + 0, _t0 * _t1_inv);
@@ -7116,7 +7116,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.makeFrustum_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
             return dest;
         }
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -7172,7 +7172,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.makeFrustum_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
             return dest;
         }
-        double _t0 = 2.0 * zNear;
+        double _t0 = zNear + zNear;
         double _t1 = right - left;
         double _t1_inv = 1.0 / _t1;
         double _t2 = top - bottom;
@@ -9253,17 +9253,17 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dest.put(destOffset + 0, 2.0 * _t0_inv);
+        dest.put(destOffset + 0, _t0_inv + _t0_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t1_inv);
+        dest.put(destOffset + 5, _t1_inv + _t1_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
         dest.put(destOffset + 9, 0.0);
-        dest.put(destOffset + 10, 2.0 * _t2_inv);
+        dest.put(destOffset + 10, _t2_inv + _t2_inv);
         dest.put(destOffset + 11, 0.0);
         dest.put(destOffset + 12, -((left + right) * _t0_inv));
         dest.put(destOffset + 13, -((bottom + top) * _t1_inv));
@@ -9298,12 +9298,12 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dest.put(destOffset + 0, 2.0 * _t0_inv);
+        dest.put(destOffset + 0, _t0_inv + _t0_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t1_inv);
+        dest.put(destOffset + 5, _t1_inv + _t1_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
@@ -9350,12 +9350,12 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dest.put(destOffset + 0, 2.0 * _t0_inv);
+        dest.put(destOffset + 0, _t0_inv + _t0_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t1_inv);
+        dest.put(destOffset + 5, _t1_inv + _t1_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
@@ -9395,12 +9395,12 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        dest.put(destOffset + 0, 2.0 * _t0_inv);
+        dest.put(destOffset + 0, _t0_inv + _t0_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t1_inv);
+        dest.put(destOffset + 5, _t1_inv + _t1_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
@@ -9445,12 +9445,12 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dest.put(destOffset + 0, 2.0 * _t0_inv);
+        dest.put(destOffset + 0, _t0_inv + _t0_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t1_inv);
+        dest.put(destOffset + 5, _t1_inv + _t1_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
@@ -9488,12 +9488,12 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dest.put(destOffset + 0, 2.0 * _t0_inv);
+        dest.put(destOffset + 0, _t0_inv + _t0_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t1_inv);
+        dest.put(destOffset + 5, _t1_inv + _t1_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
@@ -9538,12 +9538,12 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dest.put(destOffset + 0, 2.0 * _t0_inv);
+        dest.put(destOffset + 0, _t0_inv + _t0_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t1_inv);
+        dest.put(destOffset + 5, _t1_inv + _t1_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
@@ -9581,12 +9581,12 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dest.put(destOffset + 0, 2.0 * _t0_inv);
+        dest.put(destOffset + 0, _t0_inv + _t0_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t1_inv);
+        dest.put(destOffset + 5, _t1_inv + _t1_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
@@ -9632,14 +9632,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t2 = Math.tan(0.5 * fovy);
         if (far == Double.POSITIVE_INFINITY) {
             dest.put(destOffset + 10, 1.0);
-            dest.put(destOffset + 14, -(2.0 * near));
+            dest.put(destOffset + 14, -(near + near));
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 dest.put(destOffset + 10, -1.0);
-                dest.put(destOffset + 14, 2.0 * far);
+                dest.put(destOffset + 14, far + far);
             } else {
                 dest.put(destOffset + 10, -((far + near) * _t1_inv));
-                dest.put(destOffset + 14, 2.0 * far * near * _t1_inv);
+                dest.put(destOffset + 14, (far + far) * near * _t1_inv);
             }
         }
         dest.put(destOffset + 0, 1.0 / (aspect * _t2));
@@ -9684,14 +9684,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t2 = Math.tan(0.5 * fovy);
         if (far == Double.POSITIVE_INFINITY) {
             dest.put(destOffset + 10, -1.0);
-            dest.put(destOffset + 14, -(2.0 * near));
+            dest.put(destOffset + 14, -(near + near));
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 dest.put(destOffset + 10, 1.0);
-                dest.put(destOffset + 14, 2.0 * far);
+                dest.put(destOffset + 14, far + far);
             } else {
                 dest.put(destOffset + 10, (far + near) * _t1_inv);
-                dest.put(destOffset + 14, 2.0 * far * near * _t1_inv);
+                dest.put(destOffset + 14, (far + far) * near * _t1_inv);
             }
         }
         dest.put(destOffset + 0, 1.0 / (aspect * _t2));
@@ -9857,14 +9857,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t3_inv = 1.0 / _t3;
         if (far == Double.POSITIVE_INFINITY) {
             dest.put(destOffset + 10, 1.0);
-            dest.put(destOffset + 14, -(2.0 * near));
+            dest.put(destOffset + 14, -(near + near));
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 dest.put(destOffset + 10, -1.0);
-                dest.put(destOffset + 14, 2.0 * far);
+                dest.put(destOffset + 14, far + far);
             } else {
                 dest.put(destOffset + 10, -((far + near) * _t2_inv));
-                dest.put(destOffset + 14, 2.0 * far * near * _t2_inv);
+                dest.put(destOffset + 14, (far + far) * near * _t2_inv);
             }
         }
         dest.put(destOffset + 0, 2.0 / (aspect * _t3));
@@ -9872,7 +9872,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t3_inv);
+        dest.put(destOffset + 5, _t3_inv + _t3_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
@@ -9912,14 +9912,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t3_inv = 1.0 / _t3;
         if (far == Double.POSITIVE_INFINITY) {
             dest.put(destOffset + 10, -1.0);
-            dest.put(destOffset + 14, -(2.0 * near));
+            dest.put(destOffset + 14, -(near + near));
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 dest.put(destOffset + 10, 1.0);
-                dest.put(destOffset + 14, 2.0 * far);
+                dest.put(destOffset + 14, far + far);
             } else {
                 dest.put(destOffset + 10, (far + near) * _t2_inv);
-                dest.put(destOffset + 14, 2.0 * far * near * _t2_inv);
+                dest.put(destOffset + 14, (far + far) * near * _t2_inv);
             }
         }
         dest.put(destOffset + 0, 2.0 / (aspect * _t3));
@@ -9927,7 +9927,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t3_inv);
+        dest.put(destOffset + 5, _t3_inv + _t3_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
@@ -9989,7 +9989,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t3_inv);
+        dest.put(destOffset + 5, _t3_inv + _t3_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
@@ -10044,7 +10044,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t3_inv);
+        dest.put(destOffset + 5, _t3_inv + _t3_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
@@ -10095,22 +10095,22 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t6_inv = 1.0 / _t6;
         if (far == Double.POSITIVE_INFINITY) {
             dest.put(destOffset + 10, 1.0);
-            dest.put(destOffset + 14, -(2.0 * near));
+            dest.put(destOffset + 14, -(near + near));
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 dest.put(destOffset + 10, -1.0);
-                dest.put(destOffset + 14, 2.0 * far);
+                dest.put(destOffset + 14, far + far);
             } else {
                 dest.put(destOffset + 10, -((far + near) * _t4_inv));
-                dest.put(destOffset + 14, 2.0 * far * near * _t4_inv);
+                dest.put(destOffset + 14, (far + far) * near * _t4_inv);
             }
         }
-        dest.put(destOffset + 0, 2.0 * _t5_inv);
+        dest.put(destOffset + 0, _t5_inv + _t5_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t6_inv);
+        dest.put(destOffset + 5, _t6_inv + _t6_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, -((_t1 + _t0) * _t5_inv));
@@ -10154,22 +10154,22 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t6_inv = 1.0 / _t6;
         if (far == Double.POSITIVE_INFINITY) {
             dest.put(destOffset + 10, -1.0);
-            dest.put(destOffset + 14, -(2.0 * near));
+            dest.put(destOffset + 14, -(near + near));
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 dest.put(destOffset + 10, 1.0);
-                dest.put(destOffset + 14, 2.0 * far);
+                dest.put(destOffset + 14, far + far);
             } else {
                 dest.put(destOffset + 10, (far + near) * _t4_inv);
-                dest.put(destOffset + 14, 2.0 * far * near * _t4_inv);
+                dest.put(destOffset + 14, (far + far) * near * _t4_inv);
             }
         }
-        dest.put(destOffset + 0, 2.0 * _t5_inv);
+        dest.put(destOffset + 0, _t5_inv + _t5_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t6_inv);
+        dest.put(destOffset + 5, _t6_inv + _t6_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, (_t1 + _t0) * _t5_inv);
@@ -10230,12 +10230,12 @@ public final class Double4x4OpsKernelsTypedBuffer {
                 dest.put(destOffset + 14, far * near * _t4_inv);
             }
         }
-        dest.put(destOffset + 0, 2.0 * _t5_inv);
+        dest.put(destOffset + 0, _t5_inv + _t5_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t6_inv);
+        dest.put(destOffset + 5, _t6_inv + _t6_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, -((_t1 + _t0) * _t5_inv));
@@ -10289,12 +10289,12 @@ public final class Double4x4OpsKernelsTypedBuffer {
                 dest.put(destOffset + 14, far * near * _t4_inv);
             }
         }
-        dest.put(destOffset + 0, 2.0 * _t5_inv);
+        dest.put(destOffset + 0, _t5_inv + _t5_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t6_inv);
+        dest.put(destOffset + 5, _t6_inv + _t6_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, (_t1 + _t0) * _t5_inv);
@@ -10352,7 +10352,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t36 = (1.0 / Math.sqrt(_t35));
         double _t40 = _t27 * _t34;
         double _t41 = Math.fma(_t27, _t34, nearFarDist);
-        double _t42 = 2.0 * _t40;
+        double _t42 = _t40 + _t40;
         double _t44, _t45, _t46;
         if (_t35 > 0.0) {
             _t44 = _t26 * _t36;
@@ -10401,10 +10401,10 @@ public final class Double4x4OpsKernelsTypedBuffer {
         } else {
             if (_t40 == Double.POSITIVE_INFINITY) {
                 dest.put(destOffset + 10, -1.0);
-                dest.put(destOffset + 14, 2.0 * _t41);
+                dest.put(destOffset + 14, _t41 + _t41);
             } else {
                 dest.put(destOffset + 10, -(Math.fma(_t27, _t34, _t41) * _t53_inv));
-                dest.put(destOffset + 14, 2.0 * _t41 * _t40 * _t53_inv);
+                dest.put(destOffset + 14, (_t41 + _t41) * _t40 * _t53_inv);
             }
         }
         dest.put(destOffset + 0, _t42 * _t123_inv);
@@ -10463,7 +10463,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t36 = (1.0 / Math.sqrt(_t35));
         double _t40 = _t27 * _t34;
         double _t41 = Math.fma(_t27, _t34, nearFarDist);
-        double _t42 = 2.0 * _t40;
+        double _t42 = _t40 + _t40;
         double _t44, _t45, _t46;
         if (_t35 > 0.0) {
             _t44 = _t25 * _t36;
@@ -10512,10 +10512,10 @@ public final class Double4x4OpsKernelsTypedBuffer {
         } else {
             if (_t40 == Double.POSITIVE_INFINITY) {
                 dest.put(destOffset + 10, 1.0);
-                dest.put(destOffset + 14, 2.0 * _t41);
+                dest.put(destOffset + 14, _t41 + _t41);
             } else {
                 dest.put(destOffset + 10, Math.fma(_t27, _t34, _t41) * _t53_inv);
-                dest.put(destOffset + 14, 2.0 * _t41 * _t40 * _t53_inv);
+                dest.put(destOffset + 14, (_t41 + _t41) * _t40 * _t53_inv);
             }
         }
         dest.put(destOffset + 0, _t42 * _t123_inv);
@@ -10581,7 +10581,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t36 = (1.0 / Math.sqrt(_t35));
         double _t40 = _t27 * _t34;
         double _t41 = Math.fma(_t27, _t34, nearFarDist);
-        double _t42 = 2.0 * _t40;
+        double _t42 = _t40 + _t40;
         double _t44, _t45, _t46;
         if (_t35 > 0.0) {
             _t44 = _t26 * _t36;
@@ -10692,7 +10692,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t36 = (1.0 / Math.sqrt(_t35));
         double _t40 = _t27 * _t34;
         double _t41 = Math.fma(_t27, _t34, nearFarDist);
-        double _t42 = 2.0 * _t40;
+        double _t42 = _t40 + _t40;
         double _t44, _t45, _t46;
         if (_t35 > 0.0) {
             _t44 = _t25 * _t36;
@@ -10826,7 +10826,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t36 = (1.0 / Math.sqrt(_t35));
         double _t40 = _t27 * _t34;
         double _t41 = Math.fma(_t27, _t34, nearFarDist);
-        double _t42 = 2.0 * _t40;
+        double _t42 = _t40 + _t40;
         double _t44, _t45, _t46;
         if (_t35 > 0.0) {
             _t44 = _t26 * _t36;
@@ -10875,10 +10875,10 @@ public final class Double4x4OpsKernelsTypedBuffer {
         } else {
             if (_t40 == Double.POSITIVE_INFINITY) {
                 dest.put(destOffset + 10, -1.0);
-                dest.put(destOffset + 14, 2.0 * _t41);
+                dest.put(destOffset + 14, _t41 + _t41);
             } else {
                 dest.put(destOffset + 10, -(Math.fma(_t27, _t34, _t41) * _t53_inv));
-                dest.put(destOffset + 14, 2.0 * _t41 * _t40 * _t53_inv);
+                dest.put(destOffset + 14, (_t41 + _t41) * _t40 * _t53_inv);
             }
         }
         dest.put(destOffset + 0, _t42 * _t123_inv);
@@ -10953,7 +10953,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t36 = (1.0 / Math.sqrt(_t35));
         double _t40 = _t27 * _t34;
         double _t41 = Math.fma(_t27, _t34, nearFarDist);
-        double _t42 = 2.0 * _t40;
+        double _t42 = _t40 + _t40;
         double _t44, _t45, _t46;
         if (_t35 > 0.0) {
             _t44 = _t25 * _t36;
@@ -11002,10 +11002,10 @@ public final class Double4x4OpsKernelsTypedBuffer {
         } else {
             if (_t40 == Double.POSITIVE_INFINITY) {
                 dest.put(destOffset + 10, 1.0);
-                dest.put(destOffset + 14, 2.0 * _t41);
+                dest.put(destOffset + 14, _t41 + _t41);
             } else {
                 dest.put(destOffset + 10, Math.fma(_t27, _t34, _t41) * _t53_inv);
-                dest.put(destOffset + 14, 2.0 * _t41 * _t40 * _t53_inv);
+                dest.put(destOffset + 14, (_t41 + _t41) * _t40 * _t53_inv);
             }
         }
         dest.put(destOffset + 0, _t42 * _t123_inv);
@@ -11087,7 +11087,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t36 = (1.0 / Math.sqrt(_t35));
         double _t40 = _t27 * _t34;
         double _t41 = Math.fma(_t27, _t34, nearFarDist);
-        double _t42 = 2.0 * _t40;
+        double _t42 = _t40 + _t40;
         double _t44, _t45, _t46;
         if (_t35 > 0.0) {
             _t44 = _t26 * _t36;
@@ -11214,7 +11214,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t36 = (1.0 / Math.sqrt(_t35));
         double _t40 = _t27 * _t34;
         double _t41 = Math.fma(_t27, _t34, nearFarDist);
-        double _t42 = 2.0 * _t40;
+        double _t42 = _t40 + _t40;
         double _t44, _t45, _t46;
         if (_t35 > 0.0) {
             _t44 = _t25 * _t36;
@@ -11680,9 +11680,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.makeReflection_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, normalX, normalY, normalZ);
             return dest;
         }
-        double _t6 = -(2.0 * normalX * normalY);
-        double _t7 = -(2.0 * normalX * normalZ);
-        double _t8 = -(2.0 * normalY * normalZ);
+        double _t6 = -((normalX + normalX) * normalY);
+        double _t7 = -((normalX + normalX) * normalZ);
+        double _t8 = -((normalY + normalY) * normalZ);
         dest.put(destOffset + 0, Math.fma(-2.0, normalX * normalX, 1.0));
         dest.put(destOffset + 1, _t6);
         dest.put(destOffset + 2, _t7);
@@ -11721,9 +11721,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _normalx = normal.get(normalOffset + 0);
         double _normaly = normal.get(normalOffset + 1);
         double _normalz = normal.get(normalOffset + 2);
-        double _t6 = -(2.0 * _normalx * _normaly);
-        double _t7 = -(2.0 * _normalx * _normalz);
-        double _t8 = -(2.0 * _normaly * _normalz);
+        double _t6 = -((_normalx + _normalx) * _normaly);
+        double _t7 = -((_normalx + _normalx) * _normalz);
+        double _t8 = -((_normaly + _normaly) * _normalz);
         dest.put(destOffset + 0, Math.fma(-2.0, _normalx * _normalx, 1.0));
         dest.put(destOffset + 1, _t6);
         dest.put(destOffset + 2, _t7);
@@ -12760,13 +12760,13 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t54 = _t3 * _t52_inv;
         double _t55 = _t52 * _t47;
         double _t58 = _t50 * _t52_inv;
-        double _t60 = 2.0 * _t45 / ((1.0 - _t45 / _t55) * _t55);
+        double _t60 = (_t45 + _t45) / ((1.0 - _t45 / _t55) * _t55);
         double _t61 = 1.0 + _t60;
-        dest.put(destOffset + 0, 2.0 * _t25 * _t41_inv - _t53);
+        dest.put(destOffset + 0, (_t25 + _t25) * _t41_inv - _t53);
         dest.put(destOffset + 1, _t61 * _t5 * _t52_inv);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, _t53);
-        dest.put(destOffset + 4, 2.0 * _t26 * _t41_inv - _t54);
+        dest.put(destOffset + 4, (_t26 + _t26) * _t41_inv - _t54);
         dest.put(destOffset + 5, _t61 * _t3 * _t52_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, _t54);
@@ -12831,13 +12831,13 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t54 = _t3 * _t52_inv;
         double _t55 = _t52 * _t47;
         double _t58 = _t50 * _t52_inv;
-        double _t60 = 2.0 * _t45 / ((1.0 - _t45 / _t55) * _t55);
+        double _t60 = (_t45 + _t45) / ((1.0 - _t45 / _t55) * _t55);
         double _t61 = 1.0 + _t60;
-        dest.put(destOffset + 0, 2.0 * _t25 * _t41_inv - _t53);
+        dest.put(destOffset + 0, (_t25 + _t25) * _t41_inv - _t53);
         dest.put(destOffset + 1, _t61 * _t5 * _t52_inv);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, _t53);
-        dest.put(destOffset + 4, 2.0 * _t26 * _t41_inv - _t54);
+        dest.put(destOffset + 4, (_t26 + _t26) * _t41_inv - _t54);
         dest.put(destOffset + 5, _t61 * _t3 * _t52_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, _t54);
@@ -15050,7 +15050,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = 2.0 * _self23;
+        double _t0 = _self23 + _self23;
         double _t15 = Math.fma(planeW, 1.0 - _self22, _self23 * (planeZ + (planeX * ((planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0) - _self02) / _self00 + planeY * ((planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0) - _self12) / _self11)));
         double _t15_inv = 1.0 / _t15;
         dest.put(destOffset + 0, _self00);
@@ -15099,7 +15099,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = 2.0 * _self23;
+        double _t0 = _self23 + _self23;
         double _t15 = Math.fma(planeW, 1.0 + _self22, _self23 * (planeX * (_self02 + (planeX < 0.0 ? -1.0 : planeX > 0.0 ? 1.0 : 0.0)) / _self00 + planeY * (_self12 + (planeY < 0.0 ? -1.0 : planeY > 0.0 ? 1.0 : 0.0)) / _self11 - planeZ));
         double _t15_inv = 1.0 / _t15;
         dest.put(destOffset + 0, _self00);
@@ -15263,7 +15263,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _planey = plane.get(planeOffset + 1);
         double _planez = plane.get(planeOffset + 2);
         double _planew = plane.get(planeOffset + 3);
-        double _t0 = 2.0 * _self23;
+        double _t0 = _self23 + _self23;
         double _t15 = Math.fma(_planew, 1.0 - _self22, _self23 * (_planez + (_planex * ((_planex < 0.0 ? -1.0 : _planex > 0.0 ? 1.0 : 0.0) - _self02) / _self00 + _planey * ((_planey < 0.0 ? -1.0 : _planey > 0.0 ? 1.0 : 0.0) - _self12) / _self11)));
         double _t15_inv = 1.0 / _t15;
         dest.put(destOffset + 0, _self00);
@@ -15317,7 +15317,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _planey = plane.get(planeOffset + 1);
         double _planez = plane.get(planeOffset + 2);
         double _planew = plane.get(planeOffset + 3);
-        double _t0 = 2.0 * _self23;
+        double _t0 = _self23 + _self23;
         double _t15 = Math.fma(_planew, 1.0 + _self22, _self23 * (_planex * (_self02 + (_planex < 0.0 ? -1.0 : _planex > 0.0 ? 1.0 : 0.0)) / _self00 + _planey * (_self12 + (_planey < 0.0 ? -1.0 : _planey > 0.0 ? 1.0 : 0.0)) / _self11 - _planez));
         double _t15_inv = 1.0 / _t15;
         dest.put(destOffset + 0, _self00);
@@ -15497,18 +15497,18 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t3 = left + right;
         double _t4 = bottom + top;
         double _t5 = zFar + zNear;
-        dest.put(destOffset + 0, 2.0 * _self00 * _t0_inv);
-        dest.put(destOffset + 1, 2.0 * _self10 * _t0_inv);
-        dest.put(destOffset + 2, 2.0 * _self20 * _t0_inv);
-        dest.put(destOffset + 3, 2.0 * _self30 * _t0_inv);
-        dest.put(destOffset + 4, 2.0 * _self01 * _t1_inv);
-        dest.put(destOffset + 5, 2.0 * _self11 * _t1_inv);
-        dest.put(destOffset + 6, 2.0 * _self21 * _t1_inv);
-        dest.put(destOffset + 7, 2.0 * _self31 * _t1_inv);
-        dest.put(destOffset + 8, 2.0 * _self02 * _t2_inv);
-        dest.put(destOffset + 9, 2.0 * _self12 * _t2_inv);
-        dest.put(destOffset + 10, 2.0 * _self22 * _t2_inv);
-        dest.put(destOffset + 11, 2.0 * _self32 * _t2_inv);
+        dest.put(destOffset + 0, (_self00 + _self00) * _t0_inv);
+        dest.put(destOffset + 1, (_self10 + _self10) * _t0_inv);
+        dest.put(destOffset + 2, (_self20 + _self20) * _t0_inv);
+        dest.put(destOffset + 3, (_self30 + _self30) * _t0_inv);
+        dest.put(destOffset + 4, (_self01 + _self01) * _t1_inv);
+        dest.put(destOffset + 5, (_self11 + _self11) * _t1_inv);
+        dest.put(destOffset + 6, (_self21 + _self21) * _t1_inv);
+        dest.put(destOffset + 7, (_self31 + _self31) * _t1_inv);
+        dest.put(destOffset + 8, (_self02 + _self02) * _t2_inv);
+        dest.put(destOffset + 9, (_self12 + _self12) * _t2_inv);
+        dest.put(destOffset + 10, (_self22 + _self22) * _t2_inv);
+        dest.put(destOffset + 11, (_self32 + _self32) * _t2_inv);
         dest.put(destOffset + 12, _self03 + (-(_self00 * _t3 * _t0_inv) - _self01 * _t4 * _t1_inv - _self02 * _t5 * _t2_inv));
         dest.put(destOffset + 13, _self13 + (-(_self10 * _t3 * _t0_inv) - _self11 * _t4 * _t1_inv - _self12 * _t5 * _t2_inv));
         dest.put(destOffset + 14, _self23 + (-(_self20 * _t3 * _t0_inv) - _self21 * _t4 * _t1_inv - _self22 * _t5 * _t2_inv));
@@ -15554,14 +15554,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t3 = left + right;
         double _t4 = bottom + top;
         double _t5 = zFar + zNear;
-        dest.put(destOffset + 0, 2.0 * _self00 * _t0_inv);
-        dest.put(destOffset + 1, 2.0 * _self10 * _t0_inv);
-        dest.put(destOffset + 2, 2.0 * _self20 * _t0_inv);
-        dest.put(destOffset + 3, 2.0 * _self30 * _t0_inv);
-        dest.put(destOffset + 4, 2.0 * _self01 * _t1_inv);
-        dest.put(destOffset + 5, 2.0 * _self11 * _t1_inv);
-        dest.put(destOffset + 6, 2.0 * _self21 * _t1_inv);
-        dest.put(destOffset + 7, 2.0 * _self31 * _t1_inv);
+        dest.put(destOffset + 0, (_self00 + _self00) * _t0_inv);
+        dest.put(destOffset + 1, (_self10 + _self10) * _t0_inv);
+        dest.put(destOffset + 2, (_self20 + _self20) * _t0_inv);
+        dest.put(destOffset + 3, (_self30 + _self30) * _t0_inv);
+        dest.put(destOffset + 4, (_self01 + _self01) * _t1_inv);
+        dest.put(destOffset + 5, (_self11 + _self11) * _t1_inv);
+        dest.put(destOffset + 6, (_self21 + _self21) * _t1_inv);
+        dest.put(destOffset + 7, (_self31 + _self31) * _t1_inv);
         dest.put(destOffset + 8, -2.0 * _self02 * _t2_inv);
         dest.put(destOffset + 9, -2.0 * _self12 * _t2_inv);
         dest.put(destOffset + 10, -2.0 * _self22 * _t2_inv);
@@ -15617,14 +15617,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t2_inv = 1.0 / _t2;
         double _t3 = left + right;
         double _t4 = bottom + top;
-        dest.put(destOffset + 0, 2.0 * _self00 * _t0_inv);
-        dest.put(destOffset + 1, 2.0 * _self10 * _t0_inv);
-        dest.put(destOffset + 2, 2.0 * _self20 * _t0_inv);
-        dest.put(destOffset + 3, 2.0 * _self30 * _t0_inv);
-        dest.put(destOffset + 4, 2.0 * _self01 * _t1_inv);
-        dest.put(destOffset + 5, 2.0 * _self11 * _t1_inv);
-        dest.put(destOffset + 6, 2.0 * _self21 * _t1_inv);
-        dest.put(destOffset + 7, 2.0 * _self31 * _t1_inv);
+        dest.put(destOffset + 0, (_self00 + _self00) * _t0_inv);
+        dest.put(destOffset + 1, (_self10 + _self10) * _t0_inv);
+        dest.put(destOffset + 2, (_self20 + _self20) * _t0_inv);
+        dest.put(destOffset + 3, (_self30 + _self30) * _t0_inv);
+        dest.put(destOffset + 4, (_self01 + _self01) * _t1_inv);
+        dest.put(destOffset + 5, (_self11 + _self11) * _t1_inv);
+        dest.put(destOffset + 6, (_self21 + _self21) * _t1_inv);
+        dest.put(destOffset + 7, (_self31 + _self31) * _t1_inv);
         dest.put(destOffset + 8, _self02 * _t2_inv);
         dest.put(destOffset + 9, _self12 * _t2_inv);
         dest.put(destOffset + 10, _self22 * _t2_inv);
@@ -15673,14 +15673,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t2_inv = 1.0 / _t2;
         double _t3 = left + right;
         double _t4 = bottom + top;
-        dest.put(destOffset + 0, 2.0 * _self00 * _t0_inv);
-        dest.put(destOffset + 1, 2.0 * _self10 * _t0_inv);
-        dest.put(destOffset + 2, 2.0 * _self20 * _t0_inv);
-        dest.put(destOffset + 3, 2.0 * _self30 * _t0_inv);
-        dest.put(destOffset + 4, 2.0 * _self01 * _t1_inv);
-        dest.put(destOffset + 5, 2.0 * _self11 * _t1_inv);
-        dest.put(destOffset + 6, 2.0 * _self21 * _t1_inv);
-        dest.put(destOffset + 7, 2.0 * _self31 * _t1_inv);
+        dest.put(destOffset + 0, (_self00 + _self00) * _t0_inv);
+        dest.put(destOffset + 1, (_self10 + _self10) * _t0_inv);
+        dest.put(destOffset + 2, (_self20 + _self20) * _t0_inv);
+        dest.put(destOffset + 3, (_self30 + _self30) * _t0_inv);
+        dest.put(destOffset + 4, (_self01 + _self01) * _t1_inv);
+        dest.put(destOffset + 5, (_self11 + _self11) * _t1_inv);
+        dest.put(destOffset + 6, (_self21 + _self21) * _t1_inv);
+        dest.put(destOffset + 7, (_self31 + _self31) * _t1_inv);
         dest.put(destOffset + 8, -(_self02 * _t2_inv));
         dest.put(destOffset + 9, -(_self12 * _t2_inv));
         dest.put(destOffset + 10, -(_self22 * _t2_inv));
@@ -15734,14 +15734,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        dest.put(destOffset + 0, 2.0 * _self00 * _t0_inv);
-        dest.put(destOffset + 1, 2.0 * _self10 * _t0_inv);
-        dest.put(destOffset + 2, 2.0 * _self20 * _t0_inv);
-        dest.put(destOffset + 3, 2.0 * _self30 * _t0_inv);
-        dest.put(destOffset + 4, 2.0 * _self01 * _t1_inv);
-        dest.put(destOffset + 5, 2.0 * _self11 * _t1_inv);
-        dest.put(destOffset + 6, 2.0 * _self21 * _t1_inv);
-        dest.put(destOffset + 7, 2.0 * _self31 * _t1_inv);
+        dest.put(destOffset + 0, (_self00 + _self00) * _t0_inv);
+        dest.put(destOffset + 1, (_self10 + _self10) * _t0_inv);
+        dest.put(destOffset + 2, (_self20 + _self20) * _t0_inv);
+        dest.put(destOffset + 3, (_self30 + _self30) * _t0_inv);
+        dest.put(destOffset + 4, (_self01 + _self01) * _t1_inv);
+        dest.put(destOffset + 5, (_self11 + _self11) * _t1_inv);
+        dest.put(destOffset + 6, (_self21 + _self21) * _t1_inv);
+        dest.put(destOffset + 7, (_self31 + _self31) * _t1_inv);
         dest.put(destOffset + 8, _self02);
         dest.put(destOffset + 9, _self12);
         dest.put(destOffset + 10, _self22);
@@ -15788,14 +15788,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        dest.put(destOffset + 0, 2.0 * _self00 * _t0_inv);
-        dest.put(destOffset + 1, 2.0 * _self10 * _t0_inv);
-        dest.put(destOffset + 2, 2.0 * _self20 * _t0_inv);
-        dest.put(destOffset + 3, 2.0 * _self30 * _t0_inv);
-        dest.put(destOffset + 4, 2.0 * _self01 * _t1_inv);
-        dest.put(destOffset + 5, 2.0 * _self11 * _t1_inv);
-        dest.put(destOffset + 6, 2.0 * _self21 * _t1_inv);
-        dest.put(destOffset + 7, 2.0 * _self31 * _t1_inv);
+        dest.put(destOffset + 0, (_self00 + _self00) * _t0_inv);
+        dest.put(destOffset + 1, (_self10 + _self10) * _t0_inv);
+        dest.put(destOffset + 2, (_self20 + _self20) * _t0_inv);
+        dest.put(destOffset + 3, (_self30 + _self30) * _t0_inv);
+        dest.put(destOffset + 4, (_self01 + _self01) * _t1_inv);
+        dest.put(destOffset + 5, (_self11 + _self11) * _t1_inv);
+        dest.put(destOffset + 6, (_self21 + _self21) * _t1_inv);
+        dest.put(destOffset + 7, (_self31 + _self31) * _t1_inv);
         dest.put(destOffset + 8, -_self02);
         dest.put(destOffset + 9, -_self12);
         dest.put(destOffset + 10, -_self22);
@@ -15849,14 +15849,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        dest.put(destOffset + 0, 2.0 * _self00 * _t0_inv);
-        dest.put(destOffset + 1, 2.0 * _self10 * _t0_inv);
-        dest.put(destOffset + 2, 2.0 * _self20 * _t0_inv);
-        dest.put(destOffset + 3, 2.0 * _self30 * _t0_inv);
-        dest.put(destOffset + 4, 2.0 * _self01 * _t1_inv);
-        dest.put(destOffset + 5, 2.0 * _self11 * _t1_inv);
-        dest.put(destOffset + 6, 2.0 * _self21 * _t1_inv);
-        dest.put(destOffset + 7, 2.0 * _self31 * _t1_inv);
+        dest.put(destOffset + 0, (_self00 + _self00) * _t0_inv);
+        dest.put(destOffset + 1, (_self10 + _self10) * _t0_inv);
+        dest.put(destOffset + 2, (_self20 + _self20) * _t0_inv);
+        dest.put(destOffset + 3, (_self30 + _self30) * _t0_inv);
+        dest.put(destOffset + 4, (_self01 + _self01) * _t1_inv);
+        dest.put(destOffset + 5, (_self11 + _self11) * _t1_inv);
+        dest.put(destOffset + 6, (_self21 + _self21) * _t1_inv);
+        dest.put(destOffset + 7, (_self31 + _self31) * _t1_inv);
         dest.put(destOffset + 8, 0.5 * _self02);
         dest.put(destOffset + 9, 0.5 * _self12);
         dest.put(destOffset + 10, 0.5 * _self22);
@@ -15903,14 +15903,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        dest.put(destOffset + 0, 2.0 * _self00 * _t0_inv);
-        dest.put(destOffset + 1, 2.0 * _self10 * _t0_inv);
-        dest.put(destOffset + 2, 2.0 * _self20 * _t0_inv);
-        dest.put(destOffset + 3, 2.0 * _self30 * _t0_inv);
-        dest.put(destOffset + 4, 2.0 * _self01 * _t1_inv);
-        dest.put(destOffset + 5, 2.0 * _self11 * _t1_inv);
-        dest.put(destOffset + 6, 2.0 * _self21 * _t1_inv);
-        dest.put(destOffset + 7, 2.0 * _self31 * _t1_inv);
+        dest.put(destOffset + 0, (_self00 + _self00) * _t0_inv);
+        dest.put(destOffset + 1, (_self10 + _self10) * _t0_inv);
+        dest.put(destOffset + 2, (_self20 + _self20) * _t0_inv);
+        dest.put(destOffset + 3, (_self30 + _self30) * _t0_inv);
+        dest.put(destOffset + 4, (_self01 + _self01) * _t1_inv);
+        dest.put(destOffset + 5, (_self11 + _self11) * _t1_inv);
+        dest.put(destOffset + 6, (_self21 + _self21) * _t1_inv);
+        dest.put(destOffset + 7, (_self31 + _self31) * _t1_inv);
         dest.put(destOffset + 8, -0.5 * _self02);
         dest.put(destOffset + 9, -0.5 * _self12);
         dest.put(destOffset + 10, -0.5 * _self22);
@@ -16071,17 +16071,17 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t247_inv = 1.0 / _t247;
         double _t248 = _t244 - _t245;
         double _t248_inv = 1.0 / _t248;
-        dest.put(destOffset + 0, 2.0 * _t246_inv);
+        dest.put(destOffset + 0, _t246_inv + _t246_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t247_inv);
+        dest.put(destOffset + 5, _t247_inv + _t247_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
         dest.put(destOffset + 9, 0.0);
-        dest.put(destOffset + 10, 2.0 * _t248_inv);
+        dest.put(destOffset + 10, _t248_inv + _t248_inv);
         dest.put(destOffset + 11, 0.0);
         dest.put(destOffset + 12, -((_t241 + _t240) * _t246_inv));
         dest.put(destOffset + 13, -((_t243 + _t242) * _t247_inv));
@@ -16232,12 +16232,12 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t247_inv = 1.0 / _t247;
         double _t248 = _t244 - _t245;
         double _t248_inv = 1.0 / _t248;
-        dest.put(destOffset + 0, 2.0 * _t246_inv);
+        dest.put(destOffset + 0, _t246_inv + _t246_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t247_inv);
+        dest.put(destOffset + 5, _t247_inv + _t247_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
@@ -16399,12 +16399,12 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t231_inv = 1.0 / _t231;
         double _t232 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181) - _t229;
         double _t232_inv = 1.0 / _t232;
-        dest.put(destOffset + 0, 2.0 * _t230_inv);
+        dest.put(destOffset + 0, _t230_inv + _t230_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t231_inv);
+        dest.put(destOffset + 5, _t231_inv + _t231_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
@@ -16559,12 +16559,12 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t231_inv = 1.0 / _t231;
         double _t232 = _t228 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181);
         double _t232_inv = 1.0 / _t232;
-        dest.put(destOffset + 0, 2.0 * _t230_inv);
+        dest.put(destOffset + 0, _t230_inv + _t230_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t231_inv);
+        dest.put(destOffset + 5, _t231_inv + _t231_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
@@ -16731,17 +16731,17 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t223_inv = 1.0 / _t223;
         double _t224 = _t220 - _t221;
         double _t224_inv = 1.0 / _t224;
-        dest.put(destOffset + 0, 2.0 * _t222_inv);
+        dest.put(destOffset + 0, _t222_inv + _t222_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t223_inv);
+        dest.put(destOffset + 5, _t223_inv + _t223_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
         dest.put(destOffset + 9, 0.0);
-        dest.put(destOffset + 10, 2.0 * _t224_inv);
+        dest.put(destOffset + 10, _t224_inv + _t224_inv);
         dest.put(destOffset + 11, 0.0);
         dest.put(destOffset + 12, -((_t217 + _t216) * _t222_inv));
         dest.put(destOffset + 13, -((_t219 + _t218) * _t223_inv));
@@ -16896,12 +16896,12 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t223_inv = 1.0 / _t223;
         double _t224 = _t220 - _t221;
         double _t224_inv = 1.0 / _t224;
-        dest.put(destOffset + 0, 2.0 * _t222_inv);
+        dest.put(destOffset + 0, _t222_inv + _t222_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t223_inv);
+        dest.put(destOffset + 5, _t223_inv + _t223_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
@@ -17067,12 +17067,12 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t223_inv = 1.0 / _t223;
         double _t224 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179) - _t221;
         double _t224_inv = 1.0 / _t224;
-        dest.put(destOffset + 0, 2.0 * _t222_inv);
+        dest.put(destOffset + 0, _t222_inv + _t222_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t223_inv);
+        dest.put(destOffset + 5, _t223_inv + _t223_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
@@ -17231,12 +17231,12 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t223_inv = 1.0 / _t223;
         double _t224 = _t220 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
         double _t224_inv = 1.0 / _t224;
-        dest.put(destOffset + 0, 2.0 * _t222_inv);
+        dest.put(destOffset + 0, _t222_inv + _t222_inv);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
         dest.put(destOffset + 3, 0.0);
         dest.put(destOffset + 4, 0.0);
-        dest.put(destOffset + 5, 2.0 * _t223_inv);
+        dest.put(destOffset + 5, _t223_inv + _t223_inv);
         dest.put(destOffset + 6, 0.0);
         dest.put(destOffset + 7, 0.0);
         dest.put(destOffset + 8, 0.0);
@@ -17295,14 +17295,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t15, _t16;
         if (far == Double.POSITIVE_INFINITY) {
             _t15 = 1.0;
-            _t16 = -(2.0 * near);
+            _t16 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t15 = -1.0;
-                _t16 = 2.0 * far;
+                _t16 = far + far;
             } else {
                 _t15 = -((far + near) * _t2_inv);
-                _t16 = 2.0 * far * near * _t2_inv;
+                _t16 = (far + far) * near * _t2_inv;
             }
         }
         dest.put(destOffset + 0, _self00 * _t9_inv);
@@ -17362,14 +17362,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t13, _t15;
         if (far == Double.POSITIVE_INFINITY) {
             _t13 = -1.0;
-            _t15 = -(2.0 * near);
+            _t15 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t13 = 1.0;
-                _t15 = 2.0 * far;
+                _t15 = far + far;
             } else {
                 _t13 = (far + near) * _t2_inv;
-                _t15 = 2.0 * far * near * _t2_inv;
+                _t15 = (far + far) * near * _t2_inv;
             }
         }
         dest.put(destOffset + 0, _self00 * _t9_inv);
@@ -17580,24 +17580,24 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t17, _t18;
         if (far == Double.POSITIVE_INFINITY) {
             _t17 = 1.0;
-            _t18 = -(2.0 * near);
+            _t18 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t17 = -1.0;
-                _t18 = 2.0 * far;
+                _t18 = far + far;
             } else {
                 _t17 = -((far + near) * _t3_inv);
-                _t18 = 2.0 * far * near * _t3_inv;
+                _t18 = (far + far) * near * _t3_inv;
             }
         }
-        dest.put(destOffset + 0, 2.0 * _self00 * _t11_inv);
-        dest.put(destOffset + 1, 2.0 * _self10 * _t11_inv);
-        dest.put(destOffset + 2, 2.0 * _self20 * _t11_inv);
-        dest.put(destOffset + 3, 2.0 * _self30 * _t11_inv);
-        dest.put(destOffset + 4, 2.0 * _self01 * _t8_inv);
-        dest.put(destOffset + 5, 2.0 * _self11 * _t8_inv);
-        dest.put(destOffset + 6, 2.0 * _self21 * _t8_inv);
-        dest.put(destOffset + 7, 2.0 * _self31 * _t8_inv);
+        dest.put(destOffset + 0, (_self00 + _self00) * _t11_inv);
+        dest.put(destOffset + 1, (_self10 + _self10) * _t11_inv);
+        dest.put(destOffset + 2, (_self20 + _self20) * _t11_inv);
+        dest.put(destOffset + 3, (_self30 + _self30) * _t11_inv);
+        dest.put(destOffset + 4, (_self01 + _self01) * _t8_inv);
+        dest.put(destOffset + 5, (_self11 + _self11) * _t8_inv);
+        dest.put(destOffset + 6, (_self21 + _self21) * _t8_inv);
+        dest.put(destOffset + 7, (_self31 + _self31) * _t8_inv);
         dest.put(destOffset + 8, Math.fma(_self02, _t17, _self03 - _self01 * _t9 * _t8_inv));
         dest.put(destOffset + 9, Math.fma(_self12, _t17, _self13 - _self11 * _t9 * _t8_inv));
         dest.put(destOffset + 10, Math.fma(_self22, _t17, _self23 - _self21 * _t9 * _t8_inv));
@@ -17650,24 +17650,24 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t15, _t17;
         if (far == Double.POSITIVE_INFINITY) {
             _t15 = -1.0;
-            _t17 = -(2.0 * near);
+            _t17 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t15 = 1.0;
-                _t17 = 2.0 * far;
+                _t17 = far + far;
             } else {
                 _t15 = (far + near) * _t3_inv;
-                _t17 = 2.0 * far * near * _t3_inv;
+                _t17 = (far + far) * near * _t3_inv;
             }
         }
-        dest.put(destOffset + 0, 2.0 * _self00 * _t11_inv);
-        dest.put(destOffset + 1, 2.0 * _self10 * _t11_inv);
-        dest.put(destOffset + 2, 2.0 * _self20 * _t11_inv);
-        dest.put(destOffset + 3, 2.0 * _self30 * _t11_inv);
-        dest.put(destOffset + 4, 2.0 * _self01 * _t8_inv);
-        dest.put(destOffset + 5, 2.0 * _self11 * _t8_inv);
-        dest.put(destOffset + 6, 2.0 * _self21 * _t8_inv);
-        dest.put(destOffset + 7, 2.0 * _self31 * _t8_inv);
+        dest.put(destOffset + 0, (_self00 + _self00) * _t11_inv);
+        dest.put(destOffset + 1, (_self10 + _self10) * _t11_inv);
+        dest.put(destOffset + 2, (_self20 + _self20) * _t11_inv);
+        dest.put(destOffset + 3, (_self30 + _self30) * _t11_inv);
+        dest.put(destOffset + 4, (_self01 + _self01) * _t8_inv);
+        dest.put(destOffset + 5, (_self11 + _self11) * _t8_inv);
+        dest.put(destOffset + 6, (_self21 + _self21) * _t8_inv);
+        dest.put(destOffset + 7, (_self31 + _self31) * _t8_inv);
         dest.put(destOffset + 8, Math.fma(_self02, _t15, _self01 * _t9 * _t8_inv - _self03));
         dest.put(destOffset + 9, Math.fma(_self12, _t15, _self11 * _t9 * _t8_inv - _self13));
         dest.put(destOffset + 10, Math.fma(_self22, _t15, _self21 * _t9 * _t8_inv - _self23));
@@ -17737,14 +17737,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
                 _t13 = far * near * _t2_inv;
             }
         }
-        dest.put(destOffset + 0, 2.0 * _self00 * _t8_inv);
-        dest.put(destOffset + 1, 2.0 * _self10 * _t8_inv);
-        dest.put(destOffset + 2, 2.0 * _self20 * _t8_inv);
-        dest.put(destOffset + 3, 2.0 * _self30 * _t8_inv);
-        dest.put(destOffset + 4, 2.0 * _self01 * _t4_inv);
-        dest.put(destOffset + 5, 2.0 * _self11 * _t4_inv);
-        dest.put(destOffset + 6, 2.0 * _self21 * _t4_inv);
-        dest.put(destOffset + 7, 2.0 * _self31 * _t4_inv);
+        dest.put(destOffset + 0, (_self00 + _self00) * _t8_inv);
+        dest.put(destOffset + 1, (_self10 + _self10) * _t8_inv);
+        dest.put(destOffset + 2, (_self20 + _self20) * _t8_inv);
+        dest.put(destOffset + 3, (_self30 + _self30) * _t8_inv);
+        dest.put(destOffset + 4, (_self01 + _self01) * _t4_inv);
+        dest.put(destOffset + 5, (_self11 + _self11) * _t4_inv);
+        dest.put(destOffset + 6, (_self21 + _self21) * _t4_inv);
+        dest.put(destOffset + 7, (_self31 + _self31) * _t4_inv);
         dest.put(destOffset + 8, Math.fma(_self02, _t12, _self03 - _self01 * _t6 * _t4_inv));
         dest.put(destOffset + 9, Math.fma(_self12, _t12, _self13 - _self11 * _t6 * _t4_inv));
         dest.put(destOffset + 10, Math.fma(_self22, _t12, _self23 - _self21 * _t6 * _t4_inv));
@@ -17807,14 +17807,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
                 _t12 = far * near * _t2_inv;
             }
         }
-        dest.put(destOffset + 0, 2.0 * _self00 * _t7_inv);
-        dest.put(destOffset + 1, 2.0 * _self10 * _t7_inv);
-        dest.put(destOffset + 2, 2.0 * _self20 * _t7_inv);
-        dest.put(destOffset + 3, 2.0 * _self30 * _t7_inv);
-        dest.put(destOffset + 4, 2.0 * _self01 * _t4_inv);
-        dest.put(destOffset + 5, 2.0 * _self11 * _t4_inv);
-        dest.put(destOffset + 6, 2.0 * _self21 * _t4_inv);
-        dest.put(destOffset + 7, 2.0 * _self31 * _t4_inv);
+        dest.put(destOffset + 0, (_self00 + _self00) * _t7_inv);
+        dest.put(destOffset + 1, (_self10 + _self10) * _t7_inv);
+        dest.put(destOffset + 2, (_self20 + _self20) * _t7_inv);
+        dest.put(destOffset + 3, (_self30 + _self30) * _t7_inv);
+        dest.put(destOffset + 4, (_self01 + _self01) * _t4_inv);
+        dest.put(destOffset + 5, (_self11 + _self11) * _t4_inv);
+        dest.put(destOffset + 6, (_self21 + _self21) * _t4_inv);
+        dest.put(destOffset + 7, (_self31 + _self31) * _t4_inv);
         dest.put(destOffset + 8, Math.fma(_self02, _t11, _self01 * _t6 * _t4_inv - _self03));
         dest.put(destOffset + 9, Math.fma(_self12, _t11, _self11 * _t6 * _t4_inv - _self13));
         dest.put(destOffset + 10, Math.fma(_self22, _t11, _self21 * _t6 * _t4_inv - _self23));
@@ -17864,14 +17864,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t0_inv = 1.0 / _t0;
         if (far == Double.POSITIVE_INFINITY) {
             dest.put(destOffset + 10, 1.0);
-            dest.put(destOffset + 14, -(2.0 * near));
+            dest.put(destOffset + 14, -(near + near));
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 dest.put(destOffset + 10, -1.0);
-                dest.put(destOffset + 14, 2.0 * far);
+                dest.put(destOffset + 14, far + far);
             } else {
                 dest.put(destOffset + 10, -((far + near) * _t0_inv));
-                dest.put(destOffset + 14, 2.0 * far * near * _t0_inv);
+                dest.put(destOffset + 14, (far + far) * near * _t0_inv);
             }
         }
         dest.put(destOffset + 0, _self00);
@@ -17922,14 +17922,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t0_inv = 1.0 / _t0;
         if (far == Double.POSITIVE_INFINITY) {
             dest.put(destOffset + 10, -1.0);
-            dest.put(destOffset + 14, -(2.0 * near));
+            dest.put(destOffset + 14, -(near + near));
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 dest.put(destOffset + 10, 1.0);
-                dest.put(destOffset + 14, 2.0 * far);
+                dest.put(destOffset + 14, far + far);
             } else {
                 dest.put(destOffset + 10, (far + near) * _t0_inv);
-                dest.put(destOffset + 14, 2.0 * far * near * _t0_inv);
+                dest.put(destOffset + 14, (far + far) * near * _t0_inv);
             }
         }
         dest.put(destOffset + 0, _self00);
@@ -18123,24 +18123,24 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t20, _t21;
         if (far == Double.POSITIVE_INFINITY) {
             _t20 = 1.0;
-            _t21 = -(2.0 * near);
+            _t21 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t20 = -1.0;
-                _t21 = 2.0 * far;
+                _t21 = far + far;
             } else {
                 _t20 = -((far + near) * _t5_inv);
-                _t21 = 2.0 * far * near * _t5_inv;
+                _t21 = (far + far) * near * _t5_inv;
             }
         }
-        dest.put(destOffset + 0, 2.0 * _self00 * _t10_inv);
-        dest.put(destOffset + 1, 2.0 * _self10 * _t10_inv);
-        dest.put(destOffset + 2, 2.0 * _self20 * _t10_inv);
-        dest.put(destOffset + 3, 2.0 * _self30 * _t10_inv);
-        dest.put(destOffset + 4, 2.0 * _self01 * _t11_inv);
-        dest.put(destOffset + 5, 2.0 * _self11 * _t11_inv);
-        dest.put(destOffset + 6, 2.0 * _self21 * _t11_inv);
-        dest.put(destOffset + 7, 2.0 * _self31 * _t11_inv);
+        dest.put(destOffset + 0, (_self00 + _self00) * _t10_inv);
+        dest.put(destOffset + 1, (_self10 + _self10) * _t10_inv);
+        dest.put(destOffset + 2, (_self20 + _self20) * _t10_inv);
+        dest.put(destOffset + 3, (_self30 + _self30) * _t10_inv);
+        dest.put(destOffset + 4, (_self01 + _self01) * _t11_inv);
+        dest.put(destOffset + 5, (_self11 + _self11) * _t11_inv);
+        dest.put(destOffset + 6, (_self21 + _self21) * _t11_inv);
+        dest.put(destOffset + 7, (_self31 + _self31) * _t11_inv);
         dest.put(destOffset + 8, Math.fma(_self02, _t20, _self03 - _self00 * _t12 * _t10_inv - _self01 * _t13 * _t11_inv));
         dest.put(destOffset + 9, Math.fma(_self12, _t20, _self13 - _self10 * _t12 * _t10_inv - _self11 * _t13 * _t11_inv));
         dest.put(destOffset + 10, Math.fma(_self22, _t20, _self23 - _self20 * _t12 * _t10_inv - _self21 * _t13 * _t11_inv));
@@ -18196,24 +18196,24 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t18, _t20;
         if (far == Double.POSITIVE_INFINITY) {
             _t18 = -1.0;
-            _t20 = -(2.0 * near);
+            _t20 = -(near + near);
         } else {
             if (near == Double.POSITIVE_INFINITY) {
                 _t18 = 1.0;
-                _t20 = 2.0 * far;
+                _t20 = far + far;
             } else {
                 _t18 = (far + near) * _t5_inv;
-                _t20 = 2.0 * far * near * _t5_inv;
+                _t20 = (far + far) * near * _t5_inv;
             }
         }
-        dest.put(destOffset + 0, 2.0 * _self00 * _t10_inv);
-        dest.put(destOffset + 1, 2.0 * _self10 * _t10_inv);
-        dest.put(destOffset + 2, 2.0 * _self20 * _t10_inv);
-        dest.put(destOffset + 3, 2.0 * _self30 * _t10_inv);
-        dest.put(destOffset + 4, 2.0 * _self01 * _t11_inv);
-        dest.put(destOffset + 5, 2.0 * _self11 * _t11_inv);
-        dest.put(destOffset + 6, 2.0 * _self21 * _t11_inv);
-        dest.put(destOffset + 7, 2.0 * _self31 * _t11_inv);
+        dest.put(destOffset + 0, (_self00 + _self00) * _t10_inv);
+        dest.put(destOffset + 1, (_self10 + _self10) * _t10_inv);
+        dest.put(destOffset + 2, (_self20 + _self20) * _t10_inv);
+        dest.put(destOffset + 3, (_self30 + _self30) * _t10_inv);
+        dest.put(destOffset + 4, (_self01 + _self01) * _t11_inv);
+        dest.put(destOffset + 5, (_self11 + _self11) * _t11_inv);
+        dest.put(destOffset + 6, (_self21 + _self21) * _t11_inv);
+        dest.put(destOffset + 7, (_self31 + _self31) * _t11_inv);
         dest.put(destOffset + 8, Math.fma(_self02, _t18, _self00 * _t12 * _t10_inv + _self01 * _t13 * _t11_inv - _self03));
         dest.put(destOffset + 9, Math.fma(_self12, _t18, _self10 * _t12 * _t10_inv + _self11 * _t13 * _t11_inv - _self13));
         dest.put(destOffset + 10, Math.fma(_self22, _t18, _self20 * _t12 * _t10_inv + _self21 * _t13 * _t11_inv - _self23));
@@ -18286,14 +18286,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
                 _t16 = far * near * _t4_inv;
             }
         }
-        dest.put(destOffset + 0, 2.0 * _self00 * _t6_inv);
-        dest.put(destOffset + 1, 2.0 * _self10 * _t6_inv);
-        dest.put(destOffset + 2, 2.0 * _self20 * _t6_inv);
-        dest.put(destOffset + 3, 2.0 * _self30 * _t6_inv);
-        dest.put(destOffset + 4, 2.0 * _self01 * _t7_inv);
-        dest.put(destOffset + 5, 2.0 * _self11 * _t7_inv);
-        dest.put(destOffset + 6, 2.0 * _self21 * _t7_inv);
-        dest.put(destOffset + 7, 2.0 * _self31 * _t7_inv);
+        dest.put(destOffset + 0, (_self00 + _self00) * _t6_inv);
+        dest.put(destOffset + 1, (_self10 + _self10) * _t6_inv);
+        dest.put(destOffset + 2, (_self20 + _self20) * _t6_inv);
+        dest.put(destOffset + 3, (_self30 + _self30) * _t6_inv);
+        dest.put(destOffset + 4, (_self01 + _self01) * _t7_inv);
+        dest.put(destOffset + 5, (_self11 + _self11) * _t7_inv);
+        dest.put(destOffset + 6, (_self21 + _self21) * _t7_inv);
+        dest.put(destOffset + 7, (_self31 + _self31) * _t7_inv);
         dest.put(destOffset + 8, Math.fma(_self02, _t15, _self03 - _self00 * _t9 * _t6_inv - _self01 * _t10 * _t7_inv));
         dest.put(destOffset + 9, Math.fma(_self12, _t15, _self13 - _self10 * _t9 * _t6_inv - _self11 * _t10 * _t7_inv));
         dest.put(destOffset + 10, Math.fma(_self22, _t15, _self23 - _self20 * _t9 * _t6_inv - _self21 * _t10 * _t7_inv));
@@ -18359,14 +18359,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
                 _t15 = far * near * _t4_inv;
             }
         }
-        dest.put(destOffset + 0, 2.0 * _self00 * _t6_inv);
-        dest.put(destOffset + 1, 2.0 * _self10 * _t6_inv);
-        dest.put(destOffset + 2, 2.0 * _self20 * _t6_inv);
-        dest.put(destOffset + 3, 2.0 * _self30 * _t6_inv);
-        dest.put(destOffset + 4, 2.0 * _self01 * _t7_inv);
-        dest.put(destOffset + 5, 2.0 * _self11 * _t7_inv);
-        dest.put(destOffset + 6, 2.0 * _self21 * _t7_inv);
-        dest.put(destOffset + 7, 2.0 * _self31 * _t7_inv);
+        dest.put(destOffset + 0, (_self00 + _self00) * _t6_inv);
+        dest.put(destOffset + 1, (_self10 + _self10) * _t6_inv);
+        dest.put(destOffset + 2, (_self20 + _self20) * _t6_inv);
+        dest.put(destOffset + 3, (_self30 + _self30) * _t6_inv);
+        dest.put(destOffset + 4, (_self01 + _self01) * _t7_inv);
+        dest.put(destOffset + 5, (_self11 + _self11) * _t7_inv);
+        dest.put(destOffset + 6, (_self21 + _self21) * _t7_inv);
+        dest.put(destOffset + 7, (_self31 + _self31) * _t7_inv);
         dest.put(destOffset + 8, Math.fma(_self02, _t14, _self00 * _t9 * _t6_inv + _self01 * _t10 * _t7_inv - _self03));
         dest.put(destOffset + 9, Math.fma(_self12, _t14, _self10 * _t9 * _t6_inv + _self11 * _t10 * _t7_inv - _self13));
         dest.put(destOffset + 10, Math.fma(_self22, _t14, _self20 * _t9 * _t6_inv + _self21 * _t10 * _t7_inv - _self23));
@@ -18467,9 +18467,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t0 = -pivotZ;
         double _t1 = -rotY;
         double _t3 = -rotX;
-        double _t5 = 2.0 * rotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
+        double _t5 = rotX + rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
         double _t8 = rotW * _t6;
         double _t9 = rotZ * _t7;
         double _t10 = rotW * _t7;
@@ -18550,9 +18550,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t0 = -_pivotz;
         double _t1 = -_roty;
         double _t3 = -_rotx;
-        double _t5 = 2.0 * _rotx;
-        double _t6 = 2.0 * _roty;
-        double _t7 = 2.0 * _rotz;
+        double _t5 = _rotx + _rotx;
+        double _t6 = _roty + _roty;
+        double _t7 = _rotz + _rotz;
         double _t8 = _rotw * _t6;
         double _t9 = _rotz * _t7;
         double _t10 = _rotw * _t7;
@@ -18759,9 +18759,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self33 = src.get(srcOffset + 15);
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -18833,9 +18833,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _qw = q.get(qOffset + 3);
         double _t0 = -_qy;
         double _t2 = -_qx;
-        double _t3 = 2.0 * _qx;
-        double _t4 = 2.0 * _qy;
-        double _t5 = 2.0 * _qz;
+        double _t3 = _qx + _qx;
+        double _t4 = _qy + _qy;
+        double _t5 = _qz + _qz;
         double _t6 = _qw * _t4;
         double _t7 = _qw * _t5;
         double _t8 = _qw * _t3;
@@ -19583,9 +19583,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t1 = -_self12;
         double _t2 = -_self22;
         double _t3 = -_self32;
-        double _t10 = 2.0 * normalX * normalZ;
-        double _t11 = 2.0 * normalX * normalY;
-        double _t12 = 2.0 * normalY * normalZ;
+        double _t10 = (normalX + normalX) * normalZ;
+        double _t11 = (normalX + normalX) * normalY;
+        double _t12 = (normalY + normalY) * normalZ;
         double _t13 = Math.fma(-2.0, normalX * normalX, 1.0);
         double _t14 = Math.fma(-2.0, normalY * normalY, 1.0);
         double _t15 = Math.fma(-2.0, normalZ * normalZ, 1.0);
@@ -19640,9 +19640,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t1 = -_self12;
         double _t2 = -_self22;
         double _t3 = -_self32;
-        double _t10 = 2.0 * _normalx * _normalz;
-        double _t11 = 2.0 * _normalx * _normaly;
-        double _t12 = 2.0 * _normaly * _normalz;
+        double _t10 = (_normalx + _normalx) * _normalz;
+        double _t11 = (_normalx + _normalx) * _normaly;
+        double _t12 = (_normaly + _normaly) * _normalz;
         double _t13 = Math.fma(-2.0, _normalx * _normalx, 1.0);
         double _t14 = Math.fma(-2.0, _normaly * _normaly, 1.0);
         double _t15 = Math.fma(-2.0, _normalz * _normalz, 1.0);
@@ -19692,9 +19692,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t0 = -rotY;
         double _t2 = -rotX;
         double _t3 = -pivotZ;
-        double _t5 = 2.0 * rotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
+        double _t5 = rotX + rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
         double _t8 = rotW * _t6;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t5;
@@ -19767,9 +19767,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t0 = -_roty;
         double _t2 = -_rotx;
         double _t3 = -_pivotz;
-        double _t5 = 2.0 * _rotx;
-        double _t6 = 2.0 * _roty;
-        double _t7 = 2.0 * _rotz;
+        double _t5 = _rotx + _rotx;
+        double _t6 = _roty + _roty;
+        double _t7 = _rotz + _rotz;
         double _t8 = _rotw * _t6;
         double _t9 = _rotw * _t7;
         double _t10 = _rotw * _t5;
@@ -19952,9 +19952,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self33 = src.get(srcOffset + 15);
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -20018,9 +20018,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _qw = q.get(qOffset + 3);
         double _t0 = -_qy;
         double _t2 = -_qx;
-        double _t3 = 2.0 * _qx;
-        double _t4 = 2.0 * _qy;
-        double _t5 = 2.0 * _qz;
+        double _t3 = _qx + _qx;
+        double _t4 = _qy + _qy;
+        double _t5 = _qz + _qz;
         double _t6 = _qw * _t4;
         double _t7 = _qw * _t5;
         double _t8 = _qw * _t3;
@@ -21254,11 +21254,11 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t58 = Math.fma(_t0, _t3, Math.fma(-p0Y, _t4, _t50 / _t55));
         double _t60 = Math.fma(p3X, _t3, Math.fma(p3Y, _t4, _t58));
         double _t60_inv = 1.0 / _t60;
-        double _t63 = 2.0 * _t25 * _t46_inv - _t3 * _t60_inv;
-        double _t64 = 2.0 * _t26 * _t46_inv - _t4 * _t60_inv;
+        double _t63 = (_t25 + _t25) * _t46_inv - _t3 * _t60_inv;
+        double _t64 = (_t26 + _t26) * _t46_inv - _t4 * _t60_inv;
         double _t65 = _t60 * _t55;
         double _t69 = 2.0 * Math.fma(p0Y, _t3, Math.fma(_t0, _t4, _t32)) * _t46_inv - _t58 * _t60_inv;
-        double _t71 = 2.0 * _t50 / ((1.0 - _t50 / _t65) * _t65);
+        double _t71 = (_t50 + _t50) / ((1.0 - _t50 / _t65) * _t65);
         double _t72 = 1.0 + _t71;
         double _t73 = _t72 * _t3;
         double _t74 = _t72 * _t4;
@@ -21345,11 +21345,11 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _t58 = Math.fma(_t0, _t3, Math.fma(-_p0y, _t4, _t50 / _t55));
         double _t60 = Math.fma(_p3x, _t3, Math.fma(_p3y, _t4, _t58));
         double _t60_inv = 1.0 / _t60;
-        double _t63 = 2.0 * _t25 * _t46_inv - _t3 * _t60_inv;
-        double _t64 = 2.0 * _t26 * _t46_inv - _t4 * _t60_inv;
+        double _t63 = (_t25 + _t25) * _t46_inv - _t3 * _t60_inv;
+        double _t64 = (_t26 + _t26) * _t46_inv - _t4 * _t60_inv;
         double _t65 = _t60 * _t55;
         double _t69 = 2.0 * Math.fma(_p0y, _t3, Math.fma(_t0, _t4, _t32)) * _t46_inv - _t58 * _t60_inv;
-        double _t71 = 2.0 * _t50 / ((1.0 - _t50 / _t65) * _t65);
+        double _t71 = (_t50 + _t50) / ((1.0 - _t50 / _t65) * _t65);
         double _t72 = 1.0 + _t71;
         double _t73 = _t72 * _t3;
         double _t74 = _t72 * _t4;

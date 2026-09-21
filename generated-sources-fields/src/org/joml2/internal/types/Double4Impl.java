@@ -755,7 +755,7 @@ public final class Double4Impl implements Double4 {
         Double4Impl d = (Double4Impl) dest;
         double _t0 = t * t;
         double _t1 = 1.0 - t;
-        double _t3 = 2.0 * t * _t1;
+        double _t3 = (t + t) * _t1;
         double _t4 = _t1 * _t1;
         d.x = Math.fma(p2X, _t0, Math.fma(p1X, _t3, this.x * _t4));
         d.y = Math.fma(p2Y, _t0, Math.fma(p1Y, _t3, this.y * _t4));
@@ -809,7 +809,7 @@ public final class Double4Impl implements Double4 {
      */
     public Double4 bezier2Tangent(double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double t, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        double _t1 = 2.0 * t;
+        double _t1 = t + t;
         double _t2 = 2.0 * (1.0 - t);
         d.x = Math.fma(p1X - this.x, _t2, (p2X - p1X) * _t1);
         d.y = Math.fma(p1Y - this.y, _t2, (p2Y - p1Y) * _t1);
@@ -1073,7 +1073,7 @@ public final class Double4Impl implements Double4 {
         double _t2 = t * _t0;
         double _t5 = t * Math.fma(t, t, -t);
         double _t7 = Math.fma(t - 2.0, _t0, t);
-        double _t9 = Math.fma(3.0, _t0, -(2.0 * _t2));
+        double _t9 = Math.fma(3.0, _t0, -(_t2 + _t2));
         double _t10 = Math.fma(2.0, _t2, Math.fma(-3.0, _t0, 1.0));
         d.x = Math.fma(this.x, _t10, t0X * _t7) + Math.fma(t1X, _t5, v1X * _t9);
         d.y = Math.fma(this.y, _t10, t0Y * _t7) + Math.fma(t1Y, _t5, v1Y * _t9);
@@ -1135,7 +1135,7 @@ public final class Double4Impl implements Double4 {
         double _t0 = t * t;
         double _t6 = 6.0 * Math.fma(t, t, -t);
         double _t7 = 6.0 * Math.fma(-t, t, t);
-        double _t8 = Math.fma(3.0, _t0, -(2.0 * t));
+        double _t8 = Math.fma(3.0, _t0, -(t + t));
         double _t9 = Math.fma(3.0, _t0, Math.fma(-4.0, t, 1.0));
         d.x = Math.fma(this.x, _t6, t0X * _t9) + Math.fma(t1X, _t8, v1X * _t7);
         d.y = Math.fma(this.y, _t6, t0Y * _t9) + Math.fma(t1Y, _t8, v1Y * _t7);

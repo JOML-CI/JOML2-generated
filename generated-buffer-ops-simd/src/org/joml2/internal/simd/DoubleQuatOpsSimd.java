@@ -1260,97 +1260,6 @@ public final class DoubleQuatOpsSimd {
         return dest;
     }
 
-    public static double[] difference(double[] dest, int destOffset, double[] src, int srcOffset, double otherX, double otherY, double otherZ, double otherW) {
-        double _selfw = src[srcOffset + 3];
-        double _selfx = src[srcOffset + 0];
-        double _selfy = src[srcOffset + 1];
-        double _selfz = src[srcOffset + 2];
-        double _t3_inv = 1.0 / Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
-        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, Math.fma(otherX, _selfw, -(otherW * _selfx))).withLane(2, Math.fma(otherX, _selfy, -(otherW * _selfz))).add(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(otherY, _selfz, -(otherZ * _selfy))).withLane(2, Math.fma(otherZ, _selfw, -(otherY * _selfx)))).withLane(3, Math.fma(otherZ, _selfz, Math.fma(otherY, _selfy, Math.fma(otherX, _selfx, otherW * _selfw)))).mul(DoubleVector.broadcast(SIMD_SPECIES, _t3_inv)).withLane(1, -(otherW * _selfy * _t3_inv) - otherX * _selfz * _t3_inv + Math.fma(otherY, _selfw, otherZ * _selfx) * _t3_inv);
-        _c0.intoArray(dest, destOffset);
-        return dest;
-    }
-
-    public static java.lang.foreign.MemorySegment difference(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double otherX, double otherY, double otherZ, double otherW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return difference_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
-        return difference_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
-    }
-
-    public static java.lang.foreign.MemorySegment difference_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double otherX, double otherY, double otherZ, double otherW) {
-        long _srcBase = src.address() + srcOffset;
-        double _selfw = UnsafeOpsHolder.U.getDouble(_srcBase + 24L);
-        double _selfx = UnsafeOpsHolder.U.getDouble(_srcBase + 0L);
-        double _selfy = UnsafeOpsHolder.U.getDouble(_srcBase + 8L);
-        double _selfz = UnsafeOpsHolder.U.getDouble(_srcBase + 16L);
-        double _t3_inv = 1.0 / Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
-        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, Math.fma(otherX, _selfw, -(otherW * _selfx))).withLane(2, Math.fma(otherX, _selfy, -(otherW * _selfz))).add(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(otherY, _selfz, -(otherZ * _selfy))).withLane(2, Math.fma(otherZ, _selfw, -(otherY * _selfx)))).withLane(3, Math.fma(otherZ, _selfz, Math.fma(otherY, _selfy, Math.fma(otherX, _selfx, otherW * _selfw)))).mul(DoubleVector.broadcast(SIMD_SPECIES, _t3_inv)).withLane(1, -(otherW * _selfy * _t3_inv) - otherX * _selfz * _t3_inv + Math.fma(otherY, _selfw, otherZ * _selfx) * _t3_inv);
-        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
-        return dest;
-    }
-
-    public static java.lang.foreign.MemorySegment difference_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double otherX, double otherY, double otherZ, double otherW) {
-        double _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L);
-        double _selfx = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
-        double _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
-        double _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
-        double _t3_inv = 1.0 / Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
-        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, Math.fma(otherX, _selfw, -(otherW * _selfx))).withLane(2, Math.fma(otherX, _selfy, -(otherW * _selfz))).add(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(otherY, _selfz, -(otherZ * _selfy))).withLane(2, Math.fma(otherZ, _selfw, -(otherY * _selfx)))).withLane(3, Math.fma(otherZ, _selfz, Math.fma(otherY, _selfy, Math.fma(otherX, _selfx, otherW * _selfw)))).mul(DoubleVector.broadcast(SIMD_SPECIES, _t3_inv)).withLane(1, -(otherW * _selfy * _t3_inv) - otherX * _selfz * _t3_inv + Math.fma(otherY, _selfw, otherZ * _selfx) * _t3_inv);
-        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
-        return dest;
-    }
-
-    public static double[] difference(double[] dest, int destOffset, double[] src, int srcOffset, double[] other, int otherOffset) {
-        double _otherx = other[otherOffset + 0];
-        double _selfw = src[srcOffset + 3];
-        double _otherw = other[otherOffset + 3];
-        double _selfx = src[srcOffset + 0];
-        double _selfy = src[srcOffset + 1];
-        double _selfz = src[srcOffset + 2];
-        double _othery = other[otherOffset + 1];
-        double _otherz = other[otherOffset + 2];
-        double _t3_inv = 1.0 / Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
-        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_otherx, _selfw, -(_otherw * _selfx))).withLane(2, Math.fma(_otherx, _selfy, -(_otherw * _selfz))).add(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_othery, _selfz, -(_otherz * _selfy))).withLane(2, Math.fma(_otherz, _selfw, -(_othery * _selfx)))).withLane(3, Math.fma(_otherz, _selfz, Math.fma(_othery, _selfy, Math.fma(_otherx, _selfx, _otherw * _selfw)))).mul(DoubleVector.broadcast(SIMD_SPECIES, _t3_inv)).withLane(1, -(_otherw * _selfy * _t3_inv) - _otherx * _selfz * _t3_inv + Math.fma(_othery, _selfw, _otherz * _selfx) * _t3_inv);
-        _c0.intoArray(dest, destOffset);
-        return dest;
-    }
-
-    public static java.lang.foreign.MemorySegment difference(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative() && other.isNative()) return difference_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
-        return difference_api(dest, destOffset, src, srcOffset, other, otherOffset);
-    }
-
-    public static java.lang.foreign.MemorySegment difference_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
-        long _srcBase = src.address() + srcOffset;
-        long _otherBase = other.address() + otherOffset;
-        double _otherx = UnsafeOpsHolder.U.getDouble(_otherBase + 0L);
-        double _selfw = UnsafeOpsHolder.U.getDouble(_srcBase + 24L);
-        double _otherw = UnsafeOpsHolder.U.getDouble(_otherBase + 24L);
-        double _selfx = UnsafeOpsHolder.U.getDouble(_srcBase + 0L);
-        double _selfy = UnsafeOpsHolder.U.getDouble(_srcBase + 8L);
-        double _selfz = UnsafeOpsHolder.U.getDouble(_srcBase + 16L);
-        double _othery = UnsafeOpsHolder.U.getDouble(_otherBase + 8L);
-        double _otherz = UnsafeOpsHolder.U.getDouble(_otherBase + 16L);
-        double _t3_inv = 1.0 / Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
-        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_otherx, _selfw, -(_otherw * _selfx))).withLane(2, Math.fma(_otherx, _selfy, -(_otherw * _selfz))).add(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_othery, _selfz, -(_otherz * _selfy))).withLane(2, Math.fma(_otherz, _selfw, -(_othery * _selfx)))).withLane(3, Math.fma(_otherz, _selfz, Math.fma(_othery, _selfy, Math.fma(_otherx, _selfx, _otherw * _selfw)))).mul(DoubleVector.broadcast(SIMD_SPECIES, _t3_inv)).withLane(1, -(_otherw * _selfy * _t3_inv) - _otherx * _selfz * _t3_inv + Math.fma(_othery, _selfw, _otherz * _selfx) * _t3_inv);
-        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
-        return dest;
-    }
-
-    public static java.lang.foreign.MemorySegment difference_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
-        double _otherx = other.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, otherOffset + 0L);
-        double _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L);
-        double _otherw = other.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, otherOffset + 24L);
-        double _selfx = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
-        double _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
-        double _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
-        double _othery = other.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, otherOffset + 8L);
-        double _otherz = other.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, otherOffset + 16L);
-        double _t3_inv = 1.0 / Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
-        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_otherx, _selfw, -(_otherw * _selfx))).withLane(2, Math.fma(_otherx, _selfy, -(_otherw * _selfz))).add(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_othery, _selfz, -(_otherz * _selfy))).withLane(2, Math.fma(_otherz, _selfw, -(_othery * _selfx)))).withLane(3, Math.fma(_otherz, _selfz, Math.fma(_othery, _selfy, Math.fma(_otherx, _selfx, _otherw * _selfw)))).mul(DoubleVector.broadcast(SIMD_SPECIES, _t3_inv)).withLane(1, -(_otherw * _selfy * _t3_inv) - _otherx * _selfz * _t3_inv + Math.fma(_othery, _selfw, _otherz * _selfx) * _t3_inv);
-        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
-        return dest;
-    }
-
     public static double[] exp(double[] dest, int destOffset, double[] src, int srcOffset) {
         double _selfz = src[srcOffset + 2];
         double _selfx = src[srcOffset + 0];
@@ -2184,41 +2093,41 @@ public final class DoubleQuatOpsSimd {
     }
 
     public static double[] makeRotationTo_fma(double[] dest, int destOffset, double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ) {
-        double _t3 = fromDirZ + toDirZ;
-        double _t4 = fromDirX + toDirX;
-        double _t5 = fromDirY + toDirY;
-        double _t13 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
-        double _t15 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        double _t2 = fromDirZ + toDirZ;
+        double _t3 = fromDirX + toDirX;
+        double _t4 = fromDirY + toDirY;
+        double _t12 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        double _t14 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        double _t15 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
         double _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
-        double _t17 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
-        double _t18 = _t13 > 0.0 ? fromDirY : 0.0;
-        double _t19 = _t13 > 0.0 ? 0.0 : -fromDirY;
-        double _t20 = _t13 > 0.0 ? -fromDirX : fromDirZ;
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
-        double _t33 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
+        double _t17 = _t12 > 0.0 ? fromDirY : 0.0;
+        double _t18 = _t12 > 0.0 ? 0.0 : -fromDirY;
+        double _t19 = _t12 > 0.0 ? -fromDirX : fromDirZ;
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
+        double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t15).withLane(1, _t16).withLane(2, _t17).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t33).withLane(3, _t22 * _t33)) : (_t29  >  0.0 ? _sv0.fma(UNIT_W, DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t18).withLane(1, _t20).withLane(2, _t19))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.fma(UNIT_W, DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
 
     public static double[] makeRotationTo_mulAdd(double[] dest, int destOffset, double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ) {
-        double _t3 = fromDirZ + toDirZ;
-        double _t4 = fromDirX + toDirX;
-        double _t5 = fromDirY + toDirY;
-        double _t13 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
-        double _t15 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        double _t2 = fromDirZ + toDirZ;
+        double _t3 = fromDirX + toDirX;
+        double _t4 = fromDirY + toDirY;
+        double _t12 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        double _t14 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        double _t15 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
         double _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
-        double _t17 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
-        double _t18 = _t13 > 0.0 ? fromDirY : 0.0;
-        double _t19 = _t13 > 0.0 ? 0.0 : -fromDirY;
-        double _t20 = _t13 > 0.0 ? -fromDirX : fromDirZ;
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
-        double _t33 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
+        double _t17 = _t12 > 0.0 ? fromDirY : 0.0;
+        double _t18 = _t12 > 0.0 ? 0.0 : -fromDirY;
+        double _t19 = _t12 > 0.0 ? -fromDirX : fromDirZ;
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
+        double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t15).withLane(1, _t16).withLane(2, _t17).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t33).withLane(3, _t22 * _t33)) : (_t29  >  0.0 ? _sv0.mul(UNIT_W).add(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t18).withLane(1, _t20).withLane(2, _t19))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.mul(UNIT_W).add(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -2229,41 +2138,41 @@ public final class DoubleQuatOpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment makeRotationTo_fma(java.lang.foreign.MemorySegment dest, long destOffset, double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ) {
-        double _t3 = fromDirZ + toDirZ;
-        double _t4 = fromDirX + toDirX;
-        double _t5 = fromDirY + toDirY;
-        double _t13 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
-        double _t15 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        double _t2 = fromDirZ + toDirZ;
+        double _t3 = fromDirX + toDirX;
+        double _t4 = fromDirY + toDirY;
+        double _t12 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        double _t14 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        double _t15 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
         double _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
-        double _t17 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
-        double _t18 = _t13 > 0.0 ? fromDirY : 0.0;
-        double _t19 = _t13 > 0.0 ? 0.0 : -fromDirY;
-        double _t20 = _t13 > 0.0 ? -fromDirX : fromDirZ;
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
-        double _t33 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
+        double _t17 = _t12 > 0.0 ? fromDirY : 0.0;
+        double _t18 = _t12 > 0.0 ? 0.0 : -fromDirY;
+        double _t19 = _t12 > 0.0 ? -fromDirX : fromDirZ;
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
+        double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t15).withLane(1, _t16).withLane(2, _t17).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t33).withLane(3, _t22 * _t33)) : (_t29  >  0.0 ? _sv0.fma(UNIT_W, DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t18).withLane(1, _t20).withLane(2, _t19))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.fma(UNIT_W, DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
 
     public static java.lang.foreign.MemorySegment makeRotationTo_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ) {
-        double _t3 = fromDirZ + toDirZ;
-        double _t4 = fromDirX + toDirX;
-        double _t5 = fromDirY + toDirY;
-        double _t13 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
-        double _t15 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        double _t2 = fromDirZ + toDirZ;
+        double _t3 = fromDirX + toDirX;
+        double _t4 = fromDirY + toDirY;
+        double _t12 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        double _t14 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        double _t15 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
         double _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
-        double _t17 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
-        double _t18 = _t13 > 0.0 ? fromDirY : 0.0;
-        double _t19 = _t13 > 0.0 ? 0.0 : -fromDirY;
-        double _t20 = _t13 > 0.0 ? -fromDirX : fromDirZ;
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
-        double _t33 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
+        double _t17 = _t12 > 0.0 ? fromDirY : 0.0;
+        double _t18 = _t12 > 0.0 ? 0.0 : -fromDirY;
+        double _t19 = _t12 > 0.0 ? -fromDirX : fromDirZ;
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
+        double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t15).withLane(1, _t16).withLane(2, _t17).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t33).withLane(3, _t22 * _t33)) : (_t29  >  0.0 ? _sv0.mul(UNIT_W).add(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t18).withLane(1, _t20).withLane(2, _t19))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.mul(UNIT_W).add(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -2280,21 +2189,21 @@ public final class DoubleQuatOpsSimd {
         double _toDirx = toDir[toDirOffset + 0];
         double _fromDiry = fromDir[fromDirOffset + 1];
         double _toDiry = toDir[toDirOffset + 1];
-        double _t3 = _fromDirz + _toDirz;
-        double _t4 = _fromDirx + _toDirx;
-        double _t5 = _fromDiry + _toDiry;
-        double _t13 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
-        double _t15 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
+        double _t2 = _fromDirz + _toDirz;
+        double _t3 = _fromDirx + _toDirx;
+        double _t4 = _fromDiry + _toDiry;
+        double _t12 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
+        double _t14 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
+        double _t15 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
         double _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
-        double _t17 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
-        double _t18 = _t13 > 0.0 ? _fromDiry : 0.0;
-        double _t19 = _t13 > 0.0 ? 0.0 : -_fromDiry;
-        double _t20 = _t13 > 0.0 ? -_fromDirx : _fromDirz;
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
-        double _t33 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
+        double _t17 = _t12 > 0.0 ? _fromDiry : 0.0;
+        double _t18 = _t12 > 0.0 ? 0.0 : -_fromDiry;
+        double _t19 = _t12 > 0.0 ? -_fromDirx : _fromDirz;
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
+        double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t15).withLane(1, _t16).withLane(2, _t17).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t33).withLane(3, _t22 * _t33)) : (_t29  >  0.0 ? _sv0.fma(UNIT_W, DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t18).withLane(1, _t20).withLane(2, _t19))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.fma(UNIT_W, DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -2306,21 +2215,21 @@ public final class DoubleQuatOpsSimd {
         double _toDirx = toDir[toDirOffset + 0];
         double _fromDiry = fromDir[fromDirOffset + 1];
         double _toDiry = toDir[toDirOffset + 1];
-        double _t3 = _fromDirz + _toDirz;
-        double _t4 = _fromDirx + _toDirx;
-        double _t5 = _fromDiry + _toDiry;
-        double _t13 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
-        double _t15 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
+        double _t2 = _fromDirz + _toDirz;
+        double _t3 = _fromDirx + _toDirx;
+        double _t4 = _fromDiry + _toDiry;
+        double _t12 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
+        double _t14 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
+        double _t15 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
         double _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
-        double _t17 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
-        double _t18 = _t13 > 0.0 ? _fromDiry : 0.0;
-        double _t19 = _t13 > 0.0 ? 0.0 : -_fromDiry;
-        double _t20 = _t13 > 0.0 ? -_fromDirx : _fromDirz;
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
-        double _t33 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
+        double _t17 = _t12 > 0.0 ? _fromDiry : 0.0;
+        double _t18 = _t12 > 0.0 ? 0.0 : -_fromDiry;
+        double _t19 = _t12 > 0.0 ? -_fromDirx : _fromDirz;
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
+        double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t15).withLane(1, _t16).withLane(2, _t17).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t33).withLane(3, _t22 * _t33)) : (_t29  >  0.0 ? _sv0.mul(UNIT_W).add(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t18).withLane(1, _t20).withLane(2, _t19))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.mul(UNIT_W).add(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -2344,21 +2253,21 @@ public final class DoubleQuatOpsSimd {
         double _toDirx = UnsafeOpsHolder.U.getDouble(_toDirBase + 0L);
         double _fromDiry = UnsafeOpsHolder.U.getDouble(_fromDirBase + 8L);
         double _toDiry = UnsafeOpsHolder.U.getDouble(_toDirBase + 8L);
-        double _t3 = _fromDirz + _toDirz;
-        double _t4 = _fromDirx + _toDirx;
-        double _t5 = _fromDiry + _toDiry;
-        double _t13 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
-        double _t15 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
+        double _t2 = _fromDirz + _toDirz;
+        double _t3 = _fromDirx + _toDirx;
+        double _t4 = _fromDiry + _toDiry;
+        double _t12 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
+        double _t14 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
+        double _t15 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
         double _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
-        double _t17 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
-        double _t18 = _t13 > 0.0 ? _fromDiry : 0.0;
-        double _t19 = _t13 > 0.0 ? 0.0 : -_fromDiry;
-        double _t20 = _t13 > 0.0 ? -_fromDirx : _fromDirz;
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
-        double _t33 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
+        double _t17 = _t12 > 0.0 ? _fromDiry : 0.0;
+        double _t18 = _t12 > 0.0 ? 0.0 : -_fromDiry;
+        double _t19 = _t12 > 0.0 ? -_fromDirx : _fromDirz;
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
+        double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t15).withLane(1, _t16).withLane(2, _t17).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t33).withLane(3, _t22 * _t33)) : (_t29  >  0.0 ? _sv0.fma(UNIT_W, DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t18).withLane(1, _t20).withLane(2, _t19))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.fma(UNIT_W, DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -2370,21 +2279,21 @@ public final class DoubleQuatOpsSimd {
         double _toDirx = toDir.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, toDirOffset + 0L);
         double _fromDiry = fromDir.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, fromDirOffset + 8L);
         double _toDiry = toDir.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, toDirOffset + 8L);
-        double _t3 = _fromDirz + _toDirz;
-        double _t4 = _fromDirx + _toDirx;
-        double _t5 = _fromDiry + _toDiry;
-        double _t13 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
-        double _t15 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
+        double _t2 = _fromDirz + _toDirz;
+        double _t3 = _fromDirx + _toDirx;
+        double _t4 = _fromDiry + _toDiry;
+        double _t12 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
+        double _t14 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
+        double _t15 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
         double _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
-        double _t17 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
-        double _t18 = _t13 > 0.0 ? _fromDiry : 0.0;
-        double _t19 = _t13 > 0.0 ? 0.0 : -_fromDiry;
-        double _t20 = _t13 > 0.0 ? -_fromDirx : _fromDirz;
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
-        double _t33 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
+        double _t17 = _t12 > 0.0 ? _fromDiry : 0.0;
+        double _t18 = _t12 > 0.0 ? 0.0 : -_fromDiry;
+        double _t19 = _t12 > 0.0 ? -_fromDirx : _fromDirz;
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
+        double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t15).withLane(1, _t16).withLane(2, _t17).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t33).withLane(3, _t22 * _t33)) : (_t29  >  0.0 ? _sv0.fma(UNIT_W, DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t18).withLane(1, _t20).withLane(2, _t19))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.fma(UNIT_W, DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -2403,21 +2312,21 @@ public final class DoubleQuatOpsSimd {
         double _toDirx = UnsafeOpsHolder.U.getDouble(_toDirBase + 0L);
         double _fromDiry = UnsafeOpsHolder.U.getDouble(_fromDirBase + 8L);
         double _toDiry = UnsafeOpsHolder.U.getDouble(_toDirBase + 8L);
-        double _t3 = _fromDirz + _toDirz;
-        double _t4 = _fromDirx + _toDirx;
-        double _t5 = _fromDiry + _toDiry;
-        double _t13 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
-        double _t15 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
+        double _t2 = _fromDirz + _toDirz;
+        double _t3 = _fromDirx + _toDirx;
+        double _t4 = _fromDiry + _toDiry;
+        double _t12 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
+        double _t14 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
+        double _t15 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
         double _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
-        double _t17 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
-        double _t18 = _t13 > 0.0 ? _fromDiry : 0.0;
-        double _t19 = _t13 > 0.0 ? 0.0 : -_fromDiry;
-        double _t20 = _t13 > 0.0 ? -_fromDirx : _fromDirz;
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
-        double _t33 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
+        double _t17 = _t12 > 0.0 ? _fromDiry : 0.0;
+        double _t18 = _t12 > 0.0 ? 0.0 : -_fromDiry;
+        double _t19 = _t12 > 0.0 ? -_fromDirx : _fromDirz;
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
+        double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t15).withLane(1, _t16).withLane(2, _t17).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t33).withLane(3, _t22 * _t33)) : (_t29  >  0.0 ? _sv0.mul(UNIT_W).add(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t18).withLane(1, _t20).withLane(2, _t19))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.mul(UNIT_W).add(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -2429,21 +2338,21 @@ public final class DoubleQuatOpsSimd {
         double _toDirx = toDir.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, toDirOffset + 0L);
         double _fromDiry = fromDir.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, fromDirOffset + 8L);
         double _toDiry = toDir.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, toDirOffset + 8L);
-        double _t3 = _fromDirz + _toDirz;
-        double _t4 = _fromDirx + _toDirx;
-        double _t5 = _fromDiry + _toDiry;
-        double _t13 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
-        double _t15 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
+        double _t2 = _fromDirz + _toDirz;
+        double _t3 = _fromDirx + _toDirx;
+        double _t4 = _fromDiry + _toDiry;
+        double _t12 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
+        double _t14 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
+        double _t15 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
         double _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
-        double _t17 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
-        double _t18 = _t13 > 0.0 ? _fromDiry : 0.0;
-        double _t19 = _t13 > 0.0 ? 0.0 : -_fromDiry;
-        double _t20 = _t13 > 0.0 ? -_fromDirx : _fromDirz;
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
-        double _t33 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
+        double _t17 = _t12 > 0.0 ? _fromDiry : 0.0;
+        double _t18 = _t12 > 0.0 ? 0.0 : -_fromDiry;
+        double _t19 = _t12 > 0.0 ? -_fromDirx : _fromDirz;
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
+        double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t15).withLane(1, _t16).withLane(2, _t17).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t33).withLane(3, _t22 * _t33)) : (_t29  >  0.0 ? _sv0.mul(UNIT_W).add(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t18).withLane(1, _t20).withLane(2, _t19))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.mul(UNIT_W).add(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }

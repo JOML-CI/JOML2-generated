@@ -638,9 +638,9 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * @return the resulting matrix
      */
     public Float4x4 toMatrix() {
-        float _t0 = 2.0f * this.sX;
-        float _t1 = 2.0f * this.sY;
-        float _t2 = 2.0f * this.sZ;
+        float _t0 = this.sX + this.sX;
+        float _t1 = this.sY + this.sY;
+        float _t2 = this.sZ + this.sZ;
         float _t3 = this.rZ * this.rZ;
         float _t4 = this.rZ * this.rW;
         float _t5 = this.rY * this.rW;
@@ -655,9 +655,9 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * @return the resulting matrix
      */
     public Float3x3 toMatrix3x3() {
-        float _t0 = 2.0f * this.sX;
-        float _t1 = 2.0f * this.sY;
-        float _t2 = 2.0f * this.sZ;
+        float _t0 = this.sX + this.sX;
+        float _t1 = this.sY + this.sY;
+        float _t2 = this.sZ + this.sZ;
         float _t3 = this.rZ * this.rZ;
         float _t4 = this.rZ * this.rW;
         float _t5 = this.rY * this.rW;
@@ -672,9 +672,9 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * @return the resulting matrix
      */
     public Float3x4 toMatrix3x4() {
-        float _t0 = 2.0f * this.sX;
-        float _t1 = 2.0f * this.sY;
-        float _t2 = 2.0f * this.sZ;
+        float _t0 = this.sX + this.sX;
+        float _t1 = this.sY + this.sY;
+        float _t2 = this.sZ + this.sZ;
         float _t3 = this.rZ * this.rZ;
         float _t4 = this.rZ * this.rW;
         float _t5 = this.rY * this.rW;
@@ -983,7 +983,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /** Private tail of {@code mul}; reached only through it. */
     private FloatTransform mul_s7c2aaf6f_tail(float _t2, float _t0, float _t12, float _t13, float otherTX, float otherTY, float otherTZ, float otherRX, float otherRW, float otherRZ, float otherRY, float otherSX, float otherSY, float otherSZ) {
         float _t14 = 2.0f * Math.fma(this.rY, _t2, -(this.rZ * _t0));
-        return new FloatTransform(Math.fma(this.rY, _t12, Math.fma(-this.rZ, _t13, Math.fma(this.rW, _t14, Math.fma(otherTX, this.sX, this.tX)))), Math.fma(this.rZ, _t14, Math.fma(-this.rX, _t12, Math.fma(this.rW, _t13, Math.fma(otherTY, this.sY, this.tY)))), Math.fma(this.rX, _t13, Math.fma(-this.rY, _t14, Math.fma(this.rW, _t12, Math.fma(otherTZ, this.sZ, this.tZ)))), Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRZ, this.rY, -(otherRY * this.rZ)), Math.fma(otherRY, this.rW, otherRW * this.rY) + Math.fma(otherRX, this.rZ, -(otherRZ * this.rX)), Math.fma(otherRZ, this.rW, otherRW * this.rZ) + Math.fma(otherRY, this.rX, -(otherRX * this.rY)), Math.fma(-otherRZ, this.rZ, Math.fma(-otherRY, this.rY, Math.fma(otherRW, this.rW, -(otherRX * this.rX)))), otherSX * this.sX, otherSY * this.sY, otherSZ * this.sZ);
+        return new FloatTransform(Math.fma(this.rY, _t12, Math.fma(-this.rZ, _t13, Math.fma(this.rW, _t14, Math.fma(otherTX, this.sX, this.tX)))), Math.fma(this.rZ, _t14, Math.fma(-this.rX, _t12, Math.fma(this.rW, _t13, Math.fma(otherTY, this.sY, this.tY)))), Math.fma(this.rX, _t13, Math.fma(-this.rY, _t14, Math.fma(this.rW, _t12, Math.fma(otherTZ, this.sZ, this.tZ)))), Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRZ, this.rY, -(otherRY * this.rZ)), Math.fma(otherRY, this.rW, otherRW * this.rY) + Math.fma(otherRX, this.rZ, -(otherRZ * this.rX)), Math.fma(otherRZ, this.rW, otherRW * this.rZ) + Math.fma(otherRY, this.rX, -(otherRX * this.rY)), Math.fma(otherRW, this.rW, -(otherRX * this.rX)) - Math.fma(otherRY, this.rY, otherRZ * this.rZ), otherSX * this.sX, otherSY * this.sY, otherSZ * this.sZ);
     }
 
 
@@ -1055,9 +1055,9 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     }
 
     /** Private tail of {@code preMul}; reached only through it. */
-    private FloatTransform preMul_s7c2aaf6f_tail(float otherRY, float _t4, float otherRZ, float _t2, float _t14, float _t0, float _t15, float otherRW, float otherSX, float otherTX, float otherRX, float otherSY, float otherTY, float _t1, float otherSZ, float otherTZ) {
-        float _t16 = 2.0f * Math.fma(otherRY, _t4, -(otherRZ * _t2));
-        return new FloatTransform(Math.fma(otherRY, _t14, Math.fma(_t0, _t15, Math.fma(otherRW, _t16, Math.fma(otherSX, this.tX, otherTX)))), Math.fma(otherRZ, _t16, Math.fma(-otherRX, _t14, Math.fma(otherRW, _t15, Math.fma(otherSY, this.tY, otherTY)))), Math.fma(otherRX, _t15, Math.fma(_t1, _t16, Math.fma(otherRW, _t14, Math.fma(otherSZ, this.tZ, otherTZ)))), Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY)), Math.fma(otherRY, this.rW, otherRW * this.rY) + Math.fma(otherRZ, this.rX, -(otherRX * this.rZ)), Math.fma(otherRZ, this.rW, otherRW * this.rZ) + Math.fma(otherRX, this.rY, -(otherRY * this.rX)), Math.fma(_t0, this.rZ, Math.fma(_t1, this.rY, Math.fma(otherRW, this.rW, -(otherRX * this.rX)))), otherSX * this.sX, otherSY * this.sY, otherSZ * this.sZ);
+    private FloatTransform preMul_s7c2aaf6f_tail(float otherRY, float _t2, float otherRZ, float _t0, float _t12, float _t13, float otherRW, float otherSX, float otherTX, float otherRX, float otherSY, float otherTY, float otherSZ, float otherTZ) {
+        float _t14 = 2.0f * Math.fma(otherRY, _t2, -(otherRZ * _t0));
+        return new FloatTransform(Math.fma(otherRY, _t12, Math.fma(-otherRZ, _t13, Math.fma(otherRW, _t14, Math.fma(otherSX, this.tX, otherTX)))), Math.fma(otherRZ, _t14, Math.fma(-otherRX, _t12, Math.fma(otherRW, _t13, Math.fma(otherSY, this.tY, otherTY)))), Math.fma(otherRX, _t13, Math.fma(-otherRY, _t14, Math.fma(otherRW, _t12, Math.fma(otherSZ, this.tZ, otherTZ)))), Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY)), Math.fma(otherRY, this.rW, otherRW * this.rY) + Math.fma(otherRZ, this.rX, -(otherRX * this.rZ)), Math.fma(otherRZ, this.rW, otherRW * this.rZ) + Math.fma(otherRX, this.rY, -(otherRY * this.rX)), Math.fma(otherRW, this.rW, -(otherRX * this.rX)) - Math.fma(otherRY, this.rY, otherRZ * this.rZ), otherSX * this.sX, otherSY * this.sY, otherSZ * this.sZ);
     }
 
 
@@ -1099,14 +1099,12 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * @return the resulting transform
      */
     public FloatTransform preMul(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, float otherSX, float otherSY, float otherSZ) {
-        float _t0 = -otherRZ;
-        float _t1 = -otherRY;
-        float _t2 = otherSY * this.tY;
-        float _t3 = otherSX * this.tX;
-        float _t4 = otherSZ * this.tZ;
-        float _t14 = 2.0f * Math.fma(otherRX, _t2, -(otherRY * _t3));
-        float _t15 = 2.0f * Math.fma(otherRZ, _t3, -(otherRX * _t4));
-        return preMul_s7c2aaf6f_tail(otherRY, _t4, otherRZ, _t2, _t14, _t0, _t15, otherRW, otherSX, otherTX, otherRX, otherSY, otherTY, _t1, otherSZ, otherTZ);
+        float _t0 = otherSY * this.tY;
+        float _t1 = otherSX * this.tX;
+        float _t2 = otherSZ * this.tZ;
+        float _t12 = 2.0f * Math.fma(otherRX, _t0, -(otherRY * _t1));
+        float _t13 = 2.0f * Math.fma(otherRZ, _t1, -(otherRX * _t2));
+        return preMul_s7c2aaf6f_tail(otherRY, _t2, otherRZ, _t0, _t12, _t13, otherRW, otherSX, otherTX, otherRX, otherSY, otherTY, otherSZ, otherTZ);
     }
 
 
@@ -1141,7 +1139,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _sfx3 = Math.fma(otherRX, this.rW, -(otherRW * this.rX)) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY));
         float _sfx4 = Math.fma(otherRY, this.rW, -(otherRW * this.rY)) + Math.fma(otherRZ, this.rX, -(otherRX * this.rZ));
         float _sfx5 = Math.fma(otherRX, this.rY, -(otherRY * this.rX)) + Math.fma(otherRZ, this.rW, -(otherRW * this.rZ));
-        float _sfx6 = Math.fma(otherRZ, this.rZ, Math.fma(otherRY, this.rY, Math.fma(otherRX, this.rX, otherRW * this.rW)));
+        float _sfx6 = Math.fma(otherRX, this.rX, otherRW * this.rW) - Math.fma(-otherRZ, this.rZ, -(otherRY * this.rY));
         float _sfx7 = otherSX * _rcp1;
         float _sfx8 = otherSY * _rcp2;
         float _sfx9 = otherSZ * _rcp0;
@@ -1763,7 +1761,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * @return the resulting transform
      */
     public FloatTransform rotate(float rotationX, float rotationY, float rotationZ, float rotationW) {
-        return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(rotationX, this.rW, rotationW * this.rX) + Math.fma(rotationZ, this.rY, -(rotationY * this.rZ)), Math.fma(rotationY, this.rW, rotationW * this.rY) + Math.fma(rotationX, this.rZ, -(rotationZ * this.rX)), Math.fma(rotationZ, this.rW, rotationW * this.rZ) + Math.fma(rotationY, this.rX, -(rotationX * this.rY)), Math.fma(-rotationZ, this.rZ, Math.fma(-rotationY, this.rY, Math.fma(rotationW, this.rW, -(rotationX * this.rX)))), this.sX, this.sY, this.sZ);
+        return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(rotationX, this.rW, rotationW * this.rX) + Math.fma(rotationZ, this.rY, -(rotationY * this.rZ)), Math.fma(rotationY, this.rW, rotationW * this.rY) + Math.fma(rotationX, this.rZ, -(rotationZ * this.rX)), Math.fma(rotationZ, this.rW, rotationW * this.rZ) + Math.fma(rotationY, this.rX, -(rotationX * this.rY)), Math.fma(rotationW, this.rW, -(rotationX * this.rX)) - Math.fma(rotationY, this.rY, rotationZ * this.rZ), this.sX, this.sY, this.sZ);
     }
 
 
@@ -1823,7 +1821,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t3 = axisX * _t2;
         float _t4 = axisZ * _t2;
         float _t5 = axisY * _t2;
-        return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t1, this.rW * _t3) + Math.fma(this.rY, _t4, -(this.rZ * _t5)), Math.fma(this.rY, _t1, this.rW * _t5) + Math.fma(this.rZ, _t3, -(this.rX * _t4)), Math.fma(this.rZ, _t1, this.rW * _t4) + Math.fma(this.rX, _t5, -(this.rY * _t3)), Math.fma(-this.rZ, _t4, Math.fma(-this.rY, _t5, Math.fma(this.rW, _t1, -(this.rX * _t3)))), this.sX, this.sY, this.sZ);
+        return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t1, this.rW * _t3) + Math.fma(this.rY, _t4, -(this.rZ * _t5)), Math.fma(this.rY, _t1, this.rW * _t5) + Math.fma(this.rZ, _t3, -(this.rX * _t4)), Math.fma(this.rZ, _t1, this.rW * _t4) + Math.fma(this.rX, _t5, -(this.rY * _t3)), Math.fma(this.rW, _t1, -(this.rX * _t3)) - Math.fma(this.rY, _t5, this.rZ * _t4), this.sX, this.sY, this.sZ);
     }
 
 
@@ -1854,7 +1852,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /** Private tail of {@code rotateXYZ}; reached only through it. */
     private FloatTransform rotateXYZ_s6e793366_tail(float _t12, float _t5, float _t11, float _t8, float _t21, float _t19, float _t20) {
         float _t22 = Math.fma(_t12, _t5, -(_t11 * _t8));
-        return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t21, this.rW * _t22) + Math.fma(this.rZ, _t19, -(this.rX * _t20)), Math.fma(this.rZ, _t21, this.rW * _t20) + Math.fma(this.rX, _t22, -(this.rY * _t19)), Math.fma(-this.rZ, _t20, Math.fma(-this.rY, _t22, Math.fma(this.rW, _t21, -(this.rX * _t19)))), this.sX, this.sY, this.sZ);
+        return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t21, this.rW * _t22) + Math.fma(this.rZ, _t19, -(this.rX * _t20)), Math.fma(this.rZ, _t21, this.rW * _t20) + Math.fma(this.rX, _t22, -(this.rY * _t19)), Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t22, this.rZ * _t20), this.sX, this.sY, this.sZ);
     }
 
 
@@ -1901,7 +1899,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /** Private tail of {@code rotateXZY}; reached only through it. */
     private FloatTransform rotateXZY_s6e793366_tail(float _t10, float _t5, float _t9, float _t8, float _t19, float _t21, float _t20) {
         float _t22 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rW * _t22) + Math.fma(this.rZ, _t21, -(this.rX * _t20)), Math.fma(this.rZ, _t19, this.rW * _t20) + Math.fma(this.rX, _t22, -(this.rY * _t21)), Math.fma(-this.rZ, _t20, Math.fma(-this.rY, _t22, Math.fma(this.rW, _t19, -(this.rX * _t21)))), this.sX, this.sY, this.sZ);
+        return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rW * _t22) + Math.fma(this.rZ, _t21, -(this.rX * _t20)), Math.fma(this.rZ, _t19, this.rW * _t20) + Math.fma(this.rX, _t22, -(this.rY * _t21)), Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t22, this.rZ * _t20), this.sX, this.sY, this.sZ);
     }
 
 
@@ -1973,7 +1971,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /** Private tail of {@code rotateYXZ}; reached only through it. */
     private FloatTransform rotateYXZ_s6e793366_tail(float _t12, float _t8, float _t11, float _t5, float _t19, float _t20, float _t21) {
         float _t22 = Math.fma(_t12, _t8, -(_t11 * _t5));
-        return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t20) + Math.fma(this.rY, _t21, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rW * _t22) + Math.fma(this.rZ, _t20, -(this.rX * _t21)), Math.fma(this.rZ, _t19, this.rW * _t21) + Math.fma(this.rX, _t22, -(this.rY * _t20)), Math.fma(-this.rZ, _t21, Math.fma(-this.rY, _t22, Math.fma(this.rW, _t19, -(this.rX * _t20)))), this.sX, this.sY, this.sZ);
+        return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t20) + Math.fma(this.rY, _t21, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rW * _t22) + Math.fma(this.rZ, _t20, -(this.rX * _t21)), Math.fma(this.rZ, _t19, this.rW * _t21) + Math.fma(this.rX, _t22, -(this.rY * _t20)), Math.fma(this.rW, _t19, -(this.rX * _t20)) - Math.fma(this.rY, _t22, this.rZ * _t21), this.sX, this.sY, this.sZ);
     }
 
 
@@ -2020,7 +2018,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /** Private tail of {@code rotateYZX}; reached only through it. */
     private FloatTransform rotateYZX_s6e793366_tail(float _t11, float _t5, float _t12, float _t8, float _t21, float _t19, float _t20) {
         float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
-        return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rW * _t20) + Math.fma(this.rZ, _t19, -(this.rX * _t22)), Math.fma(this.rZ, _t21, this.rW * _t22) + Math.fma(this.rX, _t20, -(this.rY * _t19)), Math.fma(-this.rZ, _t22, Math.fma(-this.rY, _t20, Math.fma(this.rW, _t21, -(this.rX * _t19)))), this.sX, this.sY, this.sZ);
+        return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rW * _t20) + Math.fma(this.rZ, _t19, -(this.rX * _t22)), Math.fma(this.rZ, _t21, this.rW * _t22) + Math.fma(this.rX, _t20, -(this.rY * _t19)), Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t20, this.rZ * _t22), this.sX, this.sY, this.sZ);
     }
 
 
@@ -2092,7 +2090,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /** Private tail of {@code rotateZXY}; reached only through it. */
     private FloatTransform rotateZXY_s6e793366_tail(float _t11, float _t5, float _t12, float _t8, float _t21, float _t19, float _t20) {
         float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
-        return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t22) + Math.fma(this.rY, _t19, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rW * _t20) + Math.fma(this.rZ, _t22, -(this.rX * _t19)), Math.fma(this.rZ, _t21, this.rW * _t19) + Math.fma(this.rX, _t20, -(this.rY * _t22)), Math.fma(-this.rZ, _t19, Math.fma(-this.rY, _t20, Math.fma(this.rW, _t21, -(this.rX * _t22)))), this.sX, this.sY, this.sZ);
+        return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t22) + Math.fma(this.rY, _t19, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rW * _t20) + Math.fma(this.rZ, _t22, -(this.rX * _t19)), Math.fma(this.rZ, _t21, this.rW * _t19) + Math.fma(this.rX, _t20, -(this.rY * _t22)), Math.fma(this.rW, _t21, -(this.rX * _t22)) - Math.fma(this.rY, _t20, this.rZ * _t19), this.sX, this.sY, this.sZ);
     }
 
 
@@ -2139,7 +2137,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /** Private tail of {@code rotateZYX}; reached only through it. */
     private FloatTransform rotateZYX_s6e793366_tail(float _t11, float _t8, float _t12, float _t5, float _t19, float _t21, float _t20) {
         float _t22 = Math.fma(_t11, _t8, -(_t12 * _t5));
-        return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t19, this.rW * _t20) + Math.fma(this.rZ, _t21, -(this.rX * _t22)), Math.fma(this.rZ, _t19, this.rW * _t22) + Math.fma(this.rX, _t20, -(this.rY * _t21)), Math.fma(-this.rZ, _t22, Math.fma(-this.rY, _t20, Math.fma(this.rW, _t19, -(this.rX * _t21)))), this.sX, this.sY, this.sZ);
+        return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t19, this.rW * _t20) + Math.fma(this.rZ, _t21, -(this.rX * _t22)), Math.fma(this.rZ, _t19, this.rW * _t22) + Math.fma(this.rX, _t20, -(this.rY * _t21)), Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t20, this.rZ * _t22), this.sX, this.sY, this.sZ);
     }
 
 

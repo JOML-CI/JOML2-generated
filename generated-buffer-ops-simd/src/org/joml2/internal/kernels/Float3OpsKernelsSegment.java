@@ -430,7 +430,7 @@ public final class Float3OpsKernelsSegment {
         float _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
         float _t0 = t * t;
         float _t1 = 1.0f - t;
-        float _t3 = 2.0f * t * _t1;
+        float _t3 = (t + t) * _t1;
         float _t4 = _t1 * _t1;
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(p2X, _t0, Math.fma(p1X, _t3, _selfx * _t4)));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(p2Y, _t0, Math.fma(p1Y, _t3, _selfy * _t4)));
@@ -459,7 +459,7 @@ public final class Float3OpsKernelsSegment {
         float _p2z = p2.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, p2Offset + 8L);
         float _t0 = t * t;
         float _t1 = 1.0f - t;
-        float _t3 = 2.0f * t * _t1;
+        float _t3 = (t + t) * _t1;
         float _t4 = _t1 * _t1;
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_p2x, _t0, Math.fma(_p1x, _t3, _selfx * _t4)));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_p2y, _t0, Math.fma(_p1y, _t3, _selfy * _t4)));
@@ -478,7 +478,7 @@ public final class Float3OpsKernelsSegment {
         float _selfx = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
-        float _t1 = 2.0f * t;
+        float _t1 = t + t;
         float _t2 = 2.0f * (1.0f - t);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(p1X - _selfx, _t2, (p2X - p1X) * _t1));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(p1Y - _selfy, _t2, (p2Y - p1Y) * _t1));
@@ -505,7 +505,7 @@ public final class Float3OpsKernelsSegment {
         float _p2x = p2.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, p2Offset + 0L);
         float _p2y = p2.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, p2Offset + 4L);
         float _p2z = p2.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, p2Offset + 8L);
-        float _t1 = 2.0f * t;
+        float _t1 = t + t;
         float _t2 = 2.0f * (1.0f - t);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_p1x - _selfx, _t2, (_p2x - _p1x) * _t1));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_p1y - _selfy, _t2, (_p2y - _p1y) * _t1));
@@ -680,7 +680,7 @@ public final class Float3OpsKernelsSegment {
         float _t2 = t * _t0;
         float _t5 = t * Math.fma(t, t, -t);
         float _t7 = Math.fma(t - 2.0f, _t0, t);
-        float _t9 = Math.fma(3.0f, _t0, -(2.0f * _t2));
+        float _t9 = Math.fma(3.0f, _t0, -(_t2 + _t2));
         float _t10 = Math.fma(2.0f, _t2, Math.fma(-3.0f, _t0, 1.0f));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_selfx, _t10, t0X * _t7) + Math.fma(t1X, _t5, v1X * _t9));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_selfy, _t10, t0Y * _t7) + Math.fma(t1Y, _t5, v1Y * _t9));
@@ -715,7 +715,7 @@ public final class Float3OpsKernelsSegment {
         float _t2 = t * _t0;
         float _t5 = t * Math.fma(t, t, -t);
         float _t7 = Math.fma(t - 2.0f, _t0, t);
-        float _t9 = Math.fma(3.0f, _t0, -(2.0f * _t2));
+        float _t9 = Math.fma(3.0f, _t0, -(_t2 + _t2));
         float _t10 = Math.fma(2.0f, _t2, Math.fma(-3.0f, _t0, 1.0f));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_selfx, _t10, _t0x * _t7) + Math.fma(_t1x, _t5, _v1x * _t9));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_selfy, _t10, _t0y * _t7) + Math.fma(_t1y, _t5, _v1y * _t9));
@@ -737,7 +737,7 @@ public final class Float3OpsKernelsSegment {
         float _t0 = t * t;
         float _t6 = 6.0f * Math.fma(t, t, -t);
         float _t7 = 6.0f * Math.fma(-t, t, t);
-        float _t8 = Math.fma(3.0f, _t0, -(2.0f * t));
+        float _t8 = Math.fma(3.0f, _t0, -(t + t));
         float _t9 = Math.fma(3.0f, _t0, Math.fma(-4.0f, t, 1.0f));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_selfx, _t6, t0X * _t9) + Math.fma(t1X, _t8, v1X * _t7));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_selfy, _t6, t0Y * _t9) + Math.fma(t1Y, _t8, v1Y * _t7));
@@ -771,7 +771,7 @@ public final class Float3OpsKernelsSegment {
         float _t0 = t * t;
         float _t6 = 6.0f * Math.fma(t, t, -t);
         float _t7 = 6.0f * Math.fma(-t, t, t);
-        float _t8 = Math.fma(3.0f, _t0, -(2.0f * t));
+        float _t8 = Math.fma(3.0f, _t0, -(t + t));
         float _t9 = Math.fma(3.0f, _t0, Math.fma(-4.0f, t, 1.0f));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_selfx, _t6, _t0x * _t9) + Math.fma(_t1x, _t8, _v1x * _t7));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_selfy, _t6, _t0y * _t9) + Math.fma(_t1y, _t8, _v1y * _t7));

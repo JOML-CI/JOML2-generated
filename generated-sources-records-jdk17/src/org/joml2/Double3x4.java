@@ -2842,9 +2842,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
      * @return the resulting matrix
      */
     public static Double3x4 makeFromTransform(double tTX, double tTY, double tTZ, double tRX, double tRY, double tRZ, double tRW, double tSX, double tSY, double tSZ) {
-        double _t0 = 2.0 * tSX;
-        double _t1 = 2.0 * tSY;
-        double _t2 = 2.0 * tSZ;
+        double _t0 = tSX + tSX;
+        double _t1 = tSY + tSY;
+        double _t2 = tSZ + tSZ;
         double _t3 = tRZ * tRZ;
         double _t4 = tRZ * tRW;
         double _t5 = tRY * tRW;
@@ -4659,9 +4659,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
      * @return the resulting matrix
      */
     public static Double3x4 composeTRS(double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ) {
-        double _t0 = 2.0 * scaleX;
-        double _t1 = 2.0 * scaleY;
-        double _t2 = 2.0 * scaleZ;
+        double _t0 = scaleX + scaleX;
+        double _t1 = scaleY + scaleY;
+        double _t2 = scaleZ + scaleZ;
         double _t3 = rotationZ * rotationZ;
         double _t4 = rotationZ * rotationW;
         double _t5 = rotationY * rotationW;
@@ -4733,9 +4733,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
      * @return the resulting matrix
      */
     public static Double3x4 composeTRSMul(double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ, Double3x4 m) {
-        double _t0 = 2.0 * scaleZ;
-        double _t1 = 2.0 * scaleX;
-        double _t2 = 2.0 * scaleY;
+        double _t0 = scaleZ + scaleZ;
+        double _t1 = scaleX + scaleX;
+        double _t2 = scaleY + scaleY;
         double _t3 = rotationY * rotationW;
         double _t4 = rotationZ * rotationZ;
         double _t5 = rotationZ * rotationW;
@@ -5837,8 +5837,8 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         double _t12 = (1.0 / Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
         double _t13 = _t0 * _t12;
         double _t14 = _t3 * _t12;
-        double _t15 = 2.0 * _t13;
-        double _t16 = 2.0 * _t14;
+        double _t15 = _t13 + _t13;
+        double _t16 = _t14 + _t14;
         double _t17 = -_t15;
         double _t19 = _t10 * _t12;
         double _t20 = _t16 * _t13;
@@ -5894,7 +5894,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         double _t4 = dqRX * dqRX;
         double _t5 = dqRY * dqRZ;
         double _t6 = Math.fma(-2.0, dqRZ * dqRZ, 1.0);
-        return new Double3x4(Math.fma(-2.0, _t0, _t6), Math.fma(-2.0, _t2, 2.0 * dqRX * dqRY), 2.0 * Math.fma(dqRX, dqRZ, _t3), 2.0 * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW))), 2.0 * Math.fma(dqRX, dqRY, _t2), Math.fma(-2.0, _t4, _t6), Math.fma(-2.0, dqRX * dqRW, 2.0 * _t5), 2.0 * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW))), Math.fma(-2.0, _t3, 2.0 * dqRX * dqRZ), 2.0 * Math.fma(dqRX, dqRW, _t5), Math.fma(-2.0, _t4, Math.fma(-2.0, _t0, 1.0)), 2.0 * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW))), Joml.BIT_ORTHOGONAL);
+        return new Double3x4(Math.fma(-2.0, _t0, _t6), Math.fma(-2.0, _t2, (dqRX + dqRX) * dqRY), 2.0 * Math.fma(dqRX, dqRZ, _t3), 2.0 * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW))), 2.0 * Math.fma(dqRX, dqRY, _t2), Math.fma(-2.0, _t4, _t6), Math.fma(-2.0, dqRX * dqRW, _t5 + _t5), 2.0 * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW))), Math.fma(-2.0, _t3, (dqRX + dqRX) * dqRZ), 2.0 * Math.fma(dqRX, dqRW, _t5), Math.fma(-2.0, _t4, Math.fma(-2.0, _t0, 1.0)), 2.0 * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW))), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -6619,9 +6619,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
      * @return the resulting matrix
      */
     public static Double3x4 makeReflection(double normalX, double normalY, double normalZ) {
-        double _t6 = -(2.0 * normalX * normalY);
-        double _t7 = -(2.0 * normalX * normalZ);
-        double _t8 = -(2.0 * normalY * normalZ);
+        double _t6 = -((normalX + normalX) * normalY);
+        double _t7 = -((normalX + normalX) * normalZ);
+        double _t8 = -((normalY + normalY) * normalZ);
         return new Double3x4(Math.fma(-2.0, normalX * normalX, 1.0), _t6, _t7, 0.0, _t6, Math.fma(-2.0, normalY * normalY, 1.0), _t8, 0.0, _t7, _t8, Math.fma(-2.0, normalZ * normalZ, 1.0), 0.0, Joml.BIT_AFFINE);
     }
 
@@ -9420,9 +9420,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotY;
-        double _t5 = 2.0 * rotZ;
-        double _t6 = 2.0 * rotX;
+        double _t4 = rotY + rotY;
+        double _t5 = rotZ + rotZ;
+        double _t6 = rotX + rotX;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t4;
         double _t9 = rotZ * _t5;
@@ -9466,9 +9466,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotY;
-        double _t5 = 2.0 * rotZ;
-        double _t6 = 2.0 * rotX;
+        double _t4 = rotY + rotY;
+        double _t5 = rotZ + rotZ;
+        double _t6 = rotX + rotX;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t4;
         double _t9 = rotZ * _t5;
@@ -9515,9 +9515,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotX;
-        double _t5 = 2.0 * rotY;
-        double _t6 = 2.0 * rotZ;
+        double _t4 = rotX + rotX;
+        double _t5 = rotY + rotY;
+        double _t6 = rotZ + rotZ;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t6;
         double _t9 = rotZ * _t6;
@@ -9564,9 +9564,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotX;
-        double _t5 = 2.0 * rotY;
-        double _t6 = 2.0 * rotZ;
+        double _t4 = rotX + rotX;
+        double _t5 = rotY + rotY;
+        double _t6 = rotZ + rotZ;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t6;
         double _t9 = rotZ * _t6;
@@ -9816,9 +9816,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
     private Double3x4 preRotateQuat_identity(double qX, double qY, double qZ, double qW) {
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qY;
-        double _t4 = 2.0 * qZ;
-        double _t5 = 2.0 * qX;
+        double _t3 = qY + qY;
+        double _t4 = qZ + qZ;
+        double _t5 = qX + qX;
         double _t6 = qW * _t4;
         double _t7 = qW * _t3;
         double _t8 = qW * _t5;
@@ -9834,9 +9834,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
     private Double3x4 preRotateQuat_translation(double qX, double qY, double qZ, double qW) {
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qY;
-        double _t4 = 2.0 * qZ;
-        double _t5 = 2.0 * qX;
+        double _t3 = qY + qY;
+        double _t4 = qZ + qZ;
+        double _t5 = qX + qX;
         double _t6 = qW * _t4;
         double _t7 = qW * _t3;
         double _t8 = qW * _t5;
@@ -9881,9 +9881,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
     private Double3x4 preRotateQuat_orthogonal(double qX, double qY, double qZ, double qW) {
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -9928,9 +9928,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
     private Double3x4 preRotateQuat_general(double qX, double qY, double qZ, double qW) {
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -10504,9 +10504,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
      * through the public {@code reflect} dispatcher.
      */
     private Double3x4 reflect_identity(double normalX, double normalY, double normalZ) {
-        double _t6 = -(2.0 * normalX * normalY);
-        double _t7 = -(2.0 * normalX * normalZ);
-        double _t8 = -(2.0 * normalY * normalZ);
+        double _t6 = -((normalX + normalX) * normalY);
+        double _t7 = -((normalX + normalX) * normalZ);
+        double _t8 = -((normalY + normalY) * normalZ);
         return new Double3x4(Math.fma(-2.0, normalX * normalX, 1.0), _t6, _t7, 0.0, _t6, Math.fma(-2.0, normalY * normalY, 1.0), _t8, 0.0, _t7, _t8, Math.fma(-2.0, normalZ * normalZ, 1.0), 0.0, Joml.BIT_AFFINE);
     }
 
@@ -10516,9 +10516,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
      * through the public {@code reflect} dispatcher.
      */
     private Double3x4 reflect_translation(double normalX, double normalY, double normalZ) {
-        double _t6 = -(2.0 * normalX * normalY);
-        double _t7 = -(2.0 * normalX * normalZ);
-        double _t8 = -(2.0 * normalY * normalZ);
+        double _t6 = -((normalX + normalX) * normalY);
+        double _t7 = -((normalX + normalX) * normalZ);
+        double _t8 = -((normalY + normalY) * normalZ);
         return new Double3x4(Math.fma(-2.0, normalX * normalX, 1.0), _t6, _t7, this.m03, _t6, Math.fma(-2.0, normalY * normalY, 1.0), _t8, this.m13, _t7, _t8, Math.fma(-2.0, normalZ * normalZ, 1.0), this.m23, Joml.BIT_AFFINE);
     }
 
@@ -10551,9 +10551,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         double _t0 = -this.m02;
         double _t1 = -this.m12;
         double _t2 = -this.m22;
-        double _t9 = 2.0 * normalX * normalZ;
-        double _t10 = 2.0 * normalX * normalY;
-        double _t11 = 2.0 * normalY * normalZ;
+        double _t9 = (normalX + normalX) * normalZ;
+        double _t10 = (normalX + normalX) * normalY;
+        double _t11 = (normalY + normalY) * normalZ;
         double _t12 = Math.fma(-2.0, normalX * normalX, 1.0);
         double _t13 = Math.fma(-2.0, normalY * normalY, 1.0);
         double _t14 = Math.fma(-2.0, normalZ * normalZ, 1.0);
@@ -10636,9 +10636,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         double _t3 = -pivotZ;
         double _t4 = -rotX;
         double _t5 = -pivotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
-        double _t8 = 2.0 * rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
+        double _t8 = rotX + rotX;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t6;
         double _t11 = rotZ * _t7;
@@ -10682,9 +10682,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         double _t0 = -rotY;
         double _t2 = -rotX;
         double _t3 = -pivotZ;
-        double _t5 = 2.0 * rotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
+        double _t5 = rotX + rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
         double _t8 = rotW * _t6;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t5;
@@ -10734,9 +10734,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         double _t0 = -rotY;
         double _t2 = -rotX;
         double _t3 = -pivotZ;
-        double _t5 = 2.0 * rotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
+        double _t5 = rotX + rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
         double _t8 = rotW * _t6;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t5;
@@ -10983,9 +10983,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
     private Double3x4 rotateQuat_translation(double qX, double qY, double qZ, double qW) {
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qY;
-        double _t4 = 2.0 * qZ;
-        double _t5 = 2.0 * qX;
+        double _t3 = qY + qY;
+        double _t4 = qZ + qZ;
+        double _t5 = qX + qX;
         double _t6 = qW * _t4;
         double _t7 = qW * _t3;
         double _t8 = qW * _t5;
@@ -11021,9 +11021,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
     private Double3x4 rotateQuat_orthogonal(double qX, double qY, double qZ, double qW) {
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -11068,9 +11068,9 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
     private Double3x4 rotateQuat_general(double qX, double qY, double qZ, double qW) {
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;

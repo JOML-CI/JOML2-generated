@@ -623,7 +623,7 @@ public record Double4(double x, double y, double z, double w) {
     public Double4 bezier2(double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double t) {
         double _t0 = t * t;
         double _t1 = 1.0 - t;
-        double _t3 = 2.0 * t * _t1;
+        double _t3 = (t + t) * _t1;
         double _t4 = _t1 * _t1;
         return new Double4(Math.fma(p2X, _t0, Math.fma(p1X, _t3, this.x * _t4)), Math.fma(p2Y, _t0, Math.fma(p1Y, _t3, this.y * _t4)), Math.fma(p2Z, _t0, Math.fma(p1Z, _t3, this.z * _t4)), Math.fma(p2W, _t0, Math.fma(p1W, _t3, this.w * _t4)));
     }
@@ -670,7 +670,7 @@ public record Double4(double x, double y, double z, double w) {
      * @return the resulting vector
      */
     public Double4 bezier2Tangent(double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double t) {
-        double _t1 = 2.0 * t;
+        double _t1 = t + t;
         double _t2 = 2.0 * (1.0 - t);
         return new Double4(Math.fma(p1X - this.x, _t2, (p2X - p1X) * _t1), Math.fma(p1Y - this.y, _t2, (p2Y - p1Y) * _t1), Math.fma(p1Z - this.z, _t2, (p2Z - p1Z) * _t1), Math.fma(p1W - this.w, _t2, (p2W - p1W) * _t1));
     }
@@ -915,7 +915,7 @@ public record Double4(double x, double y, double z, double w) {
         double _t2 = t * _t0;
         double _t5 = t * Math.fma(t, t, -t);
         double _t7 = Math.fma(t - 2.0, _t0, t);
-        double _t9 = Math.fma(3.0, _t0, -(2.0 * _t2));
+        double _t9 = Math.fma(3.0, _t0, -(_t2 + _t2));
         double _t10 = Math.fma(2.0, _t2, Math.fma(-3.0, _t0, 1.0));
         return new Double4(Math.fma(this.x, _t10, t0X * _t7) + Math.fma(t1X, _t5, v1X * _t9), Math.fma(this.y, _t10, t0Y * _t7) + Math.fma(t1Y, _t5, v1Y * _t9), Math.fma(this.z, _t10, t0Z * _t7) + Math.fma(t1Z, _t5, v1Z * _t9), Math.fma(this.w, _t10, t0W * _t7) + Math.fma(t1W, _t5, v1W * _t9));
     }
@@ -970,7 +970,7 @@ public record Double4(double x, double y, double z, double w) {
         double _t0 = t * t;
         double _t6 = 6.0 * Math.fma(t, t, -t);
         double _t7 = 6.0 * Math.fma(-t, t, t);
-        double _t8 = Math.fma(3.0, _t0, -(2.0 * t));
+        double _t8 = Math.fma(3.0, _t0, -(t + t));
         double _t9 = Math.fma(3.0, _t0, Math.fma(-4.0, t, 1.0));
         return new Double4(Math.fma(this.x, _t6, t0X * _t9) + Math.fma(t1X, _t8, v1X * _t7), Math.fma(this.y, _t6, t0Y * _t9) + Math.fma(t1Y, _t8, v1Y * _t7), Math.fma(this.z, _t6, t0Z * _t9) + Math.fma(t1Z, _t8, v1Z * _t7), Math.fma(this.w, _t6, t0W * _t9) + Math.fma(t1W, _t8, v1W * _t7));
     }

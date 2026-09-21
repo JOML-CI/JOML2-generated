@@ -1155,7 +1155,7 @@ public final class Float4Impl implements Float4 {
         Float4Impl d = (Float4Impl) dest;
         float _t0 = t * t;
         float _t1 = 1.0f - t;
-        float _t3 = 2.0f * t * _t1;
+        float _t3 = (t + t) * _t1;
         float _t4 = _t1 * _t1;
         d.x = Math.fma(p2X, _t0, Math.fma(p1X, _t3, this.x * _t4));
         d.y = Math.fma(p2Y, _t0, Math.fma(p1Y, _t3, this.y * _t4));
@@ -1193,7 +1193,7 @@ public final class Float4Impl implements Float4 {
         Double4Impl d = (Double4Impl) dest;
         float _t0 = t * t;
         float _t1 = 1.0f - t;
-        float _t3 = 2.0f * t * _t1;
+        float _t3 = (t + t) * _t1;
         float _t4 = _t1 * _t1;
         d.x = Math.fma(p2X, _t0, Math.fma(p1X, _t3, this.x * _t4));
         d.y = Math.fma(p2Y, _t0, Math.fma(p1Y, _t3, this.y * _t4));
@@ -1270,7 +1270,7 @@ public final class Float4Impl implements Float4 {
      */
     public Float4 bezier2Tangent(float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float t, @Mutated Float4 dest) {
         Float4Impl d = (Float4Impl) dest;
-        float _t1 = 2.0f * t;
+        float _t1 = t + t;
         float _t2 = 2.0f * (1.0f - t);
         d.x = Math.fma(p1X - this.x, _t2, (p2X - p1X) * _t1);
         d.y = Math.fma(p1Y - this.y, _t2, (p2Y - p1Y) * _t1);
@@ -1307,7 +1307,7 @@ public final class Float4Impl implements Float4 {
      */
     public Double4 bezier2Tangent(float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float t, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        float _t1 = 2.0f * t;
+        float _t1 = t + t;
         float _t2 = 2.0f * (1.0f - t);
         d.x = Math.fma(p1X - this.x, _t2, (p2X - p1X) * _t1);
         d.y = Math.fma(p1Y - this.y, _t2, (p2Y - p1Y) * _t1);
@@ -1814,7 +1814,7 @@ public final class Float4Impl implements Float4 {
         float _t2 = t * _t0;
         float _t5 = t * Math.fma(t, t, -t);
         float _t7 = Math.fma(t - 2.0f, _t0, t);
-        float _t9 = Math.fma(3.0f, _t0, -(2.0f * _t2));
+        float _t9 = Math.fma(3.0f, _t0, -(_t2 + _t2));
         float _t10 = Math.fma(2.0f, _t2, Math.fma(-3.0f, _t0, 1.0f));
         d.x = Math.fma(this.x, _t10, t0X * _t7) + Math.fma(t1X, _t5, v1X * _t9);
         d.y = Math.fma(this.y, _t10, t0Y * _t7) + Math.fma(t1Y, _t5, v1Y * _t9);
@@ -1859,7 +1859,7 @@ public final class Float4Impl implements Float4 {
         float _t2 = t * _t0;
         float _t5 = t * Math.fma(t, t, -t);
         float _t7 = Math.fma(t - 2.0f, _t0, t);
-        float _t9 = Math.fma(3.0f, _t0, -(2.0f * _t2));
+        float _t9 = Math.fma(3.0f, _t0, -(_t2 + _t2));
         float _t10 = Math.fma(2.0f, _t2, Math.fma(-3.0f, _t0, 1.0f));
         d.x = Math.fma(this.x, _t10, t0X * _t7) + Math.fma(t1X, _t5, v1X * _t9);
         d.y = Math.fma(this.y, _t10, t0Y * _t7) + Math.fma(t1Y, _t5, v1Y * _t9);
@@ -1944,7 +1944,7 @@ public final class Float4Impl implements Float4 {
         float _t0 = t * t;
         float _t6 = 6.0f * Math.fma(t, t, -t);
         float _t7 = 6.0f * Math.fma(-t, t, t);
-        float _t8 = Math.fma(3.0f, _t0, -(2.0f * t));
+        float _t8 = Math.fma(3.0f, _t0, -(t + t));
         float _t9 = Math.fma(3.0f, _t0, Math.fma(-4.0f, t, 1.0f));
         d.x = Math.fma(this.x, _t6, t0X * _t9) + Math.fma(t1X, _t8, v1X * _t7);
         d.y = Math.fma(this.y, _t6, t0Y * _t9) + Math.fma(t1Y, _t8, v1Y * _t7);
@@ -1989,7 +1989,7 @@ public final class Float4Impl implements Float4 {
         float _t0 = t * t;
         float _t6 = 6.0f * Math.fma(t, t, -t);
         float _t7 = 6.0f * Math.fma(-t, t, t);
-        float _t8 = Math.fma(3.0f, _t0, -(2.0f * t));
+        float _t8 = Math.fma(3.0f, _t0, -(t + t));
         float _t9 = Math.fma(3.0f, _t0, Math.fma(-4.0f, t, 1.0f));
         d.x = Math.fma(this.x, _t6, t0X * _t9) + Math.fma(t1X, _t8, v1X * _t7);
         d.y = Math.fma(this.y, _t6, t0Y * _t9) + Math.fma(t1Y, _t8, v1Y * _t7);

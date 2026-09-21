@@ -855,7 +855,7 @@ public final class Double4Impl implements Double4 {
         double[] p2Data = ((Double4Impl) p2).data;
         double[] dd = ((Double4Impl) dest).data;
         double _t1 = 1.0 - t;
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, p2Data, 0).fma(DoubleVector.broadcast(COL_SPECIES, t * t), DoubleVector.fromArray(COL_SPECIES, p1Data, 0).fma(DoubleVector.broadcast(COL_SPECIES, 2.0 * t * _t1), DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, _t1 * _t1))));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, p2Data, 0).fma(DoubleVector.broadcast(COL_SPECIES, t * t), DoubleVector.fromArray(COL_SPECIES, p1Data, 0).fma(DoubleVector.broadcast(COL_SPECIES, (t + t) * _t1), DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, _t1 * _t1))));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -866,7 +866,7 @@ public final class Double4Impl implements Double4 {
         double[] p2Data = ((Double4Impl) p2).data;
         double[] dd = ((Double4Impl) dest).data;
         double _t1 = 1.0 - t;
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, p2Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, t * t)).add(DoubleVector.fromArray(COL_SPECIES, p1Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, 2.0 * t * _t1)).add(DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, _t1 * _t1))));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, p2Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, t * t)).add(DoubleVector.fromArray(COL_SPECIES, p1Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, (t + t) * _t1)).add(DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, _t1 * _t1))));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -898,7 +898,7 @@ public final class Double4Impl implements Double4 {
         double[] dd = ((Double4Impl) dest).data;
         double _t0 = t * t;
         double _t1 = 1.0 - t;
-        double _t3 = 2.0 * t * _t1;
+        double _t3 = (t + t) * _t1;
         double _t4 = _t1 * _t1;
         dd[0] = Math.fma(p2X, _t0, Math.fma(p1X, _t3, sd[0] * _t4));
         dd[1] = Math.fma(p2Y, _t0, Math.fma(p1Y, _t3, sd[1] * _t4));
@@ -934,7 +934,7 @@ public final class Double4Impl implements Double4 {
         double[] p2Data = ((Double4Impl) p2).data;
         double[] dd = ((Double4Impl) dest).data;
         var _sv0 = DoubleVector.fromArray(COL_SPECIES, p1Data, 0);
-        var _col0 = _sv0.sub(DoubleVector.fromArray(COL_SPECIES, sd, 0)).fma(DoubleVector.broadcast(COL_SPECIES, 2.0 * (1.0 - t)), DoubleVector.fromArray(COL_SPECIES, p2Data, 0).sub(_sv0).mul(DoubleVector.broadcast(COL_SPECIES, 2.0 * t)));
+        var _col0 = _sv0.sub(DoubleVector.fromArray(COL_SPECIES, sd, 0)).fma(DoubleVector.broadcast(COL_SPECIES, 2.0 * (1.0 - t)), DoubleVector.fromArray(COL_SPECIES, p2Data, 0).sub(_sv0).mul(DoubleVector.broadcast(COL_SPECIES, t + t)));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -945,7 +945,7 @@ public final class Double4Impl implements Double4 {
         double[] p2Data = ((Double4Impl) p2).data;
         double[] dd = ((Double4Impl) dest).data;
         var _sv0 = DoubleVector.fromArray(COL_SPECIES, p1Data, 0);
-        var _col0 = _sv0.sub(DoubleVector.fromArray(COL_SPECIES, sd, 0)).mul(DoubleVector.broadcast(COL_SPECIES, 2.0 * (1.0 - t))).add(DoubleVector.fromArray(COL_SPECIES, p2Data, 0).sub(_sv0).mul(DoubleVector.broadcast(COL_SPECIES, 2.0 * t)));
+        var _col0 = _sv0.sub(DoubleVector.fromArray(COL_SPECIES, sd, 0)).mul(DoubleVector.broadcast(COL_SPECIES, 2.0 * (1.0 - t))).add(DoubleVector.fromArray(COL_SPECIES, p2Data, 0).sub(_sv0).mul(DoubleVector.broadcast(COL_SPECIES, t + t)));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -976,7 +976,7 @@ public final class Double4Impl implements Double4 {
     public Double4 bezier2Tangent(double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double t, @Mutated Double4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4Impl) dest).data;
-        double _t1 = 2.0 * t;
+        double _t1 = t + t;
         double _t2 = 2.0 * (1.0 - t);
         dd[0] = Math.fma(p1X - sd[0], _t2, (p2X - p1X) * _t1);
         dd[1] = Math.fma(p1Y - sd[1], _t2, (p2Y - p1Y) * _t1);
@@ -1318,7 +1318,7 @@ public final class Double4Impl implements Double4 {
         double[] dd = ((Double4Impl) dest).data;
         double _t0 = t * t;
         double _t2 = t * _t0;
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).fma(DoubleVector.broadcast(COL_SPECIES, Math.fma(2.0, _t2, Math.fma(-3.0, _t0, 1.0))), DoubleVector.fromArray(COL_SPECIES, t0Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.fma(t - 2.0, _t0, t)))).add(DoubleVector.fromArray(COL_SPECIES, t1Data, 0).fma(DoubleVector.broadcast(COL_SPECIES, t * Math.fma(t, t, -t)), DoubleVector.fromArray(COL_SPECIES, v1Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.fma(3.0, _t0, -(2.0 * _t2))))));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).fma(DoubleVector.broadcast(COL_SPECIES, Math.fma(2.0, _t2, Math.fma(-3.0, _t0, 1.0))), DoubleVector.fromArray(COL_SPECIES, t0Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.fma(t - 2.0, _t0, t)))).add(DoubleVector.fromArray(COL_SPECIES, t1Data, 0).fma(DoubleVector.broadcast(COL_SPECIES, t * Math.fma(t, t, -t)), DoubleVector.fromArray(COL_SPECIES, v1Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.fma(3.0, _t0, -(_t2 + _t2))))));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -1331,7 +1331,7 @@ public final class Double4Impl implements Double4 {
         double[] dd = ((Double4Impl) dest).data;
         double _t0 = t * t;
         double _t2 = t * _t0;
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.fma(2.0, _t2, Math.fma(-3.0, _t0, 1.0)))).add(DoubleVector.fromArray(COL_SPECIES, t0Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.fma(t - 2.0, _t0, t)))).add(DoubleVector.fromArray(COL_SPECIES, t1Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, t * Math.fma(t, t, -t))).add(DoubleVector.fromArray(COL_SPECIES, v1Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.fma(3.0, _t0, -(2.0 * _t2))))));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.fma(2.0, _t2, Math.fma(-3.0, _t0, 1.0)))).add(DoubleVector.fromArray(COL_SPECIES, t0Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.fma(t - 2.0, _t0, t)))).add(DoubleVector.fromArray(COL_SPECIES, t1Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, t * Math.fma(t, t, -t))).add(DoubleVector.fromArray(COL_SPECIES, v1Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.fma(3.0, _t0, -(_t2 + _t2))))));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -1370,7 +1370,7 @@ public final class Double4Impl implements Double4 {
         double _t2 = t * _t0;
         double _t5 = t * Math.fma(t, t, -t);
         double _t7 = Math.fma(t - 2.0, _t0, t);
-        double _t9 = Math.fma(3.0, _t0, -(2.0 * _t2));
+        double _t9 = Math.fma(3.0, _t0, -(_t2 + _t2));
         double _t10 = Math.fma(2.0, _t2, Math.fma(-3.0, _t0, 1.0));
         dd[0] = Math.fma(sd[0], _t10, t0X * _t7) + Math.fma(t1X, _t5, v1X * _t9);
         dd[1] = Math.fma(sd[1], _t10, t0Y * _t7) + Math.fma(t1Y, _t5, v1Y * _t9);
@@ -1407,7 +1407,7 @@ public final class Double4Impl implements Double4 {
         double[] t1Data = ((Double4Impl) t1).data;
         double[] dd = ((Double4Impl) dest).data;
         double _t0 = t * t;
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).fma(DoubleVector.broadcast(COL_SPECIES, 6.0 * Math.fma(t, t, -t)), DoubleVector.fromArray(COL_SPECIES, t0Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.fma(3.0, _t0, Math.fma(-4.0, t, 1.0))))).add(DoubleVector.fromArray(COL_SPECIES, t1Data, 0).fma(DoubleVector.broadcast(COL_SPECIES, Math.fma(3.0, _t0, -(2.0 * t))), DoubleVector.fromArray(COL_SPECIES, v1Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, 6.0 * Math.fma(-t, t, t)))));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).fma(DoubleVector.broadcast(COL_SPECIES, 6.0 * Math.fma(t, t, -t)), DoubleVector.fromArray(COL_SPECIES, t0Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.fma(3.0, _t0, Math.fma(-4.0, t, 1.0))))).add(DoubleVector.fromArray(COL_SPECIES, t1Data, 0).fma(DoubleVector.broadcast(COL_SPECIES, Math.fma(3.0, _t0, -(t + t))), DoubleVector.fromArray(COL_SPECIES, v1Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, 6.0 * Math.fma(-t, t, t)))));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -1419,7 +1419,7 @@ public final class Double4Impl implements Double4 {
         double[] t1Data = ((Double4Impl) t1).data;
         double[] dd = ((Double4Impl) dest).data;
         double _t0 = t * t;
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, 6.0 * Math.fma(t, t, -t))).add(DoubleVector.fromArray(COL_SPECIES, t0Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.fma(3.0, _t0, Math.fma(-4.0, t, 1.0))))).add(DoubleVector.fromArray(COL_SPECIES, t1Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.fma(3.0, _t0, -(2.0 * t)))).add(DoubleVector.fromArray(COL_SPECIES, v1Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, 6.0 * Math.fma(-t, t, t)))));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, 6.0 * Math.fma(t, t, -t))).add(DoubleVector.fromArray(COL_SPECIES, t0Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.fma(3.0, _t0, Math.fma(-4.0, t, 1.0))))).add(DoubleVector.fromArray(COL_SPECIES, t1Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, Math.fma(3.0, _t0, -(t + t)))).add(DoubleVector.fromArray(COL_SPECIES, v1Data, 0).mul(DoubleVector.broadcast(COL_SPECIES, 6.0 * Math.fma(-t, t, t)))));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -1458,7 +1458,7 @@ public final class Double4Impl implements Double4 {
         double _t0 = t * t;
         double _t6 = 6.0 * Math.fma(t, t, -t);
         double _t7 = 6.0 * Math.fma(-t, t, t);
-        double _t8 = Math.fma(3.0, _t0, -(2.0 * t));
+        double _t8 = Math.fma(3.0, _t0, -(t + t));
         double _t9 = Math.fma(3.0, _t0, Math.fma(-4.0, t, 1.0));
         dd[0] = Math.fma(sd[0], _t6, t0X * _t9) + Math.fma(t1X, _t8, v1X * _t7);
         dd[1] = Math.fma(sd[1], _t6, t0Y * _t9) + Math.fma(t1Y, _t8, v1Y * _t7);

@@ -228,7 +228,7 @@ public final class Double4OpsKernelsArray {
         double _p2w = p2[p2Offset + 3];
         double _t0 = t * t;
         double _t1 = 1.0 - t;
-        double _t3 = 2.0 * t * _t1;
+        double _t3 = (t + t) * _t1;
         double _t4 = _t1 * _t1;
         dest[destOffset + 0] = Math.fma(_p2x, _t0, Math.fma(_p1x, _t3, _selfx * _t4));
         dest[destOffset + 1] = Math.fma(_p2y, _t0, Math.fma(_p1y, _t3, _selfy * _t4));
@@ -250,7 +250,7 @@ public final class Double4OpsKernelsArray {
         double _p2y = p2[p2Offset + 1];
         double _p2z = p2[p2Offset + 2];
         double _p2w = p2[p2Offset + 3];
-        double _t1 = 2.0 * t;
+        double _t1 = t + t;
         double _t2 = 2.0 * (1.0 - t);
         dest[destOffset + 0] = Math.fma(_p1x - _selfx, _t2, (_p2x - _p1x) * _t1);
         dest[destOffset + 1] = Math.fma(_p1y - _selfy, _t2, (_p2y - _p1y) * _t1);
@@ -359,7 +359,7 @@ public final class Double4OpsKernelsArray {
         double _t2 = t * _t0;
         double _t5 = t * Math.fma(t, t, -t);
         double _t7 = Math.fma(t - 2.0, _t0, t);
-        double _t9 = Math.fma(3.0, _t0, -(2.0 * _t2));
+        double _t9 = Math.fma(3.0, _t0, -(_t2 + _t2));
         double _t10 = Math.fma(2.0, _t2, Math.fma(-3.0, _t0, 1.0));
         dest[destOffset + 0] = Math.fma(_selfx, _t10, _t0x * _t7) + Math.fma(_t1x, _t5, _v1x * _t9);
         dest[destOffset + 1] = Math.fma(_selfy, _t10, _t0y * _t7) + Math.fma(_t1y, _t5, _v1y * _t9);
@@ -388,7 +388,7 @@ public final class Double4OpsKernelsArray {
         double _t0 = t * t;
         double _t6 = 6.0 * Math.fma(t, t, -t);
         double _t7 = 6.0 * Math.fma(-t, t, t);
-        double _t8 = Math.fma(3.0, _t0, -(2.0 * t));
+        double _t8 = Math.fma(3.0, _t0, -(t + t));
         double _t9 = Math.fma(3.0, _t0, Math.fma(-4.0, t, 1.0));
         dest[destOffset + 0] = Math.fma(_selfx, _t6, _t0x * _t9) + Math.fma(_t1x, _t8, _v1x * _t7);
         dest[destOffset + 1] = Math.fma(_selfy, _t6, _t0y * _t9) + Math.fma(_t1y, _t8, _v1y * _t7);

@@ -896,7 +896,7 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
     /** Private tail of {@code mul}; reached only through it. */
     private DoubleRigid mul_s566a3fa8_tail(double otherTZ, double otherTY, double _t9, double _t10, double otherTX, double otherRX, double otherRW, double otherRZ, double otherRY) {
         double _t11 = 2.0 * Math.fma(otherTZ, this.rY, -(otherTY * this.rZ));
-        return new DoubleRigid(Math.fma(this.rY, _t9, Math.fma(-this.rZ, _t10, Math.fma(this.rW, _t11, this.tX + otherTX))), Math.fma(this.rZ, _t11, Math.fma(-this.rX, _t9, Math.fma(this.rW, _t10, this.tY + otherTY))), Math.fma(this.rX, _t10, Math.fma(-this.rY, _t11, Math.fma(this.rW, _t9, this.tZ + otherTZ))), Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRZ, this.rY, -(otherRY * this.rZ)), Math.fma(otherRX, this.rZ, otherRW * this.rY) + Math.fma(otherRY, this.rW, -(otherRZ * this.rX)), Math.fma(otherRY, this.rX, otherRZ * this.rW) + Math.fma(otherRW, this.rZ, -(otherRX * this.rY)), Math.fma(-otherRZ, this.rZ, Math.fma(-otherRY, this.rY, Math.fma(otherRW, this.rW, -(otherRX * this.rX)))));
+        return new DoubleRigid(Math.fma(this.rY, _t9, Math.fma(-this.rZ, _t10, Math.fma(this.rW, _t11, this.tX + otherTX))), Math.fma(this.rZ, _t11, Math.fma(-this.rX, _t9, Math.fma(this.rW, _t10, this.tY + otherTY))), Math.fma(this.rX, _t10, Math.fma(-this.rY, _t11, Math.fma(this.rW, _t9, this.tZ + otherTZ))), Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRZ, this.rY, -(otherRY * this.rZ)), Math.fma(otherRX, this.rZ, otherRW * this.rY) + Math.fma(otherRY, this.rW, -(otherRZ * this.rX)), Math.fma(otherRY, this.rX, otherRZ * this.rW) + Math.fma(otherRW, this.rZ, -(otherRX * this.rY)), Math.fma(otherRW, this.rW, -(otherRX * this.rX)) - Math.fma(otherRY, this.rY, otherRZ * this.rZ));
     }
 
 
@@ -974,12 +974,10 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
      * @return the resulting rigid transform
      */
     public DoubleRigid preMul(double otherTX, double otherTY, double otherTZ, double otherRX, double otherRY, double otherRZ, double otherRW) {
-        double _t0 = -otherRZ;
-        double _t1 = -otherRY;
-        double _t11 = 2.0 * Math.fma(otherRX, this.tY, -(otherRY * this.tX));
-        double _t12 = 2.0 * Math.fma(otherRZ, this.tX, -(otherRX * this.tZ));
-        double _t13 = 2.0 * Math.fma(otherRY, this.tZ, -(otherRZ * this.tY));
-        return new DoubleRigid(Math.fma(otherRY, _t11, Math.fma(_t0, _t12, Math.fma(otherRW, _t13, otherTX + this.tX))), Math.fma(otherRZ, _t13, Math.fma(-otherRX, _t11, Math.fma(otherRW, _t12, otherTY + this.tY))), Math.fma(otherRX, _t12, Math.fma(_t1, _t13, Math.fma(otherRW, _t11, otherTZ + this.tZ))), Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY)), Math.fma(otherRY, this.rW, otherRZ * this.rX) + Math.fma(otherRW, this.rY, -(otherRX * this.rZ)), Math.fma(otherRX, this.rY, otherRW * this.rZ) + Math.fma(otherRZ, this.rW, -(otherRY * this.rX)), Math.fma(_t0, this.rZ, Math.fma(_t1, this.rY, Math.fma(otherRW, this.rW, -(otherRX * this.rX)))));
+        double _t9 = 2.0 * Math.fma(otherRX, this.tY, -(otherRY * this.tX));
+        double _t10 = 2.0 * Math.fma(otherRZ, this.tX, -(otherRX * this.tZ));
+        double _t11 = 2.0 * Math.fma(otherRY, this.tZ, -(otherRZ * this.tY));
+        return new DoubleRigid(Math.fma(otherRY, _t9, Math.fma(-otherRZ, _t10, Math.fma(otherRW, _t11, otherTX + this.tX))), Math.fma(otherRZ, _t11, Math.fma(-otherRX, _t9, Math.fma(otherRW, _t10, otherTY + this.tY))), Math.fma(otherRX, _t10, Math.fma(-otherRY, _t11, Math.fma(otherRW, _t9, otherTZ + this.tZ))), Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY)), Math.fma(otherRY, this.rW, otherRZ * this.rX) + Math.fma(otherRW, this.rY, -(otherRX * this.rZ)), Math.fma(otherRX, this.rY, otherRW * this.rZ) + Math.fma(otherRZ, this.rW, -(otherRY * this.rX)), Math.fma(otherRW, this.rW, -(otherRX * this.rX)) - Math.fma(otherRY, this.rY, otherRZ * this.rZ));
     }
 
 
@@ -1003,7 +1001,7 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
         double _sfx3 = Math.fma(otherRX, this.rW, -(otherRW * this.rX)) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY));
         double _sfx4 = Math.fma(otherRY, this.rW, otherRZ * this.rX) + Math.fma(-otherRX, this.rZ, -(otherRW * this.rY));
         double _sfx5 = Math.fma(otherRX, this.rY, -(otherRW * this.rZ)) + Math.fma(otherRZ, this.rW, -(otherRY * this.rX));
-        double _sfx6 = Math.fma(otherRZ, this.rZ, Math.fma(otherRY, this.rY, Math.fma(otherRX, this.rX, otherRW * this.rW)));
+        double _sfx6 = Math.fma(otherRX, this.rX, otherRW * this.rW) - Math.fma(-otherRZ, this.rZ, -(otherRY * this.rY));
         return new DoubleRigid(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6);
     }
 
@@ -1546,7 +1544,7 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
      * @return the resulting rigid transform
      */
     public DoubleRigid rotate(double rotationX, double rotationY, double rotationZ, double rotationW) {
-        return new DoubleRigid(this.tX, this.tY, this.tZ, Math.fma(rotationX, this.rW, rotationW * this.rX) + Math.fma(rotationZ, this.rY, -(rotationY * this.rZ)), Math.fma(rotationX, this.rZ, rotationW * this.rY) + Math.fma(rotationY, this.rW, -(rotationZ * this.rX)), Math.fma(rotationY, this.rX, rotationZ * this.rW) + Math.fma(rotationW, this.rZ, -(rotationX * this.rY)), Math.fma(-rotationZ, this.rZ, Math.fma(-rotationY, this.rY, Math.fma(rotationW, this.rW, -(rotationX * this.rX)))));
+        return new DoubleRigid(this.tX, this.tY, this.tZ, Math.fma(rotationX, this.rW, rotationW * this.rX) + Math.fma(rotationZ, this.rY, -(rotationY * this.rZ)), Math.fma(rotationX, this.rZ, rotationW * this.rY) + Math.fma(rotationY, this.rW, -(rotationZ * this.rX)), Math.fma(rotationY, this.rX, rotationZ * this.rW) + Math.fma(rotationW, this.rZ, -(rotationX * this.rY)), Math.fma(rotationW, this.rW, -(rotationX * this.rX)) - Math.fma(rotationY, this.rY, rotationZ * this.rZ));
     }
 
 
@@ -1594,7 +1592,7 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
         double _t3 = axisX * _t2;
         double _t4 = axisZ * _t2;
         double _t5 = axisY * _t2;
-        return new DoubleRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t1, this.rW * _t3) + Math.fma(this.rY, _t4, -(this.rZ * _t5)), Math.fma(this.rY, _t1, this.rZ * _t3) + Math.fma(this.rW, _t5, -(this.rX * _t4)), Math.fma(this.rX, _t5, this.rW * _t4) + Math.fma(this.rZ, _t1, -(this.rY * _t3)), Math.fma(-this.rZ, _t4, Math.fma(-this.rY, _t5, Math.fma(this.rW, _t1, -(this.rX * _t3)))));
+        return new DoubleRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t1, this.rW * _t3) + Math.fma(this.rY, _t4, -(this.rZ * _t5)), Math.fma(this.rY, _t1, this.rZ * _t3) + Math.fma(this.rW, _t5, -(this.rX * _t4)), Math.fma(this.rX, _t5, this.rW * _t4) + Math.fma(this.rZ, _t1, -(this.rY * _t3)), Math.fma(this.rW, _t1, -(this.rX * _t3)) - Math.fma(this.rY, _t5, this.rZ * _t4));
     }
 
 
@@ -1614,12 +1612,6 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
         double _t1 = Math.cos(_t0);
         double _t2 = Math.sin(_t0);
         return new DoubleRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t1, this.rW * _t2), Math.fma(this.rY, _t1, this.rZ * _t2), Math.fma(this.rZ, _t1, -(this.rY * _t2)), Math.fma(this.rW, _t1, -(this.rX * _t2)));
-    }
-
-    /** Private tail of {@code rotateXYZ}; reached only through it. */
-    private DoubleRigid rotateXYZ_s361a4ff5_tail(double _t12, double _t5, double _t11, double _t8, double _t21, double _t19, double _t20) {
-        double _t22 = Math.fma(_t12, _t5, -(_t11 * _t8));
-        return new DoubleRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t22, -(this.rX * _t20)), Math.fma(this.rX, _t22, this.rW * _t20) + Math.fma(this.rZ, _t21, -(this.rY * _t19)), Math.fma(-this.rZ, _t20, Math.fma(-this.rY, _t22, Math.fma(this.rW, _t21, -(this.rX * _t19)))));
     }
 
 
@@ -1655,13 +1647,8 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
         double _t19 = Math.fma(_t11, _t5, _t12 * _t8);
         double _t20 = Math.fma(_t10, _t5, _t9 * _t8);
         double _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        return rotateXYZ_s361a4ff5_tail(_t12, _t5, _t11, _t8, _t21, _t19, _t20);
-    }
-
-    /** Private tail of {@code rotateXZY}; reached only through it. */
-    private DoubleRigid rotateXZY_s361a4ff5_tail(double _t10, double _t5, double _t9, double _t8, double _t19, double _t21, double _t20) {
-        double _t22 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        return new DoubleRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t22, -(this.rX * _t20)), Math.fma(this.rX, _t22, this.rW * _t20) + Math.fma(this.rZ, _t19, -(this.rY * _t21)), Math.fma(-this.rZ, _t20, Math.fma(-this.rY, _t22, Math.fma(this.rW, _t19, -(this.rX * _t21)))));
+        double _t22 = Math.fma(_t12, _t5, -(_t11 * _t8));
+        return new DoubleRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t22, -(this.rX * _t20)), Math.fma(this.rX, _t22, this.rW * _t20) + Math.fma(this.rZ, _t21, -(this.rY * _t19)), Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t22, this.rZ * _t20));
     }
 
 
@@ -1697,7 +1684,8 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
         double _t19 = Math.fma(_t9, _t5, _t10 * _t8);
         double _t20 = Math.fma(_t11, _t5, _t12 * _t8);
         double _t21 = Math.fma(_t11, _t8, -(_t12 * _t5));
-        return rotateXZY_s361a4ff5_tail(_t10, _t5, _t9, _t8, _t19, _t21, _t20);
+        double _t22 = Math.fma(_t10, _t5, -(_t9 * _t8));
+        return new DoubleRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t22, -(this.rX * _t20)), Math.fma(this.rX, _t22, this.rW * _t20) + Math.fma(this.rZ, _t19, -(this.rY * _t21)), Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t22, this.rZ * _t20));
     }
 
 
@@ -1717,12 +1705,6 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
         double _t1 = Math.cos(_t0);
         double _t2 = Math.sin(_t0);
         return new DoubleRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t1, -(this.rZ * _t2)), Math.fma(this.rY, _t1, this.rW * _t2), Math.fma(this.rX, _t2, this.rZ * _t1), Math.fma(this.rW, _t1, -(this.rY * _t2)));
-    }
-
-    /** Private tail of {@code rotateYXZ}; reached only through it. */
-    private DoubleRigid rotateYXZ_s361a4ff5_tail(double _t12, double _t8, double _t11, double _t5, double _t19, double _t20, double _t21) {
-        double _t22 = Math.fma(_t12, _t8, -(_t11 * _t5));
-        return new DoubleRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t20) + Math.fma(this.rY, _t21, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rZ * _t20) + Math.fma(this.rW, _t22, -(this.rX * _t21)), Math.fma(this.rX, _t22, this.rW * _t21) + Math.fma(this.rZ, _t19, -(this.rY * _t20)), Math.fma(-this.rZ, _t21, Math.fma(-this.rY, _t22, Math.fma(this.rW, _t19, -(this.rX * _t20)))));
     }
 
 
@@ -1758,13 +1740,8 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
         double _t19 = Math.fma(_t9, _t5, _t10 * _t8);
         double _t20 = Math.fma(_t11, _t8, _t12 * _t5);
         double _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        return rotateYXZ_s361a4ff5_tail(_t12, _t8, _t11, _t5, _t19, _t20, _t21);
-    }
-
-    /** Private tail of {@code rotateYZX}; reached only through it. */
-    private DoubleRigid rotateYZX_s361a4ff5_tail(double _t11, double _t5, double _t12, double _t8, double _t21, double _t19, double _t20) {
-        double _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
-        return new DoubleRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t20, -(this.rX * _t22)), Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t21, -(this.rY * _t19)), Math.fma(-this.rZ, _t22, Math.fma(-this.rY, _t20, Math.fma(this.rW, _t21, -(this.rX * _t19)))));
+        double _t22 = Math.fma(_t12, _t8, -(_t11 * _t5));
+        return new DoubleRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t20) + Math.fma(this.rY, _t21, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rZ * _t20) + Math.fma(this.rW, _t22, -(this.rX * _t21)), Math.fma(this.rX, _t22, this.rW * _t21) + Math.fma(this.rZ, _t19, -(this.rY * _t20)), Math.fma(this.rW, _t19, -(this.rX * _t20)) - Math.fma(this.rY, _t22, this.rZ * _t21));
     }
 
 
@@ -1800,7 +1777,8 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
         double _t19 = Math.fma(_t10, _t5, _t9 * _t8);
         double _t20 = Math.fma(_t12, _t5, _t11 * _t8);
         double _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        return rotateYZX_s361a4ff5_tail(_t11, _t5, _t12, _t8, _t21, _t19, _t20);
+        double _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+        return new DoubleRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t20, -(this.rX * _t22)), Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t21, -(this.rY * _t19)), Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t20, this.rZ * _t22));
     }
 
 
@@ -1820,12 +1798,6 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
         double _t1 = Math.cos(_t0);
         double _t2 = Math.sin(_t0);
         return new DoubleRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t1, this.rY * _t2), Math.fma(this.rY, _t1, -(this.rX * _t2)), Math.fma(this.rZ, _t1, this.rW * _t2), Math.fma(this.rW, _t1, -(this.rZ * _t2)));
-    }
-
-    /** Private tail of {@code rotateZXY}; reached only through it. */
-    private DoubleRigid rotateZXY_s361a4ff5_tail(double _t11, double _t5, double _t12, double _t8, double _t21, double _t19, double _t20) {
-        double _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
-        return new DoubleRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t22) + Math.fma(this.rY, _t19, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rZ * _t22) + Math.fma(this.rW, _t20, -(this.rX * _t19)), Math.fma(this.rX, _t20, this.rW * _t19) + Math.fma(this.rZ, _t21, -(this.rY * _t22)), Math.fma(-this.rZ, _t19, Math.fma(-this.rY, _t20, Math.fma(this.rW, _t21, -(this.rX * _t22)))));
     }
 
 
@@ -1861,13 +1833,8 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
         double _t19 = Math.fma(_t11, _t8, _t12 * _t5);
         double _t20 = Math.fma(_t10, _t5, _t9 * _t8);
         double _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        return rotateZXY_s361a4ff5_tail(_t11, _t5, _t12, _t8, _t21, _t19, _t20);
-    }
-
-    /** Private tail of {@code rotateZYX}; reached only through it. */
-    private DoubleRigid rotateZYX_s361a4ff5_tail(double _t11, double _t8, double _t12, double _t5, double _t19, double _t21, double _t20) {
-        double _t22 = Math.fma(_t11, _t8, -(_t12 * _t5));
-        return new DoubleRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t20, -(this.rX * _t22)), Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t19, -(this.rY * _t21)), Math.fma(-this.rZ, _t22, Math.fma(-this.rY, _t20, Math.fma(this.rW, _t19, -(this.rX * _t21)))));
+        double _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+        return new DoubleRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t22) + Math.fma(this.rY, _t19, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rZ * _t22) + Math.fma(this.rW, _t20, -(this.rX * _t19)), Math.fma(this.rX, _t20, this.rW * _t19) + Math.fma(this.rZ, _t21, -(this.rY * _t22)), Math.fma(this.rW, _t21, -(this.rX * _t22)) - Math.fma(this.rY, _t20, this.rZ * _t19));
     }
 
 
@@ -1903,7 +1870,8 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
         double _t19 = Math.fma(_t9, _t5, _t10 * _t8);
         double _t20 = Math.fma(_t12, _t8, _t11 * _t5);
         double _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        return rotateZYX_s361a4ff5_tail(_t11, _t8, _t12, _t5, _t19, _t21, _t20);
+        double _t22 = Math.fma(_t11, _t8, -(_t12 * _t5));
+        return new DoubleRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t20, -(this.rX * _t22)), Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t19, -(this.rY * _t21)), Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t20, this.rZ * _t22));
     }
 
 

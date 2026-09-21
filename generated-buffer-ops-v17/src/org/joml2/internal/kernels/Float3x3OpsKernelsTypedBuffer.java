@@ -931,9 +931,9 @@ public final class Float3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer makeFromTransform_api(java.nio.FloatBuffer dest, int destOffset, float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        float _t0 = 2.0f * tSX;
-        float _t1 = 2.0f * tSY;
-        float _t2 = 2.0f * tSZ;
+        float _t0 = tSX + tSX;
+        float _t1 = tSY + tSY;
+        float _t2 = tSZ + tSZ;
         float _t3 = tRZ * tRZ;
         float _t4 = tRZ * tRW;
         float _t5 = tRY * tRW;
@@ -1956,12 +1956,12 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _t6 = Math.fma(-2.0f, dqRZ * dqRZ, 1.0f);
         dest.put(destOffset + 0, Math.fma(-2.0f, _t0, _t6));
         dest.put(destOffset + 1, 2.0f * Math.fma(dqRX, dqRY, _t2));
-        dest.put(destOffset + 2, Math.fma(-2.0f, _t3, 2.0f * dqRX * dqRZ));
-        dest.put(destOffset + 3, Math.fma(-2.0f, _t2, 2.0f * dqRX * dqRY));
+        dest.put(destOffset + 2, Math.fma(-2.0f, _t3, (dqRX + dqRX) * dqRZ));
+        dest.put(destOffset + 3, Math.fma(-2.0f, _t2, (dqRX + dqRX) * dqRY));
         dest.put(destOffset + 4, Math.fma(-2.0f, _t4, _t6));
         dest.put(destOffset + 5, 2.0f * Math.fma(dqRX, dqRW, _t5));
         dest.put(destOffset + 6, 2.0f * Math.fma(dqRX, dqRZ, _t3));
-        dest.put(destOffset + 7, Math.fma(-2.0f, dqRX * dqRW, 2.0f * _t5));
+        dest.put(destOffset + 7, Math.fma(-2.0f, dqRX * dqRW, _t5 + _t5));
         dest.put(destOffset + 8, Math.fma(-2.0f, _t4, Math.fma(-2.0f, _t0, 1.0f)));
         return dest;
     }
@@ -2506,11 +2506,11 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        dest.put(destOffset + 0, 2.0f * _t0_inv);
+        dest.put(destOffset + 0, _t0_inv + _t0_inv);
         dest.put(destOffset + 1, 0.0f);
         dest.put(destOffset + 2, 0.0f);
         dest.put(destOffset + 3, 0.0f);
-        dest.put(destOffset + 4, 2.0f * _t1_inv);
+        dest.put(destOffset + 4, _t1_inv + _t1_inv);
         dest.put(destOffset + 5, 0.0f);
         dest.put(destOffset + 6, -((left + right) * _t0_inv));
         dest.put(destOffset + 7, -((bottom + top) * _t1_inv));
@@ -2569,7 +2569,7 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cos(angle);
         float _t3 = (float) Math.sin(0.5f * angle);
-        float _t8 = 2.0f * _t3 * _t3;
+        float _t8 = (_t3 + _t3) * _t3;
         float _t9 = Math.fma(pivotX, _t8, pivotY * _t0);
         float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t0));
         dest.put(destOffset + 0, Math.fma(_self20, _t9, Math.fma(_self00, _t1, -(_self10 * _t0))));
@@ -2607,7 +2607,7 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cos(angle);
         float _t3 = (float) Math.sin(0.5f * angle);
-        float _t8 = 2.0f * _t3 * _t3;
+        float _t8 = (_t3 + _t3) * _t3;
         float _t9 = Math.fma(_pivotx, _t8, _pivoty * _t0);
         float _t10 = Math.fma(_pivoty, _t8, -(_pivotx * _t0));
         dest.put(destOffset + 0, Math.fma(_self20, _t9, Math.fma(_self00, _t1, -(_self10 * _t0))));
@@ -3066,7 +3066,7 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
         float _t3 = (float) Math.sin(0.5f * angle);
-        float _t8 = 2.0f * _t3 * _t3;
+        float _t8 = (_t3 + _t3) * _t3;
         float _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
         float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
         dest.put(destOffset + 0, Math.fma(_self00, _t0, _self01 * _t1));
@@ -3104,7 +3104,7 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
         float _t3 = (float) Math.sin(0.5f * angle);
-        float _t8 = 2.0f * _t3 * _t3;
+        float _t8 = (_t3 + _t3) * _t3;
         float _t9 = Math.fma(_pivotx, _t8, _pivoty * _t1);
         float _t10 = Math.fma(_pivoty, _t8, -(_pivotx * _t1));
         dest.put(destOffset + 0, Math.fma(_self00, _t0, _self01 * _t1));
@@ -4111,12 +4111,12 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _t1_inv = 1.0f / _t1;
         float _t2 = left + right;
         float _t3 = bottom + top;
-        dest.put(destOffset + 0, 2.0f * _self00 * _t0_inv);
-        dest.put(destOffset + 1, 2.0f * _self10 * _t0_inv);
-        dest.put(destOffset + 2, 2.0f * _self20 * _t0_inv);
-        dest.put(destOffset + 3, 2.0f * _self01 * _t1_inv);
-        dest.put(destOffset + 4, 2.0f * _self11 * _t1_inv);
-        dest.put(destOffset + 5, 2.0f * _self21 * _t1_inv);
+        dest.put(destOffset + 0, (_self00 + _self00) * _t0_inv);
+        dest.put(destOffset + 1, (_self10 + _self10) * _t0_inv);
+        dest.put(destOffset + 2, (_self20 + _self20) * _t0_inv);
+        dest.put(destOffset + 3, (_self01 + _self01) * _t1_inv);
+        dest.put(destOffset + 4, (_self11 + _self11) * _t1_inv);
+        dest.put(destOffset + 5, (_self21 + _self21) * _t1_inv);
         dest.put(destOffset + 6, _self02 + (-(_self00 * _t2 * _t0_inv) - _self01 * _t3 * _t1_inv));
         dest.put(destOffset + 7, _self12 + (-(_self10 * _t2 * _t0_inv) - _self11 * _t3 * _t1_inv));
         dest.put(destOffset + 8, _self22 + (-(_self20 * _t2 * _t0_inv) - _self21 * _t3 * _t1_inv));

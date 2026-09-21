@@ -5703,9 +5703,9 @@ public class Float3x4Impl implements Float3x4 {
      */
     @Mutated public Float3x4 makeFromTransform(float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
         float[] dd = this.data;
-        float _t0 = 2.0f * tSX;
-        float _t1 = 2.0f * tSY;
-        float _t2 = 2.0f * tSZ;
+        float _t0 = tSX + tSX;
+        float _t1 = tSY + tSY;
+        float _t2 = tSZ + tSZ;
         float _t3 = tRZ * tRZ;
         float _t4 = tRZ * tRW;
         float _t5 = tRY * tRW;
@@ -10371,9 +10371,9 @@ public class Float3x4Impl implements Float3x4 {
      */
     @Mutated public Float3x4 composeTRS(float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
         float[] dd = this.data;
-        float _t0 = 2.0f * scaleX;
-        float _t1 = 2.0f * scaleY;
-        float _t2 = 2.0f * scaleZ;
+        float _t0 = scaleX + scaleX;
+        float _t1 = scaleY + scaleY;
+        float _t2 = scaleZ + scaleZ;
         float _t3 = rotationZ * rotationZ;
         float _t4 = rotationZ * rotationW;
         float _t5 = rotationY * rotationW;
@@ -10440,9 +10440,9 @@ public class Float3x4Impl implements Float3x4 {
     @Mutated public Float3x4 composeTRSMul(float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ, Float3x4R m) {
         float[] dd = this.data;
         float[] mData = ((Float3x4Impl) m).data;
-        float _t0 = 2.0f * scaleZ;
-        float _t1 = 2.0f * scaleX;
-        float _t2 = 2.0f * scaleY;
+        float _t0 = scaleZ + scaleZ;
+        float _t1 = scaleX + scaleX;
+        float _t2 = scaleY + scaleY;
         float _t3 = rotationY * rotationW;
         float _t4 = rotationZ * rotationZ;
         float _t5 = rotationZ * rotationW;
@@ -12195,8 +12195,8 @@ public class Float3x4Impl implements Float3x4 {
         float _t12 = (1.0f / (float) Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
         float _t13 = _t0 * _t12;
         float _t14 = _t3 * _t12;
-        float _t15 = 2.0f * _t13;
-        float _t16 = 2.0f * _t14;
+        float _t15 = _t13 + _t13;
+        float _t16 = _t14 + _t14;
         float _t17 = -_t15;
         float _t19 = _t10 * _t12;
         float _t20 = _t16 * _t13;
@@ -12268,14 +12268,14 @@ public class Float3x4Impl implements Float3x4 {
         float _t5 = dqRY * dqRZ;
         float _t6 = Math.fma(-2.0f, dqRZ * dqRZ, 1.0f);
         dd[0] = Math.fma(-2.0f, _t0, _t6);
-        dd[1] = Math.fma(-2.0f, _t2, 2.0f * dqRX * dqRY);
+        dd[1] = Math.fma(-2.0f, _t2, (dqRX + dqRX) * dqRY);
         dd[2] = 2.0f * Math.fma(dqRX, dqRZ, _t3);
         dd[3] = 2.0f * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW)));
         dd[4] = 2.0f * Math.fma(dqRX, dqRY, _t2);
         dd[5] = Math.fma(-2.0f, _t4, _t6);
-        dd[6] = Math.fma(-2.0f, dqRX * dqRW, 2.0f * _t5);
+        dd[6] = Math.fma(-2.0f, dqRX * dqRW, _t5 + _t5);
         dd[7] = 2.0f * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW)));
-        dd[8] = Math.fma(-2.0f, _t3, 2.0f * dqRX * dqRZ);
+        dd[8] = Math.fma(-2.0f, _t3, (dqRX + dqRX) * dqRZ);
         dd[9] = 2.0f * Math.fma(dqRX, dqRW, _t5);
         dd[10] = Math.fma(-2.0f, _t4, Math.fma(-2.0f, _t0, 1.0f));
         dd[11] = 2.0f * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW)));
@@ -13716,9 +13716,9 @@ public class Float3x4Impl implements Float3x4 {
      */
     @Mutated public Float3x4 makeReflection(float normalX, float normalY, float normalZ) {
         float[] dd = this.data;
-        float _t6 = -(2.0f * normalX * normalY);
-        float _t7 = -(2.0f * normalX * normalZ);
-        float _t8 = -(2.0f * normalY * normalZ);
+        float _t6 = -((normalX + normalX) * normalY);
+        float _t7 = -((normalX + normalX) * normalZ);
+        float _t8 = -((normalY + normalY) * normalZ);
         dd[0] = Math.fma(-2.0f, normalX * normalX, 1.0f);
         dd[1] = _t6;
         dd[2] = _t7;
@@ -23279,9 +23279,9 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
-        float _t4 = 2.0f * rotY;
-        float _t5 = 2.0f * rotZ;
-        float _t6 = 2.0f * rotX;
+        float _t4 = rotY + rotY;
+        float _t5 = rotZ + rotZ;
+        float _t6 = rotX + rotX;
         float _t7 = rotW * _t5;
         float _t8 = rotW * _t4;
         float _t9 = rotZ * _t5;
@@ -23320,9 +23320,9 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
-        float _t4 = 2.0f * rotY;
-        float _t5 = 2.0f * rotZ;
-        float _t6 = 2.0f * rotX;
+        float _t4 = rotY + rotY;
+        float _t5 = rotZ + rotZ;
+        float _t6 = rotX + rotX;
         float _t7 = rotW * _t5;
         float _t8 = rotW * _t4;
         float _t9 = rotZ * _t5;
@@ -23366,9 +23366,9 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
-        float _t4 = 2.0f * rotX;
-        float _t5 = 2.0f * rotY;
-        float _t6 = 2.0f * rotZ;
+        float _t4 = rotX + rotX;
+        float _t5 = rotY + rotY;
+        float _t6 = rotZ + rotZ;
         float _t7 = rotW * _t5;
         float _t8 = rotW * _t6;
         float _t9 = rotZ * _t6;
@@ -23418,9 +23418,9 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
-        float _t4 = 2.0f * rotX;
-        float _t5 = 2.0f * rotY;
-        float _t6 = 2.0f * rotZ;
+        float _t4 = rotX + rotX;
+        float _t5 = rotY + rotY;
+        float _t6 = rotZ + rotZ;
         float _t7 = rotW * _t5;
         float _t8 = rotW * _t6;
         float _t9 = rotZ * _t6;
@@ -23567,9 +23567,9 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
-        float _t4 = 2.0f * rotX;
-        float _t5 = 2.0f * rotY;
-        float _t6 = 2.0f * rotZ;
+        float _t4 = rotX + rotX;
+        float _t5 = rotY + rotY;
+        float _t6 = rotZ + rotZ;
         float _t7 = rotW * _t5;
         float _t8 = rotW * _t6;
         float _t9 = rotZ * _t6;
@@ -24045,9 +24045,9 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qY;
-        float _t4 = 2.0f * qZ;
-        float _t5 = 2.0f * qX;
+        float _t3 = qY + qY;
+        float _t4 = qZ + qZ;
+        float _t5 = qX + qX;
         float _t6 = qW * _t4;
         float _t7 = qW * _t3;
         float _t8 = qW * _t5;
@@ -24078,9 +24078,9 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qY;
-        float _t4 = 2.0f * qZ;
-        float _t5 = 2.0f * qX;
+        float _t3 = qY + qY;
+        float _t4 = qZ + qZ;
+        float _t5 = qX + qX;
         float _t6 = qW * _t4;
         float _t7 = qW * _t3;
         float _t8 = qW * _t5;
@@ -24108,9 +24108,9 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qY;
-        float _t4 = 2.0f * qZ;
-        float _t5 = 2.0f * qX;
+        float _t3 = qY + qY;
+        float _t4 = qZ + qZ;
+        float _t5 = qX + qX;
         float _t6 = qW * _t4;
         float _t7 = qW * _t3;
         float _t8 = qW * _t5;
@@ -24152,9 +24152,9 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -24202,9 +24202,9 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -24326,9 +24326,9 @@ public class Float3x4Impl implements Float3x4 {
         double[] dd = ((Double3x4Impl) dest).data;
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -26210,9 +26210,9 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 reflect_identity(float normalX, float normalY, float normalZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t6 = -(2.0f * normalX * normalY);
-        float _t7 = -(2.0f * normalX * normalZ);
-        float _t8 = -(2.0f * normalY * normalZ);
+        float _t6 = -((normalX + normalX) * normalY);
+        float _t7 = -((normalX + normalX) * normalZ);
+        float _t8 = -((normalY + normalY) * normalZ);
         dd[0] = Math.fma(-2.0f, normalX * normalX, 1.0f);
         dd[1] = _t6;
         dd[2] = _t7;
@@ -26237,9 +26237,9 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 reflect_identity_self(float normalX, float normalY, float normalZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t6 = -(2.0f * normalX * normalY);
-        float _t7 = -(2.0f * normalX * normalZ);
-        float _t8 = -(2.0f * normalY * normalZ);
+        float _t6 = -((normalX + normalX) * normalY);
+        float _t7 = -((normalX + normalX) * normalZ);
+        float _t8 = -((normalY + normalY) * normalZ);
         dd[0] = Math.fma(-2.0f, normalX * normalX, 1.0f);
         dd[1] = _t6;
         dd[2] = _t7;
@@ -26261,9 +26261,9 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 reflect_translation(float normalX, float normalY, float normalZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t6 = -(2.0f * normalX * normalY);
-        float _t7 = -(2.0f * normalX * normalZ);
-        float _t8 = -(2.0f * normalY * normalZ);
+        float _t6 = -((normalX + normalX) * normalY);
+        float _t7 = -((normalX + normalX) * normalZ);
+        float _t8 = -((normalY + normalY) * normalZ);
         dd[0] = Math.fma(-2.0f, normalX * normalX, 1.0f);
         dd[1] = _t6;
         dd[2] = _t7;
@@ -26291,9 +26291,9 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = -sd[2];
         float _t1 = -sd[6];
         float _t2 = -sd[10];
-        float _t9 = 2.0f * normalX * normalZ;
-        float _t10 = 2.0f * normalX * normalY;
-        float _t11 = 2.0f * normalY * normalZ;
+        float _t9 = (normalX + normalX) * normalZ;
+        float _t10 = (normalX + normalX) * normalY;
+        float _t11 = (normalY + normalY) * normalZ;
         float _t12 = Math.fma(-2.0f, normalX * normalX, 1.0f);
         float _t13 = Math.fma(-2.0f, normalY * normalY, 1.0f);
         float _t14 = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
@@ -26407,9 +26407,9 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = -sd[2];
         float _t1 = -sd[6];
         float _t2 = -sd[10];
-        float _t9 = 2.0f * normalX * normalZ;
-        float _t10 = 2.0f * normalX * normalY;
-        float _t11 = 2.0f * normalY * normalZ;
+        float _t9 = (normalX + normalX) * normalZ;
+        float _t10 = (normalX + normalX) * normalY;
+        float _t11 = (normalY + normalY) * normalZ;
         float _t12 = Math.fma(-2.0f, normalX * normalX, 1.0f);
         float _t13 = Math.fma(-2.0f, normalY * normalY, 1.0f);
         float _t14 = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
@@ -26524,9 +26524,9 @@ public class Float3x4Impl implements Float3x4 {
         float _t3 = -pivotZ;
         float _t4 = -rotX;
         float _t5 = -pivotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
-        float _t8 = 2.0f * rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
+        float _t8 = rotX + rotX;
         float _t9 = rotW * _t7;
         float _t10 = rotW * _t6;
         float _t11 = rotZ * _t7;
@@ -26565,9 +26565,9 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = -rotY;
         float _t2 = -rotX;
         float _t3 = -pivotZ;
-        float _t5 = 2.0f * rotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
+        float _t5 = rotX + rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
         float _t8 = rotW * _t6;
         float _t9 = rotW * _t7;
         float _t10 = rotW * _t5;
@@ -26621,9 +26621,9 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = -rotY;
         float _t2 = -rotX;
         float _t3 = -pivotZ;
-        float _t5 = 2.0f * rotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
+        float _t5 = rotX + rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
         float _t8 = rotW * _t6;
         float _t9 = rotW * _t7;
         float _t10 = rotW * _t5;
@@ -26774,9 +26774,9 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = -rotY;
         float _t2 = -rotX;
         float _t3 = -pivotZ;
-        float _t5 = 2.0f * rotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
+        float _t5 = rotX + rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
         float _t8 = rotW * _t6;
         float _t9 = rotW * _t7;
         float _t10 = rotW * _t5;
@@ -27217,9 +27217,9 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qY;
-        float _t4 = 2.0f * qZ;
-        float _t5 = 2.0f * qX;
+        float _t3 = qY + qY;
+        float _t4 = qZ + qZ;
+        float _t5 = qX + qX;
         float _t6 = qW * _t4;
         float _t7 = qW * _t3;
         float _t8 = qW * _t5;
@@ -27250,9 +27250,9 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -27298,9 +27298,9 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -27420,9 +27420,9 @@ public class Float3x4Impl implements Float3x4 {
         double[] dd = ((Double3x4Impl) dest).data;
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;

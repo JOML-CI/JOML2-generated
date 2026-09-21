@@ -1161,7 +1161,7 @@ public final class Float4Impl implements Float4 {
         Float4Impl d = (Float4Impl) dest;
         float _t0 = 1.0f - t;
         float _t1 = t * t;
-        float _t3 = 2.0f * t * _t0;
+        float _t3 = (t + t) * _t0;
         float _t4 = _t0 * _t0;
         d.x = p1X * _t3 + this.x * _t4 + p2X * _t1;
         d.y = p1Y * _t3 + this.y * _t4 + p2Y * _t1;
@@ -1199,7 +1199,7 @@ public final class Float4Impl implements Float4 {
         Double4Impl d = (Double4Impl) dest;
         float _t0 = 1.0f - t;
         float _t1 = t * t;
-        float _t3 = 2.0f * t * _t0;
+        float _t3 = (t + t) * _t0;
         float _t4 = _t0 * _t0;
         d.x = p1X * _t3 + this.x * _t4 + p2X * _t1;
         d.y = p1Y * _t3 + this.y * _t4 + p2Y * _t1;
@@ -1276,7 +1276,7 @@ public final class Float4Impl implements Float4 {
      */
     public Float4 bezier2Tangent(float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float t, @Mutated Float4 dest) {
         Float4Impl d = (Float4Impl) dest;
-        float _t1 = 2.0f * t;
+        float _t1 = t + t;
         float _t2 = 2.0f * (1.0f - t);
         d.x = (p1X - this.x) * _t2 + (p2X - p1X) * _t1;
         d.y = (p1Y - this.y) * _t2 + (p2Y - p1Y) * _t1;
@@ -1313,7 +1313,7 @@ public final class Float4Impl implements Float4 {
      */
     public Double4 bezier2Tangent(float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float t, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        float _t1 = 2.0f * t;
+        float _t1 = t + t;
         float _t2 = 2.0f * (1.0f - t);
         d.x = (p1X - this.x) * _t2 + (p2X - p1X) * _t1;
         d.y = (p1Y - this.y) * _t2 + (p2Y - p1Y) * _t1;
@@ -1544,10 +1544,10 @@ public final class Float4Impl implements Float4 {
         Float4Impl d = (Float4Impl) dest;
         float _t0 = t * t;
         float _t1 = t * _t0;
-        d.x = 0.5f * (2.0f * p1X + t * (p2X - this.x) + ((-5.0f * p1X + (2.0f * this.x + (4.0f * p2X - p3X))) * _t0 + (3.0f * p1X + (p3X - this.x) - 3.0f * p2X) * _t1));
-        d.y = 0.5f * (2.0f * p1Y + t * (p2Y - this.y) + ((-5.0f * p1Y + (2.0f * this.y + (4.0f * p2Y - p3Y))) * _t0 + (3.0f * p1Y + (p3Y - this.y) - 3.0f * p2Y) * _t1));
-        d.z = 0.5f * (2.0f * p1Z + t * (p2Z - this.z) + ((-5.0f * p1Z + (2.0f * this.z + (4.0f * p2Z - p3Z))) * _t0 + (3.0f * p1Z + (p3Z - this.z) - 3.0f * p2Z) * _t1));
-        d.w = 0.5f * (2.0f * p1W + t * (p2W - this.w) + ((-5.0f * p1W + (2.0f * this.w + (4.0f * p2W - p3W))) * _t0 + (3.0f * p1W + (p3W - this.w) - 3.0f * p2W) * _t1));
+        d.x = 0.5f * (p1X + p1X + t * (p2X - this.x) + ((-5.0f * p1X + (this.x + this.x + (4.0f * p2X - p3X))) * _t0 + (3.0f * p1X + (p3X - this.x) - 3.0f * p2X) * _t1));
+        d.y = 0.5f * (p1Y + p1Y + t * (p2Y - this.y) + ((-5.0f * p1Y + (this.y + this.y + (4.0f * p2Y - p3Y))) * _t0 + (3.0f * p1Y + (p3Y - this.y) - 3.0f * p2Y) * _t1));
+        d.z = 0.5f * (p1Z + p1Z + t * (p2Z - this.z) + ((-5.0f * p1Z + (this.z + this.z + (4.0f * p2Z - p3Z))) * _t0 + (3.0f * p1Z + (p3Z - this.z) - 3.0f * p2Z) * _t1));
+        d.w = 0.5f * (p1W + p1W + t * (p2W - this.w) + ((-5.0f * p1W + (this.w + this.w + (4.0f * p2W - p3W))) * _t0 + (3.0f * p1W + (p3W - this.w) - 3.0f * p2W) * _t1));
         return d;
     }
 
@@ -1591,10 +1591,10 @@ public final class Float4Impl implements Float4 {
         Double4Impl d = (Double4Impl) dest;
         float _t0 = t * t;
         float _t1 = t * _t0;
-        d.x = 0.5f * (2.0f * p1X + t * (p2X - this.x) + ((-5.0f * p1X + (2.0f * this.x + (4.0f * p2X - p3X))) * _t0 + (3.0f * p1X + (p3X - this.x) - 3.0f * p2X) * _t1));
-        d.y = 0.5f * (2.0f * p1Y + t * (p2Y - this.y) + ((-5.0f * p1Y + (2.0f * this.y + (4.0f * p2Y - p3Y))) * _t0 + (3.0f * p1Y + (p3Y - this.y) - 3.0f * p2Y) * _t1));
-        d.z = 0.5f * (2.0f * p1Z + t * (p2Z - this.z) + ((-5.0f * p1Z + (2.0f * this.z + (4.0f * p2Z - p3Z))) * _t0 + (3.0f * p1Z + (p3Z - this.z) - 3.0f * p2Z) * _t1));
-        d.w = 0.5f * (2.0f * p1W + t * (p2W - this.w) + ((-5.0f * p1W + (2.0f * this.w + (4.0f * p2W - p3W))) * _t0 + (3.0f * p1W + (p3W - this.w) - 3.0f * p2W) * _t1));
+        d.x = 0.5f * (p1X + p1X + t * (p2X - this.x) + ((-5.0f * p1X + (this.x + this.x + (4.0f * p2X - p3X))) * _t0 + (3.0f * p1X + (p3X - this.x) - 3.0f * p2X) * _t1));
+        d.y = 0.5f * (p1Y + p1Y + t * (p2Y - this.y) + ((-5.0f * p1Y + (this.y + this.y + (4.0f * p2Y - p3Y))) * _t0 + (3.0f * p1Y + (p3Y - this.y) - 3.0f * p2Y) * _t1));
+        d.z = 0.5f * (p1Z + p1Z + t * (p2Z - this.z) + ((-5.0f * p1Z + (this.z + this.z + (4.0f * p2Z - p3Z))) * _t0 + (3.0f * p1Z + (p3Z - this.z) - 3.0f * p2Z) * _t1));
+        d.w = 0.5f * (p1W + p1W + t * (p2W - this.w) + ((-5.0f * p1W + (this.w + this.w + (4.0f * p2W - p3W))) * _t0 + (3.0f * p1W + (p3W - this.w) - 3.0f * p2W) * _t1));
         return d;
     }
 
@@ -1690,10 +1690,10 @@ public final class Float4Impl implements Float4 {
     public Float4 catmullRomTangent(float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float p3X, float p3Y, float p3Z, float p3W, float t, @Mutated Float4 dest) {
         Float4Impl d = (Float4Impl) dest;
         float _t0 = t * t;
-        d.x = 0.5f * (t * 2.0f * (-5.0f * p1X + (2.0f * this.x + (4.0f * p2X - p3X))) + (3.0f * (3.0f * p1X + (p3X - this.x) - 3.0f * p2X) * _t0 + (p2X - this.x)));
-        d.y = 0.5f * (t * 2.0f * (-5.0f * p1Y + (2.0f * this.y + (4.0f * p2Y - p3Y))) + (3.0f * (3.0f * p1Y + (p3Y - this.y) - 3.0f * p2Y) * _t0 + (p2Y - this.y)));
-        d.z = 0.5f * (t * 2.0f * (-5.0f * p1Z + (2.0f * this.z + (4.0f * p2Z - p3Z))) + (3.0f * (3.0f * p1Z + (p3Z - this.z) - 3.0f * p2Z) * _t0 + (p2Z - this.z)));
-        d.w = 0.5f * (t * 2.0f * (-5.0f * p1W + (2.0f * this.w + (4.0f * p2W - p3W))) + (3.0f * (3.0f * p1W + (p3W - this.w) - 3.0f * p2W) * _t0 + (p2W - this.w)));
+        d.x = 0.5f * (t * 2.0f * (-5.0f * p1X + (this.x + this.x + (4.0f * p2X - p3X))) + (3.0f * (3.0f * p1X + (p3X - this.x) - 3.0f * p2X) * _t0 + (p2X - this.x)));
+        d.y = 0.5f * (t * 2.0f * (-5.0f * p1Y + (this.y + this.y + (4.0f * p2Y - p3Y))) + (3.0f * (3.0f * p1Y + (p3Y - this.y) - 3.0f * p2Y) * _t0 + (p2Y - this.y)));
+        d.z = 0.5f * (t * 2.0f * (-5.0f * p1Z + (this.z + this.z + (4.0f * p2Z - p3Z))) + (3.0f * (3.0f * p1Z + (p3Z - this.z) - 3.0f * p2Z) * _t0 + (p2Z - this.z)));
+        d.w = 0.5f * (t * 2.0f * (-5.0f * p1W + (this.w + this.w + (4.0f * p2W - p3W))) + (3.0f * (3.0f * p1W + (p3W - this.w) - 3.0f * p2W) * _t0 + (p2W - this.w)));
         return d;
     }
 
@@ -1737,10 +1737,10 @@ public final class Float4Impl implements Float4 {
     public Double4 catmullRomTangent(float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float p3X, float p3Y, float p3Z, float p3W, float t, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
         float _t0 = t * t;
-        d.x = 0.5f * (t * 2.0f * (-5.0f * p1X + (2.0f * this.x + (4.0f * p2X - p3X))) + (3.0f * (3.0f * p1X + (p3X - this.x) - 3.0f * p2X) * _t0 + (p2X - this.x)));
-        d.y = 0.5f * (t * 2.0f * (-5.0f * p1Y + (2.0f * this.y + (4.0f * p2Y - p3Y))) + (3.0f * (3.0f * p1Y + (p3Y - this.y) - 3.0f * p2Y) * _t0 + (p2Y - this.y)));
-        d.z = 0.5f * (t * 2.0f * (-5.0f * p1Z + (2.0f * this.z + (4.0f * p2Z - p3Z))) + (3.0f * (3.0f * p1Z + (p3Z - this.z) - 3.0f * p2Z) * _t0 + (p2Z - this.z)));
-        d.w = 0.5f * (t * 2.0f * (-5.0f * p1W + (2.0f * this.w + (4.0f * p2W - p3W))) + (3.0f * (3.0f * p1W + (p3W - this.w) - 3.0f * p2W) * _t0 + (p2W - this.w)));
+        d.x = 0.5f * (t * 2.0f * (-5.0f * p1X + (this.x + this.x + (4.0f * p2X - p3X))) + (3.0f * (3.0f * p1X + (p3X - this.x) - 3.0f * p2X) * _t0 + (p2X - this.x)));
+        d.y = 0.5f * (t * 2.0f * (-5.0f * p1Y + (this.y + this.y + (4.0f * p2Y - p3Y))) + (3.0f * (3.0f * p1Y + (p3Y - this.y) - 3.0f * p2Y) * _t0 + (p2Y - this.y)));
+        d.z = 0.5f * (t * 2.0f * (-5.0f * p1Z + (this.z + this.z + (4.0f * p2Z - p3Z))) + (3.0f * (3.0f * p1Z + (p3Z - this.z) - 3.0f * p2Z) * _t0 + (p2Z - this.z)));
+        d.w = 0.5f * (t * 2.0f * (-5.0f * p1W + (this.w + this.w + (4.0f * p2W - p3W))) + (3.0f * (3.0f * p1W + (p3W - this.w) - 3.0f * p2W) * _t0 + (p2W - this.w)));
         return d;
     }
 
@@ -1818,7 +1818,7 @@ public final class Float4Impl implements Float4 {
         Float4Impl d = (Float4Impl) dest;
         float _t0 = t * t;
         float _t3 = 3.0f * _t0;
-        float _t5 = 2.0f * t * _t0;
+        float _t5 = (t + t) * _t0;
         float _t8 = t * (_t0 - t);
         float _t9 = (t - 2.0f) * _t0 + t;
         float _t10 = _t3 - _t5;
@@ -1864,7 +1864,7 @@ public final class Float4Impl implements Float4 {
         Double4Impl d = (Double4Impl) dest;
         float _t0 = t * t;
         float _t3 = 3.0f * _t0;
-        float _t5 = 2.0f * t * _t0;
+        float _t5 = (t + t) * _t0;
         float _t8 = t * (_t0 - t);
         float _t9 = (t - 2.0f) * _t0 + t;
         float _t10 = _t3 - _t5;
@@ -1953,7 +1953,7 @@ public final class Float4Impl implements Float4 {
         float _t4 = 3.0f * _t0;
         float _t7 = 6.0f * (_t0 - t);
         float _t8 = 6.0f * (t - _t0);
-        float _t9 = _t4 - 2.0f * t;
+        float _t9 = _t4 - (t + t);
         float _t10 = _t4 + (1.0f - 4.0f * t);
         d.x = this.x * _t7 + t0X * _t10 + (t1X * _t9 + v1X * _t8);
         d.y = this.y * _t7 + t0Y * _t10 + (t1Y * _t9 + v1Y * _t8);
@@ -1999,7 +1999,7 @@ public final class Float4Impl implements Float4 {
         float _t4 = 3.0f * _t0;
         float _t7 = 6.0f * (_t0 - t);
         float _t8 = 6.0f * (t - _t0);
-        float _t9 = _t4 - 2.0f * t;
+        float _t9 = _t4 - (t + t);
         float _t10 = _t4 + (1.0f - 4.0f * t);
         d.x = this.x * _t7 + t0X * _t10 + (t1X * _t9 + v1X * _t8);
         d.y = this.y * _t7 + t0Y * _t10 + (t1Y * _t9 + v1Y * _t8);
@@ -5189,10 +5189,10 @@ public final class Float4Impl implements Float4 {
         float _t14 = Math.max(0.0f, Math.min(1.0f, (this.y - edge0) * _t0_inv));
         float _t15 = Math.max(0.0f, Math.min(1.0f, (this.z - edge0) * _t0_inv));
         float _t16 = Math.max(0.0f, Math.min(1.0f, (this.w - edge0) * _t0_inv));
-        d.x = (3.0f - 2.0f * _t13) * _t13 * _t13;
-        d.y = (3.0f - 2.0f * _t14) * _t14 * _t14;
-        d.z = (3.0f - 2.0f * _t15) * _t15 * _t15;
-        d.w = (3.0f - 2.0f * _t16) * _t16 * _t16;
+        d.x = (3.0f - (_t13 + _t13)) * _t13 * _t13;
+        d.y = (3.0f - (_t14 + _t14)) * _t14 * _t14;
+        d.z = (3.0f - (_t15 + _t15)) * _t15 * _t15;
+        d.w = (3.0f - (_t16 + _t16)) * _t16 * _t16;
         return d;
     }
 
@@ -5218,10 +5218,10 @@ public final class Float4Impl implements Float4 {
         float _t14 = Math.max(0.0f, Math.min(1.0f, (this.y - edge0) * _t0_inv));
         float _t15 = Math.max(0.0f, Math.min(1.0f, (this.z - edge0) * _t0_inv));
         float _t16 = Math.max(0.0f, Math.min(1.0f, (this.w - edge0) * _t0_inv));
-        d.x = (3.0f - 2.0f * _t13) * _t13 * _t13;
-        d.y = (3.0f - 2.0f * _t14) * _t14 * _t14;
-        d.z = (3.0f - 2.0f * _t15) * _t15 * _t15;
-        d.w = (3.0f - 2.0f * _t16) * _t16 * _t16;
+        d.x = (3.0f - (_t13 + _t13)) * _t13 * _t13;
+        d.y = (3.0f - (_t14 + _t14)) * _t14 * _t14;
+        d.z = (3.0f - (_t15 + _t15)) * _t15 * _t15;
+        d.w = (3.0f - (_t16 + _t16)) * _t16 * _t16;
         return d;
     }
 
@@ -5282,10 +5282,10 @@ public final class Float4Impl implements Float4 {
         float _t17 = Math.max(0.0f, Math.min(1.0f, (this.y - edge0Y) / (edge1Y - edge0Y)));
         float _t18 = Math.max(0.0f, Math.min(1.0f, (this.z - edge0Z) / (edge1Z - edge0Z)));
         float _t19 = Math.max(0.0f, Math.min(1.0f, (this.w - edge0W) / (edge1W - edge0W)));
-        d.x = (3.0f - 2.0f * _t16) * _t16 * _t16;
-        d.y = (3.0f - 2.0f * _t17) * _t17 * _t17;
-        d.z = (3.0f - 2.0f * _t18) * _t18 * _t18;
-        d.w = (3.0f - 2.0f * _t19) * _t19 * _t19;
+        d.x = (3.0f - (_t16 + _t16)) * _t16 * _t16;
+        d.y = (3.0f - (_t17 + _t17)) * _t17 * _t17;
+        d.z = (3.0f - (_t18 + _t18)) * _t18 * _t18;
+        d.w = (3.0f - (_t19 + _t19)) * _t19 * _t19;
         return d;
     }
 
@@ -5316,10 +5316,10 @@ public final class Float4Impl implements Float4 {
         float _t17 = Math.max(0.0f, Math.min(1.0f, (this.y - edge0Y) / (edge1Y - edge0Y)));
         float _t18 = Math.max(0.0f, Math.min(1.0f, (this.z - edge0Z) / (edge1Z - edge0Z)));
         float _t19 = Math.max(0.0f, Math.min(1.0f, (this.w - edge0W) / (edge1W - edge0W)));
-        d.x = (3.0f - 2.0f * _t16) * _t16 * _t16;
-        d.y = (3.0f - 2.0f * _t17) * _t17 * _t17;
-        d.z = (3.0f - 2.0f * _t18) * _t18 * _t18;
-        d.w = (3.0f - 2.0f * _t19) * _t19 * _t19;
+        d.x = (3.0f - (_t16 + _t16)) * _t16 * _t16;
+        d.y = (3.0f - (_t17 + _t17)) * _t17 * _t17;
+        d.z = (3.0f - (_t18 + _t18)) * _t18 * _t18;
+        d.w = (3.0f - (_t19 + _t19)) * _t19 * _t19;
         return d;
     }
 

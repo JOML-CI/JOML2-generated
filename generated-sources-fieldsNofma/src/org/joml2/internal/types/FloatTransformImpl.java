@@ -945,9 +945,9 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public Float4x4 toMatrix(@Mutated Float4x4 dest) {
         Float4x4Impl d = (Float4x4Impl) dest;
-        float _t0 = 2.0f * this.sX;
-        float _t1 = 2.0f * this.sY;
-        float _t2 = 2.0f * this.sZ;
+        float _t0 = this.sX + this.sX;
+        float _t1 = this.sY + this.sY;
+        float _t2 = this.sZ + this.sZ;
         float _t3 = this.rY * this.rY;
         float _t4 = this.rZ * this.rZ;
         float _t5 = this.rX * this.rY;
@@ -994,9 +994,9 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public Double4x4 toMatrix(@Mutated Double4x4 dest) {
         Double4x4Impl d = (Double4x4Impl) dest;
-        float _t0 = 2.0f * this.sX;
-        float _t1 = 2.0f * this.sY;
-        float _t2 = 2.0f * this.sZ;
+        float _t0 = this.sX + this.sX;
+        float _t1 = this.sY + this.sY;
+        float _t2 = this.sZ + this.sZ;
         float _t3 = this.rY * this.rY;
         float _t4 = this.rZ * this.rZ;
         float _t5 = this.rX * this.rY;
@@ -1041,9 +1041,9 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public Float3x3 toMatrix3x3(@Mutated Float3x3 dest) {
         Float3x3Impl d = (Float3x3Impl) dest;
-        float _t0 = 2.0f * this.sX;
-        float _t1 = 2.0f * this.sY;
-        float _t2 = 2.0f * this.sZ;
+        float _t0 = this.sX + this.sX;
+        float _t1 = this.sY + this.sY;
+        float _t2 = this.sZ + this.sZ;
         float _t3 = this.rY * this.rY;
         float _t4 = this.rZ * this.rZ;
         float _t5 = this.rX * this.rY;
@@ -1079,9 +1079,9 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public Double3x3 toMatrix3x3(@Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
-        float _t0 = 2.0f * this.sX;
-        float _t1 = 2.0f * this.sY;
-        float _t2 = 2.0f * this.sZ;
+        float _t0 = this.sX + this.sX;
+        float _t1 = this.sY + this.sY;
+        float _t2 = this.sZ + this.sZ;
         float _t3 = this.rY * this.rY;
         float _t4 = this.rZ * this.rZ;
         float _t5 = this.rX * this.rY;
@@ -1114,9 +1114,9 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public Float3x4 toMatrix3x4(@Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = 2.0f * this.sX;
-        float _t1 = 2.0f * this.sY;
-        float _t2 = 2.0f * this.sZ;
+        float _t0 = this.sX + this.sX;
+        float _t1 = this.sY + this.sY;
+        float _t2 = this.sZ + this.sZ;
         float _t3 = this.rY * this.rY;
         float _t4 = this.rZ * this.rZ;
         float _t5 = this.rX * this.rY;
@@ -1159,9 +1159,9 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public Double3x4 toMatrix3x4(@Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        float _t0 = 2.0f * this.sX;
-        float _t1 = 2.0f * this.sY;
-        float _t2 = 2.0f * this.sZ;
+        float _t0 = this.sX + this.sX;
+        float _t1 = this.sY + this.sY;
+        float _t2 = this.sZ + this.sZ;
         float _t3 = this.rY * this.rY;
         float _t4 = this.rZ * this.rZ;
         float _t5 = this.rX * this.rY;
@@ -1683,7 +1683,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = otherRX * this.rW + otherRW * this.rX + (otherRZ * this.rY - otherRY * this.rZ);
         float _buf1 = otherRY * this.rW + otherRW * this.rY + (otherRX * this.rZ - otherRZ * this.rX);
         float _buf2 = otherRZ * this.rW + otherRW * this.rZ + (otherRY * this.rX - otherRX * this.rY);
-        d.rW = otherRW * this.rW - otherRX * this.rX - otherRY * this.rY - otherRZ * this.rZ;
+        d.rW = otherRW * this.rW - otherRX * this.rX - (otherRY * this.rY + otherRZ * this.rZ);
         d.sX = otherSX * this.sX;
         d.sY = otherSY * this.sY;
         d.sZ = otherSZ * this.sZ;
@@ -1749,7 +1749,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = otherRX * this.rW + otherRW * this.rX + (otherRZ * this.rY - otherRY * this.rZ);
         float _buf1 = otherRY * this.rW + otherRW * this.rY + (otherRX * this.rZ - otherRZ * this.rX);
         float _buf2 = otherRZ * this.rW + otherRW * this.rZ + (otherRY * this.rX - otherRX * this.rY);
-        d.rW = otherRW * this.rW - otherRX * this.rX - otherRY * this.rY - otherRZ * this.rZ;
+        d.rW = otherRW * this.rW - otherRX * this.rX - (otherRY * this.rY + otherRZ * this.rZ);
         d.sX = otherSX * this.sX;
         d.sY = otherSY * this.sY;
         d.sZ = otherSZ * this.sZ;
@@ -1859,7 +1859,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = otherRX * this.rW + otherRW * this.rX + (otherRY * this.rZ - otherRZ * this.rY);
         float _buf1 = otherRY * this.rW + otherRW * this.rY + (otherRZ * this.rX - otherRX * this.rZ);
         float _buf2 = otherRZ * this.rW + otherRW * this.rZ + (otherRX * this.rY - otherRY * this.rX);
-        d.rW = otherRW * this.rW - otherRX * this.rX - otherRY * this.rY - otherRZ * this.rZ;
+        d.rW = otherRW * this.rW - otherRX * this.rX - (otherRY * this.rY + otherRZ * this.rZ);
         d.sX = otherSX * this.sX;
         d.sY = otherSY * this.sY;
         d.sZ = otherSZ * this.sZ;
@@ -1925,7 +1925,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = otherRX * this.rW + otherRW * this.rX + (otherRY * this.rZ - otherRZ * this.rY);
         float _buf1 = otherRY * this.rW + otherRW * this.rY + (otherRZ * this.rX - otherRX * this.rZ);
         float _buf2 = otherRZ * this.rW + otherRW * this.rZ + (otherRX * this.rY - otherRY * this.rX);
-        d.rW = otherRW * this.rW - otherRX * this.rX - otherRY * this.rY - otherRZ * this.rZ;
+        d.rW = otherRW * this.rW - otherRX * this.rX - (otherRY * this.rY + otherRZ * this.rZ);
         d.sX = otherSX * this.sX;
         d.sY = otherSY * this.sY;
         d.sZ = otherSZ * this.sZ;
@@ -2035,7 +2035,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = otherRX * this.rW - otherRW * this.rX + (otherRY * this.rZ - otherRZ * this.rY);
         float _buf1 = otherRY * this.rW - otherRW * this.rY + (otherRZ * this.rX - otherRX * this.rZ);
         float _buf2 = otherRX * this.rY - otherRY * this.rX + (otherRZ * this.rW - otherRW * this.rZ);
-        d.rW = otherRX * this.rX + otherRW * this.rW + otherRY * this.rY + otherRZ * this.rZ;
+        d.rW = otherRX * this.rX + otherRW * this.rW - (-(otherRY * this.rY) - otherRZ * this.rZ);
         d.sX = otherSX * _rcp1;
         d.sY = otherSY * _rcp2;
         d.sZ = otherSZ * _rcp0;
@@ -2105,7 +2105,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = otherRX * this.rW - otherRW * this.rX + (otherRY * this.rZ - otherRZ * this.rY);
         float _buf1 = otherRY * this.rW - otherRW * this.rY + (otherRZ * this.rX - otherRX * this.rZ);
         float _buf2 = otherRX * this.rY - otherRY * this.rX + (otherRZ * this.rW - otherRW * this.rZ);
-        d.rW = otherRX * this.rX + otherRW * this.rW + otherRY * this.rY + otherRZ * this.rZ;
+        d.rW = otherRX * this.rX + otherRW * this.rW - (-(otherRY * this.rY) - otherRZ * this.rZ);
         d.sX = otherSX * _rcp1;
         d.sY = otherSY * _rcp2;
         d.sZ = otherSZ * _rcp0;
@@ -3298,7 +3298,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = rotationX * this.rW + rotationW * this.rX + (rotationZ * this.rY - rotationY * this.rZ);
         float _buf1 = rotationY * this.rW + rotationW * this.rY + (rotationX * this.rZ - rotationZ * this.rX);
         float _buf2 = rotationZ * this.rW + rotationW * this.rZ + (rotationY * this.rX - rotationX * this.rY);
-        d.rW = rotationW * this.rW - rotationX * this.rX - rotationY * this.rY - rotationZ * this.rZ;
+        d.rW = rotationW * this.rW - rotationX * this.rX - (rotationY * this.rY + rotationZ * this.rZ);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -3349,7 +3349,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = rotationX * this.rW + rotationW * this.rX + (rotationZ * this.rY - rotationY * this.rZ);
         float _buf1 = rotationY * this.rW + rotationW * this.rY + (rotationX * this.rZ - rotationZ * this.rX);
         float _buf2 = rotationZ * this.rW + rotationW * this.rZ + (rotationY * this.rX - rotationX * this.rY);
-        d.rW = rotationW * this.rW - rotationX * this.rX - rotationY * this.rY - rotationZ * this.rZ;
+        d.rW = rotationW * this.rW - rotationX * this.rX - (rotationY * this.rY + rotationZ * this.rZ);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -3452,7 +3452,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = this.rX * _t1 + this.rW * _t3 + (this.rY * _t4 - this.rZ * _t5);
         float _buf1 = this.rY * _t1 + this.rW * _t5 + (this.rZ * _t3 - this.rX * _t4);
         float _buf2 = this.rZ * _t1 + this.rW * _t4 + (this.rX * _t5 - this.rY * _t3);
-        d.rW = this.rW * _t1 - this.rX * _t3 - this.rY * _t5 - this.rZ * _t4;
+        d.rW = this.rW * _t1 - this.rX * _t3 - (this.rY * _t5 + this.rZ * _t4);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -3507,7 +3507,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = this.rX * _t1 + this.rW * _t3 + (this.rY * _t4 - this.rZ * _t5);
         float _buf1 = this.rY * _t1 + this.rW * _t5 + (this.rZ * _t3 - this.rX * _t4);
         float _buf2 = this.rZ * _t1 + this.rW * _t4 + (this.rX * _t5 - this.rY * _t3);
-        d.rW = this.rW * _t1 - this.rX * _t3 - this.rY * _t5 - this.rZ * _t4;
+        d.rW = this.rW * _t1 - this.rX * _t3 - (this.rY * _t5 + this.rZ * _t4);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -3646,7 +3646,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
         float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -3707,7 +3707,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
         float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -3765,7 +3765,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
         float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -3826,7 +3826,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
         float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -3965,7 +3965,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
         float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -4026,7 +4026,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
         float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -4084,7 +4084,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
         float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -4145,7 +4145,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
         float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -4284,7 +4284,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
         float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -4345,7 +4345,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
         float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -4403,7 +4403,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
         float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;
@@ -4464,7 +4464,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
         float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
         float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - this.rY * _t24 - this.rZ * _t23;
+        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
         d.sX = this.sX;
         d.sY = this.sY;
         d.sZ = this.sZ;

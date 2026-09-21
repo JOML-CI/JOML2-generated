@@ -87,16 +87,16 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] sd = this.data;
         double[] otherData = ((DoubleQuatImpl) other).data;
         double[] dd = ((DoubleQuatImpl) dest).data;
-        double _t21 = Math.fma(otherData[0], sd[3], otherData[3] * sd[0]) + Math.fma(otherData[2], sd[1], -(otherData[1] * sd[2]));
+        double _t20 = Math.fma(otherData[0], sd[3], otherData[3] * sd[0]) + Math.fma(otherData[2], sd[1], -(otherData[1] * sd[2]));
+        double _t21 = Math.fma(otherData[3], sd[3], -(otherData[0] * sd[0])) - Math.fma(otherData[1], sd[1], otherData[2] * sd[2]);
         double _t22 = Math.fma(otherData[1], sd[0], otherData[2] * sd[3]) + Math.fma(otherData[3], sd[2], -(otherData[0] * sd[1]));
         double _t23 = Math.fma(otherData[0], sd[2], otherData[3] * sd[1]) + Math.fma(otherData[1], sd[3], -(otherData[2] * sd[0]));
-        double _t24 = Math.fma(-otherData[2], sd[2], Math.fma(-otherData[1], sd[1], Math.fma(otherData[3], sd[3], -(otherData[0] * sd[0]))));
-        double _t28 = Math.fma(_t24, _t24, Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t21 * _t21)));
-        double _t28_inv = 1.0 / _t28;
-        dd[0] = -(_t21 * _t28_inv);
-        dd[1] = -(_t23 * _t28_inv);
-        dd[2] = -(_t22 * _t28_inv);
-        dd[3] = _t24 * _t28_inv;
+        double _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t20 * _t20)));
+        double _t27_inv = 1.0 / _t27;
+        dd[0] = -(_t20 * _t27_inv);
+        dd[1] = -(_t23 * _t27_inv);
+        dd[2] = -(_t22 * _t27_inv);
+        dd[3] = _t21 * _t27_inv;
         return dest;
     }
 
@@ -119,16 +119,16 @@ public final class DoubleQuatImpl implements DoubleQuat {
     public DoubleQuat invertProduct(double otherX, double otherY, double otherZ, double otherW, @Mutated DoubleQuat dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
-        double _t21 = Math.fma(otherX, sd[3], otherW * sd[0]) + Math.fma(otherZ, sd[1], -(otherY * sd[2]));
+        double _t20 = Math.fma(otherX, sd[3], otherW * sd[0]) + Math.fma(otherZ, sd[1], -(otherY * sd[2]));
+        double _t21 = Math.fma(otherW, sd[3], -(otherX * sd[0])) - Math.fma(otherY, sd[1], otherZ * sd[2]);
         double _t22 = Math.fma(otherY, sd[0], otherZ * sd[3]) + Math.fma(otherW, sd[2], -(otherX * sd[1]));
         double _t23 = Math.fma(otherX, sd[2], otherW * sd[1]) + Math.fma(otherY, sd[3], -(otherZ * sd[0]));
-        double _t24 = Math.fma(-otherZ, sd[2], Math.fma(-otherY, sd[1], Math.fma(otherW, sd[3], -(otherX * sd[0]))));
-        double _t28 = Math.fma(_t24, _t24, Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t21 * _t21)));
-        double _t28_inv = 1.0 / _t28;
-        dd[0] = -(_t21 * _t28_inv);
-        dd[1] = -(_t23 * _t28_inv);
-        dd[2] = -(_t22 * _t28_inv);
-        dd[3] = _t24 * _t28_inv;
+        double _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t20 * _t20)));
+        double _t27_inv = 1.0 / _t27;
+        dd[0] = -(_t20 * _t27_inv);
+        dd[1] = -(_t23 * _t27_inv);
+        dd[2] = -(_t22 * _t27_inv);
+        dd[3] = _t21 * _t27_inv;
         return dest;
     }
 
@@ -679,7 +679,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _d0buf0 = Math.fma(sd[0], _t11, -(sd[3] * _t12)) + Math.fma(sd[2], _t13, -(sd[1] * _t14));
         double _d0buf1 = Math.fma(sd[0], _t14, -(sd[3] * _t13)) + Math.fma(sd[1], _t11, -(sd[2] * _t12));
         double _d0buf2 = Math.fma(sd[1], _t12, sd[2] * _t11) + Math.fma(-sd[0], _t13, -(sd[3] * _t14));
-        swingData[3] = Math.fma(sd[2], _t14, Math.fma(sd[1], _t13, Math.fma(sd[0], _t12, sd[3] * _t11)));
+        swingData[3] = Math.fma(sd[0], _t12, sd[3] * _t11) - Math.fma(-sd[2], _t14, -(sd[1] * _t13));
         swingData[0] = _d0buf0;
         swingData[1] = _d0buf1;
         swingData[2] = _d0buf2;
@@ -746,7 +746,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _buf0 = Math.fma(sd[0], _t11, -(sd[3] * _t12)) + Math.fma(sd[2], _t13, -(sd[1] * _t14));
         double _buf1 = Math.fma(sd[0], _t14, -(sd[3] * _t13)) + Math.fma(sd[1], _t11, -(sd[2] * _t12));
         double _buf2 = Math.fma(sd[1], _t12, sd[2] * _t11) + Math.fma(-sd[0], _t13, -(sd[3] * _t14));
-        dd[3] = Math.fma(sd[2], _t14, Math.fma(sd[1], _t13, Math.fma(sd[0], _t12, sd[3] * _t11)));
+        dd[3] = Math.fma(sd[0], _t12, sd[3] * _t11) - Math.fma(-sd[2], _t14, -(sd[1] * _t13));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -1366,7 +1366,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] targetData = ((DoubleQuatImpl) target).data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 1.0 - t;
-        double _t1 = 2.0 * t;
+        double _t1 = t + t;
         double _t13 = _t0 * _t1;
         double _t14 = Math.fma(-_t0, _t1, 1.0);
         double _t33 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(control0Data[3], control1Data[3], Math.fma(control0Data[2], control1Data[2], Math.fma(control0Data[0], control1Data[0], control0Data[1] * control1Data[1]))))));
@@ -1463,7 +1463,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 1.0 - t;
-        double _t1 = 2.0 * t;
+        double _t1 = t + t;
         double _t13 = _t0 * _t1;
         double _t14 = Math.fma(-_t0, _t1, 1.0);
         double _t33 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(control0W, control1W, Math.fma(control0Z, control1Z, Math.fma(control0X, control1X, control0Y * control1Y))))));
@@ -1541,7 +1541,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _buf0 = Math.fma(otherData[0], sd[3], otherData[3] * sd[0]) + Math.fma(otherData[2], sd[1], -(otherData[1] * sd[2]));
         double _buf1 = Math.fma(otherData[0], sd[2], otherData[3] * sd[1]) + Math.fma(otherData[1], sd[3], -(otherData[2] * sd[0]));
         double _buf2 = Math.fma(otherData[1], sd[0], otherData[2] * sd[3]) + Math.fma(otherData[3], sd[2], -(otherData[0] * sd[1]));
-        dd[3] = Math.fma(-otherData[2], sd[2], Math.fma(-otherData[1], sd[1], Math.fma(otherData[3], sd[3], -(otherData[0] * sd[0]))));
+        dd[3] = Math.fma(otherData[3], sd[3], -(otherData[0] * sd[0])) - Math.fma(otherData[1], sd[1], otherData[2] * sd[2]);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -1574,7 +1574,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _buf0 = Math.fma(otherX, sd[3], otherW * sd[0]) + Math.fma(otherZ, sd[1], -(otherY * sd[2]));
         double _buf1 = Math.fma(otherX, sd[2], otherW * sd[1]) + Math.fma(otherY, sd[3], -(otherZ * sd[0]));
         double _buf2 = Math.fma(otherY, sd[0], otherZ * sd[3]) + Math.fma(otherW, sd[2], -(otherX * sd[1]));
-        dd[3] = Math.fma(-otherZ, sd[2], Math.fma(-otherY, sd[1], Math.fma(otherW, sd[3], -(otherX * sd[0]))));
+        dd[3] = Math.fma(otherW, sd[3], -(otherX * sd[0])) - Math.fma(otherY, sd[1], otherZ * sd[2]);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -1601,7 +1601,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _buf0 = Math.fma(otherData[0], sd[3], otherData[3] * sd[0]) + Math.fma(otherData[1], sd[2], -(otherData[2] * sd[1]));
         double _buf1 = Math.fma(otherData[1], sd[3], otherData[2] * sd[0]) + Math.fma(otherData[3], sd[1], -(otherData[0] * sd[2]));
         double _buf2 = Math.fma(otherData[0], sd[1], otherData[3] * sd[2]) + Math.fma(otherData[2], sd[3], -(otherData[1] * sd[0]));
-        dd[3] = Math.fma(-otherData[2], sd[2], Math.fma(-otherData[1], sd[1], Math.fma(otherData[3], sd[3], -(otherData[0] * sd[0]))));
+        dd[3] = Math.fma(otherData[3], sd[3], -(otherData[0] * sd[0])) - Math.fma(otherData[1], sd[1], otherData[2] * sd[2]);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -1634,7 +1634,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _buf0 = Math.fma(otherX, sd[3], otherW * sd[0]) + Math.fma(otherY, sd[2], -(otherZ * sd[1]));
         double _buf1 = Math.fma(otherY, sd[3], otherZ * sd[0]) + Math.fma(otherW, sd[1], -(otherX * sd[2]));
         double _buf2 = Math.fma(otherX, sd[1], otherW * sd[2]) + Math.fma(otherZ, sd[3], -(otherY * sd[0]));
-        dd[3] = Math.fma(-otherZ, sd[2], Math.fma(-otherY, sd[1], Math.fma(otherW, sd[3], -(otherX * sd[0]))));
+        dd[3] = Math.fma(otherW, sd[3], -(otherX * sd[0])) - Math.fma(otherY, sd[1], otherZ * sd[2]);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -1788,15 +1788,14 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] sd = this.data;
         double[] qData = ((DoubleQuatImpl) q).data;
         double[] dd = ((DoubleQuatImpl) dest).data;
-        double _t1 = -qData[1];
-        double _t21 = Math.fma(qData[0], sd[1], qData[3] * sd[2]) + Math.fma(qData[2], sd[3], -(qData[1] * sd[0]));
-        double _t22 = Math.fma(qData[1], sd[3], qData[2] * sd[0]) + Math.fma(qData[3], sd[1], -(qData[0] * sd[2]));
-        double _t23 = Math.fma(qData[0], sd[3], qData[3] * sd[0]) + Math.fma(qData[1], sd[2], -(qData[2] * sd[1]));
-        double _t24 = Math.fma(-qData[2], sd[2], Math.fma(_t1, sd[1], Math.fma(qData[3], sd[3], -(qData[0] * sd[0]))));
-        double _buf0 = Math.fma(qData[1], _t21, -(qData[2] * _t22)) + Math.fma(qData[3], _t23, -(qData[0] * _t24));
-        double _buf1 = Math.fma(qData[2], _t23, -(qData[1] * _t24)) + Math.fma(qData[3], _t22, -(qData[0] * _t21));
-        double _buf2 = Math.fma(qData[0], _t22, qData[3] * _t21) + Math.fma(_t1, _t23, -(qData[2] * _t24));
-        dd[3] = Math.fma(qData[2], _t21, Math.fma(qData[1], _t22, Math.fma(qData[0], _t23, qData[3] * _t24)));
+        double _t20 = Math.fma(qData[0], sd[1], qData[3] * sd[2]) + Math.fma(qData[2], sd[3], -(qData[1] * sd[0]));
+        double _t21 = Math.fma(qData[1], sd[3], qData[2] * sd[0]) + Math.fma(qData[3], sd[1], -(qData[0] * sd[2]));
+        double _t22 = Math.fma(qData[0], sd[3], qData[3] * sd[0]) + Math.fma(qData[1], sd[2], -(qData[2] * sd[1]));
+        double _t23 = Math.fma(qData[3], sd[3], -(qData[0] * sd[0])) - Math.fma(qData[1], sd[1], qData[2] * sd[2]);
+        double _buf0 = Math.fma(qData[1], _t20, -(qData[2] * _t21)) + Math.fma(qData[3], _t22, -(qData[0] * _t23));
+        double _buf1 = Math.fma(qData[2], _t22, -(qData[1] * _t23)) + Math.fma(qData[3], _t21, -(qData[0] * _t20));
+        double _buf2 = Math.fma(qData[0], _t21, qData[3] * _t20) + Math.fma(-qData[1], _t22, -(qData[2] * _t23));
+        dd[3] = Math.fma(qData[0], _t22, qData[3] * _t23) - Math.fma(-qData[2], _t20, -(qData[1] * _t21));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -1819,15 +1818,14 @@ public final class DoubleQuatImpl implements DoubleQuat {
     public DoubleQuat conjugateBy(double qX, double qY, double qZ, double qW, @Mutated DoubleQuat dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
-        double _t1 = -qY;
-        double _t21 = Math.fma(qX, sd[1], qW * sd[2]) + Math.fma(qZ, sd[3], -(qY * sd[0]));
-        double _t22 = Math.fma(qY, sd[3], qZ * sd[0]) + Math.fma(qW, sd[1], -(qX * sd[2]));
-        double _t23 = Math.fma(qX, sd[3], qW * sd[0]) + Math.fma(qY, sd[2], -(qZ * sd[1]));
-        double _t24 = Math.fma(-qZ, sd[2], Math.fma(_t1, sd[1], Math.fma(qW, sd[3], -(qX * sd[0]))));
-        dd[0] = Math.fma(qY, _t21, -(qZ * _t22)) + Math.fma(qW, _t23, -(qX * _t24));
-        dd[1] = Math.fma(qZ, _t23, -(qY * _t24)) + Math.fma(qW, _t22, -(qX * _t21));
-        dd[2] = Math.fma(qX, _t22, qW * _t21) + Math.fma(_t1, _t23, -(qZ * _t24));
-        dd[3] = Math.fma(qZ, _t21, Math.fma(qY, _t22, Math.fma(qX, _t23, qW * _t24)));
+        double _t20 = Math.fma(qX, sd[1], qW * sd[2]) + Math.fma(qZ, sd[3], -(qY * sd[0]));
+        double _t21 = Math.fma(qY, sd[3], qZ * sd[0]) + Math.fma(qW, sd[1], -(qX * sd[2]));
+        double _t22 = Math.fma(qX, sd[3], qW * sd[0]) + Math.fma(qY, sd[2], -(qZ * sd[1]));
+        double _t23 = Math.fma(qW, sd[3], -(qX * sd[0])) - Math.fma(qY, sd[1], qZ * sd[2]);
+        dd[0] = Math.fma(qY, _t20, -(qZ * _t21)) + Math.fma(qW, _t22, -(qX * _t23));
+        dd[1] = Math.fma(qZ, _t22, -(qY * _t23)) + Math.fma(qW, _t21, -(qX * _t20));
+        dd[2] = Math.fma(qX, _t21, qW * _t20) + Math.fma(-qY, _t22, -(qZ * _t23));
+        dd[3] = Math.fma(qX, _t22, qW * _t23) - Math.fma(-qZ, _t20, -(qY * _t21));
         return dest;
     }
 
@@ -1845,9 +1843,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] sd = this.data;
         double[] otherData = ((DoubleQuatImpl) other).data;
         double[] dd = ((DoubleQuatImpl) dest).data;
-        double _t3_inv = 1.0 / Math.fma(sd[3], sd[3], Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])));
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, Math.fma(otherData[0], sd[3], -(otherData[3] * sd[0]))).withLane(2, Math.fma(otherData[0], sd[1], -(otherData[3] * sd[2]))).add(DoubleVector.broadcast(COL_SPECIES, Math.fma(otherData[1], sd[2], -(otherData[2] * sd[1]))).withLane(2, Math.fma(otherData[2], sd[3], -(otherData[1] * sd[0])))).withLane(3, Math.fma(otherData[2], sd[2], Math.fma(otherData[1], sd[1], Math.fma(otherData[0], sd[0], otherData[3] * sd[3])))).mul(DoubleVector.broadcast(COL_SPECIES, _t3_inv)).withLane(1, -(otherData[3] * sd[1] * _t3_inv) - otherData[0] * sd[2] * _t3_inv + Math.fma(otherData[1], sd[3], otherData[2] * sd[0]) * _t3_inv);
-        _col0.intoArray(dd, 0);
+        double _t3 = Math.fma(sd[3], sd[3], Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])));
+        double _t3_inv = 1.0 / _t3;
+        double _buf0 = (Math.fma(otherData[0], sd[3], -(otherData[3] * sd[0])) + Math.fma(otherData[1], sd[2], -(otherData[2] * sd[1]))) * _t3_inv;
+        double _buf1 = -(otherData[3] * sd[1] * _t3_inv) - otherData[0] * sd[2] * _t3_inv + Math.fma(otherData[1], sd[3], otherData[2] * sd[0]) * _t3_inv;
+        double _buf2 = (Math.fma(otherData[0], sd[1], -(otherData[3] * sd[2])) + Math.fma(otherData[2], sd[3], -(otherData[1] * sd[0]))) * _t3_inv;
+        dd[3] = Math.fma(otherData[0], sd[0], otherData[3] * sd[3]) * _t3_inv - (-(otherData[1] * sd[1] * _t3_inv) - otherData[2] * sd[2] * _t3_inv);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -1872,9 +1876,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
     public DoubleQuat difference(double otherX, double otherY, double otherZ, double otherW, @Mutated DoubleQuat dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
-        double _t3_inv = 1.0 / Math.fma(sd[3], sd[3], Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])));
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, Math.fma(otherX, sd[3], -(otherW * sd[0]))).withLane(2, Math.fma(otherX, sd[1], -(otherW * sd[2]))).add(DoubleVector.broadcast(COL_SPECIES, Math.fma(otherY, sd[2], -(otherZ * sd[1]))).withLane(2, Math.fma(otherZ, sd[3], -(otherY * sd[0])))).withLane(3, Math.fma(otherZ, sd[2], Math.fma(otherY, sd[1], Math.fma(otherX, sd[0], otherW * sd[3])))).mul(DoubleVector.broadcast(COL_SPECIES, _t3_inv)).withLane(1, -(otherW * sd[1] * _t3_inv) - otherX * sd[2] * _t3_inv + Math.fma(otherY, sd[3], otherZ * sd[0]) * _t3_inv);
-        _col0.intoArray(dd, 0);
+        double _t3 = Math.fma(sd[3], sd[3], Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])));
+        double _t3_inv = 1.0 / _t3;
+        double _buf0 = (Math.fma(otherX, sd[3], -(otherW * sd[0])) + Math.fma(otherY, sd[2], -(otherZ * sd[1]))) * _t3_inv;
+        double _buf1 = -(otherW * sd[1] * _t3_inv) - otherX * sd[2] * _t3_inv + Math.fma(otherY, sd[3], otherZ * sd[0]) * _t3_inv;
+        double _buf2 = (Math.fma(otherX, sd[1], -(otherW * sd[2])) + Math.fma(otherZ, sd[3], -(otherY * sd[0]))) * _t3_inv;
+        dd[3] = Math.fma(otherX, sd[0], otherW * sd[3]) * _t3_inv - (-(otherY * sd[1] * _t3_inv) - otherZ * sd[2] * _t3_inv);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -2181,7 +2191,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _buf0 = Math.fma(sd[0], _t9, sd[3] * _t15) + Math.fma(sd[2], _t16, -(sd[1] * _t17));
         double _buf1 = Math.fma(sd[0], _t17, sd[3] * _t16) + Math.fma(sd[1], _t9, -(sd[2] * _t15));
         double _buf2 = Math.fma(sd[1], _t15, sd[2] * _t9) + Math.fma(sd[3], _t17, -(sd[0] * _t16));
-        dd[3] = Math.fma(-sd[2], _t17, Math.fma(-sd[1], _t16, Math.fma(sd[3], _t9, -(sd[0] * _t15))));
+        dd[3] = Math.fma(sd[3], _t9, -(sd[0] * _t15)) - Math.fma(sd[1], _t16, sd[2] * _t17);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -2227,7 +2237,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _buf0 = Math.fma(sd[0], _t9, sd[3] * _t15) + Math.fma(sd[2], _t16, -(sd[1] * _t17));
         double _buf1 = Math.fma(sd[0], _t17, sd[3] * _t16) + Math.fma(sd[1], _t9, -(sd[2] * _t15));
         double _buf2 = Math.fma(sd[1], _t15, sd[2] * _t9) + Math.fma(sd[3], _t17, -(sd[0] * _t16));
-        dd[3] = Math.fma(-sd[2], _t17, Math.fma(-sd[1], _t16, Math.fma(sd[3], _t9, -(sd[0] * _t15))));
+        dd[3] = Math.fma(sd[3], _t9, -(sd[0] * _t15)) - Math.fma(sd[1], _t16, sd[2] * _t17);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -3258,7 +3268,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _buf0 = Math.fma(sd[0], _t110, sd[3] * _t111) + Math.fma(sd[1], _t108, -(sd[2] * _t109));
         double _buf1 = Math.fma(sd[1], _t110, sd[2] * _t111) + Math.fma(sd[3], _t109, -(sd[0] * _t108));
         double _buf2 = Math.fma(sd[0], _t109, sd[3] * _t108) + Math.fma(sd[2], _t110, -(sd[1] * _t111));
-        dd[3] = Math.fma(-sd[2], _t108, Math.fma(-sd[1], _t109, Math.fma(sd[3], _t110, -(sd[0] * _t111))));
+        dd[3] = Math.fma(sd[3], _t110, -(sd[0] * _t111)) - Math.fma(sd[1], _t109, sd[2] * _t108);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -3363,7 +3373,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _buf0 = Math.fma(sd[0], _t110, sd[3] * _t111) + Math.fma(sd[1], _t108, -(sd[2] * _t109));
         double _buf1 = Math.fma(sd[1], _t110, sd[2] * _t111) + Math.fma(sd[3], _t109, -(sd[0] * _t108));
         double _buf2 = Math.fma(sd[0], _t109, sd[3] * _t108) + Math.fma(sd[2], _t110, -(sd[1] * _t111));
-        dd[3] = Math.fma(-sd[2], _t108, Math.fma(-sd[1], _t109, Math.fma(sd[3], _t110, -(sd[0] * _t111))));
+        dd[3] = Math.fma(sd[3], _t110, -(sd[0] * _t111)) - Math.fma(sd[1], _t109, sd[2] * _t108);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -3650,21 +3660,21 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dd = this.data;
         double[] fromDirData = ((Double3Impl) fromDir).data;
         double[] toDirData = ((Double3Impl) toDir).data;
-        double _t3 = fromDirData[2] + toDirData[2];
-        double _t4 = fromDirData[0] + toDirData[0];
-        double _t5 = fromDirData[1] + toDirData[1];
-        double _t13 = Math.fma(fromDirData[0], fromDirData[0], fromDirData[1] * fromDirData[1]);
-        double _t15 = Math.fma(fromDirData[1], toDirData[2], -(fromDirData[2] * toDirData[1]));
+        double _t2 = fromDirData[2] + toDirData[2];
+        double _t3 = fromDirData[0] + toDirData[0];
+        double _t4 = fromDirData[1] + toDirData[1];
+        double _t12 = Math.fma(fromDirData[0], fromDirData[0], fromDirData[1] * fromDirData[1]);
+        double _t14 = Math.fma(fromDirData[1], toDirData[2], -(fromDirData[2] * toDirData[1]));
+        double _t15 = Math.fma(fromDirData[0], toDirData[1], -(fromDirData[1] * toDirData[0]));
         double _t16 = Math.fma(fromDirData[2], toDirData[0], -(fromDirData[0] * toDirData[2]));
-        double _t17 = Math.fma(fromDirData[0], toDirData[1], -(fromDirData[1] * toDirData[0]));
-        double _t18 = _t13 > 0.0 ? fromDirData[1] : 0.0;
-        double _t19 = _t13 > 0.0 ? 0.0 : -fromDirData[1];
-        double _t20 = _t13 > 0.0 ? -fromDirData[0] : fromDirData[2];
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
-        double _t33 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
+        double _t17 = _t12 > 0.0 ? fromDirData[1] : 0.0;
+        double _t18 = _t12 > 0.0 ? 0.0 : -fromDirData[1];
+        double _t19 = _t12 > 0.0 ? -fromDirData[0] : fromDirData[2];
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
+        double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = (0.5 * _t22 > 1.0E-6 ? DoubleVector.zero(COL_SPECIES).withLane(0, _t15).withLane(1, _t16).withLane(2, _t17).withLane(3, 0.5).mul(DoubleVector.broadcast(COL_SPECIES, _t33).withLane(3, _t22 * _t33)) : (_t29 > 0.0 ? _sv0.fma(VEC_1, DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t18).withLane(1, _t20).withLane(2, _t19))) : _sv0));
+        var _col0 = (0.5 * _t22 > 1.0E-6 ? DoubleVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 > 0.0 ? _sv0.fma(VEC_1, DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
         _col0.intoArray(dd, 0);
         return this;
     }
@@ -3673,21 +3683,21 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dd = this.data;
         double[] fromDirData = ((Double3Impl) fromDir).data;
         double[] toDirData = ((Double3Impl) toDir).data;
-        double _t3 = fromDirData[2] + toDirData[2];
-        double _t4 = fromDirData[0] + toDirData[0];
-        double _t5 = fromDirData[1] + toDirData[1];
-        double _t13 = Math.fma(fromDirData[0], fromDirData[0], fromDirData[1] * fromDirData[1]);
-        double _t15 = Math.fma(fromDirData[1], toDirData[2], -(fromDirData[2] * toDirData[1]));
+        double _t2 = fromDirData[2] + toDirData[2];
+        double _t3 = fromDirData[0] + toDirData[0];
+        double _t4 = fromDirData[1] + toDirData[1];
+        double _t12 = Math.fma(fromDirData[0], fromDirData[0], fromDirData[1] * fromDirData[1]);
+        double _t14 = Math.fma(fromDirData[1], toDirData[2], -(fromDirData[2] * toDirData[1]));
+        double _t15 = Math.fma(fromDirData[0], toDirData[1], -(fromDirData[1] * toDirData[0]));
         double _t16 = Math.fma(fromDirData[2], toDirData[0], -(fromDirData[0] * toDirData[2]));
-        double _t17 = Math.fma(fromDirData[0], toDirData[1], -(fromDirData[1] * toDirData[0]));
-        double _t18 = _t13 > 0.0 ? fromDirData[1] : 0.0;
-        double _t19 = _t13 > 0.0 ? 0.0 : -fromDirData[1];
-        double _t20 = _t13 > 0.0 ? -fromDirData[0] : fromDirData[2];
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
-        double _t33 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
+        double _t17 = _t12 > 0.0 ? fromDirData[1] : 0.0;
+        double _t18 = _t12 > 0.0 ? 0.0 : -fromDirData[1];
+        double _t19 = _t12 > 0.0 ? -fromDirData[0] : fromDirData[2];
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
+        double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = (0.5 * _t22 > 1.0E-6 ? DoubleVector.zero(COL_SPECIES).withLane(0, _t15).withLane(1, _t16).withLane(2, _t17).withLane(3, 0.5).mul(DoubleVector.broadcast(COL_SPECIES, _t33).withLane(3, _t22 * _t33)) : (_t29 > 0.0 ? _sv0.mul(VEC_1).add(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t18).withLane(1, _t20).withLane(2, _t19))) : _sv0));
+        var _col0 = (0.5 * _t22 > 1.0E-6 ? DoubleVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 > 0.0 ? _sv0.mul(VEC_1).add(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
         _col0.intoArray(dd, 0);
         return this;
     }
@@ -3718,42 +3728,42 @@ public final class DoubleQuatImpl implements DoubleQuat {
 
     private DoubleQuat makeRotationTo_fma(double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ) {
         double[] dd = this.data;
-        double _t3 = fromDirZ + toDirZ;
-        double _t4 = fromDirX + toDirX;
-        double _t5 = fromDirY + toDirY;
-        double _t13 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
-        double _t15 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        double _t2 = fromDirZ + toDirZ;
+        double _t3 = fromDirX + toDirX;
+        double _t4 = fromDirY + toDirY;
+        double _t12 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        double _t14 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        double _t15 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
         double _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
-        double _t17 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
-        double _t18 = _t13 > 0.0 ? fromDirY : 0.0;
-        double _t19 = _t13 > 0.0 ? 0.0 : -fromDirY;
-        double _t20 = _t13 > 0.0 ? -fromDirX : fromDirZ;
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
-        double _t33 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
+        double _t17 = _t12 > 0.0 ? fromDirY : 0.0;
+        double _t18 = _t12 > 0.0 ? 0.0 : -fromDirY;
+        double _t19 = _t12 > 0.0 ? -fromDirX : fromDirZ;
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
+        double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = (0.5 * _t22 > 1.0E-6 ? DoubleVector.zero(COL_SPECIES).withLane(0, _t15).withLane(1, _t16).withLane(2, _t17).withLane(3, 0.5).mul(DoubleVector.broadcast(COL_SPECIES, _t33).withLane(3, _t22 * _t33)) : (_t29 > 0.0 ? _sv0.fma(VEC_1, DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t18).withLane(1, _t20).withLane(2, _t19))) : _sv0));
+        var _col0 = (0.5 * _t22 > 1.0E-6 ? DoubleVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 > 0.0 ? _sv0.fma(VEC_1, DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
         _col0.intoArray(dd, 0);
         return this;
     }
 
     private DoubleQuat makeRotationTo_mulAdd(double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ) {
         double[] dd = this.data;
-        double _t3 = fromDirZ + toDirZ;
-        double _t4 = fromDirX + toDirX;
-        double _t5 = fromDirY + toDirY;
-        double _t13 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
-        double _t15 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        double _t2 = fromDirZ + toDirZ;
+        double _t3 = fromDirX + toDirX;
+        double _t4 = fromDirY + toDirY;
+        double _t12 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        double _t14 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        double _t15 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
         double _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
-        double _t17 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
-        double _t18 = _t13 > 0.0 ? fromDirY : 0.0;
-        double _t19 = _t13 > 0.0 ? 0.0 : -fromDirY;
-        double _t20 = _t13 > 0.0 ? -fromDirX : fromDirZ;
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
-        double _t33 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
+        double _t17 = _t12 > 0.0 ? fromDirY : 0.0;
+        double _t18 = _t12 > 0.0 ? 0.0 : -fromDirY;
+        double _t19 = _t12 > 0.0 ? -fromDirX : fromDirZ;
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
+        double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = (0.5 * _t22 > 1.0E-6 ? DoubleVector.zero(COL_SPECIES).withLane(0, _t15).withLane(1, _t16).withLane(2, _t17).withLane(3, 0.5).mul(DoubleVector.broadcast(COL_SPECIES, _t33).withLane(3, _t22 * _t33)) : (_t29 > 0.0 ? _sv0.mul(VEC_1).add(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t18).withLane(1, _t20).withLane(2, _t19))) : _sv0));
+        var _col0 = (0.5 * _t22 > 1.0E-6 ? DoubleVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 > 0.0 ? _sv0.mul(VEC_1).add(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
         _col0.intoArray(dd, 0);
         return this;
     }
@@ -4174,7 +4184,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _buf0 = Math.fma(sd[0], _t1, sd[3] * _t3) + Math.fma(sd[1], _t4, -(sd[2] * _t5));
         double _buf1 = Math.fma(sd[1], _t1, sd[2] * _t3) + Math.fma(sd[3], _t5, -(sd[0] * _t4));
         double _buf2 = Math.fma(sd[0], _t5, sd[3] * _t4) + Math.fma(sd[2], _t1, -(sd[1] * _t3));
-        dd[3] = Math.fma(-sd[2], _t4, Math.fma(-sd[1], _t5, Math.fma(sd[3], _t1, -(sd[0] * _t3))));
+        dd[3] = Math.fma(sd[3], _t1, -(sd[0] * _t3)) - Math.fma(sd[1], _t5, sd[2] * _t4);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -4215,7 +4225,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _buf0 = Math.fma(sd[0], _t1, sd[3] * _t3) + Math.fma(sd[1], _t4, -(sd[2] * _t5));
         double _buf1 = Math.fma(sd[1], _t1, sd[2] * _t3) + Math.fma(sd[3], _t5, -(sd[0] * _t4));
         double _buf2 = Math.fma(sd[0], _t5, sd[3] * _t4) + Math.fma(sd[2], _t1, -(sd[1] * _t3));
-        dd[3] = Math.fma(-sd[2], _t4, Math.fma(-sd[1], _t5, Math.fma(sd[3], _t1, -(sd[0] * _t3))));
+        dd[3] = Math.fma(sd[3], _t1, -(sd[0] * _t3)) - Math.fma(sd[1], _t5, sd[2] * _t4);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -4247,51 +4257,51 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] fromDirData = ((Double3Impl) fromDir).data;
         double[] toDirData = ((Double3Impl) toDir).data;
         double[] dd = ((DoubleQuatImpl) dest).data;
-        double _t3 = fromDirData[2] + toDirData[2];
-        double _t4 = fromDirData[0] + toDirData[0];
-        double _t5 = fromDirData[1] + toDirData[1];
-        double _t13 = Math.fma(fromDirData[0], fromDirData[0], fromDirData[1] * fromDirData[1]);
+        double _t2 = fromDirData[2] + toDirData[2];
+        double _t3 = fromDirData[0] + toDirData[0];
+        double _t4 = fromDirData[1] + toDirData[1];
+        double _t12 = Math.fma(fromDirData[0], fromDirData[0], fromDirData[1] * fromDirData[1]);
+        double _t14 = Math.fma(fromDirData[0], toDirData[1], -(fromDirData[1] * toDirData[0]));
         double _t15 = Math.fma(fromDirData[1], toDirData[2], -(fromDirData[2] * toDirData[1]));
         double _t16 = Math.fma(fromDirData[2], toDirData[0], -(fromDirData[0] * toDirData[2]));
-        double _t17 = Math.fma(fromDirData[0], toDirData[1], -(fromDirData[1] * toDirData[0]));
-        double _t18, _t19, _t20;
-        if (_t13 > 0.0) {
-            _t18 = fromDirData[1];
-            _t19 = 0.0;
-            _t20 = -fromDirData[0];
-        } else {
+        double _t17, _t18, _t19;
+        if (_t12 > 0.0) {
+            _t17 = fromDirData[1];
             _t18 = 0.0;
-            _t19 = -fromDirData[1];
-            _t20 = fromDirData[2];
+            _t19 = -fromDirData[0];
+        } else {
+            _t17 = 0.0;
+            _t18 = -fromDirData[1];
+            _t19 = fromDirData[2];
         }
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         double _t23 = 0.5 * _t22;
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         double _t30 = (1.0 / Math.sqrt(_t29));
-        double _t36 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
-        double _t42, _t46, _t47, _t48;
+        double _t35 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))));
+        double _t41, _t45, _t46, _t47;
         if (_t23 > 1.0E-6) {
-            _t42 = 0.5 * _t22 * _t36;
-            _t46 = _t15 * _t36;
-            _t47 = _t17 * _t36;
-            _t48 = _t16 * _t36;
+            _t41 = 0.5 * _t22 * _t35;
+            _t45 = _t15 * _t35;
+            _t46 = _t14 * _t35;
+            _t47 = _t16 * _t35;
         } else {
             if (_t29 > 0.0) {
-                _t42 = 0.0;
+                _t41 = 0.0;
+                _t45 = _t30 * _t17;
                 _t46 = _t30 * _t18;
                 _t47 = _t30 * _t19;
-                _t48 = _t30 * _t20;
             } else {
-                _t42 = 0.0;
+                _t41 = 0.0;
+                _t45 = 0.0;
                 _t46 = 0.0;
                 _t47 = 0.0;
-                _t48 = 0.0;
             }
         }
-        double _buf0 = Math.fma(sd[0], _t42, sd[3] * _t46) + Math.fma(sd[1], _t47, -(sd[2] * _t48));
-        double _buf1 = Math.fma(sd[1], _t42, sd[2] * _t46) + Math.fma(sd[3], _t48, -(sd[0] * _t47));
-        double _buf2 = Math.fma(sd[0], _t48, sd[3] * _t47) + Math.fma(sd[2], _t42, -(sd[1] * _t46));
-        dd[3] = Math.fma(-sd[2], _t47, Math.fma(-sd[1], _t48, Math.fma(sd[3], _t42, -(sd[0] * _t46))));
+        double _buf0 = Math.fma(sd[0], _t41, sd[3] * _t45) + Math.fma(sd[1], _t46, -(sd[2] * _t47));
+        double _buf1 = Math.fma(sd[1], _t41, sd[2] * _t45) + Math.fma(sd[3], _t47, -(sd[0] * _t46));
+        double _buf2 = Math.fma(sd[0], _t47, sd[3] * _t46) + Math.fma(sd[2], _t41, -(sd[1] * _t45));
+        dd[3] = Math.fma(sd[3], _t41, -(sd[0] * _t45)) - Math.fma(sd[1], _t47, sd[2] * _t46);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -4326,51 +4336,51 @@ public final class DoubleQuatImpl implements DoubleQuat {
     public DoubleQuat rotateTo(double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ, @Mutated DoubleQuat dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
-        double _t3 = fromDirZ + toDirZ;
-        double _t4 = fromDirX + toDirX;
-        double _t5 = fromDirY + toDirY;
-        double _t13 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        double _t2 = fromDirZ + toDirZ;
+        double _t3 = fromDirX + toDirX;
+        double _t4 = fromDirY + toDirY;
+        double _t12 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        double _t14 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
         double _t15 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
         double _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
-        double _t17 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
-        double _t18, _t19, _t20;
-        if (_t13 > 0.0) {
-            _t18 = fromDirY;
-            _t19 = 0.0;
-            _t20 = -fromDirX;
-        } else {
+        double _t17, _t18, _t19;
+        if (_t12 > 0.0) {
+            _t17 = fromDirY;
             _t18 = 0.0;
-            _t19 = -fromDirY;
-            _t20 = fromDirZ;
+            _t19 = -fromDirX;
+        } else {
+            _t17 = 0.0;
+            _t18 = -fromDirY;
+            _t19 = fromDirZ;
         }
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         double _t23 = 0.5 * _t22;
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         double _t30 = (1.0 / Math.sqrt(_t29));
-        double _t36 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
-        double _t42, _t46, _t47, _t48;
+        double _t35 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))));
+        double _t41, _t45, _t46, _t47;
         if (_t23 > 1.0E-6) {
-            _t42 = 0.5 * _t22 * _t36;
-            _t46 = _t15 * _t36;
-            _t47 = _t17 * _t36;
-            _t48 = _t16 * _t36;
+            _t41 = 0.5 * _t22 * _t35;
+            _t45 = _t15 * _t35;
+            _t46 = _t14 * _t35;
+            _t47 = _t16 * _t35;
         } else {
             if (_t29 > 0.0) {
-                _t42 = 0.0;
+                _t41 = 0.0;
+                _t45 = _t30 * _t17;
                 _t46 = _t30 * _t18;
                 _t47 = _t30 * _t19;
-                _t48 = _t30 * _t20;
             } else {
-                _t42 = 0.0;
+                _t41 = 0.0;
+                _t45 = 0.0;
                 _t46 = 0.0;
                 _t47 = 0.0;
-                _t48 = 0.0;
             }
         }
-        double _buf0 = Math.fma(sd[0], _t42, sd[3] * _t46) + Math.fma(sd[1], _t47, -(sd[2] * _t48));
-        double _buf1 = Math.fma(sd[1], _t42, sd[2] * _t46) + Math.fma(sd[3], _t48, -(sd[0] * _t47));
-        double _buf2 = Math.fma(sd[0], _t48, sd[3] * _t47) + Math.fma(sd[2], _t42, -(sd[1] * _t46));
-        dd[3] = Math.fma(-sd[2], _t47, Math.fma(-sd[1], _t48, Math.fma(sd[3], _t42, -(sd[0] * _t46))));
+        double _buf0 = Math.fma(sd[0], _t41, sd[3] * _t45) + Math.fma(sd[1], _t46, -(sd[2] * _t47));
+        double _buf1 = Math.fma(sd[1], _t41, sd[2] * _t45) + Math.fma(sd[3], _t47, -(sd[0] * _t46));
+        double _buf2 = Math.fma(sd[0], _t47, sd[3] * _t46) + Math.fma(sd[2], _t41, -(sd[1] * _t45));
+        dd[3] = Math.fma(sd[3], _t41, -(sd[0] * _t45)) - Math.fma(sd[1], _t47, sd[2] * _t46);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -4451,7 +4461,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _buf0 = Math.fma(sd[0], _t21, sd[3] * _t19) + Math.fma(sd[1], _t20, -(sd[2] * _t22));
         double _buf1 = Math.fma(sd[1], _t21, sd[2] * _t19) + Math.fma(sd[3], _t22, -(sd[0] * _t20));
         double _buf2 = Math.fma(sd[0], _t22, sd[3] * _t20) + Math.fma(sd[2], _t21, -(sd[1] * _t19));
-        dd[3] = Math.fma(-sd[2], _t20, Math.fma(-sd[1], _t22, Math.fma(sd[3], _t21, -(sd[0] * _t19))));
+        dd[3] = Math.fma(sd[3], _t21, -(sd[0] * _t19)) - Math.fma(sd[1], _t22, sd[2] * _t20);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -4498,7 +4508,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _buf0 = Math.fma(sd[0], _t19, sd[3] * _t21) + Math.fma(sd[1], _t20, -(sd[2] * _t22));
         double _buf1 = Math.fma(sd[1], _t19, sd[2] * _t21) + Math.fma(sd[3], _t22, -(sd[0] * _t20));
         double _buf2 = Math.fma(sd[0], _t22, sd[3] * _t20) + Math.fma(sd[2], _t19, -(sd[1] * _t21));
-        dd[3] = Math.fma(-sd[2], _t20, Math.fma(-sd[1], _t22, Math.fma(sd[3], _t19, -(sd[0] * _t21))));
+        dd[3] = Math.fma(sd[3], _t19, -(sd[0] * _t21)) - Math.fma(sd[1], _t22, sd[2] * _t20);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -4579,7 +4589,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _buf0 = Math.fma(sd[0], _t19, sd[3] * _t20) + Math.fma(sd[1], _t21, -(sd[2] * _t22));
         double _buf1 = Math.fma(sd[1], _t19, sd[2] * _t20) + Math.fma(sd[3], _t22, -(sd[0] * _t21));
         double _buf2 = Math.fma(sd[0], _t22, sd[3] * _t21) + Math.fma(sd[2], _t19, -(sd[1] * _t20));
-        dd[3] = Math.fma(-sd[2], _t21, Math.fma(-sd[1], _t22, Math.fma(sd[3], _t19, -(sd[0] * _t20))));
+        dd[3] = Math.fma(sd[3], _t19, -(sd[0] * _t20)) - Math.fma(sd[1], _t22, sd[2] * _t21);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -4626,7 +4636,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _buf0 = Math.fma(sd[0], _t21, sd[3] * _t19) + Math.fma(sd[1], _t22, -(sd[2] * _t20));
         double _buf1 = Math.fma(sd[1], _t21, sd[2] * _t19) + Math.fma(sd[3], _t20, -(sd[0] * _t22));
         double _buf2 = Math.fma(sd[0], _t20, sd[3] * _t22) + Math.fma(sd[2], _t21, -(sd[1] * _t19));
-        dd[3] = Math.fma(-sd[2], _t22, Math.fma(-sd[1], _t20, Math.fma(sd[3], _t21, -(sd[0] * _t19))));
+        dd[3] = Math.fma(sd[3], _t21, -(sd[0] * _t19)) - Math.fma(sd[1], _t20, sd[2] * _t22);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -4707,7 +4717,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _buf0 = Math.fma(sd[0], _t21, sd[3] * _t22) + Math.fma(sd[1], _t19, -(sd[2] * _t20));
         double _buf1 = Math.fma(sd[1], _t21, sd[2] * _t22) + Math.fma(sd[3], _t20, -(sd[0] * _t19));
         double _buf2 = Math.fma(sd[0], _t20, sd[3] * _t19) + Math.fma(sd[2], _t21, -(sd[1] * _t22));
-        dd[3] = Math.fma(-sd[2], _t19, Math.fma(-sd[1], _t20, Math.fma(sd[3], _t21, -(sd[0] * _t22))));
+        dd[3] = Math.fma(sd[3], _t21, -(sd[0] * _t22)) - Math.fma(sd[1], _t20, sd[2] * _t19);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -4754,7 +4764,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _buf0 = Math.fma(sd[0], _t19, sd[3] * _t21) + Math.fma(sd[1], _t22, -(sd[2] * _t20));
         double _buf1 = Math.fma(sd[1], _t19, sd[2] * _t21) + Math.fma(sd[3], _t20, -(sd[0] * _t22));
         double _buf2 = Math.fma(sd[0], _t20, sd[3] * _t22) + Math.fma(sd[2], _t19, -(sd[1] * _t21));
-        dd[3] = Math.fma(-sd[2], _t22, Math.fma(-sd[1], _t20, Math.fma(sd[3], _t19, -(sd[0] * _t21))));
+        dd[3] = Math.fma(sd[3], _t19, -(sd[0] * _t21)) - Math.fma(sd[1], _t20, sd[2] * _t22);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;

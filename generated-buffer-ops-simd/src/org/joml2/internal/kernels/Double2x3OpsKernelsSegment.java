@@ -746,10 +746,10 @@ public final class Double2x3OpsKernelsSegment {
         double _t0_inv = 1.0 / _t0;
         double _t1 = top - bottom;
         double _t1_inv = 1.0 / _t1;
-        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, 2.0 * _t0_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, _t0_inv + _t0_inv);
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, 0.0);
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 16L, 0.0);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 24L, 2.0 * _t1_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 24L, _t1_inv + _t1_inv);
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 32L, -((left + right) * _t0_inv));
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 40L, -((bottom + top) * _t1_inv));
         return dest;
@@ -797,7 +797,7 @@ public final class Double2x3OpsKernelsSegment {
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
         double _t3 = Math.sin(0.5 * angle);
-        double _t5 = 2.0 * _t3 * _t3;
+        double _t5 = (_t3 + _t3) * _t3;
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(_self00, _t0, -(_self10 * _t1)));
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, Math.fma(_self00, _t1, _self10 * _t0));
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 16L, Math.fma(_self01, _t0, -(_self11 * _t1)));
@@ -827,7 +827,7 @@ public final class Double2x3OpsKernelsSegment {
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
         double _t3 = Math.sin(0.5 * angle);
-        double _t5 = 2.0 * _t3 * _t3;
+        double _t5 = (_t3 + _t3) * _t3;
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(_self00, _t0, -(_self10 * _t1)));
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, Math.fma(_self00, _t1, _self10 * _t0));
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 16L, Math.fma(_self01, _t0, -(_self11 * _t1)));
@@ -1086,7 +1086,7 @@ public final class Double2x3OpsKernelsSegment {
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
         double _t3 = Math.sin(0.5 * angle);
-        double _t8 = 2.0 * _t3 * _t3;
+        double _t8 = (_t3 + _t3) * _t3;
         double _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
         double _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(_self00, _t0, _self01 * _t1));
@@ -1118,7 +1118,7 @@ public final class Double2x3OpsKernelsSegment {
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
         double _t3 = Math.sin(0.5 * angle);
-        double _t8 = 2.0 * _t3 * _t3;
+        double _t8 = (_t3 + _t3) * _t3;
         double _t9 = Math.fma(_pivotx, _t8, _pivoty * _t1);
         double _t10 = Math.fma(_pivoty, _t8, -(_pivotx * _t1));
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(_self00, _t0, _self01 * _t1));
@@ -1380,10 +1380,10 @@ public final class Double2x3OpsKernelsSegment {
         double _t1_inv = 1.0 / _t1;
         double _t2 = left + right;
         double _t3 = bottom + top;
-        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, 2.0 * _self00 * _t0_inv);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, 2.0 * _self10 * _t0_inv);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 16L, 2.0 * _self01 * _t1_inv);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 24L, 2.0 * _self11 * _t1_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, (_self00 + _self00) * _t0_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, (_self10 + _self10) * _t0_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 16L, (_self01 + _self01) * _t1_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 24L, (_self11 + _self11) * _t1_inv);
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 32L, _self02 + (-(_self00 * _t2 * _t0_inv) - _self01 * _t3 * _t1_inv));
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 40L, _self12 + (-(_self10 * _t2 * _t0_inv) - _self11 * _t3 * _t1_inv));
         return dest;

@@ -112,13 +112,13 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * @return the resulting quaternion
      */
     public DoubleQuat invertProduct(double otherX, double otherY, double otherZ, double otherW) {
-        double _t21 = Math.fma(otherX, this.w, otherW * this.x) + Math.fma(otherZ, this.y, -(otherY * this.z));
+        double _t20 = Math.fma(otherX, this.w, otherW * this.x) + Math.fma(otherZ, this.y, -(otherY * this.z));
+        double _t21 = Math.fma(otherW, this.w, -(otherX * this.x)) - Math.fma(otherY, this.y, otherZ * this.z);
         double _t22 = Math.fma(otherY, this.x, otherZ * this.w) + Math.fma(otherW, this.z, -(otherX * this.y));
         double _t23 = Math.fma(otherX, this.z, otherW * this.y) + Math.fma(otherY, this.w, -(otherZ * this.x));
-        double _t24 = Math.fma(-otherZ, this.z, Math.fma(-otherY, this.y, Math.fma(otherW, this.w, -(otherX * this.x))));
-        double _t28 = Math.fma(_t24, _t24, Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t21 * _t21)));
-        double _t28_inv = 1.0 / _t28;
-        return new DoubleQuat(-(_t21 * _t28_inv), -(_t23 * _t28_inv), -(_t22 * _t28_inv), _t24 * _t28_inv);
+        double _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t20 * _t20)));
+        double _t27_inv = 1.0 / _t27;
+        return new DoubleQuat(-(_t20 * _t27_inv), -(_t23 * _t27_inv), -(_t22 * _t27_inv), _t21 * _t27_inv);
     }
 
 
@@ -492,7 +492,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
             _t13 = 0.0;
             _t14 = 0.0;
         }
-        return new DecomposeSwingTwistResult(new DoubleQuat(Math.fma(this.x, _t11, -(this.w * _t12)) + Math.fma(this.z, _t13, -(this.y * _t14)), Math.fma(this.x, _t14, -(this.w * _t13)) + Math.fma(this.y, _t11, -(this.z * _t12)), Math.fma(this.y, _t12, this.z * _t11) + Math.fma(-this.x, _t13, -(this.w * _t14)), Math.fma(this.z, _t14, Math.fma(this.y, _t13, Math.fma(this.x, _t12, this.w * _t11)))), new DoubleQuat(_t12, _t13, _t14, _t11));
+        return new DecomposeSwingTwistResult(new DoubleQuat(Math.fma(this.x, _t11, -(this.w * _t12)) + Math.fma(this.z, _t13, -(this.y * _t14)), Math.fma(this.x, _t14, -(this.w * _t13)) + Math.fma(this.y, _t11, -(this.z * _t12)), Math.fma(this.y, _t12, this.z * _t11) + Math.fma(-this.x, _t13, -(this.w * _t14)), Math.fma(this.x, _t12, this.w * _t11) - Math.fma(-this.z, _t14, -(this.y * _t13))), new DoubleQuat(_t12, _t13, _t14, _t11));
     }
 
 
@@ -544,7 +544,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
             _t13 = 0.0;
             _t14 = 0.0;
         }
-        return new DoubleQuat(Math.fma(this.x, _t11, -(this.w * _t12)) + Math.fma(this.z, _t13, -(this.y * _t14)), Math.fma(this.x, _t14, -(this.w * _t13)) + Math.fma(this.y, _t11, -(this.z * _t12)), Math.fma(this.y, _t12, this.z * _t11) + Math.fma(-this.x, _t13, -(this.w * _t14)), Math.fma(this.z, _t14, Math.fma(this.y, _t13, Math.fma(this.x, _t12, this.w * _t11))));
+        return new DoubleQuat(Math.fma(this.x, _t11, -(this.w * _t12)) + Math.fma(this.z, _t13, -(this.y * _t14)), Math.fma(this.x, _t14, -(this.w * _t13)) + Math.fma(this.y, _t11, -(this.z * _t12)), Math.fma(this.y, _t12, this.z * _t11) + Math.fma(-this.x, _t13, -(this.w * _t14)), Math.fma(this.x, _t12, this.w * _t11) - Math.fma(-this.z, _t14, -(this.y * _t13)));
     }
 
 
@@ -1024,7 +1024,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      */
     public DoubleQuat squad(double control0X, double control0Y, double control0Z, double control0W, double control1X, double control1Y, double control1Z, double control1W, double targetX, double targetY, double targetZ, double targetW, double t) {
         double _t0 = 1.0 - t;
-        double _t1 = 2.0 * t;
+        double _t1 = t + t;
         double _t13 = _t0 * _t1;
         double _t14 = Math.fma(-_t0, _t1, 1.0);
         double _t33 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(control0W, control1W, Math.fma(control0Z, control1Z, Math.fma(control0X, control1X, control0Y * control1Y))))));
@@ -1078,7 +1078,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * @return the resulting quaternion
      */
     public DoubleQuat mul(double otherX, double otherY, double otherZ, double otherW) {
-        return new DoubleQuat(Math.fma(otherX, this.w, otherW * this.x) + Math.fma(otherZ, this.y, -(otherY * this.z)), Math.fma(otherX, this.z, otherW * this.y) + Math.fma(otherY, this.w, -(otherZ * this.x)), Math.fma(otherY, this.x, otherZ * this.w) + Math.fma(otherW, this.z, -(otherX * this.y)), Math.fma(-otherZ, this.z, Math.fma(-otherY, this.y, Math.fma(otherW, this.w, -(otherX * this.x)))));
+        return new DoubleQuat(Math.fma(otherX, this.w, otherW * this.x) + Math.fma(otherZ, this.y, -(otherY * this.z)), Math.fma(otherX, this.z, otherW * this.y) + Math.fma(otherY, this.w, -(otherZ * this.x)), Math.fma(otherY, this.x, otherZ * this.w) + Math.fma(otherW, this.z, -(otherX * this.y)), Math.fma(otherW, this.w, -(otherX * this.x)) - Math.fma(otherY, this.y, otherZ * this.z));
     }
 
 
@@ -1117,7 +1117,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * @return the resulting quaternion
      */
     public DoubleQuat preMul(double otherX, double otherY, double otherZ, double otherW) {
-        return new DoubleQuat(Math.fma(otherX, this.w, otherW * this.x) + Math.fma(otherY, this.z, -(otherZ * this.y)), Math.fma(otherY, this.w, otherZ * this.x) + Math.fma(otherW, this.y, -(otherX * this.z)), Math.fma(otherX, this.y, otherW * this.z) + Math.fma(otherZ, this.w, -(otherY * this.x)), Math.fma(-otherZ, this.z, Math.fma(-otherY, this.y, Math.fma(otherW, this.w, -(otherX * this.x)))));
+        return new DoubleQuat(Math.fma(otherX, this.w, otherW * this.x) + Math.fma(otherY, this.z, -(otherZ * this.y)), Math.fma(otherY, this.w, otherZ * this.x) + Math.fma(otherW, this.y, -(otherX * this.z)), Math.fma(otherX, this.y, otherW * this.z) + Math.fma(otherZ, this.w, -(otherY * this.x)), Math.fma(otherW, this.w, -(otherX * this.x)) - Math.fma(otherY, this.y, otherZ * this.z));
     }
 
 
@@ -1257,12 +1257,11 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * @return the resulting quaternion
      */
     public DoubleQuat conjugateBy(double qX, double qY, double qZ, double qW) {
-        double _t1 = -qY;
-        double _t21 = Math.fma(qX, this.y, qW * this.z) + Math.fma(qZ, this.w, -(qY * this.x));
-        double _t22 = Math.fma(qY, this.w, qZ * this.x) + Math.fma(qW, this.y, -(qX * this.z));
-        double _t23 = Math.fma(qX, this.w, qW * this.x) + Math.fma(qY, this.z, -(qZ * this.y));
-        double _t24 = Math.fma(-qZ, this.z, Math.fma(_t1, this.y, Math.fma(qW, this.w, -(qX * this.x))));
-        return new DoubleQuat(Math.fma(qY, _t21, -(qZ * _t22)) + Math.fma(qW, _t23, -(qX * _t24)), Math.fma(qZ, _t23, -(qY * _t24)) + Math.fma(qW, _t22, -(qX * _t21)), Math.fma(qX, _t22, qW * _t21) + Math.fma(_t1, _t23, -(qZ * _t24)), Math.fma(qZ, _t21, Math.fma(qY, _t22, Math.fma(qX, _t23, qW * _t24))));
+        double _t20 = Math.fma(qX, this.y, qW * this.z) + Math.fma(qZ, this.w, -(qY * this.x));
+        double _t21 = Math.fma(qY, this.w, qZ * this.x) + Math.fma(qW, this.y, -(qX * this.z));
+        double _t22 = Math.fma(qX, this.w, qW * this.x) + Math.fma(qY, this.z, -(qZ * this.y));
+        double _t23 = Math.fma(qW, this.w, -(qX * this.x)) - Math.fma(qY, this.y, qZ * this.z);
+        return new DoubleQuat(Math.fma(qY, _t20, -(qZ * _t21)) + Math.fma(qW, _t22, -(qX * _t23)), Math.fma(qZ, _t22, -(qY * _t23)) + Math.fma(qW, _t21, -(qX * _t20)), Math.fma(qX, _t21, qW * _t20) + Math.fma(-qY, _t22, -(qZ * _t23)), Math.fma(qX, _t22, qW * _t23) - Math.fma(-qZ, _t20, -(qY * _t21)));
     }
 
 
@@ -1298,7 +1297,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     public DoubleQuat difference(double otherX, double otherY, double otherZ, double otherW) {
         double _t3 = Math.fma(this.w, this.w, Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y)));
         double _t3_inv = 1.0 / _t3;
-        return new DoubleQuat((Math.fma(otherX, this.w, -(otherW * this.x)) + Math.fma(otherY, this.z, -(otherZ * this.y))) * _t3_inv, -(otherW * this.y * _t3_inv) - otherX * this.z * _t3_inv + Math.fma(otherY, this.w, otherZ * this.x) * _t3_inv, (Math.fma(otherX, this.y, -(otherW * this.z)) + Math.fma(otherZ, this.w, -(otherY * this.x))) * _t3_inv, Math.fma(otherZ, this.z, Math.fma(otherY, this.y, Math.fma(otherX, this.x, otherW * this.w))) * _t3_inv);
+        return new DoubleQuat((Math.fma(otherX, this.w, -(otherW * this.x)) + Math.fma(otherY, this.z, -(otherZ * this.y))) * _t3_inv, -(otherW * this.y * _t3_inv) - otherX * this.z * _t3_inv + Math.fma(otherY, this.w, otherZ * this.x) * _t3_inv, (Math.fma(otherX, this.y, -(otherW * this.z)) + Math.fma(otherZ, this.w, -(otherY * this.x))) * _t3_inv, Math.fma(otherX, this.x, otherW * this.w) * _t3_inv - (-(otherY * this.y * _t3_inv) - otherZ * this.z * _t3_inv));
     }
 
 
@@ -1560,7 +1559,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
             _t16 = 0.0;
             _t17 = 0.0;
         }
-        return new DoubleQuat(Math.fma(this.x, _t9, this.w * _t15) + Math.fma(this.z, _t16, -(this.y * _t17)), Math.fma(this.x, _t17, this.w * _t16) + Math.fma(this.y, _t9, -(this.z * _t15)), Math.fma(this.y, _t15, this.z * _t9) + Math.fma(this.w, _t17, -(this.x * _t16)), Math.fma(-this.z, _t17, Math.fma(-this.y, _t16, Math.fma(this.w, _t9, -(this.x * _t15)))));
+        return new DoubleQuat(Math.fma(this.x, _t9, this.w * _t15) + Math.fma(this.z, _t16, -(this.y * _t17)), Math.fma(this.x, _t17, this.w * _t16) + Math.fma(this.y, _t9, -(this.z * _t15)), Math.fma(this.y, _t15, this.z * _t9) + Math.fma(this.w, _t17, -(this.x * _t16)), Math.fma(this.w, _t9, -(this.x * _t15)) - Math.fma(this.y, _t16, this.z * _t17));
     }
 
 
@@ -2375,7 +2374,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
                 }
             }
         }
-        return new DoubleQuat(Math.fma(this.x, _t110, this.w * _t111) + Math.fma(this.y, _t108, -(this.z * _t109)), Math.fma(this.y, _t110, this.z * _t111) + Math.fma(this.w, _t109, -(this.x * _t108)), Math.fma(this.x, _t109, this.w * _t108) + Math.fma(this.z, _t110, -(this.y * _t111)), Math.fma(-this.z, _t108, Math.fma(-this.y, _t109, Math.fma(this.w, _t110, -(this.x * _t111)))));
+        return new DoubleQuat(Math.fma(this.x, _t110, this.w * _t111) + Math.fma(this.y, _t108, -(this.z * _t109)), Math.fma(this.y, _t110, this.z * _t111) + Math.fma(this.w, _t109, -(this.x * _t108)), Math.fma(this.x, _t109, this.w * _t108) + Math.fma(this.z, _t110, -(this.y * _t111)), Math.fma(this.w, _t110, -(this.x * _t111)) - Math.fma(this.y, _t109, this.z * _t108));
     }
 
 
@@ -2541,33 +2540,33 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * @return the resulting quaternion
      */
     public static DoubleQuat makeRotationTo(double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ) {
-        double _t3 = fromDirZ + toDirZ;
-        double _t4 = fromDirX + toDirX;
-        double _t5 = fromDirY + toDirY;
-        double _t13 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
-        double _t15 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        double _t2 = fromDirZ + toDirZ;
+        double _t3 = fromDirX + toDirX;
+        double _t4 = fromDirY + toDirY;
+        double _t12 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        double _t14 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        double _t15 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
         double _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
-        double _t17 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
-        double _t18, _t19, _t20;
-        if (_t13 > 0.0) {
-            _t18 = fromDirY;
-            _t19 = 0.0;
-            _t20 = -fromDirX;
-        } else {
+        double _t17, _t18, _t19;
+        if (_t12 > 0.0) {
+            _t17 = fromDirY;
             _t18 = 0.0;
-            _t19 = -fromDirY;
-            _t20 = fromDirZ;
+            _t19 = -fromDirX;
+        } else {
+            _t17 = 0.0;
+            _t18 = -fromDirY;
+            _t19 = fromDirZ;
         }
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         double _t23 = 0.5 * _t22;
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         double _t30 = (1.0 / Math.sqrt(_t29));
-        double _t33 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
+        double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         if (_t23 > 1.0E-6) {
-            return new DoubleQuat(_t15 * _t33, _t16 * _t33, _t17 * _t33, 0.5 * _t22 * _t33);
+            return new DoubleQuat(_t14 * _t32, _t16 * _t32, _t15 * _t32, 0.5 * _t22 * _t32);
         } else {
             if (_t29 > 0.0) {
-                return new DoubleQuat(_t30 * _t18, _t30 * _t20, _t30 * _t19, 0.0);
+                return new DoubleQuat(_t30 * _t17, _t30 * _t19, _t30 * _t18, 0.0);
             } else {
                 return DoubleQuat.ZERO;
             }
@@ -2880,7 +2879,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t3 = axisX * _t2;
         double _t4 = axisZ * _t2;
         double _t5 = axisY * _t2;
-        return new DoubleQuat(Math.fma(this.x, _t1, this.w * _t3) + Math.fma(this.y, _t4, -(this.z * _t5)), Math.fma(this.y, _t1, this.z * _t3) + Math.fma(this.w, _t5, -(this.x * _t4)), Math.fma(this.x, _t5, this.w * _t4) + Math.fma(this.z, _t1, -(this.y * _t3)), Math.fma(-this.z, _t4, Math.fma(-this.y, _t5, Math.fma(this.w, _t1, -(this.x * _t3)))));
+        return new DoubleQuat(Math.fma(this.x, _t1, this.w * _t3) + Math.fma(this.y, _t4, -(this.z * _t5)), Math.fma(this.y, _t1, this.z * _t3) + Math.fma(this.w, _t5, -(this.x * _t4)), Math.fma(this.x, _t5, this.w * _t4) + Math.fma(this.z, _t1, -(this.y * _t3)), Math.fma(this.w, _t1, -(this.x * _t3)) - Math.fma(this.y, _t5, this.z * _t4));
     }
 
 
@@ -2907,27 +2906,27 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     }
 
     /** Private tail of {@code rotateTo}; reached only through it. */
-    private DoubleQuat rotateTo_s6ca4b61d_tail(double _t23, double _t22, double _t36, double _t15, double _t29, double _t30, double _t18, double _t17, double _t19, double _t16, double _t20) {
-        double _t42, _t46, _t47, _t48;
+    private DoubleQuat rotateTo_s6ca4b61d_tail(double _t23, double _t22, double _t35, double _t15, double _t29, double _t30, double _t17, double _t14, double _t18, double _t16, double _t19) {
+        double _t41, _t45, _t46, _t47;
         if (_t23 > 1.0E-6) {
-            _t42 = 0.5 * _t22 * _t36;
-            _t46 = _t15 * _t36;
-            _t47 = _t17 * _t36;
-            _t48 = _t16 * _t36;
+            _t41 = 0.5 * _t22 * _t35;
+            _t45 = _t15 * _t35;
+            _t46 = _t14 * _t35;
+            _t47 = _t16 * _t35;
         } else {
             if (_t29 > 0.0) {
-                _t42 = 0.0;
+                _t41 = 0.0;
+                _t45 = _t30 * _t17;
                 _t46 = _t30 * _t18;
                 _t47 = _t30 * _t19;
-                _t48 = _t30 * _t20;
             } else {
-                _t42 = 0.0;
+                _t41 = 0.0;
+                _t45 = 0.0;
                 _t46 = 0.0;
                 _t47 = 0.0;
-                _t48 = 0.0;
             }
         }
-        return new DoubleQuat(Math.fma(this.x, _t42, this.w * _t46) + Math.fma(this.y, _t47, -(this.z * _t48)), Math.fma(this.y, _t42, this.z * _t46) + Math.fma(this.w, _t48, -(this.x * _t47)), Math.fma(this.x, _t48, this.w * _t47) + Math.fma(this.z, _t42, -(this.y * _t46)), Math.fma(-this.z, _t47, Math.fma(-this.y, _t48, Math.fma(this.w, _t42, -(this.x * _t46)))));
+        return new DoubleQuat(Math.fma(this.x, _t41, this.w * _t45) + Math.fma(this.y, _t46, -(this.z * _t47)), Math.fma(this.y, _t41, this.z * _t45) + Math.fma(this.w, _t47, -(this.x * _t46)), Math.fma(this.x, _t47, this.w * _t46) + Math.fma(this.z, _t41, -(this.y * _t45)), Math.fma(this.w, _t41, -(this.x * _t45)) - Math.fma(this.y, _t47, this.z * _t46));
     }
 
 
@@ -2955,29 +2954,29 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * @return the resulting quaternion
      */
     public DoubleQuat rotateTo(double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ) {
-        double _t3 = fromDirZ + toDirZ;
-        double _t4 = fromDirX + toDirX;
-        double _t5 = fromDirY + toDirY;
-        double _t13 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        double _t2 = fromDirZ + toDirZ;
+        double _t3 = fromDirX + toDirX;
+        double _t4 = fromDirY + toDirY;
+        double _t12 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        double _t14 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
         double _t15 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
         double _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
-        double _t17 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
-        double _t18, _t19, _t20;
-        if (_t13 > 0.0) {
-            _t18 = fromDirY;
-            _t19 = 0.0;
-            _t20 = -fromDirX;
-        } else {
+        double _t17, _t18, _t19;
+        if (_t12 > 0.0) {
+            _t17 = fromDirY;
             _t18 = 0.0;
-            _t19 = -fromDirY;
-            _t20 = fromDirZ;
+            _t19 = -fromDirX;
+        } else {
+            _t17 = 0.0;
+            _t18 = -fromDirY;
+            _t19 = fromDirZ;
         }
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         double _t23 = 0.5 * _t22;
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         double _t30 = (1.0 / Math.sqrt(_t29));
-        double _t36 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
-        return rotateTo_s6ca4b61d_tail(_t23, _t22, _t36, _t15, _t29, _t30, _t18, _t17, _t19, _t16, _t20);
+        double _t35 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))));
+        return rotateTo_s6ca4b61d_tail(_t23, _t22, _t35, _t15, _t29, _t30, _t17, _t14, _t18, _t16, _t19);
     }
 
 
@@ -3028,7 +3027,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t20 = Math.fma(_t10, _t5, _t9 * _t8);
         double _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
         double _t22 = Math.fma(_t12, _t5, -(_t11 * _t8));
-        return new DoubleQuat(Math.fma(this.x, _t21, this.w * _t19) + Math.fma(this.y, _t20, -(this.z * _t22)), Math.fma(this.y, _t21, this.z * _t19) + Math.fma(this.w, _t22, -(this.x * _t20)), Math.fma(this.x, _t22, this.w * _t20) + Math.fma(this.z, _t21, -(this.y * _t19)), Math.fma(-this.z, _t20, Math.fma(-this.y, _t22, Math.fma(this.w, _t21, -(this.x * _t19)))));
+        return new DoubleQuat(Math.fma(this.x, _t21, this.w * _t19) + Math.fma(this.y, _t20, -(this.z * _t22)), Math.fma(this.y, _t21, this.z * _t19) + Math.fma(this.w, _t22, -(this.x * _t20)), Math.fma(this.x, _t22, this.w * _t20) + Math.fma(this.z, _t21, -(this.y * _t19)), Math.fma(this.w, _t21, -(this.x * _t19)) - Math.fma(this.y, _t22, this.z * _t20));
     }
 
 
@@ -3064,7 +3063,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t20 = Math.fma(_t11, _t5, _t12 * _t8);
         double _t21 = Math.fma(_t11, _t8, -(_t12 * _t5));
         double _t22 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        return new DoubleQuat(Math.fma(this.x, _t19, this.w * _t21) + Math.fma(this.y, _t20, -(this.z * _t22)), Math.fma(this.y, _t19, this.z * _t21) + Math.fma(this.w, _t22, -(this.x * _t20)), Math.fma(this.x, _t22, this.w * _t20) + Math.fma(this.z, _t19, -(this.y * _t21)), Math.fma(-this.z, _t20, Math.fma(-this.y, _t22, Math.fma(this.w, _t19, -(this.x * _t21)))));
+        return new DoubleQuat(Math.fma(this.x, _t19, this.w * _t21) + Math.fma(this.y, _t20, -(this.z * _t22)), Math.fma(this.y, _t19, this.z * _t21) + Math.fma(this.w, _t22, -(this.x * _t20)), Math.fma(this.x, _t22, this.w * _t20) + Math.fma(this.z, _t19, -(this.y * _t21)), Math.fma(this.w, _t19, -(this.x * _t21)) - Math.fma(this.y, _t22, this.z * _t20));
     }
 
 
@@ -3115,7 +3114,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t20 = Math.fma(_t11, _t8, _t12 * _t5);
         double _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
         double _t22 = Math.fma(_t12, _t8, -(_t11 * _t5));
-        return new DoubleQuat(Math.fma(this.x, _t19, this.w * _t20) + Math.fma(this.y, _t21, -(this.z * _t22)), Math.fma(this.y, _t19, this.z * _t20) + Math.fma(this.w, _t22, -(this.x * _t21)), Math.fma(this.x, _t22, this.w * _t21) + Math.fma(this.z, _t19, -(this.y * _t20)), Math.fma(-this.z, _t21, Math.fma(-this.y, _t22, Math.fma(this.w, _t19, -(this.x * _t20)))));
+        return new DoubleQuat(Math.fma(this.x, _t19, this.w * _t20) + Math.fma(this.y, _t21, -(this.z * _t22)), Math.fma(this.y, _t19, this.z * _t20) + Math.fma(this.w, _t22, -(this.x * _t21)), Math.fma(this.x, _t22, this.w * _t21) + Math.fma(this.z, _t19, -(this.y * _t20)), Math.fma(this.w, _t19, -(this.x * _t20)) - Math.fma(this.y, _t22, this.z * _t21));
     }
 
 
@@ -3151,7 +3150,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t20 = Math.fma(_t12, _t5, _t11 * _t8);
         double _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
         double _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
-        return new DoubleQuat(Math.fma(this.x, _t21, this.w * _t19) + Math.fma(this.y, _t22, -(this.z * _t20)), Math.fma(this.y, _t21, this.z * _t19) + Math.fma(this.w, _t20, -(this.x * _t22)), Math.fma(this.x, _t20, this.w * _t22) + Math.fma(this.z, _t21, -(this.y * _t19)), Math.fma(-this.z, _t22, Math.fma(-this.y, _t20, Math.fma(this.w, _t21, -(this.x * _t19)))));
+        return new DoubleQuat(Math.fma(this.x, _t21, this.w * _t19) + Math.fma(this.y, _t22, -(this.z * _t20)), Math.fma(this.y, _t21, this.z * _t19) + Math.fma(this.w, _t20, -(this.x * _t22)), Math.fma(this.x, _t20, this.w * _t22) + Math.fma(this.z, _t21, -(this.y * _t19)), Math.fma(this.w, _t21, -(this.x * _t19)) - Math.fma(this.y, _t20, this.z * _t22));
     }
 
 
@@ -3202,7 +3201,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t20 = Math.fma(_t10, _t5, _t9 * _t8);
         double _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
         double _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
-        return new DoubleQuat(Math.fma(this.x, _t21, this.w * _t22) + Math.fma(this.y, _t19, -(this.z * _t20)), Math.fma(this.y, _t21, this.z * _t22) + Math.fma(this.w, _t20, -(this.x * _t19)), Math.fma(this.x, _t20, this.w * _t19) + Math.fma(this.z, _t21, -(this.y * _t22)), Math.fma(-this.z, _t19, Math.fma(-this.y, _t20, Math.fma(this.w, _t21, -(this.x * _t22)))));
+        return new DoubleQuat(Math.fma(this.x, _t21, this.w * _t22) + Math.fma(this.y, _t19, -(this.z * _t20)), Math.fma(this.y, _t21, this.z * _t22) + Math.fma(this.w, _t20, -(this.x * _t19)), Math.fma(this.x, _t20, this.w * _t19) + Math.fma(this.z, _t21, -(this.y * _t22)), Math.fma(this.w, _t21, -(this.x * _t22)) - Math.fma(this.y, _t20, this.z * _t19));
     }
 
 
@@ -3238,7 +3237,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t20 = Math.fma(_t12, _t8, _t11 * _t5);
         double _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
         double _t22 = Math.fma(_t11, _t8, -(_t12 * _t5));
-        return new DoubleQuat(Math.fma(this.x, _t19, this.w * _t21) + Math.fma(this.y, _t22, -(this.z * _t20)), Math.fma(this.y, _t19, this.z * _t21) + Math.fma(this.w, _t20, -(this.x * _t22)), Math.fma(this.x, _t20, this.w * _t22) + Math.fma(this.z, _t19, -(this.y * _t21)), Math.fma(-this.z, _t22, Math.fma(-this.y, _t20, Math.fma(this.w, _t19, -(this.x * _t21)))));
+        return new DoubleQuat(Math.fma(this.x, _t19, this.w * _t21) + Math.fma(this.y, _t22, -(this.z * _t20)), Math.fma(this.y, _t19, this.z * _t21) + Math.fma(this.w, _t20, -(this.x * _t22)), Math.fma(this.x, _t20, this.w * _t22) + Math.fma(this.z, _t19, -(this.y * _t21)), Math.fma(this.w, _t19, -(this.x * _t21)) - Math.fma(this.y, _t20, this.z * _t22));
     }
 
 

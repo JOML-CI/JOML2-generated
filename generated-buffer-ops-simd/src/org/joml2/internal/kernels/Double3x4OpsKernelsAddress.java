@@ -1075,9 +1075,9 @@ public final class Double3x4OpsKernelsAddress {
     }
 
     public static long makeFromTransform_unsafe(long dest, double tTX, double tTY, double tTZ, double tRX, double tRY, double tRZ, double tRW, double tSX, double tSY, double tSZ) {
-        double _t0 = 2.0 * tSX;
-        double _t1 = 2.0 * tSY;
-        double _t2 = 2.0 * tSZ;
+        double _t0 = tSX + tSX;
+        double _t1 = tSY + tSY;
+        double _t2 = tSZ + tSZ;
         double _t3 = tRZ * tRZ;
         double _t4 = tRZ * tRW;
         double _t5 = tRY * tRW;
@@ -2062,9 +2062,9 @@ public final class Double3x4OpsKernelsAddress {
     }
 
     public static long composeTRS_unsafe(long dest, double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ) {
-        double _t0 = 2.0 * scaleX;
-        double _t1 = 2.0 * scaleY;
-        double _t2 = 2.0 * scaleZ;
+        double _t0 = scaleX + scaleX;
+        double _t1 = scaleY + scaleY;
+        double _t2 = scaleZ + scaleZ;
         double _t3 = rotationZ * rotationZ;
         double _t4 = rotationZ * rotationW;
         double _t5 = rotationY * rotationW;
@@ -2094,9 +2094,9 @@ public final class Double3x4OpsKernelsAddress {
         double _scalex = UnsafeOpsHolder.U.getDouble(scale + 0L);
         double _scaley = UnsafeOpsHolder.U.getDouble(scale + 8L);
         double _scalez = UnsafeOpsHolder.U.getDouble(scale + 16L);
-        double _t0 = 2.0 * _scalex;
-        double _t1 = 2.0 * _scaley;
-        double _t2 = 2.0 * _scalez;
+        double _t0 = _scalex + _scalex;
+        double _t1 = _scaley + _scaley;
+        double _t2 = _scalez + _scalez;
         double _t3 = _rotationz * _rotationz;
         double _t4 = _rotationz * _rotationw;
         double _t5 = _rotationy * _rotationw;
@@ -2128,9 +2128,9 @@ public final class Double3x4OpsKernelsAddress {
         double _m21 = UnsafeOpsHolder.U.getDouble(m + 72L);
         double _m22 = UnsafeOpsHolder.U.getDouble(m + 80L);
         double _m23 = UnsafeOpsHolder.U.getDouble(m + 88L);
-        double _t0 = 2.0 * scaleZ;
-        double _t1 = 2.0 * scaleX;
-        double _t2 = 2.0 * scaleY;
+        double _t0 = scaleZ + scaleZ;
+        double _t1 = scaleX + scaleX;
+        double _t2 = scaleY + scaleY;
         double _t3 = rotationY * rotationW;
         double _t4 = rotationZ * rotationZ;
         double _t5 = rotationZ * rotationW;
@@ -2181,9 +2181,9 @@ public final class Double3x4OpsKernelsAddress {
         double _m21 = UnsafeOpsHolder.U.getDouble(m + 72L);
         double _m22 = UnsafeOpsHolder.U.getDouble(m + 80L);
         double _m23 = UnsafeOpsHolder.U.getDouble(m + 88L);
-        double _t0 = 2.0 * _scalez;
-        double _t1 = 2.0 * _scalex;
-        double _t2 = 2.0 * _scaley;
+        double _t0 = _scalez + _scalez;
+        double _t1 = _scalex + _scalex;
+        double _t2 = _scaley + _scaley;
         double _t3 = _rotationy * _rotationw;
         double _t4 = _rotationz * _rotationz;
         double _t5 = _rotationz * _rotationw;
@@ -2846,8 +2846,8 @@ public final class Double3x4OpsKernelsAddress {
         double _t12 = (1.0 / Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
         double _t13 = _t0 * _t12;
         double _t14 = _t3 * _t12;
-        double _t15 = 2.0 * _t13;
-        double _t16 = 2.0 * _t14;
+        double _t15 = _t13 + _t13;
+        double _t16 = _t14 + _t14;
         double _t17 = -_t15;
         double _t19 = _t10 * _t12;
         double _t20 = _t16 * _t13;
@@ -2884,8 +2884,8 @@ public final class Double3x4OpsKernelsAddress {
         double _t12 = (1.0 / Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
         double _t13 = _t0 * _t12;
         double _t14 = _t3 * _t12;
-        double _t15 = 2.0 * _t13;
-        double _t16 = 2.0 * _t14;
+        double _t15 = _t13 + _t13;
+        double _t16 = _t14 + _t14;
         double _t17 = -_t15;
         double _t19 = _t10 * _t12;
         double _t20 = _t16 * _t13;
@@ -2915,14 +2915,14 @@ public final class Double3x4OpsKernelsAddress {
         double _t5 = dqRY * dqRZ;
         double _t6 = Math.fma(-2.0, dqRZ * dqRZ, 1.0);
         UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(-2.0, _t0, _t6));
-        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(-2.0, _t2, 2.0 * dqRX * dqRY));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(-2.0, _t2, (dqRX + dqRX) * dqRY));
         UnsafeOpsHolder.U.putDouble(dest + 16L, 2.0 * Math.fma(dqRX, dqRZ, _t3));
         UnsafeOpsHolder.U.putDouble(dest + 24L, 2.0 * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW))));
         UnsafeOpsHolder.U.putDouble(dest + 32L, 2.0 * Math.fma(dqRX, dqRY, _t2));
         UnsafeOpsHolder.U.putDouble(dest + 40L, Math.fma(-2.0, _t4, _t6));
-        UnsafeOpsHolder.U.putDouble(dest + 48L, Math.fma(-2.0, dqRX * dqRW, 2.0 * _t5));
+        UnsafeOpsHolder.U.putDouble(dest + 48L, Math.fma(-2.0, dqRX * dqRW, _t5 + _t5));
         UnsafeOpsHolder.U.putDouble(dest + 56L, 2.0 * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW))));
-        UnsafeOpsHolder.U.putDouble(dest + 64L, Math.fma(-2.0, _t3, 2.0 * dqRX * dqRZ));
+        UnsafeOpsHolder.U.putDouble(dest + 64L, Math.fma(-2.0, _t3, (dqRX + dqRX) * dqRZ));
         UnsafeOpsHolder.U.putDouble(dest + 72L, 2.0 * Math.fma(dqRX, dqRW, _t5));
         UnsafeOpsHolder.U.putDouble(dest + 80L, Math.fma(-2.0, _t4, Math.fma(-2.0, _t0, 1.0)));
         UnsafeOpsHolder.U.putDouble(dest + 88L, 2.0 * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW))));
@@ -3936,9 +3936,9 @@ public final class Double3x4OpsKernelsAddress {
     }
 
     public static long makeReflection_unsafe(long dest, double normalX, double normalY, double normalZ) {
-        double _t6 = -(2.0 * normalX * normalY);
-        double _t7 = -(2.0 * normalX * normalZ);
-        double _t8 = -(2.0 * normalY * normalZ);
+        double _t6 = -((normalX + normalX) * normalY);
+        double _t7 = -((normalX + normalX) * normalZ);
+        double _t8 = -((normalY + normalY) * normalZ);
         UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(-2.0, normalX * normalX, 1.0));
         UnsafeOpsHolder.U.putDouble(dest + 8L, _t6);
         UnsafeOpsHolder.U.putDouble(dest + 16L, _t7);
@@ -3958,9 +3958,9 @@ public final class Double3x4OpsKernelsAddress {
         double _normalx = UnsafeOpsHolder.U.getDouble(normal + 0L);
         double _normaly = UnsafeOpsHolder.U.getDouble(normal + 8L);
         double _normalz = UnsafeOpsHolder.U.getDouble(normal + 16L);
-        double _t6 = -(2.0 * _normalx * _normaly);
-        double _t7 = -(2.0 * _normalx * _normalz);
-        double _t8 = -(2.0 * _normaly * _normalz);
+        double _t6 = -((_normalx + _normalx) * _normaly);
+        double _t7 = -((_normalx + _normalx) * _normalz);
+        double _t8 = -((_normaly + _normaly) * _normalz);
         UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(-2.0, _normalx * _normalx, 1.0));
         UnsafeOpsHolder.U.putDouble(dest + 8L, _t6);
         UnsafeOpsHolder.U.putDouble(dest + 16L, _t7);
@@ -5170,9 +5170,9 @@ public final class Double3x4OpsKernelsAddress {
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotX;
-        double _t5 = 2.0 * rotY;
-        double _t6 = 2.0 * rotZ;
+        double _t4 = rotX + rotX;
+        double _t5 = rotY + rotY;
+        double _t6 = rotZ + rotZ;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t6;
         double _t9 = rotZ * _t6;
@@ -5225,9 +5225,9 @@ public final class Double3x4OpsKernelsAddress {
         double _t0 = -_roty;
         double _t2 = -_pivotz;
         double _t3 = -_rotx;
-        double _t4 = 2.0 * _rotx;
-        double _t5 = 2.0 * _roty;
-        double _t6 = 2.0 * _rotz;
+        double _t4 = _rotx + _rotx;
+        double _t5 = _roty + _roty;
+        double _t6 = _rotz + _rotz;
         double _t7 = _rotw * _t5;
         double _t8 = _rotw * _t6;
         double _t9 = _rotz * _t6;
@@ -5361,9 +5361,9 @@ public final class Double3x4OpsKernelsAddress {
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 88L);
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -5411,9 +5411,9 @@ public final class Double3x4OpsKernelsAddress {
         double _qw = UnsafeOpsHolder.U.getDouble(q + 24L);
         double _t0 = -_qy;
         double _t2 = -_qx;
-        double _t3 = 2.0 * _qx;
-        double _t4 = 2.0 * _qy;
-        double _t5 = 2.0 * _qz;
+        double _t3 = _qx + _qx;
+        double _t4 = _qy + _qy;
+        double _t5 = _qz + _qz;
         double _t6 = _qw * _t4;
         double _t7 = _qw * _t5;
         double _t8 = _qw * _t3;
@@ -5795,9 +5795,9 @@ public final class Double3x4OpsKernelsAddress {
         double _t0 = -_self02;
         double _t1 = -_self12;
         double _t2 = -_self22;
-        double _t9 = 2.0 * normalX * normalZ;
-        double _t10 = 2.0 * normalX * normalY;
-        double _t11 = 2.0 * normalY * normalZ;
+        double _t9 = (normalX + normalX) * normalZ;
+        double _t10 = (normalX + normalX) * normalY;
+        double _t11 = (normalY + normalY) * normalZ;
         double _t12 = Math.fma(-2.0, normalX * normalX, 1.0);
         double _t13 = Math.fma(-2.0, normalY * normalY, 1.0);
         double _t14 = Math.fma(-2.0, normalZ * normalZ, 1.0);
@@ -5835,9 +5835,9 @@ public final class Double3x4OpsKernelsAddress {
         double _t0 = -_self02;
         double _t1 = -_self12;
         double _t2 = -_self22;
-        double _t9 = 2.0 * _normalx * _normalz;
-        double _t10 = 2.0 * _normalx * _normaly;
-        double _t11 = 2.0 * _normaly * _normalz;
+        double _t9 = (_normalx + _normalx) * _normalz;
+        double _t10 = (_normalx + _normalx) * _normaly;
+        double _t11 = (_normaly + _normaly) * _normalz;
         double _t12 = Math.fma(-2.0, _normalx * _normalx, 1.0);
         double _t13 = Math.fma(-2.0, _normaly * _normaly, 1.0);
         double _t14 = Math.fma(-2.0, _normalz * _normalz, 1.0);
@@ -5872,9 +5872,9 @@ public final class Double3x4OpsKernelsAddress {
         double _t0 = -rotY;
         double _t2 = -rotX;
         double _t3 = -pivotZ;
-        double _t5 = 2.0 * rotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
+        double _t5 = rotX + rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
         double _t8 = rotW * _t6;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t5;
@@ -5930,9 +5930,9 @@ public final class Double3x4OpsKernelsAddress {
         double _t0 = -_roty;
         double _t2 = -_rotx;
         double _t3 = -_pivotz;
-        double _t5 = 2.0 * _rotx;
-        double _t6 = 2.0 * _roty;
-        double _t7 = 2.0 * _rotz;
+        double _t5 = _rotx + _rotx;
+        double _t6 = _roty + _roty;
+        double _t7 = _rotz + _rotz;
         double _t8 = _rotw * _t6;
         double _t9 = _rotw * _t7;
         double _t10 = _rotw * _t5;
@@ -6069,9 +6069,9 @@ public final class Double3x4OpsKernelsAddress {
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 88L);
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -6119,9 +6119,9 @@ public final class Double3x4OpsKernelsAddress {
         double _qw = UnsafeOpsHolder.U.getDouble(q + 24L);
         double _t0 = -_qy;
         double _t2 = -_qx;
-        double _t3 = 2.0 * _qx;
-        double _t4 = 2.0 * _qy;
-        double _t5 = 2.0 * _qz;
+        double _t3 = _qx + _qx;
+        double _t4 = _qy + _qy;
+        double _t5 = _qz + _qz;
         double _t6 = _qw * _t4;
         double _t7 = _qw * _t5;
         double _t8 = _qw * _t3;

@@ -130,16 +130,16 @@ public final class DoubleQuatOps {
         double _selfy = src[srcOffset + 1];
         double _selfz = src[srcOffset + 2];
         double _selfw = src[srcOffset + 3];
-        double _t21 = Math.fma(otherX, _selfw, otherW * _selfx) + Math.fma(otherZ, _selfy, -(otherY * _selfz));
+        double _t20 = Math.fma(otherX, _selfw, otherW * _selfx) + Math.fma(otherZ, _selfy, -(otherY * _selfz));
+        double _t21 = Math.fma(otherW, _selfw, -(otherX * _selfx)) - Math.fma(otherY, _selfy, otherZ * _selfz);
         double _t22 = Math.fma(otherY, _selfx, otherZ * _selfw) + Math.fma(otherW, _selfz, -(otherX * _selfy));
         double _t23 = Math.fma(otherX, _selfz, otherW * _selfy) + Math.fma(otherY, _selfw, -(otherZ * _selfx));
-        double _t24 = Math.fma(-otherZ, _selfz, Math.fma(-otherY, _selfy, Math.fma(otherW, _selfw, -(otherX * _selfx))));
-        double _t28 = Math.fma(_t24, _t24, Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t21 * _t21)));
-        double _t28_inv = 1.0 / _t28;
-        dest[destOffset + 0] = -(_t21 * _t28_inv);
-        dest[destOffset + 1] = -(_t23 * _t28_inv);
-        dest[destOffset + 2] = -(_t22 * _t28_inv);
-        dest[destOffset + 3] = _t24 * _t28_inv;
+        double _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t20 * _t20)));
+        double _t27_inv = 1.0 / _t27;
+        dest[destOffset + 0] = -(_t20 * _t27_inv);
+        dest[destOffset + 1] = -(_t23 * _t27_inv);
+        dest[destOffset + 2] = -(_t22 * _t27_inv);
+        dest[destOffset + 3] = _t21 * _t27_inv;
         return dest;
     }
 
@@ -183,16 +183,16 @@ public final class DoubleQuatOps {
         double _othery = other[otherOffset + 1];
         double _otherz = other[otherOffset + 2];
         double _otherw = other[otherOffset + 3];
-        double _t21 = Math.fma(_otherx, _selfw, _otherw * _selfx) + Math.fma(_otherz, _selfy, -(_othery * _selfz));
+        double _t20 = Math.fma(_otherx, _selfw, _otherw * _selfx) + Math.fma(_otherz, _selfy, -(_othery * _selfz));
+        double _t21 = Math.fma(_otherw, _selfw, -(_otherx * _selfx)) - Math.fma(_othery, _selfy, _otherz * _selfz);
         double _t22 = Math.fma(_othery, _selfx, _otherz * _selfw) + Math.fma(_otherw, _selfz, -(_otherx * _selfy));
         double _t23 = Math.fma(_otherx, _selfz, _otherw * _selfy) + Math.fma(_othery, _selfw, -(_otherz * _selfx));
-        double _t24 = Math.fma(-_otherz, _selfz, Math.fma(-_othery, _selfy, Math.fma(_otherw, _selfw, -(_otherx * _selfx))));
-        double _t28 = Math.fma(_t24, _t24, Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t21 * _t21)));
-        double _t28_inv = 1.0 / _t28;
-        dest[destOffset + 0] = -(_t21 * _t28_inv);
-        dest[destOffset + 1] = -(_t23 * _t28_inv);
-        dest[destOffset + 2] = -(_t22 * _t28_inv);
-        dest[destOffset + 3] = _t24 * _t28_inv;
+        double _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t20 * _t20)));
+        double _t27_inv = 1.0 / _t27;
+        dest[destOffset + 0] = -(_t20 * _t27_inv);
+        dest[destOffset + 1] = -(_t23 * _t27_inv);
+        dest[destOffset + 2] = -(_t22 * _t27_inv);
+        dest[destOffset + 3] = _t21 * _t27_inv;
         return dest;
     }
 
@@ -872,7 +872,7 @@ public final class DoubleQuatOps {
         swing[swingOffset + 0] = Math.fma(_selfx, _t11, -(_selfw * _t12)) + Math.fma(_selfz, _t13, -(_selfy * _t14));
         swing[swingOffset + 1] = Math.fma(_selfx, _t14, -(_selfw * _t13)) + Math.fma(_selfy, _t11, -(_selfz * _t12));
         swing[swingOffset + 2] = Math.fma(_selfy, _t12, _selfz * _t11) + Math.fma(-_selfx, _t13, -(_selfw * _t14));
-        swing[swingOffset + 3] = Math.fma(_selfz, _t14, Math.fma(_selfy, _t13, Math.fma(_selfx, _t12, _selfw * _t11)));
+        swing[swingOffset + 3] = Math.fma(_selfx, _t12, _selfw * _t11) - Math.fma(-_selfz, _t14, -(_selfy * _t13));
         twist[twistOffset + 0] = _t12;
         twist[twistOffset + 1] = _t13;
         twist[twistOffset + 2] = _t14;
@@ -945,7 +945,7 @@ public final class DoubleQuatOps {
         swing[swingOffset + 0] = Math.fma(_selfx, _t11, -(_selfw * _t12)) + Math.fma(_selfz, _t13, -(_selfy * _t14));
         swing[swingOffset + 1] = Math.fma(_selfx, _t14, -(_selfw * _t13)) + Math.fma(_selfy, _t11, -(_selfz * _t12));
         swing[swingOffset + 2] = Math.fma(_selfy, _t12, _selfz * _t11) + Math.fma(-_selfx, _t13, -(_selfw * _t14));
-        swing[swingOffset + 3] = Math.fma(_selfz, _t14, Math.fma(_selfy, _t13, Math.fma(_selfx, _t12, _selfw * _t11)));
+        swing[swingOffset + 3] = Math.fma(_selfx, _t12, _selfw * _t11) - Math.fma(-_selfz, _t14, -(_selfy * _t13));
         twist[twistOffset + 0] = _t12;
         twist[twistOffset + 1] = _t13;
         twist[twistOffset + 2] = _t14;
@@ -1015,7 +1015,7 @@ public final class DoubleQuatOps {
         dest[destOffset + 0] = Math.fma(_selfx, _t11, -(_selfw * _t12)) + Math.fma(_selfz, _t13, -(_selfy * _t14));
         dest[destOffset + 1] = Math.fma(_selfx, _t14, -(_selfw * _t13)) + Math.fma(_selfy, _t11, -(_selfz * _t12));
         dest[destOffset + 2] = Math.fma(_selfy, _t12, _selfz * _t11) + Math.fma(-_selfx, _t13, -(_selfw * _t14));
-        dest[destOffset + 3] = Math.fma(_selfz, _t14, Math.fma(_selfy, _t13, Math.fma(_selfx, _t12, _selfw * _t11)));
+        dest[destOffset + 3] = Math.fma(_selfx, _t12, _selfw * _t11) - Math.fma(-_selfz, _t14, -(_selfy * _t13));
         return dest;
     }
 
@@ -1080,7 +1080,7 @@ public final class DoubleQuatOps {
         dest[destOffset + 0] = Math.fma(_selfx, _t11, -(_selfw * _t12)) + Math.fma(_selfz, _t13, -(_selfy * _t14));
         dest[destOffset + 1] = Math.fma(_selfx, _t14, -(_selfw * _t13)) + Math.fma(_selfy, _t11, -(_selfz * _t12));
         dest[destOffset + 2] = Math.fma(_selfy, _t12, _selfz * _t11) + Math.fma(-_selfx, _t13, -(_selfw * _t14));
-        dest[destOffset + 3] = Math.fma(_selfz, _t14, Math.fma(_selfy, _t13, Math.fma(_selfx, _t12, _selfw * _t11)));
+        dest[destOffset + 3] = Math.fma(_selfx, _t12, _selfw * _t11) - Math.fma(-_selfz, _t14, -(_selfy * _t13));
         return dest;
     }
 
@@ -1888,7 +1888,7 @@ public final class DoubleQuatOps {
         double _selfz = src[srcOffset + 2];
         double _selfw = src[srcOffset + 3];
         double _t0 = 1.0 - t;
-        double _t1 = 2.0 * t;
+        double _t1 = t + t;
         double _t13 = _t0 * _t1;
         double _t14 = Math.fma(-_t0, _t1, 1.0);
         double _t33 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(control0W, control1W, Math.fma(control0Z, control1Z, Math.fma(control0X, control1X, control0Y * control1Y))))));
@@ -2004,7 +2004,7 @@ public final class DoubleQuatOps {
         double _targetz = target[targetOffset + 2];
         double _targetw = target[targetOffset + 3];
         double _t0 = 1.0 - t;
-        double _t1 = 2.0 * t;
+        double _t1 = t + t;
         double _t13 = _t0 * _t1;
         double _t14 = Math.fma(-_t0, _t1, 1.0);
         double _t33 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(_control0w, _control1w, Math.fma(_control0z, _control1z, Math.fma(_control0x, _control1x, _control0y * _control1y))))));
@@ -2111,7 +2111,7 @@ public final class DoubleQuatOps {
         dest[destOffset + 0] = Math.fma(otherX, _selfw, otherW * _selfx) + Math.fma(otherZ, _selfy, -(otherY * _selfz));
         dest[destOffset + 1] = Math.fma(otherX, _selfz, otherW * _selfy) + Math.fma(otherY, _selfw, -(otherZ * _selfx));
         dest[destOffset + 2] = Math.fma(otherY, _selfx, otherZ * _selfw) + Math.fma(otherW, _selfz, -(otherX * _selfy));
-        dest[destOffset + 3] = Math.fma(-otherZ, _selfz, Math.fma(-otherY, _selfy, Math.fma(otherW, _selfw, -(otherX * _selfx))));
+        dest[destOffset + 3] = Math.fma(otherW, _selfw, -(otherX * _selfx)) - Math.fma(otherY, _selfy, otherZ * _selfz);
         return dest;
     }
 
@@ -2161,7 +2161,7 @@ public final class DoubleQuatOps {
         dest[destOffset + 0] = Math.fma(_otherx, _selfw, _otherw * _selfx) + Math.fma(_otherz, _selfy, -(_othery * _selfz));
         dest[destOffset + 1] = Math.fma(_otherx, _selfz, _otherw * _selfy) + Math.fma(_othery, _selfw, -(_otherz * _selfx));
         dest[destOffset + 2] = Math.fma(_othery, _selfx, _otherz * _selfw) + Math.fma(_otherw, _selfz, -(_otherx * _selfy));
-        dest[destOffset + 3] = Math.fma(-_otherz, _selfz, Math.fma(-_othery, _selfy, Math.fma(_otherw, _selfw, -(_otherx * _selfx))));
+        dest[destOffset + 3] = Math.fma(_otherw, _selfw, -(_otherx * _selfx)) - Math.fma(_othery, _selfy, _otherz * _selfz);
         return dest;
     }
 
@@ -2214,7 +2214,7 @@ public final class DoubleQuatOps {
         dest[destOffset + 0] = Math.fma(otherX, _selfw, otherW * _selfx) + Math.fma(otherY, _selfz, -(otherZ * _selfy));
         dest[destOffset + 1] = Math.fma(otherY, _selfw, otherZ * _selfx) + Math.fma(otherW, _selfy, -(otherX * _selfz));
         dest[destOffset + 2] = Math.fma(otherX, _selfy, otherW * _selfz) + Math.fma(otherZ, _selfw, -(otherY * _selfx));
-        dest[destOffset + 3] = Math.fma(-otherZ, _selfz, Math.fma(-otherY, _selfy, Math.fma(otherW, _selfw, -(otherX * _selfx))));
+        dest[destOffset + 3] = Math.fma(otherW, _selfw, -(otherX * _selfx)) - Math.fma(otherY, _selfy, otherZ * _selfz);
         return dest;
     }
 
@@ -2265,7 +2265,7 @@ public final class DoubleQuatOps {
         dest[destOffset + 0] = Math.fma(_otherx, _selfw, _otherw * _selfx) + Math.fma(_othery, _selfz, -(_otherz * _selfy));
         dest[destOffset + 1] = Math.fma(_othery, _selfw, _otherz * _selfx) + Math.fma(_otherw, _selfy, -(_otherx * _selfz));
         dest[destOffset + 2] = Math.fma(_otherx, _selfy, _otherw * _selfz) + Math.fma(_otherz, _selfw, -(_othery * _selfx));
-        dest[destOffset + 3] = Math.fma(-_otherz, _selfz, Math.fma(-_othery, _selfy, Math.fma(_otherw, _selfw, -(_otherx * _selfx))));
+        dest[destOffset + 3] = Math.fma(_otherw, _selfw, -(_otherx * _selfx)) - Math.fma(_othery, _selfy, _otherz * _selfz);
         return dest;
     }
 
@@ -2599,15 +2599,14 @@ public final class DoubleQuatOps {
         double _selfy = src[srcOffset + 1];
         double _selfz = src[srcOffset + 2];
         double _selfw = src[srcOffset + 3];
-        double _t1 = -qY;
-        double _t21 = Math.fma(qX, _selfy, qW * _selfz) + Math.fma(qZ, _selfw, -(qY * _selfx));
-        double _t22 = Math.fma(qY, _selfw, qZ * _selfx) + Math.fma(qW, _selfy, -(qX * _selfz));
-        double _t23 = Math.fma(qX, _selfw, qW * _selfx) + Math.fma(qY, _selfz, -(qZ * _selfy));
-        double _t24 = Math.fma(-qZ, _selfz, Math.fma(_t1, _selfy, Math.fma(qW, _selfw, -(qX * _selfx))));
-        dest[destOffset + 0] = Math.fma(qY, _t21, -(qZ * _t22)) + Math.fma(qW, _t23, -(qX * _t24));
-        dest[destOffset + 1] = Math.fma(qZ, _t23, -(qY * _t24)) + Math.fma(qW, _t22, -(qX * _t21));
-        dest[destOffset + 2] = Math.fma(qX, _t22, qW * _t21) + Math.fma(_t1, _t23, -(qZ * _t24));
-        dest[destOffset + 3] = Math.fma(qZ, _t21, Math.fma(qY, _t22, Math.fma(qX, _t23, qW * _t24)));
+        double _t20 = Math.fma(qX, _selfy, qW * _selfz) + Math.fma(qZ, _selfw, -(qY * _selfx));
+        double _t21 = Math.fma(qY, _selfw, qZ * _selfx) + Math.fma(qW, _selfy, -(qX * _selfz));
+        double _t22 = Math.fma(qX, _selfw, qW * _selfx) + Math.fma(qY, _selfz, -(qZ * _selfy));
+        double _t23 = Math.fma(qW, _selfw, -(qX * _selfx)) - Math.fma(qY, _selfy, qZ * _selfz);
+        dest[destOffset + 0] = Math.fma(qY, _t20, -(qZ * _t21)) + Math.fma(qW, _t22, -(qX * _t23));
+        dest[destOffset + 1] = Math.fma(qZ, _t22, -(qY * _t23)) + Math.fma(qW, _t21, -(qX * _t20));
+        dest[destOffset + 2] = Math.fma(qX, _t21, qW * _t20) + Math.fma(-qY, _t22, -(qZ * _t23));
+        dest[destOffset + 3] = Math.fma(qX, _t22, qW * _t23) - Math.fma(-qZ, _t20, -(qY * _t21));
         return dest;
     }
 
@@ -2652,15 +2651,14 @@ public final class DoubleQuatOps {
         double _qy = q[qOffset + 1];
         double _qz = q[qOffset + 2];
         double _qw = q[qOffset + 3];
-        double _t1 = -_qy;
-        double _t21 = Math.fma(_qx, _selfy, _qw * _selfz) + Math.fma(_qz, _selfw, -(_qy * _selfx));
-        double _t22 = Math.fma(_qy, _selfw, _qz * _selfx) + Math.fma(_qw, _selfy, -(_qx * _selfz));
-        double _t23 = Math.fma(_qx, _selfw, _qw * _selfx) + Math.fma(_qy, _selfz, -(_qz * _selfy));
-        double _t24 = Math.fma(-_qz, _selfz, Math.fma(_t1, _selfy, Math.fma(_qw, _selfw, -(_qx * _selfx))));
-        dest[destOffset + 0] = Math.fma(_qy, _t21, -(_qz * _t22)) + Math.fma(_qw, _t23, -(_qx * _t24));
-        dest[destOffset + 1] = Math.fma(_qz, _t23, -(_qy * _t24)) + Math.fma(_qw, _t22, -(_qx * _t21));
-        dest[destOffset + 2] = Math.fma(_qx, _t22, _qw * _t21) + Math.fma(_t1, _t23, -(_qz * _t24));
-        dest[destOffset + 3] = Math.fma(_qz, _t21, Math.fma(_qy, _t22, Math.fma(_qx, _t23, _qw * _t24)));
+        double _t20 = Math.fma(_qx, _selfy, _qw * _selfz) + Math.fma(_qz, _selfw, -(_qy * _selfx));
+        double _t21 = Math.fma(_qy, _selfw, _qz * _selfx) + Math.fma(_qw, _selfy, -(_qx * _selfz));
+        double _t22 = Math.fma(_qx, _selfw, _qw * _selfx) + Math.fma(_qy, _selfz, -(_qz * _selfy));
+        double _t23 = Math.fma(_qw, _selfw, -(_qx * _selfx)) - Math.fma(_qy, _selfy, _qz * _selfz);
+        dest[destOffset + 0] = Math.fma(_qy, _t20, -(_qz * _t21)) + Math.fma(_qw, _t22, -(_qx * _t23));
+        dest[destOffset + 1] = Math.fma(_qz, _t22, -(_qy * _t23)) + Math.fma(_qw, _t21, -(_qx * _t20));
+        dest[destOffset + 2] = Math.fma(_qx, _t21, _qw * _t20) + Math.fma(-_qy, _t22, -(_qz * _t23));
+        dest[destOffset + 3] = Math.fma(_qx, _t22, _qw * _t23) - Math.fma(-_qz, _t20, -(_qy * _t21));
         return dest;
     }
 
@@ -2703,8 +2701,17 @@ public final class DoubleQuatOps {
      * @return {@code dest}
      */
     public static double[] difference(double[] dest, int destOffset, double[] src, int srcOffset, double otherX, double otherY, double otherZ, double otherW) {
-        if (SimdSupport.VECTOR_API) return DoubleQuatOpsSimd.difference(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
-        return DoubleQuatOpsKernelsArray.difference_scalar(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
+        double _selfx = src[srcOffset + 0];
+        double _selfy = src[srcOffset + 1];
+        double _selfz = src[srcOffset + 2];
+        double _selfw = src[srcOffset + 3];
+        double _t3 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
+        double _t3_inv = 1.0 / _t3;
+        dest[destOffset + 0] = (Math.fma(otherX, _selfw, -(otherW * _selfx)) + Math.fma(otherY, _selfz, -(otherZ * _selfy))) * _t3_inv;
+        dest[destOffset + 1] = -(otherW * _selfy * _t3_inv) - otherX * _selfz * _t3_inv + Math.fma(otherY, _selfw, otherZ * _selfx) * _t3_inv;
+        dest[destOffset + 2] = (Math.fma(otherX, _selfy, -(otherW * _selfz)) + Math.fma(otherZ, _selfw, -(otherY * _selfx))) * _t3_inv;
+        dest[destOffset + 3] = Math.fma(otherX, _selfx, otherW * _selfw) * _t3_inv - (-(otherY * _selfy * _t3_inv) - otherZ * _selfz * _t3_inv);
+        return dest;
     }
 
     /** {@link #difference(double[], int, double[], int, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
@@ -2741,8 +2748,21 @@ public final class DoubleQuatOps {
      * @return {@code dest}
      */
     public static double[] difference(double[] dest, int destOffset, double[] src, int srcOffset, double[] other, int otherOffset) {
-        if (SimdSupport.VECTOR_API) return DoubleQuatOpsSimd.difference(dest, destOffset, src, srcOffset, other, otherOffset);
-        return DoubleQuatOpsKernelsArray.difference_scalar(dest, destOffset, src, srcOffset, other, otherOffset);
+        double _selfx = src[srcOffset + 0];
+        double _selfy = src[srcOffset + 1];
+        double _selfz = src[srcOffset + 2];
+        double _selfw = src[srcOffset + 3];
+        double _otherx = other[otherOffset + 0];
+        double _othery = other[otherOffset + 1];
+        double _otherz = other[otherOffset + 2];
+        double _otherw = other[otherOffset + 3];
+        double _t3 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
+        double _t3_inv = 1.0 / _t3;
+        dest[destOffset + 0] = (Math.fma(_otherx, _selfw, -(_otherw * _selfx)) + Math.fma(_othery, _selfz, -(_otherz * _selfy))) * _t3_inv;
+        dest[destOffset + 1] = -(_otherw * _selfy * _t3_inv) - _otherx * _selfz * _t3_inv + Math.fma(_othery, _selfw, _otherz * _selfx) * _t3_inv;
+        dest[destOffset + 2] = (Math.fma(_otherx, _selfy, -(_otherw * _selfz)) + Math.fma(_otherz, _selfw, -(_othery * _selfx))) * _t3_inv;
+        dest[destOffset + 3] = Math.fma(_otherx, _selfx, _otherw * _selfw) * _t3_inv - (-(_othery * _selfy * _t3_inv) - _otherz * _selfz * _t3_inv);
+        return dest;
     }
 
     /** {@link #difference(double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
@@ -3266,7 +3286,7 @@ public final class DoubleQuatOps {
         dest[destOffset + 0] = Math.fma(_selfx, _t9, _selfw * _t15) + Math.fma(_selfz, _t16, -(_selfy * _t17));
         dest[destOffset + 1] = Math.fma(_selfx, _t17, _selfw * _t16) + Math.fma(_selfy, _t9, -(_selfz * _t15));
         dest[destOffset + 2] = Math.fma(_selfy, _t15, _selfz * _t9) + Math.fma(_selfw, _t17, -(_selfx * _t16));
-        dest[destOffset + 3] = Math.fma(-_selfz, _t17, Math.fma(-_selfy, _t16, Math.fma(_selfw, _t9, -(_selfx * _t15))));
+        dest[destOffset + 3] = Math.fma(_selfw, _t9, -(_selfx * _t15)) - Math.fma(_selfy, _t16, _selfz * _t17);
         return dest;
     }
 
@@ -3332,7 +3352,7 @@ public final class DoubleQuatOps {
         dest[destOffset + 0] = Math.fma(_selfx, _t9, _selfw * _t15) + Math.fma(_selfz, _t16, -(_selfy * _t17));
         dest[destOffset + 1] = Math.fma(_selfx, _t17, _selfw * _t16) + Math.fma(_selfy, _t9, -(_selfz * _t15));
         dest[destOffset + 2] = Math.fma(_selfy, _t15, _selfz * _t9) + Math.fma(_selfw, _t17, -(_selfx * _t16));
-        dest[destOffset + 3] = Math.fma(-_selfz, _t17, Math.fma(-_selfy, _t16, Math.fma(_selfw, _t9, -(_selfx * _t15))));
+        dest[destOffset + 3] = Math.fma(_selfw, _t9, -(_selfx * _t15)) - Math.fma(_selfy, _t16, _selfz * _t17);
         return dest;
     }
 
@@ -5054,7 +5074,7 @@ public final class DoubleQuatOps {
         dest[destOffset + 0] = Math.fma(_selfx, _t110, _selfw * _t111) + Math.fma(_selfy, _t108, -(_selfz * _t109));
         dest[destOffset + 1] = Math.fma(_selfy, _t110, _selfz * _t111) + Math.fma(_selfw, _t109, -(_selfx * _t108));
         dest[destOffset + 2] = Math.fma(_selfx, _t109, _selfw * _t108) + Math.fma(_selfz, _t110, -(_selfy * _t111));
-        dest[destOffset + 3] = Math.fma(-_selfz, _t108, Math.fma(-_selfy, _t109, Math.fma(_selfw, _t110, -(_selfx * _t111))));
+        dest[destOffset + 3] = Math.fma(_selfw, _t110, -(_selfx * _t111)) - Math.fma(_selfy, _t109, _selfz * _t108);
         return dest;
     }
 
@@ -5184,7 +5204,7 @@ public final class DoubleQuatOps {
         dest[destOffset + 0] = Math.fma(_selfx, _t110, _selfw * _t111) + Math.fma(_selfy, _t108, -(_selfz * _t109));
         dest[destOffset + 1] = Math.fma(_selfy, _t110, _selfz * _t111) + Math.fma(_selfw, _t109, -(_selfx * _t108));
         dest[destOffset + 2] = Math.fma(_selfx, _t109, _selfw * _t108) + Math.fma(_selfz, _t110, -(_selfy * _t111));
-        dest[destOffset + 3] = Math.fma(-_selfz, _t108, Math.fma(-_selfy, _t109, Math.fma(_selfw, _t110, -(_selfx * _t111))));
+        dest[destOffset + 3] = Math.fma(_selfw, _t110, -(_selfx * _t111)) - Math.fma(_selfy, _t109, _selfz * _t108);
         return dest;
     }
 
@@ -6024,7 +6044,7 @@ public final class DoubleQuatOps {
         dest[destOffset + 0] = Math.fma(_selfx, _t1, _selfw * _t3) + Math.fma(_selfy, _t4, -(_selfz * _t5));
         dest[destOffset + 1] = Math.fma(_selfy, _t1, _selfz * _t3) + Math.fma(_selfw, _t5, -(_selfx * _t4));
         dest[destOffset + 2] = Math.fma(_selfx, _t5, _selfw * _t4) + Math.fma(_selfz, _t1, -(_selfy * _t3));
-        dest[destOffset + 3] = Math.fma(-_selfz, _t4, Math.fma(-_selfy, _t5, Math.fma(_selfw, _t1, -(_selfx * _t3))));
+        dest[destOffset + 3] = Math.fma(_selfw, _t1, -(_selfx * _t3)) - Math.fma(_selfy, _t5, _selfz * _t4);
         return dest;
     }
 
@@ -6081,7 +6101,7 @@ public final class DoubleQuatOps {
         dest[destOffset + 0] = Math.fma(_selfx, _t1, _selfw * _t3) + Math.fma(_selfy, _t4, -(_selfz * _t5));
         dest[destOffset + 1] = Math.fma(_selfy, _t1, _selfz * _t3) + Math.fma(_selfw, _t5, -(_selfx * _t4));
         dest[destOffset + 2] = Math.fma(_selfx, _t5, _selfw * _t4) + Math.fma(_selfz, _t1, -(_selfy * _t3));
-        dest[destOffset + 3] = Math.fma(-_selfz, _t4, Math.fma(-_selfy, _t5, Math.fma(_selfw, _t1, -(_selfx * _t3))));
+        dest[destOffset + 3] = Math.fma(_selfw, _t1, -(_selfx * _t3)) - Math.fma(_selfy, _t5, _selfz * _t4);
         return dest;
     }
 
@@ -6135,51 +6155,51 @@ public final class DoubleQuatOps {
         double _selfy = src[srcOffset + 1];
         double _selfz = src[srcOffset + 2];
         double _selfw = src[srcOffset + 3];
-        double _t3 = fromDirZ + toDirZ;
-        double _t4 = fromDirX + toDirX;
-        double _t5 = fromDirY + toDirY;
-        double _t13 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        double _t2 = fromDirZ + toDirZ;
+        double _t3 = fromDirX + toDirX;
+        double _t4 = fromDirY + toDirY;
+        double _t12 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        double _t14 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
         double _t15 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
         double _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
-        double _t17 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
-        double _t18, _t19, _t20;
-        if (_t13 > 0.0) {
-            _t18 = fromDirY;
-            _t19 = 0.0;
-            _t20 = -fromDirX;
-        } else {
+        double _t17, _t18, _t19;
+        if (_t12 > 0.0) {
+            _t17 = fromDirY;
             _t18 = 0.0;
-            _t19 = -fromDirY;
-            _t20 = fromDirZ;
+            _t19 = -fromDirX;
+        } else {
+            _t17 = 0.0;
+            _t18 = -fromDirY;
+            _t19 = fromDirZ;
         }
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         double _t23 = 0.5 * _t22;
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         double _t30 = (1.0 / Math.sqrt(_t29));
-        double _t36 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
-        double _t42, _t46, _t47, _t48;
+        double _t35 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))));
+        double _t41, _t45, _t46, _t47;
         if (_t23 > 1.0E-6) {
-            _t42 = 0.5 * _t22 * _t36;
-            _t46 = _t15 * _t36;
-            _t47 = _t17 * _t36;
-            _t48 = _t16 * _t36;
+            _t41 = 0.5 * _t22 * _t35;
+            _t45 = _t15 * _t35;
+            _t46 = _t14 * _t35;
+            _t47 = _t16 * _t35;
         } else {
             if (_t29 > 0.0) {
-                _t42 = 0.0;
+                _t41 = 0.0;
+                _t45 = _t30 * _t17;
                 _t46 = _t30 * _t18;
                 _t47 = _t30 * _t19;
-                _t48 = _t30 * _t20;
             } else {
-                _t42 = 0.0;
+                _t41 = 0.0;
+                _t45 = 0.0;
                 _t46 = 0.0;
                 _t47 = 0.0;
-                _t48 = 0.0;
             }
         }
-        dest[destOffset + 0] = Math.fma(_selfx, _t42, _selfw * _t46) + Math.fma(_selfy, _t47, -(_selfz * _t48));
-        dest[destOffset + 1] = Math.fma(_selfy, _t42, _selfz * _t46) + Math.fma(_selfw, _t48, -(_selfx * _t47));
-        dest[destOffset + 2] = Math.fma(_selfx, _t48, _selfw * _t47) + Math.fma(_selfz, _t42, -(_selfy * _t46));
-        dest[destOffset + 3] = Math.fma(-_selfz, _t47, Math.fma(-_selfy, _t48, Math.fma(_selfw, _t42, -(_selfx * _t46))));
+        dest[destOffset + 0] = Math.fma(_selfx, _t41, _selfw * _t45) + Math.fma(_selfy, _t46, -(_selfz * _t47));
+        dest[destOffset + 1] = Math.fma(_selfy, _t41, _selfz * _t45) + Math.fma(_selfw, _t47, -(_selfx * _t46));
+        dest[destOffset + 2] = Math.fma(_selfx, _t47, _selfw * _t46) + Math.fma(_selfz, _t41, -(_selfy * _t45));
+        dest[destOffset + 3] = Math.fma(_selfw, _t41, -(_selfx * _t45)) - Math.fma(_selfy, _t47, _selfz * _t46);
         return dest;
     }
 
@@ -6237,51 +6257,51 @@ public final class DoubleQuatOps {
         double _toDirx = toDir[toDirOffset + 0];
         double _toDiry = toDir[toDirOffset + 1];
         double _toDirz = toDir[toDirOffset + 2];
-        double _t3 = _fromDirz + _toDirz;
-        double _t4 = _fromDirx + _toDirx;
-        double _t5 = _fromDiry + _toDiry;
-        double _t13 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
+        double _t2 = _fromDirz + _toDirz;
+        double _t3 = _fromDirx + _toDirx;
+        double _t4 = _fromDiry + _toDiry;
+        double _t12 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
+        double _t14 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
         double _t15 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
         double _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
-        double _t17 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
-        double _t18, _t19, _t20;
-        if (_t13 > 0.0) {
-            _t18 = _fromDiry;
-            _t19 = 0.0;
-            _t20 = -_fromDirx;
-        } else {
+        double _t17, _t18, _t19;
+        if (_t12 > 0.0) {
+            _t17 = _fromDiry;
             _t18 = 0.0;
-            _t19 = -_fromDiry;
-            _t20 = _fromDirz;
+            _t19 = -_fromDirx;
+        } else {
+            _t17 = 0.0;
+            _t18 = -_fromDiry;
+            _t19 = _fromDirz;
         }
-        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         double _t23 = 0.5 * _t22;
-        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         double _t30 = (1.0 / Math.sqrt(_t29));
-        double _t36 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
-        double _t42, _t46, _t47, _t48;
+        double _t35 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))));
+        double _t41, _t45, _t46, _t47;
         if (_t23 > 1.0E-6) {
-            _t42 = 0.5 * _t22 * _t36;
-            _t46 = _t15 * _t36;
-            _t47 = _t17 * _t36;
-            _t48 = _t16 * _t36;
+            _t41 = 0.5 * _t22 * _t35;
+            _t45 = _t15 * _t35;
+            _t46 = _t14 * _t35;
+            _t47 = _t16 * _t35;
         } else {
             if (_t29 > 0.0) {
-                _t42 = 0.0;
+                _t41 = 0.0;
+                _t45 = _t30 * _t17;
                 _t46 = _t30 * _t18;
                 _t47 = _t30 * _t19;
-                _t48 = _t30 * _t20;
             } else {
-                _t42 = 0.0;
+                _t41 = 0.0;
+                _t45 = 0.0;
                 _t46 = 0.0;
                 _t47 = 0.0;
-                _t48 = 0.0;
             }
         }
-        dest[destOffset + 0] = Math.fma(_selfx, _t42, _selfw * _t46) + Math.fma(_selfy, _t47, -(_selfz * _t48));
-        dest[destOffset + 1] = Math.fma(_selfy, _t42, _selfz * _t46) + Math.fma(_selfw, _t48, -(_selfx * _t47));
-        dest[destOffset + 2] = Math.fma(_selfx, _t48, _selfw * _t47) + Math.fma(_selfz, _t42, -(_selfy * _t46));
-        dest[destOffset + 3] = Math.fma(-_selfz, _t47, Math.fma(-_selfy, _t48, Math.fma(_selfw, _t42, -(_selfx * _t46))));
+        dest[destOffset + 0] = Math.fma(_selfx, _t41, _selfw * _t45) + Math.fma(_selfy, _t46, -(_selfz * _t47));
+        dest[destOffset + 1] = Math.fma(_selfy, _t41, _selfz * _t45) + Math.fma(_selfw, _t47, -(_selfx * _t46));
+        dest[destOffset + 2] = Math.fma(_selfx, _t47, _selfw * _t46) + Math.fma(_selfz, _t41, -(_selfy * _t45));
+        dest[destOffset + 3] = Math.fma(_selfw, _t41, -(_selfx * _t45)) - Math.fma(_selfy, _t47, _selfz * _t46);
         return dest;
     }
 
@@ -6393,7 +6413,7 @@ public final class DoubleQuatOps {
         dest[destOffset + 0] = Math.fma(_selfx, _t21, _selfw * _t19) + Math.fma(_selfy, _t20, -(_selfz * _t22));
         dest[destOffset + 1] = Math.fma(_selfy, _t21, _selfz * _t19) + Math.fma(_selfw, _t22, -(_selfx * _t20));
         dest[destOffset + 2] = Math.fma(_selfx, _t22, _selfw * _t20) + Math.fma(_selfz, _t21, -(_selfy * _t19));
-        dest[destOffset + 3] = Math.fma(-_selfz, _t20, Math.fma(-_selfy, _t22, Math.fma(_selfw, _t21, -(_selfx * _t19))));
+        dest[destOffset + 3] = Math.fma(_selfw, _t21, -(_selfx * _t19)) - Math.fma(_selfy, _t22, _selfz * _t20);
         return dest;
     }
 
@@ -6460,7 +6480,7 @@ public final class DoubleQuatOps {
         dest[destOffset + 0] = Math.fma(_selfx, _t19, _selfw * _t21) + Math.fma(_selfy, _t20, -(_selfz * _t22));
         dest[destOffset + 1] = Math.fma(_selfy, _t19, _selfz * _t21) + Math.fma(_selfw, _t22, -(_selfx * _t20));
         dest[destOffset + 2] = Math.fma(_selfx, _t22, _selfw * _t20) + Math.fma(_selfz, _t19, -(_selfy * _t21));
-        dest[destOffset + 3] = Math.fma(-_selfz, _t20, Math.fma(-_selfy, _t22, Math.fma(_selfw, _t19, -(_selfx * _t21))));
+        dest[destOffset + 3] = Math.fma(_selfw, _t19, -(_selfx * _t21)) - Math.fma(_selfy, _t22, _selfz * _t20);
         return dest;
     }
 
@@ -6572,7 +6592,7 @@ public final class DoubleQuatOps {
         dest[destOffset + 0] = Math.fma(_selfx, _t19, _selfw * _t20) + Math.fma(_selfy, _t21, -(_selfz * _t22));
         dest[destOffset + 1] = Math.fma(_selfy, _t19, _selfz * _t20) + Math.fma(_selfw, _t22, -(_selfx * _t21));
         dest[destOffset + 2] = Math.fma(_selfx, _t22, _selfw * _t21) + Math.fma(_selfz, _t19, -(_selfy * _t20));
-        dest[destOffset + 3] = Math.fma(-_selfz, _t21, Math.fma(-_selfy, _t22, Math.fma(_selfw, _t19, -(_selfx * _t20))));
+        dest[destOffset + 3] = Math.fma(_selfw, _t19, -(_selfx * _t20)) - Math.fma(_selfy, _t22, _selfz * _t21);
         return dest;
     }
 
@@ -6639,7 +6659,7 @@ public final class DoubleQuatOps {
         dest[destOffset + 0] = Math.fma(_selfx, _t21, _selfw * _t19) + Math.fma(_selfy, _t22, -(_selfz * _t20));
         dest[destOffset + 1] = Math.fma(_selfy, _t21, _selfz * _t19) + Math.fma(_selfw, _t20, -(_selfx * _t22));
         dest[destOffset + 2] = Math.fma(_selfx, _t20, _selfw * _t22) + Math.fma(_selfz, _t21, -(_selfy * _t19));
-        dest[destOffset + 3] = Math.fma(-_selfz, _t22, Math.fma(-_selfy, _t20, Math.fma(_selfw, _t21, -(_selfx * _t19))));
+        dest[destOffset + 3] = Math.fma(_selfw, _t21, -(_selfx * _t19)) - Math.fma(_selfy, _t20, _selfz * _t22);
         return dest;
     }
 
@@ -6751,7 +6771,7 @@ public final class DoubleQuatOps {
         dest[destOffset + 0] = Math.fma(_selfx, _t21, _selfw * _t22) + Math.fma(_selfy, _t19, -(_selfz * _t20));
         dest[destOffset + 1] = Math.fma(_selfy, _t21, _selfz * _t22) + Math.fma(_selfw, _t20, -(_selfx * _t19));
         dest[destOffset + 2] = Math.fma(_selfx, _t20, _selfw * _t19) + Math.fma(_selfz, _t21, -(_selfy * _t22));
-        dest[destOffset + 3] = Math.fma(-_selfz, _t19, Math.fma(-_selfy, _t20, Math.fma(_selfw, _t21, -(_selfx * _t22))));
+        dest[destOffset + 3] = Math.fma(_selfw, _t21, -(_selfx * _t22)) - Math.fma(_selfy, _t20, _selfz * _t19);
         return dest;
     }
 
@@ -6818,7 +6838,7 @@ public final class DoubleQuatOps {
         dest[destOffset + 0] = Math.fma(_selfx, _t19, _selfw * _t21) + Math.fma(_selfy, _t22, -(_selfz * _t20));
         dest[destOffset + 1] = Math.fma(_selfy, _t19, _selfz * _t21) + Math.fma(_selfw, _t20, -(_selfx * _t22));
         dest[destOffset + 2] = Math.fma(_selfx, _t20, _selfw * _t22) + Math.fma(_selfz, _t19, -(_selfy * _t21));
-        dest[destOffset + 3] = Math.fma(-_selfz, _t22, Math.fma(-_selfy, _t20, Math.fma(_selfw, _t19, -(_selfx * _t21))));
+        dest[destOffset + 3] = Math.fma(_selfw, _t19, -(_selfx * _t21)) - Math.fma(_selfy, _t20, _selfz * _t22);
         return dest;
     }
 

@@ -142,7 +142,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t24 = otherX * this.w + otherW * this.x + (otherZ * this.y - otherY * this.z);
         float _t25 = otherX * this.z + otherW * this.y + (otherY * this.w - otherZ * this.x);
         float _t26 = otherY * this.x + otherZ * this.w + (otherW * this.z - otherX * this.y);
-        float _t27 = otherW * this.w - otherX * this.x - otherY * this.y - otherZ * this.z;
+        float _t27 = otherW * this.w - otherX * this.x - (otherY * this.y + otherZ * this.z);
         float _t34 = _t25 * _t25 + _t24 * _t24 + _t26 * _t26 + _t27 * _t27;
         float _t34_inv = 1.0f / _t34;
         d.x = -(_t24 * _t34_inv);
@@ -176,7 +176,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t24 = otherX * this.w + otherW * this.x + (otherZ * this.y - otherY * this.z);
         float _t25 = otherX * this.z + otherW * this.y + (otherY * this.w - otherZ * this.x);
         float _t26 = otherY * this.x + otherZ * this.w + (otherW * this.z - otherX * this.y);
-        float _t27 = otherW * this.w - otherX * this.x - otherY * this.y - otherZ * this.z;
+        float _t27 = otherW * this.w - otherX * this.x - (otherY * this.y + otherZ * this.z);
         float _t34 = _t25 * _t25 + _t24 * _t24 + _t26 * _t26 + _t27 * _t27;
         float _t34_inv = 1.0f / _t34;
         d.x = -(_t24 * _t34_inv);
@@ -978,7 +978,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _d0buf0 = this.x * _t14 - this.w * _t15 + (this.z * _t16 - this.y * _t17);
         float _d0buf1 = this.x * _t17 - this.w * _t16 + (this.y * _t14 - this.z * _t15);
         float _d0buf2 = this.y * _t15 + this.z * _t14 + (-(this.w * _t17) - this.x * _t16);
-        d0.w = this.x * _t15 + this.w * _t14 + this.y * _t16 + this.z * _t17;
+        d0.w = this.x * _t15 + this.w * _t14 - (-(this.y * _t16) - this.z * _t17);
         d0.x = _d0buf0;
         d0.y = _d0buf1;
         d0.z = _d0buf2;
@@ -1035,7 +1035,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _d0buf0 = this.x * _t14 - this.w * _t15 + (this.z * _t16 - this.y * _t17);
         float _d0buf1 = this.x * _t17 - this.w * _t16 + (this.y * _t14 - this.z * _t15);
         float _d0buf2 = this.y * _t15 + this.z * _t14 + (-(this.w * _t17) - this.x * _t16);
-        d0.w = this.x * _t15 + this.w * _t14 + this.y * _t16 + this.z * _t17;
+        d0.w = this.x * _t15 + this.w * _t14 - (-(this.y * _t16) - this.z * _t17);
         d0.x = _d0buf0;
         d0.y = _d0buf1;
         d0.z = _d0buf2;
@@ -1120,7 +1120,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t14 - this.w * _t15 + (this.z * _t16 - this.y * _t17);
         float _buf1 = this.x * _t17 - this.w * _t16 + (this.y * _t14 - this.z * _t15);
         float _buf2 = this.y * _t15 + this.z * _t14 + (-(this.w * _t17) - this.x * _t16);
-        d.w = this.x * _t15 + this.w * _t14 + this.y * _t16 + this.z * _t17;
+        d.w = this.x * _t15 + this.w * _t14 - (-(this.y * _t16) - this.z * _t17);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -1169,7 +1169,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t14 - this.w * _t15 + (this.z * _t16 - this.y * _t17);
         float _buf1 = this.x * _t17 - this.w * _t16 + (this.y * _t14 - this.z * _t15);
         float _buf2 = this.y * _t15 + this.z * _t14 + (-(this.w * _t17) - this.x * _t16);
-        d.w = this.x * _t15 + this.w * _t14 + this.y * _t16 + this.z * _t17;
+        d.w = this.x * _t15 + this.w * _t14 - (-(this.y * _t16) - this.z * _t17);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -2136,7 +2136,7 @@ public final class FloatQuatImpl implements FloatQuat {
     public FloatQuat squad(float control0X, float control0Y, float control0Z, float control0W, float control1X, float control1Y, float control1Z, float control1W, float targetX, float targetY, float targetZ, float targetW, float t, @Mutated FloatQuat dest) {
         FloatQuatImpl d = (FloatQuatImpl) dest;
         float _t0 = 1.0f - t;
-        float _t26 = _t0 * 2.0f * t;
+        float _t26 = _t0 * (t + t);
         float _t27 = 1.0f - _t26;
         float _t46 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, control0X * control1X + control0Y * control1Y + control0Z * control1Z + control0W * control1W)));
         float _t47 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, this.x * targetX + this.y * targetY + this.z * targetZ + this.w * targetW)));
@@ -2234,7 +2234,7 @@ public final class FloatQuatImpl implements FloatQuat {
     public DoubleQuat squad(float control0X, float control0Y, float control0Z, float control0W, float control1X, float control1Y, float control1Z, float control1W, float targetX, float targetY, float targetZ, float targetW, float t, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         float _t0 = 1.0f - t;
-        float _t26 = _t0 * 2.0f * t;
+        float _t26 = _t0 * (t + t);
         float _t27 = 1.0f - _t26;
         float _t46 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, control0X * control1X + control0Y * control1Y + control0Z * control1Z + control0W * control1W)));
         float _t47 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, this.x * targetX + this.y * targetY + this.z * targetZ + this.w * targetW)));
@@ -2352,7 +2352,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = otherX * this.w + otherW * this.x + (otherZ * this.y - otherY * this.z);
         float _buf1 = otherX * this.z + otherW * this.y + (otherY * this.w - otherZ * this.x);
         float _buf2 = otherY * this.x + otherZ * this.w + (otherW * this.z - otherX * this.y);
-        d.w = otherW * this.w - otherX * this.x - otherY * this.y - otherZ * this.z;
+        d.w = otherW * this.w - otherX * this.x - (otherY * this.y + otherZ * this.z);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -2387,7 +2387,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = otherX * this.w + otherW * this.x + (otherZ * this.y - otherY * this.z);
         float _buf1 = otherX * this.z + otherW * this.y + (otherY * this.w - otherZ * this.x);
         float _buf2 = otherY * this.x + otherZ * this.w + (otherW * this.z - otherX * this.y);
-        d.w = otherW * this.w - otherX * this.x - otherY * this.y - otherZ * this.z;
+        d.w = otherW * this.w - otherX * this.x - (otherY * this.y + otherZ * this.z);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -2456,7 +2456,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = otherX * this.w + otherW * this.x + (otherY * this.z - otherZ * this.y);
         float _buf1 = otherY * this.w + otherZ * this.x + (otherW * this.y - otherX * this.z);
         float _buf2 = otherX * this.y + otherW * this.z + (otherZ * this.w - otherY * this.x);
-        d.w = otherW * this.w - otherX * this.x - otherY * this.y - otherZ * this.z;
+        d.w = otherW * this.w - otherX * this.x - (otherY * this.y + otherZ * this.z);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -2491,7 +2491,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = otherX * this.w + otherW * this.x + (otherY * this.z - otherZ * this.y);
         float _buf1 = otherY * this.w + otherZ * this.x + (otherW * this.y - otherX * this.z);
         float _buf2 = otherX * this.y + otherW * this.z + (otherZ * this.w - otherY * this.x);
-        d.w = otherW * this.w - otherX * this.x - otherY * this.y - otherZ * this.z;
+        d.w = otherW * this.w - otherX * this.x - (otherY * this.y + otherZ * this.z);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -2751,11 +2751,11 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t24 = qX * this.y + qW * this.z + (qZ * this.w - qY * this.x);
         float _t25 = qY * this.w + qZ * this.x + (qW * this.y - qX * this.z);
         float _t26 = qX * this.w + qW * this.x + (qY * this.z - qZ * this.y);
-        float _t27 = qW * this.w - qX * this.x - qY * this.y - qZ * this.z;
+        float _t27 = qW * this.w - qX * this.x - (qY * this.y + qZ * this.z);
         d.x = qY * _t24 - qZ * _t25 + (qW * _t26 - qX * _t27);
         d.y = qZ * _t26 - qY * _t27 + (qW * _t25 - qX * _t24);
         d.z = qX * _t25 + qW * _t24 + (-(qZ * _t27) - qY * _t26);
-        d.w = qX * _t26 + qW * _t27 + qY * _t25 + qZ * _t24;
+        d.w = qX * _t26 + qW * _t27 - (-(qY * _t25) - qZ * _t24);
         return d;
     }
 
@@ -2780,11 +2780,11 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t24 = qX * this.y + qW * this.z + (qZ * this.w - qY * this.x);
         float _t25 = qY * this.w + qZ * this.x + (qW * this.y - qX * this.z);
         float _t26 = qX * this.w + qW * this.x + (qY * this.z - qZ * this.y);
-        float _t27 = qW * this.w - qX * this.x - qY * this.y - qZ * this.z;
+        float _t27 = qW * this.w - qX * this.x - (qY * this.y + qZ * this.z);
         d.x = qY * _t24 - qZ * _t25 + (qW * _t26 - qX * _t27);
         d.y = qZ * _t26 - qY * _t27 + (qW * _t25 - qX * _t24);
         d.z = qX * _t25 + qW * _t24 + (-(qZ * _t27) - qY * _t26);
-        d.w = qX * _t26 + qW * _t27 + qY * _t25 + qZ * _t24;
+        d.w = qX * _t26 + qW * _t27 - (-(qY * _t25) - qZ * _t24);
         return d;
     }
 
@@ -2844,7 +2844,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = (otherX * this.w - otherW * this.x + (otherY * this.z - otherZ * this.y)) * _t6_inv;
         float _buf1 = -(otherW * this.y * _t6_inv) - otherX * this.z * _t6_inv + (otherY * this.w + otherZ * this.x) * _t6_inv;
         float _buf2 = (otherX * this.y - otherW * this.z + (otherZ * this.w - otherY * this.x)) * _t6_inv;
-        d.w = (otherX * this.x + otherW * this.w + otherY * this.y + otherZ * this.z) * _t6_inv;
+        d.w = (otherX * this.x + otherW * this.w) * _t6_inv - (-(otherY * this.y * _t6_inv) - otherZ * this.z * _t6_inv);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -2879,7 +2879,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = (otherX * this.w - otherW * this.x + (otherY * this.z - otherZ * this.y)) * _t6_inv;
         float _buf1 = -(otherW * this.y * _t6_inv) - otherX * this.z * _t6_inv + (otherY * this.w + otherZ * this.x) * _t6_inv;
         float _buf2 = (otherX * this.y - otherW * this.z + (otherZ * this.w - otherY * this.x)) * _t6_inv;
-        d.w = (otherX * this.x + otherW * this.w + otherY * this.y + otherZ * this.z) * _t6_inv;
+        d.w = (otherX * this.x + otherW * this.w) * _t6_inv - (-(otherY * this.y * _t6_inv) - otherZ * this.z * _t6_inv);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -3515,7 +3515,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t11 + this.w * _t17 + (this.z * _t18 - this.y * _t19);
         float _buf1 = this.x * _t19 + this.w * _t18 + (this.y * _t11 - this.z * _t17);
         float _buf2 = this.y * _t17 + this.z * _t11 + (this.w * _t19 - this.x * _t18);
-        d.w = this.w * _t11 - this.x * _t17 - this.y * _t18 - this.z * _t19;
+        d.w = this.w * _t11 - this.x * _t17 - (this.y * _t18 + this.z * _t19);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -3563,7 +3563,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t11 + this.w * _t17 + (this.z * _t18 - this.y * _t19);
         float _buf1 = this.x * _t19 + this.w * _t18 + (this.y * _t11 - this.z * _t17);
         float _buf2 = this.y * _t17 + this.z * _t11 + (this.w * _t19 - this.x * _t18);
-        d.w = this.w * _t11 - this.x * _t17 - this.y * _t18 - this.z * _t19;
+        d.w = this.w * _t11 - this.x * _t17 - (this.y * _t18 + this.z * _t19);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -5584,7 +5584,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t116 + this.w * _t117 + (this.y * _t114 - this.z * _t115);
         float _buf1 = this.y * _t116 + this.z * _t117 + (this.w * _t115 - this.x * _t114);
         float _buf2 = this.x * _t115 + this.w * _t114 + (this.z * _t116 - this.y * _t117);
-        d.w = this.w * _t116 - this.x * _t117 - this.y * _t115 - this.z * _t114;
+        d.w = this.w * _t116 - this.x * _t117 - (this.y * _t115 + this.z * _t114);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -5694,7 +5694,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t116 + this.w * _t117 + (this.y * _t114 - this.z * _t115);
         float _buf1 = this.y * _t116 + this.z * _t117 + (this.w * _t115 - this.x * _t114);
         float _buf2 = this.x * _t115 + this.w * _t114 + (this.z * _t116 - this.y * _t117);
-        d.w = this.w * _t116 - this.x * _t117 - this.y * _t115 - this.z * _t114;
+        d.w = this.w * _t116 - this.x * _t117 - (this.y * _t115 + this.z * _t114);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -5885,38 +5885,38 @@ public final class FloatQuatImpl implements FloatQuat {
      * @return this
      */
     @Mutated public FloatQuat makeRotationTo(float fromDirX, float fromDirY, float fromDirZ, float toDirX, float toDirY, float toDirZ) {
-        float _t3 = fromDirX + toDirX;
-        float _t4 = fromDirY + toDirY;
-        float _t5 = fromDirZ + toDirZ;
-        float _t17 = fromDirY * toDirZ - fromDirZ * toDirY;
-        float _t18 = fromDirZ * toDirX - fromDirX * toDirZ;
-        float _t19 = fromDirX * toDirY - fromDirY * toDirX;
-        float _t20 = fromDirX * fromDirX + fromDirY * fromDirY;
-        float _t21, _t22, _t23;
-        if (_t20 > 0.0f) {
-            _t21 = fromDirY;
-            _t22 = 0.0f;
-            _t23 = -fromDirX;
-        } else {
+        float _t2 = fromDirX + toDirX;
+        float _t3 = fromDirY + toDirY;
+        float _t4 = fromDirZ + toDirZ;
+        float _t16 = fromDirY * toDirZ - fromDirZ * toDirY;
+        float _t17 = fromDirZ * toDirX - fromDirX * toDirZ;
+        float _t18 = fromDirX * toDirY - fromDirY * toDirX;
+        float _t19 = fromDirX * fromDirX + fromDirY * fromDirY;
+        float _t20, _t21, _t22;
+        if (_t19 > 0.0f) {
+            _t20 = fromDirY;
             _t21 = 0.0f;
-            _t22 = -fromDirY;
-            _t23 = fromDirZ;
+            _t22 = -fromDirX;
+        } else {
+            _t20 = 0.0f;
+            _t21 = -fromDirY;
+            _t22 = fromDirZ;
         }
-        float _t29 = _t3 * _t3 + _t4 * _t4 + _t5 * _t5;
-        float _t31 = 0.5f * _t29;
-        float _t37 = _t21 * _t21 + _t23 * _t23 + _t22 * _t22;
+        float _t28 = _t2 * _t2 + _t3 * _t3 + _t4 * _t4;
+        float _t30 = 0.5f * _t28;
+        float _t37 = _t20 * _t20 + _t22 * _t22 + _t21 * _t21;
         float _t38 = (1.0f / (float) Math.sqrt(_t37));
-        float _t41 = (1.0f / (float) Math.sqrt(_t17 * _t17 + (_t18 * _t18 + (_t19 * _t19 + _t29 * _t29 / (2.0f * 2.0f)))));
-        if (_t31 > 1.0E-6f) {
-            this.x = _t17 * _t41;
-            this.y = _t18 * _t41;
-            this.z = _t19 * _t41;
-            this.w = 0.5f * _t29 * _t41;
+        float _t40 = (1.0f / (float) Math.sqrt(_t16 * _t16 + _t17 * _t17 + _t18 * _t18 + 0.25f * _t28 * _t28));
+        if (_t30 > 1.0E-6f) {
+            this.x = _t16 * _t40;
+            this.y = _t17 * _t40;
+            this.z = _t18 * _t40;
+            this.w = 0.5f * _t28 * _t40;
         } else {
             if (_t37 > 0.0f) {
-                this.x = _t38 * _t21;
-                this.y = _t38 * _t23;
-                this.z = _t38 * _t22;
+                this.x = _t38 * _t20;
+                this.y = _t38 * _t22;
+                this.z = _t38 * _t21;
                 this.w = 0.0f;
             } else {
                 this.x = 0.0f;
@@ -6411,7 +6411,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t1 + this.w * _t3 + (this.y * _t4 - this.z * _t5);
         float _buf1 = this.y * _t1 + this.z * _t3 + (this.w * _t5 - this.x * _t4);
         float _buf2 = this.x * _t5 + this.w * _t4 + (this.z * _t1 - this.y * _t3);
-        d.w = this.w * _t1 - this.x * _t3 - this.y * _t5 - this.z * _t4;
+        d.w = this.w * _t1 - this.x * _t3 - (this.y * _t5 + this.z * _t4);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -6454,7 +6454,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t1 + this.w * _t3 + (this.y * _t4 - this.z * _t5);
         float _buf1 = this.y * _t1 + this.z * _t3 + (this.w * _t5 - this.x * _t4);
         float _buf2 = this.x * _t5 + this.w * _t4 + (this.z * _t1 - this.y * _t3);
-        d.w = this.w * _t1 - this.x * _t3 - this.y * _t5 - this.z * _t4;
+        d.w = this.w * _t1 - this.x * _t3 - (this.y * _t5 + this.z * _t4);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -6539,51 +6539,51 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public FloatQuat rotateTo(float fromDirX, float fromDirY, float fromDirZ, float toDirX, float toDirY, float toDirZ, @Mutated FloatQuat dest) {
         FloatQuatImpl d = (FloatQuatImpl) dest;
-        float _t3 = fromDirX + toDirX;
-        float _t4 = fromDirY + toDirY;
-        float _t5 = fromDirZ + toDirZ;
-        float _t17 = fromDirY * toDirZ - fromDirZ * toDirY;
-        float _t18 = fromDirZ * toDirX - fromDirX * toDirZ;
-        float _t19 = fromDirX * toDirY - fromDirY * toDirX;
-        float _t20 = fromDirX * fromDirX + fromDirY * fromDirY;
-        float _t21, _t22, _t23;
-        if (_t20 > 0.0f) {
-            _t21 = fromDirY;
-            _t22 = 0.0f;
-            _t23 = -fromDirX;
-        } else {
+        float _t2 = fromDirX + toDirX;
+        float _t3 = fromDirY + toDirY;
+        float _t4 = fromDirZ + toDirZ;
+        float _t16 = fromDirY * toDirZ - fromDirZ * toDirY;
+        float _t17 = fromDirZ * toDirX - fromDirX * toDirZ;
+        float _t18 = fromDirX * toDirY - fromDirY * toDirX;
+        float _t19 = fromDirX * fromDirX + fromDirY * fromDirY;
+        float _t20, _t21, _t22;
+        if (_t19 > 0.0f) {
+            _t20 = fromDirY;
             _t21 = 0.0f;
-            _t22 = -fromDirY;
-            _t23 = fromDirZ;
+            _t22 = -fromDirX;
+        } else {
+            _t20 = 0.0f;
+            _t21 = -fromDirY;
+            _t22 = fromDirZ;
         }
-        float _t29 = _t3 * _t3 + _t4 * _t4 + _t5 * _t5;
-        float _t31 = 0.5f * _t29;
-        float _t37 = _t21 * _t21 + _t23 * _t23 + _t22 * _t22;
+        float _t28 = _t2 * _t2 + _t3 * _t3 + _t4 * _t4;
+        float _t30 = 0.5f * _t28;
+        float _t37 = _t20 * _t20 + _t22 * _t22 + _t21 * _t21;
         float _t38 = (1.0f / (float) Math.sqrt(_t37));
-        float _t44 = (1.0f / (float) Math.sqrt(_t17 * _t17 + (_t18 * _t18 + (_t19 * _t19 + _t29 * _t29 / (2.0f * 2.0f)))));
-        float _t50, _t54, _t55, _t56;
-        if (_t31 > 1.0E-6f) {
-            _t50 = 0.5f * _t29 * _t44;
-            _t54 = _t17 * _t44;
-            _t55 = _t19 * _t44;
-            _t56 = _t18 * _t44;
+        float _t43 = (1.0f / (float) Math.sqrt(_t16 * _t16 + _t17 * _t17 + _t18 * _t18 + 0.25f * _t28 * _t28));
+        float _t49, _t53, _t54, _t55;
+        if (_t30 > 1.0E-6f) {
+            _t49 = 0.5f * _t28 * _t43;
+            _t53 = _t16 * _t43;
+            _t54 = _t18 * _t43;
+            _t55 = _t17 * _t43;
         } else {
             if (_t37 > 0.0f) {
-                _t50 = 0.0f;
+                _t49 = 0.0f;
+                _t53 = _t38 * _t20;
                 _t54 = _t38 * _t21;
                 _t55 = _t38 * _t22;
-                _t56 = _t38 * _t23;
             } else {
-                _t50 = 0.0f;
+                _t49 = 0.0f;
+                _t53 = 0.0f;
                 _t54 = 0.0f;
                 _t55 = 0.0f;
-                _t56 = 0.0f;
             }
         }
-        float _buf0 = this.x * _t50 + this.w * _t54 + (this.y * _t55 - this.z * _t56);
-        float _buf1 = this.y * _t50 + this.z * _t54 + (this.w * _t56 - this.x * _t55);
-        float _buf2 = this.x * _t56 + this.w * _t55 + (this.z * _t50 - this.y * _t54);
-        d.w = this.w * _t50 - this.x * _t54 - this.y * _t56 - this.z * _t55;
+        float _buf0 = this.x * _t49 + this.w * _t53 + (this.y * _t54 - this.z * _t55);
+        float _buf1 = this.y * _t49 + this.z * _t53 + (this.w * _t55 - this.x * _t54);
+        float _buf2 = this.x * _t55 + this.w * _t54 + (this.z * _t49 - this.y * _t53);
+        d.w = this.w * _t49 - this.x * _t53 - (this.y * _t55 + this.z * _t54);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -6620,51 +6620,51 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public DoubleQuat rotateTo(float fromDirX, float fromDirY, float fromDirZ, float toDirX, float toDirY, float toDirZ, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        float _t3 = fromDirX + toDirX;
-        float _t4 = fromDirY + toDirY;
-        float _t5 = fromDirZ + toDirZ;
-        float _t17 = fromDirY * toDirZ - fromDirZ * toDirY;
-        float _t18 = fromDirZ * toDirX - fromDirX * toDirZ;
-        float _t19 = fromDirX * toDirY - fromDirY * toDirX;
-        float _t20 = fromDirX * fromDirX + fromDirY * fromDirY;
-        float _t21, _t22, _t23;
-        if (_t20 > 0.0f) {
-            _t21 = fromDirY;
-            _t22 = 0.0f;
-            _t23 = -fromDirX;
-        } else {
+        float _t2 = fromDirX + toDirX;
+        float _t3 = fromDirY + toDirY;
+        float _t4 = fromDirZ + toDirZ;
+        float _t16 = fromDirY * toDirZ - fromDirZ * toDirY;
+        float _t17 = fromDirZ * toDirX - fromDirX * toDirZ;
+        float _t18 = fromDirX * toDirY - fromDirY * toDirX;
+        float _t19 = fromDirX * fromDirX + fromDirY * fromDirY;
+        float _t20, _t21, _t22;
+        if (_t19 > 0.0f) {
+            _t20 = fromDirY;
             _t21 = 0.0f;
-            _t22 = -fromDirY;
-            _t23 = fromDirZ;
+            _t22 = -fromDirX;
+        } else {
+            _t20 = 0.0f;
+            _t21 = -fromDirY;
+            _t22 = fromDirZ;
         }
-        float _t29 = _t3 * _t3 + _t4 * _t4 + _t5 * _t5;
-        float _t31 = 0.5f * _t29;
-        float _t37 = _t21 * _t21 + _t23 * _t23 + _t22 * _t22;
+        float _t28 = _t2 * _t2 + _t3 * _t3 + _t4 * _t4;
+        float _t30 = 0.5f * _t28;
+        float _t37 = _t20 * _t20 + _t22 * _t22 + _t21 * _t21;
         float _t38 = (1.0f / (float) Math.sqrt(_t37));
-        float _t44 = (1.0f / (float) Math.sqrt(_t17 * _t17 + (_t18 * _t18 + (_t19 * _t19 + _t29 * _t29 / (2.0f * 2.0f)))));
-        float _t50, _t54, _t55, _t56;
-        if (_t31 > 1.0E-6f) {
-            _t50 = 0.5f * _t29 * _t44;
-            _t54 = _t17 * _t44;
-            _t55 = _t19 * _t44;
-            _t56 = _t18 * _t44;
+        float _t43 = (1.0f / (float) Math.sqrt(_t16 * _t16 + _t17 * _t17 + _t18 * _t18 + 0.25f * _t28 * _t28));
+        float _t49, _t53, _t54, _t55;
+        if (_t30 > 1.0E-6f) {
+            _t49 = 0.5f * _t28 * _t43;
+            _t53 = _t16 * _t43;
+            _t54 = _t18 * _t43;
+            _t55 = _t17 * _t43;
         } else {
             if (_t37 > 0.0f) {
-                _t50 = 0.0f;
+                _t49 = 0.0f;
+                _t53 = _t38 * _t20;
                 _t54 = _t38 * _t21;
                 _t55 = _t38 * _t22;
-                _t56 = _t38 * _t23;
             } else {
-                _t50 = 0.0f;
+                _t49 = 0.0f;
+                _t53 = 0.0f;
                 _t54 = 0.0f;
                 _t55 = 0.0f;
-                _t56 = 0.0f;
             }
         }
-        float _buf0 = this.x * _t50 + this.w * _t54 + (this.y * _t55 - this.z * _t56);
-        float _buf1 = this.y * _t50 + this.z * _t54 + (this.w * _t56 - this.x * _t55);
-        float _buf2 = this.x * _t56 + this.w * _t55 + (this.z * _t50 - this.y * _t54);
-        d.w = this.w * _t50 - this.x * _t54 - this.y * _t56 - this.z * _t55;
+        float _buf0 = this.x * _t49 + this.w * _t53 + (this.y * _t54 - this.z * _t55);
+        float _buf1 = this.y * _t49 + this.z * _t53 + (this.w * _t55 - this.x * _t54);
+        float _buf2 = this.x * _t55 + this.w * _t54 + (this.z * _t49 - this.y * _t53);
+        d.w = this.w * _t49 - this.x * _t53 - (this.y * _t55 + this.z * _t54);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -6759,7 +6759,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
-        d.w = this.w * _t21 - this.x * _t22 - this.y * _t24 - this.z * _t23;
+        d.w = this.w * _t21 - this.x * _t22 - (this.y * _t24 + this.z * _t23);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -6808,7 +6808,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
-        d.w = this.w * _t21 - this.x * _t22 - this.y * _t24 - this.z * _t23;
+        d.w = this.w * _t21 - this.x * _t22 - (this.y * _t24 + this.z * _t23);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -6854,7 +6854,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
-        d.w = this.w * _t21 - this.x * _t22 - this.y * _t24 - this.z * _t23;
+        d.w = this.w * _t21 - this.x * _t22 - (this.y * _t24 + this.z * _t23);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -6903,7 +6903,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
-        d.w = this.w * _t21 - this.x * _t22 - this.y * _t24 - this.z * _t23;
+        d.w = this.w * _t21 - this.x * _t22 - (this.y * _t24 + this.z * _t23);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -6998,7 +6998,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
-        d.w = this.w * _t21 - this.x * _t22 - this.y * _t24 - this.z * _t23;
+        d.w = this.w * _t21 - this.x * _t22 - (this.y * _t24 + this.z * _t23);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -7047,7 +7047,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
-        d.w = this.w * _t21 - this.x * _t22 - this.y * _t24 - this.z * _t23;
+        d.w = this.w * _t21 - this.x * _t22 - (this.y * _t24 + this.z * _t23);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -7093,7 +7093,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
-        d.w = this.w * _t21 - this.x * _t22 - this.y * _t24 - this.z * _t23;
+        d.w = this.w * _t21 - this.x * _t22 - (this.y * _t24 + this.z * _t23);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -7142,7 +7142,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
-        d.w = this.w * _t21 - this.x * _t22 - this.y * _t24 - this.z * _t23;
+        d.w = this.w * _t21 - this.x * _t22 - (this.y * _t24 + this.z * _t23);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -7237,7 +7237,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
-        d.w = this.w * _t21 - this.x * _t22 - this.y * _t24 - this.z * _t23;
+        d.w = this.w * _t21 - this.x * _t22 - (this.y * _t24 + this.z * _t23);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -7286,7 +7286,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
-        d.w = this.w * _t21 - this.x * _t22 - this.y * _t24 - this.z * _t23;
+        d.w = this.w * _t21 - this.x * _t22 - (this.y * _t24 + this.z * _t23);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -7332,7 +7332,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
-        d.w = this.w * _t21 - this.x * _t22 - this.y * _t24 - this.z * _t23;
+        d.w = this.w * _t21 - this.x * _t22 - (this.y * _t24 + this.z * _t23);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -7381,7 +7381,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
-        d.w = this.w * _t21 - this.x * _t22 - this.y * _t24 - this.z * _t23;
+        d.w = this.w * _t21 - this.x * _t22 - (this.y * _t24 + this.z * _t23);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;

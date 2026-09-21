@@ -624,7 +624,7 @@ public value record Float4(float x, float y, float z, float w) {
     public Float4 bezier2(float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float t) {
         float _t0 = t * t;
         float _t1 = 1.0f - t;
-        float _t3 = 2.0f * t * _t1;
+        float _t3 = (t + t) * _t1;
         float _t4 = _t1 * _t1;
         return new Float4(Math.fma(p2X, _t0, Math.fma(p1X, _t3, this.x * _t4)), Math.fma(p2Y, _t0, Math.fma(p1Y, _t3, this.y * _t4)), Math.fma(p2Z, _t0, Math.fma(p1Z, _t3, this.z * _t4)), Math.fma(p2W, _t0, Math.fma(p1W, _t3, this.w * _t4)));
     }
@@ -671,7 +671,7 @@ public value record Float4(float x, float y, float z, float w) {
      * @return the resulting vector
      */
     public Float4 bezier2Tangent(float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float t) {
-        float _t1 = 2.0f * t;
+        float _t1 = t + t;
         float _t2 = 2.0f * (1.0f - t);
         return new Float4(Math.fma(p1X - this.x, _t2, (p2X - p1X) * _t1), Math.fma(p1Y - this.y, _t2, (p2Y - p1Y) * _t1), Math.fma(p1Z - this.z, _t2, (p2Z - p1Z) * _t1), Math.fma(p1W - this.w, _t2, (p2W - p1W) * _t1));
     }
@@ -916,7 +916,7 @@ public value record Float4(float x, float y, float z, float w) {
         float _t2 = t * _t0;
         float _t5 = t * Math.fma(t, t, -t);
         float _t7 = Math.fma(t - 2.0f, _t0, t);
-        float _t9 = Math.fma(3.0f, _t0, -(2.0f * _t2));
+        float _t9 = Math.fma(3.0f, _t0, -(_t2 + _t2));
         float _t10 = Math.fma(2.0f, _t2, Math.fma(-3.0f, _t0, 1.0f));
         return new Float4(Math.fma(this.x, _t10, t0X * _t7) + Math.fma(t1X, _t5, v1X * _t9), Math.fma(this.y, _t10, t0Y * _t7) + Math.fma(t1Y, _t5, v1Y * _t9), Math.fma(this.z, _t10, t0Z * _t7) + Math.fma(t1Z, _t5, v1Z * _t9), Math.fma(this.w, _t10, t0W * _t7) + Math.fma(t1W, _t5, v1W * _t9));
     }
@@ -971,7 +971,7 @@ public value record Float4(float x, float y, float z, float w) {
         float _t0 = t * t;
         float _t6 = 6.0f * Math.fma(t, t, -t);
         float _t7 = 6.0f * Math.fma(-t, t, t);
-        float _t8 = Math.fma(3.0f, _t0, -(2.0f * t));
+        float _t8 = Math.fma(3.0f, _t0, -(t + t));
         float _t9 = Math.fma(3.0f, _t0, Math.fma(-4.0f, t, 1.0f));
         return new Float4(Math.fma(this.x, _t6, t0X * _t9) + Math.fma(t1X, _t8, v1X * _t7), Math.fma(this.y, _t6, t0Y * _t9) + Math.fma(t1Y, _t8, v1Y * _t7), Math.fma(this.z, _t6, t0Z * _t9) + Math.fma(t1Z, _t8, v1Z * _t7), Math.fma(this.w, _t6, t0W * _t9) + Math.fma(t1W, _t8, v1W * _t7));
     }

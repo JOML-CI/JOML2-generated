@@ -2274,9 +2274,9 @@ public final class Double3x4OpsSimd {
     }
 
     public static double[] composeTRSMul_fma(double[] dest, int destOffset, double[] m, int mOffset, double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ) {
-        double _t0 = 2.0 * scaleZ;
-        double _t1 = 2.0 * scaleX;
-        double _t2 = 2.0 * scaleY;
+        double _t0 = scaleZ + scaleZ;
+        double _t1 = scaleX + scaleX;
+        double _t2 = scaleY + scaleY;
         double _t3 = rotationY * rotationW;
         double _t4 = rotationZ * rotationZ;
         double _t5 = rotationZ * rotationW;
@@ -2293,9 +2293,9 @@ public final class Double3x4OpsSimd {
     }
 
     public static double[] composeTRSMul_mulAdd(double[] dest, int destOffset, double[] m, int mOffset, double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ) {
-        double _t0 = 2.0 * scaleZ;
-        double _t1 = 2.0 * scaleX;
-        double _t2 = 2.0 * scaleY;
+        double _t0 = scaleZ + scaleZ;
+        double _t1 = scaleX + scaleX;
+        double _t2 = scaleY + scaleY;
         double _t3 = rotationY * rotationW;
         double _t4 = rotationZ * rotationZ;
         double _t5 = rotationZ * rotationW;
@@ -2317,9 +2317,9 @@ public final class Double3x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment composeTRSMul_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment m, long mOffset, double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ) {
-        double _t0 = 2.0 * scaleZ;
-        double _t1 = 2.0 * scaleX;
-        double _t2 = 2.0 * scaleY;
+        double _t0 = scaleZ + scaleZ;
+        double _t1 = scaleX + scaleX;
+        double _t2 = scaleY + scaleY;
         double _t3 = rotationY * rotationW;
         double _t4 = rotationZ * rotationZ;
         double _t5 = rotationZ * rotationW;
@@ -2336,9 +2336,9 @@ public final class Double3x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment composeTRSMul_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment m, long mOffset, double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ) {
-        double _t0 = 2.0 * scaleZ;
-        double _t1 = 2.0 * scaleX;
-        double _t2 = 2.0 * scaleY;
+        double _t0 = scaleZ + scaleZ;
+        double _t1 = scaleX + scaleX;
+        double _t2 = scaleY + scaleY;
         double _t3 = rotationY * rotationW;
         double _t4 = rotationZ * rotationZ;
         double _t5 = rotationZ * rotationW;
@@ -2367,9 +2367,9 @@ public final class Double3x4OpsSimd {
         double _rotationw = rotation[rotationOffset + 3];
         double _scaley = scale[scaleOffset + 1];
         double _scalez = scale[scaleOffset + 2];
-        double _t0 = 2.0 * _scalez;
-        double _t1 = 2.0 * _scalex;
-        double _t2 = 2.0 * _scaley;
+        double _t0 = _scalez + _scalez;
+        double _t1 = _scalex + _scalex;
+        double _t2 = _scaley + _scaley;
         double _t3 = _rotationy * _rotationw;
         double _t4 = _rotationz * _rotationz;
         double _t5 = _rotationz * _rotationw;
@@ -2393,9 +2393,9 @@ public final class Double3x4OpsSimd {
         double _rotationw = rotation[rotationOffset + 3];
         double _scaley = scale[scaleOffset + 1];
         double _scalez = scale[scaleOffset + 2];
-        double _t0 = 2.0 * _scalez;
-        double _t1 = 2.0 * _scalex;
-        double _t2 = 2.0 * _scaley;
+        double _t0 = _scalez + _scalez;
+        double _t1 = _scalex + _scalex;
+        double _t2 = _scaley + _scaley;
         double _t3 = _rotationy * _rotationw;
         double _t4 = _rotationz * _rotationz;
         double _t5 = _rotationz * _rotationw;
@@ -2432,9 +2432,9 @@ public final class Double3x4OpsSimd {
         double _rotationw = UnsafeOpsHolder.U.getDouble(_rotationBase + 24L);
         double _scaley = UnsafeOpsHolder.U.getDouble(_scaleBase + 8L);
         double _scalez = UnsafeOpsHolder.U.getDouble(_scaleBase + 16L);
-        double _t0 = 2.0 * _scalez;
-        double _t1 = 2.0 * _scalex;
-        double _t2 = 2.0 * _scaley;
+        double _t0 = _scalez + _scalez;
+        double _t1 = _scalex + _scalex;
+        double _t2 = _scaley + _scaley;
         double _t3 = _rotationy * _rotationw;
         double _t4 = _rotationz * _rotationz;
         double _t5 = _rotationz * _rotationw;
@@ -2458,9 +2458,9 @@ public final class Double3x4OpsSimd {
         double _rotationw = rotation.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, rotationOffset + 24L);
         double _scaley = scale.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, scaleOffset + 8L);
         double _scalez = scale.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, scaleOffset + 16L);
-        double _t0 = 2.0 * _scalez;
-        double _t1 = 2.0 * _scalex;
-        double _t2 = 2.0 * _scaley;
+        double _t0 = _scalez + _scalez;
+        double _t1 = _scalex + _scalex;
+        double _t2 = _scaley + _scaley;
         double _t3 = _rotationy * _rotationw;
         double _t4 = _rotationz * _rotationz;
         double _t5 = _rotationz * _rotationw;
@@ -2492,9 +2492,9 @@ public final class Double3x4OpsSimd {
         double _rotationw = UnsafeOpsHolder.U.getDouble(_rotationBase + 24L);
         double _scaley = UnsafeOpsHolder.U.getDouble(_scaleBase + 8L);
         double _scalez = UnsafeOpsHolder.U.getDouble(_scaleBase + 16L);
-        double _t0 = 2.0 * _scalez;
-        double _t1 = 2.0 * _scalex;
-        double _t2 = 2.0 * _scaley;
+        double _t0 = _scalez + _scalez;
+        double _t1 = _scalex + _scalex;
+        double _t2 = _scaley + _scaley;
         double _t3 = _rotationy * _rotationw;
         double _t4 = _rotationz * _rotationz;
         double _t5 = _rotationz * _rotationw;
@@ -2518,9 +2518,9 @@ public final class Double3x4OpsSimd {
         double _rotationw = rotation.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, rotationOffset + 24L);
         double _scaley = scale.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, scaleOffset + 8L);
         double _scalez = scale.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, scaleOffset + 16L);
-        double _t0 = 2.0 * _scalez;
-        double _t1 = 2.0 * _scalex;
-        double _t2 = 2.0 * _scaley;
+        double _t0 = _scalez + _scalez;
+        double _t1 = _scalex + _scalex;
+        double _t2 = _scaley + _scaley;
         double _t3 = _rotationy * _rotationw;
         double _t4 = _rotationz * _rotationz;
         double _t5 = _rotationz * _rotationw;
@@ -3849,9 +3849,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotX;
-        double _t5 = 2.0 * rotY;
-        double _t6 = 2.0 * rotZ;
+        double _t4 = rotX + rotX;
+        double _t5 = rotY + rotY;
+        double _t6 = rotZ + rotZ;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t6;
         double _t9 = rotZ * _t6;
@@ -3879,9 +3879,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotX;
-        double _t5 = 2.0 * rotY;
-        double _t6 = 2.0 * rotZ;
+        double _t4 = rotX + rotX;
+        double _t5 = rotY + rotY;
+        double _t6 = rotZ + rotZ;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t6;
         double _t9 = rotZ * _t6;
@@ -3914,9 +3914,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotX;
-        double _t5 = 2.0 * rotY;
-        double _t6 = 2.0 * rotZ;
+        double _t4 = rotX + rotX;
+        double _t5 = rotY + rotY;
+        double _t6 = rotZ + rotZ;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t6;
         double _t9 = rotZ * _t6;
@@ -3944,9 +3944,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotX;
-        double _t5 = 2.0 * rotY;
-        double _t6 = 2.0 * rotZ;
+        double _t4 = rotX + rotX;
+        double _t5 = rotY + rotY;
+        double _t6 = rotZ + rotZ;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t6;
         double _t9 = rotZ * _t6;
@@ -3986,9 +3986,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -_roty;
         double _t2 = -_pivotz;
         double _t3 = -_rotx;
-        double _t4 = 2.0 * _rotx;
-        double _t5 = 2.0 * _roty;
-        double _t6 = 2.0 * _rotz;
+        double _t4 = _rotx + _rotx;
+        double _t5 = _roty + _roty;
+        double _t6 = _rotz + _rotz;
         double _t7 = _rotw * _t5;
         double _t8 = _rotw * _t6;
         double _t9 = _rotz * _t6;
@@ -4023,9 +4023,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -_roty;
         double _t2 = -_pivotz;
         double _t3 = -_rotx;
-        double _t4 = 2.0 * _rotx;
-        double _t5 = 2.0 * _roty;
-        double _t6 = 2.0 * _rotz;
+        double _t4 = _rotx + _rotx;
+        double _t5 = _roty + _roty;
+        double _t6 = _rotz + _rotz;
         double _t7 = _rotw * _t5;
         double _t8 = _rotw * _t6;
         double _t9 = _rotz * _t6;
@@ -4072,9 +4072,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -_roty;
         double _t2 = -_pivotz;
         double _t3 = -_rotx;
-        double _t4 = 2.0 * _rotx;
-        double _t5 = 2.0 * _roty;
-        double _t6 = 2.0 * _rotz;
+        double _t4 = _rotx + _rotx;
+        double _t5 = _roty + _roty;
+        double _t6 = _rotz + _rotz;
         double _t7 = _rotw * _t5;
         double _t8 = _rotw * _t6;
         double _t9 = _rotz * _t6;
@@ -4109,9 +4109,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -_roty;
         double _t2 = -_pivotz;
         double _t3 = -_rotx;
-        double _t4 = 2.0 * _rotx;
-        double _t5 = 2.0 * _roty;
-        double _t6 = 2.0 * _rotz;
+        double _t4 = _rotx + _rotx;
+        double _t5 = _roty + _roty;
+        double _t6 = _rotz + _rotz;
         double _t7 = _rotw * _t5;
         double _t8 = _rotw * _t6;
         double _t9 = _rotz * _t6;
@@ -4153,9 +4153,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -_roty;
         double _t2 = -_pivotz;
         double _t3 = -_rotx;
-        double _t4 = 2.0 * _rotx;
-        double _t5 = 2.0 * _roty;
-        double _t6 = 2.0 * _rotz;
+        double _t4 = _rotx + _rotx;
+        double _t5 = _roty + _roty;
+        double _t6 = _rotz + _rotz;
         double _t7 = _rotw * _t5;
         double _t8 = _rotw * _t6;
         double _t9 = _rotz * _t6;
@@ -4190,9 +4190,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -_roty;
         double _t2 = -_pivotz;
         double _t3 = -_rotx;
-        double _t4 = 2.0 * _rotx;
-        double _t5 = 2.0 * _roty;
-        double _t6 = 2.0 * _rotz;
+        double _t4 = _rotx + _rotx;
+        double _t5 = _roty + _roty;
+        double _t6 = _rotz + _rotz;
         double _t7 = _rotw * _t5;
         double _t8 = _rotw * _t6;
         double _t9 = _rotz * _t6;
@@ -4464,9 +4464,9 @@ public final class Double3x4OpsSimd {
     public static double[] preRotateQuat_fma(double[] dest, int destOffset, double[] src, int srcOffset, double qX, double qY, double qZ, double qW) {
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -4486,9 +4486,9 @@ public final class Double3x4OpsSimd {
     public static double[] preRotateQuat_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double qX, double qY, double qZ, double qW) {
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -4513,9 +4513,9 @@ public final class Double3x4OpsSimd {
     public static java.lang.foreign.MemorySegment preRotateQuat_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double qX, double qY, double qZ, double qW) {
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -4535,9 +4535,9 @@ public final class Double3x4OpsSimd {
     public static java.lang.foreign.MemorySegment preRotateQuat_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double qX, double qY, double qZ, double qW) {
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -4566,9 +4566,9 @@ public final class Double3x4OpsSimd {
         double _qw = q[qOffset + 3];
         double _t0 = -_qy;
         double _t2 = -_qx;
-        double _t3 = 2.0 * _qx;
-        double _t4 = 2.0 * _qy;
-        double _t5 = 2.0 * _qz;
+        double _t3 = _qx + _qx;
+        double _t4 = _qy + _qy;
+        double _t5 = _qz + _qz;
         double _t6 = _qw * _t4;
         double _t7 = _qw * _t5;
         double _t8 = _qw * _t3;
@@ -4592,9 +4592,9 @@ public final class Double3x4OpsSimd {
         double _qw = q[qOffset + 3];
         double _t0 = -_qy;
         double _t2 = -_qx;
-        double _t3 = 2.0 * _qx;
-        double _t4 = 2.0 * _qy;
-        double _t5 = 2.0 * _qz;
+        double _t3 = _qx + _qx;
+        double _t4 = _qy + _qy;
+        double _t5 = _qz + _qz;
         double _t6 = _qw * _t4;
         double _t7 = _qw * _t5;
         double _t8 = _qw * _t3;
@@ -4629,9 +4629,9 @@ public final class Double3x4OpsSimd {
         double _qw = UnsafeOpsHolder.U.getDouble(_qBase + 24L);
         double _t0 = -_qy;
         double _t2 = -_qx;
-        double _t3 = 2.0 * _qx;
-        double _t4 = 2.0 * _qy;
-        double _t5 = 2.0 * _qz;
+        double _t3 = _qx + _qx;
+        double _t4 = _qy + _qy;
+        double _t5 = _qz + _qz;
         double _t6 = _qw * _t4;
         double _t7 = _qw * _t5;
         double _t8 = _qw * _t3;
@@ -4655,9 +4655,9 @@ public final class Double3x4OpsSimd {
         double _qw = q.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, qOffset + 24L);
         double _t0 = -_qy;
         double _t2 = -_qx;
-        double _t3 = 2.0 * _qx;
-        double _t4 = 2.0 * _qy;
-        double _t5 = 2.0 * _qz;
+        double _t3 = _qx + _qx;
+        double _t4 = _qy + _qy;
+        double _t5 = _qz + _qz;
         double _t6 = _qw * _t4;
         double _t7 = _qw * _t5;
         double _t8 = _qw * _t3;
@@ -4687,9 +4687,9 @@ public final class Double3x4OpsSimd {
         double _qw = UnsafeOpsHolder.U.getDouble(_qBase + 24L);
         double _t0 = -_qy;
         double _t2 = -_qx;
-        double _t3 = 2.0 * _qx;
-        double _t4 = 2.0 * _qy;
-        double _t5 = 2.0 * _qz;
+        double _t3 = _qx + _qx;
+        double _t4 = _qy + _qy;
+        double _t5 = _qz + _qz;
         double _t6 = _qw * _t4;
         double _t7 = _qw * _t5;
         double _t8 = _qw * _t3;
@@ -4713,9 +4713,9 @@ public final class Double3x4OpsSimd {
         double _qw = q.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, qOffset + 24L);
         double _t0 = -_qy;
         double _t2 = -_qx;
-        double _t3 = 2.0 * _qx;
-        double _t4 = 2.0 * _qy;
-        double _t5 = 2.0 * _qz;
+        double _t3 = _qx + _qx;
+        double _t4 = _qy + _qy;
+        double _t5 = _qz + _qz;
         double _t6 = _qw * _t4;
         double _t7 = _qw * _t5;
         double _t8 = _qw * _t3;
@@ -5342,9 +5342,9 @@ public final class Double3x4OpsSimd {
         double _self21 = src[srcOffset + 9];
         double _self22 = src[srcOffset + 10];
         double _t2 = -_self22;
-        double _t9 = 2.0 * normalX * normalZ;
-        double _t10 = 2.0 * normalX * normalY;
-        double _t11 = 2.0 * normalY * normalZ;
+        double _t9 = (normalX + normalX) * normalZ;
+        double _t10 = (normalX + normalX) * normalY;
+        double _t11 = (normalY + normalY) * normalZ;
         double _t12 = Math.fma(-2.0, normalX * normalX, 1.0);
         double _t13 = Math.fma(-2.0, normalY * normalY, 1.0);
         double _t14 = Math.fma(-2.0, normalZ * normalZ, 1.0);
@@ -5369,9 +5369,9 @@ public final class Double3x4OpsSimd {
         double _self21 = src[srcOffset + 9];
         double _self22 = src[srcOffset + 10];
         double _t2 = -_self22;
-        double _t9 = 2.0 * normalX * normalZ;
-        double _t10 = 2.0 * normalX * normalY;
-        double _t11 = 2.0 * normalY * normalZ;
+        double _t9 = (normalX + normalX) * normalZ;
+        double _t10 = (normalX + normalX) * normalY;
+        double _t11 = (normalY + normalY) * normalZ;
         double _t12 = Math.fma(-2.0, normalX * normalX, 1.0);
         double _t13 = Math.fma(-2.0, normalY * normalY, 1.0);
         double _t14 = Math.fma(-2.0, normalZ * normalZ, 1.0);
@@ -5407,9 +5407,9 @@ public final class Double3x4OpsSimd {
         double _self21 = UnsafeOpsHolder.U.getDouble(_srcBase + 72L);
         double _self22 = UnsafeOpsHolder.U.getDouble(_srcBase + 80L);
         double _t2 = -_self22;
-        double _t9 = 2.0 * normalX * normalZ;
-        double _t10 = 2.0 * normalX * normalY;
-        double _t11 = 2.0 * normalY * normalZ;
+        double _t9 = (normalX + normalX) * normalZ;
+        double _t10 = (normalX + normalX) * normalY;
+        double _t11 = (normalY + normalY) * normalZ;
         double _t12 = Math.fma(-2.0, normalX * normalX, 1.0);
         double _t13 = Math.fma(-2.0, normalY * normalY, 1.0);
         double _t14 = Math.fma(-2.0, normalZ * normalZ, 1.0);
@@ -5434,9 +5434,9 @@ public final class Double3x4OpsSimd {
         double _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 72L);
         double _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 80L);
         double _t2 = -_self22;
-        double _t9 = 2.0 * normalX * normalZ;
-        double _t10 = 2.0 * normalX * normalY;
-        double _t11 = 2.0 * normalY * normalZ;
+        double _t9 = (normalX + normalX) * normalZ;
+        double _t10 = (normalX + normalX) * normalY;
+        double _t11 = (normalY + normalY) * normalZ;
         double _t12 = Math.fma(-2.0, normalX * normalX, 1.0);
         double _t13 = Math.fma(-2.0, normalY * normalY, 1.0);
         double _t14 = Math.fma(-2.0, normalZ * normalZ, 1.0);
@@ -5467,9 +5467,9 @@ public final class Double3x4OpsSimd {
         double _self21 = UnsafeOpsHolder.U.getDouble(_srcBase + 72L);
         double _self22 = UnsafeOpsHolder.U.getDouble(_srcBase + 80L);
         double _t2 = -_self22;
-        double _t9 = 2.0 * normalX * normalZ;
-        double _t10 = 2.0 * normalX * normalY;
-        double _t11 = 2.0 * normalY * normalZ;
+        double _t9 = (normalX + normalX) * normalZ;
+        double _t10 = (normalX + normalX) * normalY;
+        double _t11 = (normalY + normalY) * normalZ;
         double _t12 = Math.fma(-2.0, normalX * normalX, 1.0);
         double _t13 = Math.fma(-2.0, normalY * normalY, 1.0);
         double _t14 = Math.fma(-2.0, normalZ * normalZ, 1.0);
@@ -5494,9 +5494,9 @@ public final class Double3x4OpsSimd {
         double _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 72L);
         double _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 80L);
         double _t2 = -_self22;
-        double _t9 = 2.0 * normalX * normalZ;
-        double _t10 = 2.0 * normalX * normalY;
-        double _t11 = 2.0 * normalY * normalZ;
+        double _t9 = (normalX + normalX) * normalZ;
+        double _t10 = (normalX + normalX) * normalY;
+        double _t11 = (normalY + normalY) * normalZ;
         double _t12 = Math.fma(-2.0, normalX * normalX, 1.0);
         double _t13 = Math.fma(-2.0, normalY * normalY, 1.0);
         double _t14 = Math.fma(-2.0, normalZ * normalZ, 1.0);
@@ -5529,9 +5529,9 @@ public final class Double3x4OpsSimd {
         double _normalz = normal[normalOffset + 2];
         double _normaly = normal[normalOffset + 1];
         double _t2 = -_self22;
-        double _t9 = 2.0 * _normalx * _normalz;
-        double _t10 = 2.0 * _normalx * _normaly;
-        double _t11 = 2.0 * _normaly * _normalz;
+        double _t9 = (_normalx + _normalx) * _normalz;
+        double _t10 = (_normalx + _normalx) * _normaly;
+        double _t11 = (_normaly + _normaly) * _normalz;
         double _t12 = Math.fma(-2.0, _normalx * _normalx, 1.0);
         double _t13 = Math.fma(-2.0, _normaly * _normaly, 1.0);
         double _t14 = Math.fma(-2.0, _normalz * _normalz, 1.0);
@@ -5559,9 +5559,9 @@ public final class Double3x4OpsSimd {
         double _normalz = normal[normalOffset + 2];
         double _normaly = normal[normalOffset + 1];
         double _t2 = -_self22;
-        double _t9 = 2.0 * _normalx * _normalz;
-        double _t10 = 2.0 * _normalx * _normaly;
-        double _t11 = 2.0 * _normaly * _normalz;
+        double _t9 = (_normalx + _normalx) * _normalz;
+        double _t10 = (_normalx + _normalx) * _normaly;
+        double _t11 = (_normaly + _normaly) * _normalz;
         double _t12 = Math.fma(-2.0, _normalx * _normalx, 1.0);
         double _t13 = Math.fma(-2.0, _normaly * _normaly, 1.0);
         double _t14 = Math.fma(-2.0, _normalz * _normalz, 1.0);
@@ -5601,9 +5601,9 @@ public final class Double3x4OpsSimd {
         double _normalz = UnsafeOpsHolder.U.getDouble(_normalBase + 16L);
         double _normaly = UnsafeOpsHolder.U.getDouble(_normalBase + 8L);
         double _t2 = -_self22;
-        double _t9 = 2.0 * _normalx * _normalz;
-        double _t10 = 2.0 * _normalx * _normaly;
-        double _t11 = 2.0 * _normaly * _normalz;
+        double _t9 = (_normalx + _normalx) * _normalz;
+        double _t10 = (_normalx + _normalx) * _normaly;
+        double _t11 = (_normaly + _normaly) * _normalz;
         double _t12 = Math.fma(-2.0, _normalx * _normalx, 1.0);
         double _t13 = Math.fma(-2.0, _normaly * _normaly, 1.0);
         double _t14 = Math.fma(-2.0, _normalz * _normalz, 1.0);
@@ -5631,9 +5631,9 @@ public final class Double3x4OpsSimd {
         double _normalz = normal.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, normalOffset + 16L);
         double _normaly = normal.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, normalOffset + 8L);
         double _t2 = -_self22;
-        double _t9 = 2.0 * _normalx * _normalz;
-        double _t10 = 2.0 * _normalx * _normaly;
-        double _t11 = 2.0 * _normaly * _normalz;
+        double _t9 = (_normalx + _normalx) * _normalz;
+        double _t10 = (_normalx + _normalx) * _normaly;
+        double _t11 = (_normaly + _normaly) * _normalz;
         double _t12 = Math.fma(-2.0, _normalx * _normalx, 1.0);
         double _t13 = Math.fma(-2.0, _normaly * _normaly, 1.0);
         double _t14 = Math.fma(-2.0, _normalz * _normalz, 1.0);
@@ -5668,9 +5668,9 @@ public final class Double3x4OpsSimd {
         double _normalz = UnsafeOpsHolder.U.getDouble(_normalBase + 16L);
         double _normaly = UnsafeOpsHolder.U.getDouble(_normalBase + 8L);
         double _t2 = -_self22;
-        double _t9 = 2.0 * _normalx * _normalz;
-        double _t10 = 2.0 * _normalx * _normaly;
-        double _t11 = 2.0 * _normaly * _normalz;
+        double _t9 = (_normalx + _normalx) * _normalz;
+        double _t10 = (_normalx + _normalx) * _normaly;
+        double _t11 = (_normaly + _normaly) * _normalz;
         double _t12 = Math.fma(-2.0, _normalx * _normalx, 1.0);
         double _t13 = Math.fma(-2.0, _normaly * _normaly, 1.0);
         double _t14 = Math.fma(-2.0, _normalz * _normalz, 1.0);
@@ -5698,9 +5698,9 @@ public final class Double3x4OpsSimd {
         double _normalz = normal.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, normalOffset + 16L);
         double _normaly = normal.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, normalOffset + 8L);
         double _t2 = -_self22;
-        double _t9 = 2.0 * _normalx * _normalz;
-        double _t10 = 2.0 * _normalx * _normaly;
-        double _t11 = 2.0 * _normaly * _normalz;
+        double _t9 = (_normalx + _normalx) * _normalz;
+        double _t10 = (_normalx + _normalx) * _normaly;
+        double _t11 = (_normaly + _normaly) * _normalz;
         double _t12 = Math.fma(-2.0, _normalx * _normalx, 1.0);
         double _t13 = Math.fma(-2.0, _normaly * _normaly, 1.0);
         double _t14 = Math.fma(-2.0, _normalz * _normalz, 1.0);
@@ -5732,9 +5732,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -rotY;
         double _t2 = -rotX;
         double _t3 = -pivotZ;
-        double _t5 = 2.0 * rotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
+        double _t5 = rotX + rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
         double _t8 = rotW * _t6;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t5;
@@ -5780,9 +5780,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -rotY;
         double _t2 = -rotX;
         double _t3 = -pivotZ;
-        double _t5 = 2.0 * rotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
+        double _t5 = rotX + rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
         double _t8 = rotW * _t6;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t5;
@@ -5839,9 +5839,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -rotY;
         double _t2 = -rotX;
         double _t3 = -pivotZ;
-        double _t5 = 2.0 * rotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
+        double _t5 = rotX + rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
         double _t8 = rotW * _t6;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t5;
@@ -5887,9 +5887,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -rotY;
         double _t2 = -rotX;
         double _t3 = -pivotZ;
-        double _t5 = 2.0 * rotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
+        double _t5 = rotX + rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
         double _t8 = rotW * _t6;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t5;
@@ -5941,9 +5941,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -rotY;
         double _t2 = -rotX;
         double _t3 = -pivotZ;
-        double _t5 = 2.0 * rotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
+        double _t5 = rotX + rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
         double _t8 = rotW * _t6;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t5;
@@ -5989,9 +5989,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -rotY;
         double _t2 = -rotX;
         double _t3 = -pivotZ;
-        double _t5 = 2.0 * rotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
+        double _t5 = rotX + rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
         double _t8 = rotW * _t6;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t5;
@@ -6049,9 +6049,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -_roty;
         double _t2 = -_rotx;
         double _t3 = -_pivotz;
-        double _t5 = 2.0 * _rotx;
-        double _t6 = 2.0 * _roty;
-        double _t7 = 2.0 * _rotz;
+        double _t5 = _rotx + _rotx;
+        double _t6 = _roty + _roty;
+        double _t7 = _rotz + _rotz;
         double _t8 = _rotw * _t6;
         double _t9 = _rotw * _t7;
         double _t10 = _rotw * _t5;
@@ -6104,9 +6104,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -_roty;
         double _t2 = -_rotx;
         double _t3 = -_pivotz;
-        double _t5 = 2.0 * _rotx;
-        double _t6 = 2.0 * _roty;
-        double _t7 = 2.0 * _rotz;
+        double _t5 = _rotx + _rotx;
+        double _t6 = _roty + _roty;
+        double _t7 = _rotz + _rotz;
         double _t8 = _rotw * _t6;
         double _t9 = _rotw * _t7;
         double _t10 = _rotw * _t5;
@@ -6172,9 +6172,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -_roty;
         double _t2 = -_rotx;
         double _t3 = -_pivotz;
-        double _t5 = 2.0 * _rotx;
-        double _t6 = 2.0 * _roty;
-        double _t7 = 2.0 * _rotz;
+        double _t5 = _rotx + _rotx;
+        double _t6 = _roty + _roty;
+        double _t7 = _rotz + _rotz;
         double _t8 = _rotw * _t6;
         double _t9 = _rotw * _t7;
         double _t10 = _rotw * _t5;
@@ -6227,9 +6227,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -_roty;
         double _t2 = -_rotx;
         double _t3 = -_pivotz;
-        double _t5 = 2.0 * _rotx;
-        double _t6 = 2.0 * _roty;
-        double _t7 = 2.0 * _rotz;
+        double _t5 = _rotx + _rotx;
+        double _t6 = _roty + _roty;
+        double _t7 = _rotz + _rotz;
         double _t8 = _rotw * _t6;
         double _t9 = _rotw * _t7;
         double _t10 = _rotw * _t5;
@@ -6290,9 +6290,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -_roty;
         double _t2 = -_rotx;
         double _t3 = -_pivotz;
-        double _t5 = 2.0 * _rotx;
-        double _t6 = 2.0 * _roty;
-        double _t7 = 2.0 * _rotz;
+        double _t5 = _rotx + _rotx;
+        double _t6 = _roty + _roty;
+        double _t7 = _rotz + _rotz;
         double _t8 = _rotw * _t6;
         double _t9 = _rotw * _t7;
         double _t10 = _rotw * _t5;
@@ -6345,9 +6345,9 @@ public final class Double3x4OpsSimd {
         double _t0 = -_roty;
         double _t2 = -_rotx;
         double _t3 = -_pivotz;
-        double _t5 = 2.0 * _rotx;
-        double _t6 = 2.0 * _roty;
-        double _t7 = 2.0 * _rotz;
+        double _t5 = _rotx + _rotx;
+        double _t6 = _roty + _roty;
+        double _t7 = _rotz + _rotz;
         double _t8 = _rotw * _t6;
         double _t9 = _rotw * _t7;
         double _t10 = _rotw * _t5;

@@ -964,9 +964,9 @@ public final class FloatTransformImpl implements FloatTransform {
     public Float4x4 toMatrix(@Mutated Float4x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4x4Impl) dest).data;
-        float _t0 = 2.0f * sd[7];
-        float _t1 = 2.0f * sd[8];
-        float _t2 = 2.0f * sd[9];
+        float _t0 = sd[7] + sd[7];
+        float _t1 = sd[8] + sd[8];
+        float _t2 = sd[9] + sd[9];
         float _t3 = sd[5] * sd[5];
         float _t4 = sd[5] * sd[6];
         float _t5 = sd[4] * sd[6];
@@ -1010,9 +1010,9 @@ public final class FloatTransformImpl implements FloatTransform {
     public Double4x4 toMatrix(@Mutated Double4x4 dest) {
         float[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
-        float _t0 = 2.0f * sd[7];
-        float _t1 = 2.0f * sd[8];
-        float _t2 = 2.0f * sd[9];
+        float _t0 = sd[7] + sd[7];
+        float _t1 = sd[8] + sd[8];
+        float _t2 = sd[9] + sd[9];
         float _t3 = sd[5] * sd[5];
         float _t4 = sd[5] * sd[6];
         float _t5 = sd[4] * sd[6];
@@ -1054,9 +1054,9 @@ public final class FloatTransformImpl implements FloatTransform {
     public Float3x3 toMatrix3x3(@Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
-        float _t0 = 2.0f * sd[7];
-        float _t1 = 2.0f * sd[8];
-        float _t2 = 2.0f * sd[9];
+        float _t0 = sd[7] + sd[7];
+        float _t1 = sd[8] + sd[8];
+        float _t2 = sd[9] + sd[9];
         float _t3 = sd[5] * sd[5];
         float _t4 = sd[5] * sd[6];
         float _t5 = sd[4] * sd[6];
@@ -1090,9 +1090,9 @@ public final class FloatTransformImpl implements FloatTransform {
     public Double3x3 toMatrix3x3(@Mutated Double3x3 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        float _t0 = 2.0f * sd[7];
-        float _t1 = 2.0f * sd[8];
-        float _t2 = 2.0f * sd[9];
+        float _t0 = sd[7] + sd[7];
+        float _t1 = sd[8] + sd[8];
+        float _t2 = sd[9] + sd[9];
         float _t3 = sd[5] * sd[5];
         float _t4 = sd[5] * sd[6];
         float _t5 = sd[4] * sd[6];
@@ -1123,9 +1123,9 @@ public final class FloatTransformImpl implements FloatTransform {
     public Float3x4 toMatrix3x4(@Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t0 = 2.0f * sd[7];
-        float _t1 = 2.0f * sd[8];
-        float _t2 = 2.0f * sd[9];
+        float _t0 = sd[7] + sd[7];
+        float _t1 = sd[8] + sd[8];
+        float _t2 = sd[9] + sd[9];
         float _t3 = sd[5] * sd[5];
         float _t4 = sd[5] * sd[6];
         float _t5 = sd[4] * sd[6];
@@ -1167,9 +1167,9 @@ public final class FloatTransformImpl implements FloatTransform {
     public Double3x4 toMatrix3x4(@Mutated Double3x4 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
-        float _t0 = 2.0f * sd[7];
-        float _t1 = 2.0f * sd[8];
-        float _t2 = 2.0f * sd[9];
+        float _t0 = sd[7] + sd[7];
+        float _t1 = sd[8] + sd[8];
+        float _t2 = sd[9] + sd[9];
         float _t3 = sd[5] * sd[5];
         float _t4 = sd[5] * sd[6];
         float _t5 = sd[4] * sd[6];
@@ -1698,7 +1698,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(otherRX, sd[6], otherRW * sd[3]) + Math.fma(otherRZ, sd[4], -(otherRY * sd[5]));
         float _buf1 = Math.fma(otherRY, sd[6], otherRW * sd[4]) + Math.fma(otherRX, sd[5], -(otherRZ * sd[3]));
         float _buf2 = Math.fma(otherRZ, sd[6], otherRW * sd[5]) + Math.fma(otherRY, sd[3], -(otherRX * sd[4]));
-        dd[6] = Math.fma(-otherRZ, sd[5], Math.fma(-otherRY, sd[4], Math.fma(otherRW, sd[6], -(otherRX * sd[3]))));
+        dd[6] = Math.fma(otherRW, sd[6], -(otherRX * sd[3])) - Math.fma(otherRY, sd[4], otherRZ * sd[5]);
         dd[7] = otherSX * sd[7];
         dd[8] = otherSY * sd[8];
         dd[9] = otherSZ * sd[9];
@@ -1765,7 +1765,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(otherRX, sd[6], otherRW * sd[3]) + Math.fma(otherRZ, sd[4], -(otherRY * sd[5]));
         float _buf1 = Math.fma(otherRY, sd[6], otherRW * sd[4]) + Math.fma(otherRX, sd[5], -(otherRZ * sd[3]));
         float _buf2 = Math.fma(otherRZ, sd[6], otherRW * sd[5]) + Math.fma(otherRY, sd[3], -(otherRX * sd[4]));
-        dd[6] = Math.fma(-otherRZ, sd[5], Math.fma(-otherRY, sd[4], Math.fma(otherRW, sd[6], -(otherRX * sd[3]))));
+        dd[6] = Math.fma(otherRW, sd[6], -(otherRX * sd[3])) - Math.fma(otherRY, sd[4], otherRZ * sd[5]);
         dd[7] = otherSX * sd[7];
         dd[8] = otherSY * sd[8];
         dd[9] = otherSZ * sd[9];
@@ -1864,21 +1864,19 @@ public final class FloatTransformImpl implements FloatTransform {
     public FloatTransform preMul(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, float otherSX, float otherSY, float otherSZ, @Mutated FloatTransform dest) {
         float[] sd = this.data;
         float[] dd = ((FloatTransformImpl) dest).data;
-        float _t0 = -otherRZ;
-        float _t1 = -otherRY;
-        float _t2 = otherSY * sd[1];
-        float _t3 = otherSX * sd[0];
-        float _t4 = otherSZ * sd[2];
-        float _t14 = 2.0f * Math.fma(otherRX, _t2, -(otherRY * _t3));
-        float _t15 = 2.0f * Math.fma(otherRZ, _t3, -(otherRX * _t4));
-        float _t16 = 2.0f * Math.fma(otherRY, _t4, -(otherRZ * _t2));
-        dd[0] = Math.fma(otherRY, _t14, Math.fma(_t0, _t15, Math.fma(otherRW, _t16, Math.fma(otherSX, sd[0], otherTX))));
-        dd[1] = Math.fma(otherRZ, _t16, Math.fma(-otherRX, _t14, Math.fma(otherRW, _t15, Math.fma(otherSY, sd[1], otherTY))));
-        dd[2] = Math.fma(otherRX, _t15, Math.fma(_t1, _t16, Math.fma(otherRW, _t14, Math.fma(otherSZ, sd[2], otherTZ))));
+        float _t0 = otherSY * sd[1];
+        float _t1 = otherSX * sd[0];
+        float _t2 = otherSZ * sd[2];
+        float _t12 = 2.0f * Math.fma(otherRX, _t0, -(otherRY * _t1));
+        float _t13 = 2.0f * Math.fma(otherRZ, _t1, -(otherRX * _t2));
+        float _t14 = 2.0f * Math.fma(otherRY, _t2, -(otherRZ * _t0));
+        dd[0] = Math.fma(otherRY, _t12, Math.fma(-otherRZ, _t13, Math.fma(otherRW, _t14, Math.fma(otherSX, sd[0], otherTX))));
+        dd[1] = Math.fma(otherRZ, _t14, Math.fma(-otherRX, _t12, Math.fma(otherRW, _t13, Math.fma(otherSY, sd[1], otherTY))));
+        dd[2] = Math.fma(otherRX, _t13, Math.fma(-otherRY, _t14, Math.fma(otherRW, _t12, Math.fma(otherSZ, sd[2], otherTZ))));
         float _buf0 = Math.fma(otherRX, sd[6], otherRW * sd[3]) + Math.fma(otherRY, sd[5], -(otherRZ * sd[4]));
         float _buf1 = Math.fma(otherRY, sd[6], otherRW * sd[4]) + Math.fma(otherRZ, sd[3], -(otherRX * sd[5]));
         float _buf2 = Math.fma(otherRZ, sd[6], otherRW * sd[5]) + Math.fma(otherRX, sd[4], -(otherRY * sd[3]));
-        dd[6] = Math.fma(_t0, sd[5], Math.fma(_t1, sd[4], Math.fma(otherRW, sd[6], -(otherRX * sd[3]))));
+        dd[6] = Math.fma(otherRW, sd[6], -(otherRX * sd[3])) - Math.fma(otherRY, sd[4], otherRZ * sd[5]);
         dd[7] = otherSX * sd[7];
         dd[8] = otherSY * sd[8];
         dd[9] = otherSZ * sd[9];
@@ -1933,21 +1931,19 @@ public final class FloatTransformImpl implements FloatTransform {
     public DoubleTransform preMul(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, float otherSX, float otherSY, float otherSZ, @Mutated DoubleTransform dest) {
         float[] sd = this.data;
         double[] dd = ((DoubleTransformImpl) dest).data;
-        float _t0 = -otherRZ;
-        float _t1 = -otherRY;
-        float _t2 = otherSY * sd[1];
-        float _t3 = otherSX * sd[0];
-        float _t4 = otherSZ * sd[2];
-        float _t14 = 2.0f * Math.fma(otherRX, _t2, -(otherRY * _t3));
-        float _t15 = 2.0f * Math.fma(otherRZ, _t3, -(otherRX * _t4));
-        float _t16 = 2.0f * Math.fma(otherRY, _t4, -(otherRZ * _t2));
-        dd[0] = Math.fma(otherRY, _t14, Math.fma(_t0, _t15, Math.fma(otherRW, _t16, Math.fma(otherSX, sd[0], otherTX))));
-        dd[1] = Math.fma(otherRZ, _t16, Math.fma(-otherRX, _t14, Math.fma(otherRW, _t15, Math.fma(otherSY, sd[1], otherTY))));
-        dd[2] = Math.fma(otherRX, _t15, Math.fma(_t1, _t16, Math.fma(otherRW, _t14, Math.fma(otherSZ, sd[2], otherTZ))));
+        float _t0 = otherSY * sd[1];
+        float _t1 = otherSX * sd[0];
+        float _t2 = otherSZ * sd[2];
+        float _t12 = 2.0f * Math.fma(otherRX, _t0, -(otherRY * _t1));
+        float _t13 = 2.0f * Math.fma(otherRZ, _t1, -(otherRX * _t2));
+        float _t14 = 2.0f * Math.fma(otherRY, _t2, -(otherRZ * _t0));
+        dd[0] = Math.fma(otherRY, _t12, Math.fma(-otherRZ, _t13, Math.fma(otherRW, _t14, Math.fma(otherSX, sd[0], otherTX))));
+        dd[1] = Math.fma(otherRZ, _t14, Math.fma(-otherRX, _t12, Math.fma(otherRW, _t13, Math.fma(otherSY, sd[1], otherTY))));
+        dd[2] = Math.fma(otherRX, _t13, Math.fma(-otherRY, _t14, Math.fma(otherRW, _t12, Math.fma(otherSZ, sd[2], otherTZ))));
         float _buf0 = Math.fma(otherRX, sd[6], otherRW * sd[3]) + Math.fma(otherRY, sd[5], -(otherRZ * sd[4]));
         float _buf1 = Math.fma(otherRY, sd[6], otherRW * sd[4]) + Math.fma(otherRZ, sd[3], -(otherRX * sd[5]));
         float _buf2 = Math.fma(otherRZ, sd[6], otherRW * sd[5]) + Math.fma(otherRX, sd[4], -(otherRY * sd[3]));
-        dd[6] = Math.fma(_t0, sd[5], Math.fma(_t1, sd[4], Math.fma(otherRW, sd[6], -(otherRX * sd[3]))));
+        dd[6] = Math.fma(otherRW, sd[6], -(otherRX * sd[3])) - Math.fma(otherRY, sd[4], otherRZ * sd[5]);
         dd[7] = otherSX * sd[7];
         dd[8] = otherSY * sd[8];
         dd[9] = otherSZ * sd[9];
@@ -2058,7 +2054,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(otherRX, sd[6], -(otherRW * sd[3])) + Math.fma(otherRY, sd[5], -(otherRZ * sd[4]));
         float _buf1 = Math.fma(otherRY, sd[6], -(otherRW * sd[4])) + Math.fma(otherRZ, sd[3], -(otherRX * sd[5]));
         float _buf2 = Math.fma(otherRX, sd[4], -(otherRY * sd[3])) + Math.fma(otherRZ, sd[6], -(otherRW * sd[5]));
-        dd[6] = Math.fma(otherRZ, sd[5], Math.fma(otherRY, sd[4], Math.fma(otherRX, sd[3], otherRW * sd[6])));
+        dd[6] = Math.fma(otherRX, sd[3], otherRW * sd[6]) - Math.fma(-otherRZ, sd[5], -(otherRY * sd[4]));
         dd[7] = otherSX * _rcp1;
         dd[8] = otherSY * _rcp2;
         dd[9] = otherSZ * _rcp0;
@@ -2129,7 +2125,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(otherRX, sd[6], -(otherRW * sd[3])) + Math.fma(otherRY, sd[5], -(otherRZ * sd[4]));
         float _buf1 = Math.fma(otherRY, sd[6], -(otherRW * sd[4])) + Math.fma(otherRZ, sd[3], -(otherRX * sd[5]));
         float _buf2 = Math.fma(otherRX, sd[4], -(otherRY * sd[3])) + Math.fma(otherRZ, sd[6], -(otherRW * sd[5]));
-        dd[6] = Math.fma(otherRZ, sd[5], Math.fma(otherRY, sd[4], Math.fma(otherRX, sd[3], otherRW * sd[6])));
+        dd[6] = Math.fma(otherRX, sd[3], otherRW * sd[6]) - Math.fma(-otherRZ, sd[5], -(otherRY * sd[4]));
         dd[7] = otherSX * _rcp1;
         dd[8] = otherSY * _rcp2;
         dd[9] = otherSZ * _rcp0;
@@ -3319,7 +3315,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(rotationX, sd[6], rotationW * sd[3]) + Math.fma(rotationZ, sd[4], -(rotationY * sd[5]));
         float _buf1 = Math.fma(rotationY, sd[6], rotationW * sd[4]) + Math.fma(rotationX, sd[5], -(rotationZ * sd[3]));
         float _buf2 = Math.fma(rotationZ, sd[6], rotationW * sd[5]) + Math.fma(rotationY, sd[3], -(rotationX * sd[4]));
-        dd[6] = Math.fma(-rotationZ, sd[5], Math.fma(-rotationY, sd[4], Math.fma(rotationW, sd[6], -(rotationX * sd[3]))));
+        dd[6] = Math.fma(rotationW, sd[6], -(rotationX * sd[3])) - Math.fma(rotationY, sd[4], rotationZ * sd[5]);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];
@@ -3371,7 +3367,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(rotationX, sd[6], rotationW * sd[3]) + Math.fma(rotationZ, sd[4], -(rotationY * sd[5]));
         float _buf1 = Math.fma(rotationY, sd[6], rotationW * sd[4]) + Math.fma(rotationX, sd[5], -(rotationZ * sd[3]));
         float _buf2 = Math.fma(rotationZ, sd[6], rotationW * sd[5]) + Math.fma(rotationY, sd[3], -(rotationX * sd[4]));
-        dd[6] = Math.fma(-rotationZ, sd[5], Math.fma(-rotationY, sd[4], Math.fma(rotationW, sd[6], -(rotationX * sd[3]))));
+        dd[6] = Math.fma(rotationW, sd[6], -(rotationX * sd[3])) - Math.fma(rotationY, sd[4], rotationZ * sd[5]);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];
@@ -3475,7 +3471,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(sd[3], _t1, sd[6] * _t3) + Math.fma(sd[4], _t4, -(sd[5] * _t5));
         float _buf1 = Math.fma(sd[4], _t1, sd[6] * _t5) + Math.fma(sd[5], _t3, -(sd[3] * _t4));
         float _buf2 = Math.fma(sd[5], _t1, sd[6] * _t4) + Math.fma(sd[3], _t5, -(sd[4] * _t3));
-        dd[6] = Math.fma(-sd[5], _t4, Math.fma(-sd[4], _t5, Math.fma(sd[6], _t1, -(sd[3] * _t3))));
+        dd[6] = Math.fma(sd[6], _t1, -(sd[3] * _t3)) - Math.fma(sd[4], _t5, sd[5] * _t4);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];
@@ -3531,7 +3527,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(sd[3], _t1, sd[6] * _t3) + Math.fma(sd[4], _t4, -(sd[5] * _t5));
         float _buf1 = Math.fma(sd[4], _t1, sd[6] * _t5) + Math.fma(sd[5], _t3, -(sd[3] * _t4));
         float _buf2 = Math.fma(sd[5], _t1, sd[6] * _t4) + Math.fma(sd[3], _t5, -(sd[4] * _t3));
-        dd[6] = Math.fma(-sd[5], _t4, Math.fma(-sd[4], _t5, Math.fma(sd[6], _t1, -(sd[3] * _t3))));
+        dd[6] = Math.fma(sd[6], _t1, -(sd[3] * _t3)) - Math.fma(sd[4], _t5, sd[5] * _t4);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];
@@ -3673,7 +3669,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(sd[3], _t21, sd[6] * _t19) + Math.fma(sd[4], _t20, -(sd[5] * _t22));
         float _buf1 = Math.fma(sd[4], _t21, sd[6] * _t22) + Math.fma(sd[5], _t19, -(sd[3] * _t20));
         float _buf2 = Math.fma(sd[5], _t21, sd[6] * _t20) + Math.fma(sd[3], _t22, -(sd[4] * _t19));
-        dd[6] = Math.fma(-sd[5], _t20, Math.fma(-sd[4], _t22, Math.fma(sd[6], _t21, -(sd[3] * _t19))));
+        dd[6] = Math.fma(sd[6], _t21, -(sd[3] * _t19)) - Math.fma(sd[4], _t22, sd[5] * _t20);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];
@@ -3735,7 +3731,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(sd[3], _t21, sd[6] * _t19) + Math.fma(sd[4], _t20, -(sd[5] * _t22));
         float _buf1 = Math.fma(sd[4], _t21, sd[6] * _t22) + Math.fma(sd[5], _t19, -(sd[3] * _t20));
         float _buf2 = Math.fma(sd[5], _t21, sd[6] * _t20) + Math.fma(sd[3], _t22, -(sd[4] * _t19));
-        dd[6] = Math.fma(-sd[5], _t20, Math.fma(-sd[4], _t22, Math.fma(sd[6], _t21, -(sd[3] * _t19))));
+        dd[6] = Math.fma(sd[6], _t21, -(sd[3] * _t19)) - Math.fma(sd[4], _t22, sd[5] * _t20);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];
@@ -3794,7 +3790,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(sd[3], _t19, sd[6] * _t21) + Math.fma(sd[4], _t20, -(sd[5] * _t22));
         float _buf1 = Math.fma(sd[4], _t19, sd[6] * _t22) + Math.fma(sd[5], _t21, -(sd[3] * _t20));
         float _buf2 = Math.fma(sd[5], _t19, sd[6] * _t20) + Math.fma(sd[3], _t22, -(sd[4] * _t21));
-        dd[6] = Math.fma(-sd[5], _t20, Math.fma(-sd[4], _t22, Math.fma(sd[6], _t19, -(sd[3] * _t21))));
+        dd[6] = Math.fma(sd[6], _t19, -(sd[3] * _t21)) - Math.fma(sd[4], _t22, sd[5] * _t20);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];
@@ -3856,7 +3852,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(sd[3], _t19, sd[6] * _t21) + Math.fma(sd[4], _t20, -(sd[5] * _t22));
         float _buf1 = Math.fma(sd[4], _t19, sd[6] * _t22) + Math.fma(sd[5], _t21, -(sd[3] * _t20));
         float _buf2 = Math.fma(sd[5], _t19, sd[6] * _t20) + Math.fma(sd[3], _t22, -(sd[4] * _t21));
-        dd[6] = Math.fma(-sd[5], _t20, Math.fma(-sd[4], _t22, Math.fma(sd[6], _t19, -(sd[3] * _t21))));
+        dd[6] = Math.fma(sd[6], _t19, -(sd[3] * _t21)) - Math.fma(sd[4], _t22, sd[5] * _t20);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];
@@ -3998,7 +3994,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(sd[3], _t19, sd[6] * _t20) + Math.fma(sd[4], _t21, -(sd[5] * _t22));
         float _buf1 = Math.fma(sd[4], _t19, sd[6] * _t22) + Math.fma(sd[5], _t20, -(sd[3] * _t21));
         float _buf2 = Math.fma(sd[5], _t19, sd[6] * _t21) + Math.fma(sd[3], _t22, -(sd[4] * _t20));
-        dd[6] = Math.fma(-sd[5], _t21, Math.fma(-sd[4], _t22, Math.fma(sd[6], _t19, -(sd[3] * _t20))));
+        dd[6] = Math.fma(sd[6], _t19, -(sd[3] * _t20)) - Math.fma(sd[4], _t22, sd[5] * _t21);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];
@@ -4060,7 +4056,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(sd[3], _t19, sd[6] * _t20) + Math.fma(sd[4], _t21, -(sd[5] * _t22));
         float _buf1 = Math.fma(sd[4], _t19, sd[6] * _t22) + Math.fma(sd[5], _t20, -(sd[3] * _t21));
         float _buf2 = Math.fma(sd[5], _t19, sd[6] * _t21) + Math.fma(sd[3], _t22, -(sd[4] * _t20));
-        dd[6] = Math.fma(-sd[5], _t21, Math.fma(-sd[4], _t22, Math.fma(sd[6], _t19, -(sd[3] * _t20))));
+        dd[6] = Math.fma(sd[6], _t19, -(sd[3] * _t20)) - Math.fma(sd[4], _t22, sd[5] * _t21);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];
@@ -4119,7 +4115,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(sd[3], _t21, sd[6] * _t19) + Math.fma(sd[4], _t22, -(sd[5] * _t20));
         float _buf1 = Math.fma(sd[4], _t21, sd[6] * _t20) + Math.fma(sd[5], _t19, -(sd[3] * _t22));
         float _buf2 = Math.fma(sd[5], _t21, sd[6] * _t22) + Math.fma(sd[3], _t20, -(sd[4] * _t19));
-        dd[6] = Math.fma(-sd[5], _t22, Math.fma(-sd[4], _t20, Math.fma(sd[6], _t21, -(sd[3] * _t19))));
+        dd[6] = Math.fma(sd[6], _t21, -(sd[3] * _t19)) - Math.fma(sd[4], _t20, sd[5] * _t22);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];
@@ -4181,7 +4177,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(sd[3], _t21, sd[6] * _t19) + Math.fma(sd[4], _t22, -(sd[5] * _t20));
         float _buf1 = Math.fma(sd[4], _t21, sd[6] * _t20) + Math.fma(sd[5], _t19, -(sd[3] * _t22));
         float _buf2 = Math.fma(sd[5], _t21, sd[6] * _t22) + Math.fma(sd[3], _t20, -(sd[4] * _t19));
-        dd[6] = Math.fma(-sd[5], _t22, Math.fma(-sd[4], _t20, Math.fma(sd[6], _t21, -(sd[3] * _t19))));
+        dd[6] = Math.fma(sd[6], _t21, -(sd[3] * _t19)) - Math.fma(sd[4], _t20, sd[5] * _t22);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];
@@ -4323,7 +4319,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(sd[3], _t21, sd[6] * _t22) + Math.fma(sd[4], _t19, -(sd[5] * _t20));
         float _buf1 = Math.fma(sd[4], _t21, sd[6] * _t20) + Math.fma(sd[5], _t22, -(sd[3] * _t19));
         float _buf2 = Math.fma(sd[5], _t21, sd[6] * _t19) + Math.fma(sd[3], _t20, -(sd[4] * _t22));
-        dd[6] = Math.fma(-sd[5], _t19, Math.fma(-sd[4], _t20, Math.fma(sd[6], _t21, -(sd[3] * _t22))));
+        dd[6] = Math.fma(sd[6], _t21, -(sd[3] * _t22)) - Math.fma(sd[4], _t20, sd[5] * _t19);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];
@@ -4385,7 +4381,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(sd[3], _t21, sd[6] * _t22) + Math.fma(sd[4], _t19, -(sd[5] * _t20));
         float _buf1 = Math.fma(sd[4], _t21, sd[6] * _t20) + Math.fma(sd[5], _t22, -(sd[3] * _t19));
         float _buf2 = Math.fma(sd[5], _t21, sd[6] * _t19) + Math.fma(sd[3], _t20, -(sd[4] * _t22));
-        dd[6] = Math.fma(-sd[5], _t19, Math.fma(-sd[4], _t20, Math.fma(sd[6], _t21, -(sd[3] * _t22))));
+        dd[6] = Math.fma(sd[6], _t21, -(sd[3] * _t22)) - Math.fma(sd[4], _t20, sd[5] * _t19);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];
@@ -4444,7 +4440,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(sd[3], _t19, sd[6] * _t21) + Math.fma(sd[4], _t22, -(sd[5] * _t20));
         float _buf1 = Math.fma(sd[4], _t19, sd[6] * _t20) + Math.fma(sd[5], _t21, -(sd[3] * _t22));
         float _buf2 = Math.fma(sd[5], _t19, sd[6] * _t22) + Math.fma(sd[3], _t20, -(sd[4] * _t21));
-        dd[6] = Math.fma(-sd[5], _t22, Math.fma(-sd[4], _t20, Math.fma(sd[6], _t19, -(sd[3] * _t21))));
+        dd[6] = Math.fma(sd[6], _t19, -(sd[3] * _t21)) - Math.fma(sd[4], _t20, sd[5] * _t22);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];
@@ -4506,7 +4502,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _buf0 = Math.fma(sd[3], _t19, sd[6] * _t21) + Math.fma(sd[4], _t22, -(sd[5] * _t20));
         float _buf1 = Math.fma(sd[4], _t19, sd[6] * _t20) + Math.fma(sd[5], _t21, -(sd[3] * _t22));
         float _buf2 = Math.fma(sd[5], _t19, sd[6] * _t22) + Math.fma(sd[3], _t20, -(sd[4] * _t21));
-        dd[6] = Math.fma(-sd[5], _t22, Math.fma(-sd[4], _t20, Math.fma(sd[6], _t19, -(sd[3] * _t21))));
+        dd[6] = Math.fma(sd[6], _t19, -(sd[3] * _t21)) - Math.fma(sd[4], _t20, sd[5] * _t22);
         dd[7] = sd[7];
         dd[8] = sd[8];
         dd[9] = sd[9];

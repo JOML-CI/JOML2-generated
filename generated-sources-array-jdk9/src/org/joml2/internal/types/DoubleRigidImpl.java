@@ -1051,7 +1051,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
         double _buf0 = Math.fma(otherRX, sd[6], otherRW * sd[3]) + Math.fma(otherRZ, sd[4], -(otherRY * sd[5]));
         double _buf1 = Math.fma(otherRX, sd[5], otherRW * sd[4]) + Math.fma(otherRY, sd[6], -(otherRZ * sd[3]));
         double _buf2 = Math.fma(otherRY, sd[3], otherRZ * sd[6]) + Math.fma(otherRW, sd[5], -(otherRX * sd[4]));
-        dd[6] = Math.fma(-otherRZ, sd[5], Math.fma(-otherRY, sd[4], Math.fma(otherRW, sd[6], -(otherRX * sd[3]))));
+        dd[6] = Math.fma(otherRW, sd[6], -(otherRX * sd[3])) - Math.fma(otherRY, sd[4], otherRZ * sd[5]);
         dd[3] = _buf0;
         dd[4] = _buf1;
         dd[5] = _buf2;
@@ -1104,18 +1104,16 @@ public final class DoubleRigidImpl implements DoubleRigid {
     public DoubleRigid preMul(double otherTX, double otherTY, double otherTZ, double otherRX, double otherRY, double otherRZ, double otherRW, @Mutated DoubleRigid dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleRigidImpl) dest).data;
-        double _t0 = -otherRZ;
-        double _t1 = -otherRY;
-        double _t11 = 2.0 * Math.fma(otherRX, sd[1], -(otherRY * sd[0]));
-        double _t12 = 2.0 * Math.fma(otherRZ, sd[0], -(otherRX * sd[2]));
-        double _t13 = 2.0 * Math.fma(otherRY, sd[2], -(otherRZ * sd[1]));
-        dd[0] = Math.fma(otherRY, _t11, Math.fma(_t0, _t12, Math.fma(otherRW, _t13, otherTX + sd[0])));
-        dd[1] = Math.fma(otherRZ, _t13, Math.fma(-otherRX, _t11, Math.fma(otherRW, _t12, otherTY + sd[1])));
-        dd[2] = Math.fma(otherRX, _t12, Math.fma(_t1, _t13, Math.fma(otherRW, _t11, otherTZ + sd[2])));
+        double _t9 = 2.0 * Math.fma(otherRX, sd[1], -(otherRY * sd[0]));
+        double _t10 = 2.0 * Math.fma(otherRZ, sd[0], -(otherRX * sd[2]));
+        double _t11 = 2.0 * Math.fma(otherRY, sd[2], -(otherRZ * sd[1]));
+        dd[0] = Math.fma(otherRY, _t9, Math.fma(-otherRZ, _t10, Math.fma(otherRW, _t11, otherTX + sd[0])));
+        dd[1] = Math.fma(otherRZ, _t11, Math.fma(-otherRX, _t9, Math.fma(otherRW, _t10, otherTY + sd[1])));
+        dd[2] = Math.fma(otherRX, _t10, Math.fma(-otherRY, _t11, Math.fma(otherRW, _t9, otherTZ + sd[2])));
         double _buf0 = Math.fma(otherRX, sd[6], otherRW * sd[3]) + Math.fma(otherRY, sd[5], -(otherRZ * sd[4]));
         double _buf1 = Math.fma(otherRY, sd[6], otherRZ * sd[3]) + Math.fma(otherRW, sd[4], -(otherRX * sd[5]));
         double _buf2 = Math.fma(otherRX, sd[4], otherRW * sd[5]) + Math.fma(otherRZ, sd[6], -(otherRY * sd[3]));
-        dd[6] = Math.fma(_t0, sd[5], Math.fma(_t1, sd[4], Math.fma(otherRW, sd[6], -(otherRX * sd[3]))));
+        dd[6] = Math.fma(otherRW, sd[6], -(otherRX * sd[3])) - Math.fma(otherRY, sd[4], otherRZ * sd[5]);
         dd[3] = _buf0;
         dd[4] = _buf1;
         dd[5] = _buf2;
@@ -1178,7 +1176,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
         double _buf0 = Math.fma(otherRX, sd[6], -(otherRW * sd[3])) + Math.fma(otherRY, sd[5], -(otherRZ * sd[4]));
         double _buf1 = Math.fma(otherRY, sd[6], otherRZ * sd[3]) + Math.fma(-otherRX, sd[5], -(otherRW * sd[4]));
         double _buf2 = Math.fma(otherRX, sd[4], -(otherRW * sd[5])) + Math.fma(otherRZ, sd[6], -(otherRY * sd[3]));
-        dd[6] = Math.fma(otherRZ, sd[5], Math.fma(otherRY, sd[4], Math.fma(otherRX, sd[3], otherRW * sd[6])));
+        dd[6] = Math.fma(otherRX, sd[3], otherRW * sd[6]) - Math.fma(-otherRZ, sd[5], -(otherRY * sd[4]));
         dd[3] = _buf0;
         dd[4] = _buf1;
         dd[5] = _buf2;
@@ -1856,7 +1854,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
         double _buf0 = Math.fma(rotationX, sd[6], rotationW * sd[3]) + Math.fma(rotationZ, sd[4], -(rotationY * sd[5]));
         double _buf1 = Math.fma(rotationX, sd[5], rotationW * sd[4]) + Math.fma(rotationY, sd[6], -(rotationZ * sd[3]));
         double _buf2 = Math.fma(rotationY, sd[3], rotationZ * sd[6]) + Math.fma(rotationW, sd[5], -(rotationX * sd[4]));
-        dd[6] = Math.fma(-rotationZ, sd[5], Math.fma(-rotationY, sd[4], Math.fma(rotationW, sd[6], -(rotationX * sd[3]))));
+        dd[6] = Math.fma(rotationW, sd[6], -(rotationX * sd[3])) - Math.fma(rotationY, sd[4], rotationZ * sd[5]);
         dd[3] = _buf0;
         dd[4] = _buf1;
         dd[5] = _buf2;
@@ -1918,7 +1916,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
         double _buf0 = Math.fma(sd[3], _t1, sd[6] * _t3) + Math.fma(sd[4], _t4, -(sd[5] * _t5));
         double _buf1 = Math.fma(sd[4], _t1, sd[5] * _t3) + Math.fma(sd[6], _t5, -(sd[3] * _t4));
         double _buf2 = Math.fma(sd[3], _t5, sd[6] * _t4) + Math.fma(sd[5], _t1, -(sd[4] * _t3));
-        dd[6] = Math.fma(-sd[5], _t4, Math.fma(-sd[4], _t5, Math.fma(sd[6], _t1, -(sd[3] * _t3))));
+        dd[6] = Math.fma(sd[6], _t1, -(sd[3] * _t3)) - Math.fma(sd[4], _t5, sd[5] * _t4);
         dd[3] = _buf0;
         dd[4] = _buf1;
         dd[5] = _buf2;
@@ -1999,7 +1997,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
         double _buf0 = Math.fma(sd[3], _t21, sd[6] * _t19) + Math.fma(sd[4], _t20, -(sd[5] * _t22));
         double _buf1 = Math.fma(sd[4], _t21, sd[5] * _t19) + Math.fma(sd[6], _t22, -(sd[3] * _t20));
         double _buf2 = Math.fma(sd[3], _t22, sd[6] * _t20) + Math.fma(sd[5], _t21, -(sd[4] * _t19));
-        dd[6] = Math.fma(-sd[5], _t20, Math.fma(-sd[4], _t22, Math.fma(sd[6], _t21, -(sd[3] * _t19))));
+        dd[6] = Math.fma(sd[6], _t21, -(sd[3] * _t19)) - Math.fma(sd[4], _t22, sd[5] * _t20);
         dd[3] = _buf0;
         dd[4] = _buf1;
         dd[5] = _buf2;
@@ -2049,7 +2047,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
         double _buf0 = Math.fma(sd[3], _t19, sd[6] * _t21) + Math.fma(sd[4], _t20, -(sd[5] * _t22));
         double _buf1 = Math.fma(sd[4], _t19, sd[5] * _t21) + Math.fma(sd[6], _t22, -(sd[3] * _t20));
         double _buf2 = Math.fma(sd[3], _t22, sd[6] * _t20) + Math.fma(sd[5], _t19, -(sd[4] * _t21));
-        dd[6] = Math.fma(-sd[5], _t20, Math.fma(-sd[4], _t22, Math.fma(sd[6], _t19, -(sd[3] * _t21))));
+        dd[6] = Math.fma(sd[6], _t19, -(sd[3] * _t21)) - Math.fma(sd[4], _t22, sd[5] * _t20);
         dd[3] = _buf0;
         dd[4] = _buf1;
         dd[5] = _buf2;
@@ -2130,7 +2128,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
         double _buf0 = Math.fma(sd[3], _t19, sd[6] * _t20) + Math.fma(sd[4], _t21, -(sd[5] * _t22));
         double _buf1 = Math.fma(sd[4], _t19, sd[5] * _t20) + Math.fma(sd[6], _t22, -(sd[3] * _t21));
         double _buf2 = Math.fma(sd[3], _t22, sd[6] * _t21) + Math.fma(sd[5], _t19, -(sd[4] * _t20));
-        dd[6] = Math.fma(-sd[5], _t21, Math.fma(-sd[4], _t22, Math.fma(sd[6], _t19, -(sd[3] * _t20))));
+        dd[6] = Math.fma(sd[6], _t19, -(sd[3] * _t20)) - Math.fma(sd[4], _t22, sd[5] * _t21);
         dd[3] = _buf0;
         dd[4] = _buf1;
         dd[5] = _buf2;
@@ -2180,7 +2178,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
         double _buf0 = Math.fma(sd[3], _t21, sd[6] * _t19) + Math.fma(sd[4], _t22, -(sd[5] * _t20));
         double _buf1 = Math.fma(sd[4], _t21, sd[5] * _t19) + Math.fma(sd[6], _t20, -(sd[3] * _t22));
         double _buf2 = Math.fma(sd[3], _t20, sd[6] * _t22) + Math.fma(sd[5], _t21, -(sd[4] * _t19));
-        dd[6] = Math.fma(-sd[5], _t22, Math.fma(-sd[4], _t20, Math.fma(sd[6], _t21, -(sd[3] * _t19))));
+        dd[6] = Math.fma(sd[6], _t21, -(sd[3] * _t19)) - Math.fma(sd[4], _t20, sd[5] * _t22);
         dd[3] = _buf0;
         dd[4] = _buf1;
         dd[5] = _buf2;
@@ -2261,7 +2259,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
         double _buf0 = Math.fma(sd[3], _t21, sd[6] * _t22) + Math.fma(sd[4], _t19, -(sd[5] * _t20));
         double _buf1 = Math.fma(sd[4], _t21, sd[5] * _t22) + Math.fma(sd[6], _t20, -(sd[3] * _t19));
         double _buf2 = Math.fma(sd[3], _t20, sd[6] * _t19) + Math.fma(sd[5], _t21, -(sd[4] * _t22));
-        dd[6] = Math.fma(-sd[5], _t19, Math.fma(-sd[4], _t20, Math.fma(sd[6], _t21, -(sd[3] * _t22))));
+        dd[6] = Math.fma(sd[6], _t21, -(sd[3] * _t22)) - Math.fma(sd[4], _t20, sd[5] * _t19);
         dd[3] = _buf0;
         dd[4] = _buf1;
         dd[5] = _buf2;
@@ -2311,7 +2309,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
         double _buf0 = Math.fma(sd[3], _t19, sd[6] * _t21) + Math.fma(sd[4], _t22, -(sd[5] * _t20));
         double _buf1 = Math.fma(sd[4], _t19, sd[5] * _t21) + Math.fma(sd[6], _t20, -(sd[3] * _t22));
         double _buf2 = Math.fma(sd[3], _t20, sd[6] * _t22) + Math.fma(sd[5], _t19, -(sd[4] * _t21));
-        dd[6] = Math.fma(-sd[5], _t22, Math.fma(-sd[4], _t20, Math.fma(sd[6], _t19, -(sd[3] * _t21))));
+        dd[6] = Math.fma(sd[6], _t19, -(sd[3] * _t21)) - Math.fma(sd[4], _t20, sd[5] * _t22);
         dd[3] = _buf0;
         dd[4] = _buf1;
         dd[5] = _buf2;

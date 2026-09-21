@@ -645,7 +645,7 @@ public final class Double2Impl implements Double2 {
         Double2Impl d = (Double2Impl) dest;
         double _t0 = 1.0 - t;
         double _t1 = t * t;
-        double _t3 = 2.0 * t * _t0;
+        double _t3 = (t + t) * _t0;
         double _t4 = _t0 * _t0;
         d.x = p1X * _t3 + this.x * _t4 + p2X * _t1;
         d.y = p1Y * _t3 + this.y * _t4 + p2Y * _t1;
@@ -693,7 +693,7 @@ public final class Double2Impl implements Double2 {
      */
     public Double2 bezier2Tangent(double p1X, double p1Y, double p2X, double p2Y, double t, @Mutated Double2 dest) {
         Double2Impl d = (Double2Impl) dest;
-        double _t1 = 2.0 * t;
+        double _t1 = t + t;
         double _t2 = 2.0 * (1.0 - t);
         d.x = (p1X - this.x) * _t2 + (p2X - p1X) * _t1;
         d.y = (p1Y - this.y) * _t2 + (p2Y - p1Y) * _t1;
@@ -808,8 +808,8 @@ public final class Double2Impl implements Double2 {
         Double2Impl d = (Double2Impl) dest;
         double _t0 = t * t;
         double _t1 = t * _t0;
-        d.x = 0.5 * (2.0 * p1X + t * (p2X - this.x) + ((-5.0 * p1X + (2.0 * this.x + (4.0 * p2X - p3X))) * _t0 + (3.0 * p1X + (p3X - this.x) - 3.0 * p2X) * _t1));
-        d.y = 0.5 * (2.0 * p1Y + t * (p2Y - this.y) + ((-5.0 * p1Y + (2.0 * this.y + (4.0 * p2Y - p3Y))) * _t0 + (3.0 * p1Y + (p3Y - this.y) - 3.0 * p2Y) * _t1));
+        d.x = 0.5 * (p1X + p1X + t * (p2X - this.x) + ((-5.0 * p1X + (this.x + this.x + (4.0 * p2X - p3X))) * _t0 + (3.0 * p1X + (p3X - this.x) - 3.0 * p2X) * _t1));
+        d.y = 0.5 * (p1Y + p1Y + t * (p2Y - this.y) + ((-5.0 * p1Y + (this.y + this.y + (4.0 * p2Y - p3Y))) * _t0 + (3.0 * p1Y + (p3Y - this.y) - 3.0 * p2Y) * _t1));
         return d;
     }
 
@@ -868,8 +868,8 @@ public final class Double2Impl implements Double2 {
     public Double2 catmullRomTangent(double p1X, double p1Y, double p2X, double p2Y, double p3X, double p3Y, double t, @Mutated Double2 dest) {
         Double2Impl d = (Double2Impl) dest;
         double _t0 = t * t;
-        d.x = 0.5 * (t * 2.0 * (-5.0 * p1X + (2.0 * this.x + (4.0 * p2X - p3X))) + (3.0 * (3.0 * p1X + (p3X - this.x) - 3.0 * p2X) * _t0 + (p2X - this.x)));
-        d.y = 0.5 * (t * 2.0 * (-5.0 * p1Y + (2.0 * this.y + (4.0 * p2Y - p3Y))) + (3.0 * (3.0 * p1Y + (p3Y - this.y) - 3.0 * p2Y) * _t0 + (p2Y - this.y)));
+        d.x = 0.5 * (t * 2.0 * (-5.0 * p1X + (this.x + this.x + (4.0 * p2X - p3X))) + (3.0 * (3.0 * p1X + (p3X - this.x) - 3.0 * p2X) * _t0 + (p2X - this.x)));
+        d.y = 0.5 * (t * 2.0 * (-5.0 * p1Y + (this.y + this.y + (4.0 * p2Y - p3Y))) + (3.0 * (3.0 * p1Y + (p3Y - this.y) - 3.0 * p2Y) * _t0 + (p2Y - this.y)));
         return d;
     }
 
@@ -916,7 +916,7 @@ public final class Double2Impl implements Double2 {
         Double2Impl d = (Double2Impl) dest;
         double _t0 = t * t;
         double _t3 = 3.0 * _t0;
-        double _t5 = 2.0 * t * _t0;
+        double _t5 = (t + t) * _t0;
         double _t8 = t * (_t0 - t);
         double _t9 = (t - 2.0) * _t0 + t;
         double _t10 = _t3 - _t5;
@@ -972,7 +972,7 @@ public final class Double2Impl implements Double2 {
         double _t4 = 3.0 * _t0;
         double _t7 = 6.0 * (_t0 - t);
         double _t8 = 6.0 * (t - _t0);
-        double _t9 = _t4 - 2.0 * t;
+        double _t9 = _t4 - (t + t);
         double _t10 = _t4 + (1.0 - 4.0 * t);
         d.x = this.x * _t7 + t0X * _t10 + (t1X * _t9 + v1X * _t8);
         d.y = this.y * _t7 + t0Y * _t10 + (t1Y * _t9 + v1Y * _t8);
@@ -2412,8 +2412,8 @@ public final class Double2Impl implements Double2 {
         double _t0_inv = 1.0 / _t0;
         double _t7 = Math.max(0.0, Math.min(1.0, (this.x - edge0) * _t0_inv));
         double _t8 = Math.max(0.0, Math.min(1.0, (this.y - edge0) * _t0_inv));
-        d.x = (3.0 - 2.0 * _t7) * _t7 * _t7;
-        d.y = (3.0 - 2.0 * _t8) * _t8 * _t8;
+        d.x = (3.0 - (_t7 + _t7)) * _t7 * _t7;
+        d.y = (3.0 - (_t8 + _t8)) * _t8 * _t8;
         return d;
     }
 
@@ -2450,8 +2450,8 @@ public final class Double2Impl implements Double2 {
         Double2Impl d = (Double2Impl) dest;
         double _t8 = Math.max(0.0, Math.min(1.0, (this.x - edge0X) / (edge1X - edge0X)));
         double _t9 = Math.max(0.0, Math.min(1.0, (this.y - edge0Y) / (edge1Y - edge0Y)));
-        d.x = (3.0 - 2.0 * _t8) * _t8 * _t8;
-        d.y = (3.0 - 2.0 * _t9) * _t9 * _t9;
+        d.x = (3.0 - (_t8 + _t8)) * _t8 * _t8;
+        d.y = (3.0 - (_t9 + _t9)) * _t9 * _t9;
         return d;
     }
 

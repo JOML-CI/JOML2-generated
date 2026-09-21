@@ -1074,9 +1074,9 @@ public final class Float3x4OpsKernelsAddress {
     }
 
     public static long makeFromTransform_unsafe(long dest, float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        float _t0 = 2.0f * tSX;
-        float _t1 = 2.0f * tSY;
-        float _t2 = 2.0f * tSZ;
+        float _t0 = tSX + tSX;
+        float _t1 = tSY + tSY;
+        float _t2 = tSZ + tSZ;
         float _t3 = tRZ * tRZ;
         float _t4 = tRZ * tRW;
         float _t5 = tRY * tRW;
@@ -2061,9 +2061,9 @@ public final class Float3x4OpsKernelsAddress {
     }
 
     public static long composeTRS_unsafe(long dest, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        float _t0 = 2.0f * scaleX;
-        float _t1 = 2.0f * scaleY;
-        float _t2 = 2.0f * scaleZ;
+        float _t0 = scaleX + scaleX;
+        float _t1 = scaleY + scaleY;
+        float _t2 = scaleZ + scaleZ;
         float _t3 = rotationZ * rotationZ;
         float _t4 = rotationZ * rotationW;
         float _t5 = rotationY * rotationW;
@@ -2093,9 +2093,9 @@ public final class Float3x4OpsKernelsAddress {
         float _scalex = UnsafeOpsHolder.U.getFloat(scale + 0L);
         float _scaley = UnsafeOpsHolder.U.getFloat(scale + 4L);
         float _scalez = UnsafeOpsHolder.U.getFloat(scale + 8L);
-        float _t0 = 2.0f * _scalex;
-        float _t1 = 2.0f * _scaley;
-        float _t2 = 2.0f * _scalez;
+        float _t0 = _scalex + _scalex;
+        float _t1 = _scaley + _scaley;
+        float _t2 = _scalez + _scalez;
         float _t3 = _rotationz * _rotationz;
         float _t4 = _rotationz * _rotationw;
         float _t5 = _rotationy * _rotationw;
@@ -2127,9 +2127,9 @@ public final class Float3x4OpsKernelsAddress {
         float _m21 = UnsafeOpsHolder.U.getFloat(m + 36L);
         float _m22 = UnsafeOpsHolder.U.getFloat(m + 40L);
         float _m23 = UnsafeOpsHolder.U.getFloat(m + 44L);
-        float _t0 = 2.0f * scaleZ;
-        float _t1 = 2.0f * scaleX;
-        float _t2 = 2.0f * scaleY;
+        float _t0 = scaleZ + scaleZ;
+        float _t1 = scaleX + scaleX;
+        float _t2 = scaleY + scaleY;
         float _t3 = rotationY * rotationW;
         float _t4 = rotationZ * rotationZ;
         float _t5 = rotationZ * rotationW;
@@ -2180,9 +2180,9 @@ public final class Float3x4OpsKernelsAddress {
         float _m21 = UnsafeOpsHolder.U.getFloat(m + 36L);
         float _m22 = UnsafeOpsHolder.U.getFloat(m + 40L);
         float _m23 = UnsafeOpsHolder.U.getFloat(m + 44L);
-        float _t0 = 2.0f * _scalez;
-        float _t1 = 2.0f * _scalex;
-        float _t2 = 2.0f * _scaley;
+        float _t0 = _scalez + _scalez;
+        float _t1 = _scalex + _scalex;
+        float _t2 = _scaley + _scaley;
         float _t3 = _rotationy * _rotationw;
         float _t4 = _rotationz * _rotationz;
         float _t5 = _rotationz * _rotationw;
@@ -2841,8 +2841,8 @@ public final class Float3x4OpsKernelsAddress {
         float _t12 = (1.0f / (float) Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
         float _t13 = _t0 * _t12;
         float _t14 = _t3 * _t12;
-        float _t15 = 2.0f * _t13;
-        float _t16 = 2.0f * _t14;
+        float _t15 = _t13 + _t13;
+        float _t16 = _t14 + _t14;
         float _t17 = -_t15;
         float _t19 = _t10 * _t12;
         float _t20 = _t16 * _t13;
@@ -2879,8 +2879,8 @@ public final class Float3x4OpsKernelsAddress {
         float _t12 = (1.0f / (float) Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
         float _t13 = _t0 * _t12;
         float _t14 = _t3 * _t12;
-        float _t15 = 2.0f * _t13;
-        float _t16 = 2.0f * _t14;
+        float _t15 = _t13 + _t13;
+        float _t16 = _t14 + _t14;
         float _t17 = -_t15;
         float _t19 = _t10 * _t12;
         float _t20 = _t16 * _t13;
@@ -2910,14 +2910,14 @@ public final class Float3x4OpsKernelsAddress {
         float _t5 = dqRY * dqRZ;
         float _t6 = Math.fma(-2.0f, dqRZ * dqRZ, 1.0f);
         UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(-2.0f, _t0, _t6));
-        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(-2.0f, _t2, 2.0f * dqRX * dqRY));
+        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(-2.0f, _t2, (dqRX + dqRX) * dqRY));
         UnsafeOpsHolder.U.putFloat(dest + 8L, 2.0f * Math.fma(dqRX, dqRZ, _t3));
         UnsafeOpsHolder.U.putFloat(dest + 12L, 2.0f * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW))));
         UnsafeOpsHolder.U.putFloat(dest + 16L, 2.0f * Math.fma(dqRX, dqRY, _t2));
         UnsafeOpsHolder.U.putFloat(dest + 20L, Math.fma(-2.0f, _t4, _t6));
-        UnsafeOpsHolder.U.putFloat(dest + 24L, Math.fma(-2.0f, dqRX * dqRW, 2.0f * _t5));
+        UnsafeOpsHolder.U.putFloat(dest + 24L, Math.fma(-2.0f, dqRX * dqRW, _t5 + _t5));
         UnsafeOpsHolder.U.putFloat(dest + 28L, 2.0f * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW))));
-        UnsafeOpsHolder.U.putFloat(dest + 32L, Math.fma(-2.0f, _t3, 2.0f * dqRX * dqRZ));
+        UnsafeOpsHolder.U.putFloat(dest + 32L, Math.fma(-2.0f, _t3, (dqRX + dqRX) * dqRZ));
         UnsafeOpsHolder.U.putFloat(dest + 36L, 2.0f * Math.fma(dqRX, dqRW, _t5));
         UnsafeOpsHolder.U.putFloat(dest + 40L, Math.fma(-2.0f, _t4, Math.fma(-2.0f, _t0, 1.0f)));
         UnsafeOpsHolder.U.putFloat(dest + 44L, 2.0f * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW))));
@@ -3927,9 +3927,9 @@ public final class Float3x4OpsKernelsAddress {
     }
 
     public static long makeReflection_unsafe(long dest, float normalX, float normalY, float normalZ) {
-        float _t6 = -(2.0f * normalX * normalY);
-        float _t7 = -(2.0f * normalX * normalZ);
-        float _t8 = -(2.0f * normalY * normalZ);
+        float _t6 = -((normalX + normalX) * normalY);
+        float _t7 = -((normalX + normalX) * normalZ);
+        float _t8 = -((normalY + normalY) * normalZ);
         UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(-2.0f, normalX * normalX, 1.0f));
         UnsafeOpsHolder.U.putFloat(dest + 4L, _t6);
         UnsafeOpsHolder.U.putFloat(dest + 8L, _t7);
@@ -3949,9 +3949,9 @@ public final class Float3x4OpsKernelsAddress {
         float _normalx = UnsafeOpsHolder.U.getFloat(normal + 0L);
         float _normaly = UnsafeOpsHolder.U.getFloat(normal + 4L);
         float _normalz = UnsafeOpsHolder.U.getFloat(normal + 8L);
-        float _t6 = -(2.0f * _normalx * _normaly);
-        float _t7 = -(2.0f * _normalx * _normalz);
-        float _t8 = -(2.0f * _normaly * _normalz);
+        float _t6 = -((_normalx + _normalx) * _normaly);
+        float _t7 = -((_normalx + _normalx) * _normalz);
+        float _t8 = -((_normaly + _normaly) * _normalz);
         UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(-2.0f, _normalx * _normalx, 1.0f));
         UnsafeOpsHolder.U.putFloat(dest + 4L, _t6);
         UnsafeOpsHolder.U.putFloat(dest + 8L, _t7);
@@ -5161,9 +5161,9 @@ public final class Float3x4OpsKernelsAddress {
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
-        float _t4 = 2.0f * rotX;
-        float _t5 = 2.0f * rotY;
-        float _t6 = 2.0f * rotZ;
+        float _t4 = rotX + rotX;
+        float _t5 = rotY + rotY;
+        float _t6 = rotZ + rotZ;
         float _t7 = rotW * _t5;
         float _t8 = rotW * _t6;
         float _t9 = rotZ * _t6;
@@ -5216,9 +5216,9 @@ public final class Float3x4OpsKernelsAddress {
         float _t0 = -_roty;
         float _t2 = -_pivotz;
         float _t3 = -_rotx;
-        float _t4 = 2.0f * _rotx;
-        float _t5 = 2.0f * _roty;
-        float _t6 = 2.0f * _rotz;
+        float _t4 = _rotx + _rotx;
+        float _t5 = _roty + _roty;
+        float _t6 = _rotz + _rotz;
         float _t7 = _rotw * _t5;
         float _t8 = _rotw * _t6;
         float _t9 = _rotz * _t6;
@@ -5352,9 +5352,9 @@ public final class Float3x4OpsKernelsAddress {
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 44L);
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -5402,9 +5402,9 @@ public final class Float3x4OpsKernelsAddress {
         float _qw = UnsafeOpsHolder.U.getFloat(q + 12L);
         float _t0 = -_qy;
         float _t2 = -_qx;
-        float _t3 = 2.0f * _qx;
-        float _t4 = 2.0f * _qy;
-        float _t5 = 2.0f * _qz;
+        float _t3 = _qx + _qx;
+        float _t4 = _qy + _qy;
+        float _t5 = _qz + _qz;
         float _t6 = _qw * _t4;
         float _t7 = _qw * _t5;
         float _t8 = _qw * _t3;
@@ -5786,9 +5786,9 @@ public final class Float3x4OpsKernelsAddress {
         float _t0 = -_self02;
         float _t1 = -_self12;
         float _t2 = -_self22;
-        float _t9 = 2.0f * normalX * normalZ;
-        float _t10 = 2.0f * normalX * normalY;
-        float _t11 = 2.0f * normalY * normalZ;
+        float _t9 = (normalX + normalX) * normalZ;
+        float _t10 = (normalX + normalX) * normalY;
+        float _t11 = (normalY + normalY) * normalZ;
         float _t12 = Math.fma(-2.0f, normalX * normalX, 1.0f);
         float _t13 = Math.fma(-2.0f, normalY * normalY, 1.0f);
         float _t14 = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
@@ -5826,9 +5826,9 @@ public final class Float3x4OpsKernelsAddress {
         float _t0 = -_self02;
         float _t1 = -_self12;
         float _t2 = -_self22;
-        float _t9 = 2.0f * _normalx * _normalz;
-        float _t10 = 2.0f * _normalx * _normaly;
-        float _t11 = 2.0f * _normaly * _normalz;
+        float _t9 = (_normalx + _normalx) * _normalz;
+        float _t10 = (_normalx + _normalx) * _normaly;
+        float _t11 = (_normaly + _normaly) * _normalz;
         float _t12 = Math.fma(-2.0f, _normalx * _normalx, 1.0f);
         float _t13 = Math.fma(-2.0f, _normaly * _normaly, 1.0f);
         float _t14 = Math.fma(-2.0f, _normalz * _normalz, 1.0f);
@@ -5863,9 +5863,9 @@ public final class Float3x4OpsKernelsAddress {
         float _t0 = -rotY;
         float _t2 = -rotX;
         float _t3 = -pivotZ;
-        float _t5 = 2.0f * rotX;
-        float _t6 = 2.0f * rotY;
-        float _t7 = 2.0f * rotZ;
+        float _t5 = rotX + rotX;
+        float _t6 = rotY + rotY;
+        float _t7 = rotZ + rotZ;
         float _t8 = rotW * _t6;
         float _t9 = rotW * _t7;
         float _t10 = rotW * _t5;
@@ -5921,9 +5921,9 @@ public final class Float3x4OpsKernelsAddress {
         float _t0 = -_roty;
         float _t2 = -_rotx;
         float _t3 = -_pivotz;
-        float _t5 = 2.0f * _rotx;
-        float _t6 = 2.0f * _roty;
-        float _t7 = 2.0f * _rotz;
+        float _t5 = _rotx + _rotx;
+        float _t6 = _roty + _roty;
+        float _t7 = _rotz + _rotz;
         float _t8 = _rotw * _t6;
         float _t9 = _rotw * _t7;
         float _t10 = _rotw * _t5;
@@ -6060,9 +6060,9 @@ public final class Float3x4OpsKernelsAddress {
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 44L);
         float _t0 = -qY;
         float _t2 = -qX;
-        float _t3 = 2.0f * qX;
-        float _t4 = 2.0f * qY;
-        float _t5 = 2.0f * qZ;
+        float _t3 = qX + qX;
+        float _t4 = qY + qY;
+        float _t5 = qZ + qZ;
         float _t6 = qW * _t4;
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
@@ -6110,9 +6110,9 @@ public final class Float3x4OpsKernelsAddress {
         float _qw = UnsafeOpsHolder.U.getFloat(q + 12L);
         float _t0 = -_qy;
         float _t2 = -_qx;
-        float _t3 = 2.0f * _qx;
-        float _t4 = 2.0f * _qy;
-        float _t5 = 2.0f * _qz;
+        float _t3 = _qx + _qx;
+        float _t4 = _qy + _qy;
+        float _t5 = _qz + _qz;
         float _t6 = _qw * _t4;
         float _t7 = _qw * _t5;
         float _t8 = _qw * _t3;

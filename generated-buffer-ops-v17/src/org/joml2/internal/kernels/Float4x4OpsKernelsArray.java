@@ -1190,7 +1190,7 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -1206,10 +1206,10 @@ public final class Float4x4OpsKernelsArray {
         } else {
             if (zNear == Float.POSITIVE_INFINITY) {
                 _t16 = -1.0f;
-                _t17 = 2.0f * zFar;
+                _t17 = zFar + zFar;
             } else {
                 _t16 = -((zFar + zNear) * _t4_inv);
-                _t17 = 2.0f * zFar * zNear * _t4_inv;
+                _t17 = (zFar + zFar) * zNear * _t4_inv;
             }
         }
         dest[destOffset + 0] = _self00 * _t0 * _t1_inv;
@@ -1248,7 +1248,7 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -1264,10 +1264,10 @@ public final class Float4x4OpsKernelsArray {
         } else {
             if (zNear == Float.POSITIVE_INFINITY) {
                 _t14 = 1.0f;
-                _t16 = 2.0f * zFar;
+                _t16 = zFar + zFar;
             } else {
                 _t14 = (zFar + zNear) * _t4_inv;
-                _t16 = 2.0f * zFar * zNear * _t4_inv;
+                _t16 = (zFar + zFar) * zNear * _t4_inv;
             }
         }
         dest[destOffset + 0] = _self00 * _t0 * _t1_inv;
@@ -1313,7 +1313,7 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -1371,7 +1371,7 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -1734,7 +1734,7 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] makeFrustum_no_lh(float[] dest, int destOffset, float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -1747,10 +1747,10 @@ public final class Float4x4OpsKernelsArray {
         } else {
             if (zNear == Float.POSITIVE_INFINITY) {
                 dest[destOffset + 10] = -1.0f;
-                dest[destOffset + 14] = 2.0f * zFar;
+                dest[destOffset + 14] = zFar + zFar;
             } else {
                 dest[destOffset + 10] = -((zFar + zNear) * _t3_inv);
-                dest[destOffset + 14] = 2.0f * zFar * zNear * _t3_inv;
+                dest[destOffset + 14] = (zFar + zFar) * zNear * _t3_inv;
             }
         }
         dest[destOffset + 0] = _t0 * _t1_inv;
@@ -1771,7 +1771,7 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] makeFrustum_no_rh(float[] dest, int destOffset, float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -1784,10 +1784,10 @@ public final class Float4x4OpsKernelsArray {
         } else {
             if (zNear == Float.POSITIVE_INFINITY) {
                 dest[destOffset + 10] = 1.0f;
-                dest[destOffset + 14] = 2.0f * zFar;
+                dest[destOffset + 14] = zFar + zFar;
             } else {
                 dest[destOffset + 10] = (zFar + zNear) * _t3_inv;
-                dest[destOffset + 14] = 2.0f * zFar * zNear * _t3_inv;
+                dest[destOffset + 14] = (zFar + zFar) * zNear * _t3_inv;
             }
         }
         dest[destOffset + 0] = _t0 * _t1_inv;
@@ -1815,7 +1815,7 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] makeFrustum_zo_lh(float[] dest, int destOffset, float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -1852,7 +1852,7 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] makeFrustum_zo_rh(float[] dest, int destOffset, float left, float right, float bottom, float top, float zNear, float zFar) {
-        float _t0 = 2.0f * zNear;
+        float _t0 = zNear + zNear;
         float _t1 = right - left;
         float _t1_inv = 1.0f / _t1;
         float _t2 = top - bottom;
@@ -2132,17 +2132,17 @@ public final class Float4x4OpsKernelsArray {
         float _t1_inv = 1.0f / _t1;
         float _t2 = zFar - zNear;
         float _t2_inv = 1.0f / _t2;
-        dest[destOffset + 0] = 2.0f * _t0_inv;
+        dest[destOffset + 0] = _t0_inv + _t0_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t1_inv;
+        dest[destOffset + 5] = _t1_inv + _t1_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
         dest[destOffset + 9] = 0.0f;
-        dest[destOffset + 10] = 2.0f * _t2_inv;
+        dest[destOffset + 10] = _t2_inv + _t2_inv;
         dest[destOffset + 11] = 0.0f;
         dest[destOffset + 12] = -((left + right) * _t0_inv);
         dest[destOffset + 13] = -((bottom + top) * _t1_inv);
@@ -2158,12 +2158,12 @@ public final class Float4x4OpsKernelsArray {
         float _t1_inv = 1.0f / _t1;
         float _t2 = zFar - zNear;
         float _t2_inv = 1.0f / _t2;
-        dest[destOffset + 0] = 2.0f * _t0_inv;
+        dest[destOffset + 0] = _t0_inv + _t0_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t1_inv;
+        dest[destOffset + 5] = _t1_inv + _t1_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
@@ -2191,12 +2191,12 @@ public final class Float4x4OpsKernelsArray {
         float _t1_inv = 1.0f / _t1;
         float _t2 = zFar - zNear;
         float _t2_inv = 1.0f / _t2;
-        dest[destOffset + 0] = 2.0f * _t0_inv;
+        dest[destOffset + 0] = _t0_inv + _t0_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t1_inv;
+        dest[destOffset + 5] = _t1_inv + _t1_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
@@ -2217,12 +2217,12 @@ public final class Float4x4OpsKernelsArray {
         float _t1_inv = 1.0f / _t1;
         float _t2 = zFar - zNear;
         float _t2_inv = 1.0f / _t2;
-        dest[destOffset + 0] = 2.0f * _t0_inv;
+        dest[destOffset + 0] = _t0_inv + _t0_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t1_inv;
+        dest[destOffset + 5] = _t1_inv + _t1_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
@@ -2248,12 +2248,12 @@ public final class Float4x4OpsKernelsArray {
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        dest[destOffset + 0] = 2.0f * _t0_inv;
+        dest[destOffset + 0] = _t0_inv + _t0_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t1_inv;
+        dest[destOffset + 5] = _t1_inv + _t1_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
@@ -2272,12 +2272,12 @@ public final class Float4x4OpsKernelsArray {
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        dest[destOffset + 0] = 2.0f * _t0_inv;
+        dest[destOffset + 0] = _t0_inv + _t0_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t1_inv;
+        dest[destOffset + 5] = _t1_inv + _t1_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
@@ -2303,12 +2303,12 @@ public final class Float4x4OpsKernelsArray {
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        dest[destOffset + 0] = 2.0f * _t0_inv;
+        dest[destOffset + 0] = _t0_inv + _t0_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t1_inv;
+        dest[destOffset + 5] = _t1_inv + _t1_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
@@ -2327,12 +2327,12 @@ public final class Float4x4OpsKernelsArray {
         float _t0_inv = 1.0f / _t0;
         float _t1 = top - bottom;
         float _t1_inv = 1.0f / _t1;
-        dest[destOffset + 0] = 2.0f * _t0_inv;
+        dest[destOffset + 0] = _t0_inv + _t0_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t1_inv;
+        dest[destOffset + 5] = _t1_inv + _t1_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
@@ -2359,14 +2359,14 @@ public final class Float4x4OpsKernelsArray {
         float _t2 = (float) Math.tan(0.5f * fovy);
         if (far == Float.POSITIVE_INFINITY) {
             dest[destOffset + 10] = 1.0f;
-            dest[destOffset + 14] = -(2.0f * near);
+            dest[destOffset + 14] = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 dest[destOffset + 10] = -1.0f;
-                dest[destOffset + 14] = 2.0f * far;
+                dest[destOffset + 14] = far + far;
             } else {
                 dest[destOffset + 10] = -((far + near) * _t1_inv);
-                dest[destOffset + 14] = 2.0f * far * near * _t1_inv;
+                dest[destOffset + 14] = (far + far) * near * _t1_inv;
             }
         }
         dest[destOffset + 0] = 1.0f / (aspect * _t2);
@@ -2392,14 +2392,14 @@ public final class Float4x4OpsKernelsArray {
         float _t2 = (float) Math.tan(0.5f * fovy);
         if (far == Float.POSITIVE_INFINITY) {
             dest[destOffset + 10] = -1.0f;
-            dest[destOffset + 14] = -(2.0f * near);
+            dest[destOffset + 14] = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 dest[destOffset + 10] = 1.0f;
-                dest[destOffset + 14] = 2.0f * far;
+                dest[destOffset + 14] = far + far;
             } else {
                 dest[destOffset + 10] = (far + near) * _t1_inv;
-                dest[destOffset + 14] = 2.0f * far * near * _t1_inv;
+                dest[destOffset + 14] = (far + far) * near * _t1_inv;
             }
         }
         dest[destOffset + 0] = 1.0f / (aspect * _t2);
@@ -2508,14 +2508,14 @@ public final class Float4x4OpsKernelsArray {
         float _t3_inv = 1.0f / _t3;
         if (far == Float.POSITIVE_INFINITY) {
             dest[destOffset + 10] = 1.0f;
-            dest[destOffset + 14] = -(2.0f * near);
+            dest[destOffset + 14] = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 dest[destOffset + 10] = -1.0f;
-                dest[destOffset + 14] = 2.0f * far;
+                dest[destOffset + 14] = far + far;
             } else {
                 dest[destOffset + 10] = -((far + near) * _t2_inv);
-                dest[destOffset + 14] = 2.0f * far * near * _t2_inv;
+                dest[destOffset + 14] = (far + far) * near * _t2_inv;
             }
         }
         dest[destOffset + 0] = 2.0f / (aspect * _t3);
@@ -2523,7 +2523,7 @@ public final class Float4x4OpsKernelsArray {
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t3_inv;
+        dest[destOffset + 5] = _t3_inv + _t3_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
@@ -2544,14 +2544,14 @@ public final class Float4x4OpsKernelsArray {
         float _t3_inv = 1.0f / _t3;
         if (far == Float.POSITIVE_INFINITY) {
             dest[destOffset + 10] = -1.0f;
-            dest[destOffset + 14] = -(2.0f * near);
+            dest[destOffset + 14] = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 dest[destOffset + 10] = 1.0f;
-                dest[destOffset + 14] = 2.0f * far;
+                dest[destOffset + 14] = far + far;
             } else {
                 dest[destOffset + 10] = (far + near) * _t2_inv;
-                dest[destOffset + 14] = 2.0f * far * near * _t2_inv;
+                dest[destOffset + 14] = (far + far) * near * _t2_inv;
             }
         }
         dest[destOffset + 0] = 2.0f / (aspect * _t3);
@@ -2559,7 +2559,7 @@ public final class Float4x4OpsKernelsArray {
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t3_inv;
+        dest[destOffset + 5] = _t3_inv + _t3_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
@@ -2602,7 +2602,7 @@ public final class Float4x4OpsKernelsArray {
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t3_inv;
+        dest[destOffset + 5] = _t3_inv + _t3_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
@@ -2638,7 +2638,7 @@ public final class Float4x4OpsKernelsArray {
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t3_inv;
+        dest[destOffset + 5] = _t3_inv + _t3_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
@@ -2670,22 +2670,22 @@ public final class Float4x4OpsKernelsArray {
         float _t6_inv = 1.0f / _t6;
         if (far == Float.POSITIVE_INFINITY) {
             dest[destOffset + 10] = 1.0f;
-            dest[destOffset + 14] = -(2.0f * near);
+            dest[destOffset + 14] = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 dest[destOffset + 10] = -1.0f;
-                dest[destOffset + 14] = 2.0f * far;
+                dest[destOffset + 14] = far + far;
             } else {
                 dest[destOffset + 10] = -((far + near) * _t4_inv);
-                dest[destOffset + 14] = 2.0f * far * near * _t4_inv;
+                dest[destOffset + 14] = (far + far) * near * _t4_inv;
             }
         }
-        dest[destOffset + 0] = 2.0f * _t5_inv;
+        dest[destOffset + 0] = _t5_inv + _t5_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t6_inv;
+        dest[destOffset + 5] = _t6_inv + _t6_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = -((_t1 + _t0) * _t5_inv);
@@ -2710,22 +2710,22 @@ public final class Float4x4OpsKernelsArray {
         float _t6_inv = 1.0f / _t6;
         if (far == Float.POSITIVE_INFINITY) {
             dest[destOffset + 10] = -1.0f;
-            dest[destOffset + 14] = -(2.0f * near);
+            dest[destOffset + 14] = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 dest[destOffset + 10] = 1.0f;
-                dest[destOffset + 14] = 2.0f * far;
+                dest[destOffset + 14] = far + far;
             } else {
                 dest[destOffset + 10] = (far + near) * _t4_inv;
-                dest[destOffset + 14] = 2.0f * far * near * _t4_inv;
+                dest[destOffset + 14] = (far + far) * near * _t4_inv;
             }
         }
-        dest[destOffset + 0] = 2.0f * _t5_inv;
+        dest[destOffset + 0] = _t5_inv + _t5_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t6_inv;
+        dest[destOffset + 5] = _t6_inv + _t6_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = (_t1 + _t0) * _t5_inv;
@@ -2767,12 +2767,12 @@ public final class Float4x4OpsKernelsArray {
                 dest[destOffset + 14] = far * near * _t4_inv;
             }
         }
-        dest[destOffset + 0] = 2.0f * _t5_inv;
+        dest[destOffset + 0] = _t5_inv + _t5_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t6_inv;
+        dest[destOffset + 5] = _t6_inv + _t6_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = -((_t1 + _t0) * _t5_inv);
@@ -2807,12 +2807,12 @@ public final class Float4x4OpsKernelsArray {
                 dest[destOffset + 14] = far * near * _t4_inv;
             }
         }
-        dest[destOffset + 0] = 2.0f * _t5_inv;
+        dest[destOffset + 0] = _t5_inv + _t5_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t6_inv;
+        dest[destOffset + 5] = _t6_inv + _t6_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = (_t1 + _t0) * _t5_inv;
@@ -2851,7 +2851,7 @@ public final class Float4x4OpsKernelsArray {
         float _t36 = (1.0f / (float) Math.sqrt(_t35));
         float _t40 = _t27 * _t34;
         float _t41 = Math.fma(_t27, _t34, nearFarDist);
-        float _t42 = 2.0f * _t40;
+        float _t42 = _t40 + _t40;
         float _t44, _t45, _t46;
         if (_t35 > 0.0f) {
             _t44 = _t26 * _t36;
@@ -2900,10 +2900,10 @@ public final class Float4x4OpsKernelsArray {
         } else {
             if (_t40 == Float.POSITIVE_INFINITY) {
                 dest[destOffset + 10] = -1.0f;
-                dest[destOffset + 14] = 2.0f * _t41;
+                dest[destOffset + 14] = _t41 + _t41;
             } else {
                 dest[destOffset + 10] = -(Math.fma(_t27, _t34, _t41) * _t53_inv);
-                dest[destOffset + 14] = 2.0f * _t41 * _t40 * _t53_inv;
+                dest[destOffset + 14] = (_t41 + _t41) * _t40 * _t53_inv;
             }
         }
         dest[destOffset + 0] = _t42 * _t123_inv;
@@ -2943,7 +2943,7 @@ public final class Float4x4OpsKernelsArray {
         float _t36 = (1.0f / (float) Math.sqrt(_t35));
         float _t40 = _t27 * _t34;
         float _t41 = Math.fma(_t27, _t34, nearFarDist);
-        float _t42 = 2.0f * _t40;
+        float _t42 = _t40 + _t40;
         float _t44, _t45, _t46;
         if (_t35 > 0.0f) {
             _t44 = _t25 * _t36;
@@ -2992,10 +2992,10 @@ public final class Float4x4OpsKernelsArray {
         } else {
             if (_t40 == Float.POSITIVE_INFINITY) {
                 dest[destOffset + 10] = 1.0f;
-                dest[destOffset + 14] = 2.0f * _t41;
+                dest[destOffset + 14] = _t41 + _t41;
             } else {
                 dest[destOffset + 10] = Math.fma(_t27, _t34, _t41) * _t53_inv;
-                dest[destOffset + 14] = 2.0f * _t41 * _t40 * _t53_inv;
+                dest[destOffset + 14] = (_t41 + _t41) * _t40 * _t53_inv;
             }
         }
         dest[destOffset + 0] = _t42 * _t123_inv;
@@ -3042,7 +3042,7 @@ public final class Float4x4OpsKernelsArray {
         float _t36 = (1.0f / (float) Math.sqrt(_t35));
         float _t40 = _t27 * _t34;
         float _t41 = Math.fma(_t27, _t34, nearFarDist);
-        float _t42 = 2.0f * _t40;
+        float _t42 = _t40 + _t40;
         float _t44, _t45, _t46;
         if (_t35 > 0.0f) {
             _t44 = _t26 * _t36;
@@ -3134,7 +3134,7 @@ public final class Float4x4OpsKernelsArray {
         float _t36 = (1.0f / (float) Math.sqrt(_t35));
         float _t40 = _t27 * _t34;
         float _t41 = Math.fma(_t27, _t34, nearFarDist);
-        float _t42 = 2.0f * _t40;
+        float _t42 = _t40 + _t40;
         float _t44, _t45, _t46;
         if (_t35 > 0.0f) {
             _t44 = _t25 * _t36;
@@ -3245,7 +3245,7 @@ public final class Float4x4OpsKernelsArray {
         float _t36 = (1.0f / (float) Math.sqrt(_t35));
         float _t40 = _t27 * _t34;
         float _t41 = Math.fma(_t27, _t34, nearFarDist);
-        float _t42 = 2.0f * _t40;
+        float _t42 = _t40 + _t40;
         float _t44, _t45, _t46;
         if (_t35 > 0.0f) {
             _t44 = _t26 * _t36;
@@ -3294,10 +3294,10 @@ public final class Float4x4OpsKernelsArray {
         } else {
             if (_t40 == Float.POSITIVE_INFINITY) {
                 dest[destOffset + 10] = -1.0f;
-                dest[destOffset + 14] = 2.0f * _t41;
+                dest[destOffset + 14] = _t41 + _t41;
             } else {
                 dest[destOffset + 10] = -(Math.fma(_t27, _t34, _t41) * _t53_inv);
-                dest[destOffset + 14] = 2.0f * _t41 * _t40 * _t53_inv;
+                dest[destOffset + 14] = (_t41 + _t41) * _t40 * _t53_inv;
             }
         }
         dest[destOffset + 0] = _t42 * _t123_inv;
@@ -3349,7 +3349,7 @@ public final class Float4x4OpsKernelsArray {
         float _t36 = (1.0f / (float) Math.sqrt(_t35));
         float _t40 = _t27 * _t34;
         float _t41 = Math.fma(_t27, _t34, nearFarDist);
-        float _t42 = 2.0f * _t40;
+        float _t42 = _t40 + _t40;
         float _t44, _t45, _t46;
         if (_t35 > 0.0f) {
             _t44 = _t25 * _t36;
@@ -3398,10 +3398,10 @@ public final class Float4x4OpsKernelsArray {
         } else {
             if (_t40 == Float.POSITIVE_INFINITY) {
                 dest[destOffset + 10] = 1.0f;
-                dest[destOffset + 14] = 2.0f * _t41;
+                dest[destOffset + 14] = _t41 + _t41;
             } else {
                 dest[destOffset + 10] = Math.fma(_t27, _t34, _t41) * _t53_inv;
-                dest[destOffset + 14] = 2.0f * _t41 * _t40 * _t53_inv;
+                dest[destOffset + 14] = (_t41 + _t41) * _t40 * _t53_inv;
             }
         }
         dest[destOffset + 0] = _t42 * _t123_inv;
@@ -3460,7 +3460,7 @@ public final class Float4x4OpsKernelsArray {
         float _t36 = (1.0f / (float) Math.sqrt(_t35));
         float _t40 = _t27 * _t34;
         float _t41 = Math.fma(_t27, _t34, nearFarDist);
-        float _t42 = 2.0f * _t40;
+        float _t42 = _t40 + _t40;
         float _t44, _t45, _t46;
         if (_t35 > 0.0f) {
             _t44 = _t26 * _t36;
@@ -3564,7 +3564,7 @@ public final class Float4x4OpsKernelsArray {
         float _t36 = (1.0f / (float) Math.sqrt(_t35));
         float _t40 = _t27 * _t34;
         float _t41 = Math.fma(_t27, _t34, nearFarDist);
-        float _t42 = 2.0f * _t40;
+        float _t42 = _t40 + _t40;
         float _t44, _t45, _t46;
         if (_t35 > 0.0f) {
             _t44 = _t25 * _t36;
@@ -3910,7 +3910,7 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = 2.0f * _self23;
+        float _t0 = _self23 + _self23;
         float _t15 = Math.fma(planeW, 1.0f - _self22, _self23 * (planeZ + (planeX * ((planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f) - _self02) / _self00 + planeY * ((planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f) - _self12) / _self11)));
         float _t15_inv = 1.0f / _t15;
         dest[destOffset + 0] = _self00;
@@ -3947,7 +3947,7 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = 2.0f * _self23;
+        float _t0 = _self23 + _self23;
         float _t15 = Math.fma(planeW, 1.0f + _self22, _self23 * (planeX * (_self02 + (planeX < 0.0f ? -1.0f : planeX > 0.0f ? 1.0f : 0.0f)) / _self00 + planeY * (_self12 + (planeY < 0.0f ? -1.0f : planeY > 0.0f ? 1.0f : 0.0f)) / _self11 - planeZ));
         float _t15_inv = 1.0f / _t15;
         dest[destOffset + 0] = _self00;
@@ -4074,7 +4074,7 @@ public final class Float4x4OpsKernelsArray {
         float _planey = plane[planeOffset + 1];
         float _planez = plane[planeOffset + 2];
         float _planew = plane[planeOffset + 3];
-        float _t0 = 2.0f * _self23;
+        float _t0 = _self23 + _self23;
         float _t15 = Math.fma(_planew, 1.0f - _self22, _self23 * (_planez + (_planex * ((_planex < 0.0f ? -1.0f : _planex > 0.0f ? 1.0f : 0.0f) - _self02) / _self00 + _planey * ((_planey < 0.0f ? -1.0f : _planey > 0.0f ? 1.0f : 0.0f) - _self12) / _self11)));
         float _t15_inv = 1.0f / _t15;
         dest[destOffset + 0] = _self00;
@@ -4115,7 +4115,7 @@ public final class Float4x4OpsKernelsArray {
         float _planey = plane[planeOffset + 1];
         float _planez = plane[planeOffset + 2];
         float _planew = plane[planeOffset + 3];
-        float _t0 = 2.0f * _self23;
+        float _t0 = _self23 + _self23;
         float _t15 = Math.fma(_planew, 1.0f + _self22, _self23 * (_planex * (_self02 + (_planex < 0.0f ? -1.0f : _planex > 0.0f ? 1.0f : 0.0f)) / _self00 + _planey * (_self12 + (_planey < 0.0f ? -1.0f : _planey > 0.0f ? 1.0f : 0.0f)) / _self11 - _planez));
         float _t15_inv = 1.0f / _t15;
         dest[destOffset + 0] = _self00;
@@ -4257,18 +4257,18 @@ public final class Float4x4OpsKernelsArray {
         float _t3 = left + right;
         float _t4 = bottom + top;
         float _t5 = zFar + zNear;
-        dest[destOffset + 0] = 2.0f * _self00 * _t0_inv;
-        dest[destOffset + 1] = 2.0f * _self10 * _t0_inv;
-        dest[destOffset + 2] = 2.0f * _self20 * _t0_inv;
-        dest[destOffset + 3] = 2.0f * _self30 * _t0_inv;
-        dest[destOffset + 4] = 2.0f * _self01 * _t1_inv;
-        dest[destOffset + 5] = 2.0f * _self11 * _t1_inv;
-        dest[destOffset + 6] = 2.0f * _self21 * _t1_inv;
-        dest[destOffset + 7] = 2.0f * _self31 * _t1_inv;
-        dest[destOffset + 8] = 2.0f * _self02 * _t2_inv;
-        dest[destOffset + 9] = 2.0f * _self12 * _t2_inv;
-        dest[destOffset + 10] = 2.0f * _self22 * _t2_inv;
-        dest[destOffset + 11] = 2.0f * _self32 * _t2_inv;
+        dest[destOffset + 0] = (_self00 + _self00) * _t0_inv;
+        dest[destOffset + 1] = (_self10 + _self10) * _t0_inv;
+        dest[destOffset + 2] = (_self20 + _self20) * _t0_inv;
+        dest[destOffset + 3] = (_self30 + _self30) * _t0_inv;
+        dest[destOffset + 4] = (_self01 + _self01) * _t1_inv;
+        dest[destOffset + 5] = (_self11 + _self11) * _t1_inv;
+        dest[destOffset + 6] = (_self21 + _self21) * _t1_inv;
+        dest[destOffset + 7] = (_self31 + _self31) * _t1_inv;
+        dest[destOffset + 8] = (_self02 + _self02) * _t2_inv;
+        dest[destOffset + 9] = (_self12 + _self12) * _t2_inv;
+        dest[destOffset + 10] = (_self22 + _self22) * _t2_inv;
+        dest[destOffset + 11] = (_self32 + _self32) * _t2_inv;
         dest[destOffset + 12] = _self03 + (-(_self00 * _t3 * _t0_inv) - _self01 * _t4 * _t1_inv - _self02 * _t5 * _t2_inv);
         dest[destOffset + 13] = _self13 + (-(_self10 * _t3 * _t0_inv) - _self11 * _t4 * _t1_inv - _self12 * _t5 * _t2_inv);
         dest[destOffset + 14] = _self23 + (-(_self20 * _t3 * _t0_inv) - _self21 * _t4 * _t1_inv - _self22 * _t5 * _t2_inv);
@@ -4302,14 +4302,14 @@ public final class Float4x4OpsKernelsArray {
         float _t3 = left + right;
         float _t4 = bottom + top;
         float _t5 = zFar + zNear;
-        dest[destOffset + 0] = 2.0f * _self00 * _t0_inv;
-        dest[destOffset + 1] = 2.0f * _self10 * _t0_inv;
-        dest[destOffset + 2] = 2.0f * _self20 * _t0_inv;
-        dest[destOffset + 3] = 2.0f * _self30 * _t0_inv;
-        dest[destOffset + 4] = 2.0f * _self01 * _t1_inv;
-        dest[destOffset + 5] = 2.0f * _self11 * _t1_inv;
-        dest[destOffset + 6] = 2.0f * _self21 * _t1_inv;
-        dest[destOffset + 7] = 2.0f * _self31 * _t1_inv;
+        dest[destOffset + 0] = (_self00 + _self00) * _t0_inv;
+        dest[destOffset + 1] = (_self10 + _self10) * _t0_inv;
+        dest[destOffset + 2] = (_self20 + _self20) * _t0_inv;
+        dest[destOffset + 3] = (_self30 + _self30) * _t0_inv;
+        dest[destOffset + 4] = (_self01 + _self01) * _t1_inv;
+        dest[destOffset + 5] = (_self11 + _self11) * _t1_inv;
+        dest[destOffset + 6] = (_self21 + _self21) * _t1_inv;
+        dest[destOffset + 7] = (_self31 + _self31) * _t1_inv;
         dest[destOffset + 8] = -2.0f * _self02 * _t2_inv;
         dest[destOffset + 9] = -2.0f * _self12 * _t2_inv;
         dest[destOffset + 10] = -2.0f * _self22 * _t2_inv;
@@ -4353,14 +4353,14 @@ public final class Float4x4OpsKernelsArray {
         float _t2_inv = 1.0f / _t2;
         float _t3 = left + right;
         float _t4 = bottom + top;
-        dest[destOffset + 0] = 2.0f * _self00 * _t0_inv;
-        dest[destOffset + 1] = 2.0f * _self10 * _t0_inv;
-        dest[destOffset + 2] = 2.0f * _self20 * _t0_inv;
-        dest[destOffset + 3] = 2.0f * _self30 * _t0_inv;
-        dest[destOffset + 4] = 2.0f * _self01 * _t1_inv;
-        dest[destOffset + 5] = 2.0f * _self11 * _t1_inv;
-        dest[destOffset + 6] = 2.0f * _self21 * _t1_inv;
-        dest[destOffset + 7] = 2.0f * _self31 * _t1_inv;
+        dest[destOffset + 0] = (_self00 + _self00) * _t0_inv;
+        dest[destOffset + 1] = (_self10 + _self10) * _t0_inv;
+        dest[destOffset + 2] = (_self20 + _self20) * _t0_inv;
+        dest[destOffset + 3] = (_self30 + _self30) * _t0_inv;
+        dest[destOffset + 4] = (_self01 + _self01) * _t1_inv;
+        dest[destOffset + 5] = (_self11 + _self11) * _t1_inv;
+        dest[destOffset + 6] = (_self21 + _self21) * _t1_inv;
+        dest[destOffset + 7] = (_self31 + _self31) * _t1_inv;
         dest[destOffset + 8] = _self02 * _t2_inv;
         dest[destOffset + 9] = _self12 * _t2_inv;
         dest[destOffset + 10] = _self22 * _t2_inv;
@@ -4397,14 +4397,14 @@ public final class Float4x4OpsKernelsArray {
         float _t2_inv = 1.0f / _t2;
         float _t3 = left + right;
         float _t4 = bottom + top;
-        dest[destOffset + 0] = 2.0f * _self00 * _t0_inv;
-        dest[destOffset + 1] = 2.0f * _self10 * _t0_inv;
-        dest[destOffset + 2] = 2.0f * _self20 * _t0_inv;
-        dest[destOffset + 3] = 2.0f * _self30 * _t0_inv;
-        dest[destOffset + 4] = 2.0f * _self01 * _t1_inv;
-        dest[destOffset + 5] = 2.0f * _self11 * _t1_inv;
-        dest[destOffset + 6] = 2.0f * _self21 * _t1_inv;
-        dest[destOffset + 7] = 2.0f * _self31 * _t1_inv;
+        dest[destOffset + 0] = (_self00 + _self00) * _t0_inv;
+        dest[destOffset + 1] = (_self10 + _self10) * _t0_inv;
+        dest[destOffset + 2] = (_self20 + _self20) * _t0_inv;
+        dest[destOffset + 3] = (_self30 + _self30) * _t0_inv;
+        dest[destOffset + 4] = (_self01 + _self01) * _t1_inv;
+        dest[destOffset + 5] = (_self11 + _self11) * _t1_inv;
+        dest[destOffset + 6] = (_self21 + _self21) * _t1_inv;
+        dest[destOffset + 7] = (_self31 + _self31) * _t1_inv;
         dest[destOffset + 8] = -(_self02 * _t2_inv);
         dest[destOffset + 9] = -(_self12 * _t2_inv);
         dest[destOffset + 10] = -(_self22 * _t2_inv);
@@ -4446,14 +4446,14 @@ public final class Float4x4OpsKernelsArray {
         float _t1_inv = 1.0f / _t1;
         float _t2 = left + right;
         float _t3 = bottom + top;
-        dest[destOffset + 0] = 2.0f * _self00 * _t0_inv;
-        dest[destOffset + 1] = 2.0f * _self10 * _t0_inv;
-        dest[destOffset + 2] = 2.0f * _self20 * _t0_inv;
-        dest[destOffset + 3] = 2.0f * _self30 * _t0_inv;
-        dest[destOffset + 4] = 2.0f * _self01 * _t1_inv;
-        dest[destOffset + 5] = 2.0f * _self11 * _t1_inv;
-        dest[destOffset + 6] = 2.0f * _self21 * _t1_inv;
-        dest[destOffset + 7] = 2.0f * _self31 * _t1_inv;
+        dest[destOffset + 0] = (_self00 + _self00) * _t0_inv;
+        dest[destOffset + 1] = (_self10 + _self10) * _t0_inv;
+        dest[destOffset + 2] = (_self20 + _self20) * _t0_inv;
+        dest[destOffset + 3] = (_self30 + _self30) * _t0_inv;
+        dest[destOffset + 4] = (_self01 + _self01) * _t1_inv;
+        dest[destOffset + 5] = (_self11 + _self11) * _t1_inv;
+        dest[destOffset + 6] = (_self21 + _self21) * _t1_inv;
+        dest[destOffset + 7] = (_self31 + _self31) * _t1_inv;
         dest[destOffset + 8] = _self02;
         dest[destOffset + 9] = _self12;
         dest[destOffset + 10] = _self22;
@@ -4488,14 +4488,14 @@ public final class Float4x4OpsKernelsArray {
         float _t1_inv = 1.0f / _t1;
         float _t2 = left + right;
         float _t3 = bottom + top;
-        dest[destOffset + 0] = 2.0f * _self00 * _t0_inv;
-        dest[destOffset + 1] = 2.0f * _self10 * _t0_inv;
-        dest[destOffset + 2] = 2.0f * _self20 * _t0_inv;
-        dest[destOffset + 3] = 2.0f * _self30 * _t0_inv;
-        dest[destOffset + 4] = 2.0f * _self01 * _t1_inv;
-        dest[destOffset + 5] = 2.0f * _self11 * _t1_inv;
-        dest[destOffset + 6] = 2.0f * _self21 * _t1_inv;
-        dest[destOffset + 7] = 2.0f * _self31 * _t1_inv;
+        dest[destOffset + 0] = (_self00 + _self00) * _t0_inv;
+        dest[destOffset + 1] = (_self10 + _self10) * _t0_inv;
+        dest[destOffset + 2] = (_self20 + _self20) * _t0_inv;
+        dest[destOffset + 3] = (_self30 + _self30) * _t0_inv;
+        dest[destOffset + 4] = (_self01 + _self01) * _t1_inv;
+        dest[destOffset + 5] = (_self11 + _self11) * _t1_inv;
+        dest[destOffset + 6] = (_self21 + _self21) * _t1_inv;
+        dest[destOffset + 7] = (_self31 + _self31) * _t1_inv;
         dest[destOffset + 8] = -_self02;
         dest[destOffset + 9] = -_self12;
         dest[destOffset + 10] = -_self22;
@@ -4537,14 +4537,14 @@ public final class Float4x4OpsKernelsArray {
         float _t1_inv = 1.0f / _t1;
         float _t2 = left + right;
         float _t3 = bottom + top;
-        dest[destOffset + 0] = 2.0f * _self00 * _t0_inv;
-        dest[destOffset + 1] = 2.0f * _self10 * _t0_inv;
-        dest[destOffset + 2] = 2.0f * _self20 * _t0_inv;
-        dest[destOffset + 3] = 2.0f * _self30 * _t0_inv;
-        dest[destOffset + 4] = 2.0f * _self01 * _t1_inv;
-        dest[destOffset + 5] = 2.0f * _self11 * _t1_inv;
-        dest[destOffset + 6] = 2.0f * _self21 * _t1_inv;
-        dest[destOffset + 7] = 2.0f * _self31 * _t1_inv;
+        dest[destOffset + 0] = (_self00 + _self00) * _t0_inv;
+        dest[destOffset + 1] = (_self10 + _self10) * _t0_inv;
+        dest[destOffset + 2] = (_self20 + _self20) * _t0_inv;
+        dest[destOffset + 3] = (_self30 + _self30) * _t0_inv;
+        dest[destOffset + 4] = (_self01 + _self01) * _t1_inv;
+        dest[destOffset + 5] = (_self11 + _self11) * _t1_inv;
+        dest[destOffset + 6] = (_self21 + _self21) * _t1_inv;
+        dest[destOffset + 7] = (_self31 + _self31) * _t1_inv;
         dest[destOffset + 8] = 0.5f * _self02;
         dest[destOffset + 9] = 0.5f * _self12;
         dest[destOffset + 10] = 0.5f * _self22;
@@ -4579,14 +4579,14 @@ public final class Float4x4OpsKernelsArray {
         float _t1_inv = 1.0f / _t1;
         float _t2 = left + right;
         float _t3 = bottom + top;
-        dest[destOffset + 0] = 2.0f * _self00 * _t0_inv;
-        dest[destOffset + 1] = 2.0f * _self10 * _t0_inv;
-        dest[destOffset + 2] = 2.0f * _self20 * _t0_inv;
-        dest[destOffset + 3] = 2.0f * _self30 * _t0_inv;
-        dest[destOffset + 4] = 2.0f * _self01 * _t1_inv;
-        dest[destOffset + 5] = 2.0f * _self11 * _t1_inv;
-        dest[destOffset + 6] = 2.0f * _self21 * _t1_inv;
-        dest[destOffset + 7] = 2.0f * _self31 * _t1_inv;
+        dest[destOffset + 0] = (_self00 + _self00) * _t0_inv;
+        dest[destOffset + 1] = (_self10 + _self10) * _t0_inv;
+        dest[destOffset + 2] = (_self20 + _self20) * _t0_inv;
+        dest[destOffset + 3] = (_self30 + _self30) * _t0_inv;
+        dest[destOffset + 4] = (_self01 + _self01) * _t1_inv;
+        dest[destOffset + 5] = (_self11 + _self11) * _t1_inv;
+        dest[destOffset + 6] = (_self21 + _self21) * _t1_inv;
+        dest[destOffset + 7] = (_self31 + _self31) * _t1_inv;
         dest[destOffset + 8] = -0.5f * _self02;
         dest[destOffset + 9] = -0.5f * _self12;
         dest[destOffset + 10] = -0.5f * _self22;
@@ -4726,17 +4726,17 @@ public final class Float4x4OpsKernelsArray {
         float _t247_inv = 1.0f / _t247;
         float _t248 = _t244 - _t245;
         float _t248_inv = 1.0f / _t248;
-        dest[destOffset + 0] = 2.0f * _t246_inv;
+        dest[destOffset + 0] = _t246_inv + _t246_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t247_inv;
+        dest[destOffset + 5] = _t247_inv + _t247_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
         dest[destOffset + 9] = 0.0f;
-        dest[destOffset + 10] = 2.0f * _t248_inv;
+        dest[destOffset + 10] = _t248_inv + _t248_inv;
         dest[destOffset + 11] = 0.0f;
         dest[destOffset + 12] = -((_t241 + _t240) * _t246_inv);
         dest[destOffset + 13] = -((_t243 + _t242) * _t247_inv);
@@ -4866,12 +4866,12 @@ public final class Float4x4OpsKernelsArray {
         float _t247_inv = 1.0f / _t247;
         float _t248 = _t244 - _t245;
         float _t248_inv = 1.0f / _t248;
-        dest[destOffset + 0] = 2.0f * _t246_inv;
+        dest[destOffset + 0] = _t246_inv + _t246_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t247_inv;
+        dest[destOffset + 5] = _t247_inv + _t247_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
@@ -5012,12 +5012,12 @@ public final class Float4x4OpsKernelsArray {
         float _t231_inv = 1.0f / _t231;
         float _t232 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181) - _t229;
         float _t232_inv = 1.0f / _t232;
-        dest[destOffset + 0] = 2.0f * _t230_inv;
+        dest[destOffset + 0] = _t230_inv + _t230_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t231_inv;
+        dest[destOffset + 5] = _t231_inv + _t231_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
@@ -5151,12 +5151,12 @@ public final class Float4x4OpsKernelsArray {
         float _t231_inv = 1.0f / _t231;
         float _t232 = _t228 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181);
         float _t232_inv = 1.0f / _t232;
-        dest[destOffset + 0] = 2.0f * _t230_inv;
+        dest[destOffset + 0] = _t230_inv + _t230_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t231_inv;
+        dest[destOffset + 5] = _t231_inv + _t231_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
@@ -5302,17 +5302,17 @@ public final class Float4x4OpsKernelsArray {
         float _t223_inv = 1.0f / _t223;
         float _t224 = _t220 - _t221;
         float _t224_inv = 1.0f / _t224;
-        dest[destOffset + 0] = 2.0f * _t222_inv;
+        dest[destOffset + 0] = _t222_inv + _t222_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t223_inv;
+        dest[destOffset + 5] = _t223_inv + _t223_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
         dest[destOffset + 9] = 0.0f;
-        dest[destOffset + 10] = 2.0f * _t224_inv;
+        dest[destOffset + 10] = _t224_inv + _t224_inv;
         dest[destOffset + 11] = 0.0f;
         dest[destOffset + 12] = -((_t217 + _t216) * _t222_inv);
         dest[destOffset + 13] = -((_t219 + _t218) * _t223_inv);
@@ -5446,12 +5446,12 @@ public final class Float4x4OpsKernelsArray {
         float _t223_inv = 1.0f / _t223;
         float _t224 = _t220 - _t221;
         float _t224_inv = 1.0f / _t224;
-        dest[destOffset + 0] = 2.0f * _t222_inv;
+        dest[destOffset + 0] = _t222_inv + _t222_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t223_inv;
+        dest[destOffset + 5] = _t223_inv + _t223_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
@@ -5596,12 +5596,12 @@ public final class Float4x4OpsKernelsArray {
         float _t223_inv = 1.0f / _t223;
         float _t224 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179) - _t221;
         float _t224_inv = 1.0f / _t224;
-        dest[destOffset + 0] = 2.0f * _t222_inv;
+        dest[destOffset + 0] = _t222_inv + _t222_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t223_inv;
+        dest[destOffset + 5] = _t223_inv + _t223_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
@@ -5739,12 +5739,12 @@ public final class Float4x4OpsKernelsArray {
         float _t223_inv = 1.0f / _t223;
         float _t224 = _t220 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
         float _t224_inv = 1.0f / _t224;
-        dest[destOffset + 0] = 2.0f * _t222_inv;
+        dest[destOffset + 0] = _t222_inv + _t222_inv;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = 0.0f;
         dest[destOffset + 4] = 0.0f;
-        dest[destOffset + 5] = 2.0f * _t223_inv;
+        dest[destOffset + 5] = _t223_inv + _t223_inv;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
@@ -5791,14 +5791,14 @@ public final class Float4x4OpsKernelsArray {
         float _t15, _t16;
         if (far == Float.POSITIVE_INFINITY) {
             _t15 = 1.0f;
-            _t16 = -(2.0f * near);
+            _t16 = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 _t15 = -1.0f;
-                _t16 = 2.0f * far;
+                _t16 = far + far;
             } else {
                 _t15 = -((far + near) * _t2_inv);
-                _t16 = 2.0f * far * near * _t2_inv;
+                _t16 = (far + far) * near * _t2_inv;
             }
         }
         dest[destOffset + 0] = _self00 * _t9_inv;
@@ -5846,14 +5846,14 @@ public final class Float4x4OpsKernelsArray {
         float _t13, _t15;
         if (far == Float.POSITIVE_INFINITY) {
             _t13 = -1.0f;
-            _t15 = -(2.0f * near);
+            _t15 = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 _t13 = 1.0f;
-                _t15 = 2.0f * far;
+                _t15 = far + far;
             } else {
                 _t13 = (far + near) * _t2_inv;
-                _t15 = 2.0f * far * near * _t2_inv;
+                _t15 = (far + far) * near * _t2_inv;
             }
         }
         dest[destOffset + 0] = _self00 * _t9_inv;
@@ -6028,24 +6028,24 @@ public final class Float4x4OpsKernelsArray {
         float _t17, _t18;
         if (far == Float.POSITIVE_INFINITY) {
             _t17 = 1.0f;
-            _t18 = -(2.0f * near);
+            _t18 = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 _t17 = -1.0f;
-                _t18 = 2.0f * far;
+                _t18 = far + far;
             } else {
                 _t17 = -((far + near) * _t3_inv);
-                _t18 = 2.0f * far * near * _t3_inv;
+                _t18 = (far + far) * near * _t3_inv;
             }
         }
-        dest[destOffset + 0] = 2.0f * _self00 * _t11_inv;
-        dest[destOffset + 1] = 2.0f * _self10 * _t11_inv;
-        dest[destOffset + 2] = 2.0f * _self20 * _t11_inv;
-        dest[destOffset + 3] = 2.0f * _self30 * _t11_inv;
-        dest[destOffset + 4] = 2.0f * _self01 * _t8_inv;
-        dest[destOffset + 5] = 2.0f * _self11 * _t8_inv;
-        dest[destOffset + 6] = 2.0f * _self21 * _t8_inv;
-        dest[destOffset + 7] = 2.0f * _self31 * _t8_inv;
+        dest[destOffset + 0] = (_self00 + _self00) * _t11_inv;
+        dest[destOffset + 1] = (_self10 + _self10) * _t11_inv;
+        dest[destOffset + 2] = (_self20 + _self20) * _t11_inv;
+        dest[destOffset + 3] = (_self30 + _self30) * _t11_inv;
+        dest[destOffset + 4] = (_self01 + _self01) * _t8_inv;
+        dest[destOffset + 5] = (_self11 + _self11) * _t8_inv;
+        dest[destOffset + 6] = (_self21 + _self21) * _t8_inv;
+        dest[destOffset + 7] = (_self31 + _self31) * _t8_inv;
         dest[destOffset + 8] = Math.fma(_self02, _t17, _self03 - _self01 * _t9 * _t8_inv);
         dest[destOffset + 9] = Math.fma(_self12, _t17, _self13 - _self11 * _t9 * _t8_inv);
         dest[destOffset + 10] = Math.fma(_self22, _t17, _self23 - _self21 * _t9 * _t8_inv);
@@ -6086,24 +6086,24 @@ public final class Float4x4OpsKernelsArray {
         float _t15, _t17;
         if (far == Float.POSITIVE_INFINITY) {
             _t15 = -1.0f;
-            _t17 = -(2.0f * near);
+            _t17 = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 _t15 = 1.0f;
-                _t17 = 2.0f * far;
+                _t17 = far + far;
             } else {
                 _t15 = (far + near) * _t3_inv;
-                _t17 = 2.0f * far * near * _t3_inv;
+                _t17 = (far + far) * near * _t3_inv;
             }
         }
-        dest[destOffset + 0] = 2.0f * _self00 * _t11_inv;
-        dest[destOffset + 1] = 2.0f * _self10 * _t11_inv;
-        dest[destOffset + 2] = 2.0f * _self20 * _t11_inv;
-        dest[destOffset + 3] = 2.0f * _self30 * _t11_inv;
-        dest[destOffset + 4] = 2.0f * _self01 * _t8_inv;
-        dest[destOffset + 5] = 2.0f * _self11 * _t8_inv;
-        dest[destOffset + 6] = 2.0f * _self21 * _t8_inv;
-        dest[destOffset + 7] = 2.0f * _self31 * _t8_inv;
+        dest[destOffset + 0] = (_self00 + _self00) * _t11_inv;
+        dest[destOffset + 1] = (_self10 + _self10) * _t11_inv;
+        dest[destOffset + 2] = (_self20 + _self20) * _t11_inv;
+        dest[destOffset + 3] = (_self30 + _self30) * _t11_inv;
+        dest[destOffset + 4] = (_self01 + _self01) * _t8_inv;
+        dest[destOffset + 5] = (_self11 + _self11) * _t8_inv;
+        dest[destOffset + 6] = (_self21 + _self21) * _t8_inv;
+        dest[destOffset + 7] = (_self31 + _self31) * _t8_inv;
         dest[destOffset + 8] = Math.fma(_self02, _t15, _self01 * _t9 * _t8_inv - _self03);
         dest[destOffset + 9] = Math.fma(_self12, _t15, _self11 * _t9 * _t8_inv - _self13);
         dest[destOffset + 10] = Math.fma(_self22, _t15, _self21 * _t9 * _t8_inv - _self23);
@@ -6161,14 +6161,14 @@ public final class Float4x4OpsKernelsArray {
                 _t13 = far * near * _t2_inv;
             }
         }
-        dest[destOffset + 0] = 2.0f * _self00 * _t8_inv;
-        dest[destOffset + 1] = 2.0f * _self10 * _t8_inv;
-        dest[destOffset + 2] = 2.0f * _self20 * _t8_inv;
-        dest[destOffset + 3] = 2.0f * _self30 * _t8_inv;
-        dest[destOffset + 4] = 2.0f * _self01 * _t4_inv;
-        dest[destOffset + 5] = 2.0f * _self11 * _t4_inv;
-        dest[destOffset + 6] = 2.0f * _self21 * _t4_inv;
-        dest[destOffset + 7] = 2.0f * _self31 * _t4_inv;
+        dest[destOffset + 0] = (_self00 + _self00) * _t8_inv;
+        dest[destOffset + 1] = (_self10 + _self10) * _t8_inv;
+        dest[destOffset + 2] = (_self20 + _self20) * _t8_inv;
+        dest[destOffset + 3] = (_self30 + _self30) * _t8_inv;
+        dest[destOffset + 4] = (_self01 + _self01) * _t4_inv;
+        dest[destOffset + 5] = (_self11 + _self11) * _t4_inv;
+        dest[destOffset + 6] = (_self21 + _self21) * _t4_inv;
+        dest[destOffset + 7] = (_self31 + _self31) * _t4_inv;
         dest[destOffset + 8] = Math.fma(_self02, _t12, _self03 - _self01 * _t6 * _t4_inv);
         dest[destOffset + 9] = Math.fma(_self12, _t12, _self13 - _self11 * _t6 * _t4_inv);
         dest[destOffset + 10] = Math.fma(_self22, _t12, _self23 - _self21 * _t6 * _t4_inv);
@@ -6219,14 +6219,14 @@ public final class Float4x4OpsKernelsArray {
                 _t12 = far * near * _t2_inv;
             }
         }
-        dest[destOffset + 0] = 2.0f * _self00 * _t7_inv;
-        dest[destOffset + 1] = 2.0f * _self10 * _t7_inv;
-        dest[destOffset + 2] = 2.0f * _self20 * _t7_inv;
-        dest[destOffset + 3] = 2.0f * _self30 * _t7_inv;
-        dest[destOffset + 4] = 2.0f * _self01 * _t4_inv;
-        dest[destOffset + 5] = 2.0f * _self11 * _t4_inv;
-        dest[destOffset + 6] = 2.0f * _self21 * _t4_inv;
-        dest[destOffset + 7] = 2.0f * _self31 * _t4_inv;
+        dest[destOffset + 0] = (_self00 + _self00) * _t7_inv;
+        dest[destOffset + 1] = (_self10 + _self10) * _t7_inv;
+        dest[destOffset + 2] = (_self20 + _self20) * _t7_inv;
+        dest[destOffset + 3] = (_self30 + _self30) * _t7_inv;
+        dest[destOffset + 4] = (_self01 + _self01) * _t4_inv;
+        dest[destOffset + 5] = (_self11 + _self11) * _t4_inv;
+        dest[destOffset + 6] = (_self21 + _self21) * _t4_inv;
+        dest[destOffset + 7] = (_self31 + _self31) * _t4_inv;
         dest[destOffset + 8] = Math.fma(_self02, _t11, _self01 * _t6 * _t4_inv - _self03);
         dest[destOffset + 9] = Math.fma(_self12, _t11, _self11 * _t6 * _t4_inv - _self13);
         dest[destOffset + 10] = Math.fma(_self22, _t11, _self21 * _t6 * _t4_inv - _self23);
@@ -6264,14 +6264,14 @@ public final class Float4x4OpsKernelsArray {
         float _t0_inv = 1.0f / _t0;
         if (far == Float.POSITIVE_INFINITY) {
             dest[destOffset + 10] = 1.0f;
-            dest[destOffset + 14] = -(2.0f * near);
+            dest[destOffset + 14] = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 dest[destOffset + 10] = -1.0f;
-                dest[destOffset + 14] = 2.0f * far;
+                dest[destOffset + 14] = far + far;
             } else {
                 dest[destOffset + 10] = -((far + near) * _t0_inv);
-                dest[destOffset + 14] = 2.0f * far * near * _t0_inv;
+                dest[destOffset + 14] = (far + far) * near * _t0_inv;
             }
         }
         dest[destOffset + 0] = _self00;
@@ -6310,14 +6310,14 @@ public final class Float4x4OpsKernelsArray {
         float _t0_inv = 1.0f / _t0;
         if (far == Float.POSITIVE_INFINITY) {
             dest[destOffset + 10] = -1.0f;
-            dest[destOffset + 14] = -(2.0f * near);
+            dest[destOffset + 14] = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 dest[destOffset + 10] = 1.0f;
-                dest[destOffset + 14] = 2.0f * far;
+                dest[destOffset + 14] = far + far;
             } else {
                 dest[destOffset + 10] = (far + near) * _t0_inv;
-                dest[destOffset + 14] = 2.0f * far * near * _t0_inv;
+                dest[destOffset + 14] = (far + far) * near * _t0_inv;
             }
         }
         dest[destOffset + 0] = _self00;
@@ -6475,24 +6475,24 @@ public final class Float4x4OpsKernelsArray {
         float _t20, _t21;
         if (far == Float.POSITIVE_INFINITY) {
             _t20 = 1.0f;
-            _t21 = -(2.0f * near);
+            _t21 = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 _t20 = -1.0f;
-                _t21 = 2.0f * far;
+                _t21 = far + far;
             } else {
                 _t20 = -((far + near) * _t5_inv);
-                _t21 = 2.0f * far * near * _t5_inv;
+                _t21 = (far + far) * near * _t5_inv;
             }
         }
-        dest[destOffset + 0] = 2.0f * _self00 * _t10_inv;
-        dest[destOffset + 1] = 2.0f * _self10 * _t10_inv;
-        dest[destOffset + 2] = 2.0f * _self20 * _t10_inv;
-        dest[destOffset + 3] = 2.0f * _self30 * _t10_inv;
-        dest[destOffset + 4] = 2.0f * _self01 * _t11_inv;
-        dest[destOffset + 5] = 2.0f * _self11 * _t11_inv;
-        dest[destOffset + 6] = 2.0f * _self21 * _t11_inv;
-        dest[destOffset + 7] = 2.0f * _self31 * _t11_inv;
+        dest[destOffset + 0] = (_self00 + _self00) * _t10_inv;
+        dest[destOffset + 1] = (_self10 + _self10) * _t10_inv;
+        dest[destOffset + 2] = (_self20 + _self20) * _t10_inv;
+        dest[destOffset + 3] = (_self30 + _self30) * _t10_inv;
+        dest[destOffset + 4] = (_self01 + _self01) * _t11_inv;
+        dest[destOffset + 5] = (_self11 + _self11) * _t11_inv;
+        dest[destOffset + 6] = (_self21 + _self21) * _t11_inv;
+        dest[destOffset + 7] = (_self31 + _self31) * _t11_inv;
         dest[destOffset + 8] = Math.fma(_self02, _t20, _self03 - _self00 * _t12 * _t10_inv - _self01 * _t13 * _t11_inv);
         dest[destOffset + 9] = Math.fma(_self12, _t20, _self13 - _self10 * _t12 * _t10_inv - _self11 * _t13 * _t11_inv);
         dest[destOffset + 10] = Math.fma(_self22, _t20, _self23 - _self20 * _t12 * _t10_inv - _self21 * _t13 * _t11_inv);
@@ -6536,24 +6536,24 @@ public final class Float4x4OpsKernelsArray {
         float _t18, _t20;
         if (far == Float.POSITIVE_INFINITY) {
             _t18 = -1.0f;
-            _t20 = -(2.0f * near);
+            _t20 = -(near + near);
         } else {
             if (near == Float.POSITIVE_INFINITY) {
                 _t18 = 1.0f;
-                _t20 = 2.0f * far;
+                _t20 = far + far;
             } else {
                 _t18 = (far + near) * _t5_inv;
-                _t20 = 2.0f * far * near * _t5_inv;
+                _t20 = (far + far) * near * _t5_inv;
             }
         }
-        dest[destOffset + 0] = 2.0f * _self00 * _t10_inv;
-        dest[destOffset + 1] = 2.0f * _self10 * _t10_inv;
-        dest[destOffset + 2] = 2.0f * _self20 * _t10_inv;
-        dest[destOffset + 3] = 2.0f * _self30 * _t10_inv;
-        dest[destOffset + 4] = 2.0f * _self01 * _t11_inv;
-        dest[destOffset + 5] = 2.0f * _self11 * _t11_inv;
-        dest[destOffset + 6] = 2.0f * _self21 * _t11_inv;
-        dest[destOffset + 7] = 2.0f * _self31 * _t11_inv;
+        dest[destOffset + 0] = (_self00 + _self00) * _t10_inv;
+        dest[destOffset + 1] = (_self10 + _self10) * _t10_inv;
+        dest[destOffset + 2] = (_self20 + _self20) * _t10_inv;
+        dest[destOffset + 3] = (_self30 + _self30) * _t10_inv;
+        dest[destOffset + 4] = (_self01 + _self01) * _t11_inv;
+        dest[destOffset + 5] = (_self11 + _self11) * _t11_inv;
+        dest[destOffset + 6] = (_self21 + _self21) * _t11_inv;
+        dest[destOffset + 7] = (_self31 + _self31) * _t11_inv;
         dest[destOffset + 8] = Math.fma(_self02, _t18, _self00 * _t12 * _t10_inv + _self01 * _t13 * _t11_inv - _self03);
         dest[destOffset + 9] = Math.fma(_self12, _t18, _self10 * _t12 * _t10_inv + _self11 * _t13 * _t11_inv - _self13);
         dest[destOffset + 10] = Math.fma(_self22, _t18, _self20 * _t12 * _t10_inv + _self21 * _t13 * _t11_inv - _self23);
@@ -6614,14 +6614,14 @@ public final class Float4x4OpsKernelsArray {
                 _t16 = far * near * _t4_inv;
             }
         }
-        dest[destOffset + 0] = 2.0f * _self00 * _t6_inv;
-        dest[destOffset + 1] = 2.0f * _self10 * _t6_inv;
-        dest[destOffset + 2] = 2.0f * _self20 * _t6_inv;
-        dest[destOffset + 3] = 2.0f * _self30 * _t6_inv;
-        dest[destOffset + 4] = 2.0f * _self01 * _t7_inv;
-        dest[destOffset + 5] = 2.0f * _self11 * _t7_inv;
-        dest[destOffset + 6] = 2.0f * _self21 * _t7_inv;
-        dest[destOffset + 7] = 2.0f * _self31 * _t7_inv;
+        dest[destOffset + 0] = (_self00 + _self00) * _t6_inv;
+        dest[destOffset + 1] = (_self10 + _self10) * _t6_inv;
+        dest[destOffset + 2] = (_self20 + _self20) * _t6_inv;
+        dest[destOffset + 3] = (_self30 + _self30) * _t6_inv;
+        dest[destOffset + 4] = (_self01 + _self01) * _t7_inv;
+        dest[destOffset + 5] = (_self11 + _self11) * _t7_inv;
+        dest[destOffset + 6] = (_self21 + _self21) * _t7_inv;
+        dest[destOffset + 7] = (_self31 + _self31) * _t7_inv;
         dest[destOffset + 8] = Math.fma(_self02, _t15, _self03 - _self00 * _t9 * _t6_inv - _self01 * _t10 * _t7_inv);
         dest[destOffset + 9] = Math.fma(_self12, _t15, _self13 - _self10 * _t9 * _t6_inv - _self11 * _t10 * _t7_inv);
         dest[destOffset + 10] = Math.fma(_self22, _t15, _self23 - _self20 * _t9 * _t6_inv - _self21 * _t10 * _t7_inv);
@@ -6675,14 +6675,14 @@ public final class Float4x4OpsKernelsArray {
                 _t15 = far * near * _t4_inv;
             }
         }
-        dest[destOffset + 0] = 2.0f * _self00 * _t6_inv;
-        dest[destOffset + 1] = 2.0f * _self10 * _t6_inv;
-        dest[destOffset + 2] = 2.0f * _self20 * _t6_inv;
-        dest[destOffset + 3] = 2.0f * _self30 * _t6_inv;
-        dest[destOffset + 4] = 2.0f * _self01 * _t7_inv;
-        dest[destOffset + 5] = 2.0f * _self11 * _t7_inv;
-        dest[destOffset + 6] = 2.0f * _self21 * _t7_inv;
-        dest[destOffset + 7] = 2.0f * _self31 * _t7_inv;
+        dest[destOffset + 0] = (_self00 + _self00) * _t6_inv;
+        dest[destOffset + 1] = (_self10 + _self10) * _t6_inv;
+        dest[destOffset + 2] = (_self20 + _self20) * _t6_inv;
+        dest[destOffset + 3] = (_self30 + _self30) * _t6_inv;
+        dest[destOffset + 4] = (_self01 + _self01) * _t7_inv;
+        dest[destOffset + 5] = (_self11 + _self11) * _t7_inv;
+        dest[destOffset + 6] = (_self21 + _self21) * _t7_inv;
+        dest[destOffset + 7] = (_self31 + _self31) * _t7_inv;
         dest[destOffset + 8] = Math.fma(_self02, _t14, _self00 * _t9 * _t6_inv + _self01 * _t10 * _t7_inv - _self03);
         dest[destOffset + 9] = Math.fma(_self12, _t14, _self10 * _t9 * _t6_inv + _self11 * _t10 * _t7_inv - _self13);
         dest[destOffset + 10] = Math.fma(_self22, _t14, _self20 * _t9 * _t6_inv + _self21 * _t10 * _t7_inv - _self23);

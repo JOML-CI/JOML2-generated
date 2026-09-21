@@ -820,7 +820,7 @@ public final class Intersectiond {
      *        and <code>maxR</code>, or positive infinity when there is no such root
      */
     public static double computeLowestRoot(double a, double b, double c, double maxR) {
-        double _t1 = 2.0 * a;
+        double _t1 = a + a;
         double _t1_inv = 1.0 / _t1;
         double _t4 = Math.fma(b, b, -(c * 4.0 * a));
         double _t5 = Math.sqrt(_t4);
@@ -862,7 +862,7 @@ public final class Intersectiond {
         double _t0 = bX - aX;
         double _t1 = bY - aY;
         double _t4 = Math.fma(_t0, _t0, _t1 * _t1);
-        double _t8 = 0.5 + (radiusSquaredA - radiusSquaredB) / (2.0 * _t4);
+        double _t8 = 0.5 + (radiusSquaredA - radiusSquaredB) / (_t4 + _t4);
         double _t11 = Math.sqrt(Math.fma(-_t4, _t8 * _t8, radiusSquaredA));
         if ((_t4 != 0.0) && (_t11 >= 0.0)) return new DoubleHit3(1, Math.fma(_t8, _t0, aX), Math.fma(_t8, _t1, aY), _t11);
         return DoubleHit3.MISS;
@@ -2288,12 +2288,12 @@ public final class Intersectiond {
         double _t0 = bZ - aZ;
         double _t1 = bX - aX;
         double _t2 = bY - aY;
-        double _t9 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
-        double _t10 = 2.0 * _t9;
+        double _t8 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
+        double _t10 = _t8 + _t8;
         double _t10_inv = 1.0 / _t10;
         double _t11 = Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t0, _t0, radiusSquaredA - radiusSquaredB)));
-        double _t15 = radiusSquaredA - _t11 * _t11 / (2.0 * 2.0 * _t9);
-        if ((_t9 != 0.0) && (_t15 >= 0.0)) return new DoubleHit4(1, aX + _t1 * _t11 * _t10_inv, aY + _t2 * _t11 * _t10_inv, aZ + _t0 * _t11 * _t10_inv, Math.sqrt(_t15));
+        double _t14 = radiusSquaredA - _t11 * _t11 / (4.0 * _t8);
+        if ((_t8 != 0.0) && (_t14 >= 0.0)) return new DoubleHit4(1, aX + _t1 * _t11 * _t10_inv, aY + _t2 * _t11 * _t10_inv, aZ + _t0 * _t11 * _t10_inv, Math.sqrt(_t14));
         return DoubleHit4.MISS;
     }
 

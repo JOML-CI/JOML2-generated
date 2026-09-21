@@ -820,7 +820,7 @@ public final class Intersectionf {
      *        and <code>maxR</code>, or positive infinity when there is no such root
      */
     public static float computeLowestRoot(float a, float b, float c, float maxR) {
-        float _t1 = 2.0f * a;
+        float _t1 = a + a;
         float _t1_inv = 1.0f / _t1;
         float _t4 = Math.fma(b, b, -(c * 4.0f * a));
         float _t5 = (float) Math.sqrt(_t4);
@@ -862,7 +862,7 @@ public final class Intersectionf {
         float _t0 = bX - aX;
         float _t1 = bY - aY;
         float _t4 = Math.fma(_t0, _t0, _t1 * _t1);
-        float _t8 = 0.5f + (radiusSquaredA - radiusSquaredB) / (2.0f * _t4);
+        float _t8 = 0.5f + (radiusSquaredA - radiusSquaredB) / (_t4 + _t4);
         float _t11 = (float) Math.sqrt(Math.fma(-_t4, _t8 * _t8, radiusSquaredA));
         if ((_t4 != 0.0f) && (_t11 >= 0.0f)) return new FloatHit3(1, Math.fma(_t8, _t0, aX), Math.fma(_t8, _t1, aY), _t11);
         return FloatHit3.MISS;
@@ -2288,12 +2288,12 @@ public final class Intersectionf {
         float _t0 = bZ - aZ;
         float _t1 = bX - aX;
         float _t2 = bY - aY;
-        float _t9 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
-        float _t10 = 2.0f * _t9;
+        float _t8 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
+        float _t10 = _t8 + _t8;
         float _t10_inv = 1.0f / _t10;
         float _t11 = Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t0, _t0, radiusSquaredA - radiusSquaredB)));
-        float _t15 = radiusSquaredA - _t11 * _t11 / (2.0f * 2.0f * _t9);
-        if ((_t9 != 0.0f) && (_t15 >= 0.0f)) return new FloatHit4(1, aX + _t1 * _t11 * _t10_inv, aY + _t2 * _t11 * _t10_inv, aZ + _t0 * _t11 * _t10_inv, (float) Math.sqrt(_t15));
+        float _t14 = radiusSquaredA - _t11 * _t11 / (4.0f * _t8);
+        if ((_t8 != 0.0f) && (_t14 >= 0.0f)) return new FloatHit4(1, aX + _t1 * _t11 * _t10_inv, aY + _t2 * _t11 * _t10_inv, aZ + _t0 * _t11 * _t10_inv, (float) Math.sqrt(_t14));
         return FloatHit4.MISS;
     }
 

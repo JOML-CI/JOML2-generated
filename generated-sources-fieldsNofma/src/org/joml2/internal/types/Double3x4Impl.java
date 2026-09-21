@@ -4013,9 +4013,9 @@ public class Double3x4Impl implements Double3x4 {
      * @return this
      */
     @Mutated public Double3x4 makeFromTransform(double tTX, double tTY, double tTZ, double tRX, double tRY, double tRZ, double tRW, double tSX, double tSY, double tSZ) {
-        double _t0 = 2.0 * tSX;
-        double _t1 = 2.0 * tSY;
-        double _t2 = 2.0 * tSZ;
+        double _t0 = tSX + tSX;
+        double _t1 = tSY + tSY;
+        double _t2 = tSZ + tSZ;
         double _t3 = tRY * tRY;
         double _t4 = tRZ * tRZ;
         double _t5 = tRX * tRY;
@@ -7351,9 +7351,9 @@ public class Double3x4Impl implements Double3x4 {
      * @return this
      */
     @Mutated public Double3x4 composeTRS(double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ) {
-        double _t0 = 2.0 * scaleX;
-        double _t1 = 2.0 * scaleY;
-        double _t2 = 2.0 * scaleZ;
+        double _t0 = scaleX + scaleX;
+        double _t1 = scaleY + scaleY;
+        double _t2 = scaleZ + scaleZ;
         double _t3 = rotationY * rotationY;
         double _t4 = rotationZ * rotationZ;
         double _t5 = rotationX * rotationY;
@@ -7424,9 +7424,9 @@ public class Double3x4Impl implements Double3x4 {
      * @return this
      */
     @Mutated public Double3x4 composeTRSMul(double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ, Double3x4R m) {
-        double _t0 = 2.0 * scaleX;
-        double _t1 = 2.0 * scaleY;
-        double _t2 = 2.0 * scaleZ;
+        double _t0 = scaleX + scaleX;
+        double _t1 = scaleY + scaleY;
+        double _t2 = scaleZ + scaleZ;
         double _t3 = rotationY * rotationY;
         double _t4 = rotationZ * rotationZ;
         double _t5 = rotationX * rotationY;
@@ -8791,8 +8791,8 @@ public class Double3x4Impl implements Double3x4 {
         double _t15 = (1.0 / Math.sqrt(_t1 * _t1 + _t5 + _t12 * _t12));
         double _t16 = _t0 * _t15;
         double _t17 = _t1 * _t15;
-        double _t18 = 2.0 * _t16;
-        double _t19 = 2.0 * _t17;
+        double _t18 = _t16 + _t16;
+        double _t19 = _t17 + _t17;
         double _t20 = _t12 * _t15;
         double _t21 = _t18 * _t16;
         double _t22 = _t19 * _t16;
@@ -8862,18 +8862,18 @@ public class Double3x4Impl implements Double3x4 {
         double _t5 = dqRY * dqRW;
         double _t7 = dqRX * dqRW;
         double _t8 = dqRY * dqRZ;
-        double _t10 = 2.0 * dqRY * dqRY;
-        double _t11 = 2.0 * dqRX * dqRX;
-        double _t12 = 1.0 - 2.0 * dqRZ * dqRZ;
+        double _t10 = (dqRY + dqRY) * dqRY;
+        double _t11 = (dqRX + dqRX) * dqRX;
+        double _t12 = 1.0 - (dqRZ + dqRZ) * dqRZ;
         this.m00 = _t12 - _t10;
-        this.m01 = -2.0 * _t2 + 2.0 * _t3;
+        this.m01 = -2.0 * _t2 + (_t3 + _t3);
         this.m02 = 2.0 * (_t4 + _t5);
         this.m03 = 2.0 * (dqRY * dqDZ - dqRZ * dqDY + (dqRW * dqDX - dqRX * dqDW));
         this.m10 = 2.0 * (_t3 + _t2);
         this.m11 = _t12 - _t11;
-        this.m12 = -2.0 * _t7 + 2.0 * _t8;
+        this.m12 = -2.0 * _t7 + (_t8 + _t8);
         this.m13 = 2.0 * (dqRZ * dqDX - dqRX * dqDZ + (dqRW * dqDY - dqRY * dqDW));
-        this.m20 = -2.0 * _t5 + 2.0 * _t4;
+        this.m20 = -2.0 * _t5 + (_t4 + _t4);
         this.m21 = 2.0 * (_t7 + _t8);
         this.m22 = 1.0 - _t10 - _t11;
         this.m23 = 2.0 * (dqRX * dqDY - dqRY * dqDX + (dqRW * dqDZ - dqRZ * dqDW));
@@ -10263,20 +10263,20 @@ public class Double3x4Impl implements Double3x4 {
      * @return this
      */
     @Mutated public Double3x4 makeReflection(double normalX, double normalY, double normalZ) {
-        double _t6 = -(2.0 * normalX * normalY);
-        double _t7 = -(2.0 * normalX * normalZ);
-        double _t8 = -(2.0 * normalY * normalZ);
-        this.m00 = 1.0 - 2.0 * normalX * normalX;
+        double _t6 = -((normalX + normalX) * normalY);
+        double _t7 = -((normalX + normalX) * normalZ);
+        double _t8 = -((normalY + normalY) * normalZ);
+        this.m00 = 1.0 - (normalX + normalX) * normalX;
         this.m01 = _t6;
         this.m02 = _t7;
         this.m03 = 0.0;
         this.m10 = _t6;
-        this.m11 = 1.0 - 2.0 * normalY * normalY;
+        this.m11 = 1.0 - (normalY + normalY) * normalY;
         this.m12 = _t8;
         this.m13 = 0.0;
         this.m20 = _t7;
         this.m21 = _t8;
-        this.m22 = 1.0 - 2.0 * normalZ * normalZ;
+        this.m22 = 1.0 - (normalZ + normalZ) * normalZ;
         this.m23 = 0.0;
         this.properties = Joml.BIT_AFFINE;
         return this;
@@ -17779,9 +17779,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateAround_identity(double rotX, double rotY, double rotZ, double rotW, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = 2.0 * rotZ;
-        double _t1 = 2.0 * rotY;
-        double _t2 = 2.0 * rotX;
+        double _t0 = rotZ + rotZ;
+        double _t1 = rotY + rotY;
+        double _t2 = rotX + rotX;
         double _t3 = rotZ * _t0;
         double _t4 = rotY * _t1;
         double _t5 = rotY * _t2;
@@ -17821,9 +17821,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateAround_translation(double rotX, double rotY, double rotZ, double rotW, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = 2.0 * rotZ;
-        double _t1 = 2.0 * rotY;
-        double _t2 = 2.0 * rotX;
+        double _t0 = rotZ + rotZ;
+        double _t1 = rotY + rotY;
+        double _t2 = rotX + rotX;
         double _t3 = rotZ * _t0;
         double _t4 = rotY * _t1;
         double _t5 = rotY * _t2;
@@ -17868,9 +17868,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateAround_orthogonal(double rotX, double rotY, double rotZ, double rotW, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = 2.0 * rotZ;
-        double _t1 = 2.0 * rotY;
-        double _t2 = 2.0 * rotX;
+        double _t0 = rotZ + rotZ;
+        double _t1 = rotY + rotY;
+        double _t2 = rotX + rotX;
         double _t3 = rotZ * _t0;
         double _t4 = rotY * _t1;
         double _t5 = rotY * _t2;
@@ -17921,9 +17921,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateAround_general(double rotX, double rotY, double rotZ, double rotW, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = 2.0 * rotZ;
-        double _t1 = 2.0 * rotY;
-        double _t2 = 2.0 * rotX;
+        double _t0 = rotZ + rotZ;
+        double _t1 = rotY + rotY;
+        double _t2 = rotX + rotX;
         double _t3 = rotZ * _t0;
         double _t4 = rotY * _t1;
         double _t5 = rotY * _t2;
@@ -18374,9 +18374,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateQuat_identity(double qX, double qY, double qZ, double qW, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = 2.0 * qZ;
-        double _t1 = 2.0 * qY;
-        double _t2 = 2.0 * qX;
+        double _t0 = qZ + qZ;
+        double _t1 = qY + qY;
+        double _t2 = qX + qX;
         double _t4 = qY * _t1;
         double _t5 = qY * _t2;
         double _t6 = qW * _t0;
@@ -18409,9 +18409,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateQuat_identity_self(double qX, double qY, double qZ, double qW, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = 2.0 * qZ;
-        double _t1 = 2.0 * qY;
-        double _t2 = 2.0 * qX;
+        double _t0 = qZ + qZ;
+        double _t1 = qY + qY;
+        double _t2 = qX + qX;
         double _t4 = qY * _t1;
         double _t5 = qY * _t2;
         double _t6 = qW * _t0;
@@ -18441,9 +18441,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateQuat_translation(double qX, double qY, double qZ, double qW, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = 2.0 * qZ;
-        double _t1 = 2.0 * qY;
-        double _t2 = 2.0 * qX;
+        double _t0 = qZ + qZ;
+        double _t1 = qY + qY;
+        double _t2 = qX + qX;
         double _t4 = qY * _t1;
         double _t5 = qY * _t2;
         double _t6 = qW * _t0;
@@ -18487,9 +18487,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateQuat_orthogonal(double qX, double qY, double qZ, double qW, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = 2.0 * qZ;
-        double _t1 = 2.0 * qY;
-        double _t2 = 2.0 * qX;
+        double _t0 = qZ + qZ;
+        double _t1 = qY + qY;
+        double _t2 = qX + qX;
         double _t4 = qY * _t1;
         double _t5 = qY * _t2;
         double _t6 = qW * _t0;
@@ -18539,9 +18539,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateQuat_general(double qX, double qY, double qZ, double qW, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = 2.0 * qZ;
-        double _t1 = 2.0 * qY;
-        double _t2 = 2.0 * qX;
+        double _t0 = qZ + qZ;
+        double _t1 = qY + qY;
+        double _t2 = qX + qX;
         double _t4 = qY * _t1;
         double _t5 = qY * _t2;
         double _t6 = qW * _t0;
@@ -20031,20 +20031,20 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 reflect_identity(double normalX, double normalY, double normalZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t6 = -(2.0 * normalX * normalY);
-        double _t7 = -(2.0 * normalX * normalZ);
-        double _t8 = -(2.0 * normalY * normalZ);
-        d.m00 = 1.0 - 2.0 * normalX * normalX;
+        double _t6 = -((normalX + normalX) * normalY);
+        double _t7 = -((normalX + normalX) * normalZ);
+        double _t8 = -((normalY + normalY) * normalZ);
+        d.m00 = 1.0 - (normalX + normalX) * normalX;
         d.m01 = _t6;
         d.m02 = _t7;
         d.m03 = 0.0;
         d.m10 = _t6;
-        d.m11 = 1.0 - 2.0 * normalY * normalY;
+        d.m11 = 1.0 - (normalY + normalY) * normalY;
         d.m12 = _t8;
         d.m13 = 0.0;
         d.m20 = _t7;
         d.m21 = _t8;
-        d.m22 = 1.0 - 2.0 * normalZ * normalZ;
+        d.m22 = 1.0 - (normalZ + normalZ) * normalZ;
         d.m23 = 0.0;
         d.properties = Joml.BIT_AFFINE;
         return d;
@@ -20057,18 +20057,18 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 reflect_identity_self(double normalX, double normalY, double normalZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t6 = -(2.0 * normalX * normalY);
-        double _t7 = -(2.0 * normalX * normalZ);
-        double _t8 = -(2.0 * normalY * normalZ);
-        d.m00 = 1.0 - 2.0 * normalX * normalX;
+        double _t6 = -((normalX + normalX) * normalY);
+        double _t7 = -((normalX + normalX) * normalZ);
+        double _t8 = -((normalY + normalY) * normalZ);
+        d.m00 = 1.0 - (normalX + normalX) * normalX;
         d.m01 = _t6;
         d.m02 = _t7;
         d.m10 = _t6;
-        d.m11 = 1.0 - 2.0 * normalY * normalY;
+        d.m11 = 1.0 - (normalY + normalY) * normalY;
         d.m12 = _t8;
         d.m20 = _t7;
         d.m21 = _t8;
-        d.m22 = 1.0 - 2.0 * normalZ * normalZ;
+        d.m22 = 1.0 - (normalZ + normalZ) * normalZ;
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -20080,20 +20080,20 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 reflect_translation(double normalX, double normalY, double normalZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t6 = -(2.0 * normalX * normalY);
-        double _t7 = -(2.0 * normalX * normalZ);
-        double _t8 = -(2.0 * normalY * normalZ);
-        d.m00 = 1.0 - 2.0 * normalX * normalX;
+        double _t6 = -((normalX + normalX) * normalY);
+        double _t7 = -((normalX + normalX) * normalZ);
+        double _t8 = -((normalY + normalY) * normalZ);
+        d.m00 = 1.0 - (normalX + normalX) * normalX;
         d.m01 = _t6;
         d.m02 = _t7;
         d.m03 = this.m03;
         d.m10 = _t6;
-        d.m11 = 1.0 - 2.0 * normalY * normalY;
+        d.m11 = 1.0 - (normalY + normalY) * normalY;
         d.m12 = _t8;
         d.m13 = this.m13;
         d.m20 = _t7;
         d.m21 = _t8;
-        d.m22 = 1.0 - 2.0 * normalZ * normalZ;
+        d.m22 = 1.0 - (normalZ + normalZ) * normalZ;
         d.m23 = this.m23;
         d.properties = Joml.BIT_AFFINE;
         return d;
@@ -20106,12 +20106,12 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 reflect_orthogonal(double normalX, double normalY, double normalZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t7 = 2.0 * normalX * normalY;
-        double _t8 = 2.0 * normalX * normalZ;
-        double _t10 = 2.0 * normalY * normalZ;
-        double _t12 = 1.0 - 2.0 * normalX * normalX;
-        double _t13 = 1.0 - 2.0 * normalY * normalY;
-        double _t14 = 1.0 - 2.0 * normalZ * normalZ;
+        double _t7 = (normalX + normalX) * normalY;
+        double _t8 = (normalX + normalX) * normalZ;
+        double _t10 = (normalY + normalY) * normalZ;
+        double _t12 = 1.0 - (normalX + normalX) * normalX;
+        double _t13 = 1.0 - (normalY + normalY) * normalY;
+        double _t14 = 1.0 - (normalZ + normalZ) * normalZ;
         double _buf0 = this.m00 * _t12 - this.m01 * _t7 - this.m02 * _t8;
         double _buf1 = this.m01 * _t13 - this.m00 * _t7 - this.m02 * _t10;
         d.m02 = -(this.m00 * _t8) - this.m01 * _t10 + this.m02 * _t14;
@@ -20253,9 +20253,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateAround_translation(double rotX, double rotY, double rotZ, double rotW, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = 2.0 * rotZ;
-        double _t1 = 2.0 * rotY;
-        double _t2 = 2.0 * rotX;
+        double _t0 = rotZ + rotZ;
+        double _t1 = rotY + rotY;
+        double _t2 = rotX + rotX;
         double _t3 = rotZ * _t0;
         double _t4 = rotY * _t1;
         double _t5 = rotY * _t2;
@@ -20295,9 +20295,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateAround_orthogonal(double rotX, double rotY, double rotZ, double rotW, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = 2.0 * rotZ;
-        double _t1 = 2.0 * rotY;
-        double _t2 = 2.0 * rotX;
+        double _t0 = rotZ + rotZ;
+        double _t1 = rotY + rotY;
+        double _t2 = rotX + rotX;
         double _t3 = rotZ * _t0;
         double _t4 = rotY * _t1;
         double _t5 = rotY * _t2;
@@ -20352,9 +20352,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateAround_general(double rotX, double rotY, double rotZ, double rotW, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = 2.0 * rotZ;
-        double _t1 = 2.0 * rotY;
-        double _t2 = 2.0 * rotX;
+        double _t0 = rotZ + rotZ;
+        double _t1 = rotY + rotY;
+        double _t2 = rotX + rotX;
         double _t3 = rotZ * _t0;
         double _t4 = rotY * _t1;
         double _t5 = rotY * _t2;
@@ -20768,9 +20768,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateQuat_translation(double qX, double qY, double qZ, double qW, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = 2.0 * qZ;
-        double _t1 = 2.0 * qY;
-        double _t2 = 2.0 * qX;
+        double _t0 = qZ + qZ;
+        double _t1 = qY + qY;
+        double _t2 = qX + qX;
         double _t4 = qY * _t1;
         double _t5 = qY * _t2;
         double _t6 = qW * _t0;
@@ -20803,9 +20803,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateQuat_orthogonal(double qX, double qY, double qZ, double qW, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = 2.0 * qZ;
-        double _t1 = 2.0 * qY;
-        double _t2 = 2.0 * qX;
+        double _t0 = qZ + qZ;
+        double _t1 = qY + qY;
+        double _t2 = qX + qX;
         double _t4 = qY * _t1;
         double _t5 = qY * _t2;
         double _t6 = qW * _t0;
@@ -20853,9 +20853,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateQuat_general(double qX, double qY, double qZ, double qW, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = 2.0 * qZ;
-        double _t1 = 2.0 * qY;
-        double _t2 = 2.0 * qX;
+        double _t0 = qZ + qZ;
+        double _t1 = qY + qY;
+        double _t2 = qX + qX;
         double _t4 = qY * _t1;
         double _t5 = qY * _t2;
         double _t6 = qW * _t0;

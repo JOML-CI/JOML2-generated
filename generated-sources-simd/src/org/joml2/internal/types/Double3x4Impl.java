@@ -4178,9 +4178,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     @Mutated public Double3x4 makeFromTransform(double tTX, double tTY, double tTZ, double tRX, double tRY, double tRZ, double tRW, double tSX, double tSY, double tSZ) {
         double[] dd = this.data;
-        double _t0 = 2.0 * tSX;
-        double _t1 = 2.0 * tSY;
-        double _t2 = 2.0 * tSZ;
+        double _t0 = tSX + tSX;
+        double _t1 = tSY + tSY;
+        double _t2 = tSZ + tSZ;
         double _t3 = tRZ * tRZ;
         double _t4 = tRZ * tRW;
         double _t5 = tRY * tRW;
@@ -7547,9 +7547,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     @Mutated public Double3x4 composeTRS(double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ) {
         double[] dd = this.data;
-        double _t0 = 2.0 * scaleX;
-        double _t1 = 2.0 * scaleY;
-        double _t2 = 2.0 * scaleZ;
+        double _t0 = scaleX + scaleX;
+        double _t1 = scaleY + scaleY;
+        double _t2 = scaleZ + scaleZ;
         double _t3 = rotationZ * rotationZ;
         double _t4 = rotationZ * rotationW;
         double _t5 = rotationY * rotationW;
@@ -7621,9 +7621,9 @@ public class Double3x4Impl implements Double3x4 {
     private Double3x4 composeTRSMul_fma(double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ, Double3x4R m) {
         double[] dd = this.data;
         double[] mData = ((Double3x4Impl) m).data;
-        double _t0 = 2.0 * scaleZ;
-        double _t1 = 2.0 * scaleX;
-        double _t2 = 2.0 * scaleY;
+        double _t0 = scaleZ + scaleZ;
+        double _t1 = scaleX + scaleX;
+        double _t2 = scaleY + scaleY;
         double _t3 = rotationY * rotationW;
         double _t4 = rotationZ * rotationZ;
         double _t5 = rotationZ * rotationW;
@@ -7643,9 +7643,9 @@ public class Double3x4Impl implements Double3x4 {
     private Double3x4 composeTRSMul_mulAdd(double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ, Double3x4R m) {
         double[] dd = this.data;
         double[] mData = ((Double3x4Impl) m).data;
-        double _t0 = 2.0 * scaleZ;
-        double _t1 = 2.0 * scaleX;
-        double _t2 = 2.0 * scaleY;
+        double _t0 = scaleZ + scaleZ;
+        double _t1 = scaleX + scaleX;
+        double _t2 = scaleY + scaleY;
         double _t3 = rotationY * rotationW;
         double _t4 = rotationZ * rotationZ;
         double _t5 = rotationZ * rotationW;
@@ -8835,8 +8835,8 @@ public class Double3x4Impl implements Double3x4 {
         double _t12 = (1.0 / Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
         double _t13 = _t0 * _t12;
         double _t14 = _t3 * _t12;
-        double _t15 = 2.0 * _t13;
-        double _t16 = 2.0 * _t14;
+        double _t15 = _t13 + _t13;
+        double _t16 = _t14 + _t14;
         double _t17 = -_t15;
         double _t19 = _t10 * _t12;
         double _t20 = _t16 * _t13;
@@ -8908,14 +8908,14 @@ public class Double3x4Impl implements Double3x4 {
         double _t5 = dqRY * dqRZ;
         double _t6 = Math.fma(-2.0, dqRZ * dqRZ, 1.0);
         dd[0] = Math.fma(-2.0, _t0, _t6);
-        dd[1] = Math.fma(-2.0, _t2, 2.0 * dqRX * dqRY);
+        dd[1] = Math.fma(-2.0, _t2, (dqRX + dqRX) * dqRY);
         dd[2] = 2.0 * Math.fma(dqRX, dqRZ, _t3);
         dd[3] = 2.0 * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW)));
         dd[4] = 2.0 * Math.fma(dqRX, dqRY, _t2);
         dd[5] = Math.fma(-2.0, _t4, _t6);
-        dd[6] = Math.fma(-2.0, dqRX * dqRW, 2.0 * _t5);
+        dd[6] = Math.fma(-2.0, dqRX * dqRW, _t5 + _t5);
         dd[7] = 2.0 * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW)));
-        dd[8] = Math.fma(-2.0, _t3, 2.0 * dqRX * dqRZ);
+        dd[8] = Math.fma(-2.0, _t3, (dqRX + dqRX) * dqRZ);
         dd[9] = 2.0 * Math.fma(dqRX, dqRW, _t5);
         dd[10] = Math.fma(-2.0, _t4, Math.fma(-2.0, _t0, 1.0));
         dd[11] = 2.0 * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW)));
@@ -9924,9 +9924,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     @Mutated public Double3x4 makeReflection(double normalX, double normalY, double normalZ) {
         double[] dd = this.data;
-        double _t6 = -(2.0 * normalX * normalY);
-        double _t7 = -(2.0 * normalX * normalZ);
-        double _t8 = -(2.0 * normalY * normalZ);
+        double _t6 = -((normalX + normalX) * normalY);
+        double _t7 = -((normalX + normalX) * normalZ);
+        double _t8 = -((normalY + normalY) * normalZ);
         dd[0] = Math.fma(-2.0, normalX * normalX, 1.0);
         dd[1] = _t6;
         dd[2] = _t7;
@@ -16575,9 +16575,9 @@ public class Double3x4Impl implements Double3x4 {
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotY;
-        double _t5 = 2.0 * rotZ;
-        double _t6 = 2.0 * rotX;
+        double _t4 = rotY + rotY;
+        double _t5 = rotZ + rotZ;
+        double _t6 = rotX + rotX;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t4;
         double _t9 = rotZ * _t5;
@@ -16616,9 +16616,9 @@ public class Double3x4Impl implements Double3x4 {
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotY;
-        double _t5 = 2.0 * rotZ;
-        double _t6 = 2.0 * rotX;
+        double _t4 = rotY + rotY;
+        double _t5 = rotZ + rotZ;
+        double _t6 = rotX + rotX;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t4;
         double _t9 = rotZ * _t5;
@@ -16667,9 +16667,9 @@ public class Double3x4Impl implements Double3x4 {
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotX;
-        double _t5 = 2.0 * rotY;
-        double _t6 = 2.0 * rotZ;
+        double _t4 = rotX + rotX;
+        double _t5 = rotY + rotY;
+        double _t6 = rotZ + rotZ;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t6;
         double _t9 = rotZ * _t6;
@@ -16700,9 +16700,9 @@ public class Double3x4Impl implements Double3x4 {
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotX;
-        double _t5 = 2.0 * rotY;
-        double _t6 = 2.0 * rotZ;
+        double _t4 = rotX + rotX;
+        double _t5 = rotY + rotY;
+        double _t6 = rotZ + rotZ;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t6;
         double _t9 = rotZ * _t6;
@@ -16743,9 +16743,9 @@ public class Double3x4Impl implements Double3x4 {
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotX;
-        double _t5 = 2.0 * rotY;
-        double _t6 = 2.0 * rotZ;
+        double _t4 = rotX + rotX;
+        double _t5 = rotY + rotY;
+        double _t6 = rotZ + rotZ;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t6;
         double _t9 = rotZ * _t6;
@@ -16776,9 +16776,9 @@ public class Double3x4Impl implements Double3x4 {
         double _t0 = -rotY;
         double _t2 = -pivotZ;
         double _t3 = -rotX;
-        double _t4 = 2.0 * rotX;
-        double _t5 = 2.0 * rotY;
-        double _t6 = 2.0 * rotZ;
+        double _t4 = rotX + rotX;
+        double _t5 = rotY + rotY;
+        double _t6 = rotZ + rotZ;
         double _t7 = rotW * _t5;
         double _t8 = rotW * _t6;
         double _t9 = rotZ * _t6;
@@ -17217,9 +17217,9 @@ public class Double3x4Impl implements Double3x4 {
         double[] dd = ((Double3x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qY;
-        double _t4 = 2.0 * qZ;
-        double _t5 = 2.0 * qX;
+        double _t3 = qY + qY;
+        double _t4 = qZ + qZ;
+        double _t5 = qX + qX;
         double _t6 = qW * _t4;
         double _t7 = qW * _t3;
         double _t8 = qW * _t5;
@@ -17250,9 +17250,9 @@ public class Double3x4Impl implements Double3x4 {
         double[] dd = ((Double3x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qY;
-        double _t4 = 2.0 * qZ;
-        double _t5 = 2.0 * qX;
+        double _t3 = qY + qY;
+        double _t4 = qZ + qZ;
+        double _t5 = qX + qX;
         double _t6 = qW * _t4;
         double _t7 = qW * _t3;
         double _t8 = qW * _t5;
@@ -17280,9 +17280,9 @@ public class Double3x4Impl implements Double3x4 {
         double[] dd = ((Double3x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qY;
-        double _t4 = 2.0 * qZ;
-        double _t5 = 2.0 * qX;
+        double _t3 = qY + qY;
+        double _t4 = qZ + qZ;
+        double _t5 = qX + qX;
         double _t6 = qW * _t4;
         double _t7 = qW * _t3;
         double _t8 = qW * _t5;
@@ -17329,9 +17329,9 @@ public class Double3x4Impl implements Double3x4 {
         double[] dd = ((Double3x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -17354,9 +17354,9 @@ public class Double3x4Impl implements Double3x4 {
         double[] dd = ((Double3x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -17389,9 +17389,9 @@ public class Double3x4Impl implements Double3x4 {
         double[] dd = ((Double3x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -17414,9 +17414,9 @@ public class Double3x4Impl implements Double3x4 {
         double[] dd = ((Double3x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -18300,9 +18300,9 @@ public class Double3x4Impl implements Double3x4 {
     private Double3x4 reflect_identity(double normalX, double normalY, double normalZ, @Mutated Double3x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
-        double _t6 = -(2.0 * normalX * normalY);
-        double _t7 = -(2.0 * normalX * normalZ);
-        double _t8 = -(2.0 * normalY * normalZ);
+        double _t6 = -((normalX + normalX) * normalY);
+        double _t7 = -((normalX + normalX) * normalZ);
+        double _t8 = -((normalY + normalY) * normalZ);
         dd[0] = Math.fma(-2.0, normalX * normalX, 1.0);
         dd[1] = _t6;
         dd[2] = _t7;
@@ -18327,9 +18327,9 @@ public class Double3x4Impl implements Double3x4 {
     private Double3x4 reflect_identity_self(double normalX, double normalY, double normalZ, @Mutated Double3x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
-        double _t6 = -(2.0 * normalX * normalY);
-        double _t7 = -(2.0 * normalX * normalZ);
-        double _t8 = -(2.0 * normalY * normalZ);
+        double _t6 = -((normalX + normalX) * normalY);
+        double _t7 = -((normalX + normalX) * normalZ);
+        double _t8 = -((normalY + normalY) * normalZ);
         dd[0] = Math.fma(-2.0, normalX * normalX, 1.0);
         dd[1] = _t6;
         dd[2] = _t7;
@@ -18351,9 +18351,9 @@ public class Double3x4Impl implements Double3x4 {
     private Double3x4 reflect_translation(double normalX, double normalY, double normalZ, @Mutated Double3x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
-        double _t6 = -(2.0 * normalX * normalY);
-        double _t7 = -(2.0 * normalX * normalZ);
-        double _t8 = -(2.0 * normalY * normalZ);
+        double _t6 = -((normalX + normalX) * normalY);
+        double _t7 = -((normalX + normalX) * normalZ);
+        double _t8 = -((normalY + normalY) * normalZ);
         dd[0] = Math.fma(-2.0, normalX * normalX, 1.0);
         dd[1] = _t6;
         dd[2] = _t7;
@@ -18384,9 +18384,9 @@ public class Double3x4Impl implements Double3x4 {
         double[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
         double _t2 = -sd[10];
-        double _t9 = 2.0 * normalX * normalZ;
-        double _t10 = 2.0 * normalX * normalY;
-        double _t11 = 2.0 * normalY * normalZ;
+        double _t9 = (normalX + normalX) * normalZ;
+        double _t10 = (normalX + normalX) * normalY;
+        double _t11 = (normalY + normalY) * normalZ;
         double _t12 = Math.fma(-2.0, normalX * normalX, 1.0);
         double _t13 = Math.fma(-2.0, normalY * normalY, 1.0);
         double _t14 = Math.fma(-2.0, normalZ * normalZ, 1.0);
@@ -18405,9 +18405,9 @@ public class Double3x4Impl implements Double3x4 {
         double[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
         double _t2 = -sd[10];
-        double _t9 = 2.0 * normalX * normalZ;
-        double _t10 = 2.0 * normalX * normalY;
-        double _t11 = 2.0 * normalY * normalZ;
+        double _t9 = (normalX + normalX) * normalZ;
+        double _t10 = (normalX + normalX) * normalY;
+        double _t11 = (normalY + normalY) * normalZ;
         double _t12 = Math.fma(-2.0, normalX * normalX, 1.0);
         double _t13 = Math.fma(-2.0, normalY * normalY, 1.0);
         double _t14 = Math.fma(-2.0, normalZ * normalZ, 1.0);
@@ -18541,9 +18541,9 @@ public class Double3x4Impl implements Double3x4 {
         double _t0 = -rotY;
         double _t2 = -rotX;
         double _t3 = -pivotZ;
-        double _t5 = 2.0 * rotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
+        double _t5 = rotX + rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
         double _t8 = rotW * _t6;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t5;
@@ -18583,9 +18583,9 @@ public class Double3x4Impl implements Double3x4 {
         double _t0 = -rotY;
         double _t2 = -rotX;
         double _t3 = -pivotZ;
-        double _t5 = 2.0 * rotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
+        double _t5 = rotX + rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
         double _t8 = rotW * _t6;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t5;
@@ -18641,9 +18641,9 @@ public class Double3x4Impl implements Double3x4 {
         double _t3 = -pivotZ;
         double _t4 = -rotX;
         double _t5 = -pivotX;
-        double _t6 = 2.0 * rotY;
-        double _t7 = 2.0 * rotZ;
-        double _t8 = 2.0 * rotX;
+        double _t6 = rotY + rotY;
+        double _t7 = rotZ + rotZ;
+        double _t8 = rotX + rotX;
         double _t9 = rotW * _t7;
         double _t10 = rotW * _t6;
         double _t11 = rotZ * _t7;
@@ -18967,9 +18967,9 @@ public class Double3x4Impl implements Double3x4 {
         double[] dd = ((Double3x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qX;
-        double _t4 = 2.0 * qY;
-        double _t5 = 2.0 * qZ;
+        double _t3 = qX + qX;
+        double _t4 = qY + qY;
+        double _t5 = qZ + qZ;
         double _t6 = qW * _t4;
         double _t7 = qW * _t5;
         double _t8 = qW * _t3;
@@ -19033,9 +19033,9 @@ public class Double3x4Impl implements Double3x4 {
         double[] dd = ((Double3x4Impl) dest).data;
         double _t0 = -qY;
         double _t2 = -qX;
-        double _t3 = 2.0 * qY;
-        double _t4 = 2.0 * qZ;
-        double _t5 = 2.0 * qX;
+        double _t3 = qY + qY;
+        double _t4 = qZ + qZ;
+        double _t5 = qX + qX;
         double _t6 = qW * _t4;
         double _t7 = qW * _t3;
         double _t8 = qW * _t5;

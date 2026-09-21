@@ -112,13 +112,13 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * @return the resulting quaternion
      */
     public FloatQuat invertProduct(float otherX, float otherY, float otherZ, float otherW) {
-        float _t21 = Math.fma(otherX, this.w, otherW * this.x) + Math.fma(otherZ, this.y, -(otherY * this.z));
+        float _t20 = Math.fma(otherX, this.w, otherW * this.x) + Math.fma(otherZ, this.y, -(otherY * this.z));
+        float _t21 = Math.fma(otherW, this.w, -(otherX * this.x)) - Math.fma(otherY, this.y, otherZ * this.z);
         float _t22 = Math.fma(otherY, this.x, otherZ * this.w) + Math.fma(otherW, this.z, -(otherX * this.y));
         float _t23 = Math.fma(otherX, this.z, otherW * this.y) + Math.fma(otherY, this.w, -(otherZ * this.x));
-        float _t24 = Math.fma(-otherZ, this.z, Math.fma(-otherY, this.y, Math.fma(otherW, this.w, -(otherX * this.x))));
-        float _t28 = Math.fma(_t24, _t24, Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t21 * _t21)));
-        float _t28_inv = 1.0f / _t28;
-        return new FloatQuat(-(_t21 * _t28_inv), -(_t23 * _t28_inv), -(_t22 * _t28_inv), _t24 * _t28_inv);
+        float _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t20 * _t20)));
+        float _t27_inv = 1.0f / _t27;
+        return new FloatQuat(-(_t20 * _t27_inv), -(_t23 * _t27_inv), -(_t22 * _t27_inv), _t21 * _t27_inv);
     }
 
 
@@ -490,7 +490,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
             _t13 = 0.0f;
             _t14 = 0.0f;
         }
-        return new DecomposeSwingTwistResult(new FloatQuat(Math.fma(this.x, _t11, -(this.w * _t12)) + Math.fma(this.z, _t13, -(this.y * _t14)), Math.fma(this.x, _t14, -(this.w * _t13)) + Math.fma(this.y, _t11, -(this.z * _t12)), Math.fma(this.y, _t12, this.z * _t11) + Math.fma(-this.x, _t13, -(this.w * _t14)), Math.fma(this.z, _t14, Math.fma(this.y, _t13, Math.fma(this.x, _t12, this.w * _t11)))), new FloatQuat(_t12, _t13, _t14, _t11));
+        return new DecomposeSwingTwistResult(new FloatQuat(Math.fma(this.x, _t11, -(this.w * _t12)) + Math.fma(this.z, _t13, -(this.y * _t14)), Math.fma(this.x, _t14, -(this.w * _t13)) + Math.fma(this.y, _t11, -(this.z * _t12)), Math.fma(this.y, _t12, this.z * _t11) + Math.fma(-this.x, _t13, -(this.w * _t14)), Math.fma(this.x, _t12, this.w * _t11) - Math.fma(-this.z, _t14, -(this.y * _t13))), new FloatQuat(_t12, _t13, _t14, _t11));
     }
 
 
@@ -542,7 +542,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
             _t13 = 0.0f;
             _t14 = 0.0f;
         }
-        return new FloatQuat(Math.fma(this.x, _t11, -(this.w * _t12)) + Math.fma(this.z, _t13, -(this.y * _t14)), Math.fma(this.x, _t14, -(this.w * _t13)) + Math.fma(this.y, _t11, -(this.z * _t12)), Math.fma(this.y, _t12, this.z * _t11) + Math.fma(-this.x, _t13, -(this.w * _t14)), Math.fma(this.z, _t14, Math.fma(this.y, _t13, Math.fma(this.x, _t12, this.w * _t11))));
+        return new FloatQuat(Math.fma(this.x, _t11, -(this.w * _t12)) + Math.fma(this.z, _t13, -(this.y * _t14)), Math.fma(this.x, _t14, -(this.w * _t13)) + Math.fma(this.y, _t11, -(this.z * _t12)), Math.fma(this.y, _t12, this.z * _t11) + Math.fma(-this.x, _t13, -(this.w * _t14)), Math.fma(this.x, _t12, this.w * _t11) - Math.fma(-this.z, _t14, -(this.y * _t13)));
     }
 
 
@@ -1022,7 +1022,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
      */
     public FloatQuat squad(float control0X, float control0Y, float control0Z, float control0W, float control1X, float control1Y, float control1Z, float control1W, float targetX, float targetY, float targetZ, float targetW, float t) {
         float _t0 = 1.0f - t;
-        float _t1 = 2.0f * t;
+        float _t1 = t + t;
         float _t13 = _t0 * _t1;
         float _t14 = Math.fma(-_t0, _t1, 1.0f);
         float _t33 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(control0W, control1W, Math.fma(control0Z, control1Z, Math.fma(control0X, control1X, control0Y * control1Y))))));
@@ -1076,7 +1076,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * @return the resulting quaternion
      */
     public FloatQuat mul(float otherX, float otherY, float otherZ, float otherW) {
-        return new FloatQuat(Math.fma(otherX, this.w, otherW * this.x) + Math.fma(otherZ, this.y, -(otherY * this.z)), Math.fma(otherX, this.z, otherW * this.y) + Math.fma(otherY, this.w, -(otherZ * this.x)), Math.fma(otherY, this.x, otherZ * this.w) + Math.fma(otherW, this.z, -(otherX * this.y)), Math.fma(-otherZ, this.z, Math.fma(-otherY, this.y, Math.fma(otherW, this.w, -(otherX * this.x)))));
+        return new FloatQuat(Math.fma(otherX, this.w, otherW * this.x) + Math.fma(otherZ, this.y, -(otherY * this.z)), Math.fma(otherX, this.z, otherW * this.y) + Math.fma(otherY, this.w, -(otherZ * this.x)), Math.fma(otherY, this.x, otherZ * this.w) + Math.fma(otherW, this.z, -(otherX * this.y)), Math.fma(otherW, this.w, -(otherX * this.x)) - Math.fma(otherY, this.y, otherZ * this.z));
     }
 
 
@@ -1115,7 +1115,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * @return the resulting quaternion
      */
     public FloatQuat preMul(float otherX, float otherY, float otherZ, float otherW) {
-        return new FloatQuat(Math.fma(otherX, this.w, otherW * this.x) + Math.fma(otherY, this.z, -(otherZ * this.y)), Math.fma(otherY, this.w, otherZ * this.x) + Math.fma(otherW, this.y, -(otherX * this.z)), Math.fma(otherX, this.y, otherW * this.z) + Math.fma(otherZ, this.w, -(otherY * this.x)), Math.fma(-otherZ, this.z, Math.fma(-otherY, this.y, Math.fma(otherW, this.w, -(otherX * this.x)))));
+        return new FloatQuat(Math.fma(otherX, this.w, otherW * this.x) + Math.fma(otherY, this.z, -(otherZ * this.y)), Math.fma(otherY, this.w, otherZ * this.x) + Math.fma(otherW, this.y, -(otherX * this.z)), Math.fma(otherX, this.y, otherW * this.z) + Math.fma(otherZ, this.w, -(otherY * this.x)), Math.fma(otherW, this.w, -(otherX * this.x)) - Math.fma(otherY, this.y, otherZ * this.z));
     }
 
 
@@ -1255,12 +1255,11 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * @return the resulting quaternion
      */
     public FloatQuat conjugateBy(float qX, float qY, float qZ, float qW) {
-        float _t1 = -qY;
-        float _t21 = Math.fma(qX, this.y, qW * this.z) + Math.fma(qZ, this.w, -(qY * this.x));
-        float _t22 = Math.fma(qY, this.w, qZ * this.x) + Math.fma(qW, this.y, -(qX * this.z));
-        float _t23 = Math.fma(qX, this.w, qW * this.x) + Math.fma(qY, this.z, -(qZ * this.y));
-        float _t24 = Math.fma(-qZ, this.z, Math.fma(_t1, this.y, Math.fma(qW, this.w, -(qX * this.x))));
-        return new FloatQuat(Math.fma(qY, _t21, -(qZ * _t22)) + Math.fma(qW, _t23, -(qX * _t24)), Math.fma(qZ, _t23, -(qY * _t24)) + Math.fma(qW, _t22, -(qX * _t21)), Math.fma(qX, _t22, qW * _t21) + Math.fma(_t1, _t23, -(qZ * _t24)), Math.fma(qZ, _t21, Math.fma(qY, _t22, Math.fma(qX, _t23, qW * _t24))));
+        float _t20 = Math.fma(qX, this.y, qW * this.z) + Math.fma(qZ, this.w, -(qY * this.x));
+        float _t21 = Math.fma(qY, this.w, qZ * this.x) + Math.fma(qW, this.y, -(qX * this.z));
+        float _t22 = Math.fma(qX, this.w, qW * this.x) + Math.fma(qY, this.z, -(qZ * this.y));
+        float _t23 = Math.fma(qW, this.w, -(qX * this.x)) - Math.fma(qY, this.y, qZ * this.z);
+        return new FloatQuat(Math.fma(qY, _t20, -(qZ * _t21)) + Math.fma(qW, _t22, -(qX * _t23)), Math.fma(qZ, _t22, -(qY * _t23)) + Math.fma(qW, _t21, -(qX * _t20)), Math.fma(qX, _t21, qW * _t20) + Math.fma(-qY, _t22, -(qZ * _t23)), Math.fma(qX, _t22, qW * _t23) - Math.fma(-qZ, _t20, -(qY * _t21)));
     }
 
 
@@ -1296,7 +1295,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
     public FloatQuat difference(float otherX, float otherY, float otherZ, float otherW) {
         float _t3 = Math.fma(this.w, this.w, Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y)));
         float _t3_inv = 1.0f / _t3;
-        return new FloatQuat((Math.fma(otherX, this.w, -(otherW * this.x)) + Math.fma(otherY, this.z, -(otherZ * this.y))) * _t3_inv, -(otherW * this.y * _t3_inv) - otherX * this.z * _t3_inv + Math.fma(otherY, this.w, otherZ * this.x) * _t3_inv, (Math.fma(otherX, this.y, -(otherW * this.z)) + Math.fma(otherZ, this.w, -(otherY * this.x))) * _t3_inv, Math.fma(otherZ, this.z, Math.fma(otherY, this.y, Math.fma(otherX, this.x, otherW * this.w))) * _t3_inv);
+        return new FloatQuat((Math.fma(otherX, this.w, -(otherW * this.x)) + Math.fma(otherY, this.z, -(otherZ * this.y))) * _t3_inv, -(otherW * this.y * _t3_inv) - otherX * this.z * _t3_inv + Math.fma(otherY, this.w, otherZ * this.x) * _t3_inv, (Math.fma(otherX, this.y, -(otherW * this.z)) + Math.fma(otherZ, this.w, -(otherY * this.x))) * _t3_inv, Math.fma(otherX, this.x, otherW * this.w) * _t3_inv - (-(otherY * this.y * _t3_inv) - otherZ * this.z * _t3_inv));
     }
 
 
@@ -1558,7 +1557,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
             _t16 = 0.0f;
             _t17 = 0.0f;
         }
-        return new FloatQuat(Math.fma(this.x, _t9, this.w * _t15) + Math.fma(this.z, _t16, -(this.y * _t17)), Math.fma(this.x, _t17, this.w * _t16) + Math.fma(this.y, _t9, -(this.z * _t15)), Math.fma(this.y, _t15, this.z * _t9) + Math.fma(this.w, _t17, -(this.x * _t16)), Math.fma(-this.z, _t17, Math.fma(-this.y, _t16, Math.fma(this.w, _t9, -(this.x * _t15)))));
+        return new FloatQuat(Math.fma(this.x, _t9, this.w * _t15) + Math.fma(this.z, _t16, -(this.y * _t17)), Math.fma(this.x, _t17, this.w * _t16) + Math.fma(this.y, _t9, -(this.z * _t15)), Math.fma(this.y, _t15, this.z * _t9) + Math.fma(this.w, _t17, -(this.x * _t16)), Math.fma(this.w, _t9, -(this.x * _t15)) - Math.fma(this.y, _t16, this.z * _t17));
     }
 
 
@@ -2373,7 +2372,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
                 }
             }
         }
-        return new FloatQuat(Math.fma(this.x, _t110, this.w * _t111) + Math.fma(this.y, _t108, -(this.z * _t109)), Math.fma(this.y, _t110, this.z * _t111) + Math.fma(this.w, _t109, -(this.x * _t108)), Math.fma(this.x, _t109, this.w * _t108) + Math.fma(this.z, _t110, -(this.y * _t111)), Math.fma(-this.z, _t108, Math.fma(-this.y, _t109, Math.fma(this.w, _t110, -(this.x * _t111)))));
+        return new FloatQuat(Math.fma(this.x, _t110, this.w * _t111) + Math.fma(this.y, _t108, -(this.z * _t109)), Math.fma(this.y, _t110, this.z * _t111) + Math.fma(this.w, _t109, -(this.x * _t108)), Math.fma(this.x, _t109, this.w * _t108) + Math.fma(this.z, _t110, -(this.y * _t111)), Math.fma(this.w, _t110, -(this.x * _t111)) - Math.fma(this.y, _t109, this.z * _t108));
     }
 
 
@@ -2539,33 +2538,33 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * @return the resulting quaternion
      */
     public static FloatQuat makeRotationTo(float fromDirX, float fromDirY, float fromDirZ, float toDirX, float toDirY, float toDirZ) {
-        float _t3 = fromDirZ + toDirZ;
-        float _t4 = fromDirX + toDirX;
-        float _t5 = fromDirY + toDirY;
-        float _t13 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
-        float _t15 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        float _t2 = fromDirZ + toDirZ;
+        float _t3 = fromDirX + toDirX;
+        float _t4 = fromDirY + toDirY;
+        float _t12 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        float _t14 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        float _t15 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
         float _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
-        float _t17 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
-        float _t18, _t19, _t20;
-        if (_t13 > 0.0f) {
-            _t18 = fromDirY;
-            _t19 = 0.0f;
-            _t20 = -fromDirX;
-        } else {
+        float _t17, _t18, _t19;
+        if (_t12 > 0.0f) {
+            _t17 = fromDirY;
             _t18 = 0.0f;
-            _t19 = -fromDirY;
-            _t20 = fromDirZ;
+            _t19 = -fromDirX;
+        } else {
+            _t17 = 0.0f;
+            _t18 = -fromDirY;
+            _t19 = fromDirZ;
         }
-        float _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        float _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         float _t23 = 0.5f * _t22;
-        float _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        float _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
-        float _t33 = (1.0f / (float) Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0f * 2.0f))))));
+        float _t32 = (1.0f / (float) Math.sqrt(Math.fma(0.25f, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         if (_t23 > 1.0E-6f) {
-            return new FloatQuat(_t15 * _t33, _t16 * _t33, _t17 * _t33, 0.5f * _t22 * _t33);
+            return new FloatQuat(_t14 * _t32, _t16 * _t32, _t15 * _t32, 0.5f * _t22 * _t32);
         } else {
             if (_t29 > 0.0f) {
-                return new FloatQuat(_t30 * _t18, _t30 * _t20, _t30 * _t19, 0.0f);
+                return new FloatQuat(_t30 * _t17, _t30 * _t19, _t30 * _t18, 0.0f);
             } else {
                 return FloatQuat.ZERO;
             }
@@ -2878,7 +2877,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
         float _t3 = axisX * _t2;
         float _t4 = axisZ * _t2;
         float _t5 = axisY * _t2;
-        return new FloatQuat(Math.fma(this.x, _t1, this.w * _t3) + Math.fma(this.y, _t4, -(this.z * _t5)), Math.fma(this.y, _t1, this.z * _t3) + Math.fma(this.w, _t5, -(this.x * _t4)), Math.fma(this.x, _t5, this.w * _t4) + Math.fma(this.z, _t1, -(this.y * _t3)), Math.fma(-this.z, _t4, Math.fma(-this.y, _t5, Math.fma(this.w, _t1, -(this.x * _t3)))));
+        return new FloatQuat(Math.fma(this.x, _t1, this.w * _t3) + Math.fma(this.y, _t4, -(this.z * _t5)), Math.fma(this.y, _t1, this.z * _t3) + Math.fma(this.w, _t5, -(this.x * _t4)), Math.fma(this.x, _t5, this.w * _t4) + Math.fma(this.z, _t1, -(this.y * _t3)), Math.fma(this.w, _t1, -(this.x * _t3)) - Math.fma(this.y, _t5, this.z * _t4));
     }
 
 
@@ -2905,27 +2904,27 @@ public value record FloatQuat(float x, float y, float z, float w) {
     }
 
     /** Private tail of {@code rotateTo}; reached only through it. */
-    private FloatQuat rotateTo_sb47fb53_tail(float _t23, float _t22, float _t36, float _t15, float _t29, float _t30, float _t18, float _t17, float _t19, float _t16, float _t20) {
-        float _t42, _t46, _t47, _t48;
+    private FloatQuat rotateTo_sb47fb53_tail(float _t23, float _t22, float _t35, float _t15, float _t29, float _t30, float _t17, float _t14, float _t18, float _t16, float _t19) {
+        float _t41, _t45, _t46, _t47;
         if (_t23 > 1.0E-6f) {
-            _t42 = 0.5f * _t22 * _t36;
-            _t46 = _t15 * _t36;
-            _t47 = _t17 * _t36;
-            _t48 = _t16 * _t36;
+            _t41 = 0.5f * _t22 * _t35;
+            _t45 = _t15 * _t35;
+            _t46 = _t14 * _t35;
+            _t47 = _t16 * _t35;
         } else {
             if (_t29 > 0.0f) {
-                _t42 = 0.0f;
+                _t41 = 0.0f;
+                _t45 = _t30 * _t17;
                 _t46 = _t30 * _t18;
                 _t47 = _t30 * _t19;
-                _t48 = _t30 * _t20;
             } else {
-                _t42 = 0.0f;
+                _t41 = 0.0f;
+                _t45 = 0.0f;
                 _t46 = 0.0f;
                 _t47 = 0.0f;
-                _t48 = 0.0f;
             }
         }
-        return new FloatQuat(Math.fma(this.x, _t42, this.w * _t46) + Math.fma(this.y, _t47, -(this.z * _t48)), Math.fma(this.y, _t42, this.z * _t46) + Math.fma(this.w, _t48, -(this.x * _t47)), Math.fma(this.x, _t48, this.w * _t47) + Math.fma(this.z, _t42, -(this.y * _t46)), Math.fma(-this.z, _t47, Math.fma(-this.y, _t48, Math.fma(this.w, _t42, -(this.x * _t46)))));
+        return new FloatQuat(Math.fma(this.x, _t41, this.w * _t45) + Math.fma(this.y, _t46, -(this.z * _t47)), Math.fma(this.y, _t41, this.z * _t45) + Math.fma(this.w, _t47, -(this.x * _t46)), Math.fma(this.x, _t47, this.w * _t46) + Math.fma(this.z, _t41, -(this.y * _t45)), Math.fma(this.w, _t41, -(this.x * _t45)) - Math.fma(this.y, _t47, this.z * _t46));
     }
 
 
@@ -2953,29 +2952,29 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * @return the resulting quaternion
      */
     public FloatQuat rotateTo(float fromDirX, float fromDirY, float fromDirZ, float toDirX, float toDirY, float toDirZ) {
-        float _t3 = fromDirZ + toDirZ;
-        float _t4 = fromDirX + toDirX;
-        float _t5 = fromDirY + toDirY;
-        float _t13 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        float _t2 = fromDirZ + toDirZ;
+        float _t3 = fromDirX + toDirX;
+        float _t4 = fromDirY + toDirY;
+        float _t12 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        float _t14 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
         float _t15 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
         float _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
-        float _t17 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
-        float _t18, _t19, _t20;
-        if (_t13 > 0.0f) {
-            _t18 = fromDirY;
-            _t19 = 0.0f;
-            _t20 = -fromDirX;
-        } else {
+        float _t17, _t18, _t19;
+        if (_t12 > 0.0f) {
+            _t17 = fromDirY;
             _t18 = 0.0f;
-            _t19 = -fromDirY;
-            _t20 = fromDirZ;
+            _t19 = -fromDirX;
+        } else {
+            _t17 = 0.0f;
+            _t18 = -fromDirY;
+            _t19 = fromDirZ;
         }
-        float _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        float _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         float _t23 = 0.5f * _t22;
-        float _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        float _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
-        float _t36 = (1.0f / (float) Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0f * 2.0f))))));
-        return rotateTo_sb47fb53_tail(_t23, _t22, _t36, _t15, _t29, _t30, _t18, _t17, _t19, _t16, _t20);
+        float _t35 = (1.0f / (float) Math.sqrt(Math.fma(0.25f, _t22 * _t22, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))));
+        return rotateTo_sb47fb53_tail(_t23, _t22, _t35, _t15, _t29, _t30, _t17, _t14, _t18, _t16, _t19);
     }
 
 
@@ -3026,7 +3025,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
         float _t20 = Math.fma(_t10, _t5, _t9 * _t8);
         float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
         float _t22 = Math.fma(_t12, _t5, -(_t11 * _t8));
-        return new FloatQuat(Math.fma(this.x, _t21, this.w * _t19) + Math.fma(this.y, _t20, -(this.z * _t22)), Math.fma(this.y, _t21, this.z * _t19) + Math.fma(this.w, _t22, -(this.x * _t20)), Math.fma(this.x, _t22, this.w * _t20) + Math.fma(this.z, _t21, -(this.y * _t19)), Math.fma(-this.z, _t20, Math.fma(-this.y, _t22, Math.fma(this.w, _t21, -(this.x * _t19)))));
+        return new FloatQuat(Math.fma(this.x, _t21, this.w * _t19) + Math.fma(this.y, _t20, -(this.z * _t22)), Math.fma(this.y, _t21, this.z * _t19) + Math.fma(this.w, _t22, -(this.x * _t20)), Math.fma(this.x, _t22, this.w * _t20) + Math.fma(this.z, _t21, -(this.y * _t19)), Math.fma(this.w, _t21, -(this.x * _t19)) - Math.fma(this.y, _t22, this.z * _t20));
     }
 
 
@@ -3062,7 +3061,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
         float _t20 = Math.fma(_t11, _t5, _t12 * _t8);
         float _t21 = Math.fma(_t11, _t8, -(_t12 * _t5));
         float _t22 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        return new FloatQuat(Math.fma(this.x, _t19, this.w * _t21) + Math.fma(this.y, _t20, -(this.z * _t22)), Math.fma(this.y, _t19, this.z * _t21) + Math.fma(this.w, _t22, -(this.x * _t20)), Math.fma(this.x, _t22, this.w * _t20) + Math.fma(this.z, _t19, -(this.y * _t21)), Math.fma(-this.z, _t20, Math.fma(-this.y, _t22, Math.fma(this.w, _t19, -(this.x * _t21)))));
+        return new FloatQuat(Math.fma(this.x, _t19, this.w * _t21) + Math.fma(this.y, _t20, -(this.z * _t22)), Math.fma(this.y, _t19, this.z * _t21) + Math.fma(this.w, _t22, -(this.x * _t20)), Math.fma(this.x, _t22, this.w * _t20) + Math.fma(this.z, _t19, -(this.y * _t21)), Math.fma(this.w, _t19, -(this.x * _t21)) - Math.fma(this.y, _t22, this.z * _t20));
     }
 
 
@@ -3113,7 +3112,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
         float _t20 = Math.fma(_t11, _t8, _t12 * _t5);
         float _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
         float _t22 = Math.fma(_t12, _t8, -(_t11 * _t5));
-        return new FloatQuat(Math.fma(this.x, _t19, this.w * _t20) + Math.fma(this.y, _t21, -(this.z * _t22)), Math.fma(this.y, _t19, this.z * _t20) + Math.fma(this.w, _t22, -(this.x * _t21)), Math.fma(this.x, _t22, this.w * _t21) + Math.fma(this.z, _t19, -(this.y * _t20)), Math.fma(-this.z, _t21, Math.fma(-this.y, _t22, Math.fma(this.w, _t19, -(this.x * _t20)))));
+        return new FloatQuat(Math.fma(this.x, _t19, this.w * _t20) + Math.fma(this.y, _t21, -(this.z * _t22)), Math.fma(this.y, _t19, this.z * _t20) + Math.fma(this.w, _t22, -(this.x * _t21)), Math.fma(this.x, _t22, this.w * _t21) + Math.fma(this.z, _t19, -(this.y * _t20)), Math.fma(this.w, _t19, -(this.x * _t20)) - Math.fma(this.y, _t22, this.z * _t21));
     }
 
 
@@ -3149,7 +3148,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
         float _t20 = Math.fma(_t12, _t5, _t11 * _t8);
         float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
         float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
-        return new FloatQuat(Math.fma(this.x, _t21, this.w * _t19) + Math.fma(this.y, _t22, -(this.z * _t20)), Math.fma(this.y, _t21, this.z * _t19) + Math.fma(this.w, _t20, -(this.x * _t22)), Math.fma(this.x, _t20, this.w * _t22) + Math.fma(this.z, _t21, -(this.y * _t19)), Math.fma(-this.z, _t22, Math.fma(-this.y, _t20, Math.fma(this.w, _t21, -(this.x * _t19)))));
+        return new FloatQuat(Math.fma(this.x, _t21, this.w * _t19) + Math.fma(this.y, _t22, -(this.z * _t20)), Math.fma(this.y, _t21, this.z * _t19) + Math.fma(this.w, _t20, -(this.x * _t22)), Math.fma(this.x, _t20, this.w * _t22) + Math.fma(this.z, _t21, -(this.y * _t19)), Math.fma(this.w, _t21, -(this.x * _t19)) - Math.fma(this.y, _t20, this.z * _t22));
     }
 
 
@@ -3200,7 +3199,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
         float _t20 = Math.fma(_t10, _t5, _t9 * _t8);
         float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
         float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
-        return new FloatQuat(Math.fma(this.x, _t21, this.w * _t22) + Math.fma(this.y, _t19, -(this.z * _t20)), Math.fma(this.y, _t21, this.z * _t22) + Math.fma(this.w, _t20, -(this.x * _t19)), Math.fma(this.x, _t20, this.w * _t19) + Math.fma(this.z, _t21, -(this.y * _t22)), Math.fma(-this.z, _t19, Math.fma(-this.y, _t20, Math.fma(this.w, _t21, -(this.x * _t22)))));
+        return new FloatQuat(Math.fma(this.x, _t21, this.w * _t22) + Math.fma(this.y, _t19, -(this.z * _t20)), Math.fma(this.y, _t21, this.z * _t22) + Math.fma(this.w, _t20, -(this.x * _t19)), Math.fma(this.x, _t20, this.w * _t19) + Math.fma(this.z, _t21, -(this.y * _t22)), Math.fma(this.w, _t21, -(this.x * _t22)) - Math.fma(this.y, _t20, this.z * _t19));
     }
 
 
@@ -3236,7 +3235,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
         float _t20 = Math.fma(_t12, _t8, _t11 * _t5);
         float _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
         float _t22 = Math.fma(_t11, _t8, -(_t12 * _t5));
-        return new FloatQuat(Math.fma(this.x, _t19, this.w * _t21) + Math.fma(this.y, _t22, -(this.z * _t20)), Math.fma(this.y, _t19, this.z * _t21) + Math.fma(this.w, _t20, -(this.x * _t22)), Math.fma(this.x, _t20, this.w * _t22) + Math.fma(this.z, _t19, -(this.y * _t21)), Math.fma(-this.z, _t22, Math.fma(-this.y, _t20, Math.fma(this.w, _t19, -(this.x * _t21)))));
+        return new FloatQuat(Math.fma(this.x, _t19, this.w * _t21) + Math.fma(this.y, _t22, -(this.z * _t20)), Math.fma(this.y, _t19, this.z * _t21) + Math.fma(this.w, _t20, -(this.x * _t22)), Math.fma(this.x, _t20, this.w * _t22) + Math.fma(this.z, _t19, -(this.y * _t21)), Math.fma(this.w, _t19, -(this.x * _t21)) - Math.fma(this.y, _t20, this.z * _t22));
     }
 
 
