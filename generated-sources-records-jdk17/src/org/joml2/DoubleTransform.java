@@ -406,6 +406,76 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         return new DoubleTransform(2.0 * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW))), 2.0 * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW))), 2.0 * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW))), dqRX, dqRY, dqRZ, dqRW, 1.0, 1.0, 1.0);
     }
 
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static DoubleTransform makeFromMatrix_s91e5aa_tail(double _t16, double _t17, double _t18, double _t19, Double3x3 m, double _t12, double _t21, double _t22, double _t13, double _t24, double _t1, double _t0, double _t33, double _t34, double _t29, double _t15, double _t9, double _t10) {
+        double _t44 = Math.fma(-Math.fma(_t16, _t17, -(_t18 * _t19)), m.m01() * _t12, Math.fma(Math.fma(_t16, _t21, -(_t22 * _t19)), m.m02() * _t13, Math.fma(_t22, _t17, -(_t18 * _t21)) * _t24));
+        double _t45, _t46, _t47;
+        if (_t44 < 0.0) {
+            _t45 = -_t24;
+            _t46 = -_t16;
+            _t47 = -_t19;
+        } else {
+            _t45 = _t24;
+            _t46 = _t16;
+            _t47 = _t19;
+        }
+        double _t49 = 1.0 + _t45;
+        double _t50 = 1.0 - _t45;
+        double _t52 = Math.fma(m.m01(), _t12, _t46);
+        double _t53 = Math.fma(m.m02(), _t13, _t47);
+        double _t54 = Math.fma(m.m02(), _t13, -_t47);
+        double _t55 = Math.fma(-m.m01(), _t12, _t46);
+        double _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t45));
+        return makeFromMatrix_s91e5aa_tail2(m, _t12, _t13, _t49, _t1, _t50, _t0, _t60, _t33, _t45, _t34, _t22, _t17, _t52, _t53, _t54, _t29, _t55, _t44, _t15, _t9, _t10);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static DoubleTransform makeFromMatrix_s91e5aa_tail2(Double3x3 m, double _t12, double _t13, double _t49, double _t1, double _t50, double _t0, double _t60, double _t33, double _t45, double _t34, double _t22, double _t17, double _t52, double _t53, double _t54, double _t29, double _t55, double _t44, double _t15, double _t9, double _t10) {
+        double _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
+        double _t62 = (1.0 / Math.sqrt(_t61));
+        double _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
+        double _t64 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t50));
+        double _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
+        double _t66 = (1.0 / Math.sqrt(_t63));
+        double _t67 = (1.0 / Math.sqrt(_t64));
+        double _t68 = (1.0 / Math.sqrt(_t65));
+        double _sfx0 = 0.0;
+        double _sfx1 = 0.0;
+        double _sfx2 = 0.0;
+        double _sfx3 = _t60 > 0.0 ? 0.5 * _t33 * _t62 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? 0.5 * _t52 * _t66 : 0.5 * _t53 * _t67;
+        return makeFromMatrix_s91e5aa_tail3(_t60, _t54, _t62, _t45, _t34, _t52, _t68, _t22, _t17, _t63, _t29, _t67, _t55, _t53, _t66, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static DoubleTransform makeFromMatrix_s91e5aa_tail3(double _t60, double _t54, double _t62, double _t45, double _t34, double _t52, double _t68, double _t22, double _t17, double _t63, double _t29, double _t67, double _t55, double _t53, double _t66, double _t64, double _t61, double _t33, double _t44, double _t15, double _t9, double _t10, double _sfx0, double _sfx1, double _sfx2, double _sfx3) {
+        double _sfx4, _sfx5, _sfx6;
+        if (_t60 > 0.0) {
+            _sfx4 = 0.5 * _t54 * _t62;
+            _sfx5 = 0.5 * _t55 * _t62;
+            _sfx6 = 0.5 * Math.sqrt(_t61);
+        } else {
+            if (_t45 > _t34) {
+                _sfx4 = 0.5 * _t52 * _t68;
+                _sfx5 = 0.5 * _t53 * _t68;
+                _sfx6 = 0.5 * _t33 * _t68;
+            } else {
+                if (_t22 > _t17) {
+                    _sfx4 = 0.5 * Math.sqrt(_t63);
+                    _sfx5 = 0.5 * _t29 * _t66;
+                    _sfx6 = 0.5 * _t54 * _t66;
+                } else {
+                    _sfx4 = 0.5 * _t29 * _t67;
+                    _sfx5 = 0.5 * Math.sqrt(_t64);
+                    _sfx6 = 0.5 * _t55 * _t67;
+                }
+            }
+        }
+        double _sfx7 = _t44 < 0.0 ? -_t15 : _t15;
+        double _sfx8 = Math.sqrt(_t9);
+        double _sfx9 = Math.sqrt(_t10);
+        return new DoubleTransform(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7, _sfx8, _sfx9);
+    }
+
 
     /**
      * Create the decomposition of the given matrix's linear {@code R * S} block, with zero
@@ -435,6 +505,11 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t29 = Math.fma(m.m12(), _t13, _t21);
         double _t33 = Math.fma(m.m21(), _t12, -_t18);
         double _t34 = Math.max(_t22, _t17);
+        return makeFromMatrix_s91e5aa_tail(_t16, _t17, _t18, _t19, m, _t12, _t21, _t22, _t13, _t24, _t1, _t0, _t33, _t34, _t29, _t15, _t9, _t10);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static DoubleTransform makeFromMatrix_s91e96b_tail(double _t16, double _t17, double _t18, double _t19, Double3x4 m, double _t12, double _t21, double _t22, double _t13, double _t24, double _t1, double _t0, double _t33, double _t34, double _t29, double _t15, double _t9, double _t10) {
         double _t44 = Math.fma(-Math.fma(_t16, _t17, -(_t18 * _t19)), m.m01() * _t12, Math.fma(Math.fma(_t16, _t21, -(_t22 * _t19)), m.m02() * _t13, Math.fma(_t22, _t17, -(_t18 * _t21)) * _t24));
         double _t45, _t46, _t47;
         if (_t44 < 0.0) {
@@ -453,6 +528,11 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t54 = Math.fma(m.m02(), _t13, -_t47);
         double _t55 = Math.fma(-m.m01(), _t12, _t46);
         double _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t45));
+        return makeFromMatrix_s91e96b_tail2(m, _t12, _t13, _t49, _t1, _t50, _t0, _t60, _t33, _t45, _t34, _t22, _t17, _t52, _t53, _t54, _t29, _t55, _t44, _t15, _t9, _t10);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static DoubleTransform makeFromMatrix_s91e96b_tail2(Double3x4 m, double _t12, double _t13, double _t49, double _t1, double _t50, double _t0, double _t60, double _t33, double _t45, double _t34, double _t22, double _t17, double _t52, double _t53, double _t54, double _t29, double _t55, double _t44, double _t15, double _t9, double _t10) {
         double _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
         double _t62 = (1.0 / Math.sqrt(_t61));
         double _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
@@ -461,7 +541,41 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t66 = (1.0 / Math.sqrt(_t63));
         double _t67 = (1.0 / Math.sqrt(_t64));
         double _t68 = (1.0 / Math.sqrt(_t65));
-        return new DoubleTransform(0.0, 0.0, 0.0, _t60 > 0.0 ? 0.5 * _t33 * _t62 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? 0.5 * _t52 * _t66 : 0.5 * _t53 * _t67, _t60 > 0.0 ? 0.5 * _t54 * _t62 : _t45 > _t34 ? 0.5 * _t52 * _t68 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : 0.5 * _t29 * _t67, _t60 > 0.0 ? 0.5 * _t55 * _t62 : _t45 > _t34 ? 0.5 * _t53 * _t68 : _t22 > _t17 ? 0.5 * _t29 * _t66 : 0.5 * Math.sqrt(_t64), _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? 0.5 * _t33 * _t68 : _t22 > _t17 ? 0.5 * _t54 * _t66 : 0.5 * _t55 * _t67, _t44 < 0.0 ? -_t15 : _t15, Math.sqrt(_t9), Math.sqrt(_t10));
+        double _sfx0 = m.m03();
+        double _sfx1 = m.m13();
+        double _sfx2 = m.m23();
+        double _sfx3 = _t60 > 0.0 ? 0.5 * _t33 * _t62 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? 0.5 * _t52 * _t66 : 0.5 * _t53 * _t67;
+        return makeFromMatrix_s91e96b_tail3(_t60, _t54, _t62, _t45, _t34, _t52, _t68, _t22, _t17, _t63, _t29, _t67, _t55, _t53, _t66, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static DoubleTransform makeFromMatrix_s91e96b_tail3(double _t60, double _t54, double _t62, double _t45, double _t34, double _t52, double _t68, double _t22, double _t17, double _t63, double _t29, double _t67, double _t55, double _t53, double _t66, double _t64, double _t61, double _t33, double _t44, double _t15, double _t9, double _t10, double _sfx0, double _sfx1, double _sfx2, double _sfx3) {
+        double _sfx4, _sfx5, _sfx6;
+        if (_t60 > 0.0) {
+            _sfx4 = 0.5 * _t54 * _t62;
+            _sfx5 = 0.5 * _t55 * _t62;
+            _sfx6 = 0.5 * Math.sqrt(_t61);
+        } else {
+            if (_t45 > _t34) {
+                _sfx4 = 0.5 * _t52 * _t68;
+                _sfx5 = 0.5 * _t53 * _t68;
+                _sfx6 = 0.5 * _t33 * _t68;
+            } else {
+                if (_t22 > _t17) {
+                    _sfx4 = 0.5 * Math.sqrt(_t63);
+                    _sfx5 = 0.5 * _t29 * _t66;
+                    _sfx6 = 0.5 * _t54 * _t66;
+                } else {
+                    _sfx4 = 0.5 * _t29 * _t67;
+                    _sfx5 = 0.5 * Math.sqrt(_t64);
+                    _sfx6 = 0.5 * _t55 * _t67;
+                }
+            }
+        }
+        double _sfx7 = _t44 < 0.0 ? -_t15 : _t15;
+        double _sfx8 = Math.sqrt(_t9);
+        double _sfx9 = Math.sqrt(_t10);
+        return new DoubleTransform(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7, _sfx8, _sfx9);
     }
 
 
@@ -494,6 +608,11 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t29 = Math.fma(m.m12(), _t13, _t21);
         double _t33 = Math.fma(m.m21(), _t12, -_t18);
         double _t34 = Math.max(_t22, _t17);
+        return makeFromMatrix_s91e96b_tail(_t16, _t17, _t18, _t19, m, _t12, _t21, _t22, _t13, _t24, _t1, _t0, _t33, _t34, _t29, _t15, _t9, _t10);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static DoubleTransform makeFromMatrix_sa000ec_tail(double _t16, double _t17, double _t18, double _t19, Double4x4 m, double _t12, double _t21, double _t22, double _t13, double _t24, double _t1, double _t0, double _t33, double _t34, double _t29, double _t15, double _t9, double _t10) {
         double _t44 = Math.fma(-Math.fma(_t16, _t17, -(_t18 * _t19)), m.m01() * _t12, Math.fma(Math.fma(_t16, _t21, -(_t22 * _t19)), m.m02() * _t13, Math.fma(_t22, _t17, -(_t18 * _t21)) * _t24));
         double _t45, _t46, _t47;
         if (_t44 < 0.0) {
@@ -512,6 +631,11 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t54 = Math.fma(m.m02(), _t13, -_t47);
         double _t55 = Math.fma(-m.m01(), _t12, _t46);
         double _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t45));
+        return makeFromMatrix_sa000ec_tail2(m, _t12, _t13, _t49, _t1, _t50, _t0, _t60, _t33, _t45, _t34, _t22, _t17, _t52, _t53, _t54, _t29, _t55, _t44, _t15, _t9, _t10);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static DoubleTransform makeFromMatrix_sa000ec_tail2(Double4x4 m, double _t12, double _t13, double _t49, double _t1, double _t50, double _t0, double _t60, double _t33, double _t45, double _t34, double _t22, double _t17, double _t52, double _t53, double _t54, double _t29, double _t55, double _t44, double _t15, double _t9, double _t10) {
         double _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
         double _t62 = (1.0 / Math.sqrt(_t61));
         double _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
@@ -520,7 +644,41 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t66 = (1.0 / Math.sqrt(_t63));
         double _t67 = (1.0 / Math.sqrt(_t64));
         double _t68 = (1.0 / Math.sqrt(_t65));
-        return new DoubleTransform(m.m03(), m.m13(), m.m23(), _t60 > 0.0 ? 0.5 * _t33 * _t62 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? 0.5 * _t52 * _t66 : 0.5 * _t53 * _t67, _t60 > 0.0 ? 0.5 * _t54 * _t62 : _t45 > _t34 ? 0.5 * _t52 * _t68 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : 0.5 * _t29 * _t67, _t60 > 0.0 ? 0.5 * _t55 * _t62 : _t45 > _t34 ? 0.5 * _t53 * _t68 : _t22 > _t17 ? 0.5 * _t29 * _t66 : 0.5 * Math.sqrt(_t64), _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? 0.5 * _t33 * _t68 : _t22 > _t17 ? 0.5 * _t54 * _t66 : 0.5 * _t55 * _t67, _t44 < 0.0 ? -_t15 : _t15, Math.sqrt(_t9), Math.sqrt(_t10));
+        double _sfx0 = m.m03();
+        double _sfx1 = m.m13();
+        double _sfx2 = m.m23();
+        double _sfx3 = _t60 > 0.0 ? 0.5 * _t33 * _t62 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? 0.5 * _t52 * _t66 : 0.5 * _t53 * _t67;
+        return makeFromMatrix_sa000ec_tail3(_t60, _t54, _t62, _t45, _t34, _t52, _t68, _t22, _t17, _t63, _t29, _t67, _t55, _t53, _t66, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static DoubleTransform makeFromMatrix_sa000ec_tail3(double _t60, double _t54, double _t62, double _t45, double _t34, double _t52, double _t68, double _t22, double _t17, double _t63, double _t29, double _t67, double _t55, double _t53, double _t66, double _t64, double _t61, double _t33, double _t44, double _t15, double _t9, double _t10, double _sfx0, double _sfx1, double _sfx2, double _sfx3) {
+        double _sfx4, _sfx5, _sfx6;
+        if (_t60 > 0.0) {
+            _sfx4 = 0.5 * _t54 * _t62;
+            _sfx5 = 0.5 * _t55 * _t62;
+            _sfx6 = 0.5 * Math.sqrt(_t61);
+        } else {
+            if (_t45 > _t34) {
+                _sfx4 = 0.5 * _t52 * _t68;
+                _sfx5 = 0.5 * _t53 * _t68;
+                _sfx6 = 0.5 * _t33 * _t68;
+            } else {
+                if (_t22 > _t17) {
+                    _sfx4 = 0.5 * Math.sqrt(_t63);
+                    _sfx5 = 0.5 * _t29 * _t66;
+                    _sfx6 = 0.5 * _t54 * _t66;
+                } else {
+                    _sfx4 = 0.5 * _t29 * _t67;
+                    _sfx5 = 0.5 * Math.sqrt(_t64);
+                    _sfx6 = 0.5 * _t55 * _t67;
+                }
+            }
+        }
+        double _sfx7 = _t44 < 0.0 ? -_t15 : _t15;
+        double _sfx8 = Math.sqrt(_t9);
+        double _sfx9 = Math.sqrt(_t10);
+        return new DoubleTransform(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7, _sfx8, _sfx9);
     }
 
 
@@ -553,33 +711,7 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t29 = Math.fma(m.m12(), _t13, _t21);
         double _t33 = Math.fma(m.m21(), _t12, -_t18);
         double _t34 = Math.max(_t22, _t17);
-        double _t44 = Math.fma(-Math.fma(_t16, _t17, -(_t18 * _t19)), m.m01() * _t12, Math.fma(Math.fma(_t16, _t21, -(_t22 * _t19)), m.m02() * _t13, Math.fma(_t22, _t17, -(_t18 * _t21)) * _t24));
-        double _t45, _t46, _t47;
-        if (_t44 < 0.0) {
-            _t45 = -_t24;
-            _t46 = -_t16;
-            _t47 = -_t19;
-        } else {
-            _t45 = _t24;
-            _t46 = _t16;
-            _t47 = _t19;
-        }
-        double _t49 = 1.0 + _t45;
-        double _t50 = 1.0 - _t45;
-        double _t52 = Math.fma(m.m01(), _t12, _t46);
-        double _t53 = Math.fma(m.m02(), _t13, _t47);
-        double _t54 = Math.fma(m.m02(), _t13, -_t47);
-        double _t55 = Math.fma(-m.m01(), _t12, _t46);
-        double _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t45));
-        double _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
-        double _t62 = (1.0 / Math.sqrt(_t61));
-        double _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
-        double _t64 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t50));
-        double _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
-        double _t68 = (1.0 / Math.sqrt(_t65));
-        return new DoubleTransform(m.m03(), m.m13(), m.m23(), _t60 > 0.0 ? 0.5 * _t33 * _t62 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? 0.5 * _t52 * _t66 : 0.5 * _t53 * _t67, _t60 > 0.0 ? 0.5 * _t54 * _t62 : _t45 > _t34 ? 0.5 * _t52 * _t68 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : 0.5 * _t29 * _t67, _t60 > 0.0 ? 0.5 * _t55 * _t62 : _t45 > _t34 ? 0.5 * _t53 * _t68 : _t22 > _t17 ? 0.5 * _t29 * _t66 : 0.5 * Math.sqrt(_t64), _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? 0.5 * _t33 * _t68 : _t22 > _t17 ? 0.5 * _t54 * _t66 : 0.5 * _t55 * _t67, _t44 < 0.0 ? -_t15 : _t15, Math.sqrt(_t9), Math.sqrt(_t10));
+        return makeFromMatrix_sa000ec_tail(_t16, _t17, _t18, _t19, m, _t12, _t21, _t22, _t13, _t24, _t1, _t0, _t33, _t34, _t29, _t15, _t9, _t10);
     }
 
 
@@ -629,6 +761,26 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         return new DoubleDualQuat(this.rX, this.rY, this.rZ, this.rW, 0.5 * Math.fma(_t0, this.rY, Math.fma(this.tX, this.rW, this.tY * this.rZ)), 0.5 * Math.fma(this.tZ, this.rX, Math.fma(this.tY, this.rW, -(this.tX * this.rZ))), 0.5 * Math.fma(this.tZ, this.rW, Math.fma(this.tX, this.rY, -(this.tY * this.rX))), 0.5 * Math.fma(_t0, this.rZ, Math.fma(-this.tY, this.rY, -(this.tX * this.rX))));
     }
 
+    /** Private per-column body of {@code toMatrix}; reached only through it. */
+    private Double4 toMatrix_s0_c0(double _t3, double _t0, double _t4, double _t5) {
+        return new Double4(Math.fma(-Math.fma(this.rY, this.rY, _t3), _t0, this.sX), Math.fma(this.rX, this.rY, _t4) * _t0, Math.fma(this.rX, this.rZ, -_t5) * _t0, 0.0);
+    }
+
+    /** Private per-column body of {@code toMatrix}; reached only through it. */
+    private Double4 toMatrix_s0_c1(double _t4, double _t1, double _t3) {
+        return new Double4(Math.fma(this.rX, this.rY, -_t4) * _t1, Math.fma(-Math.fma(this.rX, this.rX, _t3), _t1, this.sY), Math.fma(this.rX, this.rW, this.rY * this.rZ) * _t1, 0.0);
+    }
+
+    /** Private per-column body of {@code toMatrix}; reached only through it. */
+    private Double4 toMatrix_s0_c2(double _t5, double _t2) {
+        return new Double4(Math.fma(this.rX, this.rZ, _t5) * _t2, Math.fma(this.rY, this.rZ, -(this.rX * this.rW)) * _t2, Math.fma(-Math.fma(this.rX, this.rX, this.rY * this.rY), _t2, this.sZ), 0.0);
+    }
+
+    /** Private per-column body of {@code toMatrix}; reached only through it. */
+    private Double4 toMatrix_s0_c3() {
+        return new Double4(this.tX, this.tY, this.tZ, 1.0);
+    }
+
 
     /**
      * Compute the matrix representation of this transform, returning the result as a value.
@@ -642,7 +794,7 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t3 = this.rZ * this.rZ;
         double _t4 = this.rZ * this.rW;
         double _t5 = this.rY * this.rW;
-        return new Double4x4(Math.fma(-Math.fma(this.rY, this.rY, _t3), _t0, this.sX), Math.fma(this.rX, this.rY, -_t4) * _t1, Math.fma(this.rX, this.rZ, _t5) * _t2, this.tX, Math.fma(this.rX, this.rY, _t4) * _t0, Math.fma(-Math.fma(this.rX, this.rX, _t3), _t1, this.sY), Math.fma(this.rY, this.rZ, -(this.rX * this.rW)) * _t2, this.tY, Math.fma(this.rX, this.rZ, -_t5) * _t0, Math.fma(this.rX, this.rW, this.rY * this.rZ) * _t1, Math.fma(-Math.fma(this.rX, this.rX, this.rY * this.rY), _t2, this.sZ), this.tZ, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE);
+        return new Double4x4(toMatrix_s0_c0(_t3, _t0, _t4, _t5), toMatrix_s0_c1(_t4, _t1, _t3), toMatrix_s0_c2(_t5, _t2), toMatrix_s0_c3(), Joml.BIT_AFFINE);
     }
 
 
@@ -874,13 +1026,13 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t49 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, Math.fma(_t44, _t44, _t45 * _t45)));
         double _t50 = (1.0 / Math.sqrt(_t49));
         double _sfx0 = Math.fma(t, otherTX - this.tX, this.tX);
-        double _sfx1 = Math.fma(t, otherTY - this.tY, this.tY);
-        double _sfx2 = Math.fma(t, otherTZ - this.tZ, this.tZ);
-        return lerp_s2f52a392_tail2(_t49, _t50, _t44, _t45, _t43, _t42, t, otherSX, otherSY, otherSZ, _sfx0, _sfx1, _sfx2);
+        return lerp_s2f52a392_tail2(t, otherTY, otherTZ, _t49, _t50, _t44, _t45, _t43, _t42, otherSX, otherSY, otherSZ, _sfx0);
     }
 
     /** Private tail of {@code lerp}; reached only through it. */
-    private DoubleTransform lerp_s2f52a392_tail2(double _t49, double _t50, double _t44, double _t45, double _t43, double _t42, double t, double otherSX, double otherSY, double otherSZ, double _sfx0, double _sfx1, double _sfx2) {
+    private DoubleTransform lerp_s2f52a392_tail2(double t, double otherTY, double otherTZ, double _t49, double _t50, double _t44, double _t45, double _t43, double _t42, double otherSX, double otherSY, double otherSZ, double _sfx0) {
+        double _sfx1 = Math.fma(t, otherTY - this.tY, this.tY);
+        double _sfx2 = Math.fma(t, otherTZ - this.tZ, this.tZ);
         double _sfx3, _sfx4, _sfx5, _sfx6;
         if (_t49 > 0.0) {
             _sfx3 = _t50 * _t44;
@@ -981,9 +1133,15 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     }
 
     /** Private tail of {@code mul}; reached only through it. */
-    private DoubleTransform mul_s25974579_tail(double _t2, double _t0, double _t12, double _t13, double otherTX, double otherTY, double otherTZ, double otherRX, double otherRW, double otherRZ, double otherRY, double otherSX, double otherSY, double otherSZ) {
-        double _t14 = 2.0 * Math.fma(this.rY, _t2, -(this.rZ * _t0));
-        return new DoubleTransform(Math.fma(this.rY, _t12, Math.fma(-this.rZ, _t13, Math.fma(this.rW, _t14, Math.fma(otherTX, this.sX, this.tX)))), Math.fma(this.rZ, _t14, Math.fma(-this.rX, _t12, Math.fma(this.rW, _t13, Math.fma(otherTY, this.sY, this.tY)))), Math.fma(this.rX, _t13, Math.fma(-this.rY, _t14, Math.fma(this.rW, _t12, Math.fma(otherTZ, this.sZ, this.tZ)))), Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRZ, this.rY, -(otherRY * this.rZ)), Math.fma(otherRY, this.rW, otherRW * this.rY) + Math.fma(otherRX, this.rZ, -(otherRZ * this.rX)), Math.fma(otherRZ, this.rW, otherRW * this.rZ) + Math.fma(otherRY, this.rX, -(otherRX * this.rY)), Math.fma(otherRW, this.rW, -(otherRX * this.rX)) - Math.fma(otherRY, this.rY, otherRZ * this.rZ), otherSX * this.sX, otherSY * this.sY, otherSZ * this.sZ);
+    private DoubleTransform mul_s25974579_tail(double otherRX, double otherRW, double otherRZ, double otherRY, double otherSX, double otherSY, double otherSZ, double _sfx0, double _sfx1, double _sfx2) {
+        double _sfx3 = Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRZ, this.rY, -(otherRY * this.rZ));
+        double _sfx4 = Math.fma(otherRY, this.rW, otherRW * this.rY) + Math.fma(otherRX, this.rZ, -(otherRZ * this.rX));
+        double _sfx5 = Math.fma(otherRZ, this.rW, otherRW * this.rZ) + Math.fma(otherRY, this.rX, -(otherRX * this.rY));
+        double _sfx6 = Math.fma(otherRW, this.rW, -(otherRX * this.rX)) - Math.fma(otherRY, this.rY, otherRZ * this.rZ);
+        double _sfx7 = otherSX * this.sX;
+        double _sfx8 = otherSY * this.sY;
+        double _sfx9 = otherSZ * this.sZ;
+        return new DoubleTransform(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7, _sfx8, _sfx9);
     }
 
 
@@ -1030,7 +1188,11 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t2 = otherTZ * this.sZ;
         double _t12 = 2.0 * Math.fma(this.rX, _t0, -(this.rY * _t1));
         double _t13 = 2.0 * Math.fma(this.rZ, _t1, -(this.rX * _t2));
-        return mul_s25974579_tail(_t2, _t0, _t12, _t13, otherTX, otherTY, otherTZ, otherRX, otherRW, otherRZ, otherRY, otherSX, otherSY, otherSZ);
+        double _t14 = 2.0 * Math.fma(this.rY, _t2, -(this.rZ * _t0));
+        double _sfx0 = Math.fma(this.rY, _t12, Math.fma(-this.rZ, _t13, Math.fma(this.rW, _t14, Math.fma(otherTX, this.sX, this.tX))));
+        double _sfx1 = Math.fma(this.rZ, _t14, Math.fma(-this.rX, _t12, Math.fma(this.rW, _t13, Math.fma(otherTY, this.sY, this.tY))));
+        double _sfx2 = Math.fma(this.rX, _t13, Math.fma(-this.rY, _t14, Math.fma(this.rW, _t12, Math.fma(otherTZ, this.sZ, this.tZ))));
+        return mul_s25974579_tail(otherRX, otherRW, otherRZ, otherRY, otherSX, otherSY, otherSZ, _sfx0, _sfx1, _sfx2);
     }
 
 
@@ -1127,15 +1289,16 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     }
 
     /** Private tail of {@code difference}; reached only through it. */
-    private DoubleTransform difference_s25974579_tail(double _t30, double _t31, double _t32, double otherTX, double _rcp1, double _t33, double _t34, double _t35, double otherTY, double _rcp2, double otherTZ, double _rcp0, double otherRX, double otherRW, double otherRY, double otherRZ, double otherSX, double otherSY, double otherSZ) {
+    private DoubleTransform difference_s25974579_tail(double _rcp0, double _rcp2, double _t30, double _t31, double _t32, double otherTX, double _rcp1, double _t33, double _t34, double otherTY, double otherTZ, double otherRX, double otherRW, double otherRY, double otherRZ, double otherSX, double otherSY, double otherSZ) {
+        double _t35 = 2.0 * (this.tZ * this.rY * _rcp0 - this.tY * this.rZ * _rcp2);
         double _sfx0 = Math.fma(this.rZ, _t30, -(this.rY * _t31)) + Math.fma(this.rW, _t32, otherTX * _rcp1) + (Math.fma(this.rZ, _t33, -(this.rY * _t34)) + Math.fma(this.rW, _t35, -(this.tX * _rcp1)));
         double _sfx1 = Math.fma(this.rX, _t31, -(this.rZ * _t32)) + Math.fma(this.rW, _t30, otherTY * _rcp2) + (Math.fma(this.rX, _t34, -(this.rZ * _t35)) + Math.fma(this.rW, _t33, -(this.tY * _rcp2)));
-        double _sfx2 = Math.fma(this.rY, _t32, -(this.rX * _t30)) + Math.fma(this.rW, _t31, otherTZ * _rcp0) + (Math.fma(this.rY, _t35, -(this.rX * _t33)) + Math.fma(this.rW, _t34, -(this.tZ * _rcp0)));
-        return difference_s25974579_tail2(otherRX, otherRW, otherRY, otherRZ, otherSX, _rcp1, otherSY, _rcp2, otherSZ, _rcp0, _sfx0, _sfx1, _sfx2);
+        return difference_s25974579_tail2(_t32, _t30, _t31, otherTZ, _rcp0, _t35, _t33, _t34, otherRX, otherRW, otherRY, otherRZ, otherSX, _rcp1, otherSY, _rcp2, otherSZ, _sfx0, _sfx1);
     }
 
     /** Private tail of {@code difference}; reached only through it. */
-    private DoubleTransform difference_s25974579_tail2(double otherRX, double otherRW, double otherRY, double otherRZ, double otherSX, double _rcp1, double otherSY, double _rcp2, double otherSZ, double _rcp0, double _sfx0, double _sfx1, double _sfx2) {
+    private DoubleTransform difference_s25974579_tail2(double _t32, double _t30, double _t31, double otherTZ, double _rcp0, double _t35, double _t33, double _t34, double otherRX, double otherRW, double otherRY, double otherRZ, double otherSX, double _rcp1, double otherSY, double _rcp2, double otherSZ, double _sfx0, double _sfx1) {
+        double _sfx2 = Math.fma(this.rY, _t32, -(this.rX * _t30)) + Math.fma(this.rW, _t31, otherTZ * _rcp0) + (Math.fma(this.rY, _t35, -(this.rX * _t33)) + Math.fma(this.rW, _t34, -(this.tZ * _rcp0)));
         double _sfx3 = Math.fma(otherRX, this.rW, -(otherRW * this.rX)) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY));
         double _sfx4 = Math.fma(otherRY, this.rW, -(otherRW * this.rY)) + Math.fma(otherRZ, this.rX, -(otherRX * this.rZ));
         double _sfx5 = Math.fma(otherRX, this.rY, -(otherRY * this.rX)) + Math.fma(otherRZ, this.rW, -(otherRW * this.rZ));
@@ -1194,8 +1357,7 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t32 = 2.0 * (otherTY * this.rZ * _rcp2 - otherTZ * this.rY * _rcp0);
         double _t33 = 2.0 * (this.tX * this.rZ * _rcp1 - this.tZ * this.rX * _rcp0);
         double _t34 = 2.0 * (this.tY * this.rX * _rcp2 - this.tX * this.rY * _rcp1);
-        double _t35 = 2.0 * (this.tZ * this.rY * _rcp0 - this.tY * this.rZ * _rcp2);
-        return difference_s25974579_tail(_t30, _t31, _t32, otherTX, _rcp1, _t33, _t34, _t35, otherTY, _rcp2, otherTZ, _rcp0, otherRX, otherRW, otherRY, otherRZ, otherSX, otherSY, otherSZ);
+        return difference_s25974579_tail(_rcp0, _rcp2, _t30, _t31, _t32, otherTX, _rcp1, _t33, _t34, otherTY, otherTZ, otherRX, otherRW, otherRY, otherRZ, otherSX, otherSY, otherSZ);
     }
 
 

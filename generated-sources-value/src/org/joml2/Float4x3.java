@@ -128,6 +128,21 @@ public value record Float4x3(float m00, float m01, float m02, float m10, float m
     /** {@return the element in row 3, column 2} */
     public float m32() { return m32; }
 
+    /** Private arm 0 of {@code getColumn}; reached only through it. */
+    private Float4 getColumn_s749615cf_arm0() {
+        return new Float4(this.m00, this.m10, this.m20, this.m30);
+    }
+
+    /** Private arm 1 of {@code getColumn}; reached only through it. */
+    private Float4 getColumn_s749615cf_arm1() {
+        return new Float4(this.m01, this.m11, this.m21, this.m31);
+    }
+
+    /** Private arm 2 of {@code getColumn}; reached only through it. */
+    private Float4 getColumn_s749615cf_arm2() {
+        return new Float4(this.m02, this.m12, this.m22, this.m32);
+    }
+
 
     /**
      * Get the column at the given index of this matrix, returning the result as a value.
@@ -137,7 +152,32 @@ public value record Float4x3(float m00, float m01, float m02, float m10, float m
      * @throws IndexOutOfBoundsException if {@code col} is not in {@code [0, COLUMNS)}
      */
     public Float4 getColumn(int col) {
-        return new Float4(switch (col) { case 0 -> this.m00; case 1 -> this.m01; case 2 -> this.m02; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); }, switch (col) { case 0 -> this.m10; case 1 -> this.m11; case 2 -> this.m12; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); }, switch (col) { case 0 -> this.m20; case 1 -> this.m21; case 2 -> this.m22; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); }, switch (col) { case 0 -> this.m30; case 1 -> this.m31; case 2 -> this.m32; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); });
+        return switch (col) {
+            case 0 -> getColumn_s749615cf_arm0();
+            case 1 -> getColumn_s749615cf_arm1();
+            case 2 -> getColumn_s749615cf_arm2();
+            default -> throw new IndexOutOfBoundsException("Index out of range: " + col);
+        };
+    }
+
+    /** Private arm 0 of {@code getRow}; reached only through it. */
+    private Float3 getRow_s74964e29_arm0() {
+        return new Float3(this.m00, this.m01, this.m02);
+    }
+
+    /** Private arm 1 of {@code getRow}; reached only through it. */
+    private Float3 getRow_s74964e29_arm1() {
+        return new Float3(this.m10, this.m11, this.m12);
+    }
+
+    /** Private arm 2 of {@code getRow}; reached only through it. */
+    private Float3 getRow_s74964e29_arm2() {
+        return new Float3(this.m20, this.m21, this.m22);
+    }
+
+    /** Private arm 3 of {@code getRow}; reached only through it. */
+    private Float3 getRow_s74964e29_arm3() {
+        return new Float3(this.m30, this.m31, this.m32);
     }
 
 
@@ -149,7 +189,13 @@ public value record Float4x3(float m00, float m01, float m02, float m10, float m
      * @throws IndexOutOfBoundsException if {@code row} is not in {@code [0, ROWS)}
      */
     public Float3 getRow(int row) {
-        return new Float3(switch (row) { case 0 -> this.m00; case 1 -> this.m10; case 2 -> this.m20; case 3 -> this.m30; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); }, switch (row) { case 0 -> this.m01; case 1 -> this.m11; case 2 -> this.m21; case 3 -> this.m31; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); }, switch (row) { case 0 -> this.m02; case 1 -> this.m12; case 2 -> this.m22; case 3 -> this.m32; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); });
+        return switch (row) {
+            case 0 -> getRow_s74964e29_arm0();
+            case 1 -> getRow_s74964e29_arm1();
+            case 2 -> getRow_s74964e29_arm2();
+            case 3 -> getRow_s74964e29_arm3();
+            default -> throw new IndexOutOfBoundsException("Index out of range: " + row);
+        };
     }
 
 

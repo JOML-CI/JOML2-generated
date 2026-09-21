@@ -206,13 +206,48 @@ public record Float2x3(float m00, float m01, float m02, float m10, float m11, fl
     /** {@return whether this matrix is affine} Always {@code true} for this shape. */
     public boolean isAffine() { return true; }
 
+    /** Private arm 0 of {@code getColumn_identity}; reached only through it. */
+    private Float2 getColumn_identity_s749615cf_arm0() {
+        return new Float2(1.0f, 0.0f);
+    }
+
+    /** Private arm 1 of {@code getColumn_identity}; reached only through it. */
+    private Float2 getColumn_identity_s749615cf_arm1() {
+        return new Float2(0.0f, 1.0f);
+    }
+
+    /** Private arm 2 of {@code getColumn_identity}; reached only through it. */
+    private Float2 getColumn_identity_s749615cf_arm2() {
+        return Float2.ZERO;
+    }
+
 
     /**
      * Private body of {@code getColumn}, specialized by runtime matrix properties; reached only
      * through the public {@code getColumn} dispatcher.
      */
     private Float2 getColumn_identity(int col) {
-        return new Float2(switch (col) { case 0 -> 1.0f; case 1 -> 0.0f; case 2 -> 0.0f; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); }, switch (col) { case 0 -> 0.0f; case 1 -> 1.0f; case 2 -> 0.0f; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); });
+        return switch (col) {
+            case 0 -> getColumn_identity_s749615cf_arm0();
+            case 1 -> getColumn_identity_s749615cf_arm1();
+            case 2 -> getColumn_identity_s749615cf_arm2();
+            default -> throw new IndexOutOfBoundsException("Index out of range: " + col);
+        };
+    }
+
+    /** Private arm 0 of {@code getColumn_translation}; reached only through it. */
+    private Float2 getColumn_translation_s749615cf_arm0() {
+        return new Float2(1.0f, 0.0f);
+    }
+
+    /** Private arm 1 of {@code getColumn_translation}; reached only through it. */
+    private Float2 getColumn_translation_s749615cf_arm1() {
+        return new Float2(0.0f, 1.0f);
+    }
+
+    /** Private arm 2 of {@code getColumn_translation}; reached only through it. */
+    private Float2 getColumn_translation_s749615cf_arm2() {
+        return new Float2(this.m02, this.m12);
     }
 
 
@@ -221,7 +256,27 @@ public record Float2x3(float m00, float m01, float m02, float m10, float m11, fl
      * through the public {@code getColumn} dispatcher.
      */
     private Float2 getColumn_translation(int col) {
-        return new Float2(switch (col) { case 0 -> 1.0f; case 1 -> 0.0f; case 2 -> this.m02; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); }, switch (col) { case 0 -> 0.0f; case 1 -> 1.0f; case 2 -> this.m12; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); });
+        return switch (col) {
+            case 0 -> getColumn_translation_s749615cf_arm0();
+            case 1 -> getColumn_translation_s749615cf_arm1();
+            case 2 -> getColumn_translation_s749615cf_arm2();
+            default -> throw new IndexOutOfBoundsException("Index out of range: " + col);
+        };
+    }
+
+    /** Private arm 0 of {@code getColumn_general}; reached only through it. */
+    private Float2 getColumn_general_s749615cf_arm0() {
+        return new Float2(this.m00, this.m10);
+    }
+
+    /** Private arm 1 of {@code getColumn_general}; reached only through it. */
+    private Float2 getColumn_general_s749615cf_arm1() {
+        return new Float2(this.m01, this.m11);
+    }
+
+    /** Private arm 2 of {@code getColumn_general}; reached only through it. */
+    private Float2 getColumn_general_s749615cf_arm2() {
+        return new Float2(this.m02, this.m12);
     }
 
 
@@ -230,7 +285,12 @@ public record Float2x3(float m00, float m01, float m02, float m10, float m11, fl
      * through the public {@code getColumn} dispatcher.
      */
     private Float2 getColumn_general(int col) {
-        return new Float2(switch (col) { case 0 -> this.m00; case 1 -> this.m01; case 2 -> this.m02; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); }, switch (col) { case 0 -> this.m10; case 1 -> this.m11; case 2 -> this.m12; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); });
+        return switch (col) {
+            case 0 -> getColumn_general_s749615cf_arm0();
+            case 1 -> getColumn_general_s749615cf_arm1();
+            case 2 -> getColumn_general_s749615cf_arm2();
+            default -> throw new IndexOutOfBoundsException("Index out of range: " + col);
+        };
     }
 
 
@@ -261,13 +321,37 @@ public record Float2x3(float m00, float m01, float m02, float m10, float m11, fl
         return (float) Math.atan2(this.m10, this.m00);
     }
 
+    /** Private arm 0 of {@code getRow_identity}; reached only through it. */
+    private Float3 getRow_identity_s74964e29_arm0() {
+        return new Float3(1.0f, 0.0f, 0.0f);
+    }
+
+    /** Private arm 1 of {@code getRow_identity}; reached only through it. */
+    private Float3 getRow_identity_s74964e29_arm1() {
+        return new Float3(0.0f, 1.0f, 0.0f);
+    }
+
 
     /**
      * Private body of {@code getRow}, specialized by runtime matrix properties; reached only
      * through the public {@code getRow} dispatcher.
      */
     private Float3 getRow_identity(int row) {
-        return new Float3(switch (row) { case 0 -> 1.0f; case 1 -> 0.0f; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); }, switch (row) { case 0 -> 0.0f; case 1 -> 1.0f; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); }, 0.0f);
+        return switch (row) {
+            case 0 -> getRow_identity_s74964e29_arm0();
+            case 1 -> getRow_identity_s74964e29_arm1();
+            default -> throw new IndexOutOfBoundsException("Index out of range: " + row);
+        };
+    }
+
+    /** Private arm 0 of {@code getRow_translation}; reached only through it. */
+    private Float3 getRow_translation_s74964e29_arm0() {
+        return new Float3(1.0f, 0.0f, this.m02);
+    }
+
+    /** Private arm 1 of {@code getRow_translation}; reached only through it. */
+    private Float3 getRow_translation_s74964e29_arm1() {
+        return new Float3(0.0f, 1.0f, this.m12);
     }
 
 
@@ -276,7 +360,21 @@ public record Float2x3(float m00, float m01, float m02, float m10, float m11, fl
      * through the public {@code getRow} dispatcher.
      */
     private Float3 getRow_translation(int row) {
-        return new Float3(switch (row) { case 0 -> 1.0f; case 1 -> 0.0f; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); }, switch (row) { case 0 -> 0.0f; case 1 -> 1.0f; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); }, switch (row) { case 0 -> this.m02; case 1 -> this.m12; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); });
+        return switch (row) {
+            case 0 -> getRow_translation_s74964e29_arm0();
+            case 1 -> getRow_translation_s74964e29_arm1();
+            default -> throw new IndexOutOfBoundsException("Index out of range: " + row);
+        };
+    }
+
+    /** Private arm 0 of {@code getRow_general}; reached only through it. */
+    private Float3 getRow_general_s74964e29_arm0() {
+        return new Float3(this.m00, this.m01, this.m02);
+    }
+
+    /** Private arm 1 of {@code getRow_general}; reached only through it. */
+    private Float3 getRow_general_s74964e29_arm1() {
+        return new Float3(this.m10, this.m11, this.m12);
     }
 
 
@@ -285,7 +383,11 @@ public record Float2x3(float m00, float m01, float m02, float m10, float m11, fl
      * through the public {@code getRow} dispatcher.
      */
     private Float3 getRow_general(int row) {
-        return new Float3(switch (row) { case 0 -> this.m00; case 1 -> this.m10; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); }, switch (row) { case 0 -> this.m01; case 1 -> this.m11; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); }, switch (row) { case 0 -> this.m02; case 1 -> this.m12; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); });
+        return switch (row) {
+            case 0 -> getRow_general_s74964e29_arm0();
+            case 1 -> getRow_general_s74964e29_arm1();
+            default -> throw new IndexOutOfBoundsException("Index out of range: " + row);
+        };
     }
 
 

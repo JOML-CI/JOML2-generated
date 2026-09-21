@@ -263,14 +263,39 @@ public record DoubleRect(double minX, double minY, double maxX, double maxY) {
      * @param roundingMode the rounding mode to use
      * @return a new {@code IntRect} holding the result
      */
+    /** Private {@code RoundingMode.FLOOR} body of {@code toInt(RoundingMode)}; reached only through it. */
+    private IntRect toInt_floor() {
+        return new IntRect((int) Math.floor(this.minX), (int) Math.floor(this.minY), (int) Math.floor(this.maxX), (int) Math.floor(this.maxY));
+    }
+
+    /** Private {@code RoundingMode.CEILING} body of {@code toInt(RoundingMode)}; reached only through it. */
+    private IntRect toInt_ceiling() {
+        return new IntRect((int) Math.ceil(this.minX), (int) Math.ceil(this.minY), (int) Math.ceil(this.maxX), (int) Math.ceil(this.maxY));
+    }
+
+    /** Private {@code RoundingMode.HALF_TOWARD_POSITIVE_INFINITY} body of {@code toInt(RoundingMode)}; reached only through it. */
+    private IntRect toInt_half_toward_positive_infinity() {
+        return new IntRect((int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.minX))), (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.minY))), (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.maxX))), (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.maxY))));
+    }
+
+    /** Private {@code RoundingMode.HALF_AWAY_FROM_ZERO} body of {@code toInt(RoundingMode)}; reached only through it. */
+    private IntRect toInt_half_away_from_zero() {
+        return new IntRect((int) (Math.abs(this.minX - Math.rint(this.minX)) == 0.5 ? this.minX + Math.copySign(0.5, this.minX) : Math.rint(this.minX)), (int) (Math.abs(this.minY - Math.rint(this.minY)) == 0.5 ? this.minY + Math.copySign(0.5, this.minY) : Math.rint(this.minY)), (int) (Math.abs(this.maxX - Math.rint(this.maxX)) == 0.5 ? this.maxX + Math.copySign(0.5, this.maxX) : Math.rint(this.maxX)), (int) (Math.abs(this.maxY - Math.rint(this.maxY)) == 0.5 ? this.maxY + Math.copySign(0.5, this.maxY) : Math.rint(this.maxY)));
+    }
+
+    /** Private {@code RoundingMode.HALF_EVEN} body of {@code toInt(RoundingMode)}; reached only through it. */
+    private IntRect toInt_half_even() {
+        return new IntRect((int) Math.rint(this.minX), (int) Math.rint(this.minY), (int) Math.rint(this.maxX), (int) Math.rint(this.maxY));
+    }
+
     public IntRect toInt(RoundingMode roundingMode) {
         return switch (roundingMode) {
             case TRUNCATE -> toInt();
-            case FLOOR -> new IntRect((int) Math.floor(this.minX), (int) Math.floor(this.minY), (int) Math.floor(this.maxX), (int) Math.floor(this.maxY));
-            case CEILING -> new IntRect((int) Math.ceil(this.minX), (int) Math.ceil(this.minY), (int) Math.ceil(this.maxX), (int) Math.ceil(this.maxY));
-            case HALF_TOWARD_POSITIVE_INFINITY -> new IntRect((int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.minX))), (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.minY))), (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.maxX))), (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.maxY))));
-            case HALF_AWAY_FROM_ZERO -> new IntRect((int) (Math.abs(this.minX - Math.rint(this.minX)) == 0.5 ? this.minX + Math.copySign(0.5, this.minX) : Math.rint(this.minX)), (int) (Math.abs(this.minY - Math.rint(this.minY)) == 0.5 ? this.minY + Math.copySign(0.5, this.minY) : Math.rint(this.minY)), (int) (Math.abs(this.maxX - Math.rint(this.maxX)) == 0.5 ? this.maxX + Math.copySign(0.5, this.maxX) : Math.rint(this.maxX)), (int) (Math.abs(this.maxY - Math.rint(this.maxY)) == 0.5 ? this.maxY + Math.copySign(0.5, this.maxY) : Math.rint(this.maxY)));
-            case HALF_EVEN -> new IntRect((int) Math.rint(this.minX), (int) Math.rint(this.minY), (int) Math.rint(this.maxX), (int) Math.rint(this.maxY));
+            case FLOOR -> toInt_floor();
+            case CEILING -> toInt_ceiling();
+            case HALF_TOWARD_POSITIVE_INFINITY -> toInt_half_toward_positive_infinity();
+            case HALF_AWAY_FROM_ZERO -> toInt_half_away_from_zero();
+            case HALF_EVEN -> toInt_half_even();
         };
     }
 

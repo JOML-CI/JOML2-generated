@@ -309,6 +309,73 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         return new FloatRigid(2.0f * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW))), 2.0f * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW))), 2.0f * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW))), dqRX, dqRY, dqRZ, dqRW);
     }
 
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatRigid makeFromMatrix_s37cad23f_tail(float _t15, float _t16, float _t17, float _t18, Float3x3 m, float _t12, float _t20, float _t21, float _t13, float _t23, float _t1, float _t0, float _t32, float _t33, float _t28) {
+        float _t43 = Math.fma(-Math.fma(_t15, _t16, -(_t17 * _t18)), m.m01() * _t12, Math.fma(Math.fma(_t15, _t20, -(_t21 * _t18)), m.m02() * _t13, Math.fma(_t21, _t16, -(_t17 * _t20)) * _t23));
+        float _t44, _t45, _t46;
+        if (_t43 < 0.0f) {
+            _t44 = -_t23;
+            _t45 = -_t15;
+            _t46 = -_t18;
+        } else {
+            _t44 = _t23;
+            _t45 = _t15;
+            _t46 = _t18;
+        }
+        float _t48 = 1.0f + _t44;
+        float _t49 = 1.0f - _t44;
+        float _t51 = Math.fma(m.m01(), _t12, _t45);
+        float _t52 = Math.fma(m.m02(), _t13, _t46);
+        float _t53 = Math.fma(m.m02(), _t13, -_t46);
+        float _t54 = Math.fma(-m.m01(), _t12, _t45);
+        float _t59 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t44));
+        return makeFromMatrix_s37cad23f_tail2(m, _t12, _t13, _t48, _t1, _t49, _t0, _t59, _t32, _t44, _t33, _t21, _t16, _t51, _t52, _t53, _t28, _t54);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatRigid makeFromMatrix_s37cad23f_tail2(Float3x3 m, float _t12, float _t13, float _t48, float _t1, float _t49, float _t0, float _t59, float _t32, float _t44, float _t33, float _t21, float _t16, float _t51, float _t52, float _t53, float _t28, float _t54) {
+        float _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t48));
+        float _t61 = (1.0f / (float) Math.sqrt(_t60));
+        float _t62 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t49));
+        float _t63 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t49));
+        float _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
+        float _t65 = (1.0f / (float) Math.sqrt(_t62));
+        float _t66 = (1.0f / (float) Math.sqrt(_t63));
+        float _t67 = (1.0f / (float) Math.sqrt(_t64));
+        float _sfx0 = 0.0f;
+        float _sfx1 = 0.0f;
+        float _sfx2 = 0.0f;
+        float _sfx3 = _t59 > 0.0f ? 0.5f * _t32 * _t61 : _t44 > _t33 ? 0.5f * (float) Math.sqrt(_t64) : _t21 > _t16 ? 0.5f * _t51 * _t65 : 0.5f * _t52 * _t66;
+        return makeFromMatrix_s37cad23f_tail3(_t59, _t53, _t61, _t44, _t33, _t51, _t67, _t21, _t16, _t62, _t28, _t66, _t54, _t52, _t65, _t63, _t60, _t32, _sfx0, _sfx1, _sfx2, _sfx3);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatRigid makeFromMatrix_s37cad23f_tail3(float _t59, float _t53, float _t61, float _t44, float _t33, float _t51, float _t67, float _t21, float _t16, float _t62, float _t28, float _t66, float _t54, float _t52, float _t65, float _t63, float _t60, float _t32, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
+        float _sfx4, _sfx5, _sfx6;
+        if (_t59 > 0.0f) {
+            _sfx4 = 0.5f * _t53 * _t61;
+            _sfx5 = 0.5f * _t54 * _t61;
+            _sfx6 = 0.5f * (float) Math.sqrt(_t60);
+        } else {
+            if (_t44 > _t33) {
+                _sfx4 = 0.5f * _t51 * _t67;
+                _sfx5 = 0.5f * _t52 * _t67;
+                _sfx6 = 0.5f * _t32 * _t67;
+            } else {
+                if (_t21 > _t16) {
+                    _sfx4 = 0.5f * (float) Math.sqrt(_t62);
+                    _sfx5 = 0.5f * _t28 * _t65;
+                    _sfx6 = 0.5f * _t53 * _t65;
+                } else {
+                    _sfx4 = 0.5f * _t28 * _t66;
+                    _sfx5 = 0.5f * (float) Math.sqrt(_t63);
+                    _sfx6 = 0.5f * _t54 * _t66;
+                }
+            }
+        }
+        return new FloatRigid(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6);
+    }
+
 
     /**
      * Create the rotation extracted from the given matrix, with zero translation (scale is removed
@@ -334,6 +401,11 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         float _t28 = Math.fma(m.m12(), _t13, _t20);
         float _t32 = Math.fma(m.m21(), _t12, -_t17);
         float _t33 = Math.max(_t21, _t16);
+        return makeFromMatrix_s37cad23f_tail(_t15, _t16, _t17, _t18, m, _t12, _t20, _t21, _t13, _t23, _t1, _t0, _t32, _t33, _t28);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatRigid makeFromMatrix_s37cad600_tail(float _t15, float _t16, float _t17, float _t18, Float3x4 m, float _t12, float _t20, float _t21, float _t13, float _t23, float _t1, float _t0, float _t32, float _t33, float _t28) {
         float _t43 = Math.fma(-Math.fma(_t15, _t16, -(_t17 * _t18)), m.m01() * _t12, Math.fma(Math.fma(_t15, _t20, -(_t21 * _t18)), m.m02() * _t13, Math.fma(_t21, _t16, -(_t17 * _t20)) * _t23));
         float _t44, _t45, _t46;
         if (_t43 < 0.0f) {
@@ -352,6 +424,11 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         float _t53 = Math.fma(m.m02(), _t13, -_t46);
         float _t54 = Math.fma(-m.m01(), _t12, _t45);
         float _t59 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t44));
+        return makeFromMatrix_s37cad600_tail2(m, _t12, _t13, _t48, _t1, _t49, _t0, _t59, _t32, _t44, _t33, _t21, _t16, _t51, _t52, _t53, _t28, _t54);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatRigid makeFromMatrix_s37cad600_tail2(Float3x4 m, float _t12, float _t13, float _t48, float _t1, float _t49, float _t0, float _t59, float _t32, float _t44, float _t33, float _t21, float _t16, float _t51, float _t52, float _t53, float _t28, float _t54) {
         float _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t48));
         float _t61 = (1.0f / (float) Math.sqrt(_t60));
         float _t62 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t49));
@@ -360,19 +437,38 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         float _t65 = (1.0f / (float) Math.sqrt(_t62));
         float _t66 = (1.0f / (float) Math.sqrt(_t63));
         float _t67 = (1.0f / (float) Math.sqrt(_t64));
+        float _sfx0 = m.m03();
+        float _sfx1 = m.m13();
+        float _sfx2 = m.m23();
+        float _sfx3 = _t59 > 0.0f ? 0.5f * _t32 * _t61 : _t44 > _t33 ? 0.5f * (float) Math.sqrt(_t64) : _t21 > _t16 ? 0.5f * _t51 * _t65 : 0.5f * _t52 * _t66;
+        return makeFromMatrix_s37cad600_tail3(_t59, _t53, _t61, _t44, _t33, _t51, _t67, _t21, _t16, _t62, _t28, _t66, _t54, _t52, _t65, _t63, _t60, _t32, _sfx0, _sfx1, _sfx2, _sfx3);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatRigid makeFromMatrix_s37cad600_tail3(float _t59, float _t53, float _t61, float _t44, float _t33, float _t51, float _t67, float _t21, float _t16, float _t62, float _t28, float _t66, float _t54, float _t52, float _t65, float _t63, float _t60, float _t32, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
+        float _sfx4, _sfx5, _sfx6;
         if (_t59 > 0.0f) {
-            return new FloatRigid(0.0f, 0.0f, 0.0f, 0.5f * _t32 * _t61, 0.5f * _t53 * _t61, 0.5f * _t54 * _t61, 0.5f * (float) Math.sqrt(_t60));
+            _sfx4 = 0.5f * _t53 * _t61;
+            _sfx5 = 0.5f * _t54 * _t61;
+            _sfx6 = 0.5f * (float) Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
-                return new FloatRigid(0.0f, 0.0f, 0.0f, 0.5f * (float) Math.sqrt(_t64), 0.5f * _t51 * _t67, 0.5f * _t52 * _t67, 0.5f * _t32 * _t67);
+                _sfx4 = 0.5f * _t51 * _t67;
+                _sfx5 = 0.5f * _t52 * _t67;
+                _sfx6 = 0.5f * _t32 * _t67;
             } else {
                 if (_t21 > _t16) {
-                    return new FloatRigid(0.0f, 0.0f, 0.0f, 0.5f * _t51 * _t65, 0.5f * (float) Math.sqrt(_t62), 0.5f * _t28 * _t65, 0.5f * _t53 * _t65);
+                    _sfx4 = 0.5f * (float) Math.sqrt(_t62);
+                    _sfx5 = 0.5f * _t28 * _t65;
+                    _sfx6 = 0.5f * _t53 * _t65;
                 } else {
-                    return new FloatRigid(0.0f, 0.0f, 0.0f, 0.5f * _t52 * _t66, 0.5f * _t28 * _t66, 0.5f * (float) Math.sqrt(_t63), 0.5f * _t54 * _t66);
+                    _sfx4 = 0.5f * _t28 * _t66;
+                    _sfx5 = 0.5f * (float) Math.sqrt(_t63);
+                    _sfx6 = 0.5f * _t54 * _t66;
                 }
             }
         }
+        return new FloatRigid(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6);
     }
 
 
@@ -401,6 +497,11 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         float _t28 = Math.fma(m.m12(), _t13, _t20);
         float _t32 = Math.fma(m.m21(), _t12, -_t17);
         float _t33 = Math.max(_t21, _t16);
+        return makeFromMatrix_s37cad600_tail(_t15, _t16, _t17, _t18, m, _t12, _t20, _t21, _t13, _t23, _t1, _t0, _t32, _t33, _t28);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatRigid makeFromMatrix_s37d8ed81_tail(float _t15, float _t16, float _t17, float _t18, Float4x4 m, float _t12, float _t20, float _t21, float _t13, float _t23, float _t1, float _t0, float _t32, float _t33, float _t28) {
         float _t43 = Math.fma(-Math.fma(_t15, _t16, -(_t17 * _t18)), m.m01() * _t12, Math.fma(Math.fma(_t15, _t20, -(_t21 * _t18)), m.m02() * _t13, Math.fma(_t21, _t16, -(_t17 * _t20)) * _t23));
         float _t44, _t45, _t46;
         if (_t43 < 0.0f) {
@@ -419,6 +520,11 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         float _t53 = Math.fma(m.m02(), _t13, -_t46);
         float _t54 = Math.fma(-m.m01(), _t12, _t45);
         float _t59 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t44));
+        return makeFromMatrix_s37d8ed81_tail2(m, _t12, _t13, _t48, _t1, _t49, _t0, _t59, _t32, _t44, _t33, _t21, _t16, _t51, _t52, _t53, _t28, _t54);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatRigid makeFromMatrix_s37d8ed81_tail2(Float4x4 m, float _t12, float _t13, float _t48, float _t1, float _t49, float _t0, float _t59, float _t32, float _t44, float _t33, float _t21, float _t16, float _t51, float _t52, float _t53, float _t28, float _t54) {
         float _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t48));
         float _t61 = (1.0f / (float) Math.sqrt(_t60));
         float _t62 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t49));
@@ -427,19 +533,38 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         float _t65 = (1.0f / (float) Math.sqrt(_t62));
         float _t66 = (1.0f / (float) Math.sqrt(_t63));
         float _t67 = (1.0f / (float) Math.sqrt(_t64));
+        float _sfx0 = m.m03();
+        float _sfx1 = m.m13();
+        float _sfx2 = m.m23();
+        float _sfx3 = _t59 > 0.0f ? 0.5f * _t32 * _t61 : _t44 > _t33 ? 0.5f * (float) Math.sqrt(_t64) : _t21 > _t16 ? 0.5f * _t51 * _t65 : 0.5f * _t52 * _t66;
+        return makeFromMatrix_s37d8ed81_tail3(_t59, _t53, _t61, _t44, _t33, _t51, _t67, _t21, _t16, _t62, _t28, _t66, _t54, _t52, _t65, _t63, _t60, _t32, _sfx0, _sfx1, _sfx2, _sfx3);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatRigid makeFromMatrix_s37d8ed81_tail3(float _t59, float _t53, float _t61, float _t44, float _t33, float _t51, float _t67, float _t21, float _t16, float _t62, float _t28, float _t66, float _t54, float _t52, float _t65, float _t63, float _t60, float _t32, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
+        float _sfx4, _sfx5, _sfx6;
         if (_t59 > 0.0f) {
-            return new FloatRigid(m.m03(), m.m13(), m.m23(), 0.5f * _t32 * _t61, 0.5f * _t53 * _t61, 0.5f * _t54 * _t61, 0.5f * (float) Math.sqrt(_t60));
+            _sfx4 = 0.5f * _t53 * _t61;
+            _sfx5 = 0.5f * _t54 * _t61;
+            _sfx6 = 0.5f * (float) Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
-                return new FloatRigid(m.m03(), m.m13(), m.m23(), 0.5f * (float) Math.sqrt(_t64), 0.5f * _t51 * _t67, 0.5f * _t52 * _t67, 0.5f * _t32 * _t67);
+                _sfx4 = 0.5f * _t51 * _t67;
+                _sfx5 = 0.5f * _t52 * _t67;
+                _sfx6 = 0.5f * _t32 * _t67;
             } else {
                 if (_t21 > _t16) {
-                    return new FloatRigid(m.m03(), m.m13(), m.m23(), 0.5f * _t51 * _t65, 0.5f * (float) Math.sqrt(_t62), 0.5f * _t28 * _t65, 0.5f * _t53 * _t65);
+                    _sfx4 = 0.5f * (float) Math.sqrt(_t62);
+                    _sfx5 = 0.5f * _t28 * _t65;
+                    _sfx6 = 0.5f * _t53 * _t65;
                 } else {
-                    return new FloatRigid(m.m03(), m.m13(), m.m23(), 0.5f * _t52 * _t66, 0.5f * _t28 * _t66, 0.5f * (float) Math.sqrt(_t63), 0.5f * _t54 * _t66);
+                    _sfx4 = 0.5f * _t28 * _t66;
+                    _sfx5 = 0.5f * (float) Math.sqrt(_t63);
+                    _sfx6 = 0.5f * _t54 * _t66;
                 }
             }
         }
+        return new FloatRigid(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6);
     }
 
 
@@ -468,45 +593,7 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         float _t28 = Math.fma(m.m12(), _t13, _t20);
         float _t32 = Math.fma(m.m21(), _t12, -_t17);
         float _t33 = Math.max(_t21, _t16);
-        float _t43 = Math.fma(-Math.fma(_t15, _t16, -(_t17 * _t18)), m.m01() * _t12, Math.fma(Math.fma(_t15, _t20, -(_t21 * _t18)), m.m02() * _t13, Math.fma(_t21, _t16, -(_t17 * _t20)) * _t23));
-        float _t44, _t45, _t46;
-        if (_t43 < 0.0f) {
-            _t44 = -_t23;
-            _t45 = -_t15;
-            _t46 = -_t18;
-        } else {
-            _t44 = _t23;
-            _t45 = _t15;
-            _t46 = _t18;
-        }
-        float _t48 = 1.0f + _t44;
-        float _t49 = 1.0f - _t44;
-        float _t51 = Math.fma(m.m01(), _t12, _t45);
-        float _t52 = Math.fma(m.m02(), _t13, _t46);
-        float _t53 = Math.fma(m.m02(), _t13, -_t46);
-        float _t54 = Math.fma(-m.m01(), _t12, _t45);
-        float _t59 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t44));
-        float _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t48));
-        float _t61 = (1.0f / (float) Math.sqrt(_t60));
-        float _t62 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t49));
-        float _t63 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t49));
-        float _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        float _t65 = (1.0f / (float) Math.sqrt(_t62));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        if (_t59 > 0.0f) {
-            return new FloatRigid(m.m03(), m.m13(), m.m23(), 0.5f * _t32 * _t61, 0.5f * _t53 * _t61, 0.5f * _t54 * _t61, 0.5f * (float) Math.sqrt(_t60));
-        } else {
-            if (_t44 > _t33) {
-                return new FloatRigid(m.m03(), m.m13(), m.m23(), 0.5f * (float) Math.sqrt(_t64), 0.5f * _t51 * _t67, 0.5f * _t52 * _t67, 0.5f * _t32 * _t67);
-            } else {
-                if (_t21 > _t16) {
-                    return new FloatRigid(m.m03(), m.m13(), m.m23(), 0.5f * _t51 * _t65, 0.5f * (float) Math.sqrt(_t62), 0.5f * _t28 * _t65, 0.5f * _t53 * _t65);
-                } else {
-                    return new FloatRigid(m.m03(), m.m13(), m.m23(), 0.5f * _t52 * _t66, 0.5f * _t28 * _t66, 0.5f * (float) Math.sqrt(_t63), 0.5f * _t54 * _t66);
-                }
-            }
-        }
+        return makeFromMatrix_s37d8ed81_tail(_t15, _t16, _t17, _t18, m, _t12, _t20, _t21, _t13, _t23, _t1, _t0, _t32, _t33, _t28);
     }
 
 
@@ -801,13 +888,13 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         float _t49 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, Math.fma(_t44, _t44, _t45 * _t45)));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
         float _sfx0 = Math.fma(t, otherTX - this.tX, this.tX);
-        float _sfx1 = Math.fma(t, otherTY - this.tY, this.tY);
-        float _sfx2 = Math.fma(t, otherTZ - this.tZ, this.tZ);
-        return lerp_s49cf416d_tail2(_t49, _t50, _t44, _t45, _t43, _t42, _sfx0, _sfx1, _sfx2);
+        return lerp_s49cf416d_tail2(t, otherTY, otherTZ, _t49, _t50, _t44, _t45, _t43, _t42, _sfx0);
     }
 
     /** Private tail of {@code lerp}; reached only through it. */
-    private FloatRigid lerp_s49cf416d_tail2(float _t49, float _t50, float _t44, float _t45, float _t43, float _t42, float _sfx0, float _sfx1, float _sfx2) {
+    private FloatRigid lerp_s49cf416d_tail2(float t, float otherTY, float otherTZ, float _t49, float _t50, float _t44, float _t45, float _t43, float _t42, float _sfx0) {
+        float _sfx1 = Math.fma(t, otherTY - this.tY, this.tY);
+        float _sfx2 = Math.fma(t, otherTZ - this.tZ, this.tZ);
         float _sfx3, _sfx4, _sfx5, _sfx6;
         if (_t49 > 0.0f) {
             _sfx3 = _t50 * _t44;
@@ -945,6 +1032,12 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         return preMul(other.tX(), other.tY(), other.tZ(), other.rX(), other.rY(), other.rZ(), other.rW());
     }
 
+    /** Private tail of {@code preMul}; reached only through it. */
+    private FloatRigid preMul_s183b932f_tail(float otherRY, float otherRZ, float _t9, float _t10, float otherRW, float otherTX, float otherRX, float otherTY, float otherTZ) {
+        float _t11 = 2.0f * Math.fma(otherRY, this.tZ, -(otherRZ * this.tY));
+        return new FloatRigid(Math.fma(otherRY, _t9, Math.fma(-otherRZ, _t10, Math.fma(otherRW, _t11, otherTX + this.tX))), Math.fma(otherRZ, _t11, Math.fma(-otherRX, _t9, Math.fma(otherRW, _t10, otherTY + this.tY))), Math.fma(otherRX, _t10, Math.fma(-otherRY, _t11, Math.fma(otherRW, _t9, otherTZ + this.tZ))), Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY)), Math.fma(otherRY, this.rW, otherRZ * this.rX) + Math.fma(otherRW, this.rY, -(otherRX * this.rZ)), Math.fma(otherRX, this.rY, otherRW * this.rZ) + Math.fma(otherRZ, this.rW, -(otherRY * this.rX)), Math.fma(otherRW, this.rW, -(otherRX * this.rX)) - Math.fma(otherRY, this.rY, otherRZ * this.rZ));
+    }
+
 
     /**
      * Pre-multiply ({@code otherTX}, {@code otherTY}, {@code otherTZ}, {@code otherRX},
@@ -974,8 +1067,7 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     public FloatRigid preMul(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW) {
         float _t9 = 2.0f * Math.fma(otherRX, this.tY, -(otherRY * this.tX));
         float _t10 = 2.0f * Math.fma(otherRZ, this.tX, -(otherRX * this.tZ));
-        float _t11 = 2.0f * Math.fma(otherRY, this.tZ, -(otherRZ * this.tY));
-        return new FloatRigid(Math.fma(otherRY, _t9, Math.fma(-otherRZ, _t10, Math.fma(otherRW, _t11, otherTX + this.tX))), Math.fma(otherRZ, _t11, Math.fma(-otherRX, _t9, Math.fma(otherRW, _t10, otherTY + this.tY))), Math.fma(otherRX, _t10, Math.fma(-otherRY, _t11, Math.fma(otherRW, _t9, otherTZ + this.tZ))), Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY)), Math.fma(otherRY, this.rW, otherRZ * this.rX) + Math.fma(otherRW, this.rY, -(otherRX * this.rZ)), Math.fma(otherRX, this.rY, otherRW * this.rZ) + Math.fma(otherRZ, this.rW, -(otherRY * this.rX)), Math.fma(otherRW, this.rW, -(otherRX * this.rX)) - Math.fma(otherRY, this.rY, otherRZ * this.rZ));
+        return preMul_s183b932f_tail(otherRY, otherRZ, _t9, _t10, otherRW, otherTX, otherRX, otherTY, otherTZ);
     }
 
 
@@ -998,6 +1090,11 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         float _sfx2 = Math.fma(this.rY, _t19, otherTZ) + Math.fma(this.rW, _t20, -(this.rX * _t18)) + (Math.fma(this.rY, _t23, -(this.rX * _t21)) + Math.fma(this.rW, _t22, -this.tZ));
         float _sfx3 = Math.fma(otherRX, this.rW, -(otherRW * this.rX)) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY));
         float _sfx4 = Math.fma(otherRY, this.rW, otherRZ * this.rX) + Math.fma(-otherRX, this.rZ, -(otherRW * this.rY));
+        return difference_s183b932f_tail2(otherRX, otherRW, otherRZ, otherRY, _sfx0, _sfx1, _sfx2, _sfx3, _sfx4);
+    }
+
+    /** Private tail of {@code difference}; reached only through it. */
+    private FloatRigid difference_s183b932f_tail2(float otherRX, float otherRW, float otherRZ, float otherRY, float _sfx0, float _sfx1, float _sfx2, float _sfx3, float _sfx4) {
         float _sfx5 = Math.fma(otherRX, this.rY, -(otherRW * this.rZ)) + Math.fma(otherRZ, this.rW, -(otherRY * this.rX));
         float _sfx6 = Math.fma(otherRX, this.rX, otherRW * this.rW) - Math.fma(-otherRZ, this.rZ, -(otherRY * this.rY));
         return new FloatRigid(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6);
@@ -1612,6 +1709,12 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t1, this.rW * _t2), Math.fma(this.rY, _t1, this.rZ * _t2), Math.fma(this.rZ, _t1, -(this.rY * _t2)), Math.fma(this.rW, _t1, -(this.rX * _t2)));
     }
 
+    /** Private tail of {@code rotateXYZ}; reached only through it. */
+    private FloatRigid rotateXYZ_s6e793366_tail(float _t12, float _t5, float _t11, float _t8, float _t21, float _t19, float _t20) {
+        float _t22 = Math.fma(_t12, _t5, -(_t11 * _t8));
+        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t22, -(this.rX * _t20)), Math.fma(this.rX, _t22, this.rW * _t20) + Math.fma(this.rZ, _t21, -(this.rY * _t19)), Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t22, this.rZ * _t20));
+    }
+
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
@@ -1645,8 +1748,13 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         float _t19 = Math.fma(_t11, _t5, _t12 * _t8);
         float _t20 = Math.fma(_t10, _t5, _t9 * _t8);
         float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        float _t22 = Math.fma(_t12, _t5, -(_t11 * _t8));
-        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t22, -(this.rX * _t20)), Math.fma(this.rX, _t22, this.rW * _t20) + Math.fma(this.rZ, _t21, -(this.rY * _t19)), Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t22, this.rZ * _t20));
+        return rotateXYZ_s6e793366_tail(_t12, _t5, _t11, _t8, _t21, _t19, _t20);
+    }
+
+    /** Private tail of {@code rotateXZY}; reached only through it. */
+    private FloatRigid rotateXZY_s6e793366_tail(float _t10, float _t5, float _t9, float _t8, float _t19, float _t21, float _t20) {
+        float _t22 = Math.fma(_t10, _t5, -(_t9 * _t8));
+        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t22, -(this.rX * _t20)), Math.fma(this.rX, _t22, this.rW * _t20) + Math.fma(this.rZ, _t19, -(this.rY * _t21)), Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t22, this.rZ * _t20));
     }
 
 
@@ -1682,8 +1790,7 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
         float _t20 = Math.fma(_t11, _t5, _t12 * _t8);
         float _t21 = Math.fma(_t11, _t8, -(_t12 * _t5));
-        float _t22 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t22, -(this.rX * _t20)), Math.fma(this.rX, _t22, this.rW * _t20) + Math.fma(this.rZ, _t19, -(this.rY * _t21)), Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t22, this.rZ * _t20));
+        return rotateXZY_s6e793366_tail(_t10, _t5, _t9, _t8, _t19, _t21, _t20);
     }
 
 
@@ -1703,6 +1810,12 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         float _t1 = (float) Math.cos(_t0);
         float _t2 = (float) Math.sin(_t0);
         return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t1, -(this.rZ * _t2)), Math.fma(this.rY, _t1, this.rW * _t2), Math.fma(this.rX, _t2, this.rZ * _t1), Math.fma(this.rW, _t1, -(this.rY * _t2)));
+    }
+
+    /** Private tail of {@code rotateYXZ}; reached only through it. */
+    private FloatRigid rotateYXZ_s6e793366_tail(float _t12, float _t8, float _t11, float _t5, float _t19, float _t20, float _t21) {
+        float _t22 = Math.fma(_t12, _t8, -(_t11 * _t5));
+        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t20) + Math.fma(this.rY, _t21, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rZ * _t20) + Math.fma(this.rW, _t22, -(this.rX * _t21)), Math.fma(this.rX, _t22, this.rW * _t21) + Math.fma(this.rZ, _t19, -(this.rY * _t20)), Math.fma(this.rW, _t19, -(this.rX * _t20)) - Math.fma(this.rY, _t22, this.rZ * _t21));
     }
 
 
@@ -1738,8 +1851,13 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
         float _t20 = Math.fma(_t11, _t8, _t12 * _t5);
         float _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        float _t22 = Math.fma(_t12, _t8, -(_t11 * _t5));
-        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t20) + Math.fma(this.rY, _t21, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rZ * _t20) + Math.fma(this.rW, _t22, -(this.rX * _t21)), Math.fma(this.rX, _t22, this.rW * _t21) + Math.fma(this.rZ, _t19, -(this.rY * _t20)), Math.fma(this.rW, _t19, -(this.rX * _t20)) - Math.fma(this.rY, _t22, this.rZ * _t21));
+        return rotateYXZ_s6e793366_tail(_t12, _t8, _t11, _t5, _t19, _t20, _t21);
+    }
+
+    /** Private tail of {@code rotateYZX}; reached only through it. */
+    private FloatRigid rotateYZX_s6e793366_tail(float _t11, float _t5, float _t12, float _t8, float _t21, float _t19, float _t20) {
+        float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t20, -(this.rX * _t22)), Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t21, -(this.rY * _t19)), Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t20, this.rZ * _t22));
     }
 
 
@@ -1775,8 +1893,7 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         float _t19 = Math.fma(_t10, _t5, _t9 * _t8);
         float _t20 = Math.fma(_t12, _t5, _t11 * _t8);
         float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
-        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t20, -(this.rX * _t22)), Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t21, -(this.rY * _t19)), Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t20, this.rZ * _t22));
+        return rotateYZX_s6e793366_tail(_t11, _t5, _t12, _t8, _t21, _t19, _t20);
     }
 
 
@@ -1796,6 +1913,12 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         float _t1 = (float) Math.cos(_t0);
         float _t2 = (float) Math.sin(_t0);
         return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t1, this.rY * _t2), Math.fma(this.rY, _t1, -(this.rX * _t2)), Math.fma(this.rZ, _t1, this.rW * _t2), Math.fma(this.rW, _t1, -(this.rZ * _t2)));
+    }
+
+    /** Private tail of {@code rotateZXY}; reached only through it. */
+    private FloatRigid rotateZXY_s6e793366_tail(float _t11, float _t5, float _t12, float _t8, float _t21, float _t19, float _t20) {
+        float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t22) + Math.fma(this.rY, _t19, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rZ * _t22) + Math.fma(this.rW, _t20, -(this.rX * _t19)), Math.fma(this.rX, _t20, this.rW * _t19) + Math.fma(this.rZ, _t21, -(this.rY * _t22)), Math.fma(this.rW, _t21, -(this.rX * _t22)) - Math.fma(this.rY, _t20, this.rZ * _t19));
     }
 
 
@@ -1831,8 +1954,13 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         float _t19 = Math.fma(_t11, _t8, _t12 * _t5);
         float _t20 = Math.fma(_t10, _t5, _t9 * _t8);
         float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
-        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t22) + Math.fma(this.rY, _t19, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rZ * _t22) + Math.fma(this.rW, _t20, -(this.rX * _t19)), Math.fma(this.rX, _t20, this.rW * _t19) + Math.fma(this.rZ, _t21, -(this.rY * _t22)), Math.fma(this.rW, _t21, -(this.rX * _t22)) - Math.fma(this.rY, _t20, this.rZ * _t19));
+        return rotateZXY_s6e793366_tail(_t11, _t5, _t12, _t8, _t21, _t19, _t20);
+    }
+
+    /** Private tail of {@code rotateZYX}; reached only through it. */
+    private FloatRigid rotateZYX_s6e793366_tail(float _t11, float _t8, float _t12, float _t5, float _t19, float _t21, float _t20) {
+        float _t22 = Math.fma(_t11, _t8, -(_t12 * _t5));
+        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t20, -(this.rX * _t22)), Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t19, -(this.rY * _t21)), Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t20, this.rZ * _t22));
     }
 
 
@@ -1868,8 +1996,7 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
         float _t20 = Math.fma(_t12, _t8, _t11 * _t5);
         float _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        float _t22 = Math.fma(_t11, _t8, -(_t12 * _t5));
-        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t20, -(this.rX * _t22)), Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t19, -(this.rY * _t21)), Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t20, this.rZ * _t22));
+        return rotateZYX_s6e793366_tail(_t11, _t8, _t12, _t5, _t19, _t21, _t20);
     }
 
 

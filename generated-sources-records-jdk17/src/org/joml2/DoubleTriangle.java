@@ -162,6 +162,15 @@ public record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1X, dou
         return new FloatTriangle((float) (this.v0X), (float) (this.v0Y), (float) (this.v0Z), (float) (this.v1X), (float) (this.v1Y), (float) (this.v1Z), (float) (this.v2X), (float) (this.v2Y), (float) (this.v2Z));
     }
 
+    /** Private tail of {@code transform}; reached only through it. */
+    private DoubleTriangle transform_s91e96b_tail(Double3x4 m, double _sfx0, double _sfx1, double _sfx2, double _sfx3, double _sfx4) {
+        double _sfx5 = Math.fma(m.m22(), this.v1Z, Math.fma(m.m20(), this.v1X, Math.fma(m.m21(), this.v1Y, m.m23())));
+        double _sfx6 = Math.fma(m.m02(), this.v2Z, Math.fma(m.m00(), this.v2X, Math.fma(m.m01(), this.v2Y, m.m03())));
+        double _sfx7 = Math.fma(m.m12(), this.v2Z, Math.fma(m.m10(), this.v2X, Math.fma(m.m11(), this.v2Y, m.m13())));
+        double _sfx8 = Math.fma(m.m22(), this.v2Z, Math.fma(m.m20(), this.v2X, Math.fma(m.m21(), this.v2Y, m.m23())));
+        return new DoubleTriangle(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7, _sfx8);
+    }
+
 
     /**
      * Transform this triangle by {@code m}, returning the result as a value.
@@ -170,7 +179,21 @@ public record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1X, dou
      * @return the resulting triangle
      */
     public DoubleTriangle transform(Double3x4 m) {
-        return new DoubleTriangle(Math.fma(m.m02(), this.v0Z, Math.fma(m.m00(), this.v0X, Math.fma(m.m01(), this.v0Y, m.m03()))), Math.fma(m.m12(), this.v0Z, Math.fma(m.m10(), this.v0X, Math.fma(m.m11(), this.v0Y, m.m13()))), Math.fma(m.m22(), this.v0Z, Math.fma(m.m20(), this.v0X, Math.fma(m.m21(), this.v0Y, m.m23()))), Math.fma(m.m02(), this.v1Z, Math.fma(m.m00(), this.v1X, Math.fma(m.m01(), this.v1Y, m.m03()))), Math.fma(m.m12(), this.v1Z, Math.fma(m.m10(), this.v1X, Math.fma(m.m11(), this.v1Y, m.m13()))), Math.fma(m.m22(), this.v1Z, Math.fma(m.m20(), this.v1X, Math.fma(m.m21(), this.v1Y, m.m23()))), Math.fma(m.m02(), this.v2Z, Math.fma(m.m00(), this.v2X, Math.fma(m.m01(), this.v2Y, m.m03()))), Math.fma(m.m12(), this.v2Z, Math.fma(m.m10(), this.v2X, Math.fma(m.m11(), this.v2Y, m.m13()))), Math.fma(m.m22(), this.v2Z, Math.fma(m.m20(), this.v2X, Math.fma(m.m21(), this.v2Y, m.m23()))));
+        double _sfx0 = Math.fma(m.m02(), this.v0Z, Math.fma(m.m00(), this.v0X, Math.fma(m.m01(), this.v0Y, m.m03())));
+        double _sfx1 = Math.fma(m.m12(), this.v0Z, Math.fma(m.m10(), this.v0X, Math.fma(m.m11(), this.v0Y, m.m13())));
+        double _sfx2 = Math.fma(m.m22(), this.v0Z, Math.fma(m.m20(), this.v0X, Math.fma(m.m21(), this.v0Y, m.m23())));
+        double _sfx3 = Math.fma(m.m02(), this.v1Z, Math.fma(m.m00(), this.v1X, Math.fma(m.m01(), this.v1Y, m.m03())));
+        double _sfx4 = Math.fma(m.m12(), this.v1Z, Math.fma(m.m10(), this.v1X, Math.fma(m.m11(), this.v1Y, m.m13())));
+        return transform_s91e96b_tail(m, _sfx0, _sfx1, _sfx2, _sfx3, _sfx4);
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private DoubleTriangle transform_sa000ec_tail(Double4x4 m, double _sfx0, double _sfx1, double _sfx2, double _sfx3, double _sfx4) {
+        double _sfx5 = Math.fma(m.m22(), this.v1Z, Math.fma(m.m20(), this.v1X, Math.fma(m.m21(), this.v1Y, m.m23())));
+        double _sfx6 = Math.fma(m.m02(), this.v2Z, Math.fma(m.m00(), this.v2X, Math.fma(m.m01(), this.v2Y, m.m03())));
+        double _sfx7 = Math.fma(m.m12(), this.v2Z, Math.fma(m.m10(), this.v2X, Math.fma(m.m11(), this.v2Y, m.m13())));
+        double _sfx8 = Math.fma(m.m22(), this.v2Z, Math.fma(m.m20(), this.v2X, Math.fma(m.m21(), this.v2Y, m.m23())));
+        return new DoubleTriangle(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7, _sfx8);
     }
 
 
@@ -184,7 +207,12 @@ public record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1X, dou
      * @return the resulting triangle
      */
     public DoubleTriangle transform(Double4x4 m) {
-        return new DoubleTriangle(Math.fma(m.m02(), this.v0Z, Math.fma(m.m00(), this.v0X, Math.fma(m.m01(), this.v0Y, m.m03()))), Math.fma(m.m12(), this.v0Z, Math.fma(m.m10(), this.v0X, Math.fma(m.m11(), this.v0Y, m.m13()))), Math.fma(m.m22(), this.v0Z, Math.fma(m.m20(), this.v0X, Math.fma(m.m21(), this.v0Y, m.m23()))), Math.fma(m.m02(), this.v1Z, Math.fma(m.m00(), this.v1X, Math.fma(m.m01(), this.v1Y, m.m03()))), Math.fma(m.m12(), this.v1Z, Math.fma(m.m10(), this.v1X, Math.fma(m.m11(), this.v1Y, m.m13()))), Math.fma(m.m22(), this.v1Z, Math.fma(m.m20(), this.v1X, Math.fma(m.m21(), this.v1Y, m.m23()))), Math.fma(m.m02(), this.v2Z, Math.fma(m.m00(), this.v2X, Math.fma(m.m01(), this.v2Y, m.m03()))), Math.fma(m.m12(), this.v2Z, Math.fma(m.m10(), this.v2X, Math.fma(m.m11(), this.v2Y, m.m13()))), Math.fma(m.m22(), this.v2Z, Math.fma(m.m20(), this.v2X, Math.fma(m.m21(), this.v2Y, m.m23()))));
+        double _sfx0 = Math.fma(m.m02(), this.v0Z, Math.fma(m.m00(), this.v0X, Math.fma(m.m01(), this.v0Y, m.m03())));
+        double _sfx1 = Math.fma(m.m12(), this.v0Z, Math.fma(m.m10(), this.v0X, Math.fma(m.m11(), this.v0Y, m.m13())));
+        double _sfx2 = Math.fma(m.m22(), this.v0Z, Math.fma(m.m20(), this.v0X, Math.fma(m.m21(), this.v0Y, m.m23())));
+        double _sfx3 = Math.fma(m.m02(), this.v1Z, Math.fma(m.m00(), this.v1X, Math.fma(m.m01(), this.v1Y, m.m03())));
+        double _sfx4 = Math.fma(m.m12(), this.v1Z, Math.fma(m.m10(), this.v1X, Math.fma(m.m11(), this.v1Y, m.m13())));
+        return transform_sa000ec_tail(m, _sfx0, _sfx1, _sfx2, _sfx3, _sfx4);
     }
 
 

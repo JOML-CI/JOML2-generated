@@ -408,6 +408,76 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         return new FloatTransform(2.0f * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW))), 2.0f * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW))), 2.0f * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW))), dqRX, dqRY, dqRZ, dqRW, 1.0f, 1.0f, 1.0f);
     }
 
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatTransform makeFromMatrix_s37cad23f_tail(float _t16, float _t17, float _t18, float _t19, Float3x3 m, float _t12, float _t21, float _t22, float _t13, float _t24, float _t1, float _t0, float _t33, float _t34, float _t29, float _t15, float _t9, float _t10) {
+        float _t44 = Math.fma(-Math.fma(_t16, _t17, -(_t18 * _t19)), m.m01() * _t12, Math.fma(Math.fma(_t16, _t21, -(_t22 * _t19)), m.m02() * _t13, Math.fma(_t22, _t17, -(_t18 * _t21)) * _t24));
+        float _t45, _t46, _t47;
+        if (_t44 < 0.0f) {
+            _t45 = -_t24;
+            _t46 = -_t16;
+            _t47 = -_t19;
+        } else {
+            _t45 = _t24;
+            _t46 = _t16;
+            _t47 = _t19;
+        }
+        float _t49 = 1.0f + _t45;
+        float _t50 = 1.0f - _t45;
+        float _t52 = Math.fma(m.m01(), _t12, _t46);
+        float _t53 = Math.fma(m.m02(), _t13, _t47);
+        float _t54 = Math.fma(m.m02(), _t13, -_t47);
+        float _t55 = Math.fma(-m.m01(), _t12, _t46);
+        float _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t45));
+        return makeFromMatrix_s37cad23f_tail2(m, _t12, _t13, _t49, _t1, _t50, _t0, _t60, _t33, _t45, _t34, _t22, _t17, _t52, _t53, _t54, _t29, _t55, _t44, _t15, _t9, _t10);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatTransform makeFromMatrix_s37cad23f_tail2(Float3x3 m, float _t12, float _t13, float _t49, float _t1, float _t50, float _t0, float _t60, float _t33, float _t45, float _t34, float _t22, float _t17, float _t52, float _t53, float _t54, float _t29, float _t55, float _t44, float _t15, float _t9, float _t10) {
+        float _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
+        float _t62 = (1.0f / (float) Math.sqrt(_t61));
+        float _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
+        float _t64 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t50));
+        float _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
+        float _t66 = (1.0f / (float) Math.sqrt(_t63));
+        float _t67 = (1.0f / (float) Math.sqrt(_t64));
+        float _t68 = (1.0f / (float) Math.sqrt(_t65));
+        float _sfx0 = 0.0f;
+        float _sfx1 = 0.0f;
+        float _sfx2 = 0.0f;
+        float _sfx3 = _t60 > 0.0f ? 0.5f * _t33 * _t62 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? 0.5f * _t52 * _t66 : 0.5f * _t53 * _t67;
+        return makeFromMatrix_s37cad23f_tail3(_t60, _t54, _t62, _t45, _t34, _t52, _t68, _t22, _t17, _t63, _t29, _t67, _t55, _t53, _t66, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatTransform makeFromMatrix_s37cad23f_tail3(float _t60, float _t54, float _t62, float _t45, float _t34, float _t52, float _t68, float _t22, float _t17, float _t63, float _t29, float _t67, float _t55, float _t53, float _t66, float _t64, float _t61, float _t33, float _t44, float _t15, float _t9, float _t10, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
+        float _sfx4, _sfx5, _sfx6;
+        if (_t60 > 0.0f) {
+            _sfx4 = 0.5f * _t54 * _t62;
+            _sfx5 = 0.5f * _t55 * _t62;
+            _sfx6 = 0.5f * (float) Math.sqrt(_t61);
+        } else {
+            if (_t45 > _t34) {
+                _sfx4 = 0.5f * _t52 * _t68;
+                _sfx5 = 0.5f * _t53 * _t68;
+                _sfx6 = 0.5f * _t33 * _t68;
+            } else {
+                if (_t22 > _t17) {
+                    _sfx4 = 0.5f * (float) Math.sqrt(_t63);
+                    _sfx5 = 0.5f * _t29 * _t66;
+                    _sfx6 = 0.5f * _t54 * _t66;
+                } else {
+                    _sfx4 = 0.5f * _t29 * _t67;
+                    _sfx5 = 0.5f * (float) Math.sqrt(_t64);
+                    _sfx6 = 0.5f * _t55 * _t67;
+                }
+            }
+        }
+        float _sfx7 = _t44 < 0.0f ? -_t15 : _t15;
+        float _sfx8 = (float) Math.sqrt(_t9);
+        float _sfx9 = (float) Math.sqrt(_t10);
+        return new FloatTransform(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7, _sfx8, _sfx9);
+    }
+
 
     /**
      * Create the decomposition of the given matrix's linear {@code R * S} block, with zero
@@ -437,6 +507,11 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t29 = Math.fma(m.m12(), _t13, _t21);
         float _t33 = Math.fma(m.m21(), _t12, -_t18);
         float _t34 = Math.max(_t22, _t17);
+        return makeFromMatrix_s37cad23f_tail(_t16, _t17, _t18, _t19, m, _t12, _t21, _t22, _t13, _t24, _t1, _t0, _t33, _t34, _t29, _t15, _t9, _t10);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatTransform makeFromMatrix_s37cad600_tail(float _t16, float _t17, float _t18, float _t19, Float3x4 m, float _t12, float _t21, float _t22, float _t13, float _t24, float _t1, float _t0, float _t33, float _t34, float _t29, float _t15, float _t9, float _t10) {
         float _t44 = Math.fma(-Math.fma(_t16, _t17, -(_t18 * _t19)), m.m01() * _t12, Math.fma(Math.fma(_t16, _t21, -(_t22 * _t19)), m.m02() * _t13, Math.fma(_t22, _t17, -(_t18 * _t21)) * _t24));
         float _t45, _t46, _t47;
         if (_t44 < 0.0f) {
@@ -455,6 +530,11 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t54 = Math.fma(m.m02(), _t13, -_t47);
         float _t55 = Math.fma(-m.m01(), _t12, _t46);
         float _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t45));
+        return makeFromMatrix_s37cad600_tail2(m, _t12, _t13, _t49, _t1, _t50, _t0, _t60, _t33, _t45, _t34, _t22, _t17, _t52, _t53, _t54, _t29, _t55, _t44, _t15, _t9, _t10);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatTransform makeFromMatrix_s37cad600_tail2(Float3x4 m, float _t12, float _t13, float _t49, float _t1, float _t50, float _t0, float _t60, float _t33, float _t45, float _t34, float _t22, float _t17, float _t52, float _t53, float _t54, float _t29, float _t55, float _t44, float _t15, float _t9, float _t10) {
         float _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
         float _t62 = (1.0f / (float) Math.sqrt(_t61));
         float _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
@@ -463,7 +543,41 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t66 = (1.0f / (float) Math.sqrt(_t63));
         float _t67 = (1.0f / (float) Math.sqrt(_t64));
         float _t68 = (1.0f / (float) Math.sqrt(_t65));
-        return new FloatTransform(0.0f, 0.0f, 0.0f, _t60 > 0.0f ? 0.5f * _t33 * _t62 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? 0.5f * _t52 * _t66 : 0.5f * _t53 * _t67, _t60 > 0.0f ? 0.5f * _t54 * _t62 : _t45 > _t34 ? 0.5f * _t52 * _t68 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : 0.5f * _t29 * _t67, _t60 > 0.0f ? 0.5f * _t55 * _t62 : _t45 > _t34 ? 0.5f * _t53 * _t68 : _t22 > _t17 ? 0.5f * _t29 * _t66 : 0.5f * (float) Math.sqrt(_t64), _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? 0.5f * _t33 * _t68 : _t22 > _t17 ? 0.5f * _t54 * _t66 : 0.5f * _t55 * _t67, _t44 < 0.0f ? -_t15 : _t15, (float) Math.sqrt(_t9), (float) Math.sqrt(_t10));
+        float _sfx0 = m.m03();
+        float _sfx1 = m.m13();
+        float _sfx2 = m.m23();
+        float _sfx3 = _t60 > 0.0f ? 0.5f * _t33 * _t62 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? 0.5f * _t52 * _t66 : 0.5f * _t53 * _t67;
+        return makeFromMatrix_s37cad600_tail3(_t60, _t54, _t62, _t45, _t34, _t52, _t68, _t22, _t17, _t63, _t29, _t67, _t55, _t53, _t66, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatTransform makeFromMatrix_s37cad600_tail3(float _t60, float _t54, float _t62, float _t45, float _t34, float _t52, float _t68, float _t22, float _t17, float _t63, float _t29, float _t67, float _t55, float _t53, float _t66, float _t64, float _t61, float _t33, float _t44, float _t15, float _t9, float _t10, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
+        float _sfx4, _sfx5, _sfx6;
+        if (_t60 > 0.0f) {
+            _sfx4 = 0.5f * _t54 * _t62;
+            _sfx5 = 0.5f * _t55 * _t62;
+            _sfx6 = 0.5f * (float) Math.sqrt(_t61);
+        } else {
+            if (_t45 > _t34) {
+                _sfx4 = 0.5f * _t52 * _t68;
+                _sfx5 = 0.5f * _t53 * _t68;
+                _sfx6 = 0.5f * _t33 * _t68;
+            } else {
+                if (_t22 > _t17) {
+                    _sfx4 = 0.5f * (float) Math.sqrt(_t63);
+                    _sfx5 = 0.5f * _t29 * _t66;
+                    _sfx6 = 0.5f * _t54 * _t66;
+                } else {
+                    _sfx4 = 0.5f * _t29 * _t67;
+                    _sfx5 = 0.5f * (float) Math.sqrt(_t64);
+                    _sfx6 = 0.5f * _t55 * _t67;
+                }
+            }
+        }
+        float _sfx7 = _t44 < 0.0f ? -_t15 : _t15;
+        float _sfx8 = (float) Math.sqrt(_t9);
+        float _sfx9 = (float) Math.sqrt(_t10);
+        return new FloatTransform(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7, _sfx8, _sfx9);
     }
 
 
@@ -496,6 +610,11 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t29 = Math.fma(m.m12(), _t13, _t21);
         float _t33 = Math.fma(m.m21(), _t12, -_t18);
         float _t34 = Math.max(_t22, _t17);
+        return makeFromMatrix_s37cad600_tail(_t16, _t17, _t18, _t19, m, _t12, _t21, _t22, _t13, _t24, _t1, _t0, _t33, _t34, _t29, _t15, _t9, _t10);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatTransform makeFromMatrix_s37d8ed81_tail(float _t16, float _t17, float _t18, float _t19, Float4x4 m, float _t12, float _t21, float _t22, float _t13, float _t24, float _t1, float _t0, float _t33, float _t34, float _t29, float _t15, float _t9, float _t10) {
         float _t44 = Math.fma(-Math.fma(_t16, _t17, -(_t18 * _t19)), m.m01() * _t12, Math.fma(Math.fma(_t16, _t21, -(_t22 * _t19)), m.m02() * _t13, Math.fma(_t22, _t17, -(_t18 * _t21)) * _t24));
         float _t45, _t46, _t47;
         if (_t44 < 0.0f) {
@@ -514,6 +633,11 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t54 = Math.fma(m.m02(), _t13, -_t47);
         float _t55 = Math.fma(-m.m01(), _t12, _t46);
         float _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t45));
+        return makeFromMatrix_s37d8ed81_tail2(m, _t12, _t13, _t49, _t1, _t50, _t0, _t60, _t33, _t45, _t34, _t22, _t17, _t52, _t53, _t54, _t29, _t55, _t44, _t15, _t9, _t10);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatTransform makeFromMatrix_s37d8ed81_tail2(Float4x4 m, float _t12, float _t13, float _t49, float _t1, float _t50, float _t0, float _t60, float _t33, float _t45, float _t34, float _t22, float _t17, float _t52, float _t53, float _t54, float _t29, float _t55, float _t44, float _t15, float _t9, float _t10) {
         float _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
         float _t62 = (1.0f / (float) Math.sqrt(_t61));
         float _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
@@ -522,7 +646,41 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t66 = (1.0f / (float) Math.sqrt(_t63));
         float _t67 = (1.0f / (float) Math.sqrt(_t64));
         float _t68 = (1.0f / (float) Math.sqrt(_t65));
-        return new FloatTransform(m.m03(), m.m13(), m.m23(), _t60 > 0.0f ? 0.5f * _t33 * _t62 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? 0.5f * _t52 * _t66 : 0.5f * _t53 * _t67, _t60 > 0.0f ? 0.5f * _t54 * _t62 : _t45 > _t34 ? 0.5f * _t52 * _t68 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : 0.5f * _t29 * _t67, _t60 > 0.0f ? 0.5f * _t55 * _t62 : _t45 > _t34 ? 0.5f * _t53 * _t68 : _t22 > _t17 ? 0.5f * _t29 * _t66 : 0.5f * (float) Math.sqrt(_t64), _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? 0.5f * _t33 * _t68 : _t22 > _t17 ? 0.5f * _t54 * _t66 : 0.5f * _t55 * _t67, _t44 < 0.0f ? -_t15 : _t15, (float) Math.sqrt(_t9), (float) Math.sqrt(_t10));
+        float _sfx0 = m.m03();
+        float _sfx1 = m.m13();
+        float _sfx2 = m.m23();
+        float _sfx3 = _t60 > 0.0f ? 0.5f * _t33 * _t62 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? 0.5f * _t52 * _t66 : 0.5f * _t53 * _t67;
+        return makeFromMatrix_s37d8ed81_tail3(_t60, _t54, _t62, _t45, _t34, _t52, _t68, _t22, _t17, _t63, _t29, _t67, _t55, _t53, _t66, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatTransform makeFromMatrix_s37d8ed81_tail3(float _t60, float _t54, float _t62, float _t45, float _t34, float _t52, float _t68, float _t22, float _t17, float _t63, float _t29, float _t67, float _t55, float _t53, float _t66, float _t64, float _t61, float _t33, float _t44, float _t15, float _t9, float _t10, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
+        float _sfx4, _sfx5, _sfx6;
+        if (_t60 > 0.0f) {
+            _sfx4 = 0.5f * _t54 * _t62;
+            _sfx5 = 0.5f * _t55 * _t62;
+            _sfx6 = 0.5f * (float) Math.sqrt(_t61);
+        } else {
+            if (_t45 > _t34) {
+                _sfx4 = 0.5f * _t52 * _t68;
+                _sfx5 = 0.5f * _t53 * _t68;
+                _sfx6 = 0.5f * _t33 * _t68;
+            } else {
+                if (_t22 > _t17) {
+                    _sfx4 = 0.5f * (float) Math.sqrt(_t63);
+                    _sfx5 = 0.5f * _t29 * _t66;
+                    _sfx6 = 0.5f * _t54 * _t66;
+                } else {
+                    _sfx4 = 0.5f * _t29 * _t67;
+                    _sfx5 = 0.5f * (float) Math.sqrt(_t64);
+                    _sfx6 = 0.5f * _t55 * _t67;
+                }
+            }
+        }
+        float _sfx7 = _t44 < 0.0f ? -_t15 : _t15;
+        float _sfx8 = (float) Math.sqrt(_t9);
+        float _sfx9 = (float) Math.sqrt(_t10);
+        return new FloatTransform(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7, _sfx8, _sfx9);
     }
 
 
@@ -555,33 +713,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t29 = Math.fma(m.m12(), _t13, _t21);
         float _t33 = Math.fma(m.m21(), _t12, -_t18);
         float _t34 = Math.max(_t22, _t17);
-        float _t44 = Math.fma(-Math.fma(_t16, _t17, -(_t18 * _t19)), m.m01() * _t12, Math.fma(Math.fma(_t16, _t21, -(_t22 * _t19)), m.m02() * _t13, Math.fma(_t22, _t17, -(_t18 * _t21)) * _t24));
-        float _t45, _t46, _t47;
-        if (_t44 < 0.0f) {
-            _t45 = -_t24;
-            _t46 = -_t16;
-            _t47 = -_t19;
-        } else {
-            _t45 = _t24;
-            _t46 = _t16;
-            _t47 = _t19;
-        }
-        float _t49 = 1.0f + _t45;
-        float _t50 = 1.0f - _t45;
-        float _t52 = Math.fma(m.m01(), _t12, _t46);
-        float _t53 = Math.fma(m.m02(), _t13, _t47);
-        float _t54 = Math.fma(m.m02(), _t13, -_t47);
-        float _t55 = Math.fma(-m.m01(), _t12, _t46);
-        float _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t45));
-        float _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
-        float _t62 = (1.0f / (float) Math.sqrt(_t61));
-        float _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
-        float _t64 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t50));
-        float _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
-        return new FloatTransform(m.m03(), m.m13(), m.m23(), _t60 > 0.0f ? 0.5f * _t33 * _t62 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? 0.5f * _t52 * _t66 : 0.5f * _t53 * _t67, _t60 > 0.0f ? 0.5f * _t54 * _t62 : _t45 > _t34 ? 0.5f * _t52 * _t68 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : 0.5f * _t29 * _t67, _t60 > 0.0f ? 0.5f * _t55 * _t62 : _t45 > _t34 ? 0.5f * _t53 * _t68 : _t22 > _t17 ? 0.5f * _t29 * _t66 : 0.5f * (float) Math.sqrt(_t64), _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? 0.5f * _t33 * _t68 : _t22 > _t17 ? 0.5f * _t54 * _t66 : 0.5f * _t55 * _t67, _t44 < 0.0f ? -_t15 : _t15, (float) Math.sqrt(_t9), (float) Math.sqrt(_t10));
+        return makeFromMatrix_s37d8ed81_tail(_t16, _t17, _t18, _t19, m, _t12, _t21, _t22, _t13, _t24, _t1, _t0, _t33, _t34, _t29, _t15, _t9, _t10);
     }
 
 
@@ -631,6 +763,26 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         return new FloatDualQuat(this.rX, this.rY, this.rZ, this.rW, 0.5f * Math.fma(_t0, this.rY, Math.fma(this.tX, this.rW, this.tY * this.rZ)), 0.5f * Math.fma(this.tZ, this.rX, Math.fma(this.tY, this.rW, -(this.tX * this.rZ))), 0.5f * Math.fma(this.tZ, this.rW, Math.fma(this.tX, this.rY, -(this.tY * this.rX))), 0.5f * Math.fma(_t0, this.rZ, Math.fma(-this.tY, this.rY, -(this.tX * this.rX))));
     }
 
+    /** Private per-column body of {@code toMatrix}; reached only through it. */
+    private Float4 toMatrix_s0_c0(float _t3, float _t0, float _t4, float _t5) {
+        return new Float4(Math.fma(-Math.fma(this.rY, this.rY, _t3), _t0, this.sX), Math.fma(this.rX, this.rY, _t4) * _t0, Math.fma(this.rX, this.rZ, -_t5) * _t0, 0.0f);
+    }
+
+    /** Private per-column body of {@code toMatrix}; reached only through it. */
+    private Float4 toMatrix_s0_c1(float _t4, float _t1, float _t3) {
+        return new Float4(Math.fma(this.rX, this.rY, -_t4) * _t1, Math.fma(-Math.fma(this.rX, this.rX, _t3), _t1, this.sY), Math.fma(this.rX, this.rW, this.rY * this.rZ) * _t1, 0.0f);
+    }
+
+    /** Private per-column body of {@code toMatrix}; reached only through it. */
+    private Float4 toMatrix_s0_c2(float _t5, float _t2) {
+        return new Float4(Math.fma(this.rX, this.rZ, _t5) * _t2, Math.fma(this.rY, this.rZ, -(this.rX * this.rW)) * _t2, Math.fma(-Math.fma(this.rX, this.rX, this.rY * this.rY), _t2, this.sZ), 0.0f);
+    }
+
+    /** Private per-column body of {@code toMatrix}; reached only through it. */
+    private Float4 toMatrix_s0_c3() {
+        return new Float4(this.tX, this.tY, this.tZ, 1.0f);
+    }
+
 
     /**
      * Compute the matrix representation of this transform, returning the result as a value.
@@ -644,7 +796,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t3 = this.rZ * this.rZ;
         float _t4 = this.rZ * this.rW;
         float _t5 = this.rY * this.rW;
-        return new Float4x4(Math.fma(-Math.fma(this.rY, this.rY, _t3), _t0, this.sX), Math.fma(this.rX, this.rY, -_t4) * _t1, Math.fma(this.rX, this.rZ, _t5) * _t2, this.tX, Math.fma(this.rX, this.rY, _t4) * _t0, Math.fma(-Math.fma(this.rX, this.rX, _t3), _t1, this.sY), Math.fma(this.rY, this.rZ, -(this.rX * this.rW)) * _t2, this.tY, Math.fma(this.rX, this.rZ, -_t5) * _t0, Math.fma(this.rX, this.rW, this.rY * this.rZ) * _t1, Math.fma(-Math.fma(this.rX, this.rX, this.rY * this.rY), _t2, this.sZ), this.tZ, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float4x4(toMatrix_s0_c0(_t3, _t0, _t4, _t5), toMatrix_s0_c1(_t4, _t1, _t3), toMatrix_s0_c2(_t5, _t2), toMatrix_s0_c3(), Joml.BIT_AFFINE);
     }
 
 
@@ -874,13 +1026,13 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t49 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, Math.fma(_t44, _t44, _t45 * _t45)));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
         float _sfx0 = Math.fma(t, otherTX - this.tX, this.tX);
-        float _sfx1 = Math.fma(t, otherTY - this.tY, this.tY);
-        float _sfx2 = Math.fma(t, otherTZ - this.tZ, this.tZ);
-        return lerp_s7d7bed2d_tail2(_t49, _t50, _t44, _t45, _t43, _t42, t, otherSX, otherSY, otherSZ, _sfx0, _sfx1, _sfx2);
+        return lerp_s7d7bed2d_tail2(t, otherTY, otherTZ, _t49, _t50, _t44, _t45, _t43, _t42, otherSX, otherSY, otherSZ, _sfx0);
     }
 
     /** Private tail of {@code lerp}; reached only through it. */
-    private FloatTransform lerp_s7d7bed2d_tail2(float _t49, float _t50, float _t44, float _t45, float _t43, float _t42, float t, float otherSX, float otherSY, float otherSZ, float _sfx0, float _sfx1, float _sfx2) {
+    private FloatTransform lerp_s7d7bed2d_tail2(float t, float otherTY, float otherTZ, float _t49, float _t50, float _t44, float _t45, float _t43, float _t42, float otherSX, float otherSY, float otherSZ, float _sfx0) {
+        float _sfx1 = Math.fma(t, otherTY - this.tY, this.tY);
+        float _sfx2 = Math.fma(t, otherTZ - this.tZ, this.tZ);
         float _sfx3, _sfx4, _sfx5, _sfx6;
         if (_t49 > 0.0f) {
             _sfx3 = _t50 * _t44;
@@ -981,9 +1133,15 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     }
 
     /** Private tail of {@code mul}; reached only through it. */
-    private FloatTransform mul_s7c2aaf6f_tail(float _t2, float _t0, float _t12, float _t13, float otherTX, float otherTY, float otherTZ, float otherRX, float otherRW, float otherRZ, float otherRY, float otherSX, float otherSY, float otherSZ) {
-        float _t14 = 2.0f * Math.fma(this.rY, _t2, -(this.rZ * _t0));
-        return new FloatTransform(Math.fma(this.rY, _t12, Math.fma(-this.rZ, _t13, Math.fma(this.rW, _t14, Math.fma(otherTX, this.sX, this.tX)))), Math.fma(this.rZ, _t14, Math.fma(-this.rX, _t12, Math.fma(this.rW, _t13, Math.fma(otherTY, this.sY, this.tY)))), Math.fma(this.rX, _t13, Math.fma(-this.rY, _t14, Math.fma(this.rW, _t12, Math.fma(otherTZ, this.sZ, this.tZ)))), Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRZ, this.rY, -(otherRY * this.rZ)), Math.fma(otherRY, this.rW, otherRW * this.rY) + Math.fma(otherRX, this.rZ, -(otherRZ * this.rX)), Math.fma(otherRZ, this.rW, otherRW * this.rZ) + Math.fma(otherRY, this.rX, -(otherRX * this.rY)), Math.fma(otherRW, this.rW, -(otherRX * this.rX)) - Math.fma(otherRY, this.rY, otherRZ * this.rZ), otherSX * this.sX, otherSY * this.sY, otherSZ * this.sZ);
+    private FloatTransform mul_s7c2aaf6f_tail(float otherRX, float otherRW, float otherRZ, float otherRY, float otherSX, float otherSY, float otherSZ, float _sfx0, float _sfx1, float _sfx2) {
+        float _sfx3 = Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRZ, this.rY, -(otherRY * this.rZ));
+        float _sfx4 = Math.fma(otherRY, this.rW, otherRW * this.rY) + Math.fma(otherRX, this.rZ, -(otherRZ * this.rX));
+        float _sfx5 = Math.fma(otherRZ, this.rW, otherRW * this.rZ) + Math.fma(otherRY, this.rX, -(otherRX * this.rY));
+        float _sfx6 = Math.fma(otherRW, this.rW, -(otherRX * this.rX)) - Math.fma(otherRY, this.rY, otherRZ * this.rZ);
+        float _sfx7 = otherSX * this.sX;
+        float _sfx8 = otherSY * this.sY;
+        float _sfx9 = otherSZ * this.sZ;
+        return new FloatTransform(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7, _sfx8, _sfx9);
     }
 
 
@@ -1030,7 +1188,11 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t2 = otherTZ * this.sZ;
         float _t12 = 2.0f * Math.fma(this.rX, _t0, -(this.rY * _t1));
         float _t13 = 2.0f * Math.fma(this.rZ, _t1, -(this.rX * _t2));
-        return mul_s7c2aaf6f_tail(_t2, _t0, _t12, _t13, otherTX, otherTY, otherTZ, otherRX, otherRW, otherRZ, otherRY, otherSX, otherSY, otherSZ);
+        float _t14 = 2.0f * Math.fma(this.rY, _t2, -(this.rZ * _t0));
+        float _sfx0 = Math.fma(this.rY, _t12, Math.fma(-this.rZ, _t13, Math.fma(this.rW, _t14, Math.fma(otherTX, this.sX, this.tX))));
+        float _sfx1 = Math.fma(this.rZ, _t14, Math.fma(-this.rX, _t12, Math.fma(this.rW, _t13, Math.fma(otherTY, this.sY, this.tY))));
+        float _sfx2 = Math.fma(this.rX, _t13, Math.fma(-this.rY, _t14, Math.fma(this.rW, _t12, Math.fma(otherTZ, this.sZ, this.tZ))));
+        return mul_s7c2aaf6f_tail(otherRX, otherRW, otherRZ, otherRY, otherSX, otherSY, otherSZ, _sfx0, _sfx1, _sfx2);
     }
 
 
@@ -1127,15 +1289,16 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     }
 
     /** Private tail of {@code difference}; reached only through it. */
-    private FloatTransform difference_s7c2aaf6f_tail(float _t30, float _t31, float _t32, float otherTX, float _rcp1, float _t33, float _t34, float _t35, float otherTY, float _rcp2, float otherTZ, float _rcp0, float otherRX, float otherRW, float otherRY, float otherRZ, float otherSX, float otherSY, float otherSZ) {
+    private FloatTransform difference_s7c2aaf6f_tail(float _rcp0, float _rcp2, float _t30, float _t31, float _t32, float otherTX, float _rcp1, float _t33, float _t34, float otherTY, float otherTZ, float otherRX, float otherRW, float otherRY, float otherRZ, float otherSX, float otherSY, float otherSZ) {
+        float _t35 = 2.0f * (this.tZ * this.rY * _rcp0 - this.tY * this.rZ * _rcp2);
         float _sfx0 = Math.fma(this.rZ, _t30, -(this.rY * _t31)) + Math.fma(this.rW, _t32, otherTX * _rcp1) + (Math.fma(this.rZ, _t33, -(this.rY * _t34)) + Math.fma(this.rW, _t35, -(this.tX * _rcp1)));
         float _sfx1 = Math.fma(this.rX, _t31, -(this.rZ * _t32)) + Math.fma(this.rW, _t30, otherTY * _rcp2) + (Math.fma(this.rX, _t34, -(this.rZ * _t35)) + Math.fma(this.rW, _t33, -(this.tY * _rcp2)));
-        float _sfx2 = Math.fma(this.rY, _t32, -(this.rX * _t30)) + Math.fma(this.rW, _t31, otherTZ * _rcp0) + (Math.fma(this.rY, _t35, -(this.rX * _t33)) + Math.fma(this.rW, _t34, -(this.tZ * _rcp0)));
-        return difference_s7c2aaf6f_tail2(otherRX, otherRW, otherRY, otherRZ, otherSX, _rcp1, otherSY, _rcp2, otherSZ, _rcp0, _sfx0, _sfx1, _sfx2);
+        return difference_s7c2aaf6f_tail2(_t32, _t30, _t31, otherTZ, _rcp0, _t35, _t33, _t34, otherRX, otherRW, otherRY, otherRZ, otherSX, _rcp1, otherSY, _rcp2, otherSZ, _sfx0, _sfx1);
     }
 
     /** Private tail of {@code difference}; reached only through it. */
-    private FloatTransform difference_s7c2aaf6f_tail2(float otherRX, float otherRW, float otherRY, float otherRZ, float otherSX, float _rcp1, float otherSY, float _rcp2, float otherSZ, float _rcp0, float _sfx0, float _sfx1, float _sfx2) {
+    private FloatTransform difference_s7c2aaf6f_tail2(float _t32, float _t30, float _t31, float otherTZ, float _rcp0, float _t35, float _t33, float _t34, float otherRX, float otherRW, float otherRY, float otherRZ, float otherSX, float _rcp1, float otherSY, float _rcp2, float otherSZ, float _sfx0, float _sfx1) {
+        float _sfx2 = Math.fma(this.rY, _t32, -(this.rX * _t30)) + Math.fma(this.rW, _t31, otherTZ * _rcp0) + (Math.fma(this.rY, _t35, -(this.rX * _t33)) + Math.fma(this.rW, _t34, -(this.tZ * _rcp0)));
         float _sfx3 = Math.fma(otherRX, this.rW, -(otherRW * this.rX)) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY));
         float _sfx4 = Math.fma(otherRY, this.rW, -(otherRW * this.rY)) + Math.fma(otherRZ, this.rX, -(otherRX * this.rZ));
         float _sfx5 = Math.fma(otherRX, this.rY, -(otherRY * this.rX)) + Math.fma(otherRZ, this.rW, -(otherRW * this.rZ));
@@ -1194,8 +1357,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t32 = 2.0f * (otherTY * this.rZ * _rcp2 - otherTZ * this.rY * _rcp0);
         float _t33 = 2.0f * (this.tX * this.rZ * _rcp1 - this.tZ * this.rX * _rcp0);
         float _t34 = 2.0f * (this.tY * this.rX * _rcp2 - this.tX * this.rY * _rcp1);
-        float _t35 = 2.0f * (this.tZ * this.rY * _rcp0 - this.tY * this.rZ * _rcp2);
-        return difference_s7c2aaf6f_tail(_t30, _t31, _t32, otherTX, _rcp1, _t33, _t34, _t35, otherTY, _rcp2, otherTZ, _rcp0, otherRX, otherRW, otherRY, otherRZ, otherSX, otherSY, otherSZ);
+        return difference_s7c2aaf6f_tail(_rcp0, _rcp2, _t30, _t31, _t32, otherTX, _rcp1, _t33, _t34, otherTY, otherTZ, otherRX, otherRW, otherRY, otherRZ, otherSX, otherSY, otherSZ);
     }
 
 

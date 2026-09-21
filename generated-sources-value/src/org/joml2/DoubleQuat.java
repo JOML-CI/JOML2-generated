@@ -266,6 +266,52 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         return new DoubleQuat(dqRX, dqRY, dqRZ, dqRW);
     }
 
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static DoubleQuat makeFromMatrix_s91e5aa_tail(double _t10, double _t1, double _t18, Double3x3 m, double _t2, double _t15, double _t4, double _t19, double _t6, double _t20, double _t7, double _t21, double _t16, double _t8, double _t9, double _t17, double _t14) {
+        double _sfx0, _sfx1;
+        if (_t10 > 0.0) {
+            _sfx0 = 0.5 * _t1 * _t18;
+            _sfx1 = 0.5 * _t7 * _t18;
+        } else {
+            if (m.m00() > _t2) {
+                _sfx0 = 0.5 * Math.sqrt(_t15);
+                _sfx1 = 0.5 * _t4 * _t21;
+            } else {
+                if (m.m11() > m.m22()) {
+                    _sfx0 = 0.5 * _t4 * _t19;
+                    _sfx1 = 0.5 * Math.sqrt(_t16);
+                } else {
+                    _sfx0 = 0.5 * _t6 * _t20;
+                    _sfx1 = 0.5 * _t8 * _t20;
+                }
+            }
+        }
+        return makeFromMatrix_s91e5aa_tail2(_t10, _t9, _t18, m, _t2, _t6, _t21, _t8, _t19, _t17, _t14, _t1, _t7, _t20, _sfx0, _sfx1);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static DoubleQuat makeFromMatrix_s91e5aa_tail2(double _t10, double _t9, double _t18, Double3x3 m, double _t2, double _t6, double _t21, double _t8, double _t19, double _t17, double _t14, double _t1, double _t7, double _t20, double _sfx0, double _sfx1) {
+        double _sfx2, _sfx3;
+        if (_t10 > 0.0) {
+            _sfx2 = 0.5 * _t9 * _t18;
+            _sfx3 = 0.5 * Math.sqrt(_t14);
+        } else {
+            if (m.m00() > _t2) {
+                _sfx2 = 0.5 * _t6 * _t21;
+                _sfx3 = 0.5 * _t1 * _t21;
+            } else {
+                if (m.m11() > m.m22()) {
+                    _sfx2 = 0.5 * _t8 * _t19;
+                    _sfx3 = 0.5 * _t7 * _t19;
+                } else {
+                    _sfx2 = 0.5 * Math.sqrt(_t17);
+                    _sfx3 = 0.5 * _t9 * _t20;
+                }
+            }
+        }
+        return new DoubleQuat(_sfx0, _sfx1, _sfx2, _sfx3);
+    }
+
 
     /**
      * Create the rotation represented by the given matrix.
@@ -291,19 +337,53 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t19 = (1.0 / Math.sqrt(_t16));
         double _t20 = (1.0 / Math.sqrt(_t17));
         double _t21 = (1.0 / Math.sqrt(_t15));
+        return makeFromMatrix_s91e5aa_tail(_t10, _t1, _t18, m, _t2, _t15, _t4, _t19, _t6, _t20, _t7, _t21, _t16, _t8, _t9, _t17, _t14);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static DoubleQuat makeFromMatrix_s91e96b_tail(double _t10, double _t1, double _t18, Double3x4 m, double _t2, double _t15, double _t4, double _t19, double _t6, double _t20, double _t7, double _t21, double _t16, double _t8, double _t9, double _t17, double _t14) {
+        double _sfx0, _sfx1;
         if (_t10 > 0.0) {
-            return new DoubleQuat(0.5 * _t1 * _t18, 0.5 * _t7 * _t18, 0.5 * _t9 * _t18, 0.5 * Math.sqrt(_t14));
+            _sfx0 = 0.5 * _t1 * _t18;
+            _sfx1 = 0.5 * _t7 * _t18;
         } else {
             if (m.m00() > _t2) {
-                return new DoubleQuat(0.5 * Math.sqrt(_t15), 0.5 * _t4 * _t21, 0.5 * _t6 * _t21, 0.5 * _t1 * _t21);
+                _sfx0 = 0.5 * Math.sqrt(_t15);
+                _sfx1 = 0.5 * _t4 * _t21;
             } else {
                 if (m.m11() > m.m22()) {
-                    return new DoubleQuat(0.5 * _t4 * _t19, 0.5 * Math.sqrt(_t16), 0.5 * _t8 * _t19, 0.5 * _t7 * _t19);
+                    _sfx0 = 0.5 * _t4 * _t19;
+                    _sfx1 = 0.5 * Math.sqrt(_t16);
                 } else {
-                    return new DoubleQuat(0.5 * _t6 * _t20, 0.5 * _t8 * _t20, 0.5 * Math.sqrt(_t17), 0.5 * _t9 * _t20);
+                    _sfx0 = 0.5 * _t6 * _t20;
+                    _sfx1 = 0.5 * _t8 * _t20;
                 }
             }
         }
+        return makeFromMatrix_s91e96b_tail2(_t10, _t9, _t18, m, _t2, _t6, _t21, _t8, _t19, _t17, _t14, _t1, _t7, _t20, _sfx0, _sfx1);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static DoubleQuat makeFromMatrix_s91e96b_tail2(double _t10, double _t9, double _t18, Double3x4 m, double _t2, double _t6, double _t21, double _t8, double _t19, double _t17, double _t14, double _t1, double _t7, double _t20, double _sfx0, double _sfx1) {
+        double _sfx2, _sfx3;
+        if (_t10 > 0.0) {
+            _sfx2 = 0.5 * _t9 * _t18;
+            _sfx3 = 0.5 * Math.sqrt(_t14);
+        } else {
+            if (m.m00() > _t2) {
+                _sfx2 = 0.5 * _t6 * _t21;
+                _sfx3 = 0.5 * _t1 * _t21;
+            } else {
+                if (m.m11() > m.m22()) {
+                    _sfx2 = 0.5 * _t8 * _t19;
+                    _sfx3 = 0.5 * _t7 * _t19;
+                } else {
+                    _sfx2 = 0.5 * Math.sqrt(_t17);
+                    _sfx3 = 0.5 * _t9 * _t20;
+                }
+            }
+        }
+        return new DoubleQuat(_sfx0, _sfx1, _sfx2, _sfx3);
     }
 
 
@@ -331,19 +411,53 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t19 = (1.0 / Math.sqrt(_t16));
         double _t20 = (1.0 / Math.sqrt(_t17));
         double _t21 = (1.0 / Math.sqrt(_t15));
+        return makeFromMatrix_s91e96b_tail(_t10, _t1, _t18, m, _t2, _t15, _t4, _t19, _t6, _t20, _t7, _t21, _t16, _t8, _t9, _t17, _t14);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static DoubleQuat makeFromMatrix_sa000ec_tail(double _t10, double _t1, double _t18, Double4x4 m, double _t2, double _t15, double _t4, double _t19, double _t6, double _t20, double _t7, double _t21, double _t16, double _t8, double _t9, double _t17, double _t14) {
+        double _sfx0, _sfx1;
         if (_t10 > 0.0) {
-            return new DoubleQuat(0.5 * _t1 * _t18, 0.5 * _t7 * _t18, 0.5 * _t9 * _t18, 0.5 * Math.sqrt(_t14));
+            _sfx0 = 0.5 * _t1 * _t18;
+            _sfx1 = 0.5 * _t7 * _t18;
         } else {
             if (m.m00() > _t2) {
-                return new DoubleQuat(0.5 * Math.sqrt(_t15), 0.5 * _t4 * _t21, 0.5 * _t6 * _t21, 0.5 * _t1 * _t21);
+                _sfx0 = 0.5 * Math.sqrt(_t15);
+                _sfx1 = 0.5 * _t4 * _t21;
             } else {
                 if (m.m11() > m.m22()) {
-                    return new DoubleQuat(0.5 * _t4 * _t19, 0.5 * Math.sqrt(_t16), 0.5 * _t8 * _t19, 0.5 * _t7 * _t19);
+                    _sfx0 = 0.5 * _t4 * _t19;
+                    _sfx1 = 0.5 * Math.sqrt(_t16);
                 } else {
-                    return new DoubleQuat(0.5 * _t6 * _t20, 0.5 * _t8 * _t20, 0.5 * Math.sqrt(_t17), 0.5 * _t9 * _t20);
+                    _sfx0 = 0.5 * _t6 * _t20;
+                    _sfx1 = 0.5 * _t8 * _t20;
                 }
             }
         }
+        return makeFromMatrix_sa000ec_tail2(_t10, _t9, _t18, m, _t2, _t6, _t21, _t8, _t19, _t17, _t14, _t1, _t7, _t20, _sfx0, _sfx1);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static DoubleQuat makeFromMatrix_sa000ec_tail2(double _t10, double _t9, double _t18, Double4x4 m, double _t2, double _t6, double _t21, double _t8, double _t19, double _t17, double _t14, double _t1, double _t7, double _t20, double _sfx0, double _sfx1) {
+        double _sfx2, _sfx3;
+        if (_t10 > 0.0) {
+            _sfx2 = 0.5 * _t9 * _t18;
+            _sfx3 = 0.5 * Math.sqrt(_t14);
+        } else {
+            if (m.m00() > _t2) {
+                _sfx2 = 0.5 * _t6 * _t21;
+                _sfx3 = 0.5 * _t1 * _t21;
+            } else {
+                if (m.m11() > m.m22()) {
+                    _sfx2 = 0.5 * _t8 * _t19;
+                    _sfx3 = 0.5 * _t7 * _t19;
+                } else {
+                    _sfx2 = 0.5 * Math.sqrt(_t17);
+                    _sfx3 = 0.5 * _t9 * _t20;
+                }
+            }
+        }
+        return new DoubleQuat(_sfx0, _sfx1, _sfx2, _sfx3);
     }
 
 
@@ -371,19 +485,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t19 = (1.0 / Math.sqrt(_t16));
         double _t20 = (1.0 / Math.sqrt(_t17));
         double _t21 = (1.0 / Math.sqrt(_t15));
-        if (_t10 > 0.0) {
-            return new DoubleQuat(0.5 * _t1 * _t18, 0.5 * _t7 * _t18, 0.5 * _t9 * _t18, 0.5 * Math.sqrt(_t14));
-        } else {
-            if (m.m00() > _t2) {
-                return new DoubleQuat(0.5 * Math.sqrt(_t15), 0.5 * _t4 * _t21, 0.5 * _t6 * _t21, 0.5 * _t1 * _t21);
-            } else {
-                if (m.m11() > m.m22()) {
-                    return new DoubleQuat(0.5 * _t4 * _t19, 0.5 * Math.sqrt(_t16), 0.5 * _t8 * _t19, 0.5 * _t7 * _t19);
-                } else {
-                    return new DoubleQuat(0.5 * _t6 * _t20, 0.5 * _t8 * _t20, 0.5 * Math.sqrt(_t17), 0.5 * _t9 * _t20);
-                }
-            }
-        }
+        return makeFromMatrix_sa000ec_tail(_t10, _t1, _t18, m, _t2, _t15, _t4, _t19, _t6, _t20, _t7, _t21, _t16, _t8, _t9, _t17, _t14);
     }
 
 
@@ -463,6 +565,23 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         public DoubleQuat twist() { return twist; }
     }
 
+    /** Private tail of {@code decomposeSwingTwist}; reached only through it. */
+    private DecomposeSwingTwistResult decomposeSwingTwist_sce8ee9f_tail(double _t4, double _t5, Double3 axis, double _t7) {
+        double _t11, _t12, _t13, _t14;
+        if (_t4 > 1.0E-30) {
+            _t11 = this.w * _t5;
+            _t12 = axis.x() * _t7;
+            _t13 = axis.y() * _t7;
+            _t14 = axis.z() * _t7;
+        } else {
+            _t11 = 1.0;
+            _t12 = 0.0;
+            _t13 = 0.0;
+            _t14 = 0.0;
+        }
+        return new DecomposeSwingTwistResult(new DoubleQuat(Math.fma(this.x, _t11, -(this.w * _t12)) + Math.fma(this.z, _t13, -(this.y * _t14)), Math.fma(this.x, _t14, -(this.w * _t13)) + Math.fma(this.y, _t11, -(this.z * _t12)), Math.fma(this.y, _t12, this.z * _t11) + Math.fma(-this.x, _t13, -(this.w * _t14)), Math.fma(this.x, _t12, this.w * _t11) - Math.fma(-this.z, _t14, -(this.y * _t13))), new DoubleQuat(_t12, _t13, _t14, _t11));
+    }
+
 
     /**
      * Decompose this quaternion into a swing about an axis perpendicular to {@code axis} followed
@@ -480,19 +599,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t4 = Math.fma(this.w, this.w, _t2 * _t2);
         double _t5 = (1.0 / Math.sqrt(_t4));
         double _t7 = _t2 * _t5;
-        double _t11, _t12, _t13, _t14;
-        if (_t4 > 1.0E-30) {
-            _t11 = this.w * _t5;
-            _t12 = axis.x() * _t7;
-            _t13 = axis.y() * _t7;
-            _t14 = axis.z() * _t7;
-        } else {
-            _t11 = 1.0;
-            _t12 = 0.0;
-            _t13 = 0.0;
-            _t14 = 0.0;
-        }
-        return new DecomposeSwingTwistResult(new DoubleQuat(Math.fma(this.x, _t11, -(this.w * _t12)) + Math.fma(this.z, _t13, -(this.y * _t14)), Math.fma(this.x, _t14, -(this.w * _t13)) + Math.fma(this.y, _t11, -(this.z * _t12)), Math.fma(this.y, _t12, this.z * _t11) + Math.fma(-this.x, _t13, -(this.w * _t14)), Math.fma(this.x, _t12, this.w * _t11) - Math.fma(-this.z, _t14, -(this.y * _t13))), new DoubleQuat(_t12, _t13, _t14, _t11));
+        return decomposeSwingTwist_sce8ee9f_tail(_t4, _t5, axis, _t7);
     }
 
 
@@ -872,11 +979,24 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         }
         double _t49 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, Math.fma(_t44, _t44, _t45 * _t45)));
         double _t50 = (1.0 / Math.sqrt(_t49));
+        return slerpShortest_s66703101_tail2(_t49, _t50, _t44, _t45, _t43, _t42);
+    }
+
+    /** Private tail of {@code slerpShortest}; reached only through it. */
+    private DoubleQuat slerpShortest_s66703101_tail2(double _t49, double _t50, double _t44, double _t45, double _t43, double _t42) {
+        double _sfx0, _sfx1, _sfx2, _sfx3;
         if (_t49 > 0.0) {
-            return new DoubleQuat(_t50 * _t44, _t50 * _t45, _t50 * _t43, _t50 * _t42);
+            _sfx0 = _t50 * _t44;
+            _sfx1 = _t50 * _t45;
+            _sfx2 = _t50 * _t43;
+            _sfx3 = _t50 * _t42;
         } else {
-            return DoubleQuat.ZERO;
+            _sfx0 = 0.0;
+            _sfx1 = 0.0;
+            _sfx2 = 0.0;
+            _sfx3 = 0.0;
         }
+        return new DoubleQuat(_sfx0, _sfx1, _sfx2, _sfx3);
     }
 
 
@@ -942,38 +1062,47 @@ public value record DoubleQuat(double x, double y, double z, double w) {
 
     /** Private tail of {@code squad}; reached only through it. */
     private DoubleQuat squad_s59cffae7_tail(double _t39, double _t46, double targetW, double _t42, double _t36_inv, double t, double _t0, double _t37, double control0Z, double _t45, double control1Z, double _t41, double _t35_inv, double targetZ, double control0X, double control1X, double targetX, double control0Y, double control1Y, double targetY, double _t71, double _t13, double _t14) {
-        double _t72, _t74, _t76;
+        double _t72, _t74;
         if (_t39 > 1.0E-6) {
             _t72 = Math.fma(this.w, _t46, targetW * _t42) * _t36_inv;
             _t74 = Math.fma(this.z, _t46, targetZ * _t42) * _t36_inv;
-            _t76 = Math.fma(this.x, _t46, targetX * _t42) * _t36_inv;
         } else {
             _t72 = Math.fma(t, targetW, this.w * _t0);
             _t74 = Math.fma(t, targetZ, this.z * _t0);
-            _t76 = Math.fma(t, targetX, this.x * _t0);
         }
-        double _t73, _t75, _t77;
+        double _t73, _t75;
         if (_t37 > 1.0E-6) {
             _t73 = Math.fma(control0Z, _t45, control1Z * _t41) * _t35_inv;
             _t75 = Math.fma(control0X, _t45, control1X * _t41) * _t35_inv;
-            _t77 = Math.fma(control0Y, _t45, control1Y * _t41) * _t35_inv;
         } else {
             _t73 = Math.fma(t, control1Z, control0Z * _t0);
             _t75 = Math.fma(t, control1X, control0X * _t0);
-            _t77 = Math.fma(t, control1Y, control0Y * _t0);
         }
-        return squad_s59cffae7_tail2(_t39, _t46, targetY, _t42, _t36_inv, t, _t0, _t71, _t72, _t73, _t74, _t75, _t76, _t77, _t13, _t14);
+        return squad_s59cffae7_tail2(_t39, _t46, targetX, _t42, _t36_inv, t, _t0, _t37, control0Y, _t45, control1Y, _t41, _t35_inv, targetY, _t71, _t72, _t73, _t74, _t75, _t13, _t14);
     }
 
     /** Private tail of {@code squad}; reached only through it. */
-    private DoubleQuat squad_s59cffae7_tail2(double _t39, double _t46, double targetY, double _t42, double _t36_inv, double t, double _t0, double _t71, double _t72, double _t73, double _t74, double _t75, double _t76, double _t77, double _t13, double _t14) {
-        double _t78 = _t39 > 1.0E-6 ? Math.fma(this.y, _t46, targetY * _t42) * _t36_inv : Math.fma(t, targetY, this.y * _t0);
+    private DoubleQuat squad_s59cffae7_tail2(double _t39, double _t46, double targetX, double _t42, double _t36_inv, double t, double _t0, double _t37, double control0Y, double _t45, double control1Y, double _t41, double _t35_inv, double targetY, double _t71, double _t72, double _t73, double _t74, double _t75, double _t13, double _t14) {
+        double _t76, _t78;
+        if (_t39 > 1.0E-6) {
+            _t76 = Math.fma(this.x, _t46, targetX * _t42) * _t36_inv;
+            _t78 = Math.fma(this.y, _t46, targetY * _t42) * _t36_inv;
+        } else {
+            _t76 = Math.fma(t, targetX, this.x * _t0);
+            _t78 = Math.fma(t, targetY, this.y * _t0);
+        }
+        double _t77 = _t37 > 1.0E-6 ? Math.fma(control0Y, _t45, control1Y * _t41) * _t35_inv : Math.fma(t, control1Y, control0Y * _t0);
         double _t85 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(_t71, _t72, Math.fma(_t73, _t74, Math.fma(_t75, _t76, _t77 * _t78))))));
         double _t86 = Math.sin(_t85);
         double _t86_inv = 1.0 / _t86;
         double _t87 = Math.abs(_t86);
         double _t89 = Math.sin(_t13 * _t85);
         double _t91 = Math.sin(_t14 * _t85);
+        return squad_s59cffae7_tail3(_t87, _t91, _t76, _t89, _t75, _t86_inv, _t14, _t13, _t78, _t77, _t74, _t73, _t72, _t71);
+    }
+
+    /** Private tail of {@code squad}; reached only through it. */
+    private DoubleQuat squad_s59cffae7_tail3(double _t87, double _t91, double _t76, double _t89, double _t75, double _t86_inv, double _t14, double _t13, double _t78, double _t77, double _t74, double _t73, double _t72, double _t71) {
         double _sfx0, _sfx1, _sfx2, _sfx3;
         if (_t87 > 1.0E-6) {
             _sfx0 = Math.fma(_t91, _t76, _t89 * _t75) * _t86_inv;
@@ -2189,9 +2318,17 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     }
 
     /** Private tail of {@code rotateTowards}; reached only through it. */
-    private DoubleQuat rotateTowards_s287f86c9_tail(double _t11, double _t39, double _t40, double _t12, double _t13, double _t12_inv, double _t14, double _t15, double _t16) {
+    private DoubleQuat rotateTowards_s287f86c9_tail(double _t17, double _t18, double _t19, double _t20, double _t21, double _t22, double _t23, double _t24, double step, double _t11, double _t12, double _t13, double _t12_inv, double _t14, double _t15, double _t16) {
+        double _t36 = 4.0 * Math.atan2(Math.sqrt(Math.fma(_t17, _t17, Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)))), Math.sqrt(Math.fma(_t21, _t21, Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24)))));
+        double _t39 = _t36 > 0.0 ? Math.min(1.0, step / _t36) : 0.0;
+        double _t40 = 1.0 - _t39;
         double _t42 = Math.sin(_t11 * _t39);
         double _t44 = Math.sin(_t40 * _t11);
+        return rotateTowards_s287f86c9_tail2(_t12, _t44, _t42, _t13, _t12_inv, _t40, _t39, _t14, _t15, _t16);
+    }
+
+    /** Private tail of {@code rotateTowards}; reached only through it. */
+    private DoubleQuat rotateTowards_s287f86c9_tail2(double _t12, double _t44, double _t42, double _t13, double _t12_inv, double _t40, double _t39, double _t14, double _t15, double _t16) {
         double _t65, _t66, _t67, _t68;
         if (_t12 > 0.0) {
             _t65 = Math.fma(this.w, _t44, _t42 * _t13) * _t12_inv;
@@ -2206,11 +2343,24 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         }
         double _t72 = Math.fma(_t65, _t65, Math.fma(_t66, _t66, Math.fma(_t67, _t67, _t68 * _t68)));
         double _t73 = (1.0 / Math.sqrt(_t72));
+        return rotateTowards_s287f86c9_tail3(_t72, _t73, _t67, _t68, _t66, _t65);
+    }
+
+    /** Private tail of {@code rotateTowards}; reached only through it. */
+    private DoubleQuat rotateTowards_s287f86c9_tail3(double _t72, double _t73, double _t67, double _t68, double _t66, double _t65) {
+        double _sfx0, _sfx1, _sfx2, _sfx3;
         if (_t72 > 0.0) {
-            return new DoubleQuat(_t73 * _t67, _t73 * _t68, _t73 * _t66, _t73 * _t65);
+            _sfx0 = _t73 * _t67;
+            _sfx1 = _t73 * _t68;
+            _sfx2 = _t73 * _t66;
+            _sfx3 = _t73 * _t65;
         } else {
-            return DoubleQuat.ZERO;
+            _sfx0 = 0.0;
+            _sfx1 = 0.0;
+            _sfx2 = 0.0;
+            _sfx3 = 0.0;
         }
+        return new DoubleQuat(_sfx0, _sfx1, _sfx2, _sfx3);
     }
 
 
@@ -2258,10 +2408,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t22 = this.z + _t14;
         double _t23 = this.x + _t15;
         double _t24 = this.y + _t16;
-        double _t36 = 4.0 * Math.atan2(Math.sqrt(Math.fma(_t17, _t17, Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)))), Math.sqrt(Math.fma(_t21, _t21, Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24)))));
-        double _t39 = _t36 > 0.0 ? Math.min(1.0, step / _t36) : 0.0;
-        double _t40 = 1.0 - _t39;
-        return rotateTowards_s287f86c9_tail(_t11, _t39, _t40, _t12, _t13, _t12_inv, _t14, _t15, _t16);
+        return rotateTowards_s287f86c9_tail(_t17, _t18, _t19, _t20, _t21, _t22, _t23, _t24, step, _t11, _t12, _t13, _t12_inv, _t14, _t15, _t16);
     }
 
 
@@ -2280,6 +2427,83 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      */
     public DoubleQuat lookAlong(Double3 dir, Double3 up) {
         return lookAlong(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
+    }
+
+    /** Private tail of {@code lookAlong}; reached only through it. */
+    private DoubleQuat lookAlong_s6a304d84_tail(double _t9, double _t32, double _t7, double _t31, double _t33, double _t11, double _t8, double _t12, double _t10, double _t34) {
+        double _t37 = _t9 - _t32;
+        double _t38 = _t9 + _t32;
+        double _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
+        double _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
+        double _t55 = Math.max(_t49, _t7);
+        double _t56 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
+        double _t57 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
+        double _t58 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
+        double _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
+        double _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
+        double _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
+        double _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0 - _t7 - _t31));
+        double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
+        double _t65 = (1.0 / Math.sqrt(_t61));
+        double _t66 = (1.0 / Math.sqrt(_t62));
+        double _t67 = (1.0 / Math.sqrt(_t63));
+        double _t68 = (1.0 / Math.sqrt(_t60));
+        return lookAlong_s6a304d84_tail2(_t59, _t57, _t68, _t31, _t55, _t38, _t65, _t49, _t7, _t54, _t66, _t63, _t37, _t58, _t62, _t67, _t60, _t56, _t61);
+    }
+
+    /** Private tail of {@code lookAlong}; reached only through it. */
+    private DoubleQuat lookAlong_s6a304d84_tail2(double _t59, double _t57, double _t68, double _t31, double _t55, double _t38, double _t65, double _t49, double _t7, double _t54, double _t66, double _t63, double _t37, double _t58, double _t62, double _t67, double _t60, double _t56, double _t61) {
+        double _t108, _t109;
+        if (_t59 > 0.0) {
+            _t108 = 0.5 * _t57 * _t68;
+            _t109 = 0.5 * _t37 * _t68;
+        } else {
+            if (_t31 > _t55) {
+                _t108 = 0.5 * _t38 * _t65;
+                _t109 = 0.5 * _t58 * _t65;
+            } else {
+                if (_t49 > _t7) {
+                    _t108 = 0.5 * _t54 * _t66;
+                    _t109 = 0.5 * Math.sqrt(_t62);
+                } else {
+                    _t108 = 0.5 * Math.sqrt(_t63);
+                    _t109 = 0.5 * _t54 * _t67;
+                }
+            }
+        }
+        return lookAlong_s6a304d84_tail3(_t59, _t60, _t31, _t55, _t56, _t65, _t49, _t7, _t37, _t66, _t57, _t67, _t68, _t61, _t58, _t38, _t108, _t109);
+    }
+
+    /** Private tail of {@code lookAlong}; reached only through it. */
+    private DoubleQuat lookAlong_s6a304d84_tail3(double _t59, double _t60, double _t31, double _t55, double _t56, double _t65, double _t49, double _t7, double _t37, double _t66, double _t57, double _t67, double _t68, double _t61, double _t58, double _t38, double _t108, double _t109) {
+        double _t110, _t111;
+        if (_t59 > 0.0) {
+            _t110 = 0.5 * Math.sqrt(_t60);
+            _t111 = 0.5 * _t56 * _t68;
+        } else {
+            if (_t31 > _t55) {
+                _t110 = 0.5 * _t56 * _t65;
+                _t111 = 0.5 * Math.sqrt(_t61);
+            } else {
+                if (_t49 > _t7) {
+                    _t110 = 0.5 * _t37 * _t66;
+                    _t111 = 0.5 * _t58 * _t66;
+                } else {
+                    _t110 = 0.5 * _t57 * _t67;
+                    _t111 = 0.5 * _t38 * _t67;
+                }
+            }
+        }
+        double _sfx0 = Math.fma(this.x, _t110, this.w * _t111) + Math.fma(this.y, _t108, -(this.z * _t109));
+        double _sfx1 = Math.fma(this.y, _t110, this.z * _t111) + Math.fma(this.w, _t109, -(this.x * _t108));
+        return lookAlong_s6a304d84_tail4(_t109, _t108, _t110, _t111, _sfx0, _sfx1);
+    }
+
+    /** Private tail of {@code lookAlong}; reached only through it. */
+    private DoubleQuat lookAlong_s6a304d84_tail4(double _t109, double _t108, double _t110, double _t111, double _sfx0, double _sfx1) {
+        double _sfx2 = Math.fma(this.x, _t109, this.w * _t108) + Math.fma(this.z, _t110, -(this.y * _t111));
+        double _sfx3 = Math.fma(this.w, _t110, -(this.x * _t111)) - Math.fma(this.y, _t109, this.z * _t108);
+        return new DoubleQuat(_sfx0, _sfx1, _sfx2, _sfx3);
     }
 
 
@@ -2331,50 +2555,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
             _t33 = 0.0;
         }
         double _t34 = 1.0 + _t31;
-        double _t37 = _t9 - _t32;
-        double _t38 = _t9 + _t32;
-        double _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        double _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        double _t55 = Math.max(_t49, _t7);
-        double _t56 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        double _t57 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        double _t58 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        double _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
-        double _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        double _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        double _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0 - _t7 - _t31));
-        double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
-        double _t65 = (1.0 / Math.sqrt(_t61));
-        double _t66 = (1.0 / Math.sqrt(_t62));
-        double _t67 = (1.0 / Math.sqrt(_t63));
-        double _t68 = (1.0 / Math.sqrt(_t60));
-        double _t108, _t109, _t110, _t111;
-        if (_t59 > 0.0) {
-            _t108 = 0.5 * _t57 * _t68;
-            _t109 = 0.5 * _t37 * _t68;
-            _t110 = 0.5 * Math.sqrt(_t60);
-            _t111 = 0.5 * _t56 * _t68;
-        } else {
-            if (_t31 > _t55) {
-                _t108 = 0.5 * _t38 * _t65;
-                _t109 = 0.5 * _t58 * _t65;
-                _t110 = 0.5 * _t56 * _t65;
-                _t111 = 0.5 * Math.sqrt(_t61);
-            } else {
-                if (_t49 > _t7) {
-                    _t108 = 0.5 * _t54 * _t66;
-                    _t109 = 0.5 * Math.sqrt(_t62);
-                    _t110 = 0.5 * _t37 * _t66;
-                    _t111 = 0.5 * _t58 * _t66;
-                } else {
-                    _t108 = 0.5 * Math.sqrt(_t63);
-                    _t109 = 0.5 * _t54 * _t67;
-                    _t110 = 0.5 * _t57 * _t67;
-                    _t111 = 0.5 * _t38 * _t67;
-                }
-            }
-        }
-        return new DoubleQuat(Math.fma(this.x, _t110, this.w * _t111) + Math.fma(this.y, _t108, -(this.z * _t109)), Math.fma(this.y, _t110, this.z * _t111) + Math.fma(this.w, _t109, -(this.x * _t108)), Math.fma(this.x, _t109, this.w * _t108) + Math.fma(this.z, _t110, -(this.y * _t111)), Math.fma(this.w, _t110, -(this.x * _t111)) - Math.fma(this.y, _t109, this.z * _t108));
+        return lookAlong_s6a304d84_tail(_t9, _t32, _t7, _t31, _t33, _t11, _t8, _t12, _t10, _t34);
     }
 
 
@@ -2425,6 +2606,74 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         return makeRotationLookAlong(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private tail of {@code makeRotationLookAlong}; reached only through it. */
+    private static DoubleQuat makeRotationLookAlong_s6a304d84_tail(double _t9, double _t32, double _t7, double _t31, double _t33, double _t11, double _t8, double _t12, double _t10, double _t34) {
+        double _t37 = _t9 + _t32;
+        double _t38 = _t9 - _t32;
+        double _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
+        double _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
+        double _t55 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
+        double _t56 = Math.max(_t49, _t7);
+        double _t57 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
+        double _t58 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
+        double _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
+        double _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
+        double _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
+        double _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0 - _t7 - _t31));
+        double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
+        double _t64 = (1.0 / Math.sqrt(_t60));
+        double _t65 = (1.0 / Math.sqrt(_t62));
+        double _t66 = (1.0 / Math.sqrt(_t63));
+        double _t67 = (1.0 / Math.sqrt(_t61));
+        return makeRotationLookAlong_s6a304d84_tail2(_t59, _t55, _t64, _t31, _t56, _t61, _t49, _t7, _t57, _t65, _t37, _t66, _t38, _t67, _t62, _t54, _t58, _t63, _t60);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong}; reached only through it. */
+    private static DoubleQuat makeRotationLookAlong_s6a304d84_tail2(double _t59, double _t55, double _t64, double _t31, double _t56, double _t61, double _t49, double _t7, double _t57, double _t65, double _t37, double _t66, double _t38, double _t67, double _t62, double _t54, double _t58, double _t63, double _t60) {
+        double _sfx0, _sfx1;
+        if (_t59 > 0.0) {
+            _sfx0 = 0.5 * _t55 * _t64;
+            _sfx1 = 0.5 * _t38 * _t64;
+        } else {
+            if (_t31 > _t56) {
+                _sfx0 = 0.5 * Math.sqrt(_t61);
+                _sfx1 = 0.5 * _t57 * _t67;
+            } else {
+                if (_t49 > _t7) {
+                    _sfx0 = 0.5 * _t57 * _t65;
+                    _sfx1 = 0.5 * Math.sqrt(_t62);
+                } else {
+                    _sfx0 = 0.5 * _t37 * _t66;
+                    _sfx1 = 0.5 * _t54 * _t66;
+                }
+            }
+        }
+        return makeRotationLookAlong_s6a304d84_tail3(_t59, _t58, _t64, _t31, _t56, _t37, _t67, _t49, _t7, _t54, _t65, _t63, _t60, _t55, _t38, _t66, _sfx0, _sfx1);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong}; reached only through it. */
+    private static DoubleQuat makeRotationLookAlong_s6a304d84_tail3(double _t59, double _t58, double _t64, double _t31, double _t56, double _t37, double _t67, double _t49, double _t7, double _t54, double _t65, double _t63, double _t60, double _t55, double _t38, double _t66, double _sfx0, double _sfx1) {
+        double _sfx2, _sfx3;
+        if (_t59 > 0.0) {
+            _sfx2 = 0.5 * _t58 * _t64;
+            _sfx3 = 0.5 * Math.sqrt(_t60);
+        } else {
+            if (_t31 > _t56) {
+                _sfx2 = 0.5 * _t37 * _t67;
+                _sfx3 = 0.5 * _t55 * _t67;
+            } else {
+                if (_t49 > _t7) {
+                    _sfx2 = 0.5 * _t54 * _t65;
+                    _sfx3 = 0.5 * _t38 * _t65;
+                } else {
+                    _sfx2 = 0.5 * Math.sqrt(_t63);
+                    _sfx3 = 0.5 * _t58 * _t66;
+                }
+            }
+        }
+        return new DoubleQuat(_sfx0, _sfx1, _sfx2, _sfx3);
+    }
+
 
     /**
      * Create a rotation that makes {@code +z} point along ({@code dirX}, {@code dirY},
@@ -2470,36 +2719,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
             _t33 = 0.0;
         }
         double _t34 = 1.0 + _t31;
-        double _t37 = _t9 + _t32;
-        double _t38 = _t9 - _t32;
-        double _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        double _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        double _t55 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        double _t56 = Math.max(_t49, _t7);
-        double _t57 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        double _t58 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        double _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
-        double _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        double _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        double _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0 - _t7 - _t31));
-        double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
-        double _t64 = (1.0 / Math.sqrt(_t60));
-        double _t65 = (1.0 / Math.sqrt(_t62));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t61));
-        if (_t59 > 0.0) {
-            return new DoubleQuat(0.5 * _t55 * _t64, 0.5 * _t38 * _t64, 0.5 * _t58 * _t64, 0.5 * Math.sqrt(_t60));
-        } else {
-            if (_t31 > _t56) {
-                return new DoubleQuat(0.5 * Math.sqrt(_t61), 0.5 * _t57 * _t67, 0.5 * _t37 * _t67, 0.5 * _t55 * _t67);
-            } else {
-                if (_t49 > _t7) {
-                    return new DoubleQuat(0.5 * _t57 * _t65, 0.5 * Math.sqrt(_t62), 0.5 * _t54 * _t65, 0.5 * _t38 * _t65);
-                } else {
-                    return new DoubleQuat(0.5 * _t37 * _t66, 0.5 * _t54 * _t66, 0.5 * Math.sqrt(_t63), 0.5 * _t58 * _t66);
-                }
-            }
-        }
+        return makeRotationLookAlong_s6a304d84_tail(_t9, _t32, _t7, _t31, _t33, _t11, _t8, _t12, _t10, _t34);
     }
 
 
@@ -2518,6 +2738,21 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      */
     public static DoubleQuat makeRotationTo(Double3 fromDir, Double3 toDir) {
         return makeRotationTo(fromDir.x(), fromDir.y(), fromDir.z(), toDir.x(), toDir.y(), toDir.z());
+    }
+
+    /** Private tail of {@code makeRotationTo}; reached only through it. */
+    private static DoubleQuat makeRotationTo_s6ca4b61d_tail(double _t29, double _t22, double _t15, double _t14, double _t16, double _t23, double _t17, double _t19, double _t18) {
+        double _t30 = (1.0 / Math.sqrt(_t29));
+        double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
+        if (_t23 > 1.0E-6) {
+            return new DoubleQuat(_t14 * _t32, _t16 * _t32, _t15 * _t32, 0.5 * _t22 * _t32);
+        } else {
+            if (_t29 > 0.0) {
+                return new DoubleQuat(_t30 * _t17, _t30 * _t19, _t30 * _t18, 0.0);
+            } else {
+                return DoubleQuat.ZERO;
+            }
+        }
     }
 
 
@@ -2560,17 +2795,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         double _t23 = 0.5 * _t22;
         double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
-        double _t30 = (1.0 / Math.sqrt(_t29));
-        double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
-        if (_t23 > 1.0E-6) {
-            return new DoubleQuat(_t14 * _t32, _t16 * _t32, _t15 * _t32, 0.5 * _t22 * _t32);
-        } else {
-            if (_t29 > 0.0) {
-                return new DoubleQuat(_t30 * _t17, _t30 * _t19, _t30 * _t18, 0.0);
-            } else {
-                return DoubleQuat.ZERO;
-            }
-        }
+        return makeRotationTo_s6ca4b61d_tail(_t29, _t22, _t15, _t14, _t16, _t23, _t17, _t19, _t18);
     }
 
 
@@ -2926,7 +3151,16 @@ public value record DoubleQuat(double x, double y, double z, double w) {
                 _t47 = 0.0;
             }
         }
-        return new DoubleQuat(Math.fma(this.x, _t41, this.w * _t45) + Math.fma(this.y, _t46, -(this.z * _t47)), Math.fma(this.y, _t41, this.z * _t45) + Math.fma(this.w, _t47, -(this.x * _t46)), Math.fma(this.x, _t47, this.w * _t46) + Math.fma(this.z, _t41, -(this.y * _t45)), Math.fma(this.w, _t41, -(this.x * _t45)) - Math.fma(this.y, _t47, this.z * _t46));
+        double _sfx0 = Math.fma(this.x, _t41, this.w * _t45) + Math.fma(this.y, _t46, -(this.z * _t47));
+        double _sfx1 = Math.fma(this.y, _t41, this.z * _t45) + Math.fma(this.w, _t47, -(this.x * _t46));
+        return rotateTo_s6ca4b61d_tail2(_t47, _t46, _t41, _t45, _sfx0, _sfx1);
+    }
+
+    /** Private tail of {@code rotateTo}; reached only through it. */
+    private DoubleQuat rotateTo_s6ca4b61d_tail2(double _t47, double _t46, double _t41, double _t45, double _sfx0, double _sfx1) {
+        double _sfx2 = Math.fma(this.x, _t47, this.w * _t46) + Math.fma(this.z, _t41, -(this.y * _t45));
+        double _sfx3 = Math.fma(this.w, _t41, -(this.x * _t45)) - Math.fma(this.y, _t47, this.z * _t46);
+        return new DoubleQuat(_sfx0, _sfx1, _sfx2, _sfx3);
     }
 
 
@@ -2994,6 +3228,12 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         return new DoubleQuat(Math.fma(this.x, _t1, this.w * _t2), Math.fma(this.y, _t1, this.z * _t2), Math.fma(this.z, _t1, -(this.y * _t2)), Math.fma(this.w, _t1, -(this.x * _t2)));
     }
 
+    /** Private tail of {@code rotateXYZ}; reached only through it. */
+    private DoubleQuat rotateXYZ_s361a4ff5_tail(double _t12, double _t5, double _t11, double _t8, double _t21, double _t19, double _t20) {
+        double _t22 = Math.fma(_t12, _t5, -(_t11 * _t8));
+        return new DoubleQuat(Math.fma(this.x, _t21, this.w * _t19) + Math.fma(this.y, _t20, -(this.z * _t22)), Math.fma(this.y, _t21, this.z * _t19) + Math.fma(this.w, _t22, -(this.x * _t20)), Math.fma(this.x, _t22, this.w * _t20) + Math.fma(this.z, _t21, -(this.y * _t19)), Math.fma(this.w, _t21, -(this.x * _t19)) - Math.fma(this.y, _t22, this.z * _t20));
+    }
+
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
@@ -3026,8 +3266,13 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t19 = Math.fma(_t11, _t5, _t12 * _t8);
         double _t20 = Math.fma(_t10, _t5, _t9 * _t8);
         double _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        double _t22 = Math.fma(_t12, _t5, -(_t11 * _t8));
-        return new DoubleQuat(Math.fma(this.x, _t21, this.w * _t19) + Math.fma(this.y, _t20, -(this.z * _t22)), Math.fma(this.y, _t21, this.z * _t19) + Math.fma(this.w, _t22, -(this.x * _t20)), Math.fma(this.x, _t22, this.w * _t20) + Math.fma(this.z, _t21, -(this.y * _t19)), Math.fma(this.w, _t21, -(this.x * _t19)) - Math.fma(this.y, _t22, this.z * _t20));
+        return rotateXYZ_s361a4ff5_tail(_t12, _t5, _t11, _t8, _t21, _t19, _t20);
+    }
+
+    /** Private tail of {@code rotateXZY}; reached only through it. */
+    private DoubleQuat rotateXZY_s361a4ff5_tail(double _t10, double _t5, double _t9, double _t8, double _t19, double _t21, double _t20) {
+        double _t22 = Math.fma(_t10, _t5, -(_t9 * _t8));
+        return new DoubleQuat(Math.fma(this.x, _t19, this.w * _t21) + Math.fma(this.y, _t20, -(this.z * _t22)), Math.fma(this.y, _t19, this.z * _t21) + Math.fma(this.w, _t22, -(this.x * _t20)), Math.fma(this.x, _t22, this.w * _t20) + Math.fma(this.z, _t19, -(this.y * _t21)), Math.fma(this.w, _t19, -(this.x * _t21)) - Math.fma(this.y, _t22, this.z * _t20));
     }
 
 
@@ -3062,8 +3307,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t19 = Math.fma(_t9, _t5, _t10 * _t8);
         double _t20 = Math.fma(_t11, _t5, _t12 * _t8);
         double _t21 = Math.fma(_t11, _t8, -(_t12 * _t5));
-        double _t22 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        return new DoubleQuat(Math.fma(this.x, _t19, this.w * _t21) + Math.fma(this.y, _t20, -(this.z * _t22)), Math.fma(this.y, _t19, this.z * _t21) + Math.fma(this.w, _t22, -(this.x * _t20)), Math.fma(this.x, _t22, this.w * _t20) + Math.fma(this.z, _t19, -(this.y * _t21)), Math.fma(this.w, _t19, -(this.x * _t21)) - Math.fma(this.y, _t22, this.z * _t20));
+        return rotateXZY_s361a4ff5_tail(_t10, _t5, _t9, _t8, _t19, _t21, _t20);
     }
 
 
@@ -3079,6 +3323,12 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t1 = Math.cos(_t0);
         double _t2 = Math.sin(_t0);
         return new DoubleQuat(Math.fma(this.x, _t1, -(this.z * _t2)), Math.fma(this.y, _t1, this.w * _t2), Math.fma(this.x, _t2, this.z * _t1), Math.fma(this.w, _t1, -(this.y * _t2)));
+    }
+
+    /** Private tail of {@code rotateYXZ}; reached only through it. */
+    private DoubleQuat rotateYXZ_s361a4ff5_tail(double _t12, double _t8, double _t11, double _t5, double _t19, double _t20, double _t21) {
+        double _t22 = Math.fma(_t12, _t8, -(_t11 * _t5));
+        return new DoubleQuat(Math.fma(this.x, _t19, this.w * _t20) + Math.fma(this.y, _t21, -(this.z * _t22)), Math.fma(this.y, _t19, this.z * _t20) + Math.fma(this.w, _t22, -(this.x * _t21)), Math.fma(this.x, _t22, this.w * _t21) + Math.fma(this.z, _t19, -(this.y * _t20)), Math.fma(this.w, _t19, -(this.x * _t20)) - Math.fma(this.y, _t22, this.z * _t21));
     }
 
 
@@ -3113,8 +3363,13 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t19 = Math.fma(_t9, _t5, _t10 * _t8);
         double _t20 = Math.fma(_t11, _t8, _t12 * _t5);
         double _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        double _t22 = Math.fma(_t12, _t8, -(_t11 * _t5));
-        return new DoubleQuat(Math.fma(this.x, _t19, this.w * _t20) + Math.fma(this.y, _t21, -(this.z * _t22)), Math.fma(this.y, _t19, this.z * _t20) + Math.fma(this.w, _t22, -(this.x * _t21)), Math.fma(this.x, _t22, this.w * _t21) + Math.fma(this.z, _t19, -(this.y * _t20)), Math.fma(this.w, _t19, -(this.x * _t20)) - Math.fma(this.y, _t22, this.z * _t21));
+        return rotateYXZ_s361a4ff5_tail(_t12, _t8, _t11, _t5, _t19, _t20, _t21);
+    }
+
+    /** Private tail of {@code rotateYZX}; reached only through it. */
+    private DoubleQuat rotateYZX_s361a4ff5_tail(double _t11, double _t5, double _t12, double _t8, double _t21, double _t19, double _t20) {
+        double _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+        return new DoubleQuat(Math.fma(this.x, _t21, this.w * _t19) + Math.fma(this.y, _t22, -(this.z * _t20)), Math.fma(this.y, _t21, this.z * _t19) + Math.fma(this.w, _t20, -(this.x * _t22)), Math.fma(this.x, _t20, this.w * _t22) + Math.fma(this.z, _t21, -(this.y * _t19)), Math.fma(this.w, _t21, -(this.x * _t19)) - Math.fma(this.y, _t20, this.z * _t22));
     }
 
 
@@ -3149,8 +3404,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t19 = Math.fma(_t10, _t5, _t9 * _t8);
         double _t20 = Math.fma(_t12, _t5, _t11 * _t8);
         double _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        double _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
-        return new DoubleQuat(Math.fma(this.x, _t21, this.w * _t19) + Math.fma(this.y, _t22, -(this.z * _t20)), Math.fma(this.y, _t21, this.z * _t19) + Math.fma(this.w, _t20, -(this.x * _t22)), Math.fma(this.x, _t20, this.w * _t22) + Math.fma(this.z, _t21, -(this.y * _t19)), Math.fma(this.w, _t21, -(this.x * _t19)) - Math.fma(this.y, _t20, this.z * _t22));
+        return rotateYZX_s361a4ff5_tail(_t11, _t5, _t12, _t8, _t21, _t19, _t20);
     }
 
 
@@ -3166,6 +3420,12 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t1 = Math.cos(_t0);
         double _t2 = Math.sin(_t0);
         return new DoubleQuat(Math.fma(this.x, _t1, this.y * _t2), Math.fma(this.y, _t1, -(this.x * _t2)), Math.fma(this.z, _t1, this.w * _t2), Math.fma(this.w, _t1, -(this.z * _t2)));
+    }
+
+    /** Private tail of {@code rotateZXY}; reached only through it. */
+    private DoubleQuat rotateZXY_s361a4ff5_tail(double _t11, double _t5, double _t12, double _t8, double _t21, double _t19, double _t20) {
+        double _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+        return new DoubleQuat(Math.fma(this.x, _t21, this.w * _t22) + Math.fma(this.y, _t19, -(this.z * _t20)), Math.fma(this.y, _t21, this.z * _t22) + Math.fma(this.w, _t20, -(this.x * _t19)), Math.fma(this.x, _t20, this.w * _t19) + Math.fma(this.z, _t21, -(this.y * _t22)), Math.fma(this.w, _t21, -(this.x * _t22)) - Math.fma(this.y, _t20, this.z * _t19));
     }
 
 
@@ -3200,8 +3460,13 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t19 = Math.fma(_t11, _t8, _t12 * _t5);
         double _t20 = Math.fma(_t10, _t5, _t9 * _t8);
         double _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        double _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
-        return new DoubleQuat(Math.fma(this.x, _t21, this.w * _t22) + Math.fma(this.y, _t19, -(this.z * _t20)), Math.fma(this.y, _t21, this.z * _t22) + Math.fma(this.w, _t20, -(this.x * _t19)), Math.fma(this.x, _t20, this.w * _t19) + Math.fma(this.z, _t21, -(this.y * _t22)), Math.fma(this.w, _t21, -(this.x * _t22)) - Math.fma(this.y, _t20, this.z * _t19));
+        return rotateZXY_s361a4ff5_tail(_t11, _t5, _t12, _t8, _t21, _t19, _t20);
+    }
+
+    /** Private tail of {@code rotateZYX}; reached only through it. */
+    private DoubleQuat rotateZYX_s361a4ff5_tail(double _t11, double _t8, double _t12, double _t5, double _t19, double _t21, double _t20) {
+        double _t22 = Math.fma(_t11, _t8, -(_t12 * _t5));
+        return new DoubleQuat(Math.fma(this.x, _t19, this.w * _t21) + Math.fma(this.y, _t22, -(this.z * _t20)), Math.fma(this.y, _t19, this.z * _t21) + Math.fma(this.w, _t20, -(this.x * _t22)), Math.fma(this.x, _t20, this.w * _t22) + Math.fma(this.z, _t19, -(this.y * _t21)), Math.fma(this.w, _t19, -(this.x * _t21)) - Math.fma(this.y, _t20, this.z * _t22));
     }
 
 
@@ -3236,8 +3501,7 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t19 = Math.fma(_t9, _t5, _t10 * _t8);
         double _t20 = Math.fma(_t12, _t8, _t11 * _t5);
         double _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        double _t22 = Math.fma(_t11, _t8, -(_t12 * _t5));
-        return new DoubleQuat(Math.fma(this.x, _t19, this.w * _t21) + Math.fma(this.y, _t22, -(this.z * _t20)), Math.fma(this.y, _t19, this.z * _t21) + Math.fma(this.w, _t20, -(this.x * _t22)), Math.fma(this.x, _t20, this.w * _t22) + Math.fma(this.z, _t19, -(this.y * _t21)), Math.fma(this.w, _t19, -(this.x * _t21)) - Math.fma(this.y, _t20, this.z * _t22));
+        return rotateZYX_s361a4ff5_tail(_t11, _t8, _t12, _t5, _t19, _t21, _t20);
     }
 
 

@@ -245,13 +245,59 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
     /** {@return whether this matrix is affine} Always {@code true} for this shape. */
     public boolean isAffine() { return true; }
 
+    /** Private arm 0 of {@code getColumn_identity}; reached only through it. */
+    private Float3 getColumn_identity_s749615cf_arm0() {
+        return new Float3(1.0f, 0.0f, 0.0f);
+    }
+
+    /** Private arm 1 of {@code getColumn_identity}; reached only through it. */
+    private Float3 getColumn_identity_s749615cf_arm1() {
+        return new Float3(0.0f, 1.0f, 0.0f);
+    }
+
+    /** Private arm 2 of {@code getColumn_identity}; reached only through it. */
+    private Float3 getColumn_identity_s749615cf_arm2() {
+        return new Float3(0.0f, 0.0f, 1.0f);
+    }
+
+    /** Private arm 3 of {@code getColumn_identity}; reached only through it. */
+    private Float3 getColumn_identity_s749615cf_arm3() {
+        return Float3.ZERO;
+    }
+
 
     /**
      * Private body of {@code getColumn}, specialized by runtime matrix properties; reached only
      * through the public {@code getColumn} dispatcher.
      */
     private Float3 getColumn_identity(int col) {
-        return new Float3(switch (col) { case 0 -> 1.0f; case 1 -> 0.0f; case 2 -> 0.0f; case 3 -> 0.0f; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); }, switch (col) { case 0 -> 0.0f; case 1 -> 1.0f; case 2 -> 0.0f; case 3 -> 0.0f; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); }, switch (col) { case 0 -> 0.0f; case 1 -> 0.0f; case 2 -> 1.0f; case 3 -> 0.0f; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); });
+        return switch (col) {
+            case 0 -> getColumn_identity_s749615cf_arm0();
+            case 1 -> getColumn_identity_s749615cf_arm1();
+            case 2 -> getColumn_identity_s749615cf_arm2();
+            case 3 -> getColumn_identity_s749615cf_arm3();
+            default -> throw new IndexOutOfBoundsException("Index out of range: " + col);
+        };
+    }
+
+    /** Private arm 0 of {@code getColumn_translation}; reached only through it. */
+    private Float3 getColumn_translation_s749615cf_arm0() {
+        return new Float3(1.0f, 0.0f, 0.0f);
+    }
+
+    /** Private arm 1 of {@code getColumn_translation}; reached only through it. */
+    private Float3 getColumn_translation_s749615cf_arm1() {
+        return new Float3(0.0f, 1.0f, 0.0f);
+    }
+
+    /** Private arm 2 of {@code getColumn_translation}; reached only through it. */
+    private Float3 getColumn_translation_s749615cf_arm2() {
+        return new Float3(0.0f, 0.0f, 1.0f);
+    }
+
+    /** Private arm 3 of {@code getColumn_translation}; reached only through it. */
+    private Float3 getColumn_translation_s749615cf_arm3() {
+        return new Float3(this.m03, this.m13, this.m23);
     }
 
 
@@ -260,7 +306,33 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code getColumn} dispatcher.
      */
     private Float3 getColumn_translation(int col) {
-        return new Float3(switch (col) { case 0 -> 1.0f; case 1 -> 0.0f; case 2 -> 0.0f; case 3 -> this.m03; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); }, switch (col) { case 0 -> 0.0f; case 1 -> 1.0f; case 2 -> 0.0f; case 3 -> this.m13; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); }, switch (col) { case 0 -> 0.0f; case 1 -> 0.0f; case 2 -> 1.0f; case 3 -> this.m23; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); });
+        return switch (col) {
+            case 0 -> getColumn_translation_s749615cf_arm0();
+            case 1 -> getColumn_translation_s749615cf_arm1();
+            case 2 -> getColumn_translation_s749615cf_arm2();
+            case 3 -> getColumn_translation_s749615cf_arm3();
+            default -> throw new IndexOutOfBoundsException("Index out of range: " + col);
+        };
+    }
+
+    /** Private arm 0 of {@code getColumn_general}; reached only through it. */
+    private Float3 getColumn_general_s749615cf_arm0() {
+        return new Float3(this.m00, this.m10, this.m20);
+    }
+
+    /** Private arm 1 of {@code getColumn_general}; reached only through it. */
+    private Float3 getColumn_general_s749615cf_arm1() {
+        return new Float3(this.m01, this.m11, this.m21);
+    }
+
+    /** Private arm 2 of {@code getColumn_general}; reached only through it. */
+    private Float3 getColumn_general_s749615cf_arm2() {
+        return new Float3(this.m02, this.m12, this.m22);
+    }
+
+    /** Private arm 3 of {@code getColumn_general}; reached only through it. */
+    private Float3 getColumn_general_s749615cf_arm3() {
+        return new Float3(this.m03, this.m13, this.m23);
     }
 
 
@@ -269,7 +341,13 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code getColumn} dispatcher.
      */
     private Float3 getColumn_general(int col) {
-        return new Float3(switch (col) { case 0 -> this.m00; case 1 -> this.m01; case 2 -> this.m02; case 3 -> this.m03; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); }, switch (col) { case 0 -> this.m10; case 1 -> this.m11; case 2 -> this.m12; case 3 -> this.m13; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); }, switch (col) { case 0 -> this.m20; case 1 -> this.m21; case 2 -> this.m22; case 3 -> this.m23; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); });
+        return switch (col) {
+            case 0 -> getColumn_general_s749615cf_arm0();
+            case 1 -> getColumn_general_s749615cf_arm1();
+            case 2 -> getColumn_general_s749615cf_arm2();
+            case 3 -> getColumn_general_s749615cf_arm3();
+            default -> throw new IndexOutOfBoundsException("Index out of range: " + col);
+        };
     }
 
 
@@ -579,7 +657,9 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
     }
 
     /** Private tail of {@code getNormalizedRotation_general}; reached only through it. */
-    private FloatQuat getNormalizedRotation_general_s0_tail(float _t8, float _t11, float _t27, float _t22, float _t23, float _t26, float _t21, float _t24, float _t25) {
+    private FloatQuat getNormalizedRotation_general_s0_tail(float _t7, float _t10, float _t6, float _t9, float _t8, float _t11, float _t22, float _t23, float _t21, float _t24, float _t25) {
+        float _t26 = _t7 > 0.0f ? this.m22 * _t10 : 0.0f;
+        float _t27 = _t6 > 0.0f ? this.m21 * _t9 : 0.0f;
         float _t28, _t29;
         if (_t8 > 0.0f) {
             _t28 = this.m00 * _t11;
@@ -604,6 +684,11 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         }
         float _t52 = _t49 + _t23;
         float _t53 = _t50 + _t21;
+        return getNormalizedRotation_general_s0_tail2(_t51, _t24, _t50, _t21, _t52, _t26, _t49, _t23, _t36, _t37, _t53, _t39);
+    }
+
+    /** Private tail of {@code getNormalizedRotation_general}; reached only through it. */
+    private FloatQuat getNormalizedRotation_general_s0_tail2(float _t51, float _t24, float _t50, float _t21, float _t52, float _t26, float _t49, float _t23, float _t36, float _t37, float _t53, float _t39) {
         float _t55 = _t51 + _t24;
         float _t56 = _t24 - _t51;
         float _t57 = _t50 - _t21;
@@ -613,39 +698,31 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t64 = 1.0f + (_t23 - (_t49 + _t26));
         float _t65 = 1.0f + (_t26 - _t52);
         float _t66 = (1.0f / (float) Math.sqrt(_t62));
-        return getNormalizedRotation_general_s0_tail2(_t64, _t65, _t63, _t58, _t36, _t66, _t49, _t37, _t23, _t26, _t53, _t55, _t56, _t39, _t57, _t62);
-    }
-
-    /** Private tail of {@code getNormalizedRotation_general}; reached only through it. */
-    private FloatQuat getNormalizedRotation_general_s0_tail2(float _t64, float _t65, float _t63, float _t58, float _t36, float _t66, float _t49, float _t37, float _t23, float _t26, float _t53, float _t55, float _t56, float _t39, float _t57, float _t62) {
         float _t67 = (1.0f / (float) Math.sqrt(_t64));
         float _t68 = (1.0f / (float) Math.sqrt(_t65));
         float _t69 = (1.0f / (float) Math.sqrt(_t63));
-        return getNormalizedRotation_general_s0_tail3(_t58, _t36, _t66, _t49, _t37, _t63, _t23, _t26, _t53, _t67, _t55, _t68, _t56, _t69, _t64, _t39, _t57, _t65, _t62);
+        float _sfx0 = _t58 > 0.0f ? 0.5f * _t36 * _t66 : _t49 > _t37 ? 0.5f * (float) Math.sqrt(_t63) : _t23 > _t26 ? 0.5f * _t53 * _t67 : 0.5f * _t55 * _t68;
+        return getNormalizedRotation_general_s0_tail3(_t58, _t56, _t66, _t49, _t37, _t53, _t69, _t23, _t26, _t64, _t39, _t68, _t57, _t55, _t67, _t65, _t62, _t36, _sfx0);
     }
 
     /** Private tail of {@code getNormalizedRotation_general}; reached only through it. */
-    private FloatQuat getNormalizedRotation_general_s0_tail3(float _t58, float _t36, float _t66, float _t49, float _t37, float _t63, float _t23, float _t26, float _t53, float _t67, float _t55, float _t68, float _t56, float _t69, float _t64, float _t39, float _t57, float _t65, float _t62) {
-        float _sfx0, _sfx1, _sfx2, _sfx3;
+    private FloatQuat getNormalizedRotation_general_s0_tail3(float _t58, float _t56, float _t66, float _t49, float _t37, float _t53, float _t69, float _t23, float _t26, float _t64, float _t39, float _t68, float _t57, float _t55, float _t67, float _t65, float _t62, float _t36, float _sfx0) {
+        float _sfx1, _sfx2, _sfx3;
         if (_t58 > 0.0f) {
-            _sfx0 = 0.5f * _t36 * _t66;
             _sfx1 = 0.5f * _t56 * _t66;
             _sfx2 = 0.5f * _t57 * _t66;
             _sfx3 = 0.5f * (float) Math.sqrt(_t62);
         } else {
             if (_t49 > _t37) {
-                _sfx0 = 0.5f * (float) Math.sqrt(_t63);
                 _sfx1 = 0.5f * _t53 * _t69;
                 _sfx2 = 0.5f * _t55 * _t69;
                 _sfx3 = 0.5f * _t36 * _t69;
             } else {
                 if (_t23 > _t26) {
-                    _sfx0 = 0.5f * _t53 * _t67;
                     _sfx1 = 0.5f * (float) Math.sqrt(_t64);
                     _sfx2 = 0.5f * _t39 * _t67;
                     _sfx3 = 0.5f * _t56 * _t67;
                 } else {
-                    _sfx0 = 0.5f * _t55 * _t68;
                     _sfx1 = 0.5f * _t39 * _t68;
                     _sfx2 = 0.5f * (float) Math.sqrt(_t65);
                     _sfx3 = 0.5f * _t57 * _t68;
@@ -667,28 +744,24 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t9 = (1.0f / (float) Math.sqrt(_t6));
         float _t10 = (1.0f / (float) Math.sqrt(_t7));
         float _t11 = (1.0f / (float) Math.sqrt(_t8));
-        float _t21, _t23, _t27;
+        float _t21, _t23;
         if (_t6 > 0.0f) {
             _t21 = this.m01 * _t9;
             _t23 = this.m11 * _t9;
-            _t27 = this.m21 * _t9;
         } else {
             _t21 = 0.0f;
             _t23 = 0.0f;
-            _t27 = 0.0f;
         }
-        float _t22, _t24, _t26;
+        float _t22, _t24;
         if (_t7 > 0.0f) {
             _t22 = this.m12 * _t10;
             _t24 = this.m02 * _t10;
-            _t26 = this.m22 * _t10;
         } else {
             _t22 = 0.0f;
             _t24 = 0.0f;
-            _t26 = 0.0f;
         }
         float _t25 = _t8 > 0.0f ? this.m20 * _t11 : 0.0f;
-        return getNormalizedRotation_general_s0_tail(_t8, _t11, _t27, _t22, _t23, _t26, _t21, _t24, _t25);
+        return getNormalizedRotation_general_s0_tail(_t7, _t10, _t6, _t9, _t8, _t11, _t22, _t23, _t21, _t24, _t25);
     }
 
 
@@ -709,13 +782,48 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         return getNormalizedRotation_general();
     }
 
+    /** Private arm 0 of {@code getRow_identity}; reached only through it. */
+    private Float4 getRow_identity_s74964e29_arm0() {
+        return new Float4(1.0f, 0.0f, 0.0f, 0.0f);
+    }
+
+    /** Private arm 1 of {@code getRow_identity}; reached only through it. */
+    private Float4 getRow_identity_s74964e29_arm1() {
+        return new Float4(0.0f, 1.0f, 0.0f, 0.0f);
+    }
+
+    /** Private arm 2 of {@code getRow_identity}; reached only through it. */
+    private Float4 getRow_identity_s74964e29_arm2() {
+        return new Float4(0.0f, 0.0f, 1.0f, 0.0f);
+    }
+
 
     /**
      * Private body of {@code getRow}, specialized by runtime matrix properties; reached only
      * through the public {@code getRow} dispatcher.
      */
     private Float4 getRow_identity(int row) {
-        return new Float4(switch (row) { case 0 -> 1.0f; case 1 -> 0.0f; case 2 -> 0.0f; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); }, switch (row) { case 0 -> 0.0f; case 1 -> 1.0f; case 2 -> 0.0f; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); }, switch (row) { case 0 -> 0.0f; case 1 -> 0.0f; case 2 -> 1.0f; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); }, 0.0f);
+        return switch (row) {
+            case 0 -> getRow_identity_s74964e29_arm0();
+            case 1 -> getRow_identity_s74964e29_arm1();
+            case 2 -> getRow_identity_s74964e29_arm2();
+            default -> throw new IndexOutOfBoundsException("Index out of range: " + row);
+        };
+    }
+
+    /** Private arm 0 of {@code getRow_translation}; reached only through it. */
+    private Float4 getRow_translation_s74964e29_arm0() {
+        return new Float4(1.0f, 0.0f, 0.0f, this.m03);
+    }
+
+    /** Private arm 1 of {@code getRow_translation}; reached only through it. */
+    private Float4 getRow_translation_s74964e29_arm1() {
+        return new Float4(0.0f, 1.0f, 0.0f, this.m13);
+    }
+
+    /** Private arm 2 of {@code getRow_translation}; reached only through it. */
+    private Float4 getRow_translation_s74964e29_arm2() {
+        return new Float4(0.0f, 0.0f, 1.0f, this.m23);
     }
 
 
@@ -724,7 +832,27 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code getRow} dispatcher.
      */
     private Float4 getRow_translation(int row) {
-        return new Float4(switch (row) { case 0 -> 1.0f; case 1 -> 0.0f; case 2 -> 0.0f; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); }, switch (row) { case 0 -> 0.0f; case 1 -> 1.0f; case 2 -> 0.0f; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); }, switch (row) { case 0 -> 0.0f; case 1 -> 0.0f; case 2 -> 1.0f; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); }, switch (row) { case 0 -> this.m03; case 1 -> this.m13; case 2 -> this.m23; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); });
+        return switch (row) {
+            case 0 -> getRow_translation_s74964e29_arm0();
+            case 1 -> getRow_translation_s74964e29_arm1();
+            case 2 -> getRow_translation_s74964e29_arm2();
+            default -> throw new IndexOutOfBoundsException("Index out of range: " + row);
+        };
+    }
+
+    /** Private arm 0 of {@code getRow_general}; reached only through it. */
+    private Float4 getRow_general_s74964e29_arm0() {
+        return new Float4(this.m00, this.m01, this.m02, this.m03);
+    }
+
+    /** Private arm 1 of {@code getRow_general}; reached only through it. */
+    private Float4 getRow_general_s74964e29_arm1() {
+        return new Float4(this.m10, this.m11, this.m12, this.m13);
+    }
+
+    /** Private arm 2 of {@code getRow_general}; reached only through it. */
+    private Float4 getRow_general_s74964e29_arm2() {
+        return new Float4(this.m20, this.m21, this.m22, this.m23);
     }
 
 
@@ -733,7 +861,12 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
      * through the public {@code getRow} dispatcher.
      */
     private Float4 getRow_general(int row) {
-        return new Float4(switch (row) { case 0 -> this.m00; case 1 -> this.m10; case 2 -> this.m20; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); }, switch (row) { case 0 -> this.m01; case 1 -> this.m11; case 2 -> this.m21; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); }, switch (row) { case 0 -> this.m02; case 1 -> this.m12; case 2 -> this.m22; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); }, switch (row) { case 0 -> this.m03; case 1 -> this.m13; case 2 -> this.m23; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); });
+        return switch (row) {
+            case 0 -> getRow_general_s74964e29_arm0();
+            case 1 -> getRow_general_s74964e29_arm1();
+            case 2 -> getRow_general_s74964e29_arm2();
+            default -> throw new IndexOutOfBoundsException("Index out of range: " + row);
+        };
     }
 
 
@@ -825,6 +958,52 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         return getNormalizedRotation_identity();
     }
 
+    /** Private tail of {@code getUnnormalizedRotation_orthogonal}; reached only through it. */
+    private FloatQuat getUnnormalizedRotation_orthogonal_s0_tail(float _t10, float _t1, float _t18, float _t2, float _t15, float _t4, float _t19, float _t6, float _t20, float _t7, float _t21, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        float _sfx0, _sfx1;
+        if (_t10 > 0.0f) {
+            _sfx0 = 0.5f * _t1 * _t18;
+            _sfx1 = 0.5f * _t7 * _t18;
+        } else {
+            if (this.m00 > _t2) {
+                _sfx0 = 0.5f * (float) Math.sqrt(_t15);
+                _sfx1 = 0.5f * _t4 * _t21;
+            } else {
+                if (this.m11 > this.m22) {
+                    _sfx0 = 0.5f * _t4 * _t19;
+                    _sfx1 = 0.5f * (float) Math.sqrt(_t16);
+                } else {
+                    _sfx0 = 0.5f * _t6 * _t20;
+                    _sfx1 = 0.5f * _t8 * _t20;
+                }
+            }
+        }
+        return getUnnormalizedRotation_orthogonal_s0_tail2(_t10, _t9, _t18, _t2, _t6, _t21, _t8, _t19, _t17, _t14, _t1, _t7, _t20, _sfx0, _sfx1);
+    }
+
+    /** Private tail of {@code getUnnormalizedRotation_orthogonal}; reached only through it. */
+    private FloatQuat getUnnormalizedRotation_orthogonal_s0_tail2(float _t10, float _t9, float _t18, float _t2, float _t6, float _t21, float _t8, float _t19, float _t17, float _t14, float _t1, float _t7, float _t20, float _sfx0, float _sfx1) {
+        float _sfx2, _sfx3;
+        if (_t10 > 0.0f) {
+            _sfx2 = 0.5f * _t9 * _t18;
+            _sfx3 = 0.5f * (float) Math.sqrt(_t14);
+        } else {
+            if (this.m00 > _t2) {
+                _sfx2 = 0.5f * _t6 * _t21;
+                _sfx3 = 0.5f * _t1 * _t21;
+            } else {
+                if (this.m11 > this.m22) {
+                    _sfx2 = 0.5f * _t8 * _t19;
+                    _sfx3 = 0.5f * _t7 * _t19;
+                } else {
+                    _sfx2 = 0.5f * (float) Math.sqrt(_t17);
+                    _sfx3 = 0.5f * _t9 * _t20;
+                }
+            }
+        }
+        return new FloatQuat(_sfx0, _sfx1, _sfx2, _sfx3);
+    }
+
 
     /**
      * Private body of {@code getUnnormalizedRotation}, specialized by runtime matrix properties;
@@ -848,20 +1027,9 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t19 = (1.0f / (float) Math.sqrt(_t16));
         float _t20 = (1.0f / (float) Math.sqrt(_t17));
         float _t21 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t10 > 0.0f) {
-            return new FloatQuat(0.5f * _t1 * _t18, 0.5f * _t7 * _t18, 0.5f * _t9 * _t18, 0.5f * (float) Math.sqrt(_t14));
-        } else {
-            if (this.m00 > _t2) {
-                return new FloatQuat(0.5f * (float) Math.sqrt(_t15), 0.5f * _t4 * _t21, 0.5f * _t6 * _t21, 0.5f * _t1 * _t21);
-            } else {
-                if (this.m11 > this.m22) {
-                    return new FloatQuat(0.5f * _t4 * _t19, 0.5f * (float) Math.sqrt(_t16), 0.5f * _t8 * _t19, 0.5f * _t7 * _t19);
-                } else {
-                    return new FloatQuat(0.5f * _t6 * _t20, 0.5f * _t8 * _t20, 0.5f * (float) Math.sqrt(_t17), 0.5f * _t9 * _t20);
-                }
-            }
-        }
+        return getUnnormalizedRotation_orthogonal_s0_tail(_t10, _t1, _t18, _t2, _t15, _t4, _t19, _t6, _t20, _t7, _t21, _t16, _t8, _t9, _t17, _t14);
     }
+
 
 
     /**
@@ -1899,24 +2067,31 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         return new Float3x4(this.m00, this.m10, this.m20, Math.fma(-this.m20, this.m23, Math.fma(-this.m10, this.m13, -(this.m00 * this.m03))), this.m01, this.m11, this.m21, Math.fma(-this.m21, this.m23, Math.fma(-this.m11, this.m13, -(this.m01 * this.m03))), this.m02, this.m12, this.m22, Math.fma(-this.m22, this.m23, Math.fma(-this.m12, this.m13, -(this.m02 * this.m03))), Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private per-column body of {@code invert_general}; reached only through it. */
-    private Float3 invert_general_s0_c0(float _t20, float _t33_inv, float _t25, float _t21) {
+    /** Private tail of {@code invert_general}; reached only through it. */
+    /** Private per-column body of {@code invert_general_s0_tail}; reached only through it. */
+    private Float3 invert_general_s0_tail_s792c63f0_c0(float _t20, float _t33_inv, float _t25, float _t21) {
         return new Float3(_t20 * _t33_inv, _t25 * _t33_inv, _t21 * _t33_inv);
     }
 
-    /** Private per-column body of {@code invert_general}; reached only through it. */
-    private Float3 invert_general_s0_c1(float _t23, float _t33_inv, float _t26, float _t28) {
+    /** Private per-column body of {@code invert_general_s0_tail}; reached only through it. */
+    private Float3 invert_general_s0_tail_s792c63f0_c1(float _t23, float _t33_inv, float _t26, float _t28) {
         return new Float3(_t23 * _t33_inv, _t26 * _t33_inv, _t28 * _t33_inv);
     }
 
-    /** Private per-column body of {@code invert_general}; reached only through it. */
-    private Float3 invert_general_s0_c2(float _t24, float _t33_inv, float _t27, float _t29) {
+    /** Private per-column body of {@code invert_general_s0_tail}; reached only through it. */
+    private Float3 invert_general_s0_tail_s792c63f0_c2(float _t24, float _t33_inv, float _t27, float _t29) {
         return new Float3(_t24 * _t33_inv, _t27 * _t33_inv, _t29 * _t33_inv);
     }
 
-    /** Private per-column body of {@code invert_general}; reached only through it. */
-    private Float3 invert_general_s0_c3(float _t24, float _t20, float _t23, float _t33_inv, float _t27, float _t25, float _t26, float _t29, float _t21, float _t28) {
+    /** Private per-column body of {@code invert_general_s0_tail}; reached only through it. */
+    private Float3 invert_general_s0_tail_s792c63f0_c3(float _t24, float _t20, float _t23, float _t33_inv, float _t27, float _t25, float _t26, float _t29, float _t21, float _t28) {
         return new Float3(-(Math.fma(this.m23, _t24, Math.fma(this.m03, _t20, this.m13 * _t23)) * _t33_inv), -(Math.fma(this.m23, _t27, Math.fma(this.m03, _t25, this.m13 * _t26)) * _t33_inv), -(Math.fma(this.m23, _t29, Math.fma(this.m03, _t21, this.m13 * _t28)) * _t33_inv));
+    }
+
+    private Float3x4 invert_general_s0_tail(float _t21, float _t20, float _t23, float _t24, float _t25, float _t26, float _t27, float _t28, float _t29, int _props) {
+        float _t33 = Math.fma(this.m02, _t21, Math.fma(this.m00, _t20, -(this.m01 * Math.fma(this.m10, this.m22, -(this.m12 * this.m20)))));
+        float _t33_inv = 1.0f / _t33;
+        return new Float3x4(invert_general_s0_tail_s792c63f0_c0(_t20, _t33_inv, _t25, _t21), invert_general_s0_tail_s792c63f0_c1(_t23, _t33_inv, _t26, _t28), invert_general_s0_tail_s792c63f0_c2(_t24, _t33_inv, _t27, _t29), invert_general_s0_tail_s792c63f0_c3(_t24, _t20, _t23, _t33_inv, _t27, _t25, _t26, _t29, _t21, _t28), _props);
     }
 
 
@@ -1934,9 +2109,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t27 = Math.fma(this.m02, this.m10, -(this.m00 * this.m12));
         float _t28 = Math.fma(this.m01, this.m20, -(this.m00 * this.m21));
         float _t29 = Math.fma(this.m00, this.m11, -(this.m01 * this.m10));
-        float _t33 = Math.fma(this.m02, _t21, Math.fma(this.m00, _t20, -(this.m01 * Math.fma(this.m10, this.m22, -(this.m12 * this.m20)))));
-        float _t33_inv = 1.0f / _t33;
-        return new Float3x4(invert_general_s0_c0(_t20, _t33_inv, _t25, _t21), invert_general_s0_c1(_t23, _t33_inv, _t26, _t28), invert_general_s0_c2(_t24, _t33_inv, _t27, _t29), invert_general_s0_c3(_t24, _t20, _t23, _t33_inv, _t27, _t25, _t26, _t29, _t21, _t28), Joml.BIT_AFFINE);
+        return invert_general_s0_tail(_t21, _t20, _t23, _t24, _t25, _t26, _t27, _t28, _t29, Joml.BIT_AFFINE);
     }
 
 
@@ -1954,6 +2127,52 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         return invert_general();
     }
 
+    /** Private tail of {@code invertProduct_general}; reached only through it. */
+    private Float3x4 invertProduct_general_s3cb97cd9_tail(Float3x4 other, float _t24, float _t25, float _t26, float _t27, float _t29, float _t30, float _t28, int _props) {
+        float _t31 = Math.fma(other.m20(), this.m02, Math.fma(other.m00(), this.m00, other.m10() * this.m01));
+        float _t32 = Math.fma(other.m21(), this.m02, Math.fma(other.m01(), this.m00, other.m11() * this.m01));
+        float _t33 = Math.fma(other.m03(), this.m20, Math.fma(other.m13(), this.m21, Math.fma(other.m23(), this.m22, this.m23)));
+        float _t34 = Math.fma(other.m03(), this.m00, Math.fma(other.m13(), this.m01, Math.fma(other.m23(), this.m02, this.m03)));
+        float _t35 = Math.fma(other.m03(), this.m10, Math.fma(other.m13(), this.m11, Math.fma(other.m23(), this.m12, this.m13)));
+        float _t56 = Math.fma(_t24, _t25, -(_t26 * _t27));
+        float _t57 = Math.fma(_t29, _t26, -(_t30 * _t24));
+        float _t59 = Math.fma(_t26, _t28, -(_t32 * _t25));
+        float _t60 = Math.fma(_t32, _t27, -(_t24 * _t28));
+        return invertProduct_general_s3cb97cd9_tail2(_t30, _t27, _t29, _t25, _t31, _t28, _t32, _t26, _t24, _t57, _t56, _t59, _t60, _t33, _t34, _t35, _props);
+    }
+
+    /** Private tail of {@code invertProduct_general}; reached only through it. */
+    /** Private per-column body of {@code invertProduct_general_s3cb97cd9_tail2}; reached only through it. */
+    private Float3 invertProduct_general_s3cb97cd9_tail2_s3cdcc10b_c0(float _t56, float _t69_inv, float _t61, float _t57) {
+        return new Float3(_t56 * _t69_inv, _t61 * _t69_inv, _t57 * _t69_inv);
+    }
+
+    /** Private per-column body of {@code invertProduct_general_s3cb97cd9_tail2}; reached only through it. */
+    private Float3 invertProduct_general_s3cb97cd9_tail2_s3cdcc10b_c1(float _t59, float _t69_inv, float _t62, float _t64) {
+        return new Float3(_t59 * _t69_inv, _t62 * _t69_inv, _t64 * _t69_inv);
+    }
+
+    /** Private per-column body of {@code invertProduct_general_s3cb97cd9_tail2}; reached only through it. */
+    private Float3 invertProduct_general_s3cb97cd9_tail2_s3cdcc10b_c2(float _t60, float _t69_inv, float _t63, float _t65) {
+        return new Float3(_t60 * _t69_inv, _t63 * _t69_inv, _t65 * _t69_inv);
+    }
+
+    /** Private per-column body of {@code invertProduct_general_s3cb97cd9_tail2}; reached only through it. */
+    private Float3 invertProduct_general_s3cb97cd9_tail2_s3cdcc10b_c3(float _t33, float _t60, float _t34, float _t56, float _t35, float _t59, float _t69_inv, float _t63, float _t61, float _t62, float _t65, float _t57, float _t64) {
+        return new Float3(-(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv), -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv), -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv));
+    }
+
+    private Float3x4 invertProduct_general_s3cb97cd9_tail2(float _t30, float _t27, float _t29, float _t25, float _t31, float _t28, float _t32, float _t26, float _t24, float _t57, float _t56, float _t59, float _t60, float _t33, float _t34, float _t35, int _props) {
+        float _t61 = Math.fma(_t30, _t27, -(_t29 * _t25));
+        float _t62 = Math.fma(_t31, _t25, -(_t30 * _t28));
+        float _t63 = Math.fma(_t29, _t28, -(_t31 * _t27));
+        float _t64 = Math.fma(_t30, _t32, -(_t31 * _t26));
+        float _t65 = Math.fma(_t31, _t24, -(_t29 * _t32));
+        float _t69 = Math.fma(_t28, _t57, Math.fma(_t31, _t56, -(_t32 * Math.fma(_t29, _t25, -(_t30 * _t27)))));
+        float _t69_inv = 1.0f / _t69;
+        return new Float3x4(invertProduct_general_s3cb97cd9_tail2_s3cdcc10b_c0(_t56, _t69_inv, _t61, _t57), invertProduct_general_s3cb97cd9_tail2_s3cdcc10b_c1(_t59, _t69_inv, _t62, _t64), invertProduct_general_s3cb97cd9_tail2_s3cdcc10b_c2(_t60, _t69_inv, _t63, _t65), invertProduct_general_s3cb97cd9_tail2_s3cdcc10b_c3(_t33, _t60, _t34, _t56, _t35, _t59, _t69_inv, _t63, _t61, _t62, _t65, _t57, _t64), _props);
+    }
+
 
     /**
      * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
@@ -1967,43 +2186,34 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t28 = Math.fma(other.m22(), this.m02, Math.fma(other.m02(), this.m00, other.m12() * this.m01));
         float _t29 = Math.fma(other.m20(), this.m12, Math.fma(other.m00(), this.m10, other.m10() * this.m11));
         float _t30 = Math.fma(other.m20(), this.m22, Math.fma(other.m00(), this.m20, other.m10() * this.m21));
-        float _t31 = Math.fma(other.m20(), this.m02, Math.fma(other.m00(), this.m00, other.m10() * this.m01));
-        float _t32 = Math.fma(other.m21(), this.m02, Math.fma(other.m01(), this.m00, other.m11() * this.m01));
-        float _t33 = Math.fma(other.m03(), this.m20, Math.fma(other.m13(), this.m21, Math.fma(other.m23(), this.m22, this.m23)));
-        float _t34 = Math.fma(other.m03(), this.m00, Math.fma(other.m13(), this.m01, Math.fma(other.m23(), this.m02, this.m03)));
-        float _t35 = Math.fma(other.m03(), this.m10, Math.fma(other.m13(), this.m11, Math.fma(other.m23(), this.m12, this.m13)));
-        float _t56 = Math.fma(_t24, _t25, -(_t26 * _t27));
-        float _t57 = Math.fma(_t29, _t26, -(_t30 * _t24));
-        float _t59 = Math.fma(_t26, _t28, -(_t32 * _t25));
-        float _t60 = Math.fma(_t32, _t27, -(_t24 * _t28));
-        float _t61 = Math.fma(_t30, _t27, -(_t29 * _t25));
-        float _t62 = Math.fma(_t31, _t25, -(_t30 * _t28));
-        float _t63 = Math.fma(_t29, _t28, -(_t31 * _t27));
-        float _t64 = Math.fma(_t30, _t32, -(_t31 * _t26));
-        float _t65 = Math.fma(_t31, _t24, -(_t29 * _t32));
-        float _t69 = Math.fma(_t28, _t57, Math.fma(_t31, _t56, -(_t32 * Math.fma(_t29, _t25, -(_t30 * _t27)))));
-        float _t69_inv = 1.0f / _t69;
-        return new Float3x4(_t56 * _t69_inv, _t59 * _t69_inv, _t60 * _t69_inv, -(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv), _t61 * _t69_inv, _t62 * _t69_inv, _t63 * _t69_inv, -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv), _t57 * _t69_inv, _t64 * _t69_inv, _t65 * _t69_inv, -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv), _props);
+        return invertProduct_general_s3cb97cd9_tail(other, _t24, _t25, _t26, _t27, _t29, _t30, _t28, _props);
     }
 
-    /** Private per-column body of {@code invertProduct_identity}; reached only through it. */
-    private Float3 invertProduct_identity_sac25323_c0(float _t20, float _t33_inv, float _t25, float _t21) {
+    /** Private tail of {@code invertProduct_identity}; reached only through it. */
+    /** Private per-column body of {@code invertProduct_identity_sac25323_tail}; reached only through it. */
+    private Float3 invertProduct_identity_sac25323_tail_s1e47a087_c0(float _t20, float _t33_inv, float _t25, float _t21) {
         return new Float3(_t20 * _t33_inv, _t25 * _t33_inv, _t21 * _t33_inv);
     }
 
-    /** Private per-column body of {@code invertProduct_identity}; reached only through it. */
-    private Float3 invertProduct_identity_sac25323_c1(float _t23, float _t33_inv, float _t26, float _t28) {
+    /** Private per-column body of {@code invertProduct_identity_sac25323_tail}; reached only through it. */
+    private Float3 invertProduct_identity_sac25323_tail_s1e47a087_c1(float _t23, float _t33_inv, float _t26, float _t28) {
         return new Float3(_t23 * _t33_inv, _t26 * _t33_inv, _t28 * _t33_inv);
     }
 
-    /** Private per-column body of {@code invertProduct_identity}; reached only through it. */
-    private Float3 invertProduct_identity_sac25323_c2(float _t24, float _t33_inv, float _t27, float _t29) {
+    /** Private per-column body of {@code invertProduct_identity_sac25323_tail}; reached only through it. */
+    private Float3 invertProduct_identity_sac25323_tail_s1e47a087_c2(float _t24, float _t33_inv, float _t27, float _t29) {
         return new Float3(_t24 * _t33_inv, _t27 * _t33_inv, _t29 * _t33_inv);
     }
 
-    /** Private per-column body of {@code invertProduct_identity}; reached only through it. */
-    private Float3 invertProduct_identity_sac25323_c3(Float3x4 other, float _t24, float _t20, float _t23, float _t33_inv, float _t27, float _t25, float _t26, float _t29, float _t21, float _t28) {
+    /** Private per-column body of {@code invertProduct_identity_sac25323_tail}; reached only through it. */
+    private Float3 invertProduct_identity_sac25323_tail_s1e47a087_c3(Float3x4 other, float _t24, float _t20, float _t23, float _t33_inv, float _t27, float _t25, float _t26, float _t29, float _t21, float _t28) {
         return new Float3(-(Math.fma(other.m23(), _t24, Math.fma(other.m03(), _t20, other.m13() * _t23)) * _t33_inv), -(Math.fma(other.m23(), _t27, Math.fma(other.m03(), _t25, other.m13() * _t26)) * _t33_inv), -(Math.fma(other.m23(), _t29, Math.fma(other.m03(), _t21, other.m13() * _t28)) * _t33_inv));
+    }
+
+    private Float3x4 invertProduct_identity_sac25323_tail(Float3x4 other, float _t21, float _t20, float _t23, float _t24, float _t25, float _t26, float _t27, float _t28, float _t29, int _props) {
+        float _t33 = Math.fma(other.m02(), _t21, Math.fma(other.m00(), _t20, -(other.m01() * Math.fma(other.m10(), other.m22(), -(other.m12() * other.m20())))));
+        float _t33_inv = 1.0f / _t33;
+        return new Float3x4(invertProduct_identity_sac25323_tail_s1e47a087_c0(_t20, _t33_inv, _t25, _t21), invertProduct_identity_sac25323_tail_s1e47a087_c1(_t23, _t33_inv, _t26, _t28), invertProduct_identity_sac25323_tail_s1e47a087_c2(_t24, _t33_inv, _t27, _t29), invertProduct_identity_sac25323_tail_s1e47a087_c3(other, _t24, _t20, _t23, _t33_inv, _t27, _t25, _t26, _t29, _t21, _t28), _props);
     }
 
 
@@ -2021,9 +2231,35 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t27 = Math.fma(other.m02(), other.m10(), -(other.m00() * other.m12()));
         float _t28 = Math.fma(other.m01(), other.m20(), -(other.m00() * other.m21()));
         float _t29 = Math.fma(other.m00(), other.m11(), -(other.m01() * other.m10()));
-        float _t33 = Math.fma(other.m02(), _t21, Math.fma(other.m00(), _t20, -(other.m01() * Math.fma(other.m10(), other.m22(), -(other.m12() * other.m20())))));
-        float _t33_inv = 1.0f / _t33;
-        return new Float3x4(invertProduct_identity_sac25323_c0(_t20, _t33_inv, _t25, _t21), invertProduct_identity_sac25323_c1(_t23, _t33_inv, _t26, _t28), invertProduct_identity_sac25323_c2(_t24, _t33_inv, _t27, _t29), invertProduct_identity_sac25323_c3(other, _t24, _t20, _t23, _t33_inv, _t27, _t25, _t26, _t29, _t21, _t28), other.properties());
+        return invertProduct_identity_sac25323_tail(other, _t21, _t20, _t23, _t24, _t25, _t26, _t27, _t28, _t29, other.properties());
+    }
+
+    /** Private tail of {@code invertProduct_translation}; reached only through it. */
+    /** Private per-column body of {@code invertProduct_translation_sac25323_tail}; reached only through it. */
+    private Float3 invertProduct_translation_sac25323_tail_s2ce953b8_c0(float _t23, float _t36_inv, float _t28, float _t24) {
+        return new Float3(_t23 * _t36_inv, _t28 * _t36_inv, _t24 * _t36_inv);
+    }
+
+    /** Private per-column body of {@code invertProduct_translation_sac25323_tail}; reached only through it. */
+    private Float3 invertProduct_translation_sac25323_tail_s2ce953b8_c1(float _t26, float _t36_inv, float _t29, float _t31) {
+        return new Float3(_t26 * _t36_inv, _t29 * _t36_inv, _t31 * _t36_inv);
+    }
+
+    /** Private per-column body of {@code invertProduct_translation_sac25323_tail}; reached only through it. */
+    private Float3 invertProduct_translation_sac25323_tail_s2ce953b8_c2(float _t27, float _t36_inv, float _t30, float _t32) {
+        return new Float3(_t27 * _t36_inv, _t30 * _t36_inv, _t32 * _t36_inv);
+    }
+
+    /** Private per-column body of {@code invertProduct_translation_sac25323_tail}; reached only through it. */
+    private Float3 invertProduct_translation_sac25323_tail_s2ce953b8_c3(float _t5, float _t27, float _t6, float _t23, float _t7, float _t26, float _t36_inv, float _t30, float _t28, float _t29, float _t32, float _t24, float _t31) {
+        return new Float3(-(Math.fma(_t5, _t27, Math.fma(_t6, _t23, _t7 * _t26)) * _t36_inv), -(Math.fma(_t5, _t30, Math.fma(_t6, _t28, _t7 * _t29)) * _t36_inv), -(Math.fma(_t5, _t32, Math.fma(_t6, _t24, _t7 * _t31)) * _t36_inv));
+    }
+
+    private Float3x4 invertProduct_translation_sac25323_tail(Float3x4 other, float _t24, float _t23, float _t26, float _t27, float _t5, float _t6, float _t7, float _t28, float _t29, float _t30, float _t31, int _props) {
+        float _t32 = Math.fma(other.m00(), other.m11(), -(other.m01() * other.m10()));
+        float _t36 = Math.fma(other.m02(), _t24, Math.fma(other.m00(), _t23, -(other.m01() * Math.fma(other.m10(), other.m22(), -(other.m12() * other.m20())))));
+        float _t36_inv = 1.0f / _t36;
+        return new Float3x4(invertProduct_translation_sac25323_tail_s2ce953b8_c0(_t23, _t36_inv, _t28, _t24), invertProduct_translation_sac25323_tail_s2ce953b8_c1(_t26, _t36_inv, _t29, _t31), invertProduct_translation_sac25323_tail_s2ce953b8_c2(_t27, _t36_inv, _t30, _t32), invertProduct_translation_sac25323_tail_s2ce953b8_c3(_t5, _t27, _t6, _t23, _t7, _t26, _t36_inv, _t30, _t28, _t29, _t32, _t24, _t31), _props);
     }
 
 
@@ -2043,10 +2279,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t29 = Math.fma(other.m00(), other.m22(), -(other.m02() * other.m20()));
         float _t30 = Math.fma(other.m02(), other.m10(), -(other.m00() * other.m12()));
         float _t31 = Math.fma(other.m01(), other.m20(), -(other.m00() * other.m21()));
-        float _t32 = Math.fma(other.m00(), other.m11(), -(other.m01() * other.m10()));
-        float _t36 = Math.fma(other.m02(), _t24, Math.fma(other.m00(), _t23, -(other.m01() * Math.fma(other.m10(), other.m22(), -(other.m12() * other.m20())))));
-        float _t36_inv = 1.0f / _t36;
-        return new Float3x4(_t23 * _t36_inv, _t26 * _t36_inv, _t27 * _t36_inv, -(Math.fma(_t5, _t27, Math.fma(_t6, _t23, _t7 * _t26)) * _t36_inv), _t28 * _t36_inv, _t29 * _t36_inv, _t30 * _t36_inv, -(Math.fma(_t5, _t30, Math.fma(_t6, _t28, _t7 * _t29)) * _t36_inv), _t24 * _t36_inv, _t31 * _t36_inv, _t32 * _t36_inv, -(Math.fma(_t5, _t32, Math.fma(_t6, _t24, _t7 * _t31)) * _t36_inv), Joml.BIT_TRANSLATION & other.properties());
+        return invertProduct_translation_sac25323_tail(other, _t24, _t23, _t26, _t27, _t5, _t6, _t7, _t28, _t29, _t30, _t31, Joml.BIT_TRANSLATION & other.properties());
     }
 
 
@@ -2103,24 +2336,31 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         return new Float3x4(this.m00, this.m10, this.m20, Math.fma(-this.m00, this.m03, Math.fma(-this.m10, this.m13, Math.fma(-this.m20, this.m23, -other.m03()))), this.m01, this.m11, this.m21, Math.fma(-this.m01, this.m03, Math.fma(-this.m11, this.m13, Math.fma(-this.m21, this.m23, -other.m13()))), this.m02, this.m12, this.m22, Math.fma(-this.m02, this.m03, Math.fma(-this.m12, this.m13, Math.fma(-this.m22, this.m23, -other.m23()))), Joml.BIT_ORTHOGONAL & other.properties());
     }
 
-    /** Private per-column body of {@code invertProduct_general_identity}; reached only through it. */
-    private Float3 invertProduct_general_identity_sac25323_c0(float _t20, float _t33_inv, float _t25, float _t21) {
+    /** Private tail of {@code invertProduct_general_identity}; reached only through it. */
+    /** Private per-column body of {@code invertProduct_general_identity_sac25323_tail}; reached only through it. */
+    private Float3 invertProduct_general_identity_sac25323_tail_s792c63f0_c0(float _t20, float _t33_inv, float _t25, float _t21) {
         return new Float3(_t20 * _t33_inv, _t25 * _t33_inv, _t21 * _t33_inv);
     }
 
-    /** Private per-column body of {@code invertProduct_general_identity}; reached only through it. */
-    private Float3 invertProduct_general_identity_sac25323_c1(float _t23, float _t33_inv, float _t26, float _t28) {
+    /** Private per-column body of {@code invertProduct_general_identity_sac25323_tail}; reached only through it. */
+    private Float3 invertProduct_general_identity_sac25323_tail_s792c63f0_c1(float _t23, float _t33_inv, float _t26, float _t28) {
         return new Float3(_t23 * _t33_inv, _t26 * _t33_inv, _t28 * _t33_inv);
     }
 
-    /** Private per-column body of {@code invertProduct_general_identity}; reached only through it. */
-    private Float3 invertProduct_general_identity_sac25323_c2(float _t24, float _t33_inv, float _t27, float _t29) {
+    /** Private per-column body of {@code invertProduct_general_identity_sac25323_tail}; reached only through it. */
+    private Float3 invertProduct_general_identity_sac25323_tail_s792c63f0_c2(float _t24, float _t33_inv, float _t27, float _t29) {
         return new Float3(_t24 * _t33_inv, _t27 * _t33_inv, _t29 * _t33_inv);
     }
 
-    /** Private per-column body of {@code invertProduct_general_identity}; reached only through it. */
-    private Float3 invertProduct_general_identity_sac25323_c3(float _t24, float _t20, float _t23, float _t33_inv, float _t27, float _t25, float _t26, float _t29, float _t21, float _t28) {
+    /** Private per-column body of {@code invertProduct_general_identity_sac25323_tail}; reached only through it. */
+    private Float3 invertProduct_general_identity_sac25323_tail_s792c63f0_c3(float _t24, float _t20, float _t23, float _t33_inv, float _t27, float _t25, float _t26, float _t29, float _t21, float _t28) {
         return new Float3(-(Math.fma(this.m23, _t24, Math.fma(this.m03, _t20, this.m13 * _t23)) * _t33_inv), -(Math.fma(this.m23, _t27, Math.fma(this.m03, _t25, this.m13 * _t26)) * _t33_inv), -(Math.fma(this.m23, _t29, Math.fma(this.m03, _t21, this.m13 * _t28)) * _t33_inv));
+    }
+
+    private Float3x4 invertProduct_general_identity_sac25323_tail(float _t21, float _t20, float _t23, float _t24, float _t25, float _t26, float _t27, float _t28, float _t29, int _props) {
+        float _t33 = Math.fma(this.m02, _t21, Math.fma(this.m00, _t20, -(this.m01 * Math.fma(this.m10, this.m22, -(this.m12 * this.m20)))));
+        float _t33_inv = 1.0f / _t33;
+        return new Float3x4(invertProduct_general_identity_sac25323_tail_s792c63f0_c0(_t20, _t33_inv, _t25, _t21), invertProduct_general_identity_sac25323_tail_s792c63f0_c1(_t23, _t33_inv, _t26, _t28), invertProduct_general_identity_sac25323_tail_s792c63f0_c2(_t24, _t33_inv, _t27, _t29), invertProduct_general_identity_sac25323_tail_s792c63f0_c3(_t24, _t20, _t23, _t33_inv, _t27, _t25, _t26, _t29, _t21, _t28), _props);
     }
 
 
@@ -2138,9 +2378,37 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t27 = Math.fma(this.m02, this.m10, -(this.m00 * this.m12));
         float _t28 = Math.fma(this.m01, this.m20, -(this.m00 * this.m21));
         float _t29 = Math.fma(this.m00, this.m11, -(this.m01 * this.m10));
-        float _t33 = Math.fma(this.m02, _t21, Math.fma(this.m00, _t20, -(this.m01 * Math.fma(this.m10, this.m22, -(this.m12 * this.m20)))));
-        float _t33_inv = 1.0f / _t33;
-        return new Float3x4(invertProduct_general_identity_sac25323_c0(_t20, _t33_inv, _t25, _t21), invertProduct_general_identity_sac25323_c1(_t23, _t33_inv, _t26, _t28), invertProduct_general_identity_sac25323_c2(_t24, _t33_inv, _t27, _t29), invertProduct_general_identity_sac25323_c3(_t24, _t20, _t23, _t33_inv, _t27, _t25, _t26, _t29, _t21, _t28), Joml.BIT_AFFINE & other.properties());
+        return invertProduct_general_identity_sac25323_tail(_t21, _t20, _t23, _t24, _t25, _t26, _t27, _t28, _t29, Joml.BIT_AFFINE & other.properties());
+    }
+
+    /** Private tail of {@code invertProduct_general_translation}; reached only through it. */
+    /** Private per-column body of {@code invertProduct_general_translation_sac25323_tail}; reached only through it. */
+    private Float3 invertProduct_general_translation_sac25323_tail_s14044161_c0(float _t23, float _t42_inv, float _t28, float _t24) {
+        return new Float3(_t23 * _t42_inv, _t28 * _t42_inv, _t24 * _t42_inv);
+    }
+
+    /** Private per-column body of {@code invertProduct_general_translation_sac25323_tail}; reached only through it. */
+    private Float3 invertProduct_general_translation_sac25323_tail_s14044161_c1(float _t26, float _t42_inv, float _t29, float _t31) {
+        return new Float3(_t26 * _t42_inv, _t29 * _t42_inv, _t31 * _t42_inv);
+    }
+
+    /** Private per-column body of {@code invertProduct_general_translation_sac25323_tail}; reached only through it. */
+    private Float3 invertProduct_general_translation_sac25323_tail_s14044161_c2(float _t27, float _t42_inv, float _t30, float _t32) {
+        return new Float3(_t27 * _t42_inv, _t30 * _t42_inv, _t32 * _t42_inv);
+    }
+
+    /** Private per-column body of {@code invertProduct_general_translation_sac25323_tail}; reached only through it. */
+    private Float3 invertProduct_general_translation_sac25323_tail_s14044161_c3(float _t38, float _t27, float _t39, float _t23, float _t40, float _t26, float _t42_inv, float _t30, float _t28, float _t29, float _t32, float _t24, float _t31) {
+        return new Float3(-(Math.fma(_t38, _t27, Math.fma(_t39, _t23, _t40 * _t26)) * _t42_inv), -(Math.fma(_t38, _t30, Math.fma(_t39, _t28, _t40 * _t29)) * _t42_inv), -(Math.fma(_t38, _t32, Math.fma(_t39, _t24, _t40 * _t31)) * _t42_inv));
+    }
+
+    private Float3x4 invertProduct_general_translation_sac25323_tail(Float3x4 other, float _t24, float _t23, float _t26, float _t27, float _t28, float _t29, float _t30, float _t31, float _t32, int _props) {
+        float _t38 = Math.fma(other.m03(), this.m20, Math.fma(other.m13(), this.m21, Math.fma(other.m23(), this.m22, this.m23)));
+        float _t39 = Math.fma(other.m03(), this.m00, Math.fma(other.m13(), this.m01, Math.fma(other.m23(), this.m02, this.m03)));
+        float _t40 = Math.fma(other.m03(), this.m10, Math.fma(other.m13(), this.m11, Math.fma(other.m23(), this.m12, this.m13)));
+        float _t42 = Math.fma(this.m02, _t24, Math.fma(this.m00, _t23, -(this.m01 * Math.fma(this.m10, this.m22, -(this.m12 * this.m20)))));
+        float _t42_inv = 1.0f / _t42;
+        return new Float3x4(invertProduct_general_translation_sac25323_tail_s14044161_c0(_t23, _t42_inv, _t28, _t24), invertProduct_general_translation_sac25323_tail_s14044161_c1(_t26, _t42_inv, _t29, _t31), invertProduct_general_translation_sac25323_tail_s14044161_c2(_t27, _t42_inv, _t30, _t32), invertProduct_general_translation_sac25323_tail_s14044161_c3(_t38, _t27, _t39, _t23, _t40, _t26, _t42_inv, _t30, _t28, _t29, _t32, _t24, _t31), _props);
     }
 
 
@@ -2158,12 +2426,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t30 = Math.fma(this.m02, this.m10, -(this.m00 * this.m12));
         float _t31 = Math.fma(this.m01, this.m20, -(this.m00 * this.m21));
         float _t32 = Math.fma(this.m00, this.m11, -(this.m01 * this.m10));
-        float _t38 = Math.fma(other.m03(), this.m20, Math.fma(other.m13(), this.m21, Math.fma(other.m23(), this.m22, this.m23)));
-        float _t39 = Math.fma(other.m03(), this.m00, Math.fma(other.m13(), this.m01, Math.fma(other.m23(), this.m02, this.m03)));
-        float _t40 = Math.fma(other.m03(), this.m10, Math.fma(other.m13(), this.m11, Math.fma(other.m23(), this.m12, this.m13)));
-        float _t42 = Math.fma(this.m02, _t24, Math.fma(this.m00, _t23, -(this.m01 * Math.fma(this.m10, this.m22, -(this.m12 * this.m20)))));
-        float _t42_inv = 1.0f / _t42;
-        return new Float3x4(_t23 * _t42_inv, _t26 * _t42_inv, _t27 * _t42_inv, -(Math.fma(_t38, _t27, Math.fma(_t39, _t23, _t40 * _t26)) * _t42_inv), _t28 * _t42_inv, _t29 * _t42_inv, _t30 * _t42_inv, -(Math.fma(_t38, _t30, Math.fma(_t39, _t28, _t40 * _t29)) * _t42_inv), _t24 * _t42_inv, _t31 * _t42_inv, _t32 * _t42_inv, -(Math.fma(_t38, _t32, Math.fma(_t39, _t24, _t40 * _t31)) * _t42_inv), Joml.BIT_AFFINE & other.properties());
+        return invertProduct_general_translation_sac25323_tail(other, _t24, _t23, _t26, _t27, _t28, _t29, _t30, _t31, _t32, Joml.BIT_AFFINE & other.properties());
     }
 
 
@@ -2206,6 +2469,50 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         return invertProduct_general(other, Joml.BIT_AFFINE & other.properties());
     }
 
+    /** Private tail of {@code invertProduct}; reached only through it. */
+    private Float3x4 invertProduct_s38768792_tail(float m03, float m13, float m23, float _t24, float _t25, float _t26, float _t27, float _t29, float _t30, float _t28, float _t32, float _t31, int _props) {
+        float _t33 = Math.fma(m03, this.m20, Math.fma(m13, this.m21, Math.fma(m23, this.m22, this.m23)));
+        float _t34 = Math.fma(m03, this.m00, Math.fma(m13, this.m01, Math.fma(m23, this.m02, this.m03)));
+        float _t35 = Math.fma(m03, this.m10, Math.fma(m13, this.m11, Math.fma(m23, this.m12, this.m13)));
+        float _t56 = Math.fma(_t24, _t25, -(_t26 * _t27));
+        float _t57 = Math.fma(_t29, _t26, -(_t30 * _t24));
+        float _t59 = Math.fma(_t26, _t28, -(_t32 * _t25));
+        float _t60 = Math.fma(_t32, _t27, -(_t24 * _t28));
+        float _t61 = Math.fma(_t30, _t27, -(_t29 * _t25));
+        float _t62 = Math.fma(_t31, _t25, -(_t30 * _t28));
+        float _t63 = Math.fma(_t29, _t28, -(_t31 * _t27));
+        float _t64 = Math.fma(_t30, _t32, -(_t31 * _t26));
+        float _t65 = Math.fma(_t31, _t24, -(_t29 * _t32));
+        return invertProduct_s38768792_tail2(_t28, _t57, _t31, _t56, _t32, _t29, _t25, _t30, _t27, _t59, _t60, _t33, _t34, _t35, _t61, _t62, _t63, _t64, _t65, _props);
+    }
+
+    /** Private tail of {@code invertProduct}; reached only through it. */
+    /** Private per-column body of {@code invertProduct_s38768792_tail2}; reached only through it. */
+    private Float3 invertProduct_s38768792_tail2_s6f1ca9fd_c0(float _t56, float _t69_inv, float _t61, float _t57) {
+        return new Float3(_t56 * _t69_inv, _t61 * _t69_inv, _t57 * _t69_inv);
+    }
+
+    /** Private per-column body of {@code invertProduct_s38768792_tail2}; reached only through it. */
+    private Float3 invertProduct_s38768792_tail2_s6f1ca9fd_c1(float _t59, float _t69_inv, float _t62, float _t64) {
+        return new Float3(_t59 * _t69_inv, _t62 * _t69_inv, _t64 * _t69_inv);
+    }
+
+    /** Private per-column body of {@code invertProduct_s38768792_tail2}; reached only through it. */
+    private Float3 invertProduct_s38768792_tail2_s6f1ca9fd_c2(float _t60, float _t69_inv, float _t63, float _t65) {
+        return new Float3(_t60 * _t69_inv, _t63 * _t69_inv, _t65 * _t69_inv);
+    }
+
+    /** Private per-column body of {@code invertProduct_s38768792_tail2}; reached only through it. */
+    private Float3 invertProduct_s38768792_tail2_s6f1ca9fd_c3(float _t33, float _t60, float _t34, float _t56, float _t35, float _t59, float _t69_inv, float _t63, float _t61, float _t62, float _t65, float _t57, float _t64) {
+        return new Float3(-(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv), -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv), -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv));
+    }
+
+    private Float3x4 invertProduct_s38768792_tail2(float _t28, float _t57, float _t31, float _t56, float _t32, float _t29, float _t25, float _t30, float _t27, float _t59, float _t60, float _t33, float _t34, float _t35, float _t61, float _t62, float _t63, float _t64, float _t65, int _props) {
+        float _t69 = Math.fma(_t28, _t57, Math.fma(_t31, _t56, -(_t32 * Math.fma(_t29, _t25, -(_t30 * _t27)))));
+        float _t69_inv = 1.0f / _t69;
+        return new Float3x4(invertProduct_s38768792_tail2_s6f1ca9fd_c0(_t56, _t69_inv, _t61, _t57), invertProduct_s38768792_tail2_s6f1ca9fd_c1(_t59, _t69_inv, _t62, _t64), invertProduct_s38768792_tail2_s6f1ca9fd_c2(_t60, _t69_inv, _t63, _t65), invertProduct_s38768792_tail2_s6f1ca9fd_c3(_t33, _t60, _t34, _t56, _t35, _t59, _t69_inv, _t63, _t61, _t62, _t65, _t57, _t64), _props);
+    }
+
 
     /**
      * Compute the inverse of the product of this matrix and ({@code m00}, {@code m01}, {@code m02},
@@ -2242,21 +2549,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t30 = Math.fma(m20, this.m22, Math.fma(m00, this.m20, m10 * this.m21));
         float _t31 = Math.fma(m20, this.m02, Math.fma(m00, this.m00, m10 * this.m01));
         float _t32 = Math.fma(m21, this.m02, Math.fma(m01, this.m00, m11 * this.m01));
-        float _t33 = Math.fma(m03, this.m20, Math.fma(m13, this.m21, Math.fma(m23, this.m22, this.m23)));
-        float _t34 = Math.fma(m03, this.m00, Math.fma(m13, this.m01, Math.fma(m23, this.m02, this.m03)));
-        float _t35 = Math.fma(m03, this.m10, Math.fma(m13, this.m11, Math.fma(m23, this.m12, this.m13)));
-        float _t56 = Math.fma(_t24, _t25, -(_t26 * _t27));
-        float _t57 = Math.fma(_t29, _t26, -(_t30 * _t24));
-        float _t59 = Math.fma(_t26, _t28, -(_t32 * _t25));
-        float _t60 = Math.fma(_t32, _t27, -(_t24 * _t28));
-        float _t61 = Math.fma(_t30, _t27, -(_t29 * _t25));
-        float _t62 = Math.fma(_t31, _t25, -(_t30 * _t28));
-        float _t63 = Math.fma(_t29, _t28, -(_t31 * _t27));
-        float _t64 = Math.fma(_t30, _t32, -(_t31 * _t26));
-        float _t65 = Math.fma(_t31, _t24, -(_t29 * _t32));
-        float _t69 = Math.fma(_t28, _t57, Math.fma(_t31, _t56, -(_t32 * Math.fma(_t29, _t25, -(_t30 * _t27)))));
-        float _t69_inv = 1.0f / _t69;
-        return new Float3x4(_t56 * _t69_inv, _t59 * _t69_inv, _t60 * _t69_inv, -(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv), _t61 * _t69_inv, _t62 * _t69_inv, _t63 * _t69_inv, -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv), _t57 * _t69_inv, _t64 * _t69_inv, _t65 * _t69_inv, -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv), Joml.BIT_AFFINE);
+        return invertProduct_s38768792_tail(m03, m13, m23, _t24, _t25, _t26, _t27, _t29, _t30, _t28, _t32, _t31, Joml.BIT_AFFINE);
     }
 
 
@@ -2946,6 +3239,65 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         return new FloatDualQuat(0.0f, 0.0f, 0.0f, 1.0f, 0.5f * this.m03, 0.5f * this.m13, 0.5f * this.m23, 0.0f);
     }
 
+    /** Private tail of {@code toDualQuat_orthogonal}; reached only through it. */
+    private FloatDualQuat toDualQuat_orthogonal_s0_tail(float _t14, float _t4, float _t19, float _t5, float _t16, float _t6, float _t21, float _t7, float _t22, float _t8, float _t23, float _t17, float _t9, float _t10, float _t18, float _t15, float _t0) {
+        float _t63, _t64;
+        if (_t14 > 0.0f) {
+            _t63 = 0.5f * _t4 * _t19;
+            _t64 = 0.5f * _t8 * _t19;
+        } else {
+            if (this.m00 > _t5) {
+                _t63 = 0.5f * (float) Math.sqrt(_t16);
+                _t64 = 0.5f * _t6 * _t23;
+            } else {
+                if (this.m11 > this.m22) {
+                    _t63 = 0.5f * _t6 * _t21;
+                    _t64 = 0.5f * (float) Math.sqrt(_t17);
+                } else {
+                    _t63 = 0.5f * _t7 * _t22;
+                    _t64 = 0.5f * _t9 * _t22;
+                }
+            }
+        }
+        return toDualQuat_orthogonal_s0_tail2(_t14, _t10, _t19, _t5, _t7, _t23, _t9, _t21, _t18, _t15, _t4, _t8, _t22, _t63, _t64, _t0);
+    }
+
+    /** Private tail of {@code toDualQuat_orthogonal}; reached only through it. */
+    private FloatDualQuat toDualQuat_orthogonal_s0_tail2(float _t14, float _t10, float _t19, float _t5, float _t7, float _t23, float _t9, float _t21, float _t18, float _t15, float _t4, float _t8, float _t22, float _t63, float _t64, float _t0) {
+        float _t65, _t66;
+        if (_t14 > 0.0f) {
+            _t65 = 0.5f * _t10 * _t19;
+            _t66 = 0.5f * (float) Math.sqrt(_t15);
+        } else {
+            if (this.m00 > _t5) {
+                _t65 = 0.5f * _t7 * _t23;
+                _t66 = 0.5f * _t4 * _t23;
+            } else {
+                if (this.m11 > this.m22) {
+                    _t65 = 0.5f * _t9 * _t21;
+                    _t66 = 0.5f * _t8 * _t21;
+                } else {
+                    _t65 = 0.5f * (float) Math.sqrt(_t18);
+                    _t66 = 0.5f * _t10 * _t22;
+                }
+            }
+        }
+        float _sfx0 = _t63;
+        float _sfx1 = _t64;
+        float _sfx2 = _t65;
+        float _sfx3 = _t66;
+        float _sfx4 = 0.5f * Math.fma(_t0, _t64, Math.fma(this.m03, _t66, this.m13 * _t65));
+        float _sfx5 = 0.5f * Math.fma(this.m23, _t63, Math.fma(this.m13, _t66, -(this.m03 * _t65)));
+        return toDualQuat_orthogonal_s0_tail3(_t66, _t64, _t63, _t0, _t65, _sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5);
+    }
+
+    /** Private tail of {@code toDualQuat_orthogonal}; reached only through it. */
+    private FloatDualQuat toDualQuat_orthogonal_s0_tail3(float _t66, float _t64, float _t63, float _t0, float _t65, float _sfx0, float _sfx1, float _sfx2, float _sfx3, float _sfx4, float _sfx5) {
+        float _sfx6 = 0.5f * Math.fma(this.m23, _t66, Math.fma(this.m03, _t64, -(this.m13 * _t63)));
+        float _sfx7 = 0.5f * Math.fma(_t0, _t65, Math.fma(-this.m13, _t64, -(this.m03 * _t63)));
+        return new FloatDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
+    }
+
 
     /**
      * Private body of {@code toDualQuat}, specialized by runtime matrix properties; reached only
@@ -2970,34 +3322,9 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t21 = (1.0f / (float) Math.sqrt(_t17));
         float _t22 = (1.0f / (float) Math.sqrt(_t18));
         float _t23 = (1.0f / (float) Math.sqrt(_t16));
-        float _t63, _t64, _t65, _t66;
-        if (_t14 > 0.0f) {
-            _t63 = 0.5f * _t4 * _t19;
-            _t64 = 0.5f * _t8 * _t19;
-            _t65 = 0.5f * _t10 * _t19;
-            _t66 = 0.5f * (float) Math.sqrt(_t15);
-        } else {
-            if (this.m00 > _t5) {
-                _t63 = 0.5f * (float) Math.sqrt(_t16);
-                _t64 = 0.5f * _t6 * _t23;
-                _t65 = 0.5f * _t7 * _t23;
-                _t66 = 0.5f * _t4 * _t23;
-            } else {
-                if (this.m11 > this.m22) {
-                    _t63 = 0.5f * _t6 * _t21;
-                    _t64 = 0.5f * (float) Math.sqrt(_t17);
-                    _t65 = 0.5f * _t9 * _t21;
-                    _t66 = 0.5f * _t8 * _t21;
-                } else {
-                    _t63 = 0.5f * _t7 * _t22;
-                    _t64 = 0.5f * _t9 * _t22;
-                    _t65 = 0.5f * (float) Math.sqrt(_t18);
-                    _t66 = 0.5f * _t10 * _t22;
-                }
-            }
-        }
-        return new FloatDualQuat(_t63, _t64, _t65, _t66, 0.5f * Math.fma(_t0, _t64, Math.fma(this.m03, _t66, this.m13 * _t65)), 0.5f * Math.fma(this.m23, _t63, Math.fma(this.m13, _t66, -(this.m03 * _t65))), 0.5f * Math.fma(this.m23, _t66, Math.fma(this.m03, _t64, -(this.m13 * _t63))), 0.5f * Math.fma(_t0, _t65, Math.fma(-this.m13, _t64, -(this.m03 * _t63))));
+        return toDualQuat_orthogonal_s0_tail(_t14, _t4, _t19, _t5, _t16, _t6, _t21, _t7, _t22, _t8, _t23, _t17, _t9, _t10, _t18, _t15, _t0);
     }
+
 
 
     /**
@@ -3041,6 +3368,73 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         return new FloatRigid(this.m03, this.m13, this.m23, 0.0f, 0.0f, 0.0f, 1.0f);
     }
 
+    /** Private tail of {@code toRigid_general}; reached only through it. */
+    private FloatRigid toRigid_general_s0_tail(float _t15, float _t16, float _t17, float _t18, float _t12, float _t20, float _t21, float _t13, float _t23, float _t1, float _t0, float _t32, float _t33, float _t28) {
+        float _t43 = Math.fma(-Math.fma(_t15, _t16, -(_t17 * _t18)), this.m01 * _t12, Math.fma(Math.fma(_t15, _t20, -(_t21 * _t18)), this.m02 * _t13, Math.fma(_t21, _t16, -(_t17 * _t20)) * _t23));
+        float _t44, _t45, _t46;
+        if (_t43 < 0.0f) {
+            _t44 = -_t23;
+            _t45 = -_t15;
+            _t46 = -_t18;
+        } else {
+            _t44 = _t23;
+            _t45 = _t15;
+            _t46 = _t18;
+        }
+        float _t48 = 1.0f + _t44;
+        float _t49 = 1.0f - _t44;
+        float _t51 = Math.fma(this.m01, _t12, _t45);
+        float _t52 = Math.fma(this.m02, _t13, _t46);
+        float _t53 = Math.fma(this.m02, _t13, -_t46);
+        float _t54 = Math.fma(-this.m01, _t12, _t45);
+        float _t59 = Math.fma(this.m11, _t12, Math.fma(this.m22, _t13, _t44));
+        float _t60 = Math.fma(this.m11, _t12, Math.fma(this.m22, _t13, _t48));
+        return toRigid_general_s0_tail2(_t60, _t12, _t1, _t13, _t49, _t0, _t48, _t59, _t32, _t44, _t33, _t21, _t16, _t51, _t52, _t53, _t28, _t54);
+    }
+
+    /** Private tail of {@code toRigid_general}; reached only through it. */
+    private FloatRigid toRigid_general_s0_tail2(float _t60, float _t12, float _t1, float _t13, float _t49, float _t0, float _t48, float _t59, float _t32, float _t44, float _t33, float _t21, float _t16, float _t51, float _t52, float _t53, float _t28, float _t54) {
+        float _t61 = (1.0f / (float) Math.sqrt(_t60));
+        float _t62 = Math.fma(this.m11, _t12, Math.fma(_t1, _t13, _t49));
+        float _t63 = Math.fma(this.m22, _t13, Math.fma(_t0, _t12, _t49));
+        float _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
+        float _t65 = (1.0f / (float) Math.sqrt(_t62));
+        float _t66 = (1.0f / (float) Math.sqrt(_t63));
+        float _t67 = (1.0f / (float) Math.sqrt(_t64));
+        float _sfx0 = this.m03;
+        float _sfx1 = this.m13;
+        float _sfx2 = this.m23;
+        float _sfx3 = _t59 > 0.0f ? 0.5f * _t32 * _t61 : _t44 > _t33 ? 0.5f * (float) Math.sqrt(_t64) : _t21 > _t16 ? 0.5f * _t51 * _t65 : 0.5f * _t52 * _t66;
+        return toRigid_general_s0_tail3(_t59, _t53, _t61, _t44, _t33, _t51, _t67, _t21, _t16, _t62, _t28, _t66, _t54, _t52, _t65, _t63, _t60, _t32, _sfx0, _sfx1, _sfx2, _sfx3);
+    }
+
+    /** Private tail of {@code toRigid_general}; reached only through it. */
+    private FloatRigid toRigid_general_s0_tail3(float _t59, float _t53, float _t61, float _t44, float _t33, float _t51, float _t67, float _t21, float _t16, float _t62, float _t28, float _t66, float _t54, float _t52, float _t65, float _t63, float _t60, float _t32, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
+        float _sfx4, _sfx5, _sfx6;
+        if (_t59 > 0.0f) {
+            _sfx4 = 0.5f * _t53 * _t61;
+            _sfx5 = 0.5f * _t54 * _t61;
+            _sfx6 = 0.5f * (float) Math.sqrt(_t60);
+        } else {
+            if (_t44 > _t33) {
+                _sfx4 = 0.5f * _t51 * _t67;
+                _sfx5 = 0.5f * _t52 * _t67;
+                _sfx6 = 0.5f * _t32 * _t67;
+            } else {
+                if (_t21 > _t16) {
+                    _sfx4 = 0.5f * (float) Math.sqrt(_t62);
+                    _sfx5 = 0.5f * _t28 * _t65;
+                    _sfx6 = 0.5f * _t53 * _t65;
+                } else {
+                    _sfx4 = 0.5f * _t28 * _t66;
+                    _sfx5 = 0.5f * (float) Math.sqrt(_t63);
+                    _sfx6 = 0.5f * _t54 * _t66;
+                }
+            }
+        }
+        return new FloatRigid(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6);
+    }
+
 
     /**
      * Private body of {@code toRigid}, specialized by runtime matrix properties; reached only
@@ -3062,45 +3456,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t28 = Math.fma(this.m12, _t13, _t20);
         float _t32 = Math.fma(this.m21, _t12, -_t17);
         float _t33 = Math.max(_t21, _t16);
-        float _t43 = Math.fma(-Math.fma(_t15, _t16, -(_t17 * _t18)), this.m01 * _t12, Math.fma(Math.fma(_t15, _t20, -(_t21 * _t18)), this.m02 * _t13, Math.fma(_t21, _t16, -(_t17 * _t20)) * _t23));
-        float _t44, _t45, _t46;
-        if (_t43 < 0.0f) {
-            _t44 = -_t23;
-            _t45 = -_t15;
-            _t46 = -_t18;
-        } else {
-            _t44 = _t23;
-            _t45 = _t15;
-            _t46 = _t18;
-        }
-        float _t48 = 1.0f + _t44;
-        float _t49 = 1.0f - _t44;
-        float _t51 = Math.fma(this.m01, _t12, _t45);
-        float _t52 = Math.fma(this.m02, _t13, _t46);
-        float _t53 = Math.fma(this.m02, _t13, -_t46);
-        float _t54 = Math.fma(-this.m01, _t12, _t45);
-        float _t59 = Math.fma(this.m11, _t12, Math.fma(this.m22, _t13, _t44));
-        float _t60 = Math.fma(this.m11, _t12, Math.fma(this.m22, _t13, _t48));
-        float _t61 = (1.0f / (float) Math.sqrt(_t60));
-        float _t62 = Math.fma(this.m11, _t12, Math.fma(_t1, _t13, _t49));
-        float _t63 = Math.fma(this.m22, _t13, Math.fma(_t0, _t12, _t49));
-        float _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        float _t65 = (1.0f / (float) Math.sqrt(_t62));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        if (_t59 > 0.0f) {
-            return new FloatRigid(this.m03, this.m13, this.m23, 0.5f * _t32 * _t61, 0.5f * _t53 * _t61, 0.5f * _t54 * _t61, 0.5f * (float) Math.sqrt(_t60));
-        } else {
-            if (_t44 > _t33) {
-                return new FloatRigid(this.m03, this.m13, this.m23, 0.5f * (float) Math.sqrt(_t64), 0.5f * _t51 * _t67, 0.5f * _t52 * _t67, 0.5f * _t32 * _t67);
-            } else {
-                if (_t21 > _t16) {
-                    return new FloatRigid(this.m03, this.m13, this.m23, 0.5f * _t51 * _t65, 0.5f * (float) Math.sqrt(_t62), 0.5f * _t28 * _t65, 0.5f * _t53 * _t65);
-                } else {
-                    return new FloatRigid(this.m03, this.m13, this.m23, 0.5f * _t52 * _t66, 0.5f * _t28 * _t66, 0.5f * (float) Math.sqrt(_t63), 0.5f * _t54 * _t66);
-                }
-            }
-        }
+        return toRigid_general_s0_tail(_t15, _t16, _t17, _t18, _t12, _t20, _t21, _t13, _t23, _t1, _t0, _t32, _t33, _t28);
     }
 
 
@@ -3137,6 +3493,76 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         return new FloatTransform(this.m03, this.m13, this.m23, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
     }
 
+    /** Private tail of {@code toTransform_general}; reached only through it. */
+    private FloatTransform toTransform_general_s0_tail(float _t16, float _t17, float _t18, float _t19, float _t12, float _t21, float _t22, float _t13, float _t24, float _t1, float _t0, float _t33, float _t34, float _t29, float _t15, float _t9, float _t10) {
+        float _t44 = Math.fma(-Math.fma(_t16, _t17, -(_t18 * _t19)), this.m01 * _t12, Math.fma(Math.fma(_t16, _t21, -(_t22 * _t19)), this.m02 * _t13, Math.fma(_t22, _t17, -(_t18 * _t21)) * _t24));
+        float _t45, _t46, _t47;
+        if (_t44 < 0.0f) {
+            _t45 = -_t24;
+            _t46 = -_t16;
+            _t47 = -_t19;
+        } else {
+            _t45 = _t24;
+            _t46 = _t16;
+            _t47 = _t19;
+        }
+        float _t49 = 1.0f + _t45;
+        float _t50 = 1.0f - _t45;
+        float _t52 = Math.fma(this.m01, _t12, _t46);
+        float _t53 = Math.fma(this.m02, _t13, _t47);
+        float _t54 = Math.fma(this.m02, _t13, -_t47);
+        float _t55 = Math.fma(-this.m01, _t12, _t46);
+        float _t60 = Math.fma(this.m11, _t12, Math.fma(this.m22, _t13, _t45));
+        return toTransform_general_s0_tail2(_t12, _t13, _t49, _t1, _t50, _t0, _t60, _t33, _t45, _t34, _t22, _t17, _t52, _t53, _t54, _t29, _t55, _t44, _t15, _t9, _t10);
+    }
+
+    /** Private tail of {@code toTransform_general}; reached only through it. */
+    private FloatTransform toTransform_general_s0_tail2(float _t12, float _t13, float _t49, float _t1, float _t50, float _t0, float _t60, float _t33, float _t45, float _t34, float _t22, float _t17, float _t52, float _t53, float _t54, float _t29, float _t55, float _t44, float _t15, float _t9, float _t10) {
+        float _t61 = Math.fma(this.m11, _t12, Math.fma(this.m22, _t13, _t49));
+        float _t62 = (1.0f / (float) Math.sqrt(_t61));
+        float _t63 = Math.fma(this.m11, _t12, Math.fma(_t1, _t13, _t50));
+        float _t64 = Math.fma(this.m22, _t13, Math.fma(_t0, _t12, _t50));
+        float _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
+        float _t66 = (1.0f / (float) Math.sqrt(_t63));
+        float _t67 = (1.0f / (float) Math.sqrt(_t64));
+        float _t68 = (1.0f / (float) Math.sqrt(_t65));
+        float _sfx0 = this.m03;
+        float _sfx1 = this.m13;
+        float _sfx2 = this.m23;
+        float _sfx3 = _t60 > 0.0f ? 0.5f * _t33 * _t62 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? 0.5f * _t52 * _t66 : 0.5f * _t53 * _t67;
+        return toTransform_general_s0_tail3(_t60, _t54, _t62, _t45, _t34, _t52, _t68, _t22, _t17, _t63, _t29, _t67, _t55, _t53, _t66, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
+    }
+
+    /** Private tail of {@code toTransform_general}; reached only through it. */
+    private FloatTransform toTransform_general_s0_tail3(float _t60, float _t54, float _t62, float _t45, float _t34, float _t52, float _t68, float _t22, float _t17, float _t63, float _t29, float _t67, float _t55, float _t53, float _t66, float _t64, float _t61, float _t33, float _t44, float _t15, float _t9, float _t10, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
+        float _sfx4, _sfx5, _sfx6;
+        if (_t60 > 0.0f) {
+            _sfx4 = 0.5f * _t54 * _t62;
+            _sfx5 = 0.5f * _t55 * _t62;
+            _sfx6 = 0.5f * (float) Math.sqrt(_t61);
+        } else {
+            if (_t45 > _t34) {
+                _sfx4 = 0.5f * _t52 * _t68;
+                _sfx5 = 0.5f * _t53 * _t68;
+                _sfx6 = 0.5f * _t33 * _t68;
+            } else {
+                if (_t22 > _t17) {
+                    _sfx4 = 0.5f * (float) Math.sqrt(_t63);
+                    _sfx5 = 0.5f * _t29 * _t66;
+                    _sfx6 = 0.5f * _t54 * _t66;
+                } else {
+                    _sfx4 = 0.5f * _t29 * _t67;
+                    _sfx5 = 0.5f * (float) Math.sqrt(_t64);
+                    _sfx6 = 0.5f * _t55 * _t67;
+                }
+            }
+        }
+        float _sfx7 = _t44 < 0.0f ? -_t15 : _t15;
+        float _sfx8 = (float) Math.sqrt(_t9);
+        float _sfx9 = (float) Math.sqrt(_t10);
+        return new FloatTransform(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7, _sfx8, _sfx9);
+    }
+
 
     /**
      * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
@@ -3162,33 +3588,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t29 = Math.fma(this.m12, _t13, _t21);
         float _t33 = Math.fma(this.m21, _t12, -_t18);
         float _t34 = Math.max(_t22, _t17);
-        float _t44 = Math.fma(-Math.fma(_t16, _t17, -(_t18 * _t19)), this.m01 * _t12, Math.fma(Math.fma(_t16, _t21, -(_t22 * _t19)), this.m02 * _t13, Math.fma(_t22, _t17, -(_t18 * _t21)) * _t24));
-        float _t45, _t46, _t47;
-        if (_t44 < 0.0f) {
-            _t45 = -_t24;
-            _t46 = -_t16;
-            _t47 = -_t19;
-        } else {
-            _t45 = _t24;
-            _t46 = _t16;
-            _t47 = _t19;
-        }
-        float _t49 = 1.0f + _t45;
-        float _t50 = 1.0f - _t45;
-        float _t52 = Math.fma(this.m01, _t12, _t46);
-        float _t53 = Math.fma(this.m02, _t13, _t47);
-        float _t54 = Math.fma(this.m02, _t13, -_t47);
-        float _t55 = Math.fma(-this.m01, _t12, _t46);
-        float _t60 = Math.fma(this.m11, _t12, Math.fma(this.m22, _t13, _t45));
-        float _t61 = Math.fma(this.m11, _t12, Math.fma(this.m22, _t13, _t49));
-        float _t62 = (1.0f / (float) Math.sqrt(_t61));
-        float _t63 = Math.fma(this.m11, _t12, Math.fma(_t1, _t13, _t50));
-        float _t64 = Math.fma(this.m22, _t13, Math.fma(_t0, _t12, _t50));
-        float _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
-        return new FloatTransform(this.m03, this.m13, this.m23, _t60 > 0.0f ? 0.5f * _t33 * _t62 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? 0.5f * _t52 * _t66 : 0.5f * _t53 * _t67, _t60 > 0.0f ? 0.5f * _t54 * _t62 : _t45 > _t34 ? 0.5f * _t52 * _t68 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : 0.5f * _t29 * _t67, _t60 > 0.0f ? 0.5f * _t55 * _t62 : _t45 > _t34 ? 0.5f * _t53 * _t68 : _t22 > _t17 ? 0.5f * _t29 * _t66 : 0.5f * (float) Math.sqrt(_t64), _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? 0.5f * _t33 * _t68 : _t22 > _t17 ? 0.5f * _t54 * _t66 : 0.5f * _t55 * _t67, _t44 < 0.0f ? -_t15 : _t15, (float) Math.sqrt(_t9), (float) Math.sqrt(_t10));
+        return toTransform_general_s0_tail(_t16, _t17, _t18, _t19, _t12, _t21, _t22, _t13, _t24, _t1, _t0, _t33, _t34, _t29, _t15, _t9, _t10);
     }
 
 
@@ -3217,7 +3617,15 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
     }
 
     /** Private tail of {@code decomposeRotation_general}; reached only through it. */
-    private FloatQuat decomposeRotation_general_s0_tail(float _t20, float _t7, float _t35, float _t8, float _t34, float _t9, float _t36) {
+    private FloatQuat decomposeRotation_general_s0_tail(float _t29, float _t21, float _t30, float _t23, float _t20, float _t7, float _t8, float _t34, float _t9) {
+        float _t35, _t36;
+        if (_t29 > 0.0f) {
+            _t35 = _t21 * _t30;
+            _t36 = _t23 * _t30;
+        } else {
+            _t35 = 0.0f;
+            _t36 = 0.0f;
+        }
         float _t40 = -Math.fma(Math.fma(_t20, _t7, this.m22), _t35, Math.fma(Math.fma(_t20, _t8, this.m02), _t34, Math.fma(_t20, _t9, this.m12) * _t36));
         float _t44 = Math.fma(_t20, _t7, Math.fma(_t40, _t35, this.m22));
         float _t45 = Math.fma(_t20, _t8, Math.fma(_t40, _t34, this.m02));
@@ -3236,13 +3644,13 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         }
         float _t60 = _t35 - _t54;
         float _t61 = Math.max(_t36, _t56);
-        float _t63 = _t35 + _t54;
-        float _t72 = Math.fma(Math.fma(_t34, _t54, -(_t36 * _t55)), _t7, Math.fma(Math.fma(_t36, _t56, -(_t35 * _t54)), _t8, Math.fma(_t35, _t55, -(_t34 * _t56)) * _t9));
-        return decomposeRotation_general_s0_tail2(_t72, _t8, _t9, _t7, _t36, _t34, _t55, _t56, _t60, _t61, _t63);
+        return decomposeRotation_general_s0_tail2(_t35, _t54, _t34, _t36, _t55, _t7, _t56, _t8, _t9, _t60, _t61);
     }
 
     /** Private tail of {@code decomposeRotation_general}; reached only through it. */
-    private FloatQuat decomposeRotation_general_s0_tail2(float _t72, float _t8, float _t9, float _t7, float _t36, float _t34, float _t55, float _t56, float _t60, float _t61, float _t63) {
+    private FloatQuat decomposeRotation_general_s0_tail2(float _t35, float _t54, float _t34, float _t36, float _t55, float _t7, float _t56, float _t8, float _t9, float _t60, float _t61) {
+        float _t63 = _t35 + _t54;
+        float _t72 = Math.fma(Math.fma(_t34, _t54, -(_t36 * _t55)), _t7, Math.fma(Math.fma(_t36, _t56, -(_t35 * _t54)), _t8, Math.fma(_t35, _t55, -(_t34 * _t56)) * _t9));
         float _t73, _t74, _t75;
         if (_t72 < 0.0f) {
             _t73 = -_t8;
@@ -3272,27 +3680,42 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
 
     /** Private tail of {@code decomposeRotation_general}; reached only through it. */
     private FloatQuat decomposeRotation_general_s0_tail3(float _t82, float _t60, float _t90, float _t73, float _t61, float _t87, float _t36, float _t56, float _t77, float _t91, float _t80, float _t92, float _t81, float _t93, float _t88, float _t63, float _t78, float _t89, float _t86) {
-        float _sfx0, _sfx1, _sfx2, _sfx3;
+        float _sfx0, _sfx1;
         if (_t82 > 0.0f) {
             _sfx0 = 0.5f * _t60 * _t90;
             _sfx1 = 0.5f * _t81 * _t90;
-            _sfx2 = 0.5f * _t78 * _t90;
-            _sfx3 = 0.5f * (float) Math.sqrt(_t86);
         } else {
             if (_t73 > _t61) {
                 _sfx0 = 0.5f * (float) Math.sqrt(_t87);
                 _sfx1 = 0.5f * _t77 * _t93;
-                _sfx2 = 0.5f * _t80 * _t93;
-                _sfx3 = 0.5f * _t60 * _t93;
             } else {
                 if (_t36 > _t56) {
                     _sfx0 = 0.5f * _t77 * _t91;
                     _sfx1 = 0.5f * (float) Math.sqrt(_t88);
-                    _sfx2 = 0.5f * _t63 * _t91;
-                    _sfx3 = 0.5f * _t81 * _t91;
                 } else {
                     _sfx0 = 0.5f * _t80 * _t92;
                     _sfx1 = 0.5f * _t63 * _t92;
+                }
+            }
+        }
+        return decomposeRotation_general_s0_tail4(_t82, _t78, _t90, _t73, _t61, _t80, _t93, _t36, _t56, _t63, _t91, _t89, _t86, _t60, _t81, _t92, _sfx0, _sfx1);
+    }
+
+    /** Private tail of {@code decomposeRotation_general}; reached only through it. */
+    private FloatQuat decomposeRotation_general_s0_tail4(float _t82, float _t78, float _t90, float _t73, float _t61, float _t80, float _t93, float _t36, float _t56, float _t63, float _t91, float _t89, float _t86, float _t60, float _t81, float _t92, float _sfx0, float _sfx1) {
+        float _sfx2, _sfx3;
+        if (_t82 > 0.0f) {
+            _sfx2 = 0.5f * _t78 * _t90;
+            _sfx3 = 0.5f * (float) Math.sqrt(_t86);
+        } else {
+            if (_t73 > _t61) {
+                _sfx2 = 0.5f * _t80 * _t93;
+                _sfx3 = 0.5f * _t60 * _t93;
+            } else {
+                if (_t36 > _t56) {
+                    _sfx2 = 0.5f * _t63 * _t91;
+                    _sfx3 = 0.5f * _t81 * _t91;
+                } else {
                     _sfx2 = 0.5f * (float) Math.sqrt(_t89);
                     _sfx3 = 0.5f * _t78 * _t92;
                 }
@@ -3326,17 +3749,8 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t23 = Math.fma(_t19, _t9, this.m11);
         float _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
-        float _t34, _t35, _t36;
-        if (_t29 > 0.0f) {
-            _t34 = _t22 * _t30;
-            _t35 = _t21 * _t30;
-            _t36 = _t23 * _t30;
-        } else {
-            _t34 = 0.0f;
-            _t35 = 0.0f;
-            _t36 = 0.0f;
-        }
-        return decomposeRotation_general_s0_tail(_t20, _t7, _t35, _t8, _t34, _t9, _t36);
+        float _t34 = _t29 > 0.0f ? _t22 * _t30 : 0.0f;
+        return decomposeRotation_general_s0_tail(_t29, _t21, _t30, _t23, _t20, _t7, _t8, _t34, _t9);
     }
 
 
@@ -3365,13 +3779,28 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
     }
 
     /** Private tail of {@code decomposeScale_general}; reached only through it. */
-    private Float3 decomposeScale_general_s0_tail(float _t18, float _t8, float _t33, float _t9, float _t32, float _t10, float _t34, float _t4, float _t27) {
+    private Float3 decomposeScale_general_s0_tail(float _t27, float _t20, float _t28, float _t19, float _t21, float _t18, float _t8, float _t9, float _t10, float _t4) {
+        float _t32, _t33, _t34;
+        if (_t27 > 0.0f) {
+            _t32 = _t20 * _t28;
+            _t33 = _t19 * _t28;
+            _t34 = _t21 * _t28;
+        } else {
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+            _t34 = 0.0f;
+        }
         float _t38 = -Math.fma(Math.fma(_t18, _t8, this.m22), _t33, Math.fma(Math.fma(_t18, _t9, this.m02), _t32, Math.fma(_t18, _t10, this.m12) * _t34));
         float _t42 = Math.fma(_t18, _t8, Math.fma(_t38, _t33, this.m22));
         float _t43 = Math.fma(_t18, _t9, Math.fma(_t38, _t32, this.m02));
         float _t44 = Math.fma(_t18, _t10, Math.fma(_t38, _t34, this.m12));
         float _t47 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, _t44 * _t44));
         float _t48 = (1.0f / (float) Math.sqrt(_t47));
+        return decomposeScale_general_s0_tail2(_t47, _t44, _t48, _t43, _t42, _t32, _t34, _t8, _t33, _t9, _t10, _t4, _t27);
+    }
+
+    /** Private tail of {@code decomposeScale_general}; reached only through it. */
+    private Float3 decomposeScale_general_s0_tail2(float _t47, float _t44, float _t48, float _t43, float _t42, float _t32, float _t34, float _t8, float _t33, float _t9, float _t10, float _t4, float _t27) {
         float _t52, _t53, _t54;
         if (_t47 > 0.0f) {
             _t52 = _t44 * _t48;
@@ -3382,7 +3811,10 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
             _t53 = 0.0f;
             _t54 = 0.0f;
         }
-        return new Float3(Math.fma(Math.fma(_t32, _t52, -(_t34 * _t53)), _t8, Math.fma(Math.fma(_t34, _t54, -(_t33 * _t52)), _t9, Math.fma(_t33, _t53, -(_t32 * _t54)) * _t10)) < 0.0f ? -_t4 : _t4, (float) Math.sqrt(_t27), (float) Math.sqrt(_t47));
+        float _sfx0 = Math.fma(Math.fma(_t32, _t52, -(_t34 * _t53)), _t8, Math.fma(Math.fma(_t34, _t54, -(_t33 * _t52)), _t9, Math.fma(_t33, _t53, -(_t32 * _t54)) * _t10)) < 0.0f ? -_t4 : _t4;
+        float _sfx1 = (float) Math.sqrt(_t27);
+        float _sfx2 = (float) Math.sqrt(_t47);
+        return new Float3(_sfx0, _sfx1, _sfx2);
     }
 
 
@@ -3411,17 +3843,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t21 = Math.fma(_t17, _t10, this.m11);
         float _t27 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
-        float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
-            _t32 = _t20 * _t28;
-            _t33 = _t19 * _t28;
-            _t34 = _t21 * _t28;
-        } else {
-            _t32 = 0.0f;
-            _t33 = 0.0f;
-            _t34 = 0.0f;
-        }
-        return decomposeScale_general_s0_tail(_t18, _t8, _t33, _t9, _t32, _t10, _t34, _t4, _t27);
+        return decomposeScale_general_s0_tail(_t27, _t20, _t28, _t19, _t21, _t18, _t8, _t9, _t10, _t4);
     }
 
 
@@ -3452,7 +3874,17 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
     }
 
     /** Private tail of {@code decomposeSkew_general}; reached only through it. */
-    private Float3 decomposeSkew_general_s0_tail(float _t16, float _t7, float _t32, float _t8, float _t33, float _t9, float _t34, float _t14, float _t28) {
+    private Float3 decomposeSkew_general_s0_tail(float _t26, float _t19, float _t27, float _t20, float _t21, float _t16, float _t7, float _t8, float _t9, float _t14, float _t28) {
+        float _t32, _t33, _t34;
+        if (_t26 > 0.0f) {
+            _t32 = _t19 * _t27;
+            _t33 = _t20 * _t27;
+            _t34 = _t21 * _t27;
+        } else {
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+            _t34 = 0.0f;
+        }
         float _t37 = Math.fma(Math.fma(_t16, _t7, this.m22), _t32, Math.fma(Math.fma(_t16, _t8, this.m02), _t33, Math.fma(_t16, _t9, this.m12) * _t34));
         float _t38 = -_t37;
         float _t42 = Math.fma(_t16, _t7, Math.fma(_t38, _t32, this.m22));
@@ -3461,6 +3893,11 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t47 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, _t44 * _t44));
         float _t48 = (1.0f / (float) Math.sqrt(_t47));
         float _t49 = _t14 * _t48;
+        return decomposeSkew_general_s0_tail2(_t47, _t44, _t48, _t43, _t42, _t33, _t34, _t7, _t32, _t8, _t9, _t37, _t49, _t28);
+    }
+
+    /** Private tail of {@code decomposeSkew_general}; reached only through it. */
+    private Float3 decomposeSkew_general_s0_tail2(float _t47, float _t44, float _t48, float _t43, float _t42, float _t33, float _t34, float _t7, float _t32, float _t8, float _t9, float _t37, float _t49, float _t28) {
         float _t53, _t54, _t55;
         if (_t47 > 0.0f) {
             _t53 = _t44 * _t48;
@@ -3472,11 +3909,16 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
             _t55 = 0.0f;
         }
         float _t67 = Math.fma(Math.fma(_t33, _t53, -(_t34 * _t54)), _t7, Math.fma(Math.fma(_t34, _t55, -(_t32 * _t53)), _t8, Math.fma(_t32, _t54, -(_t33 * _t55)) * _t9));
+        float _sfx0 = _t37 * _t48;
+        float _sfx1, _sfx2;
         if (_t67 < 0.0f) {
-            return new Float3(_t37 * _t48, -_t49, -_t28);
+            _sfx1 = -_t49;
+            _sfx2 = -_t28;
         } else {
-            return new Float3(_t37 * _t48, _t49, _t28);
+            _sfx1 = _t49;
+            _sfx2 = _t28;
         }
+        return new Float3(_sfx0, _sfx1, _sfx2);
     }
 
 
@@ -3507,17 +3949,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t26 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t27 = (1.0f / (float) Math.sqrt(_t26));
         float _t28 = _t15 * _t27;
-        float _t32, _t33, _t34;
-        if (_t26 > 0.0f) {
-            _t32 = _t19 * _t27;
-            _t33 = _t20 * _t27;
-            _t34 = _t21 * _t27;
-        } else {
-            _t32 = 0.0f;
-            _t33 = 0.0f;
-            _t34 = 0.0f;
-        }
-        return decomposeSkew_general_s0_tail(_t16, _t7, _t32, _t8, _t33, _t9, _t34, _t14, _t28);
+        return decomposeSkew_general_s0_tail(_t26, _t19, _t27, _t20, _t21, _t16, _t7, _t8, _t9, _t14, _t28);
     }
 
 
@@ -3567,6 +3999,120 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         public Float3 scale() { return scale; }
     }
 
+    /** Private tail of {@code decomposeTRS}; reached only through it. */
+    private DecomposeTRSResult decomposeTRS_s0_tail(float _t30, float _t22, float _t31, float _t24, float _t21, float _t8, float _t9, float _t35, float _t10, float _t4) {
+        float _t36, _t37;
+        if (_t30 > 0.0f) {
+            _t36 = _t22 * _t31;
+            _t37 = _t24 * _t31;
+        } else {
+            _t36 = 0.0f;
+            _t37 = 0.0f;
+        }
+        float _t41 = -Math.fma(Math.fma(_t21, _t8, this.m22), _t36, Math.fma(Math.fma(_t21, _t9, this.m02), _t35, Math.fma(_t21, _t10, this.m12) * _t37));
+        float _t45 = Math.fma(_t21, _t8, Math.fma(_t41, _t36, this.m22));
+        float _t46 = Math.fma(_t21, _t9, Math.fma(_t41, _t35, this.m02));
+        float _t47 = Math.fma(_t21, _t10, Math.fma(_t41, _t37, this.m12));
+        float _t50 = Math.fma(_t45, _t45, Math.fma(_t46, _t46, _t47 * _t47));
+        float _t51 = (1.0f / (float) Math.sqrt(_t50));
+        float _t55, _t56, _t57;
+        if (_t50 > 0.0f) {
+            _t55 = _t47 * _t51;
+            _t56 = _t46 * _t51;
+            _t57 = _t45 * _t51;
+        } else {
+            _t55 = 0.0f;
+            _t56 = 0.0f;
+            _t57 = 0.0f;
+        }
+        float _t61 = _t36 - _t55;
+        return decomposeTRS_s0_tail2(_t37, _t57, _t36, _t55, _t35, _t56, _t8, _t9, _t10, _t61, _t4, _t30, _t50);
+    }
+
+    /** Private tail of {@code decomposeTRS}; reached only through it. */
+    private DecomposeTRSResult decomposeTRS_s0_tail2(float _t37, float _t57, float _t36, float _t55, float _t35, float _t56, float _t8, float _t9, float _t10, float _t61, float _t4, float _t30, float _t50) {
+        float _t62 = Math.max(_t37, _t57);
+        float _t64 = _t36 + _t55;
+        float _t73 = Math.fma(Math.fma(_t35, _t55, -(_t37 * _t56)), _t8, Math.fma(Math.fma(_t37, _t57, -(_t36 * _t55)), _t9, Math.fma(_t36, _t56, -(_t35 * _t57)) * _t10));
+        float _t74, _t75, _t76;
+        if (_t73 < 0.0f) {
+            _t74 = -_t9;
+            _t75 = -_t10;
+            _t76 = -_t8;
+        } else {
+            _t74 = _t9;
+            _t75 = _t10;
+            _t76 = _t8;
+        }
+        float _t77 = _t74 + _t37;
+        float _t78 = _t75 + _t35;
+        float _t79 = _t75 - _t35;
+        float _t81 = _t76 + _t56;
+        float _t82 = _t56 - _t76;
+        float _t83 = _t77 + _t57;
+        float _t87 = 1.0f + _t83;
+        float _t88 = 1.0f + (_t74 - (_t37 + _t57));
+        float _t89 = 1.0f + (_t37 - (_t74 + _t57));
+        float _t90 = 1.0f + (_t57 - _t77);
+        float _t91 = (1.0f / (float) Math.sqrt(_t87));
+        float _t92 = (1.0f / (float) Math.sqrt(_t89));
+        return decomposeTRS_s0_tail3(_t90, _t88, _t83, _t61, _t91, _t74, _t62, _t37, _t57, _t78, _t92, _t81, _t82, _t89, _t64, _t79, _t87, _t73, _t4, _t30, _t50);
+    }
+
+    /** Private tail of {@code decomposeTRS}; reached only through it. */
+    private DecomposeTRSResult decomposeTRS_s0_tail3(float _t90, float _t88, float _t83, float _t61, float _t91, float _t74, float _t62, float _t37, float _t57, float _t78, float _t92, float _t81, float _t82, float _t89, float _t64, float _t79, float _t87, float _t73, float _t4, float _t30, float _t50) {
+        float _t93 = (1.0f / (float) Math.sqrt(_t90));
+        float _t94 = (1.0f / (float) Math.sqrt(_t88));
+        float _sfx0_0 = this.m03;
+        float _sfx0_1 = this.m13;
+        float _sfx0_2 = this.m23;
+        float _sfx1_0, _sfx1_1;
+        if (_t83 > 0.0f) {
+            _sfx1_0 = 0.5f * _t61 * _t91;
+            _sfx1_1 = 0.5f * _t82 * _t91;
+        } else {
+            if (_t74 > _t62) {
+                _sfx1_0 = 0.5f * (float) Math.sqrt(_t88);
+                _sfx1_1 = 0.5f * _t78 * _t94;
+            } else {
+                if (_t37 > _t57) {
+                    _sfx1_0 = 0.5f * _t78 * _t92;
+                    _sfx1_1 = 0.5f * (float) Math.sqrt(_t89);
+                } else {
+                    _sfx1_0 = 0.5f * _t81 * _t93;
+                    _sfx1_1 = 0.5f * _t64 * _t93;
+                }
+            }
+        }
+        return decomposeTRS_s0_tail4(_t83, _t79, _t91, _t74, _t62, _t81, _t94, _t37, _t57, _t64, _t92, _t90, _t87, _t61, _t82, _t93, _t73, _t4, _t30, _t50, _sfx0_0, _sfx0_1, _sfx0_2, _sfx1_0, _sfx1_1);
+    }
+
+    /** Private tail of {@code decomposeTRS}; reached only through it. */
+    private DecomposeTRSResult decomposeTRS_s0_tail4(float _t83, float _t79, float _t91, float _t74, float _t62, float _t81, float _t94, float _t37, float _t57, float _t64, float _t92, float _t90, float _t87, float _t61, float _t82, float _t93, float _t73, float _t4, float _t30, float _t50, float _sfx0_0, float _sfx0_1, float _sfx0_2, float _sfx1_0, float _sfx1_1) {
+        float _sfx1_2, _sfx1_3;
+        if (_t83 > 0.0f) {
+            _sfx1_2 = 0.5f * _t79 * _t91;
+            _sfx1_3 = 0.5f * (float) Math.sqrt(_t87);
+        } else {
+            if (_t74 > _t62) {
+                _sfx1_2 = 0.5f * _t81 * _t94;
+                _sfx1_3 = 0.5f * _t61 * _t94;
+            } else {
+                if (_t37 > _t57) {
+                    _sfx1_2 = 0.5f * _t64 * _t92;
+                    _sfx1_3 = 0.5f * _t82 * _t92;
+                } else {
+                    _sfx1_2 = 0.5f * (float) Math.sqrt(_t90);
+                    _sfx1_3 = 0.5f * _t79 * _t93;
+                }
+            }
+        }
+        float _sfx2_0 = _t73 < 0.0f ? -_t4 : _t4;
+        float _sfx2_1 = (float) Math.sqrt(_t30);
+        float _sfx2_2 = (float) Math.sqrt(_t50);
+        return new DecomposeTRSResult(new Float3(_sfx0_0, _sfx0_1, _sfx0_2), new FloatQuat(_sfx1_0, _sfx1_1, _sfx1_2, _sfx1_3), new Float3(_sfx2_0, _sfx2_1, _sfx2_2));
+    }
+
 
     /**
      * Decompose this matrix into its translation, rotation and scale components.
@@ -3598,61 +4144,8 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t24 = Math.fma(_t20, _t10, this.m11);
         float _t30 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24));
         float _t31 = (1.0f / (float) Math.sqrt(_t30));
-        float _t35, _t36, _t37;
-        if (_t30 > 0.0f) {
-            _t35 = _t23 * _t31;
-            _t36 = _t22 * _t31;
-            _t37 = _t24 * _t31;
-        } else {
-            _t35 = 0.0f;
-            _t36 = 0.0f;
-            _t37 = 0.0f;
-        }
-        float _t41 = -Math.fma(Math.fma(_t21, _t8, this.m22), _t36, Math.fma(Math.fma(_t21, _t9, this.m02), _t35, Math.fma(_t21, _t10, this.m12) * _t37));
-        float _t45 = Math.fma(_t21, _t8, Math.fma(_t41, _t36, this.m22));
-        float _t46 = Math.fma(_t21, _t9, Math.fma(_t41, _t35, this.m02));
-        float _t47 = Math.fma(_t21, _t10, Math.fma(_t41, _t37, this.m12));
-        float _t50 = Math.fma(_t45, _t45, Math.fma(_t46, _t46, _t47 * _t47));
-        float _t51 = (1.0f / (float) Math.sqrt(_t50));
-        float _t55, _t56, _t57;
-        if (_t50 > 0.0f) {
-            _t55 = _t47 * _t51;
-            _t56 = _t46 * _t51;
-            _t57 = _t45 * _t51;
-        } else {
-            _t55 = 0.0f;
-            _t56 = 0.0f;
-            _t57 = 0.0f;
-        }
-        float _t61 = _t36 - _t55;
-        float _t62 = Math.max(_t37, _t57);
-        float _t64 = _t36 + _t55;
-        float _t73 = Math.fma(Math.fma(_t35, _t55, -(_t37 * _t56)), _t8, Math.fma(Math.fma(_t37, _t57, -(_t36 * _t55)), _t9, Math.fma(_t36, _t56, -(_t35 * _t57)) * _t10));
-        float _t74, _t75, _t76;
-        if (_t73 < 0.0f) {
-            _t74 = -_t9;
-            _t75 = -_t10;
-            _t76 = -_t8;
-        } else {
-            _t74 = _t9;
-            _t75 = _t10;
-            _t76 = _t8;
-        }
-        float _t77 = _t74 + _t37;
-        float _t78 = _t75 + _t35;
-        float _t79 = _t75 - _t35;
-        float _t81 = _t76 + _t56;
-        float _t82 = _t56 - _t76;
-        float _t83 = _t77 + _t57;
-        float _t87 = 1.0f + _t83;
-        float _t88 = 1.0f + (_t74 - (_t37 + _t57));
-        float _t89 = 1.0f + (_t37 - (_t74 + _t57));
-        float _t90 = 1.0f + (_t57 - _t77);
-        float _t91 = (1.0f / (float) Math.sqrt(_t87));
-        float _t92 = (1.0f / (float) Math.sqrt(_t89));
-        float _t93 = (1.0f / (float) Math.sqrt(_t90));
-        float _t94 = (1.0f / (float) Math.sqrt(_t88));
-        return new DecomposeTRSResult(new Float3(this.m03, this.m13, this.m23), new FloatQuat(_t83 > 0.0f ? 0.5f * _t61 * _t91 : _t74 > _t62 ? 0.5f * (float) Math.sqrt(_t88) : _t37 > _t57 ? 0.5f * _t78 * _t92 : 0.5f * _t81 * _t93, _t83 > 0.0f ? 0.5f * _t82 * _t91 : _t74 > _t62 ? 0.5f * _t78 * _t94 : _t37 > _t57 ? 0.5f * (float) Math.sqrt(_t89) : 0.5f * _t64 * _t93, _t83 > 0.0f ? 0.5f * _t79 * _t91 : _t74 > _t62 ? 0.5f * _t81 * _t94 : _t37 > _t57 ? 0.5f * _t64 * _t92 : 0.5f * (float) Math.sqrt(_t90), _t83 > 0.0f ? 0.5f * (float) Math.sqrt(_t87) : _t74 > _t62 ? 0.5f * _t61 * _t94 : _t37 > _t57 ? 0.5f * _t82 * _t92 : 0.5f * _t79 * _t93), new Float3(_t73 < 0.0f ? -_t4 : _t4, (float) Math.sqrt(_t30), (float) Math.sqrt(_t50)));
+        float _t35 = _t30 > 0.0f ? _t23 * _t31 : 0.0f;
+        return decomposeTRS_s0_tail(_t30, _t22, _t31, _t24, _t21, _t8, _t9, _t35, _t10, _t4);
     }
 
 
@@ -3875,6 +4368,26 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         return mul_general(right, Joml.BIT_AFFINE & right.properties());
     }
 
+    /** Private per-column body of {@code mul}; reached only through it. */
+    private Float3 mul_s38768792_c0(float m20, float m00, float m10) {
+        return new Float3(Math.fma(m20, this.m02, Math.fma(m00, this.m00, m10 * this.m01)), Math.fma(m20, this.m12, Math.fma(m00, this.m10, m10 * this.m11)), Math.fma(m20, this.m22, Math.fma(m00, this.m20, m10 * this.m21)));
+    }
+
+    /** Private per-column body of {@code mul}; reached only through it. */
+    private Float3 mul_s38768792_c1(float m21, float m01, float m11) {
+        return new Float3(Math.fma(m21, this.m02, Math.fma(m01, this.m00, m11 * this.m01)), Math.fma(m21, this.m12, Math.fma(m01, this.m10, m11 * this.m11)), Math.fma(m21, this.m22, Math.fma(m01, this.m20, m11 * this.m21)));
+    }
+
+    /** Private per-column body of {@code mul}; reached only through it. */
+    private Float3 mul_s38768792_c2(float m22, float m02, float m12) {
+        return new Float3(Math.fma(m22, this.m02, Math.fma(m02, this.m00, m12 * this.m01)), Math.fma(m22, this.m12, Math.fma(m02, this.m10, m12 * this.m11)), Math.fma(m22, this.m22, Math.fma(m02, this.m20, m12 * this.m21)));
+    }
+
+    /** Private per-column body of {@code mul}; reached only through it. */
+    private Float3 mul_s38768792_c3(float m03, float m13, float m23) {
+        return new Float3(Math.fma(m03, this.m00, Math.fma(m13, this.m01, Math.fma(m23, this.m02, this.m03))), Math.fma(m03, this.m10, Math.fma(m13, this.m11, Math.fma(m23, this.m12, this.m13))), Math.fma(m03, this.m20, Math.fma(m13, this.m21, Math.fma(m23, this.m22, this.m23))));
+    }
+
 
     /**
      * Multiply this matrix by ({@code m00}, {@code m01}, {@code m02}, {@code m03}, {@code m10},
@@ -3903,7 +4416,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
      * @return the resulting matrix
      */
     public Float3x4 mul(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23) {
-        return new Float3x4(Math.fma(m20, this.m02, Math.fma(m00, this.m00, m10 * this.m01)), Math.fma(m21, this.m02, Math.fma(m01, this.m00, m11 * this.m01)), Math.fma(m22, this.m02, Math.fma(m02, this.m00, m12 * this.m01)), Math.fma(m03, this.m00, Math.fma(m13, this.m01, Math.fma(m23, this.m02, this.m03))), Math.fma(m20, this.m12, Math.fma(m00, this.m10, m10 * this.m11)), Math.fma(m21, this.m12, Math.fma(m01, this.m10, m11 * this.m11)), Math.fma(m22, this.m12, Math.fma(m02, this.m10, m12 * this.m11)), Math.fma(m03, this.m10, Math.fma(m13, this.m11, Math.fma(m23, this.m12, this.m13))), Math.fma(m20, this.m22, Math.fma(m00, this.m20, m10 * this.m21)), Math.fma(m21, this.m22, Math.fma(m01, this.m20, m11 * this.m21)), Math.fma(m22, this.m22, Math.fma(m02, this.m20, m12 * this.m21)), Math.fma(m03, this.m20, Math.fma(m13, this.m21, Math.fma(m23, this.m22, this.m23))), Joml.BIT_AFFINE);
+        return new Float3x4(mul_s38768792_c0(m20, m00, m10), mul_s38768792_c1(m21, m01, m11), mul_s38768792_c2(m22, m02, m12), mul_s38768792_c3(m03, m13, m23), Joml.BIT_AFFINE);
     }
 
 
@@ -4040,13 +4553,53 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         return new Float3x4(right.m00(), right.m01(), right.m02(), this.m03, right.m10(), right.m11(), right.m12(), this.m13, right.m20(), right.m21(), right.m22(), this.m23, (right.properties() & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_TRANSLATION : Joml.BIT_AFFINE);
     }
 
+    /** Private per-column body of {@code mul_orthogonal}; reached only through it. */
+    private Float3 mul_orthogonal_s56015aee_c0(Float3x3 right) {
+        return new Float3(Math.fma(right.m20(), this.m02, Math.fma(right.m00(), this.m00, right.m10() * this.m01)), Math.fma(right.m20(), this.m12, Math.fma(right.m00(), this.m10, right.m10() * this.m11)), Math.fma(right.m20(), this.m22, Math.fma(right.m00(), this.m20, right.m10() * this.m21)));
+    }
+
+    /** Private per-column body of {@code mul_orthogonal}; reached only through it. */
+    private Float3 mul_orthogonal_s56015aee_c1(Float3x3 right) {
+        return new Float3(Math.fma(right.m21(), this.m02, Math.fma(right.m01(), this.m00, right.m11() * this.m01)), Math.fma(right.m21(), this.m12, Math.fma(right.m01(), this.m10, right.m11() * this.m11)), Math.fma(right.m21(), this.m22, Math.fma(right.m01(), this.m20, right.m11() * this.m21)));
+    }
+
+    /** Private per-column body of {@code mul_orthogonal}; reached only through it. */
+    private Float3 mul_orthogonal_s56015aee_c2(Float3x3 right) {
+        return new Float3(Math.fma(right.m22(), this.m02, Math.fma(right.m02(), this.m00, right.m12() * this.m01)), Math.fma(right.m22(), this.m12, Math.fma(right.m02(), this.m10, right.m12() * this.m11)), Math.fma(right.m22(), this.m22, Math.fma(right.m02(), this.m20, right.m12() * this.m21)));
+    }
+
+    /** Private per-column body of {@code mul_orthogonal}; reached only through it. */
+    private Float3 mul_orthogonal_s56015aee_c3() {
+        return new Float3(this.m03, this.m13, this.m23);
+    }
+
 
     /**
      * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
      * the public {@code mul} dispatcher.
      */
     private Float3x4 mul_orthogonal(Float3x3 right) {
-        return new Float3x4(Math.fma(right.m20(), this.m02, Math.fma(right.m00(), this.m00, right.m10() * this.m01)), Math.fma(right.m21(), this.m02, Math.fma(right.m01(), this.m00, right.m11() * this.m01)), Math.fma(right.m22(), this.m02, Math.fma(right.m02(), this.m00, right.m12() * this.m01)), this.m03, Math.fma(right.m20(), this.m12, Math.fma(right.m00(), this.m10, right.m10() * this.m11)), Math.fma(right.m21(), this.m12, Math.fma(right.m01(), this.m10, right.m11() * this.m11)), Math.fma(right.m22(), this.m12, Math.fma(right.m02(), this.m10, right.m12() * this.m11)), this.m13, Math.fma(right.m20(), this.m22, Math.fma(right.m00(), this.m20, right.m10() * this.m21)), Math.fma(right.m21(), this.m22, Math.fma(right.m01(), this.m20, right.m11() * this.m21)), Math.fma(right.m22(), this.m22, Math.fma(right.m02(), this.m20, right.m12() * this.m21)), this.m23, (right.properties() & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_ORTHOGONAL : Joml.BIT_AFFINE);
+        return new Float3x4(mul_orthogonal_s56015aee_c0(right), mul_orthogonal_s56015aee_c1(right), mul_orthogonal_s56015aee_c2(right), mul_orthogonal_s56015aee_c3(), (right.properties() & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_ORTHOGONAL : Joml.BIT_AFFINE);
+    }
+
+    /** Private per-column body of {@code mul_general}; reached only through it. */
+    private Float3 mul_general_s56015aee_c0(Float3x3 right) {
+        return new Float3(Math.fma(right.m20(), this.m02, Math.fma(right.m00(), this.m00, right.m10() * this.m01)), Math.fma(right.m20(), this.m12, Math.fma(right.m00(), this.m10, right.m10() * this.m11)), Math.fma(right.m20(), this.m22, Math.fma(right.m00(), this.m20, right.m10() * this.m21)));
+    }
+
+    /** Private per-column body of {@code mul_general}; reached only through it. */
+    private Float3 mul_general_s56015aee_c1(Float3x3 right) {
+        return new Float3(Math.fma(right.m21(), this.m02, Math.fma(right.m01(), this.m00, right.m11() * this.m01)), Math.fma(right.m21(), this.m12, Math.fma(right.m01(), this.m10, right.m11() * this.m11)), Math.fma(right.m21(), this.m22, Math.fma(right.m01(), this.m20, right.m11() * this.m21)));
+    }
+
+    /** Private per-column body of {@code mul_general}; reached only through it. */
+    private Float3 mul_general_s56015aee_c2(Float3x3 right) {
+        return new Float3(Math.fma(right.m22(), this.m02, Math.fma(right.m02(), this.m00, right.m12() * this.m01)), Math.fma(right.m22(), this.m12, Math.fma(right.m02(), this.m10, right.m12() * this.m11)), Math.fma(right.m22(), this.m22, Math.fma(right.m02(), this.m20, right.m12() * this.m21)));
+    }
+
+    /** Private per-column body of {@code mul_general}; reached only through it. */
+    private Float3 mul_general_s56015aee_c3() {
+        return new Float3(this.m03, this.m13, this.m23);
     }
 
 
@@ -4055,7 +4608,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
      * the public {@code mul} dispatcher.
      */
     private Float3x4 mul_general(Float3x3 right) {
-        return new Float3x4(Math.fma(right.m20(), this.m02, Math.fma(right.m00(), this.m00, right.m10() * this.m01)), Math.fma(right.m21(), this.m02, Math.fma(right.m01(), this.m00, right.m11() * this.m01)), Math.fma(right.m22(), this.m02, Math.fma(right.m02(), this.m00, right.m12() * this.m01)), this.m03, Math.fma(right.m20(), this.m12, Math.fma(right.m00(), this.m10, right.m10() * this.m11)), Math.fma(right.m21(), this.m12, Math.fma(right.m01(), this.m10, right.m11() * this.m11)), Math.fma(right.m22(), this.m12, Math.fma(right.m02(), this.m10, right.m12() * this.m11)), this.m13, Math.fma(right.m20(), this.m22, Math.fma(right.m00(), this.m20, right.m10() * this.m21)), Math.fma(right.m21(), this.m22, Math.fma(right.m01(), this.m20, right.m11() * this.m21)), Math.fma(right.m22(), this.m22, Math.fma(right.m02(), this.m20, right.m12() * this.m21)), this.m23, Joml.BIT_AFFINE);
+        return new Float3x4(mul_general_s56015aee_c0(right), mul_general_s56015aee_c1(right), mul_general_s56015aee_c2(right), mul_general_s56015aee_c3(), Joml.BIT_AFFINE);
     }
 
 
@@ -4267,6 +4820,26 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         return preMul_general(other, Joml.BIT_AFFINE & other.properties());
     }
 
+    /** Private per-column body of {@code preMul}; reached only through it. */
+    private Float3 preMul_s38768792_c0(float m02, float m00, float m01, float m12, float m10, float m11, float m22, float m20, float m21) {
+        return new Float3(Math.fma(m02, this.m20, Math.fma(m00, this.m00, m01 * this.m10)), Math.fma(m12, this.m20, Math.fma(m10, this.m00, m11 * this.m10)), Math.fma(m22, this.m20, Math.fma(m20, this.m00, m21 * this.m10)));
+    }
+
+    /** Private per-column body of {@code preMul}; reached only through it. */
+    private Float3 preMul_s38768792_c1(float m02, float m00, float m01, float m12, float m10, float m11, float m22, float m20, float m21) {
+        return new Float3(Math.fma(m02, this.m21, Math.fma(m00, this.m01, m01 * this.m11)), Math.fma(m12, this.m21, Math.fma(m10, this.m01, m11 * this.m11)), Math.fma(m22, this.m21, Math.fma(m20, this.m01, m21 * this.m11)));
+    }
+
+    /** Private per-column body of {@code preMul}; reached only through it. */
+    private Float3 preMul_s38768792_c2(float m02, float m00, float m01, float m12, float m10, float m11, float m22, float m20, float m21) {
+        return new Float3(Math.fma(m02, this.m22, Math.fma(m00, this.m02, m01 * this.m12)), Math.fma(m12, this.m22, Math.fma(m10, this.m02, m11 * this.m12)), Math.fma(m22, this.m22, Math.fma(m20, this.m02, m21 * this.m12)));
+    }
+
+    /** Private per-column body of {@code preMul}; reached only through it. */
+    private Float3 preMul_s38768792_c3(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23) {
+        return new Float3(Math.fma(m00, this.m03, Math.fma(m01, this.m13, Math.fma(m02, this.m23, m03))), Math.fma(m10, this.m03, Math.fma(m11, this.m13, Math.fma(m12, this.m23, m13))), Math.fma(m20, this.m03, Math.fma(m21, this.m13, Math.fma(m22, this.m23, m23))));
+    }
+
 
     /**
      * Pre-multiply the transformation ({@code m00}, {@code m01}, {@code m02}, {@code m03},
@@ -4292,7 +4865,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
      * @return the resulting matrix
      */
     public Float3x4 preMul(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23) {
-        return new Float3x4(Math.fma(m02, this.m20, Math.fma(m00, this.m00, m01 * this.m10)), Math.fma(m02, this.m21, Math.fma(m00, this.m01, m01 * this.m11)), Math.fma(m02, this.m22, Math.fma(m00, this.m02, m01 * this.m12)), Math.fma(m00, this.m03, Math.fma(m01, this.m13, Math.fma(m02, this.m23, m03))), Math.fma(m12, this.m20, Math.fma(m10, this.m00, m11 * this.m10)), Math.fma(m12, this.m21, Math.fma(m10, this.m01, m11 * this.m11)), Math.fma(m12, this.m22, Math.fma(m10, this.m02, m11 * this.m12)), Math.fma(m10, this.m03, Math.fma(m11, this.m13, Math.fma(m12, this.m23, m13))), Math.fma(m22, this.m20, Math.fma(m20, this.m00, m21 * this.m10)), Math.fma(m22, this.m21, Math.fma(m20, this.m01, m21 * this.m11)), Math.fma(m22, this.m22, Math.fma(m20, this.m02, m21 * this.m12)), Math.fma(m20, this.m03, Math.fma(m21, this.m13, Math.fma(m22, this.m23, m23))), Joml.BIT_AFFINE);
+        return new Float3x4(preMul_s38768792_c0(m02, m00, m01, m12, m10, m11, m22, m20, m21), preMul_s38768792_c1(m02, m00, m01, m12, m10, m11, m22, m20, m21), preMul_s38768792_c2(m02, m00, m01, m12, m10, m11, m22, m20, m21), preMul_s38768792_c3(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23), Joml.BIT_AFFINE);
     }
 
 
@@ -5051,24 +5624,42 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         return new Float3x4(lookAt_lh_identity_s185c1ac6_c0(_t29, _t38, _t11), lookAt_lh_identity_s185c1ac6_c1(_t30, _t39, _t10), lookAt_lh_identity_s185c1ac6_c2(_t31, _t40, _t12), lookAt_lh_identity_s185c1ac6_c3(eyeZ, _t31, eyeX, _t29, eyeY, _t30, _t40, _t38, _t39, _t12, _t11, _t10), Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private per-column body of {@code lookAt_lh_translation}; reached only through it. */
-    private Float3 lookAt_lh_translation_s185c1ac6_c0(float _t32, float _t41, float _t14) {
+    /** Private tail of {@code lookAt_lh_translation}; reached only through it. */
+    /** Private per-column body of {@code lookAt_lh_translation_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_lh_translation_s185c1ac6_tail_s1428794f_c0(float _t32, float _t41, float _t14) {
         return new Float3(_t32, _t41, _t14);
     }
 
-    /** Private per-column body of {@code lookAt_lh_translation}; reached only through it. */
-    private Float3 lookAt_lh_translation_s185c1ac6_c1(float _t33, float _t42, float _t13) {
+    /** Private per-column body of {@code lookAt_lh_translation_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_lh_translation_s185c1ac6_tail_s1428794f_c1(float _t33, float _t42, float _t13) {
         return new Float3(_t33, _t42, _t13);
     }
 
-    /** Private per-column body of {@code lookAt_lh_translation}; reached only through it. */
-    private Float3 lookAt_lh_translation_s185c1ac6_c2(float _t34, float _t43, float _t15) {
+    /** Private per-column body of {@code lookAt_lh_translation_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_lh_translation_s185c1ac6_tail_s1428794f_c2(float _t34, float _t43, float _t15) {
         return new Float3(_t34, _t43, _t15);
     }
 
-    /** Private per-column body of {@code lookAt_lh_translation}; reached only through it. */
-    private Float3 lookAt_lh_translation_s185c1ac6_c3(float _t0, float _t32, float _t1, float _t33, float _t2, float _t34, float _t41, float _t42, float _t43, float _t14, float _t13, float _t15) {
+    /** Private per-column body of {@code lookAt_lh_translation_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_lh_translation_s185c1ac6_tail_s1428794f_c3(float _t0, float _t32, float _t1, float _t33, float _t2, float _t34, float _t41, float _t42, float _t43, float _t14, float _t13, float _t15) {
         return new Float3(Math.fma(_t0, _t32, Math.fma(_t1, _t33, Math.fma(_t2, _t34, this.m03))), Math.fma(_t0, _t41, Math.fma(_t1, _t42, Math.fma(_t2, _t43, this.m13))), Math.fma(_t0, _t14, Math.fma(_t1, _t13, Math.fma(_t2, _t15, this.m23))));
+    }
+
+    private Float3x4 lookAt_lh_translation_s185c1ac6_tail(float _t27, float _t23, float _t28, float _t24, float _t22, float _t13, float _t15, float _t14, float _t0, float _t1, float _t2, int _props) {
+        float _t32, _t33, _t34;
+        if (_t27 > 0.0f) {
+            _t32 = _t23 * _t28;
+            _t33 = _t24 * _t28;
+            _t34 = _t22 * _t28;
+        } else {
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+            _t34 = 0.0f;
+        }
+        float _t41 = Math.fma(_t13, _t34, -(_t15 * _t33));
+        float _t42 = Math.fma(_t15, _t32, -(_t14 * _t34));
+        float _t43 = Math.fma(_t14, _t33, -(_t13 * _t32));
+        return new Float3x4(lookAt_lh_translation_s185c1ac6_tail_s1428794f_c0(_t32, _t41, _t14), lookAt_lh_translation_s185c1ac6_tail_s1428794f_c1(_t33, _t42, _t13), lookAt_lh_translation_s185c1ac6_tail_s1428794f_c2(_t34, _t43, _t15), lookAt_lh_translation_s185c1ac6_tail_s1428794f_c3(_t0, _t32, _t1, _t33, _t2, _t34, _t41, _t42, _t43, _t14, _t13, _t15), _props);
     }
 
 
@@ -5100,40 +5691,47 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t24 = Math.fma(upZ, _t14, -(upX * _t15));
         float _t27 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
+        return lookAt_lh_translation_s185c1ac6_tail(_t27, _t23, _t28, _t24, _t22, _t13, _t15, _t14, _t0, _t1, _t2, Joml.BIT_ORTHOGONAL);
+    }
+
+    /** Private tail of {@code lookAt_lh_orthogonal}; reached only through it. */
+    /** Private per-column body of {@code lookAt_lh_orthogonal_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_lh_orthogonal_s185c1ac6_tail_s19bdb184_c0(float _t10, float _t32, float _t43) {
+        return new Float3(Math.fma(this.m02, _t10, Math.fma(this.m00, _t32, this.m01 * _t43)), Math.fma(this.m12, _t10, Math.fma(this.m10, _t32, this.m11 * _t43)), Math.fma(this.m22, _t10, Math.fma(this.m20, _t32, this.m21 * _t43)));
+    }
+
+    /** Private per-column body of {@code lookAt_lh_orthogonal_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_lh_orthogonal_s185c1ac6_tail_s19bdb184_c1(float _t11, float _t34, float _t44) {
+        return new Float3(Math.fma(this.m02, _t11, Math.fma(this.m00, _t34, this.m01 * _t44)), Math.fma(this.m12, _t11, Math.fma(this.m10, _t34, this.m11 * _t44)), Math.fma(this.m22, _t11, Math.fma(this.m20, _t34, this.m21 * _t44)));
+    }
+
+    /** Private per-column body of {@code lookAt_lh_orthogonal_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_lh_orthogonal_s185c1ac6_tail_s19bdb184_c2(float _t12, float _t33, float _t45) {
+        return new Float3(Math.fma(this.m02, _t12, Math.fma(this.m00, _t33, this.m01 * _t45)), Math.fma(this.m12, _t12, Math.fma(this.m10, _t33, this.m11 * _t45)), Math.fma(this.m22, _t12, Math.fma(this.m20, _t33, this.m21 * _t45)));
+    }
+
+    /** Private per-column body of {@code lookAt_lh_orthogonal_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_lh_orthogonal_s185c1ac6_tail_s19bdb184_c3(float _t47, float _t49, float _t24) {
+        return new Float3(Math.fma(-this.m00, _t47, Math.fma(-this.m01, _t49, Math.fma(-this.m02, _t24, this.m03))), Math.fma(-this.m10, _t47, Math.fma(-this.m11, _t49, Math.fma(-this.m12, _t24, this.m13))), Math.fma(-this.m20, _t47, Math.fma(-this.m21, _t49, Math.fma(-this.m22, _t24, this.m23))));
+    }
+
+    private Float3x4 lookAt_lh_orthogonal_s185c1ac6_tail(float _t27, float _t22, float _t28, float _t21, float _t23, float _t11, float _t12, float _t10, float eyeZ, float eyeX, float eyeY, float _t24, int _props) {
         float _t32, _t33, _t34;
         if (_t27 > 0.0f) {
-            _t32 = _t23 * _t28;
-            _t33 = _t24 * _t28;
-            _t34 = _t22 * _t28;
+            _t32 = _t22 * _t28;
+            _t33 = _t21 * _t28;
+            _t34 = _t23 * _t28;
         } else {
             _t32 = 0.0f;
             _t33 = 0.0f;
             _t34 = 0.0f;
         }
-        float _t41 = Math.fma(_t13, _t34, -(_t15 * _t33));
-        float _t42 = Math.fma(_t15, _t32, -(_t14 * _t34));
-        float _t43 = Math.fma(_t14, _t33, -(_t13 * _t32));
-        return new Float3x4(lookAt_lh_translation_s185c1ac6_c0(_t32, _t41, _t14), lookAt_lh_translation_s185c1ac6_c1(_t33, _t42, _t13), lookAt_lh_translation_s185c1ac6_c2(_t34, _t43, _t15), lookAt_lh_translation_s185c1ac6_c3(_t0, _t32, _t1, _t33, _t2, _t34, _t41, _t42, _t43, _t14, _t13, _t15), Joml.BIT_ORTHOGONAL);
-    }
-
-    /** Private per-column body of {@code lookAt_lh_orthogonal}; reached only through it. */
-    private Float3 lookAt_lh_orthogonal_s185c1ac6_c0(float _t10, float _t32, float _t43) {
-        return new Float3(Math.fma(this.m02, _t10, Math.fma(this.m00, _t32, this.m01 * _t43)), Math.fma(this.m12, _t10, Math.fma(this.m10, _t32, this.m11 * _t43)), Math.fma(this.m22, _t10, Math.fma(this.m20, _t32, this.m21 * _t43)));
-    }
-
-    /** Private per-column body of {@code lookAt_lh_orthogonal}; reached only through it. */
-    private Float3 lookAt_lh_orthogonal_s185c1ac6_c1(float _t11, float _t34, float _t44) {
-        return new Float3(Math.fma(this.m02, _t11, Math.fma(this.m00, _t34, this.m01 * _t44)), Math.fma(this.m12, _t11, Math.fma(this.m10, _t34, this.m11 * _t44)), Math.fma(this.m22, _t11, Math.fma(this.m20, _t34, this.m21 * _t44)));
-    }
-
-    /** Private per-column body of {@code lookAt_lh_orthogonal}; reached only through it. */
-    private Float3 lookAt_lh_orthogonal_s185c1ac6_c2(float _t12, float _t33, float _t45) {
-        return new Float3(Math.fma(this.m02, _t12, Math.fma(this.m00, _t33, this.m01 * _t45)), Math.fma(this.m12, _t12, Math.fma(this.m10, _t33, this.m11 * _t45)), Math.fma(this.m22, _t12, Math.fma(this.m20, _t33, this.m21 * _t45)));
-    }
-
-    /** Private per-column body of {@code lookAt_lh_orthogonal}; reached only through it. */
-    private Float3 lookAt_lh_orthogonal_s185c1ac6_c3(float _t47, float _t49, float _t24) {
-        return new Float3(Math.fma(-this.m00, _t47, Math.fma(-this.m01, _t49, Math.fma(-this.m02, _t24, this.m03))), Math.fma(-this.m10, _t47, Math.fma(-this.m11, _t49, Math.fma(-this.m12, _t24, this.m13))), Math.fma(-this.m20, _t47, Math.fma(-this.m21, _t49, Math.fma(-this.m22, _t24, this.m23))));
+        float _t43 = Math.fma(_t11, _t33, -(_t12 * _t34));
+        float _t44 = Math.fma(_t12, _t32, -(_t10 * _t33));
+        float _t45 = Math.fma(_t10, _t34, -(_t11 * _t32));
+        float _t47 = Math.fma(eyeZ, _t33, Math.fma(eyeX, _t32, eyeY * _t34));
+        float _t49 = Math.fma(eyeZ, _t45, Math.fma(eyeX, _t43, eyeY * _t44));
+        return new Float3x4(lookAt_lh_orthogonal_s185c1ac6_tail_s19bdb184_c0(_t10, _t32, _t43), lookAt_lh_orthogonal_s185c1ac6_tail_s19bdb184_c1(_t11, _t34, _t44), lookAt_lh_orthogonal_s185c1ac6_tail_s19bdb184_c2(_t12, _t33, _t45), lookAt_lh_orthogonal_s185c1ac6_tail_s19bdb184_c3(_t47, _t49, _t24), _props);
     }
 
 
@@ -5163,6 +5761,31 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t24 = Math.fma(eyeZ, _t12, Math.fma(eyeX, _t10, eyeY * _t11));
         float _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
+        return lookAt_lh_orthogonal_s185c1ac6_tail(_t27, _t22, _t28, _t21, _t23, _t11, _t12, _t10, eyeZ, eyeX, eyeY, _t24, Joml.BIT_ORTHOGONAL);
+    }
+
+    /** Private tail of {@code lookAt_lh_general}; reached only through it. */
+    /** Private per-column body of {@code lookAt_lh_general_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_lh_general_s185c1ac6_tail_s19bdb184_c0(float _t10, float _t32, float _t43) {
+        return new Float3(Math.fma(this.m02, _t10, Math.fma(this.m00, _t32, this.m01 * _t43)), Math.fma(this.m12, _t10, Math.fma(this.m10, _t32, this.m11 * _t43)), Math.fma(this.m22, _t10, Math.fma(this.m20, _t32, this.m21 * _t43)));
+    }
+
+    /** Private per-column body of {@code lookAt_lh_general_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_lh_general_s185c1ac6_tail_s19bdb184_c1(float _t11, float _t34, float _t44) {
+        return new Float3(Math.fma(this.m02, _t11, Math.fma(this.m00, _t34, this.m01 * _t44)), Math.fma(this.m12, _t11, Math.fma(this.m10, _t34, this.m11 * _t44)), Math.fma(this.m22, _t11, Math.fma(this.m20, _t34, this.m21 * _t44)));
+    }
+
+    /** Private per-column body of {@code lookAt_lh_general_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_lh_general_s185c1ac6_tail_s19bdb184_c2(float _t12, float _t33, float _t45) {
+        return new Float3(Math.fma(this.m02, _t12, Math.fma(this.m00, _t33, this.m01 * _t45)), Math.fma(this.m12, _t12, Math.fma(this.m10, _t33, this.m11 * _t45)), Math.fma(this.m22, _t12, Math.fma(this.m20, _t33, this.m21 * _t45)));
+    }
+
+    /** Private per-column body of {@code lookAt_lh_general_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_lh_general_s185c1ac6_tail_s19bdb184_c3(float _t47, float _t49, float _t24) {
+        return new Float3(Math.fma(-this.m00, _t47, Math.fma(-this.m01, _t49, Math.fma(-this.m02, _t24, this.m03))), Math.fma(-this.m10, _t47, Math.fma(-this.m11, _t49, Math.fma(-this.m12, _t24, this.m13))), Math.fma(-this.m20, _t47, Math.fma(-this.m21, _t49, Math.fma(-this.m22, _t24, this.m23))));
+    }
+
+    private Float3x4 lookAt_lh_general_s185c1ac6_tail(float _t27, float _t22, float _t28, float _t21, float _t23, float _t11, float _t12, float _t10, float eyeZ, float eyeX, float eyeY, float _t24, int _props) {
         float _t32, _t33, _t34;
         if (_t27 > 0.0f) {
             _t32 = _t22 * _t28;
@@ -5178,27 +5801,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t45 = Math.fma(_t10, _t34, -(_t11 * _t32));
         float _t47 = Math.fma(eyeZ, _t33, Math.fma(eyeX, _t32, eyeY * _t34));
         float _t49 = Math.fma(eyeZ, _t45, Math.fma(eyeX, _t43, eyeY * _t44));
-        return new Float3x4(lookAt_lh_orthogonal_s185c1ac6_c0(_t10, _t32, _t43), lookAt_lh_orthogonal_s185c1ac6_c1(_t11, _t34, _t44), lookAt_lh_orthogonal_s185c1ac6_c2(_t12, _t33, _t45), lookAt_lh_orthogonal_s185c1ac6_c3(_t47, _t49, _t24), Joml.BIT_ORTHOGONAL);
-    }
-
-    /** Private per-column body of {@code lookAt_lh_general}; reached only through it. */
-    private Float3 lookAt_lh_general_s185c1ac6_c0(float _t10, float _t32, float _t43) {
-        return new Float3(Math.fma(this.m02, _t10, Math.fma(this.m00, _t32, this.m01 * _t43)), Math.fma(this.m12, _t10, Math.fma(this.m10, _t32, this.m11 * _t43)), Math.fma(this.m22, _t10, Math.fma(this.m20, _t32, this.m21 * _t43)));
-    }
-
-    /** Private per-column body of {@code lookAt_lh_general}; reached only through it. */
-    private Float3 lookAt_lh_general_s185c1ac6_c1(float _t11, float _t34, float _t44) {
-        return new Float3(Math.fma(this.m02, _t11, Math.fma(this.m00, _t34, this.m01 * _t44)), Math.fma(this.m12, _t11, Math.fma(this.m10, _t34, this.m11 * _t44)), Math.fma(this.m22, _t11, Math.fma(this.m20, _t34, this.m21 * _t44)));
-    }
-
-    /** Private per-column body of {@code lookAt_lh_general}; reached only through it. */
-    private Float3 lookAt_lh_general_s185c1ac6_c2(float _t12, float _t33, float _t45) {
-        return new Float3(Math.fma(this.m02, _t12, Math.fma(this.m00, _t33, this.m01 * _t45)), Math.fma(this.m12, _t12, Math.fma(this.m10, _t33, this.m11 * _t45)), Math.fma(this.m22, _t12, Math.fma(this.m20, _t33, this.m21 * _t45)));
-    }
-
-    /** Private per-column body of {@code lookAt_lh_general}; reached only through it. */
-    private Float3 lookAt_lh_general_s185c1ac6_c3(float _t47, float _t49, float _t24) {
-        return new Float3(Math.fma(-this.m00, _t47, Math.fma(-this.m01, _t49, Math.fma(-this.m02, _t24, this.m03))), Math.fma(-this.m10, _t47, Math.fma(-this.m11, _t49, Math.fma(-this.m12, _t24, this.m13))), Math.fma(-this.m20, _t47, Math.fma(-this.m21, _t49, Math.fma(-this.m22, _t24, this.m23))));
+        return new Float3x4(lookAt_lh_general_s185c1ac6_tail_s19bdb184_c0(_t10, _t32, _t43), lookAt_lh_general_s185c1ac6_tail_s19bdb184_c1(_t11, _t34, _t44), lookAt_lh_general_s185c1ac6_tail_s19bdb184_c2(_t12, _t33, _t45), lookAt_lh_general_s185c1ac6_tail_s19bdb184_c3(_t47, _t49, _t24), _props);
     }
 
 
@@ -5228,22 +5831,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t24 = Math.fma(eyeZ, _t12, Math.fma(eyeX, _t10, eyeY * _t11));
         float _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
-        float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
-            _t32 = _t22 * _t28;
-            _t33 = _t21 * _t28;
-            _t34 = _t23 * _t28;
-        } else {
-            _t32 = 0.0f;
-            _t33 = 0.0f;
-            _t34 = 0.0f;
-        }
-        float _t43 = Math.fma(_t11, _t33, -(_t12 * _t34));
-        float _t44 = Math.fma(_t12, _t32, -(_t10 * _t33));
-        float _t45 = Math.fma(_t10, _t34, -(_t11 * _t32));
-        float _t47 = Math.fma(eyeZ, _t33, Math.fma(eyeX, _t32, eyeY * _t34));
-        float _t49 = Math.fma(eyeZ, _t45, Math.fma(eyeX, _t43, eyeY * _t44));
-        return new Float3x4(lookAt_lh_general_s185c1ac6_c0(_t10, _t32, _t43), lookAt_lh_general_s185c1ac6_c1(_t11, _t34, _t44), lookAt_lh_general_s185c1ac6_c2(_t12, _t33, _t45), lookAt_lh_general_s185c1ac6_c3(_t47, _t49, _t24), Joml.BIT_AFFINE);
+        return lookAt_lh_general_s185c1ac6_tail(_t27, _t22, _t28, _t21, _t23, _t11, _t12, _t10, eyeZ, eyeX, eyeY, _t24, Joml.BIT_AFFINE);
     }
 
 
@@ -5330,24 +5918,42 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         return new Float3x4(lookAt_rh_identity_s185c1ac6_c0(_t29, _t38, _t10), lookAt_rh_identity_s185c1ac6_c1(_t30, _t39, _t11), lookAt_rh_identity_s185c1ac6_c2(_t31, _t40, _t12), lookAt_rh_identity_s185c1ac6_c3(eyeZ, _t31, eyeX, _t29, eyeY, _t30, _t40, _t38, _t39, _t12, _t10, _t11), Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private per-column body of {@code lookAt_rh_translation}; reached only through it. */
-    private Float3 lookAt_rh_translation_s185c1ac6_c0(float _t32, float _t41, float _t13) {
+    /** Private tail of {@code lookAt_rh_translation}; reached only through it. */
+    /** Private per-column body of {@code lookAt_rh_translation_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_rh_translation_s185c1ac6_tail_s37403b4f_c0(float _t32, float _t41, float _t13) {
         return new Float3(_t32, _t41, -_t13);
     }
 
-    /** Private per-column body of {@code lookAt_rh_translation}; reached only through it. */
-    private Float3 lookAt_rh_translation_s185c1ac6_c1(float _t33, float _t42, float _t14) {
+    /** Private per-column body of {@code lookAt_rh_translation_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_rh_translation_s185c1ac6_tail_s37403b4f_c1(float _t33, float _t42, float _t14) {
         return new Float3(_t33, _t42, -_t14);
     }
 
-    /** Private per-column body of {@code lookAt_rh_translation}; reached only through it. */
-    private Float3 lookAt_rh_translation_s185c1ac6_c2(float _t34, float _t43, float _t15) {
+    /** Private per-column body of {@code lookAt_rh_translation_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_rh_translation_s185c1ac6_tail_s37403b4f_c2(float _t34, float _t43, float _t15) {
         return new Float3(_t34, _t43, -_t15);
     }
 
-    /** Private per-column body of {@code lookAt_rh_translation}; reached only through it. */
-    private Float3 lookAt_rh_translation_s185c1ac6_c3(float _t0, float _t32, float _t1, float _t33, float _t2, float _t34, float _t41, float _t42, float _t43, float eyeX, float _t13, float eyeY, float _t14, float eyeZ, float _t15) {
+    /** Private per-column body of {@code lookAt_rh_translation_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_rh_translation_s185c1ac6_tail_s37403b4f_c3(float _t0, float _t32, float _t1, float _t33, float _t2, float _t34, float _t41, float _t42, float _t43, float eyeX, float _t13, float eyeY, float _t14, float eyeZ, float _t15) {
         return new Float3(Math.fma(_t0, _t32, Math.fma(_t1, _t33, Math.fma(_t2, _t34, this.m03))), Math.fma(_t0, _t41, Math.fma(_t1, _t42, Math.fma(_t2, _t43, this.m13))), Math.fma(eyeX, _t13, Math.fma(eyeY, _t14, Math.fma(eyeZ, _t15, this.m23))));
+    }
+
+    private Float3x4 lookAt_rh_translation_s185c1ac6_tail(float _t27, float _t24, float _t28, float _t23, float _t22, float _t15, float _t14, float _t13, float _t0, float _t1, float _t2, float eyeX, float eyeY, float eyeZ, int _props) {
+        float _t32, _t33, _t34;
+        if (_t27 > 0.0f) {
+            _t32 = _t24 * _t28;
+            _t33 = _t23 * _t28;
+            _t34 = _t22 * _t28;
+        } else {
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+            _t34 = 0.0f;
+        }
+        float _t41 = Math.fma(_t15, _t33, -(_t14 * _t34));
+        float _t42 = Math.fma(_t13, _t34, -(_t15 * _t32));
+        float _t43 = Math.fma(_t14, _t32, -(_t13 * _t33));
+        return new Float3x4(lookAt_rh_translation_s185c1ac6_tail_s37403b4f_c0(_t32, _t41, _t13), lookAt_rh_translation_s185c1ac6_tail_s37403b4f_c1(_t33, _t42, _t14), lookAt_rh_translation_s185c1ac6_tail_s37403b4f_c2(_t34, _t43, _t15), lookAt_rh_translation_s185c1ac6_tail_s37403b4f_c3(_t0, _t32, _t1, _t33, _t2, _t34, _t41, _t42, _t43, eyeX, _t13, eyeY, _t14, eyeZ, _t15), _props);
     }
 
 
@@ -5379,20 +5985,47 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t24 = Math.fma(upZ, _t14, -(upY * _t15));
         float _t27 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
-        float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
-            _t32 = _t24 * _t28;
-            _t33 = _t23 * _t28;
-            _t34 = _t22 * _t28;
+        return lookAt_rh_translation_s185c1ac6_tail(_t27, _t24, _t28, _t23, _t22, _t15, _t14, _t13, _t0, _t1, _t2, eyeX, eyeY, eyeZ, Joml.BIT_ORTHOGONAL);
+    }
+
+    /** Private tail of {@code lookAt_rh_orthogonal}; reached only through it. */
+    /** Private per-column body of {@code lookAt_rh_orthogonal_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_rh_orthogonal_s185c1ac6_tail_s7fbd928b_c0(float _t0, float _t13, float _t35, float _t46, float _t1, float _t2) {
+        return new Float3(Math.fma(_t0, _t13, Math.fma(this.m00, _t35, this.m01 * _t46)), Math.fma(_t1, _t13, Math.fma(this.m10, _t35, this.m11 * _t46)), Math.fma(_t2, _t13, Math.fma(this.m20, _t35, this.m21 * _t46)));
+    }
+
+    /** Private per-column body of {@code lookAt_rh_orthogonal_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_rh_orthogonal_s185c1ac6_tail_s7fbd928b_c1(float _t0, float _t14, float _t36, float _t47, float _t1, float _t2) {
+        return new Float3(Math.fma(_t0, _t14, Math.fma(this.m00, _t36, this.m01 * _t47)), Math.fma(_t1, _t14, Math.fma(this.m10, _t36, this.m11 * _t47)), Math.fma(_t2, _t14, Math.fma(this.m20, _t36, this.m21 * _t47)));
+    }
+
+    /** Private per-column body of {@code lookAt_rh_orthogonal_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_rh_orthogonal_s185c1ac6_tail_s7fbd928b_c2(float _t0, float _t15, float _t37, float _t48, float _t1, float _t2) {
+        return new Float3(Math.fma(_t0, _t15, Math.fma(this.m00, _t37, this.m01 * _t48)), Math.fma(_t1, _t15, Math.fma(this.m10, _t37, this.m11 * _t48)), Math.fma(_t2, _t15, Math.fma(this.m20, _t37, this.m21 * _t48)));
+    }
+
+    /** Private per-column body of {@code lookAt_rh_orthogonal_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_rh_orthogonal_s185c1ac6_tail_s7fbd928b_c3(float _t50, float _t52, float _t27) {
+        return new Float3(Math.fma(-this.m00, _t50, Math.fma(-this.m01, _t52, Math.fma(this.m02, _t27, this.m03))), Math.fma(-this.m10, _t50, Math.fma(-this.m11, _t52, Math.fma(this.m12, _t27, this.m13))), Math.fma(-this.m20, _t50, Math.fma(-this.m21, _t52, Math.fma(this.m22, _t27, this.m23))));
+    }
+
+    private Float3x4 lookAt_rh_orthogonal_s185c1ac6_tail(float _t30, float _t26, float _t31, float _t25, float _t24, float _t15, float _t14, float _t13, float eyeZ, float eyeX, float eyeY, float _t0, float _t27, float _t1, float _t2, int _props) {
+        float _t35, _t36, _t37;
+        if (_t30 > 0.0f) {
+            _t35 = _t26 * _t31;
+            _t36 = _t25 * _t31;
+            _t37 = _t24 * _t31;
         } else {
-            _t32 = 0.0f;
-            _t33 = 0.0f;
-            _t34 = 0.0f;
+            _t35 = 0.0f;
+            _t36 = 0.0f;
+            _t37 = 0.0f;
         }
-        float _t41 = Math.fma(_t15, _t33, -(_t14 * _t34));
-        float _t42 = Math.fma(_t13, _t34, -(_t15 * _t32));
-        float _t43 = Math.fma(_t14, _t32, -(_t13 * _t33));
-        return new Float3x4(lookAt_rh_translation_s185c1ac6_c0(_t32, _t41, _t13), lookAt_rh_translation_s185c1ac6_c1(_t33, _t42, _t14), lookAt_rh_translation_s185c1ac6_c2(_t34, _t43, _t15), lookAt_rh_translation_s185c1ac6_c3(_t0, _t32, _t1, _t33, _t2, _t34, _t41, _t42, _t43, eyeX, _t13, eyeY, _t14, eyeZ, _t15), Joml.BIT_ORTHOGONAL);
+        float _t46 = Math.fma(_t15, _t36, -(_t14 * _t37));
+        float _t47 = Math.fma(_t13, _t37, -(_t15 * _t35));
+        float _t48 = Math.fma(_t14, _t35, -(_t13 * _t36));
+        float _t50 = Math.fma(eyeZ, _t37, Math.fma(eyeX, _t35, eyeY * _t36));
+        float _t52 = Math.fma(eyeZ, _t48, Math.fma(eyeX, _t46, eyeY * _t47));
+        return new Float3x4(lookAt_rh_orthogonal_s185c1ac6_tail_s7fbd928b_c0(_t0, _t13, _t35, _t46, _t1, _t2), lookAt_rh_orthogonal_s185c1ac6_tail_s7fbd928b_c1(_t0, _t14, _t36, _t47, _t1, _t2), lookAt_rh_orthogonal_s185c1ac6_tail_s7fbd928b_c2(_t0, _t15, _t37, _t48, _t1, _t2), lookAt_rh_orthogonal_s185c1ac6_tail_s7fbd928b_c3(_t50, _t52, _t27), _props);
     }
 
 
@@ -5425,6 +6058,31 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t27 = Math.fma(eyeZ, _t15, Math.fma(eyeX, _t13, eyeY * _t14));
         float _t30 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
         float _t31 = (1.0f / (float) Math.sqrt(_t30));
+        return lookAt_rh_orthogonal_s185c1ac6_tail(_t30, _t26, _t31, _t25, _t24, _t15, _t14, _t13, eyeZ, eyeX, eyeY, _t0, _t27, _t1, _t2, Joml.BIT_ORTHOGONAL);
+    }
+
+    /** Private tail of {@code lookAt_rh_general}; reached only through it. */
+    /** Private per-column body of {@code lookAt_rh_general_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_rh_general_s185c1ac6_tail_s7fbd928b_c0(float _t0, float _t13, float _t35, float _t46, float _t1, float _t2) {
+        return new Float3(Math.fma(_t0, _t13, Math.fma(this.m00, _t35, this.m01 * _t46)), Math.fma(_t1, _t13, Math.fma(this.m10, _t35, this.m11 * _t46)), Math.fma(_t2, _t13, Math.fma(this.m20, _t35, this.m21 * _t46)));
+    }
+
+    /** Private per-column body of {@code lookAt_rh_general_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_rh_general_s185c1ac6_tail_s7fbd928b_c1(float _t0, float _t14, float _t36, float _t47, float _t1, float _t2) {
+        return new Float3(Math.fma(_t0, _t14, Math.fma(this.m00, _t36, this.m01 * _t47)), Math.fma(_t1, _t14, Math.fma(this.m10, _t36, this.m11 * _t47)), Math.fma(_t2, _t14, Math.fma(this.m20, _t36, this.m21 * _t47)));
+    }
+
+    /** Private per-column body of {@code lookAt_rh_general_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_rh_general_s185c1ac6_tail_s7fbd928b_c2(float _t0, float _t15, float _t37, float _t48, float _t1, float _t2) {
+        return new Float3(Math.fma(_t0, _t15, Math.fma(this.m00, _t37, this.m01 * _t48)), Math.fma(_t1, _t15, Math.fma(this.m10, _t37, this.m11 * _t48)), Math.fma(_t2, _t15, Math.fma(this.m20, _t37, this.m21 * _t48)));
+    }
+
+    /** Private per-column body of {@code lookAt_rh_general_s185c1ac6_tail}; reached only through it. */
+    private Float3 lookAt_rh_general_s185c1ac6_tail_s7fbd928b_c3(float _t50, float _t52, float _t27) {
+        return new Float3(Math.fma(-this.m00, _t50, Math.fma(-this.m01, _t52, Math.fma(this.m02, _t27, this.m03))), Math.fma(-this.m10, _t50, Math.fma(-this.m11, _t52, Math.fma(this.m12, _t27, this.m13))), Math.fma(-this.m20, _t50, Math.fma(-this.m21, _t52, Math.fma(this.m22, _t27, this.m23))));
+    }
+
+    private Float3x4 lookAt_rh_general_s185c1ac6_tail(float _t30, float _t26, float _t31, float _t25, float _t24, float _t15, float _t14, float _t13, float eyeZ, float eyeX, float eyeY, float _t0, float _t27, float _t1, float _t2, int _props) {
         float _t35, _t36, _t37;
         if (_t30 > 0.0f) {
             _t35 = _t26 * _t31;
@@ -5440,7 +6098,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t48 = Math.fma(_t14, _t35, -(_t13 * _t36));
         float _t50 = Math.fma(eyeZ, _t37, Math.fma(eyeX, _t35, eyeY * _t36));
         float _t52 = Math.fma(eyeZ, _t48, Math.fma(eyeX, _t46, eyeY * _t47));
-        return new Float3x4(Math.fma(_t0, _t13, Math.fma(this.m00, _t35, this.m01 * _t46)), Math.fma(_t0, _t14, Math.fma(this.m00, _t36, this.m01 * _t47)), Math.fma(_t0, _t15, Math.fma(this.m00, _t37, this.m01 * _t48)), Math.fma(-this.m00, _t50, Math.fma(-this.m01, _t52, Math.fma(this.m02, _t27, this.m03))), Math.fma(_t1, _t13, Math.fma(this.m10, _t35, this.m11 * _t46)), Math.fma(_t1, _t14, Math.fma(this.m10, _t36, this.m11 * _t47)), Math.fma(_t1, _t15, Math.fma(this.m10, _t37, this.m11 * _t48)), Math.fma(-this.m10, _t50, Math.fma(-this.m11, _t52, Math.fma(this.m12, _t27, this.m13))), Math.fma(_t2, _t13, Math.fma(this.m20, _t35, this.m21 * _t46)), Math.fma(_t2, _t14, Math.fma(this.m20, _t36, this.m21 * _t47)), Math.fma(_t2, _t15, Math.fma(this.m20, _t37, this.m21 * _t48)), Math.fma(-this.m20, _t50, Math.fma(-this.m21, _t52, Math.fma(this.m22, _t27, this.m23))), Joml.BIT_ORTHOGONAL);
+        return new Float3x4(lookAt_rh_general_s185c1ac6_tail_s7fbd928b_c0(_t0, _t13, _t35, _t46, _t1, _t2), lookAt_rh_general_s185c1ac6_tail_s7fbd928b_c1(_t0, _t14, _t36, _t47, _t1, _t2), lookAt_rh_general_s185c1ac6_tail_s7fbd928b_c2(_t0, _t15, _t37, _t48, _t1, _t2), lookAt_rh_general_s185c1ac6_tail_s7fbd928b_c3(_t50, _t52, _t27), _props);
     }
 
 
@@ -5473,22 +6131,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t27 = Math.fma(eyeZ, _t15, Math.fma(eyeX, _t13, eyeY * _t14));
         float _t30 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
         float _t31 = (1.0f / (float) Math.sqrt(_t30));
-        float _t35, _t36, _t37;
-        if (_t30 > 0.0f) {
-            _t35 = _t26 * _t31;
-            _t36 = _t25 * _t31;
-            _t37 = _t24 * _t31;
-        } else {
-            _t35 = 0.0f;
-            _t36 = 0.0f;
-            _t37 = 0.0f;
-        }
-        float _t46 = Math.fma(_t15, _t36, -(_t14 * _t37));
-        float _t47 = Math.fma(_t13, _t37, -(_t15 * _t35));
-        float _t48 = Math.fma(_t14, _t35, -(_t13 * _t36));
-        float _t50 = Math.fma(eyeZ, _t37, Math.fma(eyeX, _t35, eyeY * _t36));
-        float _t52 = Math.fma(eyeZ, _t48, Math.fma(eyeX, _t46, eyeY * _t47));
-        return new Float3x4(Math.fma(_t0, _t13, Math.fma(this.m00, _t35, this.m01 * _t46)), Math.fma(_t0, _t14, Math.fma(this.m00, _t36, this.m01 * _t47)), Math.fma(_t0, _t15, Math.fma(this.m00, _t37, this.m01 * _t48)), Math.fma(-this.m00, _t50, Math.fma(-this.m01, _t52, Math.fma(this.m02, _t27, this.m03))), Math.fma(_t1, _t13, Math.fma(this.m10, _t35, this.m11 * _t46)), Math.fma(_t1, _t14, Math.fma(this.m10, _t36, this.m11 * _t47)), Math.fma(_t1, _t15, Math.fma(this.m10, _t37, this.m11 * _t48)), Math.fma(-this.m10, _t50, Math.fma(-this.m11, _t52, Math.fma(this.m12, _t27, this.m13))), Math.fma(_t2, _t13, Math.fma(this.m20, _t35, this.m21 * _t46)), Math.fma(_t2, _t14, Math.fma(this.m20, _t36, this.m21 * _t47)), Math.fma(_t2, _t15, Math.fma(this.m20, _t37, this.m21 * _t48)), Math.fma(-this.m20, _t50, Math.fma(-this.m21, _t52, Math.fma(this.m22, _t27, this.m23))), Joml.BIT_AFFINE);
+        return lookAt_rh_general_s185c1ac6_tail(_t30, _t26, _t31, _t25, _t24, _t15, _t14, _t13, eyeZ, eyeX, eyeY, _t0, _t27, _t1, _t2, Joml.BIT_AFFINE);
     }
 
 
@@ -5612,6 +6255,30 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         return makeBillboardCylindrical(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private per-column body of {@code makeBillboardCylindrical}; reached only through it. */
+    private static Float3 makeBillboardCylindrical_s27606544_c0(float _t19, float _t20, float _t21) {
+        return new Float3(_t19, _t20, _t21);
+    }
+
+    /** Private per-column body of {@code makeBillboardCylindrical}; reached only through it. */
+    private static Float3 makeBillboardCylindrical_s27606544_c1(float upX, float upY, float upZ) {
+        return new Float3(upX, upY, upZ);
+    }
+
+    /** Private per-column body of {@code makeBillboardCylindrical}; reached only through it. */
+    private static Float3 makeBillboardCylindrical_s27606544_c2(float _t33, float _t30, float _t34, float _t29, float _t28) {
+        if (_t33 > 0.0f) {
+            return new Float3(_t30 * _t34, _t29 * _t34, _t28 * _t34);
+        } else {
+            return Float3.ZERO;
+        }
+    }
+
+    /** Private per-column body of {@code makeBillboardCylindrical}; reached only through it. */
+    private static Float3 makeBillboardCylindrical_s27606544_c3(float objPosX, float objPosY, float objPosZ) {
+        return new Float3(objPosX, objPosY, objPosZ);
+    }
+
 
     /**
      * Create a cylindrical billboard transformation that rotates about the given axis to face the
@@ -5658,7 +6325,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t30 = Math.fma(upZ, _t20, -(upY * _t21));
         float _t33 = Math.fma(_t28, _t28, Math.fma(_t29, _t29, _t30 * _t30));
         float _t34 = (1.0f / (float) Math.sqrt(_t33));
-        return new Float3x4(_t19, upX, _t33 > 0.0f ? _t30 * _t34 : 0.0f, objPosX, _t20, upY, _t33 > 0.0f ? _t29 * _t34 : 0.0f, objPosY, _t21, upZ, _t33 > 0.0f ? _t28 * _t34 : 0.0f, objPosZ, Joml.BIT_ORTHOGONAL);
+        return new Float3x4(makeBillboardCylindrical_s27606544_c0(_t19, _t20, _t21), makeBillboardCylindrical_s27606544_c1(upX, upY, upZ), makeBillboardCylindrical_s27606544_c2(_t33, _t30, _t34, _t29, _t28), makeBillboardCylindrical_s27606544_c3(objPosX, objPosY, objPosZ), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -5672,6 +6339,26 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
      */
     public static Float3x4 makeBillboardSpherical(Float3 objPos, Float3 targetPos, Float3 up) {
         return makeBillboardSpherical(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z(), up.x(), up.y(), up.z());
+    }
+
+    /** Private per-column body of {@code makeBillboardSpherical}; reached only through it. */
+    private static Float3 makeBillboardSpherical_s27606544_c0(float _t29, float _t31, float _t30) {
+        return new Float3(_t29, _t31, _t30);
+    }
+
+    /** Private per-column body of {@code makeBillboardSpherical}; reached only through it. */
+    private static Float3 makeBillboardSpherical_s27606544_c1(float _t10, float _t30, float _t12, float _t31, float _t29, float _t11) {
+        return new Float3(Math.fma(_t10, _t30, -(_t12 * _t31)), Math.fma(_t12, _t29, -(_t11 * _t30)), Math.fma(_t11, _t31, -(_t10 * _t29)));
+    }
+
+    /** Private per-column body of {@code makeBillboardSpherical}; reached only through it. */
+    private static Float3 makeBillboardSpherical_s27606544_c2(float _t11, float _t10, float _t12) {
+        return new Float3(_t11, _t10, _t12);
+    }
+
+    /** Private per-column body of {@code makeBillboardSpherical}; reached only through it. */
+    private static Float3 makeBillboardSpherical_s27606544_c3(float objPosX, float objPosY, float objPosZ) {
+        return new Float3(objPosX, objPosY, objPosZ);
     }
 
 
@@ -5723,7 +6410,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
             _t30 = 0.0f;
             _t31 = 0.0f;
         }
-        return new Float3x4(_t29, Math.fma(_t10, _t30, -(_t12 * _t31)), _t11, objPosX, _t31, Math.fma(_t12, _t29, -(_t11 * _t30)), _t10, objPosY, _t30, Math.fma(_t11, _t31, -(_t10 * _t29)), _t12, objPosZ, Joml.BIT_ORTHOGONAL);
+        return new Float3x4(makeBillboardSpherical_s27606544_c0(_t29, _t31, _t30), makeBillboardSpherical_s27606544_c1(_t10, _t30, _t12, _t31, _t29, _t11), makeBillboardSpherical_s27606544_c2(_t11, _t10, _t12), makeBillboardSpherical_s27606544_c3(objPosX, objPosY, objPosZ), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -5739,6 +6426,26 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
      */
     public static Float3x4 targetTo(Float3 objPos, Float3 targetPos, Float3 up) {
         return targetTo(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z(), up.x(), up.y(), up.z());
+    }
+
+    /** Private per-column body of {@code targetTo}; reached only through it. */
+    private static Float3 targetTo_s27606544_c0(float _t29, float _t31, float _t30) {
+        return new Float3(_t29, _t31, _t30);
+    }
+
+    /** Private per-column body of {@code targetTo}; reached only through it. */
+    private static Float3 targetTo_s27606544_c1(float _t10, float _t30, float _t12, float _t31, float _t29, float _t11) {
+        return new Float3(Math.fma(_t10, _t30, -(_t12 * _t31)), Math.fma(_t12, _t29, -(_t11 * _t30)), Math.fma(_t11, _t31, -(_t10 * _t29)));
+    }
+
+    /** Private per-column body of {@code targetTo}; reached only through it. */
+    private static Float3 targetTo_s27606544_c2(float _t11, float _t10, float _t12) {
+        return new Float3(_t11, _t10, _t12);
+    }
+
+    /** Private per-column body of {@code targetTo}; reached only through it. */
+    private static Float3 targetTo_s27606544_c3(float objPosX, float objPosY, float objPosZ) {
+        return new Float3(objPosX, objPosY, objPosZ);
     }
 
 
@@ -5792,7 +6499,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
             _t30 = 0.0f;
             _t31 = 0.0f;
         }
-        return new Float3x4(_t29, Math.fma(_t10, _t30, -(_t12 * _t31)), _t11, objPosX, _t31, Math.fma(_t12, _t29, -(_t11 * _t30)), _t10, objPosY, _t30, Math.fma(_t11, _t31, -(_t10 * _t29)), _t12, objPosZ, Joml.BIT_ORTHOGONAL);
+        return new Float3x4(targetTo_s27606544_c0(_t29, _t31, _t30), targetTo_s27606544_c1(_t10, _t30, _t12, _t31, _t29, _t11), targetTo_s27606544_c2(_t11, _t10, _t12), targetTo_s27606544_c3(objPosX, objPosY, objPosZ), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -5855,6 +6562,26 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         return makeFromDualQuat(dq.rX(), dq.rY(), dq.rZ(), dq.rW(), dq.dX(), dq.dY(), dq.dZ(), dq.dW());
     }
 
+    /** Private per-column body of {@code makeFromDualQuat}; reached only through it. */
+    private static Float3 makeFromDualQuat_sb614d20_c0(float _t0, float _t6, float dqRX, float dqRY, float _t2, float _t3, float dqRZ) {
+        return new Float3(Math.fma(-2.0f, _t0, _t6), 2.0f * Math.fma(dqRX, dqRY, _t2), Math.fma(-2.0f, _t3, (dqRX + dqRX) * dqRZ));
+    }
+
+    /** Private per-column body of {@code makeFromDualQuat}; reached only through it. */
+    private static Float3 makeFromDualQuat_sb614d20_c1(float _t2, float dqRX, float dqRY, float _t4, float _t6, float dqRW, float _t5) {
+        return new Float3(Math.fma(-2.0f, _t2, (dqRX + dqRX) * dqRY), Math.fma(-2.0f, _t4, _t6), 2.0f * Math.fma(dqRX, dqRW, _t5));
+    }
+
+    /** Private per-column body of {@code makeFromDualQuat}; reached only through it. */
+    private static Float3 makeFromDualQuat_sb614d20_c2(float dqRX, float dqRZ, float _t3, float dqRW, float _t5, float _t4, float _t0) {
+        return new Float3(2.0f * Math.fma(dqRX, dqRZ, _t3), Math.fma(-2.0f, dqRX * dqRW, _t5 + _t5), Math.fma(-2.0f, _t4, Math.fma(-2.0f, _t0, 1.0f)));
+    }
+
+    /** Private per-column body of {@code makeFromDualQuat}; reached only through it. */
+    private static Float3 makeFromDualQuat_sb614d20_c3(float dqRY, float dqDZ, float dqRZ, float dqDY, float dqRW, float dqDX, float dqRX, float dqDW) {
+        return new Float3(2.0f * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW))), 2.0f * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW))), 2.0f * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW))));
+    }
+
 
     /**
      * Create the rigid transformation represented by the unit dual quaternion ({@code dqRX},
@@ -5890,7 +6617,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t4 = dqRX * dqRX;
         float _t5 = dqRY * dqRZ;
         float _t6 = Math.fma(-2.0f, dqRZ * dqRZ, 1.0f);
-        return new Float3x4(Math.fma(-2.0f, _t0, _t6), Math.fma(-2.0f, _t2, (dqRX + dqRX) * dqRY), 2.0f * Math.fma(dqRX, dqRZ, _t3), 2.0f * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW))), 2.0f * Math.fma(dqRX, dqRY, _t2), Math.fma(-2.0f, _t4, _t6), Math.fma(-2.0f, dqRX * dqRW, _t5 + _t5), 2.0f * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW))), Math.fma(-2.0f, _t3, (dqRX + dqRX) * dqRZ), 2.0f * Math.fma(dqRX, dqRW, _t5), Math.fma(-2.0f, _t4, Math.fma(-2.0f, _t0, 1.0f)), 2.0f * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW))), Joml.BIT_ORTHOGONAL);
+        return new Float3x4(makeFromDualQuat_sb614d20_c0(_t0, _t6, dqRX, dqRY, _t2, _t3, dqRZ), makeFromDualQuat_sb614d20_c1(_t2, dqRX, dqRY, _t4, _t6, dqRW, _t5), makeFromDualQuat_sb614d20_c2(dqRX, dqRZ, _t3, dqRW, _t5, _t4, _t0), makeFromDualQuat_sb614d20_c3(dqRY, dqDZ, dqRZ, dqDY, dqRW, dqDX, dqRX, dqDW), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -10621,6 +11348,26 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         return preRotateAround_identity(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
     }
 
+    /** Private per-column body of {@code rotateAround_translation}; reached only through it. */
+    private Float3 rotateAround_translation_s373cbb5f_c0(float _t0, float _t6, float _t16, float _t18, float _t22) {
+        return new Float3(Math.fma(_t0, _t6, _t16), _t18, _t22);
+    }
+
+    /** Private per-column body of {@code rotateAround_translation}; reached only through it. */
+    private Float3 rotateAround_translation_s373cbb5f_c1(float _t20, float _t4, float _t8, float _t16, float _t19) {
+        return new Float3(_t20, Math.fma(_t4, _t8, _t16), _t19);
+    }
+
+    /** Private per-column body of {@code rotateAround_translation}; reached only through it. */
+    private Float3 rotateAround_translation_s373cbb5f_c2(float _t17, float _t21, float _t4, float _t8, float _t0, float _t6) {
+        return new Float3(_t17, _t21, Math.fma(_t4, _t8, Math.fma(_t0, _t6, 1.0f)));
+    }
+
+    /** Private per-column body of {@code rotateAround_translation}; reached only through it. */
+    private Float3 rotateAround_translation_s373cbb5f_c3(float pivotX, float rotY, float _t6, float _t11, float _t2, float _t20, float _t3, float _t17, float pivotY, float rotX, float _t8, float _t5, float _t18, float _t21, float pivotZ, float _t22, float _t19) {
+        return new Float3(Math.fma(pivotX, Math.fma(rotY, _t6, _t11), Math.fma(_t2, _t20, Math.fma(_t3, _t17, this.m03))), Math.fma(pivotY, Math.fma(rotX, _t8, _t11), Math.fma(_t5, _t18, Math.fma(_t3, _t21, this.m13))), Math.fma(pivotZ, Math.fma(rotX, _t8, rotY * _t6), Math.fma(_t5, _t22, Math.fma(_t2, _t19, this.m23))));
+    }
+
 
     /**
      * Private body of {@code rotateAround}, specialized by runtime matrix properties; reached only
@@ -10646,7 +11393,7 @@ public value record Float3x4(float m00, float m01, float m02, float m03, float m
         float _t20 = Math.fma(rotY, _t8, -_t9);
         float _t21 = Math.fma(rotZ, _t6, -_t12);
         float _t22 = Math.fma(rotZ, _t8, -_t10);
-        return new Float3x4(Math.fma(_t0, _t6, _t16), _t20, _t17, Math.fma(pivotX, Math.fma(rotY, _t6, _t11), Math.fma(_t2, _t20, Math.fma(_t3, _t17, this.m03))), _t18, Math.fma(_t4, _t8, _t16), _t21, Math.fma(pivotY, Math.fma(rotX, _t8, _t11), Math.fma(_t5, _t18, Math.fma(_t3, _t21, this.m13))), _t22, _t19, Math.fma(_t4, _t8, Math.fma(_t0, _t6, 1.0f)), Math.fma(pivotZ, Math.fma(rotX, _t8, rotY * _t6), Math.fma(_t5, _t22, Math.fma(_t2, _t19, this.m23))), Joml.BIT_ORTHOGONAL);
+        return new Float3x4(rotateAround_translation_s373cbb5f_c0(_t0, _t6, _t16, _t18, _t22), rotateAround_translation_s373cbb5f_c1(_t20, _t4, _t8, _t16, _t19), rotateAround_translation_s373cbb5f_c2(_t17, _t21, _t4, _t8, _t0, _t6), rotateAround_translation_s373cbb5f_c3(pivotX, rotY, _t6, _t11, _t2, _t20, _t3, _t17, pivotY, rotX, _t8, _t5, _t18, _t21, pivotZ, _t22, _t19), Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code rotateAround_orthogonal}; reached only through it. */

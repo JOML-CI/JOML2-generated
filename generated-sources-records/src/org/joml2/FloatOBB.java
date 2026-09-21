@@ -358,7 +358,8 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
     }
 
     /** Private tail of {@code transform}; reached only through it. */
-    private FloatOBB transform_s37cad600_tail(Float3x4 m, float _t19, float _t18, float _t20, float _t22, float _t21, float _t23, float _t25, float _t24) {
+    private FloatOBB transform_s37cad600_tail(Float3x4 m, float _t19, float _t18, float _t20, float _t22, float _t21, float _t23, float _t24) {
+        float _t25 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
         float _t26 = Math.fma(m.m12(), this.uZz, Math.fma(m.m10(), this.uZx, m.m11() * this.uZy));
         float _t33 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
         float _t34 = Math.fma(_t22, _t22, Math.fma(_t21, _t21, _t23 * _t23));
@@ -366,7 +367,27 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
         float _t36 = (1.0f / (float) Math.sqrt(_t33));
         float _t37 = (1.0f / (float) Math.sqrt(_t34));
         float _t38 = (1.0f / (float) Math.sqrt(_t35));
-        return new FloatOBB(Math.fma(m.m02(), this.cZ, Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, m.m03()))), Math.fma(m.m12(), this.cZ, Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, m.m13()))), Math.fma(m.m22(), this.cZ, Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, m.m23()))), _t18 * _t36, _t20 * _t36, _t19 * _t36, _t21 * _t37, _t23 * _t37, _t22 * _t37, _t24 * _t38, _t26 * _t38, _t25 * _t38, this.hsX * (float) Math.sqrt(_t33), this.hsY * (float) Math.sqrt(_t34), this.hsZ * (float) Math.sqrt(_t35));
+        float _sfx0 = Math.fma(m.m02(), this.cZ, Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, m.m03())));
+        float _sfx1 = Math.fma(m.m12(), this.cZ, Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, m.m13())));
+        return transform_s37cad600_tail2(m, _t18, _t36, _t20, _t19, _t21, _t37, _t23, _t22, _t24, _t38, _t26, _t25, _t33, _t34, _t35, _sfx0, _sfx1);
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private FloatOBB transform_s37cad600_tail2(Float3x4 m, float _t18, float _t36, float _t20, float _t19, float _t21, float _t37, float _t23, float _t22, float _t24, float _t38, float _t26, float _t25, float _t33, float _t34, float _t35, float _sfx0, float _sfx1) {
+        float _sfx2 = Math.fma(m.m22(), this.cZ, Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, m.m23())));
+        float _sfx3 = _t18 * _t36;
+        float _sfx4 = _t20 * _t36;
+        float _sfx5 = _t19 * _t36;
+        float _sfx6 = _t21 * _t37;
+        float _sfx7 = _t23 * _t37;
+        float _sfx8 = _t22 * _t37;
+        float _sfx9 = _t24 * _t38;
+        float _sfx10 = _t26 * _t38;
+        float _sfx11 = _t25 * _t38;
+        float _sfx12 = this.hsX * (float) Math.sqrt(_t33);
+        float _sfx13 = this.hsY * (float) Math.sqrt(_t34);
+        float _sfx14 = this.hsZ * (float) Math.sqrt(_t35);
+        return new FloatOBB(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7, _sfx8, _sfx9, _sfx10, _sfx11, _sfx12, _sfx13, _sfx14);
     }
 
 
@@ -387,12 +408,12 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
         float _t22 = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
         float _t23 = Math.fma(m.m12(), this.uYz, Math.fma(m.m10(), this.uYx, m.m11() * this.uYy));
         float _t24 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
-        float _t25 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
-        return transform_s37cad600_tail(m, _t19, _t18, _t20, _t22, _t21, _t23, _t25, _t24);
+        return transform_s37cad600_tail(m, _t19, _t18, _t20, _t22, _t21, _t23, _t24);
     }
 
     /** Private tail of {@code transform}; reached only through it. */
-    private FloatOBB transform_s37d8ed81_tail(Float4x4 m, float _t19, float _t18, float _t20, float _t22, float _t21, float _t23, float _t25, float _t24) {
+    private FloatOBB transform_s37d8ed81_tail(Float4x4 m, float _t19, float _t18, float _t20, float _t22, float _t21, float _t23, float _t24) {
+        float _t25 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
         float _t26 = Math.fma(m.m12(), this.uZz, Math.fma(m.m10(), this.uZx, m.m11() * this.uZy));
         float _t33 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
         float _t34 = Math.fma(_t22, _t22, Math.fma(_t21, _t21, _t23 * _t23));
@@ -400,7 +421,27 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
         float _t36 = (1.0f / (float) Math.sqrt(_t33));
         float _t37 = (1.0f / (float) Math.sqrt(_t34));
         float _t38 = (1.0f / (float) Math.sqrt(_t35));
-        return new FloatOBB(Math.fma(m.m02(), this.cZ, Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, m.m03()))), Math.fma(m.m12(), this.cZ, Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, m.m13()))), Math.fma(m.m22(), this.cZ, Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, m.m23()))), _t18 * _t36, _t20 * _t36, _t19 * _t36, _t21 * _t37, _t23 * _t37, _t22 * _t37, _t24 * _t38, _t26 * _t38, _t25 * _t38, this.hsX * (float) Math.sqrt(_t33), this.hsY * (float) Math.sqrt(_t34), this.hsZ * (float) Math.sqrt(_t35));
+        float _sfx0 = Math.fma(m.m02(), this.cZ, Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, m.m03())));
+        float _sfx1 = Math.fma(m.m12(), this.cZ, Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, m.m13())));
+        return transform_s37d8ed81_tail2(m, _t18, _t36, _t20, _t19, _t21, _t37, _t23, _t22, _t24, _t38, _t26, _t25, _t33, _t34, _t35, _sfx0, _sfx1);
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private FloatOBB transform_s37d8ed81_tail2(Float4x4 m, float _t18, float _t36, float _t20, float _t19, float _t21, float _t37, float _t23, float _t22, float _t24, float _t38, float _t26, float _t25, float _t33, float _t34, float _t35, float _sfx0, float _sfx1) {
+        float _sfx2 = Math.fma(m.m22(), this.cZ, Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, m.m23())));
+        float _sfx3 = _t18 * _t36;
+        float _sfx4 = _t20 * _t36;
+        float _sfx5 = _t19 * _t36;
+        float _sfx6 = _t21 * _t37;
+        float _sfx7 = _t23 * _t37;
+        float _sfx8 = _t22 * _t37;
+        float _sfx9 = _t24 * _t38;
+        float _sfx10 = _t26 * _t38;
+        float _sfx11 = _t25 * _t38;
+        float _sfx12 = this.hsX * (float) Math.sqrt(_t33);
+        float _sfx13 = this.hsY * (float) Math.sqrt(_t34);
+        float _sfx14 = this.hsZ * (float) Math.sqrt(_t35);
+        return new FloatOBB(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7, _sfx8, _sfx9, _sfx10, _sfx11, _sfx12, _sfx13, _sfx14);
     }
 
 
@@ -424,8 +465,7 @@ public record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy, float
         float _t22 = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
         float _t23 = Math.fma(m.m12(), this.uYz, Math.fma(m.m10(), this.uYx, m.m11() * this.uYy));
         float _t24 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
-        float _t25 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
-        return transform_s37d8ed81_tail(m, _t19, _t18, _t20, _t22, _t21, _t23, _t25, _t24);
+        return transform_s37d8ed81_tail(m, _t19, _t18, _t20, _t22, _t21, _t23, _t24);
     }
 
 

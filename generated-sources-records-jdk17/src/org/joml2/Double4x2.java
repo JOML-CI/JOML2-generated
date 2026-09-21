@@ -104,6 +104,16 @@ public record Double4x2(double m00, double m01, double m10, double m11, double m
     /** {@return the element in row 3, column 1} */
     public double m31() { return m31; }
 
+    /** Private arm 0 of {@code getColumn}; reached only through it. */
+    private Double4 getColumn_s749615cf_arm0() {
+        return new Double4(this.m00, this.m10, this.m20, this.m30);
+    }
+
+    /** Private arm 1 of {@code getColumn}; reached only through it. */
+    private Double4 getColumn_s749615cf_arm1() {
+        return new Double4(this.m01, this.m11, this.m21, this.m31);
+    }
+
 
     /**
      * Get the column at the given index of this matrix, returning the result as a value.
@@ -113,7 +123,31 @@ public record Double4x2(double m00, double m01, double m10, double m11, double m
      * @throws IndexOutOfBoundsException if {@code col} is not in {@code [0, COLUMNS)}
      */
     public Double4 getColumn(int col) {
-        return new Double4(switch (col) { case 0 -> this.m00; case 1 -> this.m01; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); }, switch (col) { case 0 -> this.m10; case 1 -> this.m11; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); }, switch (col) { case 0 -> this.m20; case 1 -> this.m21; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); }, switch (col) { case 0 -> this.m30; case 1 -> this.m31; default -> throw new IndexOutOfBoundsException("Index out of range: " + col); });
+        return switch (col) {
+            case 0 -> getColumn_s749615cf_arm0();
+            case 1 -> getColumn_s749615cf_arm1();
+            default -> throw new IndexOutOfBoundsException("Index out of range: " + col);
+        };
+    }
+
+    /** Private arm 0 of {@code getRow}; reached only through it. */
+    private Double2 getRow_s74964e29_arm0() {
+        return new Double2(this.m00, this.m01);
+    }
+
+    /** Private arm 1 of {@code getRow}; reached only through it. */
+    private Double2 getRow_s74964e29_arm1() {
+        return new Double2(this.m10, this.m11);
+    }
+
+    /** Private arm 2 of {@code getRow}; reached only through it. */
+    private Double2 getRow_s74964e29_arm2() {
+        return new Double2(this.m20, this.m21);
+    }
+
+    /** Private arm 3 of {@code getRow}; reached only through it. */
+    private Double2 getRow_s74964e29_arm3() {
+        return new Double2(this.m30, this.m31);
     }
 
 
@@ -125,7 +159,13 @@ public record Double4x2(double m00, double m01, double m10, double m11, double m
      * @throws IndexOutOfBoundsException if {@code row} is not in {@code [0, ROWS)}
      */
     public Double2 getRow(int row) {
-        return new Double2(switch (row) { case 0 -> this.m00; case 1 -> this.m10; case 2 -> this.m20; case 3 -> this.m30; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); }, switch (row) { case 0 -> this.m01; case 1 -> this.m11; case 2 -> this.m21; case 3 -> this.m31; default -> throw new IndexOutOfBoundsException("Index out of range: " + row); });
+        return switch (row) {
+            case 0 -> getRow_s74964e29_arm0();
+            case 1 -> getRow_s74964e29_arm1();
+            case 2 -> getRow_s74964e29_arm2();
+            case 3 -> getRow_s74964e29_arm3();
+            default -> throw new IndexOutOfBoundsException("Index out of range: " + row);
+        };
     }
 
 

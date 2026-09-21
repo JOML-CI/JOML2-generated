@@ -350,14 +350,39 @@ public record Float3(float x, float y, float z) {
      * @param roundingMode the rounding mode to use
      * @return a new {@code Byte3} holding the result
      */
+    /** Private {@code RoundingMode.FLOOR} body of {@code toByte(RoundingMode)}; reached only through it. */
+    private Byte3 toByte_floor() {
+        return new Byte3((byte) Math.floor(this.x), (byte) Math.floor(this.y), (byte) Math.floor(this.z));
+    }
+
+    /** Private {@code RoundingMode.CEILING} body of {@code toByte(RoundingMode)}; reached only through it. */
+    private Byte3 toByte_ceiling() {
+        return new Byte3((byte) Math.ceil(this.x), (byte) Math.ceil(this.y), (byte) Math.ceil(this.z));
+    }
+
+    /** Private {@code RoundingMode.HALF_TOWARD_POSITIVE_INFINITY} body of {@code toByte(RoundingMode)}; reached only through it. */
+    private Byte3 toByte_half_toward_positive_infinity() {
+        return new Byte3((byte) Math.round(this.x), (byte) Math.round(this.y), (byte) Math.round(this.z));
+    }
+
+    /** Private {@code RoundingMode.HALF_AWAY_FROM_ZERO} body of {@code toByte(RoundingMode)}; reached only through it. */
+    private Byte3 toByte_half_away_from_zero() {
+        return new Byte3((byte) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5)), (byte) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5)), (byte) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5)));
+    }
+
+    /** Private {@code RoundingMode.HALF_EVEN} body of {@code toByte(RoundingMode)}; reached only through it. */
+    private Byte3 toByte_half_even() {
+        return new Byte3((byte) Math.rint(this.x), (byte) Math.rint(this.y), (byte) Math.rint(this.z));
+    }
+
     public Byte3 toByte(RoundingMode roundingMode) {
         return switch (roundingMode) {
             case TRUNCATE -> toByte();
-            case FLOOR -> new Byte3((byte) Math.floor(this.x), (byte) Math.floor(this.y), (byte) Math.floor(this.z));
-            case CEILING -> new Byte3((byte) Math.ceil(this.x), (byte) Math.ceil(this.y), (byte) Math.ceil(this.z));
-            case HALF_TOWARD_POSITIVE_INFINITY -> new Byte3((byte) Math.round(this.x), (byte) Math.round(this.y), (byte) Math.round(this.z));
-            case HALF_AWAY_FROM_ZERO -> new Byte3((byte) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5)), (byte) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5)), (byte) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5)));
-            case HALF_EVEN -> new Byte3((byte) Math.rint(this.x), (byte) Math.rint(this.y), (byte) Math.rint(this.z));
+            case FLOOR -> toByte_floor();
+            case CEILING -> toByte_ceiling();
+            case HALF_TOWARD_POSITIVE_INFINITY -> toByte_half_toward_positive_infinity();
+            case HALF_AWAY_FROM_ZERO -> toByte_half_away_from_zero();
+            case HALF_EVEN -> toByte_half_even();
         };
     }
 
@@ -382,14 +407,39 @@ public record Float3(float x, float y, float z) {
      * @param roundingMode the rounding mode to use
      * @return a new {@code Short3} holding the result
      */
+    /** Private {@code RoundingMode.FLOOR} body of {@code toShort(RoundingMode)}; reached only through it. */
+    private Short3 toShort_floor() {
+        return new Short3((short) Math.floor(this.x), (short) Math.floor(this.y), (short) Math.floor(this.z));
+    }
+
+    /** Private {@code RoundingMode.CEILING} body of {@code toShort(RoundingMode)}; reached only through it. */
+    private Short3 toShort_ceiling() {
+        return new Short3((short) Math.ceil(this.x), (short) Math.ceil(this.y), (short) Math.ceil(this.z));
+    }
+
+    /** Private {@code RoundingMode.HALF_TOWARD_POSITIVE_INFINITY} body of {@code toShort(RoundingMode)}; reached only through it. */
+    private Short3 toShort_half_toward_positive_infinity() {
+        return new Short3((short) Math.round(this.x), (short) Math.round(this.y), (short) Math.round(this.z));
+    }
+
+    /** Private {@code RoundingMode.HALF_AWAY_FROM_ZERO} body of {@code toShort(RoundingMode)}; reached only through it. */
+    private Short3 toShort_half_away_from_zero() {
+        return new Short3((short) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5)), (short) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5)), (short) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5)));
+    }
+
+    /** Private {@code RoundingMode.HALF_EVEN} body of {@code toShort(RoundingMode)}; reached only through it. */
+    private Short3 toShort_half_even() {
+        return new Short3((short) Math.rint(this.x), (short) Math.rint(this.y), (short) Math.rint(this.z));
+    }
+
     public Short3 toShort(RoundingMode roundingMode) {
         return switch (roundingMode) {
             case TRUNCATE -> toShort();
-            case FLOOR -> new Short3((short) Math.floor(this.x), (short) Math.floor(this.y), (short) Math.floor(this.z));
-            case CEILING -> new Short3((short) Math.ceil(this.x), (short) Math.ceil(this.y), (short) Math.ceil(this.z));
-            case HALF_TOWARD_POSITIVE_INFINITY -> new Short3((short) Math.round(this.x), (short) Math.round(this.y), (short) Math.round(this.z));
-            case HALF_AWAY_FROM_ZERO -> new Short3((short) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5)), (short) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5)), (short) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5)));
-            case HALF_EVEN -> new Short3((short) Math.rint(this.x), (short) Math.rint(this.y), (short) Math.rint(this.z));
+            case FLOOR -> toShort_floor();
+            case CEILING -> toShort_ceiling();
+            case HALF_TOWARD_POSITIVE_INFINITY -> toShort_half_toward_positive_infinity();
+            case HALF_AWAY_FROM_ZERO -> toShort_half_away_from_zero();
+            case HALF_EVEN -> toShort_half_even();
         };
     }
 
@@ -414,14 +464,39 @@ public record Float3(float x, float y, float z) {
      * @param roundingMode the rounding mode to use
      * @return a new {@code Int3} holding the result
      */
+    /** Private {@code RoundingMode.FLOOR} body of {@code toInt(RoundingMode)}; reached only through it. */
+    private Int3 toInt_floor() {
+        return new Int3((int) Math.floor(this.x), (int) Math.floor(this.y), (int) Math.floor(this.z));
+    }
+
+    /** Private {@code RoundingMode.CEILING} body of {@code toInt(RoundingMode)}; reached only through it. */
+    private Int3 toInt_ceiling() {
+        return new Int3((int) Math.ceil(this.x), (int) Math.ceil(this.y), (int) Math.ceil(this.z));
+    }
+
+    /** Private {@code RoundingMode.HALF_TOWARD_POSITIVE_INFINITY} body of {@code toInt(RoundingMode)}; reached only through it. */
+    private Int3 toInt_half_toward_positive_infinity() {
+        return new Int3(Math.round(this.x), Math.round(this.y), Math.round(this.z));
+    }
+
+    /** Private {@code RoundingMode.HALF_AWAY_FROM_ZERO} body of {@code toInt(RoundingMode)}; reached only through it. */
+    private Int3 toInt_half_away_from_zero() {
+        return new Int3((int) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5)), (int) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5)), (int) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5)));
+    }
+
+    /** Private {@code RoundingMode.HALF_EVEN} body of {@code toInt(RoundingMode)}; reached only through it. */
+    private Int3 toInt_half_even() {
+        return new Int3((int) Math.rint(this.x), (int) Math.rint(this.y), (int) Math.rint(this.z));
+    }
+
     public Int3 toInt(RoundingMode roundingMode) {
         return switch (roundingMode) {
             case TRUNCATE -> toInt();
-            case FLOOR -> new Int3((int) Math.floor(this.x), (int) Math.floor(this.y), (int) Math.floor(this.z));
-            case CEILING -> new Int3((int) Math.ceil(this.x), (int) Math.ceil(this.y), (int) Math.ceil(this.z));
-            case HALF_TOWARD_POSITIVE_INFINITY -> new Int3(Math.round(this.x), Math.round(this.y), Math.round(this.z));
-            case HALF_AWAY_FROM_ZERO -> new Int3((int) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5)), (int) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5)), (int) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5)));
-            case HALF_EVEN -> new Int3((int) Math.rint(this.x), (int) Math.rint(this.y), (int) Math.rint(this.z));
+            case FLOOR -> toInt_floor();
+            case CEILING -> toInt_ceiling();
+            case HALF_TOWARD_POSITIVE_INFINITY -> toInt_half_toward_positive_infinity();
+            case HALF_AWAY_FROM_ZERO -> toInt_half_away_from_zero();
+            case HALF_EVEN -> toInt_half_even();
         };
     }
 
@@ -446,14 +521,39 @@ public record Float3(float x, float y, float z) {
      * @param roundingMode the rounding mode to use
      * @return a new {@code Long3} holding the result
      */
+    /** Private {@code RoundingMode.FLOOR} body of {@code toLong(RoundingMode)}; reached only through it. */
+    private Long3 toLong_floor() {
+        return new Long3((long) Math.floor(this.x), (long) Math.floor(this.y), (long) Math.floor(this.z));
+    }
+
+    /** Private {@code RoundingMode.CEILING} body of {@code toLong(RoundingMode)}; reached only through it. */
+    private Long3 toLong_ceiling() {
+        return new Long3((long) Math.ceil(this.x), (long) Math.ceil(this.y), (long) Math.ceil(this.z));
+    }
+
+    /** Private {@code RoundingMode.HALF_TOWARD_POSITIVE_INFINITY} body of {@code toLong(RoundingMode)}; reached only through it. */
+    private Long3 toLong_half_toward_positive_infinity() {
+        return new Long3(Math.round((double) (this.x)), Math.round((double) (this.y)), Math.round((double) (this.z)));
+    }
+
+    /** Private {@code RoundingMode.HALF_AWAY_FROM_ZERO} body of {@code toLong(RoundingMode)}; reached only through it. */
+    private Long3 toLong_half_away_from_zero() {
+        return new Long3((long) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5)), (long) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5)), (long) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5)));
+    }
+
+    /** Private {@code RoundingMode.HALF_EVEN} body of {@code toLong(RoundingMode)}; reached only through it. */
+    private Long3 toLong_half_even() {
+        return new Long3((long) Math.rint(this.x), (long) Math.rint(this.y), (long) Math.rint(this.z));
+    }
+
     public Long3 toLong(RoundingMode roundingMode) {
         return switch (roundingMode) {
             case TRUNCATE -> toLong();
-            case FLOOR -> new Long3((long) Math.floor(this.x), (long) Math.floor(this.y), (long) Math.floor(this.z));
-            case CEILING -> new Long3((long) Math.ceil(this.x), (long) Math.ceil(this.y), (long) Math.ceil(this.z));
-            case HALF_TOWARD_POSITIVE_INFINITY -> new Long3(Math.round((double) (this.x)), Math.round((double) (this.y)), Math.round((double) (this.z)));
-            case HALF_AWAY_FROM_ZERO -> new Long3((long) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5)), (long) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5)), (long) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5)));
-            case HALF_EVEN -> new Long3((long) Math.rint(this.x), (long) Math.rint(this.y), (long) Math.rint(this.z));
+            case FLOOR -> toLong_floor();
+            case CEILING -> toLong_ceiling();
+            case HALF_TOWARD_POSITIVE_INFINITY -> toLong_half_toward_positive_infinity();
+            case HALF_AWAY_FROM_ZERO -> toLong_half_away_from_zero();
+            case HALF_EVEN -> toLong_half_even();
         };
     }
 

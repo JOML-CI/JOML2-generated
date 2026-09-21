@@ -262,14 +262,39 @@ public value record FloatRect(float minX, float minY, float maxX, float maxY) {
      * @param roundingMode the rounding mode to use
      * @return a new {@code IntRect} holding the result
      */
+    /** Private {@code RoundingMode.FLOOR} body of {@code toInt(RoundingMode)}; reached only through it. */
+    private IntRect toInt_floor() {
+        return new IntRect((int) Math.floor(this.minX), (int) Math.floor(this.minY), (int) Math.floor(this.maxX), (int) Math.floor(this.maxY));
+    }
+
+    /** Private {@code RoundingMode.CEILING} body of {@code toInt(RoundingMode)}; reached only through it. */
+    private IntRect toInt_ceiling() {
+        return new IntRect((int) Math.ceil(this.minX), (int) Math.ceil(this.minY), (int) Math.ceil(this.maxX), (int) Math.ceil(this.maxY));
+    }
+
+    /** Private {@code RoundingMode.HALF_TOWARD_POSITIVE_INFINITY} body of {@code toInt(RoundingMode)}; reached only through it. */
+    private IntRect toInt_half_toward_positive_infinity() {
+        return new IntRect(Math.round(this.minX), Math.round(this.minY), Math.round(this.maxX), Math.round(this.maxY));
+    }
+
+    /** Private {@code RoundingMode.HALF_AWAY_FROM_ZERO} body of {@code toInt(RoundingMode)}; reached only through it. */
+    private IntRect toInt_half_away_from_zero() {
+        return new IntRect((int) (this.minX >= 0 ? Math.floor(this.minX + 0.5) : Math.ceil(this.minX - 0.5)), (int) (this.minY >= 0 ? Math.floor(this.minY + 0.5) : Math.ceil(this.minY - 0.5)), (int) (this.maxX >= 0 ? Math.floor(this.maxX + 0.5) : Math.ceil(this.maxX - 0.5)), (int) (this.maxY >= 0 ? Math.floor(this.maxY + 0.5) : Math.ceil(this.maxY - 0.5)));
+    }
+
+    /** Private {@code RoundingMode.HALF_EVEN} body of {@code toInt(RoundingMode)}; reached only through it. */
+    private IntRect toInt_half_even() {
+        return new IntRect((int) Math.rint(this.minX), (int) Math.rint(this.minY), (int) Math.rint(this.maxX), (int) Math.rint(this.maxY));
+    }
+
     public IntRect toInt(RoundingMode roundingMode) {
         return switch (roundingMode) {
             case TRUNCATE -> toInt();
-            case FLOOR -> new IntRect((int) Math.floor(this.minX), (int) Math.floor(this.minY), (int) Math.floor(this.maxX), (int) Math.floor(this.maxY));
-            case CEILING -> new IntRect((int) Math.ceil(this.minX), (int) Math.ceil(this.minY), (int) Math.ceil(this.maxX), (int) Math.ceil(this.maxY));
-            case HALF_TOWARD_POSITIVE_INFINITY -> new IntRect(Math.round(this.minX), Math.round(this.minY), Math.round(this.maxX), Math.round(this.maxY));
-            case HALF_AWAY_FROM_ZERO -> new IntRect((int) (this.minX >= 0 ? Math.floor(this.minX + 0.5) : Math.ceil(this.minX - 0.5)), (int) (this.minY >= 0 ? Math.floor(this.minY + 0.5) : Math.ceil(this.minY - 0.5)), (int) (this.maxX >= 0 ? Math.floor(this.maxX + 0.5) : Math.ceil(this.maxX - 0.5)), (int) (this.maxY >= 0 ? Math.floor(this.maxY + 0.5) : Math.ceil(this.maxY - 0.5)));
-            case HALF_EVEN -> new IntRect((int) Math.rint(this.minX), (int) Math.rint(this.minY), (int) Math.rint(this.maxX), (int) Math.rint(this.maxY));
+            case FLOOR -> toInt_floor();
+            case CEILING -> toInt_ceiling();
+            case HALF_TOWARD_POSITIVE_INFINITY -> toInt_half_toward_positive_infinity();
+            case HALF_AWAY_FROM_ZERO -> toInt_half_away_from_zero();
+            case HALF_EVEN -> toInt_half_even();
         };
     }
 

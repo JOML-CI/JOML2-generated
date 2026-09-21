@@ -665,6 +665,12 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         return dlb(other.rX(), other.rY(), other.rZ(), other.rW(), other.dX(), other.dY(), other.dZ(), other.dW(), t);
     }
 
+    /** Private tail of {@code dlb}; reached only through it. */
+    private FloatDualQuat dlb_s554612b4_tail(float _t14, float _t15, float _t16, float _t17, float t, float otherDX, float _t9, float otherDY, float otherDZ, float otherDW) {
+        float _t23 = (1.0f / (float) Math.sqrt(Math.fma(_t14, _t14, _t15 * _t15) + Math.fma(_t16, _t16, _t17 * _t17)));
+        return new FloatDualQuat(_t14 * _t23, _t15 * _t23, _t16 * _t23, _t17 * _t23, Math.fma(t, Math.fma(otherDX, _t9, -this.dX), this.dX) * _t23, Math.fma(t, Math.fma(otherDY, _t9, -this.dY), this.dY) * _t23, Math.fma(t, Math.fma(otherDZ, _t9, -this.dZ), this.dZ) * _t23, Math.fma(t, Math.fma(otherDW, _t9, -this.dW), this.dW) * _t23);
+    }
+
 
     /**
      * Blend this dual quaternion with ({@code otherRX}, {@code otherRY}, {@code otherRZ},
@@ -700,8 +706,7 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t15 = Math.fma(t, Math.fma(otherRY, _t9, -this.rY), this.rY);
         float _t16 = Math.fma(t, Math.fma(otherRZ, _t9, -this.rZ), this.rZ);
         float _t17 = Math.fma(t, Math.fma(otherRW, _t9, -this.rW), this.rW);
-        float _t23 = (1.0f / (float) Math.sqrt(Math.fma(_t14, _t14, _t15 * _t15) + Math.fma(_t16, _t16, _t17 * _t17)));
-        return new FloatDualQuat(_t14 * _t23, _t15 * _t23, _t16 * _t23, _t17 * _t23, Math.fma(t, Math.fma(otherDX, _t9, -this.dX), this.dX) * _t23, Math.fma(t, Math.fma(otherDY, _t9, -this.dY), this.dY) * _t23, Math.fma(t, Math.fma(otherDZ, _t9, -this.dZ), this.dZ) * _t23, Math.fma(t, Math.fma(otherDW, _t9, -this.dW), this.dW) * _t23);
+        return dlb_s554612b4_tail(_t14, _t15, _t16, _t17, t, otherDX, _t9, otherDY, otherDZ, otherDW);
     }
 
 
@@ -769,6 +774,105 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         return sclerp(other.rX(), other.rY(), other.rZ(), other.rW(), other.dX(), other.dY(), other.dZ(), other.dW(), t);
     }
 
+    /** Private tail of {@code sclerp}; reached only through it. */
+    private FloatDualQuat sclerp_s554612b4_tail(float _t12, float _t11, float _t9, float _t10, float _t13, float _t14, float _t15, float _t16, float _t0, float _t2, float _t83, float _t77, float _t57, float _t84, float _t85, float t) {
+        float _t86 = Math.fma(this.rZ, _t12, -(this.rY * _t11)) + Math.fma(this.rW, _t9, -(this.rX * _t10));
+        float _t97 = Math.fma(this.rX, _t13, this.rW * _t14) + Math.fma(this.rY, _t15, this.rZ * _t16) + (Math.fma(this.dX, _t9, this.dW * _t10) + Math.fma(this.dY, _t12, this.dZ * _t11));
+        float _t99 = Math.fma(this.rZ, _t15, -(this.rY * _t16)) + Math.fma(this.rW, _t13, -(this.rX * _t14)) + (Math.fma(this.dZ, _t12, -(this.dY * _t11)) + Math.fma(this.dW, _t9, -(this.dX * _t10)));
+        return sclerp_s554612b4_tail2(_t13, _t14, _t16, _t15, _t9, _t10, _t11, _t12, _t0, _t2, _t83, _t77, _t57, _t84, _t85, _t86, _t97, _t99, t);
+    }
+
+    /** Private tail of {@code sclerp}; reached only through it. */
+    private FloatDualQuat sclerp_s554612b4_tail2(float _t13, float _t14, float _t16, float _t15, float _t9, float _t10, float _t11, float _t12, float _t0, float _t2, float _t83, float _t77, float _t57, float _t84, float _t85, float _t86, float _t97, float _t99, float t) {
+        float _t100 = Math.fma(this.rY, _t13, -(this.rZ * _t14)) + Math.fma(this.rW, _t16, -(this.rX * _t15)) + (Math.fma(this.dY, _t9, -(this.dZ * _t10)) + Math.fma(this.dW, _t11, -(this.dX * _t12)));
+        float _t101 = Math.fma(this.rX, _t16, this.rW * _t15) + Math.fma(_t0, _t13, -(this.rY * _t14)) + (Math.fma(this.dX, _t11, this.dW * _t12) + Math.fma(_t2, _t9, -(this.dY * _t10)));
+        return sclerp_s554612b4_tail3(_t83, _t77, _t57, _t84, _t85, _t86, _t97, _t99, _t100, _t101, t, _t0, _t2);
+    }
+
+    /** Private tail of {@code sclerp}; reached only through it. */
+    private FloatDualQuat sclerp_s554612b4_tail3(float _t83, float _t77, float _t57, float _t84, float _t85, float _t86, float _t97, float _t99, float _t100, float _t101, float t, float _t0, float _t2) {
+        float _t105, _t106, _t107, _t108, _t112, _t114, _t115, _t116;
+        if (_t83 < 0.0f) {
+            _t105 = _t77 - _t57;
+            _t106 = -_t84;
+            _t107 = -_t85;
+            _t108 = -_t86;
+            _t112 = -_t97;
+            _t114 = -_t99;
+            _t115 = -_t100;
+            _t116 = -_t101;
+        } else {
+            _t105 = _t83;
+            _t106 = _t84;
+            _t107 = _t85;
+            _t108 = _t86;
+            _t112 = _t97;
+            _t114 = _t99;
+            _t115 = _t100;
+            _t116 = _t101;
+        }
+        float _t122 = Math.fma(_t106, _t106, Math.fma(_t107, _t107, _t108 * _t108));
+        float _t124 = (1.0f / (float) Math.sqrt(_t122));
+        float _t126 = _t124 * _t108;
+        float _t127 = _t124 * _t106;
+        float _t128 = _t124 * _t107;
+        float _t129 = t * (float) Math.atan2((float) Math.sqrt(_t122), _t105);
+        float _t130 = (float) Math.cos(_t129);
+        float _t131 = (float) Math.sin(_t129);
+        float _t132 = _t124 * _t112;
+        return sclerp_s554612b4_tail4(t, _t132, _t105, _t122, _t130, _t108, _t126, _t131, _t106, _t127, _t107, _t128, _t112, _t114, _t124, _t115, _t116, _t0, _t2);
+    }
+
+    /** Private tail of {@code sclerp}; reached only through it. */
+    private FloatDualQuat sclerp_s554612b4_tail4(float t, float _t132, float _t105, float _t122, float _t130, float _t108, float _t126, float _t131, float _t106, float _t127, float _t107, float _t128, float _t112, float _t114, float _t124, float _t115, float _t116, float _t0, float _t2) {
+        float _t133 = t * _t132;
+        float _t134 = _t132 * _t105;
+        float _t135 = _t122 < 1.0E-12f ? 1.0f : _t130;
+        float _t140 = _t133 * _t130;
+        return sclerp_s554612b4_tail5(_t122, t, _t108, _t126, _t131, _t106, _t127, _t107, _t128, _t112, _t133, _t114, _t134, _t124, _t140, _t115, _t116, _t135, _t0, _t2);
+    }
+
+    /** Private tail of {@code sclerp}; reached only through it. */
+    private FloatDualQuat sclerp_s554612b4_tail5(float _t122, float t, float _t108, float _t126, float _t131, float _t106, float _t127, float _t107, float _t128, float _t112, float _t133, float _t114, float _t134, float _t124, float _t140, float _t115, float _t116, float _t135, float _t0, float _t2) {
+        float _t144, _t145, _t146, _t153, _t160, _t161, _t162;
+        if (_t122 < 1.0E-12f) {
+            _t144 = t * _t108;
+            _t145 = t * _t106;
+            _t146 = t * _t107;
+            _t153 = t * t * _t112;
+            _t160 = t * _t114;
+            _t161 = t * _t115;
+            _t162 = t * _t116;
+        } else {
+            _t144 = _t126 * _t131;
+            _t145 = _t127 * _t131;
+            _t146 = _t128 * _t131;
+            _t153 = _t133 * _t131;
+            _t160 = Math.fma(Math.fma(_t134, _t126, _t114) * _t124, _t131, -(_t140 * _t126));
+            _t161 = Math.fma(Math.fma(_t134, _t127, _t115) * _t124, _t131, -(_t140 * _t127));
+            _t162 = Math.fma(Math.fma(_t134, _t128, _t116) * _t124, _t131, -(_t140 * _t128));
+        }
+        return sclerp_s554612b4_tail6(_t135, _t144, _t145, _t146, _t153, _t160, _t161, _t162, _t0, _t2);
+    }
+
+    /** Private tail of {@code sclerp}; reached only through it. */
+    private FloatDualQuat sclerp_s554612b4_tail6(float _t135, float _t144, float _t145, float _t146, float _t153, float _t160, float _t161, float _t162, float _t0, float _t2) {
+        float _sfx0 = Math.fma(this.rX, _t135, this.rW * _t144) + Math.fma(this.rY, _t145, -(this.rZ * _t146));
+        float _sfx1 = Math.fma(this.rY, _t135, this.rZ * _t144) + Math.fma(this.rW, _t146, -(this.rX * _t145));
+        float _sfx2 = Math.fma(this.rX, _t146, this.rW * _t145) + Math.fma(this.rZ, _t135, -(this.rY * _t144));
+        float _sfx3 = Math.fma(this.rW, _t135, -(this.rX * _t144)) - Math.fma(this.rY, _t146, this.rZ * _t145);
+        float _sfx4 = Math.fma(this.rX, _t153, this.rW * _t160) + Math.fma(this.rY, _t161, -(this.rZ * _t162)) + (Math.fma(this.dX, _t135, this.dW * _t144) + Math.fma(this.dY, _t145, -(this.dZ * _t146)));
+        return sclerp_s554612b4_tail7(_t153, _t160, _t162, _t161, _t135, _t144, _t146, _t145, _t0, _t2, _sfx0, _sfx1, _sfx2, _sfx3, _sfx4);
+    }
+
+    /** Private tail of {@code sclerp}; reached only through it. */
+    private FloatDualQuat sclerp_s554612b4_tail7(float _t153, float _t160, float _t162, float _t161, float _t135, float _t144, float _t146, float _t145, float _t0, float _t2, float _sfx0, float _sfx1, float _sfx2, float _sfx3, float _sfx4) {
+        float _sfx5 = Math.fma(this.rY, _t153, this.rZ * _t160) + Math.fma(this.rW, _t162, -(this.rX * _t161)) + (Math.fma(this.dY, _t135, this.dZ * _t144) + Math.fma(this.dW, _t146, -(this.dX * _t145)));
+        float _sfx6 = Math.fma(this.rX, _t162, this.rW * _t161) + Math.fma(this.rZ, _t153, -(this.rY * _t160)) + (Math.fma(this.dX, _t146, this.dW * _t145) + Math.fma(this.dZ, _t135, -(this.dY * _t144)));
+        float _sfx7 = Math.fma(this.rW, _t153, -(this.rX * _t160)) + Math.fma(_t0, _t161, -(this.rY * _t162)) + (Math.fma(this.dW, _t135, -(this.dX * _t144)) + Math.fma(_t2, _t145, -(this.dY * _t146)));
+        return new FloatDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
+    }
+
 
     /**
      * Screw-linearly interpolate between this dual quaternion (which must have unit length) and
@@ -820,68 +924,7 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t83 = _t57 - _t77;
         float _t84 = Math.fma(this.rY, _t9, -(this.rZ * _t10)) + Math.fma(this.rW, _t11, -(this.rX * _t12));
         float _t85 = Math.fma(this.rX, _t11, this.rW * _t12) + Math.fma(_t0, _t9, -(this.rY * _t10));
-        float _t86 = Math.fma(this.rZ, _t12, -(this.rY * _t11)) + Math.fma(this.rW, _t9, -(this.rX * _t10));
-        float _t97 = Math.fma(this.rX, _t13, this.rW * _t14) + Math.fma(this.rY, _t15, this.rZ * _t16) + (Math.fma(this.dX, _t9, this.dW * _t10) + Math.fma(this.dY, _t12, this.dZ * _t11));
-        float _t99 = Math.fma(this.rZ, _t15, -(this.rY * _t16)) + Math.fma(this.rW, _t13, -(this.rX * _t14)) + (Math.fma(this.dZ, _t12, -(this.dY * _t11)) + Math.fma(this.dW, _t9, -(this.dX * _t10)));
-        float _t100 = Math.fma(this.rY, _t13, -(this.rZ * _t14)) + Math.fma(this.rW, _t16, -(this.rX * _t15)) + (Math.fma(this.dY, _t9, -(this.dZ * _t10)) + Math.fma(this.dW, _t11, -(this.dX * _t12)));
-        float _t101 = Math.fma(this.rX, _t16, this.rW * _t15) + Math.fma(_t0, _t13, -(this.rY * _t14)) + (Math.fma(this.dX, _t11, this.dW * _t12) + Math.fma(_t2, _t9, -(this.dY * _t10)));
-        float _t105, _t106, _t107, _t108, _t112, _t114, _t115, _t116;
-        if (_t83 < 0.0f) {
-            _t105 = _t77 - _t57;
-            _t106 = -_t84;
-            _t107 = -_t85;
-            _t108 = -_t86;
-            _t112 = -_t97;
-            _t114 = -_t99;
-            _t115 = -_t100;
-            _t116 = -_t101;
-        } else {
-            _t105 = _t83;
-            _t106 = _t84;
-            _t107 = _t85;
-            _t108 = _t86;
-            _t112 = _t97;
-            _t114 = _t99;
-            _t115 = _t100;
-            _t116 = _t101;
-        }
-        float _t122 = Math.fma(_t106, _t106, Math.fma(_t107, _t107, _t108 * _t108));
-        float _t124 = (1.0f / (float) Math.sqrt(_t122));
-        float _t126 = _t124 * _t108;
-        float _t127 = _t124 * _t106;
-        float _t128 = _t124 * _t107;
-        float _t129 = t * (float) Math.atan2((float) Math.sqrt(_t122), _t105);
-        float _t130 = (float) Math.cos(_t129);
-        float _t131 = (float) Math.sin(_t129);
-        float _t132 = _t124 * _t112;
-        float _t133 = t * _t132;
-        float _t134 = _t132 * _t105;
-        float _t135, _t144, _t145, _t146, _t153;
-        if (_t122 < 1.0E-12f) {
-            _t135 = 1.0f;
-            _t144 = t * _t108;
-            _t145 = t * _t106;
-            _t146 = t * _t107;
-            _t153 = t * t * _t112;
-        } else {
-            _t135 = _t130;
-            _t144 = _t126 * _t131;
-            _t145 = _t127 * _t131;
-            _t146 = _t128 * _t131;
-            _t153 = _t133 * _t131;
-        }
-        float _t140 = _t133 * _t130;
-        float _t160, _t161, _t162;
-        if (_t122 < 1.0E-12f) {
-            _t160 = t * _t114;
-            _t161 = t * _t115;
-            _t162 = t * _t116;
-        } else {
-            _t160 = Math.fma(Math.fma(_t134, _t126, _t114) * _t124, _t131, -(_t140 * _t126));
-            _t161 = Math.fma(Math.fma(_t134, _t127, _t115) * _t124, _t131, -(_t140 * _t127));
-            _t162 = Math.fma(Math.fma(_t134, _t128, _t116) * _t124, _t131, -(_t140 * _t128));
-        }
-        return new FloatDualQuat(Math.fma(this.rX, _t135, this.rW * _t144) + Math.fma(this.rY, _t145, -(this.rZ * _t146)), Math.fma(this.rY, _t135, this.rZ * _t144) + Math.fma(this.rW, _t146, -(this.rX * _t145)), Math.fma(this.rX, _t146, this.rW * _t145) + Math.fma(this.rZ, _t135, -(this.rY * _t144)), Math.fma(this.rW, _t135, -(this.rX * _t144)) - Math.fma(this.rY, _t146, this.rZ * _t145), Math.fma(this.rX, _t153, this.rW * _t160) + Math.fma(this.rY, _t161, -(this.rZ * _t162)) + (Math.fma(this.dX, _t135, this.dW * _t144) + Math.fma(this.dY, _t145, -(this.dZ * _t146))), Math.fma(this.rY, _t153, this.rZ * _t160) + Math.fma(this.rW, _t162, -(this.rX * _t161)) + (Math.fma(this.dY, _t135, this.dZ * _t144) + Math.fma(this.dW, _t146, -(this.dX * _t145))), Math.fma(this.rX, _t162, this.rW * _t161) + Math.fma(this.rZ, _t153, -(this.rY * _t160)) + (Math.fma(this.dX, _t146, this.dW * _t145) + Math.fma(this.dZ, _t135, -(this.dY * _t144))), Math.fma(this.rW, _t153, -(this.rX * _t160)) + Math.fma(_t0, _t161, -(this.rY * _t162)) + (Math.fma(this.dW, _t135, -(this.dX * _t144)) + Math.fma(_t2, _t145, -(this.dY * _t146))));
+        return sclerp_s554612b4_tail(_t12, _t11, _t9, _t10, _t13, _t14, _t15, _t16, _t0, _t2, _t83, _t77, _t57, _t84, _t85, t);
     }
 
 
@@ -1495,6 +1538,65 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         return log_s0_tail(_t19, _t10, _t8, _t11, _t18, _t9, _t21, _t22, _t12, _t14, _t15);
     }
 
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatDualQuat makeFromMatrix_s37d8ed81_tail(float _t14, float _t4, float _t19, Float4x4 m, float _t5, float _t16, float _t6, float _t21, float _t7, float _t22, float _t8, float _t23, float _t17, float _t9, float _t10, float _t18, float _t15, float _t0) {
+        float _t63, _t64;
+        if (_t14 > 0.0f) {
+            _t63 = 0.5f * _t4 * _t19;
+            _t64 = 0.5f * _t8 * _t19;
+        } else {
+            if (m.m00() > _t5) {
+                _t63 = 0.5f * (float) Math.sqrt(_t16);
+                _t64 = 0.5f * _t6 * _t23;
+            } else {
+                if (m.m11() > m.m22()) {
+                    _t63 = 0.5f * _t6 * _t21;
+                    _t64 = 0.5f * (float) Math.sqrt(_t17);
+                } else {
+                    _t63 = 0.5f * _t7 * _t22;
+                    _t64 = 0.5f * _t9 * _t22;
+                }
+            }
+        }
+        return makeFromMatrix_s37d8ed81_tail2(_t14, _t10, _t19, m, _t5, _t7, _t23, _t9, _t21, _t18, _t15, _t4, _t8, _t22, _t63, _t64, _t0);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatDualQuat makeFromMatrix_s37d8ed81_tail2(float _t14, float _t10, float _t19, Float4x4 m, float _t5, float _t7, float _t23, float _t9, float _t21, float _t18, float _t15, float _t4, float _t8, float _t22, float _t63, float _t64, float _t0) {
+        float _t65, _t66;
+        if (_t14 > 0.0f) {
+            _t65 = 0.5f * _t10 * _t19;
+            _t66 = 0.5f * (float) Math.sqrt(_t15);
+        } else {
+            if (m.m00() > _t5) {
+                _t65 = 0.5f * _t7 * _t23;
+                _t66 = 0.5f * _t4 * _t23;
+            } else {
+                if (m.m11() > m.m22()) {
+                    _t65 = 0.5f * _t9 * _t21;
+                    _t66 = 0.5f * _t8 * _t21;
+                } else {
+                    _t65 = 0.5f * (float) Math.sqrt(_t18);
+                    _t66 = 0.5f * _t10 * _t22;
+                }
+            }
+        }
+        float _sfx0 = _t63;
+        float _sfx1 = _t64;
+        float _sfx2 = _t65;
+        float _sfx3 = _t66;
+        float _sfx4 = 0.5f * Math.fma(_t0, _t64, Math.fma(m.m03(), _t66, m.m13() * _t65));
+        float _sfx5 = 0.5f * Math.fma(m.m23(), _t63, Math.fma(m.m13(), _t66, -(m.m03() * _t65)));
+        return makeFromMatrix_s37d8ed81_tail3(m, _t66, _t64, _t63, _t0, _t65, _sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatDualQuat makeFromMatrix_s37d8ed81_tail3(Float4x4 m, float _t66, float _t64, float _t63, float _t0, float _t65, float _sfx0, float _sfx1, float _sfx2, float _sfx3, float _sfx4, float _sfx5) {
+        float _sfx6 = 0.5f * Math.fma(m.m23(), _t66, Math.fma(m.m03(), _t64, -(m.m13() * _t63)));
+        float _sfx7 = 0.5f * Math.fma(_t0, _t65, Math.fma(-m.m13(), _t64, -(m.m03() * _t63)));
+        return new FloatDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
+    }
+
 
     /**
      * Create the rigid motion of the given matrix: rotation from its upper-left 3x3 block, which is
@@ -1522,33 +1624,66 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t21 = (1.0f / (float) Math.sqrt(_t17));
         float _t22 = (1.0f / (float) Math.sqrt(_t18));
         float _t23 = (1.0f / (float) Math.sqrt(_t16));
-        float _t63, _t64, _t65, _t66;
+        return makeFromMatrix_s37d8ed81_tail(_t14, _t4, _t19, m, _t5, _t16, _t6, _t21, _t7, _t22, _t8, _t23, _t17, _t9, _t10, _t18, _t15, _t0);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatDualQuat makeFromMatrix_s37cad600_tail(float _t14, float _t4, float _t19, Float3x4 m, float _t5, float _t16, float _t6, float _t21, float _t7, float _t22, float _t8, float _t23, float _t17, float _t9, float _t10, float _t18, float _t15, float _t0) {
+        float _t63, _t64;
         if (_t14 > 0.0f) {
             _t63 = 0.5f * _t4 * _t19;
             _t64 = 0.5f * _t8 * _t19;
-            _t65 = 0.5f * _t10 * _t19;
-            _t66 = 0.5f * (float) Math.sqrt(_t15);
         } else {
             if (m.m00() > _t5) {
                 _t63 = 0.5f * (float) Math.sqrt(_t16);
                 _t64 = 0.5f * _t6 * _t23;
-                _t65 = 0.5f * _t7 * _t23;
-                _t66 = 0.5f * _t4 * _t23;
             } else {
                 if (m.m11() > m.m22()) {
                     _t63 = 0.5f * _t6 * _t21;
                     _t64 = 0.5f * (float) Math.sqrt(_t17);
-                    _t65 = 0.5f * _t9 * _t21;
-                    _t66 = 0.5f * _t8 * _t21;
                 } else {
                     _t63 = 0.5f * _t7 * _t22;
                     _t64 = 0.5f * _t9 * _t22;
+                }
+            }
+        }
+        return makeFromMatrix_s37cad600_tail2(_t14, _t10, _t19, m, _t5, _t7, _t23, _t9, _t21, _t18, _t15, _t4, _t8, _t22, _t63, _t64, _t0);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatDualQuat makeFromMatrix_s37cad600_tail2(float _t14, float _t10, float _t19, Float3x4 m, float _t5, float _t7, float _t23, float _t9, float _t21, float _t18, float _t15, float _t4, float _t8, float _t22, float _t63, float _t64, float _t0) {
+        float _t65, _t66;
+        if (_t14 > 0.0f) {
+            _t65 = 0.5f * _t10 * _t19;
+            _t66 = 0.5f * (float) Math.sqrt(_t15);
+        } else {
+            if (m.m00() > _t5) {
+                _t65 = 0.5f * _t7 * _t23;
+                _t66 = 0.5f * _t4 * _t23;
+            } else {
+                if (m.m11() > m.m22()) {
+                    _t65 = 0.5f * _t9 * _t21;
+                    _t66 = 0.5f * _t8 * _t21;
+                } else {
                     _t65 = 0.5f * (float) Math.sqrt(_t18);
                     _t66 = 0.5f * _t10 * _t22;
                 }
             }
         }
-        return new FloatDualQuat(_t63, _t64, _t65, _t66, 0.5f * Math.fma(_t0, _t64, Math.fma(m.m03(), _t66, m.m13() * _t65)), 0.5f * Math.fma(m.m23(), _t63, Math.fma(m.m13(), _t66, -(m.m03() * _t65))), 0.5f * Math.fma(m.m23(), _t66, Math.fma(m.m03(), _t64, -(m.m13() * _t63))), 0.5f * Math.fma(_t0, _t65, Math.fma(-m.m13(), _t64, -(m.m03() * _t63))));
+        float _sfx0 = _t63;
+        float _sfx1 = _t64;
+        float _sfx2 = _t65;
+        float _sfx3 = _t66;
+        float _sfx4 = 0.5f * Math.fma(_t0, _t64, Math.fma(m.m03(), _t66, m.m13() * _t65));
+        float _sfx5 = 0.5f * Math.fma(m.m23(), _t63, Math.fma(m.m13(), _t66, -(m.m03() * _t65)));
+        return makeFromMatrix_s37cad600_tail3(m, _t66, _t64, _t63, _t0, _t65, _sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatDualQuat makeFromMatrix_s37cad600_tail3(Float3x4 m, float _t66, float _t64, float _t63, float _t0, float _t65, float _sfx0, float _sfx1, float _sfx2, float _sfx3, float _sfx4, float _sfx5) {
+        float _sfx6 = 0.5f * Math.fma(m.m23(), _t66, Math.fma(m.m03(), _t64, -(m.m13() * _t63)));
+        float _sfx7 = 0.5f * Math.fma(_t0, _t65, Math.fma(-m.m13(), _t64, -(m.m03() * _t63)));
+        return new FloatDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
     }
 
 
@@ -1578,33 +1713,57 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t21 = (1.0f / (float) Math.sqrt(_t17));
         float _t22 = (1.0f / (float) Math.sqrt(_t18));
         float _t23 = (1.0f / (float) Math.sqrt(_t16));
-        float _t63, _t64, _t65, _t66;
-        if (_t14 > 0.0f) {
-            _t63 = 0.5f * _t4 * _t19;
-            _t64 = 0.5f * _t8 * _t19;
-            _t65 = 0.5f * _t10 * _t19;
-            _t66 = 0.5f * (float) Math.sqrt(_t15);
+        return makeFromMatrix_s37cad600_tail(_t14, _t4, _t19, m, _t5, _t16, _t6, _t21, _t7, _t22, _t8, _t23, _t17, _t9, _t10, _t18, _t15, _t0);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatDualQuat makeFromMatrix_s37cad23f_tail(float _t13, float _t3, float _t18, Float3x3 m, float _t4, float _t15, float _t5, float _t19, float _t6, float _t20, float _t7, float _t21, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        float _sfx0, _sfx1;
+        if (_t13 > 0.0f) {
+            _sfx0 = 0.5f * _t3 * _t18;
+            _sfx1 = 0.5f * _t7 * _t18;
         } else {
-            if (m.m00() > _t5) {
-                _t63 = 0.5f * (float) Math.sqrt(_t16);
-                _t64 = 0.5f * _t6 * _t23;
-                _t65 = 0.5f * _t7 * _t23;
-                _t66 = 0.5f * _t4 * _t23;
+            if (m.m00() > _t4) {
+                _sfx0 = 0.5f * (float) Math.sqrt(_t15);
+                _sfx1 = 0.5f * _t5 * _t21;
             } else {
                 if (m.m11() > m.m22()) {
-                    _t63 = 0.5f * _t6 * _t21;
-                    _t64 = 0.5f * (float) Math.sqrt(_t17);
-                    _t65 = 0.5f * _t9 * _t21;
-                    _t66 = 0.5f * _t8 * _t21;
+                    _sfx0 = 0.5f * _t5 * _t19;
+                    _sfx1 = 0.5f * (float) Math.sqrt(_t16);
                 } else {
-                    _t63 = 0.5f * _t7 * _t22;
-                    _t64 = 0.5f * _t9 * _t22;
-                    _t65 = 0.5f * (float) Math.sqrt(_t18);
-                    _t66 = 0.5f * _t10 * _t22;
+                    _sfx0 = 0.5f * _t6 * _t20;
+                    _sfx1 = 0.5f * _t8 * _t20;
                 }
             }
         }
-        return new FloatDualQuat(_t63, _t64, _t65, _t66, 0.5f * Math.fma(_t0, _t64, Math.fma(m.m03(), _t66, m.m13() * _t65)), 0.5f * Math.fma(m.m23(), _t63, Math.fma(m.m13(), _t66, -(m.m03() * _t65))), 0.5f * Math.fma(m.m23(), _t66, Math.fma(m.m03(), _t64, -(m.m13() * _t63))), 0.5f * Math.fma(_t0, _t65, Math.fma(-m.m13(), _t64, -(m.m03() * _t63))));
+        return makeFromMatrix_s37cad23f_tail2(_t13, _t9, _t18, m, _t4, _t6, _t21, _t8, _t19, _t17, _t14, _t3, _t7, _t20, _sfx0, _sfx1);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private static FloatDualQuat makeFromMatrix_s37cad23f_tail2(float _t13, float _t9, float _t18, Float3x3 m, float _t4, float _t6, float _t21, float _t8, float _t19, float _t17, float _t14, float _t3, float _t7, float _t20, float _sfx0, float _sfx1) {
+        float _sfx2, _sfx3;
+        if (_t13 > 0.0f) {
+            _sfx2 = 0.5f * _t9 * _t18;
+            _sfx3 = 0.5f * (float) Math.sqrt(_t14);
+        } else {
+            if (m.m00() > _t4) {
+                _sfx2 = 0.5f * _t6 * _t21;
+                _sfx3 = 0.5f * _t3 * _t21;
+            } else {
+                if (m.m11() > m.m22()) {
+                    _sfx2 = 0.5f * _t8 * _t19;
+                    _sfx3 = 0.5f * _t7 * _t19;
+                } else {
+                    _sfx2 = 0.5f * (float) Math.sqrt(_t17);
+                    _sfx3 = 0.5f * _t9 * _t20;
+                }
+            }
+        }
+        float _sfx4 = 0.0f;
+        float _sfx5 = 0.0f;
+        float _sfx6 = 0.0f;
+        float _sfx7 = 0.0f;
+        return new FloatDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
     }
 
 
@@ -1632,19 +1791,7 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t19 = (1.0f / (float) Math.sqrt(_t16));
         float _t20 = (1.0f / (float) Math.sqrt(_t17));
         float _t21 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t13 > 0.0f) {
-            return new FloatDualQuat(0.5f * _t3 * _t18, 0.5f * _t7 * _t18, 0.5f * _t9 * _t18, 0.5f * (float) Math.sqrt(_t14), 0.0f, 0.0f, 0.0f, 0.0f);
-        } else {
-            if (m.m00() > _t4) {
-                return new FloatDualQuat(0.5f * (float) Math.sqrt(_t15), 0.5f * _t5 * _t21, 0.5f * _t6 * _t21, 0.5f * _t3 * _t21, 0.0f, 0.0f, 0.0f, 0.0f);
-            } else {
-                if (m.m11() > m.m22()) {
-                    return new FloatDualQuat(0.5f * _t5 * _t19, 0.5f * (float) Math.sqrt(_t16), 0.5f * _t8 * _t19, 0.5f * _t7 * _t19, 0.0f, 0.0f, 0.0f, 0.0f);
-                } else {
-                    return new FloatDualQuat(0.5f * _t6 * _t20, 0.5f * _t8 * _t20, 0.5f * (float) Math.sqrt(_t17), 0.5f * _t9 * _t20, 0.0f, 0.0f, 0.0f, 0.0f);
-                }
-            }
-        }
+        return makeFromMatrix_s37cad23f_tail(_t13, _t3, _t18, m, _t4, _t15, _t5, _t19, _t6, _t20, _t7, _t21, _t16, _t8, _t9, _t17, _t14);
     }
 
 
@@ -1664,18 +1811,42 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
     }
 
     /** Private tail of {@code pow}; reached only through it. */
-    private FloatDualQuat pow_s5250ffb0_tail(float t, float _t18, float _t11, float _t25, float _t9, float _t21, float _t10, float _t23, float _t8, float _t24, float _t12, float _t19, float _t14, float _t15, float _t13) {
+    private FloatDualQuat pow_s5250ffb0_tail(float _t19, float _t10, float _t8, float _t13, float t, float _t18, float _t11, float _t9, float _t21, float _t12, float _t14, float _t15) {
+        float _t23 = _t19 * _t10;
+        float _t24 = _t19 * _t8;
+        float _t25 = _t19 * _t13;
         float _t26 = t * (float) Math.atan2((float) Math.sqrt(_t18), _t11);
         float _t27 = t * _t25;
         float _t28 = (float) Math.sin(_t26);
         float _t29 = (float) Math.cos(_t26);
         float _t30 = _t25 * _t11;
         float _t31 = _t27 * _t29;
+        return pow_s5250ffb0_tail2(_t18, t, _t9, _t21, _t28, _t10, _t23, _t8, _t24, _t29, _t12, _t30, _t19, _t31, _t14, _t15, _t13, _t27);
+    }
+
+    /** Private tail of {@code pow}; reached only through it. */
+    private FloatDualQuat pow_s5250ffb0_tail2(float _t18, float t, float _t9, float _t21, float _t28, float _t10, float _t23, float _t8, float _t24, float _t29, float _t12, float _t30, float _t19, float _t31, float _t14, float _t15, float _t13, float _t27) {
+        float _sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7;
         if (_t18 < 1.0E-12f) {
-            return new FloatDualQuat(t * _t9, t * _t10, t * _t8, 1.0f, t * _t12, t * _t14, t * _t15, t * t * _t13);
+            _sfx0 = t * _t9;
+            _sfx1 = t * _t10;
+            _sfx2 = t * _t8;
+            _sfx3 = 1.0f;
+            _sfx4 = t * _t12;
+            _sfx5 = t * _t14;
+            _sfx6 = t * _t15;
+            _sfx7 = t * t * _t13;
         } else {
-            return new FloatDualQuat(_t21 * _t28, _t23 * _t28, _t24 * _t28, _t29, Math.fma(Math.fma(_t30, _t21, _t12) * _t19, _t28, -(_t31 * _t21)), Math.fma(Math.fma(_t30, _t23, _t14) * _t19, _t28, -(_t31 * _t23)), Math.fma(Math.fma(_t30, _t24, _t15) * _t19, _t28, -(_t31 * _t24)), _t27 * _t28);
+            _sfx0 = _t21 * _t28;
+            _sfx1 = _t23 * _t28;
+            _sfx2 = _t24 * _t28;
+            _sfx3 = _t29;
+            _sfx4 = Math.fma(Math.fma(_t30, _t21, _t12) * _t19, _t28, -(_t31 * _t21));
+            _sfx5 = Math.fma(Math.fma(_t30, _t23, _t14) * _t19, _t28, -(_t31 * _t23));
+            _sfx6 = Math.fma(Math.fma(_t30, _t24, _t15) * _t19, _t28, -(_t31 * _t24));
+            _sfx7 = _t27 * _t28;
         }
+        return new FloatDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
     }
 
 
@@ -1710,10 +1881,7 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t18 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t10 * _t10));
         float _t19 = (1.0f / (float) Math.sqrt(_t18));
         float _t21 = _t19 * _t9;
-        float _t23 = _t19 * _t10;
-        float _t24 = _t19 * _t8;
-        float _t25 = _t19 * _t13;
-        return pow_s5250ffb0_tail(t, _t18, _t11, _t25, _t9, _t21, _t10, _t23, _t8, _t24, _t12, _t19, _t14, _t15, _t13);
+        return pow_s5250ffb0_tail(_t19, _t10, _t8, _t13, t, _t18, _t11, _t9, _t21, _t12, _t14, _t15);
     }
 
 
@@ -1893,6 +2061,87 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         return lookAlong(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private tail of {@code lookAlong}; reached only through it. */
+    private FloatDualQuat lookAlong_s524747ee_tail(float _t9, float _t32, float _t7, float _t31, float _t33, float _t11, float _t8, float _t12, float _t10, float _t34) {
+        float _t37 = _t9 - _t32;
+        float _t38 = _t9 + _t32;
+        float _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
+        float _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
+        float _t55 = Math.max(_t49, _t7);
+        float _t56 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
+        float _t57 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
+        float _t58 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
+        float _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
+        float _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
+        float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
+        float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
+        float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
+        float _t65 = (1.0f / (float) Math.sqrt(_t61));
+        float _t66 = (1.0f / (float) Math.sqrt(_t62));
+        float _t67 = (1.0f / (float) Math.sqrt(_t63));
+        float _t68 = (1.0f / (float) Math.sqrt(_t60));
+        return lookAlong_s524747ee_tail2(_t59, _t57, _t68, _t31, _t55, _t38, _t65, _t49, _t7, _t54, _t66, _t63, _t37, _t58, _t62, _t67, _t60, _t56, _t61);
+    }
+
+    /** Private tail of {@code lookAlong}; reached only through it. */
+    private FloatDualQuat lookAlong_s524747ee_tail2(float _t59, float _t57, float _t68, float _t31, float _t55, float _t38, float _t65, float _t49, float _t7, float _t54, float _t66, float _t63, float _t37, float _t58, float _t62, float _t67, float _t60, float _t56, float _t61) {
+        float _t108, _t109;
+        if (_t59 > 0.0f) {
+            _t108 = 0.5f * _t57 * _t68;
+            _t109 = 0.5f * _t37 * _t68;
+        } else {
+            if (_t31 > _t55) {
+                _t108 = 0.5f * _t38 * _t65;
+                _t109 = 0.5f * _t58 * _t65;
+            } else {
+                if (_t49 > _t7) {
+                    _t108 = 0.5f * _t54 * _t66;
+                    _t109 = 0.5f * (float) Math.sqrt(_t62);
+                } else {
+                    _t108 = 0.5f * (float) Math.sqrt(_t63);
+                    _t109 = 0.5f * _t54 * _t67;
+                }
+            }
+        }
+        return lookAlong_s524747ee_tail3(_t59, _t60, _t31, _t55, _t56, _t65, _t49, _t7, _t37, _t66, _t57, _t67, _t68, _t61, _t58, _t38, _t108, _t109);
+    }
+
+    /** Private tail of {@code lookAlong}; reached only through it. */
+    private FloatDualQuat lookAlong_s524747ee_tail3(float _t59, float _t60, float _t31, float _t55, float _t56, float _t65, float _t49, float _t7, float _t37, float _t66, float _t57, float _t67, float _t68, float _t61, float _t58, float _t38, float _t108, float _t109) {
+        float _t110, _t111;
+        if (_t59 > 0.0f) {
+            _t110 = 0.5f * (float) Math.sqrt(_t60);
+            _t111 = 0.5f * _t56 * _t68;
+        } else {
+            if (_t31 > _t55) {
+                _t110 = 0.5f * _t56 * _t65;
+                _t111 = 0.5f * (float) Math.sqrt(_t61);
+            } else {
+                if (_t49 > _t7) {
+                    _t110 = 0.5f * _t37 * _t66;
+                    _t111 = 0.5f * _t58 * _t66;
+                } else {
+                    _t110 = 0.5f * _t57 * _t67;
+                    _t111 = 0.5f * _t38 * _t67;
+                }
+            }
+        }
+        float _sfx0 = Math.fma(this.rX, _t110, this.rW * _t111) + Math.fma(this.rY, _t108, -(this.rZ * _t109));
+        float _sfx1 = Math.fma(this.rY, _t110, this.rZ * _t111) + Math.fma(this.rW, _t109, -(this.rX * _t108));
+        return lookAlong_s524747ee_tail4(_t109, _t108, _t110, _t111, _sfx0, _sfx1);
+    }
+
+    /** Private tail of {@code lookAlong}; reached only through it. */
+    private FloatDualQuat lookAlong_s524747ee_tail4(float _t109, float _t108, float _t110, float _t111, float _sfx0, float _sfx1) {
+        float _sfx2 = Math.fma(this.rX, _t109, this.rW * _t108) + Math.fma(this.rZ, _t110, -(this.rY * _t111));
+        float _sfx3 = Math.fma(this.rW, _t110, -(this.rX * _t111)) - Math.fma(this.rY, _t109, this.rZ * _t108);
+        float _sfx4 = Math.fma(this.dX, _t110, this.dW * _t111) + Math.fma(this.dY, _t108, -(this.dZ * _t109));
+        float _sfx5 = Math.fma(this.dY, _t110, this.dZ * _t111) + Math.fma(this.dW, _t109, -(this.dX * _t108));
+        float _sfx6 = Math.fma(this.dX, _t109, this.dW * _t108) + Math.fma(this.dZ, _t110, -(this.dY * _t111));
+        float _sfx7 = Math.fma(this.dW, _t110, -(this.dX * _t111)) - Math.fma(this.dY, _t109, this.dZ * _t108);
+        return new FloatDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
+    }
+
 
     /**
      * Apply a rotation transformation that makes {@code +z} point along ({@code dirX},
@@ -1943,50 +2192,7 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
             _t33 = 0.0f;
         }
         float _t34 = 1.0f + _t31;
-        float _t37 = _t9 - _t32;
-        float _t38 = _t9 + _t32;
-        float _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        float _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        float _t55 = Math.max(_t49, _t7);
-        float _t56 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        float _t57 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        float _t58 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        float _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
-        float _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
-        float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
-        float _t65 = (1.0f / (float) Math.sqrt(_t61));
-        float _t66 = (1.0f / (float) Math.sqrt(_t62));
-        float _t67 = (1.0f / (float) Math.sqrt(_t63));
-        float _t68 = (1.0f / (float) Math.sqrt(_t60));
-        float _t108, _t109, _t110, _t111;
-        if (_t59 > 0.0f) {
-            _t108 = 0.5f * _t57 * _t68;
-            _t109 = 0.5f * _t37 * _t68;
-            _t110 = 0.5f * (float) Math.sqrt(_t60);
-            _t111 = 0.5f * _t56 * _t68;
-        } else {
-            if (_t31 > _t55) {
-                _t108 = 0.5f * _t38 * _t65;
-                _t109 = 0.5f * _t58 * _t65;
-                _t110 = 0.5f * _t56 * _t65;
-                _t111 = 0.5f * (float) Math.sqrt(_t61);
-            } else {
-                if (_t49 > _t7) {
-                    _t108 = 0.5f * _t54 * _t66;
-                    _t109 = 0.5f * (float) Math.sqrt(_t62);
-                    _t110 = 0.5f * _t37 * _t66;
-                    _t111 = 0.5f * _t58 * _t66;
-                } else {
-                    _t108 = 0.5f * (float) Math.sqrt(_t63);
-                    _t109 = 0.5f * _t54 * _t67;
-                    _t110 = 0.5f * _t57 * _t67;
-                    _t111 = 0.5f * _t38 * _t67;
-                }
-            }
-        }
-        return new FloatDualQuat(Math.fma(this.rX, _t110, this.rW * _t111) + Math.fma(this.rY, _t108, -(this.rZ * _t109)), Math.fma(this.rY, _t110, this.rZ * _t111) + Math.fma(this.rW, _t109, -(this.rX * _t108)), Math.fma(this.rX, _t109, this.rW * _t108) + Math.fma(this.rZ, _t110, -(this.rY * _t111)), Math.fma(this.rW, _t110, -(this.rX * _t111)) - Math.fma(this.rY, _t109, this.rZ * _t108), Math.fma(this.dX, _t110, this.dW * _t111) + Math.fma(this.dY, _t108, -(this.dZ * _t109)), Math.fma(this.dY, _t110, this.dZ * _t111) + Math.fma(this.dW, _t109, -(this.dX * _t108)), Math.fma(this.dX, _t109, this.dW * _t108) + Math.fma(this.dZ, _t110, -(this.dY * _t111)), Math.fma(this.dW, _t110, -(this.dX * _t111)) - Math.fma(this.dY, _t109, this.dZ * _t108));
+        return lookAlong_s524747ee_tail(_t9, _t32, _t7, _t31, _t33, _t11, _t8, _t12, _t10, _t34);
     }
 
 
@@ -2037,6 +2243,78 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         return makeRotationLookAlong(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private tail of {@code makeRotationLookAlong}; reached only through it. */
+    private static FloatDualQuat makeRotationLookAlong_s524747ee_tail(float _t9, float _t32, float _t7, float _t31, float _t33, float _t11, float _t8, float _t12, float _t10, float _t34) {
+        float _t37 = _t9 + _t32;
+        float _t38 = _t9 - _t32;
+        float _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
+        float _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
+        float _t55 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
+        float _t56 = Math.max(_t49, _t7);
+        float _t57 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
+        float _t58 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
+        float _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
+        float _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
+        float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
+        float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
+        float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
+        float _t64 = (1.0f / (float) Math.sqrt(_t60));
+        float _t65 = (1.0f / (float) Math.sqrt(_t62));
+        float _t66 = (1.0f / (float) Math.sqrt(_t63));
+        float _t67 = (1.0f / (float) Math.sqrt(_t61));
+        return makeRotationLookAlong_s524747ee_tail2(_t59, _t55, _t64, _t31, _t56, _t61, _t49, _t7, _t57, _t65, _t37, _t66, _t38, _t67, _t62, _t54, _t58, _t63, _t60);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong}; reached only through it. */
+    private static FloatDualQuat makeRotationLookAlong_s524747ee_tail2(float _t59, float _t55, float _t64, float _t31, float _t56, float _t61, float _t49, float _t7, float _t57, float _t65, float _t37, float _t66, float _t38, float _t67, float _t62, float _t54, float _t58, float _t63, float _t60) {
+        float _sfx0, _sfx1;
+        if (_t59 > 0.0f) {
+            _sfx0 = 0.5f * _t55 * _t64;
+            _sfx1 = 0.5f * _t38 * _t64;
+        } else {
+            if (_t31 > _t56) {
+                _sfx0 = 0.5f * (float) Math.sqrt(_t61);
+                _sfx1 = 0.5f * _t57 * _t67;
+            } else {
+                if (_t49 > _t7) {
+                    _sfx0 = 0.5f * _t57 * _t65;
+                    _sfx1 = 0.5f * (float) Math.sqrt(_t62);
+                } else {
+                    _sfx0 = 0.5f * _t37 * _t66;
+                    _sfx1 = 0.5f * _t54 * _t66;
+                }
+            }
+        }
+        return makeRotationLookAlong_s524747ee_tail3(_t59, _t58, _t64, _t31, _t56, _t37, _t67, _t49, _t7, _t54, _t65, _t63, _t60, _t55, _t38, _t66, _sfx0, _sfx1);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong}; reached only through it. */
+    private static FloatDualQuat makeRotationLookAlong_s524747ee_tail3(float _t59, float _t58, float _t64, float _t31, float _t56, float _t37, float _t67, float _t49, float _t7, float _t54, float _t65, float _t63, float _t60, float _t55, float _t38, float _t66, float _sfx0, float _sfx1) {
+        float _sfx2, _sfx3;
+        if (_t59 > 0.0f) {
+            _sfx2 = 0.5f * _t58 * _t64;
+            _sfx3 = 0.5f * (float) Math.sqrt(_t60);
+        } else {
+            if (_t31 > _t56) {
+                _sfx2 = 0.5f * _t37 * _t67;
+                _sfx3 = 0.5f * _t55 * _t67;
+            } else {
+                if (_t49 > _t7) {
+                    _sfx2 = 0.5f * _t54 * _t65;
+                    _sfx3 = 0.5f * _t38 * _t65;
+                } else {
+                    _sfx2 = 0.5f * (float) Math.sqrt(_t63);
+                    _sfx3 = 0.5f * _t58 * _t66;
+                }
+            }
+        }
+        float _sfx4 = 0.0f;
+        float _sfx5 = 0.0f;
+        float _sfx6 = 0.0f;
+        float _sfx7 = 0.0f;
+        return new FloatDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
+    }
+
 
     /**
      * Create a rotation that makes {@code +z} point along ({@code dirX}, {@code dirY},
@@ -2082,36 +2360,7 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
             _t33 = 0.0f;
         }
         float _t34 = 1.0f + _t31;
-        float _t37 = _t9 + _t32;
-        float _t38 = _t9 - _t32;
-        float _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        float _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        float _t55 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        float _t56 = Math.max(_t49, _t7);
-        float _t57 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        float _t58 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        float _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
-        float _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
-        float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
-        float _t64 = (1.0f / (float) Math.sqrt(_t60));
-        float _t65 = (1.0f / (float) Math.sqrt(_t62));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t61));
-        if (_t59 > 0.0f) {
-            return new FloatDualQuat(0.5f * _t55 * _t64, 0.5f * _t38 * _t64, 0.5f * _t58 * _t64, 0.5f * (float) Math.sqrt(_t60), 0.0f, 0.0f, 0.0f, 0.0f);
-        } else {
-            if (_t31 > _t56) {
-                return new FloatDualQuat(0.5f * (float) Math.sqrt(_t61), 0.5f * _t57 * _t67, 0.5f * _t37 * _t67, 0.5f * _t55 * _t67, 0.0f, 0.0f, 0.0f, 0.0f);
-            } else {
-                if (_t49 > _t7) {
-                    return new FloatDualQuat(0.5f * _t57 * _t65, 0.5f * (float) Math.sqrt(_t62), 0.5f * _t54 * _t65, 0.5f * _t38 * _t65, 0.0f, 0.0f, 0.0f, 0.0f);
-                } else {
-                    return new FloatDualQuat(0.5f * _t37 * _t66, 0.5f * _t54 * _t66, 0.5f * (float) Math.sqrt(_t63), 0.5f * _t58 * _t66, 0.0f, 0.0f, 0.0f, 0.0f);
-                }
-            }
-        }
+        return makeRotationLookAlong_s524747ee_tail(_t9, _t32, _t7, _t31, _t33, _t11, _t8, _t12, _t10, _t34);
     }
 
 
@@ -2334,6 +2583,15 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         return rotate(rotation.x(), rotation.y(), rotation.z(), rotation.w());
     }
 
+    /** Private tail of {@code rotate}; reached only through it. */
+    private FloatDualQuat rotate_s16969c0a_tail(float rotationX, float rotationW, float rotationZ, float rotationY, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
+        float _sfx4 = Math.fma(rotationX, this.dW, rotationW * this.dX) + Math.fma(rotationZ, this.dY, -(rotationY * this.dZ));
+        float _sfx5 = Math.fma(rotationX, this.dZ, rotationW * this.dY) + Math.fma(rotationY, this.dW, -(rotationZ * this.dX));
+        float _sfx6 = Math.fma(rotationY, this.dX, rotationZ * this.dW) + Math.fma(rotationW, this.dZ, -(rotationX * this.dY));
+        float _sfx7 = Math.fma(rotationW, this.dW, -(rotationX * this.dX)) - Math.fma(rotationY, this.dY, rotationZ * this.dZ);
+        return new FloatDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
+    }
+
 
     /**
      * Apply the rotation represented by the quaternion ({@code rotationX}, {@code rotationY},
@@ -2359,7 +2617,11 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * @return the resulting dual quaternion
      */
     public FloatDualQuat rotate(float rotationX, float rotationY, float rotationZ, float rotationW) {
-        return new FloatDualQuat(Math.fma(rotationX, this.rW, rotationW * this.rX) + Math.fma(rotationZ, this.rY, -(rotationY * this.rZ)), Math.fma(rotationX, this.rZ, rotationW * this.rY) + Math.fma(rotationY, this.rW, -(rotationZ * this.rX)), Math.fma(rotationY, this.rX, rotationZ * this.rW) + Math.fma(rotationW, this.rZ, -(rotationX * this.rY)), Math.fma(rotationW, this.rW, -(rotationX * this.rX)) - Math.fma(rotationY, this.rY, rotationZ * this.rZ), Math.fma(rotationX, this.dW, rotationW * this.dX) + Math.fma(rotationZ, this.dY, -(rotationY * this.dZ)), Math.fma(rotationX, this.dZ, rotationW * this.dY) + Math.fma(rotationY, this.dW, -(rotationZ * this.dX)), Math.fma(rotationY, this.dX, rotationZ * this.dW) + Math.fma(rotationW, this.dZ, -(rotationX * this.dY)), Math.fma(rotationW, this.dW, -(rotationX * this.dX)) - Math.fma(rotationY, this.dY, rotationZ * this.dZ));
+        float _sfx0 = Math.fma(rotationX, this.rW, rotationW * this.rX) + Math.fma(rotationZ, this.rY, -(rotationY * this.rZ));
+        float _sfx1 = Math.fma(rotationX, this.rZ, rotationW * this.rY) + Math.fma(rotationY, this.rW, -(rotationZ * this.rX));
+        float _sfx2 = Math.fma(rotationY, this.rX, rotationZ * this.rW) + Math.fma(rotationW, this.rZ, -(rotationX * this.rY));
+        float _sfx3 = Math.fma(rotationW, this.rW, -(rotationX * this.rX)) - Math.fma(rotationY, this.rY, rotationZ * this.rZ);
+        return rotate_s16969c0a_tail(rotationX, rotationW, rotationZ, rotationY, _sfx0, _sfx1, _sfx2, _sfx3);
     }
 
 
@@ -2380,9 +2642,12 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
     }
 
     /** Private tail of {@code rotateAxis}; reached only through it. */
-    private FloatDualQuat rotateAxis_s3b957671_tail(float axisY, float _t2, float _t1, float _t3, float _t4) {
-        float _t5 = axisY * _t2;
-        return new FloatDualQuat(Math.fma(this.rX, _t1, this.rW * _t3) + Math.fma(this.rY, _t4, -(this.rZ * _t5)), Math.fma(this.rY, _t1, this.rZ * _t3) + Math.fma(this.rW, _t5, -(this.rX * _t4)), Math.fma(this.rX, _t5, this.rW * _t4) + Math.fma(this.rZ, _t1, -(this.rY * _t3)), Math.fma(this.rW, _t1, -(this.rX * _t3)) - Math.fma(this.rY, _t5, this.rZ * _t4), Math.fma(this.dX, _t1, this.dW * _t3) + Math.fma(this.dY, _t4, -(this.dZ * _t5)), Math.fma(this.dY, _t1, this.dZ * _t3) + Math.fma(this.dW, _t5, -(this.dX * _t4)), Math.fma(this.dX, _t5, this.dW * _t4) + Math.fma(this.dZ, _t1, -(this.dY * _t3)), Math.fma(this.dW, _t1, -(this.dX * _t3)) - Math.fma(this.dY, _t5, this.dZ * _t4));
+    private FloatDualQuat rotateAxis_s3b957671_tail(float _t1, float _t3, float _t4, float _t5, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
+        float _sfx4 = Math.fma(this.dX, _t1, this.dW * _t3) + Math.fma(this.dY, _t4, -(this.dZ * _t5));
+        float _sfx5 = Math.fma(this.dY, _t1, this.dZ * _t3) + Math.fma(this.dW, _t5, -(this.dX * _t4));
+        float _sfx6 = Math.fma(this.dX, _t5, this.dW * _t4) + Math.fma(this.dZ, _t1, -(this.dY * _t3));
+        float _sfx7 = Math.fma(this.dW, _t1, -(this.dX * _t3)) - Math.fma(this.dY, _t5, this.dZ * _t4);
+        return new FloatDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
     }
 
 
@@ -2412,7 +2677,12 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t2 = (float) Math.sin(_t0);
         float _t3 = axisX * _t2;
         float _t4 = axisZ * _t2;
-        return rotateAxis_s3b957671_tail(axisY, _t2, _t1, _t3, _t4);
+        float _t5 = axisY * _t2;
+        float _sfx0 = Math.fma(this.rX, _t1, this.rW * _t3) + Math.fma(this.rY, _t4, -(this.rZ * _t5));
+        float _sfx1 = Math.fma(this.rY, _t1, this.rZ * _t3) + Math.fma(this.rW, _t5, -(this.rX * _t4));
+        float _sfx2 = Math.fma(this.rX, _t5, this.rW * _t4) + Math.fma(this.rZ, _t1, -(this.rY * _t3));
+        float _sfx3 = Math.fma(this.rW, _t1, -(this.rX * _t3)) - Math.fma(this.rY, _t5, this.rZ * _t4);
+        return rotateAxis_s3b957671_tail(_t1, _t3, _t4, _t5, _sfx0, _sfx1, _sfx2, _sfx3);
     }
 
 
@@ -2435,9 +2705,14 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
     }
 
     /** Private tail of {@code rotateXYZ}; reached only through it. */
-    private FloatDualQuat rotateXYZ_s6e793366_tail(float _t12, float _t5, float _t11, float _t8, float _t21, float _t19, float _t20) {
-        float _t22 = Math.fma(_t12, _t5, -(_t11 * _t8));
-        return new FloatDualQuat(Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t22, -(this.rX * _t20)), Math.fma(this.rX, _t22, this.rW * _t20) + Math.fma(this.rZ, _t21, -(this.rY * _t19)), Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t22, this.rZ * _t20), Math.fma(this.dX, _t21, this.dW * _t19) + Math.fma(this.dY, _t20, -(this.dZ * _t22)), Math.fma(this.dY, _t21, this.dZ * _t19) + Math.fma(this.dW, _t22, -(this.dX * _t20)), Math.fma(this.dX, _t22, this.dW * _t20) + Math.fma(this.dZ, _t21, -(this.dY * _t19)), Math.fma(this.dW, _t21, -(this.dX * _t19)) - Math.fma(this.dY, _t22, this.dZ * _t20));
+    private FloatDualQuat rotateXYZ_s6e793366_tail(float _t22, float _t20, float _t21, float _t19, float _sfx0, float _sfx1) {
+        float _sfx2 = Math.fma(this.rX, _t22, this.rW * _t20) + Math.fma(this.rZ, _t21, -(this.rY * _t19));
+        float _sfx3 = Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t22, this.rZ * _t20);
+        float _sfx4 = Math.fma(this.dX, _t21, this.dW * _t19) + Math.fma(this.dY, _t20, -(this.dZ * _t22));
+        float _sfx5 = Math.fma(this.dY, _t21, this.dZ * _t19) + Math.fma(this.dW, _t22, -(this.dX * _t20));
+        float _sfx6 = Math.fma(this.dX, _t22, this.dW * _t20) + Math.fma(this.dZ, _t21, -(this.dY * _t19));
+        float _sfx7 = Math.fma(this.dW, _t21, -(this.dX * _t19)) - Math.fma(this.dY, _t22, this.dZ * _t20);
+        return new FloatDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
     }
 
 
@@ -2473,13 +2748,21 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t19 = Math.fma(_t11, _t5, _t12 * _t8);
         float _t20 = Math.fma(_t10, _t5, _t9 * _t8);
         float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        return rotateXYZ_s6e793366_tail(_t12, _t5, _t11, _t8, _t21, _t19, _t20);
+        float _t22 = Math.fma(_t12, _t5, -(_t11 * _t8));
+        float _sfx0 = Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t20, -(this.rZ * _t22));
+        float _sfx1 = Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t22, -(this.rX * _t20));
+        return rotateXYZ_s6e793366_tail(_t22, _t20, _t21, _t19, _sfx0, _sfx1);
     }
 
     /** Private tail of {@code rotateXZY}; reached only through it. */
-    private FloatDualQuat rotateXZY_s6e793366_tail(float _t10, float _t5, float _t9, float _t8, float _t19, float _t21, float _t20) {
-        float _t22 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        return new FloatDualQuat(Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t22, -(this.rX * _t20)), Math.fma(this.rX, _t22, this.rW * _t20) + Math.fma(this.rZ, _t19, -(this.rY * _t21)), Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t22, this.rZ * _t20), Math.fma(this.dX, _t19, this.dW * _t21) + Math.fma(this.dY, _t20, -(this.dZ * _t22)), Math.fma(this.dY, _t19, this.dZ * _t21) + Math.fma(this.dW, _t22, -(this.dX * _t20)), Math.fma(this.dX, _t22, this.dW * _t20) + Math.fma(this.dZ, _t19, -(this.dY * _t21)), Math.fma(this.dW, _t19, -(this.dX * _t21)) - Math.fma(this.dY, _t22, this.dZ * _t20));
+    private FloatDualQuat rotateXZY_s6e793366_tail(float _t22, float _t20, float _t19, float _t21, float _sfx0, float _sfx1) {
+        float _sfx2 = Math.fma(this.rX, _t22, this.rW * _t20) + Math.fma(this.rZ, _t19, -(this.rY * _t21));
+        float _sfx3 = Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t22, this.rZ * _t20);
+        float _sfx4 = Math.fma(this.dX, _t19, this.dW * _t21) + Math.fma(this.dY, _t20, -(this.dZ * _t22));
+        float _sfx5 = Math.fma(this.dY, _t19, this.dZ * _t21) + Math.fma(this.dW, _t22, -(this.dX * _t20));
+        float _sfx6 = Math.fma(this.dX, _t22, this.dW * _t20) + Math.fma(this.dZ, _t19, -(this.dY * _t21));
+        float _sfx7 = Math.fma(this.dW, _t19, -(this.dX * _t21)) - Math.fma(this.dY, _t22, this.dZ * _t20);
+        return new FloatDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
     }
 
 
@@ -2515,7 +2798,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
         float _t20 = Math.fma(_t11, _t5, _t12 * _t8);
         float _t21 = Math.fma(_t11, _t8, -(_t12 * _t5));
-        return rotateXZY_s6e793366_tail(_t10, _t5, _t9, _t8, _t19, _t21, _t20);
+        float _t22 = Math.fma(_t10, _t5, -(_t9 * _t8));
+        float _sfx0 = Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t20, -(this.rZ * _t22));
+        float _sfx1 = Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t22, -(this.rX * _t20));
+        return rotateXZY_s6e793366_tail(_t22, _t20, _t19, _t21, _sfx0, _sfx1);
     }
 
 
@@ -2538,9 +2824,14 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
     }
 
     /** Private tail of {@code rotateYXZ}; reached only through it. */
-    private FloatDualQuat rotateYXZ_s6e793366_tail(float _t12, float _t8, float _t11, float _t5, float _t19, float _t20, float _t21) {
-        float _t22 = Math.fma(_t12, _t8, -(_t11 * _t5));
-        return new FloatDualQuat(Math.fma(this.rX, _t19, this.rW * _t20) + Math.fma(this.rY, _t21, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rZ * _t20) + Math.fma(this.rW, _t22, -(this.rX * _t21)), Math.fma(this.rX, _t22, this.rW * _t21) + Math.fma(this.rZ, _t19, -(this.rY * _t20)), Math.fma(this.rW, _t19, -(this.rX * _t20)) - Math.fma(this.rY, _t22, this.rZ * _t21), Math.fma(this.dX, _t19, this.dW * _t20) + Math.fma(this.dY, _t21, -(this.dZ * _t22)), Math.fma(this.dY, _t19, this.dZ * _t20) + Math.fma(this.dW, _t22, -(this.dX * _t21)), Math.fma(this.dX, _t22, this.dW * _t21) + Math.fma(this.dZ, _t19, -(this.dY * _t20)), Math.fma(this.dW, _t19, -(this.dX * _t20)) - Math.fma(this.dY, _t22, this.dZ * _t21));
+    private FloatDualQuat rotateYXZ_s6e793366_tail(float _t22, float _t21, float _t19, float _t20, float _sfx0, float _sfx1) {
+        float _sfx2 = Math.fma(this.rX, _t22, this.rW * _t21) + Math.fma(this.rZ, _t19, -(this.rY * _t20));
+        float _sfx3 = Math.fma(this.rW, _t19, -(this.rX * _t20)) - Math.fma(this.rY, _t22, this.rZ * _t21);
+        float _sfx4 = Math.fma(this.dX, _t19, this.dW * _t20) + Math.fma(this.dY, _t21, -(this.dZ * _t22));
+        float _sfx5 = Math.fma(this.dY, _t19, this.dZ * _t20) + Math.fma(this.dW, _t22, -(this.dX * _t21));
+        float _sfx6 = Math.fma(this.dX, _t22, this.dW * _t21) + Math.fma(this.dZ, _t19, -(this.dY * _t20));
+        float _sfx7 = Math.fma(this.dW, _t19, -(this.dX * _t20)) - Math.fma(this.dY, _t22, this.dZ * _t21);
+        return new FloatDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
     }
 
 
@@ -2576,13 +2867,21 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
         float _t20 = Math.fma(_t11, _t8, _t12 * _t5);
         float _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        return rotateYXZ_s6e793366_tail(_t12, _t8, _t11, _t5, _t19, _t20, _t21);
+        float _t22 = Math.fma(_t12, _t8, -(_t11 * _t5));
+        float _sfx0 = Math.fma(this.rX, _t19, this.rW * _t20) + Math.fma(this.rY, _t21, -(this.rZ * _t22));
+        float _sfx1 = Math.fma(this.rY, _t19, this.rZ * _t20) + Math.fma(this.rW, _t22, -(this.rX * _t21));
+        return rotateYXZ_s6e793366_tail(_t22, _t21, _t19, _t20, _sfx0, _sfx1);
     }
 
     /** Private tail of {@code rotateYZX}; reached only through it. */
-    private FloatDualQuat rotateYZX_s6e793366_tail(float _t11, float _t5, float _t12, float _t8, float _t21, float _t19, float _t20) {
-        float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
-        return new FloatDualQuat(Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t20, -(this.rX * _t22)), Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t21, -(this.rY * _t19)), Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t20, this.rZ * _t22), Math.fma(this.dX, _t21, this.dW * _t19) + Math.fma(this.dY, _t22, -(this.dZ * _t20)), Math.fma(this.dY, _t21, this.dZ * _t19) + Math.fma(this.dW, _t20, -(this.dX * _t22)), Math.fma(this.dX, _t20, this.dW * _t22) + Math.fma(this.dZ, _t21, -(this.dY * _t19)), Math.fma(this.dW, _t21, -(this.dX * _t19)) - Math.fma(this.dY, _t20, this.dZ * _t22));
+    private FloatDualQuat rotateYZX_s6e793366_tail(float _t20, float _t22, float _t21, float _t19, float _sfx0, float _sfx1) {
+        float _sfx2 = Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t21, -(this.rY * _t19));
+        float _sfx3 = Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t20, this.rZ * _t22);
+        float _sfx4 = Math.fma(this.dX, _t21, this.dW * _t19) + Math.fma(this.dY, _t22, -(this.dZ * _t20));
+        float _sfx5 = Math.fma(this.dY, _t21, this.dZ * _t19) + Math.fma(this.dW, _t20, -(this.dX * _t22));
+        float _sfx6 = Math.fma(this.dX, _t20, this.dW * _t22) + Math.fma(this.dZ, _t21, -(this.dY * _t19));
+        float _sfx7 = Math.fma(this.dW, _t21, -(this.dX * _t19)) - Math.fma(this.dY, _t20, this.dZ * _t22);
+        return new FloatDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
     }
 
 
@@ -2618,7 +2917,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t19 = Math.fma(_t10, _t5, _t9 * _t8);
         float _t20 = Math.fma(_t12, _t5, _t11 * _t8);
         float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        return rotateYZX_s6e793366_tail(_t11, _t5, _t12, _t8, _t21, _t19, _t20);
+        float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+        float _sfx0 = Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t22, -(this.rZ * _t20));
+        float _sfx1 = Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t20, -(this.rX * _t22));
+        return rotateYZX_s6e793366_tail(_t20, _t22, _t21, _t19, _sfx0, _sfx1);
     }
 
 
@@ -2641,9 +2943,14 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
     }
 
     /** Private tail of {@code rotateZXY}; reached only through it. */
-    private FloatDualQuat rotateZXY_s6e793366_tail(float _t11, float _t5, float _t12, float _t8, float _t21, float _t19, float _t20) {
-        float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
-        return new FloatDualQuat(Math.fma(this.rX, _t21, this.rW * _t22) + Math.fma(this.rY, _t19, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rZ * _t22) + Math.fma(this.rW, _t20, -(this.rX * _t19)), Math.fma(this.rX, _t20, this.rW * _t19) + Math.fma(this.rZ, _t21, -(this.rY * _t22)), Math.fma(this.rW, _t21, -(this.rX * _t22)) - Math.fma(this.rY, _t20, this.rZ * _t19), Math.fma(this.dX, _t21, this.dW * _t22) + Math.fma(this.dY, _t19, -(this.dZ * _t20)), Math.fma(this.dY, _t21, this.dZ * _t22) + Math.fma(this.dW, _t20, -(this.dX * _t19)), Math.fma(this.dX, _t20, this.dW * _t19) + Math.fma(this.dZ, _t21, -(this.dY * _t22)), Math.fma(this.dW, _t21, -(this.dX * _t22)) - Math.fma(this.dY, _t20, this.dZ * _t19));
+    private FloatDualQuat rotateZXY_s6e793366_tail(float _t20, float _t19, float _t21, float _t22, float _sfx0, float _sfx1) {
+        float _sfx2 = Math.fma(this.rX, _t20, this.rW * _t19) + Math.fma(this.rZ, _t21, -(this.rY * _t22));
+        float _sfx3 = Math.fma(this.rW, _t21, -(this.rX * _t22)) - Math.fma(this.rY, _t20, this.rZ * _t19);
+        float _sfx4 = Math.fma(this.dX, _t21, this.dW * _t22) + Math.fma(this.dY, _t19, -(this.dZ * _t20));
+        float _sfx5 = Math.fma(this.dY, _t21, this.dZ * _t22) + Math.fma(this.dW, _t20, -(this.dX * _t19));
+        float _sfx6 = Math.fma(this.dX, _t20, this.dW * _t19) + Math.fma(this.dZ, _t21, -(this.dY * _t22));
+        float _sfx7 = Math.fma(this.dW, _t21, -(this.dX * _t22)) - Math.fma(this.dY, _t20, this.dZ * _t19);
+        return new FloatDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
     }
 
 
@@ -2679,13 +2986,21 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t19 = Math.fma(_t11, _t8, _t12 * _t5);
         float _t20 = Math.fma(_t10, _t5, _t9 * _t8);
         float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        return rotateZXY_s6e793366_tail(_t11, _t5, _t12, _t8, _t21, _t19, _t20);
+        float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+        float _sfx0 = Math.fma(this.rX, _t21, this.rW * _t22) + Math.fma(this.rY, _t19, -(this.rZ * _t20));
+        float _sfx1 = Math.fma(this.rY, _t21, this.rZ * _t22) + Math.fma(this.rW, _t20, -(this.rX * _t19));
+        return rotateZXY_s6e793366_tail(_t20, _t19, _t21, _t22, _sfx0, _sfx1);
     }
 
     /** Private tail of {@code rotateZYX}; reached only through it. */
-    private FloatDualQuat rotateZYX_s6e793366_tail(float _t11, float _t8, float _t12, float _t5, float _t19, float _t21, float _t20) {
-        float _t22 = Math.fma(_t11, _t8, -(_t12 * _t5));
-        return new FloatDualQuat(Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t20, -(this.rX * _t22)), Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t19, -(this.rY * _t21)), Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t20, this.rZ * _t22), Math.fma(this.dX, _t19, this.dW * _t21) + Math.fma(this.dY, _t22, -(this.dZ * _t20)), Math.fma(this.dY, _t19, this.dZ * _t21) + Math.fma(this.dW, _t20, -(this.dX * _t22)), Math.fma(this.dX, _t20, this.dW * _t22) + Math.fma(this.dZ, _t19, -(this.dY * _t21)), Math.fma(this.dW, _t19, -(this.dX * _t21)) - Math.fma(this.dY, _t20, this.dZ * _t22));
+    private FloatDualQuat rotateZYX_s6e793366_tail(float _t20, float _t22, float _t19, float _t21, float _sfx0, float _sfx1) {
+        float _sfx2 = Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t19, -(this.rY * _t21));
+        float _sfx3 = Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t20, this.rZ * _t22);
+        float _sfx4 = Math.fma(this.dX, _t19, this.dW * _t21) + Math.fma(this.dY, _t22, -(this.dZ * _t20));
+        float _sfx5 = Math.fma(this.dY, _t19, this.dZ * _t21) + Math.fma(this.dW, _t20, -(this.dX * _t22));
+        float _sfx6 = Math.fma(this.dX, _t20, this.dW * _t22) + Math.fma(this.dZ, _t19, -(this.dY * _t21));
+        float _sfx7 = Math.fma(this.dW, _t19, -(this.dX * _t21)) - Math.fma(this.dY, _t20, this.dZ * _t22);
+        return new FloatDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
     }
 
 
@@ -2721,7 +3036,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
         float _t20 = Math.fma(_t12, _t8, _t11 * _t5);
         float _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        return rotateZYX_s6e793366_tail(_t11, _t8, _t12, _t5, _t19, _t21, _t20);
+        float _t22 = Math.fma(_t11, _t8, -(_t12 * _t5));
+        float _sfx0 = Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t22, -(this.rZ * _t20));
+        float _sfx1 = Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t20, -(this.rX * _t22));
+        return rotateZYX_s6e793366_tail(_t20, _t22, _t19, _t21, _sfx0, _sfx1);
     }
 
 
@@ -2780,6 +3098,12 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         return transform(p.x(), p.y(), p.z());
     }
 
+    /** Private tail of {@code transform}; reached only through it. */
+    private Float3 transform_s2b62622f_tail(float pZ, float pY, float _t9, float _t10, float pX) {
+        float _t11 = 2.0f * Math.fma(pZ, this.rY, -(pY * this.rZ));
+        return new Float3(Math.fma(this.rY, _t9, Math.fma(-this.rZ, _t10, Math.fma(this.rW, _t11, Math.fma(2.0f, Math.fma(this.rY, this.dZ, -(this.rZ * this.dY)) + Math.fma(this.rW, this.dX, -(this.rX * this.dW)), pX)))), Math.fma(this.rZ, _t11, Math.fma(-this.rX, _t9, Math.fma(this.rW, _t10, Math.fma(2.0f, Math.fma(this.rZ, this.dX, -(this.rX * this.dZ)) + Math.fma(this.rW, this.dY, -(this.rY * this.dW)), pY)))), Math.fma(this.rX, _t10, Math.fma(-this.rY, _t11, Math.fma(this.rW, _t9, Math.fma(2.0f, Math.fma(this.rX, this.dY, -(this.rY * this.dX)) + Math.fma(this.rW, this.dZ, -(this.rZ * this.dW)), pZ)))));
+    }
+
 
     /**
      * Transform ({@code pX}, {@code pY}, {@code pZ}) by this dual quaternion, returning the result
@@ -2793,8 +3117,7 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
     public Float3 transform(float pX, float pY, float pZ) {
         float _t9 = 2.0f * Math.fma(pY, this.rX, -(pX * this.rY));
         float _t10 = 2.0f * Math.fma(pX, this.rZ, -(pZ * this.rX));
-        float _t11 = 2.0f * Math.fma(pZ, this.rY, -(pY * this.rZ));
-        return new Float3(Math.fma(this.rY, _t9, Math.fma(-this.rZ, _t10, Math.fma(this.rW, _t11, Math.fma(2.0f, Math.fma(this.rY, this.dZ, -(this.rZ * this.dY)) + Math.fma(this.rW, this.dX, -(this.rX * this.dW)), pX)))), Math.fma(this.rZ, _t11, Math.fma(-this.rX, _t9, Math.fma(this.rW, _t10, Math.fma(2.0f, Math.fma(this.rZ, this.dX, -(this.rX * this.dZ)) + Math.fma(this.rW, this.dY, -(this.rY * this.dW)), pY)))), Math.fma(this.rX, _t10, Math.fma(-this.rY, _t11, Math.fma(this.rW, _t9, Math.fma(2.0f, Math.fma(this.rX, this.dY, -(this.rY * this.dX)) + Math.fma(this.rW, this.dZ, -(this.rZ * this.dW)), pZ)))));
+        return transform_s2b62622f_tail(pZ, pY, _t9, _t10, pX);
     }
 
 
