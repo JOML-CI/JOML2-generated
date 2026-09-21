@@ -24,3 +24,9 @@ inline infix fun FloatAABB.overlaps(sph: FloatSphere): Boolean = intersectsSpher
 inline infix fun FloatAABB.overlaps(plane: FloatPlane): Boolean = intersectsPlane(plane)
 /** [FloatAABB.intersectsRay] as the `overlaps` infix function. */
 inline infix fun FloatAABB.overlaps(ray: FloatRay): Boolean = intersectsRay(ray)
+/** Component 1 of this FloatAABB for destructuring declarations: the minimum corner of the box (`minX()`, `minY()`, `minZ()`). */
+inline operator fun FloatAABB.component1(): Float3 = Float3(minX(), minY(), minZ())
+/** Component 2 of this FloatAABB for destructuring declarations: the maximum corner of the box (`maxX()`, `maxY()`, `maxZ()`). */
+inline operator fun FloatAABB.component2(): Float3 = Float3(maxX(), maxY(), maxZ())
+/** A copy of this FloatAABB with the named parts replaced; every part left out keeps its current value. */
+inline fun FloatAABB.copy(min: Float3 = Float3(minX(), minY(), minZ()), max: Float3 = Float3(maxX(), maxY(), maxZ())): FloatAABB = FloatAABB(min, max)

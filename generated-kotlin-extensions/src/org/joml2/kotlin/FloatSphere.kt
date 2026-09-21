@@ -22,3 +22,9 @@ inline infix fun FloatSphere.overlaps(a: FloatAABB): Boolean = intersectsAABB(a)
 inline infix fun FloatSphere.overlaps(plane: FloatPlane): Boolean = intersectsPlane(plane)
 /** [FloatSphere.intersectsRay] as the `overlaps` infix function. */
 inline infix fun FloatSphere.overlaps(ray: FloatRay): Boolean = intersectsRay(ray)
+/** Component 1 of this FloatSphere for destructuring declarations: the center of the sphere (`x()`, `y()`, `z()`). */
+inline operator fun FloatSphere.component1(): Float3 = Float3(x(), y(), z())
+/** Component 2 of this FloatSphere for destructuring declarations: the radius of the sphere (`r()`). */
+inline operator fun FloatSphere.component2(): Float = r()
+/** A copy of this FloatSphere with the named parts replaced; every part left out keeps its current value. */
+inline fun FloatSphere.copy(center: Float3 = Float3(x(), y(), z()), radius: Float = r()): FloatSphere = FloatSphere(center, radius)

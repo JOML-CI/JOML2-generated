@@ -24,3 +24,9 @@ inline infix fun DoubleAABB.overlaps(sph: DoubleSphere): Boolean = intersectsSph
 inline infix fun DoubleAABB.overlaps(plane: DoublePlane): Boolean = intersectsPlane(plane)
 /** [DoubleAABB.intersectsRay] as the `overlaps` infix function. */
 inline infix fun DoubleAABB.overlaps(ray: DoubleRay): Boolean = intersectsRay(ray)
+/** Component 1 of this DoubleAABB for destructuring declarations: the minimum corner of the box (`minX()`, `minY()`, `minZ()`). */
+inline operator fun DoubleAABB.component1(): Double3 = Double3(minX(), minY(), minZ())
+/** Component 2 of this DoubleAABB for destructuring declarations: the maximum corner of the box (`maxX()`, `maxY()`, `maxZ()`). */
+inline operator fun DoubleAABB.component2(): Double3 = Double3(maxX(), maxY(), maxZ())
+/** A copy of this DoubleAABB with the named parts replaced; every part left out keeps its current value. */
+inline fun DoubleAABB.copy(min: Double3 = Double3(minX(), minY(), minZ()), max: Double3 = Double3(maxX(), maxY(), maxZ())): DoubleAABB = DoubleAABB(min, max)

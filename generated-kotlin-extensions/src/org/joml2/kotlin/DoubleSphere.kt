@@ -22,3 +22,9 @@ inline infix fun DoubleSphere.overlaps(a: DoubleAABB): Boolean = intersectsAABB(
 inline infix fun DoubleSphere.overlaps(plane: DoublePlane): Boolean = intersectsPlane(plane)
 /** [DoubleSphere.intersectsRay] as the `overlaps` infix function. */
 inline infix fun DoubleSphere.overlaps(ray: DoubleRay): Boolean = intersectsRay(ray)
+/** Component 1 of this DoubleSphere for destructuring declarations: the center of the sphere (`x()`, `y()`, `z()`). */
+inline operator fun DoubleSphere.component1(): Double3 = Double3(x(), y(), z())
+/** Component 2 of this DoubleSphere for destructuring declarations: the radius of the sphere (`r()`). */
+inline operator fun DoubleSphere.component2(): Double = r()
+/** A copy of this DoubleSphere with the named parts replaced; every part left out keeps its current value. */
+inline fun DoubleSphere.copy(center: Double3 = Double3(x(), y(), z()), radius: Double = r()): DoubleSphere = DoubleSphere(center, radius)
