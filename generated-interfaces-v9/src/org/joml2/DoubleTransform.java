@@ -1149,6 +1149,16 @@ public interface DoubleTransform extends DoubleTransformR {
     @Mutated default DoubleTransform translate(double x, double y, double z) { return translate(x, y, z, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
     /**
+     * Set this transform from its translation, rotation and scale.
+     *
+     * @param translation the translation
+     * @param rotation the rotation quaternion, taken as given (not normalized)
+     * @param scale the scale along each local axis
+     * @return this
+     */
+    @Mutated default DoubleTransform set(Double3R translation, DoubleQuatR rotation, Double3R scale) { return set(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w(), scale.x(), scale.y(), scale.z()); }
+
+    /**
      * Load the elements from the given array.
      *
      * @param src the source array

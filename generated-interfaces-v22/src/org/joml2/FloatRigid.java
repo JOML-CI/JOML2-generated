@@ -883,6 +883,15 @@ public interface FloatRigid extends FloatRigidR {
     @Mutated default FloatRigid translate(float x, float y, float z) { return translate(x, y, z, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
     /**
+     * Set this rigid transform from its translation and rotation.
+     *
+     * @param translation the translation
+     * @param rotation the rotation quaternion, taken as given (not normalized)
+     * @return this
+     */
+    @Mutated default FloatRigid set(Float3R translation, FloatQuatR rotation) { return set(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w()); }
+
+    /**
      * Load the elements from the given array.
      *
      * @param src the source array

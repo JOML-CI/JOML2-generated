@@ -196,6 +196,15 @@ public interface FloatAABB extends FloatAABBR {
     @Mutated default FloatAABB union(float x, float y, float z) { return union(x, y, z, Joml.RETURN_NEW ? Joml.floatAABB() : this); }
 
     /**
+     * Set this axis-aligned bounding box from its minimum and maximum corners.
+     *
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
+     * @return this
+     */
+    @Mutated default FloatAABB set(Float3R min, Float3R max) { return set(min.x(), min.y(), min.z(), max.x(), max.y(), max.z()); }
+
+    /**
      * Load the elements from the given array.
      *
      * @param src the source array

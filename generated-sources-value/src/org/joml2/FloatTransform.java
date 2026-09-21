@@ -75,6 +75,17 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
         this(0, 0, 0, 0, 0, 0, 1, 1, 1, 1);
     }
 
+    /**
+     * Create a transform from its translation, rotation and scale.
+     *
+     * @param translation the translation
+     * @param rotation the rotation quaternion, taken as given (not normalized)
+     * @param scale the scale along each local axis
+     */
+    public FloatTransform(Float3 translation, FloatQuat rotation, Float3 scale) {
+        this(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w(), scale.x(), scale.y(), scale.z());
+    }
+
     /** {@return the {@code tX} component} */
     public float tX() { return tX; }
     /** {@return the {@code tY} component} */
@@ -95,6 +106,18 @@ public value record FloatTransform(float tX, float tY, float tZ, float rX, float
     public float sY() { return sY; }
     /** {@return the {@code sZ} component} */
     public float sZ() { return sZ; }
+
+    /**
+     * Create a new transform from its translation, rotation and scale.
+     *
+     * @param translation the translation
+     * @param rotation the rotation quaternion, taken as given (not normalized)
+     * @param scale the scale along each local axis
+     * @return the resulting transform
+     */
+    public FloatTransform set(Float3 translation, FloatQuat rotation, Float3 scale) {
+        return new FloatTransform(translation, rotation, scale);
+    }
 
 
     /**

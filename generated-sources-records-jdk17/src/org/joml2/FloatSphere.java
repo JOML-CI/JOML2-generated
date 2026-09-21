@@ -54,6 +54,16 @@ public record FloatSphere(float x, float y, float z, float r) {
         this(0, 0, 0, 0);
     }
 
+    /**
+     * Create a sphere from its center and radius.
+     *
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
+     */
+    public FloatSphere(Float3 center, float radius) {
+        this(center.x(), center.y(), center.z(), radius);
+    }
+
     /** {@return the {@code x} component} */
     public float x() { return x; }
     /** {@return the {@code y} component} */
@@ -62,6 +72,17 @@ public record FloatSphere(float x, float y, float z, float r) {
     public float z() { return z; }
     /** {@return the {@code r} component} */
     public float r() { return r; }
+
+    /**
+     * Create a new sphere from its center and radius.
+     *
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
+     * @return the resulting sphere
+     */
+    public FloatSphere set(Float3 center, float radius) {
+        return new FloatSphere(center, radius);
+    }
 
 
     /**

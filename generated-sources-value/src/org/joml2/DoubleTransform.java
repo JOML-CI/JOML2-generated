@@ -75,6 +75,17 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
         this(0, 0, 0, 0, 0, 0, 1, 1, 1, 1);
     }
 
+    /**
+     * Create a transform from its translation, rotation and scale.
+     *
+     * @param translation the translation
+     * @param rotation the rotation quaternion, taken as given (not normalized)
+     * @param scale the scale along each local axis
+     */
+    public DoubleTransform(Double3 translation, DoubleQuat rotation, Double3 scale) {
+        this(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w(), scale.x(), scale.y(), scale.z());
+    }
+
     /** {@return the {@code tX} component} */
     public double tX() { return tX; }
     /** {@return the {@code tY} component} */
@@ -95,6 +106,18 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
     public double sY() { return sY; }
     /** {@return the {@code sZ} component} */
     public double sZ() { return sZ; }
+
+    /**
+     * Create a new transform from its translation, rotation and scale.
+     *
+     * @param translation the translation
+     * @param rotation the rotation quaternion, taken as given (not normalized)
+     * @param scale the scale along each local axis
+     * @return the resulting transform
+     */
+    public DoubleTransform set(Double3 translation, DoubleQuat rotation, Double3 scale) {
+        return new DoubleTransform(translation, rotation, scale);
+    }
 
 
     /**

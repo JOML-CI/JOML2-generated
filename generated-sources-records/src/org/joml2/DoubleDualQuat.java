@@ -74,6 +74,16 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
         this(0, 0, 0, 1, 0, 0, 0, 0);
     }
 
+    /**
+     * Create a dual quaternion from its real and dual parts.
+     *
+     * @param real the real part, i.e. the rotation quaternion
+     * @param dual the dual part, carrying the translation
+     */
+    public DoubleDualQuat(DoubleQuat real, DoubleQuat dual) {
+        this(real.x(), real.y(), real.z(), real.w(), dual.x(), dual.y(), dual.z(), dual.w());
+    }
+
     /** {@return the {@code rX} component} */
     public double rX() { return rX; }
     /** {@return the {@code rY} component} */
@@ -90,6 +100,17 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
     public double dZ() { return dZ; }
     /** {@return the {@code dW} component} */
     public double dW() { return dW; }
+
+    /**
+     * Create a new dual quaternion from its real and dual parts.
+     *
+     * @param real the real part, i.e. the rotation quaternion
+     * @param dual the dual part, carrying the translation
+     * @return the resulting dual quaternion
+     */
+    public DoubleDualQuat set(DoubleQuat real, DoubleQuat dual) {
+        return new DoubleDualQuat(real, dual);
+    }
 
 
     /**

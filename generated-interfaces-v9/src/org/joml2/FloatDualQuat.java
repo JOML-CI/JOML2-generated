@@ -1228,6 +1228,15 @@ public interface FloatDualQuat extends FloatDualQuatR {
     @Mutated default FloatDualQuat translate(float x, float y, float z) { return translate(x, y, z, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
     /**
+     * Set this dual quaternion from its real and dual parts.
+     *
+     * @param real the real part, i.e. the rotation quaternion
+     * @param dual the dual part, carrying the translation
+     * @return this
+     */
+    @Mutated default FloatDualQuat set(FloatQuatR real, FloatQuatR dual) { return set(real.x(), real.y(), real.z(), real.w(), dual.x(), dual.y(), dual.z(), dual.w()); }
+
+    /**
      * Load the elements from the given array.
      *
      * @param src the source array

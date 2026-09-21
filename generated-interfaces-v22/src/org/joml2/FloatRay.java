@@ -113,6 +113,15 @@ public interface FloatRay extends FloatRayR {
     @Mutated default FloatRay transform(Float4x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.floatRay() : this); }
 
     /**
+     * Set this ray from its origin and direction.
+     *
+     * @param origin the origin of the ray
+     * @param direction the direction of the ray, taken as given (not normalized)
+     * @return this
+     */
+    @Mutated default FloatRay set(Float3R origin, Float3R direction) { return set(origin.x(), origin.y(), origin.z(), direction.x(), direction.y(), direction.z()); }
+
+    /**
      * Load the elements from the given array.
      *
      * @param src the source array

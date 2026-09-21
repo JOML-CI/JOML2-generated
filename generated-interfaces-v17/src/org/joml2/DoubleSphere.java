@@ -122,6 +122,15 @@ public interface DoubleSphere extends DoubleSphereR {
     @Mutated default DoubleSphere translate(double x, double y, double z) { return translate(x, y, z, Joml.RETURN_NEW ? Joml.doubleSphere() : this); }
 
     /**
+     * Set this sphere from its center and radius.
+     *
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
+     * @return this
+     */
+    @Mutated default DoubleSphere set(Double3R center, double radius) { return set(center.x(), center.y(), center.z(), radius); }
+
+    /**
      * Load the elements from the given array.
      *
      * @param src the source array

@@ -92,6 +92,22 @@ public value record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy,
         this(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0);
     }
 
+    /**
+     * Create an oriented bounding box from its center, its three local axes and its half-size.
+     *
+     * @param center the center of the box
+     * @param axisX the local x axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param axisY the local y axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param axisZ the local z axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param halfSize the half extent of the box along each local axis
+     */
+    public FloatOBB(Float3 center, Float3 axisX, Float3 axisY, Float3 axisZ, Float3 halfSize) {
+        this(center.x(), center.y(), center.z(), axisX.x(), axisX.y(), axisX.z(), axisY.x(), axisY.y(), axisY.z(), axisZ.x(), axisZ.y(), axisZ.z(), halfSize.x(), halfSize.y(), halfSize.z());
+    }
+
     /** {@return the {@code cX} component} */
     public float cX() { return cX; }
     /** {@return the {@code cY} component} */
@@ -122,6 +138,23 @@ public value record FloatOBB(float cX, float cY, float cZ, float uXx, float uXy,
     public float hsY() { return hsY; }
     /** {@return the {@code hsZ} component} */
     public float hsZ() { return hsZ; }
+
+    /**
+     * Create a new oriented bounding box from its center, its three local axes and its half-size.
+     *
+     * @param center the center of the box
+     * @param axisX the local x axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param axisY the local y axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param axisZ the local z axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param halfSize the half extent of the box along each local axis
+     * @return the resulting oriented bounding box
+     */
+    public FloatOBB set(Float3 center, Float3 axisX, Float3 axisY, Float3 axisZ, Float3 halfSize) {
+        return new FloatOBB(center, axisX, axisY, axisZ, halfSize);
+    }
 
 
     /**

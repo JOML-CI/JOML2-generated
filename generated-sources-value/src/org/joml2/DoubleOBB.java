@@ -92,6 +92,22 @@ public value record DoubleOBB(double cX, double cY, double cZ, double uXx, doubl
         this(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0);
     }
 
+    /**
+     * Create an oriented bounding box from its center, its three local axes and its half-size.
+     *
+     * @param center the center of the box
+     * @param axisX the local x axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param axisY the local y axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param axisZ the local z axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param halfSize the half extent of the box along each local axis
+     */
+    public DoubleOBB(Double3 center, Double3 axisX, Double3 axisY, Double3 axisZ, Double3 halfSize) {
+        this(center.x(), center.y(), center.z(), axisX.x(), axisX.y(), axisX.z(), axisY.x(), axisY.y(), axisY.z(), axisZ.x(), axisZ.y(), axisZ.z(), halfSize.x(), halfSize.y(), halfSize.z());
+    }
+
     /** {@return the {@code cX} component} */
     public double cX() { return cX; }
     /** {@return the {@code cY} component} */
@@ -122,6 +138,23 @@ public value record DoubleOBB(double cX, double cY, double cZ, double uXx, doubl
     public double hsY() { return hsY; }
     /** {@return the {@code hsZ} component} */
     public double hsZ() { return hsZ; }
+
+    /**
+     * Create a new oriented bounding box from its center, its three local axes and its half-size.
+     *
+     * @param center the center of the box
+     * @param axisX the local x axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param axisY the local y axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param axisZ the local z axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param halfSize the half extent of the box along each local axis
+     * @return the resulting oriented bounding box
+     */
+    public DoubleOBB set(Double3 center, Double3 axisX, Double3 axisY, Double3 axisZ, Double3 halfSize) {
+        return new DoubleOBB(center, axisX, axisY, axisZ, halfSize);
+    }
 
 
     /**

@@ -86,6 +86,18 @@ public interface FloatPlane extends FloatPlaneR {
     @Mutated default FloatPlane normalize() { return normalize(Joml.RETURN_NEW ? Joml.floatPlane() : this); }
 
     /**
+     * Set this plane from its normal {@code (a, b, c)} and the {@code d} coefficient of the plane
+     * equation {@code a*x + b*y + c*z + d = 0}.
+     *
+     * @param normal the normal {@code (a, b, c)} of the plane, taken as given (not normalized)
+     * @param d the {@code d} coefficient of the plane equation {@code a*x + b*y + c*z + d = 0}; for
+     *        a unit normal, the signed distance of the origin to the plane, positive on the side
+     *        the normal points to
+     * @return this
+     */
+    @Mutated default FloatPlane set(Float3R normal, float d) { return set(normal.x(), normal.y(), normal.z(), d); }
+
+    /**
      * Load the elements from the given array.
      *
      * @param src the source array

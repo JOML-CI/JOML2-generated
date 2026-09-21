@@ -60,6 +60,16 @@ public record FloatRay(float oX, float oY, float oZ, float dX, float dY, float d
         this(0, 0, 0, 0, 0, 0);
     }
 
+    /**
+     * Create a ray from its origin and direction.
+     *
+     * @param origin the origin of the ray
+     * @param direction the direction of the ray, taken as given (not normalized)
+     */
+    public FloatRay(Float3 origin, Float3 direction) {
+        this(origin.x(), origin.y(), origin.z(), direction.x(), direction.y(), direction.z());
+    }
+
     /** {@return the {@code oX} component} */
     public float oX() { return oX; }
     /** {@return the {@code oY} component} */
@@ -72,6 +82,17 @@ public record FloatRay(float oX, float oY, float oZ, float dX, float dY, float d
     public float dY() { return dY; }
     /** {@return the {@code dZ} component} */
     public float dZ() { return dZ; }
+
+    /**
+     * Create a new ray from its origin and direction.
+     *
+     * @param origin the origin of the ray
+     * @param direction the direction of the ray, taken as given (not normalized)
+     * @return the resulting ray
+     */
+    public FloatRay set(Float3 origin, Float3 direction) {
+        return new FloatRay(origin, direction);
+    }
 
 
     /**

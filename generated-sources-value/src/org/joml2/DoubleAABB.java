@@ -65,6 +65,16 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
         this(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
     }
 
+    /**
+     * Create an axis-aligned bounding box from its minimum and maximum corners.
+     *
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
+     */
+    public DoubleAABB(Double3 min, Double3 max) {
+        this(min.x(), min.y(), min.z(), max.x(), max.y(), max.z());
+    }
+
     /** {@return the {@code minX} component} */
     public double minX() { return minX; }
     /** {@return the {@code minY} component} */
@@ -77,6 +87,17 @@ public value record DoubleAABB(double minX, double minY, double minZ, double max
     public double maxY() { return maxY; }
     /** {@return the {@code maxZ} component} */
     public double maxZ() { return maxZ; }
+
+    /**
+     * Create a new axis-aligned bounding box from its minimum and maximum corners.
+     *
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
+     * @return the resulting axis-aligned bounding box
+     */
+    public DoubleAABB set(Double3 min, Double3 max) {
+        return new DoubleAABB(min, max);
+    }
 
 
     /**

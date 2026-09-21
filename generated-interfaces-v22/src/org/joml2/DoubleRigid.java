@@ -885,6 +885,15 @@ public interface DoubleRigid extends DoubleRigidR {
     @Mutated default DoubleRigid translate(double x, double y, double z) { return translate(x, y, z, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
     /**
+     * Set this rigid transform from its translation and rotation.
+     *
+     * @param translation the translation
+     * @param rotation the rotation quaternion, taken as given (not normalized)
+     * @return this
+     */
+    @Mutated default DoubleRigid set(Double3R translation, DoubleQuatR rotation) { return set(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w()); }
+
+    /**
      * Load the elements from the given array.
      *
      * @param src the source array

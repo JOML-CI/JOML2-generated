@@ -90,6 +90,16 @@ public interface DoubleTriangle extends DoubleTriangleR {
     @Mutated default DoubleTriangle transform(Double4x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.doubleTriangle() : this); }
 
     /**
+     * Set this triangle from its three vertices.
+     *
+     * @param v0 the first vertex
+     * @param v1 the second vertex
+     * @param v2 the third vertex
+     * @return this
+     */
+    @Mutated default DoubleTriangle set(Double3R v0, Double3R v1, Double3R v2) { return set(v0.x(), v0.y(), v0.z(), v1.x(), v1.y(), v1.z(), v2.x(), v2.y(), v2.z()); }
+
+    /**
      * Load the elements from the given array.
      *
      * @param src the source array

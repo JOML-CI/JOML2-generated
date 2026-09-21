@@ -57,6 +57,16 @@ public record DoubleRect(double minX, double minY, double maxX, double maxY) {
         this(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
     }
 
+    /**
+     * Create a rectangle from its minimum and maximum corners.
+     *
+     * @param min the minimum corner of the rectangle
+     * @param max the maximum corner of the rectangle
+     */
+    public DoubleRect(Double2 min, Double2 max) {
+        this(min.x(), min.y(), max.x(), max.y());
+    }
+
     /** {@return the {@code minX} component} */
     public double minX() { return minX; }
     /** {@return the {@code minY} component} */
@@ -65,6 +75,17 @@ public record DoubleRect(double minX, double minY, double maxX, double maxY) {
     public double maxX() { return maxX; }
     /** {@return the {@code maxY} component} */
     public double maxY() { return maxY; }
+
+    /**
+     * Create a new rectangle from its minimum and maximum corners.
+     *
+     * @param min the minimum corner of the rectangle
+     * @param max the maximum corner of the rectangle
+     * @return the resulting rectangle
+     */
+    public DoubleRect set(Double2 min, Double2 max) {
+        return new DoubleRect(min, max);
+    }
 
 
     /**

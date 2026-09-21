@@ -62,6 +62,16 @@ public record DoubleRay(double oX, double oY, double oZ, double dX, double dY, d
         this(0, 0, 0, 0, 0, 0);
     }
 
+    /**
+     * Create a ray from its origin and direction.
+     *
+     * @param origin the origin of the ray
+     * @param direction the direction of the ray, taken as given (not normalized)
+     */
+    public DoubleRay(Double3 origin, Double3 direction) {
+        this(origin.x(), origin.y(), origin.z(), direction.x(), direction.y(), direction.z());
+    }
+
     /** {@return the {@code oX} component} */
     public double oX() { return oX; }
     /** {@return the {@code oY} component} */
@@ -74,6 +84,17 @@ public record DoubleRay(double oX, double oY, double oZ, double dX, double dY, d
     public double dY() { return dY; }
     /** {@return the {@code dZ} component} */
     public double dZ() { return dZ; }
+
+    /**
+     * Create a new ray from its origin and direction.
+     *
+     * @param origin the origin of the ray
+     * @param direction the direction of the ray, taken as given (not normalized)
+     * @return the resulting ray
+     */
+    public DoubleRay set(Double3 origin, Double3 direction) {
+        return new DoubleRay(origin, direction);
+    }
 
 
     /**

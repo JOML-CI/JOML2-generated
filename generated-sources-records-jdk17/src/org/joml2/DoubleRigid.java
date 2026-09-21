@@ -63,6 +63,16 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
         this(0, 0, 0, 0, 0, 0, 1);
     }
 
+    /**
+     * Create a rigid transform from its translation and rotation.
+     *
+     * @param translation the translation
+     * @param rotation the rotation quaternion, taken as given (not normalized)
+     */
+    public DoubleRigid(Double3 translation, DoubleQuat rotation) {
+        this(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w());
+    }
+
     /** {@return the {@code tX} component} */
     public double tX() { return tX; }
     /** {@return the {@code tY} component} */
@@ -77,6 +87,17 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
     public double rZ() { return rZ; }
     /** {@return the {@code rW} component} */
     public double rW() { return rW; }
+
+    /**
+     * Create a new rigid transform from its translation and rotation.
+     *
+     * @param translation the translation
+     * @param rotation the rotation quaternion, taken as given (not normalized)
+     * @return the resulting rigid transform
+     */
+    public DoubleRigid set(Double3 translation, DoubleQuat rotation) {
+        return new DoubleRigid(translation, rotation);
+    }
 
 
     /**

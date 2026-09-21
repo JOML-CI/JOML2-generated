@@ -1383,6 +1383,174 @@ public final class Joml {
     public static Long4 long4(Long3R v0, long v1) { return new Long4Impl(v0.x(), v0.y(), v0.z(), v1); }
 
     /**
+     * {@return a new {@code FloatDualQuat} built from its real and dual parts}
+     *
+     * @param real the real part, i.e. the rotation quaternion
+     * @param dual the dual part, carrying the translation
+     */
+    public static FloatDualQuat floatDualQuat(FloatQuatR real, FloatQuatR dual) { return new FloatDualQuatImpl(real.x(), real.y(), real.z(), real.w(), dual.x(), dual.y(), dual.z(), dual.w()); }
+    /**
+     * {@return a new {@code FloatRect} built from its minimum and maximum corners}
+     *
+     * @param min the minimum corner of the rectangle
+     * @param max the maximum corner of the rectangle
+     */
+    public static FloatRect floatRect(Float2R min, Float2R max) { return new FloatRectImpl(min.x(), min.y(), max.x(), max.y()); }
+    /**
+     * {@return a new {@code FloatTransform} built from its translation, rotation and scale}
+     *
+     * @param translation the translation
+     * @param rotation the rotation quaternion, taken as given (not normalized)
+     * @param scale the scale along each local axis
+     */
+    public static FloatTransform floatTransform(Float3R translation, FloatQuatR rotation, Float3R scale) { return new FloatTransformImpl(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w(), scale.x(), scale.y(), scale.z()); }
+    /**
+     * {@return a new {@code FloatRigid} built from its translation and rotation}
+     *
+     * @param translation the translation
+     * @param rotation the rotation quaternion, taken as given (not normalized)
+     */
+    public static FloatRigid floatRigid(Float3R translation, FloatQuatR rotation) { return new FloatRigidImpl(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w()); }
+    /**
+     * {@return a new {@code FloatOBB} built from its center, its three local axes and its half-size}
+     *
+     * @param center the center of the box
+     * @param axisX the local x axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param axisY the local y axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param axisZ the local z axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param halfSize the half extent of the box along each local axis
+     */
+    public static FloatOBB floatOBB(Float3R center, Float3R axisX, Float3R axisY, Float3R axisZ, Float3R halfSize) { return new FloatOBBImpl(center.x(), center.y(), center.z(), axisX.x(), axisX.y(), axisX.z(), axisY.x(), axisY.y(), axisY.z(), axisZ.x(), axisZ.y(), axisZ.z(), halfSize.x(), halfSize.y(), halfSize.z()); }
+    /**
+     * {@return a new {@code FloatAABB} built from its minimum and maximum corners}
+     *
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
+     */
+    public static FloatAABB floatAABB(Float3R min, Float3R max) { return new FloatAABBImpl(min.x(), min.y(), min.z(), max.x(), max.y(), max.z()); }
+    /**
+     * {@return a new {@code FloatSphere} built from its center and radius}
+     *
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
+     */
+    public static FloatSphere floatSphere(Float3R center, float radius) { return new FloatSphereImpl(center.x(), center.y(), center.z(), radius); }
+    /**
+     * {@return a new {@code FloatRay} built from its origin and direction}
+     *
+     * @param origin the origin of the ray
+     * @param direction the direction of the ray, taken as given (not normalized)
+     */
+    public static FloatRay floatRay(Float3R origin, Float3R direction) { return new FloatRayImpl(origin.x(), origin.y(), origin.z(), direction.x(), direction.y(), direction.z()); }
+    /**
+     * {@return a new {@code FloatPlane} built from its normal {@code (a, b, c)} and the {@code d} coefficient of the plane equation {@code a*x + b*y + c*z + d = 0}}
+     *
+     * @param normal the normal {@code (a, b, c)} of the plane, taken as given (not normalized)
+     * @param d the {@code d} coefficient of the plane equation {@code a*x + b*y + c*z + d = 0}; for
+     *        a unit normal, the signed distance of the origin to the plane, positive on the side
+     *        the normal points to
+     */
+    public static FloatPlane floatPlane(Float3R normal, float d) { return new FloatPlaneImpl(normal.x(), normal.y(), normal.z(), d); }
+    /**
+     * {@return a new {@code FloatTriangle} built from its three vertices}
+     *
+     * @param v0 the first vertex
+     * @param v1 the second vertex
+     * @param v2 the third vertex
+     */
+    public static FloatTriangle floatTriangle(Float3R v0, Float3R v1, Float3R v2) { return new FloatTriangleImpl(v0.x(), v0.y(), v0.z(), v1.x(), v1.y(), v1.z(), v2.x(), v2.y(), v2.z()); }
+    /**
+     * {@return a new {@code DoubleDualQuat} built from its real and dual parts}
+     *
+     * @param real the real part, i.e. the rotation quaternion
+     * @param dual the dual part, carrying the translation
+     */
+    public static DoubleDualQuat doubleDualQuat(DoubleQuatR real, DoubleQuatR dual) { return new DoubleDualQuatImpl(real.x(), real.y(), real.z(), real.w(), dual.x(), dual.y(), dual.z(), dual.w()); }
+    /**
+     * {@return a new {@code DoubleRect} built from its minimum and maximum corners}
+     *
+     * @param min the minimum corner of the rectangle
+     * @param max the maximum corner of the rectangle
+     */
+    public static DoubleRect doubleRect(Double2R min, Double2R max) { return new DoubleRectImpl(min.x(), min.y(), max.x(), max.y()); }
+    /**
+     * {@return a new {@code DoubleTransform} built from its translation, rotation and scale}
+     *
+     * @param translation the translation
+     * @param rotation the rotation quaternion, taken as given (not normalized)
+     * @param scale the scale along each local axis
+     */
+    public static DoubleTransform doubleTransform(Double3R translation, DoubleQuatR rotation, Double3R scale) { return new DoubleTransformImpl(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w(), scale.x(), scale.y(), scale.z()); }
+    /**
+     * {@return a new {@code DoubleRigid} built from its translation and rotation}
+     *
+     * @param translation the translation
+     * @param rotation the rotation quaternion, taken as given (not normalized)
+     */
+    public static DoubleRigid doubleRigid(Double3R translation, DoubleQuatR rotation) { return new DoubleRigidImpl(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w()); }
+    /**
+     * {@return a new {@code DoubleOBB} built from its center, its three local axes and its half-size}
+     *
+     * @param center the center of the box
+     * @param axisX the local x axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param axisY the local y axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param axisZ the local z axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param halfSize the half extent of the box along each local axis
+     */
+    public static DoubleOBB doubleOBB(Double3R center, Double3R axisX, Double3R axisY, Double3R axisZ, Double3R halfSize) { return new DoubleOBBImpl(center.x(), center.y(), center.z(), axisX.x(), axisX.y(), axisX.z(), axisY.x(), axisY.y(), axisY.z(), axisZ.x(), axisZ.y(), axisZ.z(), halfSize.x(), halfSize.y(), halfSize.z()); }
+    /**
+     * {@return a new {@code DoubleAABB} built from its minimum and maximum corners}
+     *
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
+     */
+    public static DoubleAABB doubleAABB(Double3R min, Double3R max) { return new DoubleAABBImpl(min.x(), min.y(), min.z(), max.x(), max.y(), max.z()); }
+    /**
+     * {@return a new {@code DoubleSphere} built from its center and radius}
+     *
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
+     */
+    public static DoubleSphere doubleSphere(Double3R center, double radius) { return new DoubleSphereImpl(center.x(), center.y(), center.z(), radius); }
+    /**
+     * {@return a new {@code DoubleRay} built from its origin and direction}
+     *
+     * @param origin the origin of the ray
+     * @param direction the direction of the ray, taken as given (not normalized)
+     */
+    public static DoubleRay doubleRay(Double3R origin, Double3R direction) { return new DoubleRayImpl(origin.x(), origin.y(), origin.z(), direction.x(), direction.y(), direction.z()); }
+    /**
+     * {@return a new {@code DoublePlane} built from its normal {@code (a, b, c)} and the {@code d} coefficient of the plane equation {@code a*x + b*y + c*z + d = 0}}
+     *
+     * @param normal the normal {@code (a, b, c)} of the plane, taken as given (not normalized)
+     * @param d the {@code d} coefficient of the plane equation {@code a*x + b*y + c*z + d = 0}; for
+     *        a unit normal, the signed distance of the origin to the plane, positive on the side
+     *        the normal points to
+     */
+    public static DoublePlane doublePlane(Double3R normal, double d) { return new DoublePlaneImpl(normal.x(), normal.y(), normal.z(), d); }
+    /**
+     * {@return a new {@code DoubleTriangle} built from its three vertices}
+     *
+     * @param v0 the first vertex
+     * @param v1 the second vertex
+     * @param v2 the third vertex
+     */
+    public static DoubleTriangle doubleTriangle(Double3R v0, Double3R v1, Double3R v2) { return new DoubleTriangleImpl(v0.x(), v0.y(), v0.z(), v1.x(), v1.y(), v1.z(), v2.x(), v2.y(), v2.z()); }
+    /**
+     * {@return a new {@code IntRect} built from its minimum and maximum corners}
+     *
+     * @param min the minimum corner of the rectangle
+     * @param max the maximum corner of the rectangle
+     */
+    public static IntRect intRect(Int2R min, Int2R max) { return new IntRectImpl(min.x(), min.y(), max.x(), max.y()); }
+
+    /**
      * {@return a new {@code Float2x2} built from the given column vectors}
      *
      * @param c0 the first column

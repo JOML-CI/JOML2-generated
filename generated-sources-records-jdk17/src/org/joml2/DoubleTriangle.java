@@ -69,6 +69,17 @@ public record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1X, dou
         this(0, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 
+    /**
+     * Create a triangle from its three vertices.
+     *
+     * @param v0 the first vertex
+     * @param v1 the second vertex
+     * @param v2 the third vertex
+     */
+    public DoubleTriangle(Double3 v0, Double3 v1, Double3 v2) {
+        this(v0.x(), v0.y(), v0.z(), v1.x(), v1.y(), v1.z(), v2.x(), v2.y(), v2.z());
+    }
+
     /** {@return the {@code v0X} component} */
     public double v0X() { return v0X; }
     /** {@return the {@code v0Y} component} */
@@ -87,6 +98,18 @@ public record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1X, dou
     public double v2Y() { return v2Y; }
     /** {@return the {@code v2Z} component} */
     public double v2Z() { return v2Z; }
+
+    /**
+     * Create a new triangle from its three vertices.
+     *
+     * @param v0 the first vertex
+     * @param v1 the second vertex
+     * @param v2 the third vertex
+     * @return the resulting triangle
+     */
+    public DoubleTriangle set(Double3 v0, Double3 v1, Double3 v2) {
+        return new DoubleTriangle(v0, v1, v2);
+    }
 
 
     /**

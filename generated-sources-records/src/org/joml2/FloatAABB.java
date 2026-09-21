@@ -63,6 +63,16 @@ public record FloatAABB(float minX, float minY, float minZ, float maxX, float ma
         this(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
     }
 
+    /**
+     * Create an axis-aligned bounding box from its minimum and maximum corners.
+     *
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
+     */
+    public FloatAABB(Float3 min, Float3 max) {
+        this(min.x(), min.y(), min.z(), max.x(), max.y(), max.z());
+    }
+
     /** {@return the {@code minX} component} */
     public float minX() { return minX; }
     /** {@return the {@code minY} component} */
@@ -75,6 +85,17 @@ public record FloatAABB(float minX, float minY, float minZ, float maxX, float ma
     public float maxY() { return maxY; }
     /** {@return the {@code maxZ} component} */
     public float maxZ() { return maxZ; }
+
+    /**
+     * Create a new axis-aligned bounding box from its minimum and maximum corners.
+     *
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
+     * @return the resulting axis-aligned bounding box
+     */
+    public FloatAABB set(Float3 min, Float3 max) {
+        return new FloatAABB(min, max);
+    }
 
 
     /**

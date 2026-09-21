@@ -115,6 +115,15 @@ public interface DoubleRay extends DoubleRayR {
     @Mutated default DoubleRay transform(Double4x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.doubleRay() : this); }
 
     /**
+     * Set this ray from its origin and direction.
+     *
+     * @param origin the origin of the ray
+     * @param direction the direction of the ray, taken as given (not normalized)
+     * @return this
+     */
+    @Mutated default DoubleRay set(Double3R origin, Double3R direction) { return set(origin.x(), origin.y(), origin.z(), direction.x(), direction.y(), direction.z()); }
+
+    /**
      * Load the elements from the given array.
      *
      * @param src the source array

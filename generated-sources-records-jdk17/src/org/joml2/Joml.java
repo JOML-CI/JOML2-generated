@@ -1361,6 +1361,174 @@ public final class Joml {
     public static Long4 long4(Long3 v0, long v1) { return new Long4(v0, v1); }
 
     /**
+     * {@return a new {@code FloatDualQuat} built from its real and dual parts}
+     *
+     * @param real the real part, i.e. the rotation quaternion
+     * @param dual the dual part, carrying the translation
+     */
+    public static FloatDualQuat floatDualQuat(FloatQuat real, FloatQuat dual) { return new FloatDualQuat(real, dual); }
+    /**
+     * {@return a new {@code FloatRect} built from its minimum and maximum corners}
+     *
+     * @param min the minimum corner of the rectangle
+     * @param max the maximum corner of the rectangle
+     */
+    public static FloatRect floatRect(Float2 min, Float2 max) { return new FloatRect(min, max); }
+    /**
+     * {@return a new {@code FloatTransform} built from its translation, rotation and scale}
+     *
+     * @param translation the translation
+     * @param rotation the rotation quaternion, taken as given (not normalized)
+     * @param scale the scale along each local axis
+     */
+    public static FloatTransform floatTransform(Float3 translation, FloatQuat rotation, Float3 scale) { return new FloatTransform(translation, rotation, scale); }
+    /**
+     * {@return a new {@code FloatRigid} built from its translation and rotation}
+     *
+     * @param translation the translation
+     * @param rotation the rotation quaternion, taken as given (not normalized)
+     */
+    public static FloatRigid floatRigid(Float3 translation, FloatQuat rotation) { return new FloatRigid(translation, rotation); }
+    /**
+     * {@return a new {@code FloatOBB} built from its center, its three local axes and its half-size}
+     *
+     * @param center the center of the box
+     * @param axisX the local x axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param axisY the local y axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param axisZ the local z axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param halfSize the half extent of the box along each local axis
+     */
+    public static FloatOBB floatOBB(Float3 center, Float3 axisX, Float3 axisY, Float3 axisZ, Float3 halfSize) { return new FloatOBB(center, axisX, axisY, axisZ, halfSize); }
+    /**
+     * {@return a new {@code FloatAABB} built from its minimum and maximum corners}
+     *
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
+     */
+    public static FloatAABB floatAABB(Float3 min, Float3 max) { return new FloatAABB(min, max); }
+    /**
+     * {@return a new {@code FloatSphere} built from its center and radius}
+     *
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
+     */
+    public static FloatSphere floatSphere(Float3 center, float radius) { return new FloatSphere(center, radius); }
+    /**
+     * {@return a new {@code FloatRay} built from its origin and direction}
+     *
+     * @param origin the origin of the ray
+     * @param direction the direction of the ray, taken as given (not normalized)
+     */
+    public static FloatRay floatRay(Float3 origin, Float3 direction) { return new FloatRay(origin, direction); }
+    /**
+     * {@return a new {@code FloatPlane} built from its normal {@code (a, b, c)} and the {@code d} coefficient of the plane equation {@code a*x + b*y + c*z + d = 0}}
+     *
+     * @param normal the normal {@code (a, b, c)} of the plane, taken as given (not normalized)
+     * @param d the {@code d} coefficient of the plane equation {@code a*x + b*y + c*z + d = 0}; for
+     *        a unit normal, the signed distance of the origin to the plane, positive on the side
+     *        the normal points to
+     */
+    public static FloatPlane floatPlane(Float3 normal, float d) { return new FloatPlane(normal, d); }
+    /**
+     * {@return a new {@code FloatTriangle} built from its three vertices}
+     *
+     * @param v0 the first vertex
+     * @param v1 the second vertex
+     * @param v2 the third vertex
+     */
+    public static FloatTriangle floatTriangle(Float3 v0, Float3 v1, Float3 v2) { return new FloatTriangle(v0, v1, v2); }
+    /**
+     * {@return a new {@code DoubleDualQuat} built from its real and dual parts}
+     *
+     * @param real the real part, i.e. the rotation quaternion
+     * @param dual the dual part, carrying the translation
+     */
+    public static DoubleDualQuat doubleDualQuat(DoubleQuat real, DoubleQuat dual) { return new DoubleDualQuat(real, dual); }
+    /**
+     * {@return a new {@code DoubleRect} built from its minimum and maximum corners}
+     *
+     * @param min the minimum corner of the rectangle
+     * @param max the maximum corner of the rectangle
+     */
+    public static DoubleRect doubleRect(Double2 min, Double2 max) { return new DoubleRect(min, max); }
+    /**
+     * {@return a new {@code DoubleTransform} built from its translation, rotation and scale}
+     *
+     * @param translation the translation
+     * @param rotation the rotation quaternion, taken as given (not normalized)
+     * @param scale the scale along each local axis
+     */
+    public static DoubleTransform doubleTransform(Double3 translation, DoubleQuat rotation, Double3 scale) { return new DoubleTransform(translation, rotation, scale); }
+    /**
+     * {@return a new {@code DoubleRigid} built from its translation and rotation}
+     *
+     * @param translation the translation
+     * @param rotation the rotation quaternion, taken as given (not normalized)
+     */
+    public static DoubleRigid doubleRigid(Double3 translation, DoubleQuat rotation) { return new DoubleRigid(translation, rotation); }
+    /**
+     * {@return a new {@code DoubleOBB} built from its center, its three local axes and its half-size}
+     *
+     * @param center the center of the box
+     * @param axisX the local x axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param axisY the local y axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param axisZ the local z axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param halfSize the half extent of the box along each local axis
+     */
+    public static DoubleOBB doubleOBB(Double3 center, Double3 axisX, Double3 axisY, Double3 axisZ, Double3 halfSize) { return new DoubleOBB(center, axisX, axisY, axisZ, halfSize); }
+    /**
+     * {@return a new {@code DoubleAABB} built from its minimum and maximum corners}
+     *
+     * @param min the minimum corner of the box
+     * @param max the maximum corner of the box
+     */
+    public static DoubleAABB doubleAABB(Double3 min, Double3 max) { return new DoubleAABB(min, max); }
+    /**
+     * {@return a new {@code DoubleSphere} built from its center and radius}
+     *
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
+     */
+    public static DoubleSphere doubleSphere(Double3 center, double radius) { return new DoubleSphere(center, radius); }
+    /**
+     * {@return a new {@code DoubleRay} built from its origin and direction}
+     *
+     * @param origin the origin of the ray
+     * @param direction the direction of the ray, taken as given (not normalized)
+     */
+    public static DoubleRay doubleRay(Double3 origin, Double3 direction) { return new DoubleRay(origin, direction); }
+    /**
+     * {@return a new {@code DoublePlane} built from its normal {@code (a, b, c)} and the {@code d} coefficient of the plane equation {@code a*x + b*y + c*z + d = 0}}
+     *
+     * @param normal the normal {@code (a, b, c)} of the plane, taken as given (not normalized)
+     * @param d the {@code d} coefficient of the plane equation {@code a*x + b*y + c*z + d = 0}; for
+     *        a unit normal, the signed distance of the origin to the plane, positive on the side
+     *        the normal points to
+     */
+    public static DoublePlane doublePlane(Double3 normal, double d) { return new DoublePlane(normal, d); }
+    /**
+     * {@return a new {@code DoubleTriangle} built from its three vertices}
+     *
+     * @param v0 the first vertex
+     * @param v1 the second vertex
+     * @param v2 the third vertex
+     */
+    public static DoubleTriangle doubleTriangle(Double3 v0, Double3 v1, Double3 v2) { return new DoubleTriangle(v0, v1, v2); }
+    /**
+     * {@return a new {@code IntRect} built from its minimum and maximum corners}
+     *
+     * @param min the minimum corner of the rectangle
+     * @param max the maximum corner of the rectangle
+     */
+    public static IntRect intRect(Int2 min, Int2 max) { return new IntRect(min, max); }
+
+    /**
      * {@return a new {@code Float2x2} built from the given column vectors}
      *
      * @param c0 the first column

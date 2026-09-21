@@ -55,6 +55,16 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
         this(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
     }
 
+    /**
+     * Create a rectangle from its minimum and maximum corners.
+     *
+     * @param min the minimum corner of the rectangle
+     * @param max the maximum corner of the rectangle
+     */
+    public FloatRect(Float2 min, Float2 max) {
+        this(min.x(), min.y(), max.x(), max.y());
+    }
+
     /** {@return the {@code minX} component} */
     public float minX() { return minX; }
     /** {@return the {@code minY} component} */
@@ -63,6 +73,17 @@ public record FloatRect(float minX, float minY, float maxX, float maxY) {
     public float maxX() { return maxX; }
     /** {@return the {@code maxY} component} */
     public float maxY() { return maxY; }
+
+    /**
+     * Create a new rectangle from its minimum and maximum corners.
+     *
+     * @param min the minimum corner of the rectangle
+     * @param max the maximum corner of the rectangle
+     * @return the resulting rectangle
+     */
+    public FloatRect set(Float2 min, Float2 max) {
+        return new FloatRect(min, max);
+    }
 
 
     /**

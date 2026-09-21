@@ -54,6 +54,19 @@ public record DoublePlane(double a, double b, double c, double d) {
         this(0, 0, 0, 0);
     }
 
+    /**
+     * Create a plane from its normal {@code (a, b, c)} and the {@code d} coefficient of the plane
+     * equation {@code a*x + b*y + c*z + d = 0}.
+     *
+     * @param normal the normal {@code (a, b, c)} of the plane, taken as given (not normalized)
+     * @param d the {@code d} coefficient of the plane equation {@code a*x + b*y + c*z + d = 0}; for
+     *        a unit normal, the signed distance of the origin to the plane, positive on the side
+     *        the normal points to
+     */
+    public DoublePlane(Double3 normal, double d) {
+        this(normal.x(), normal.y(), normal.z(), d);
+    }
+
     /** {@return the {@code a} component} */
     public double a() { return a; }
     /** {@return the {@code b} component} */
@@ -62,6 +75,20 @@ public record DoublePlane(double a, double b, double c, double d) {
     public double c() { return c; }
     /** {@return the {@code d} component} */
     public double d() { return d; }
+
+    /**
+     * Create a new plane from its normal {@code (a, b, c)} and the {@code d} coefficient of the
+     * plane equation {@code a*x + b*y + c*z + d = 0}.
+     *
+     * @param normal the normal {@code (a, b, c)} of the plane, taken as given (not normalized)
+     * @param d the {@code d} coefficient of the plane equation {@code a*x + b*y + c*z + d = 0}; for
+     *        a unit normal, the signed distance of the origin to the plane, positive on the side
+     *        the normal points to
+     * @return the resulting plane
+     */
+    public DoublePlane set(Double3 normal, double d) {
+        return new DoublePlane(normal, d);
+    }
 
 
     /**

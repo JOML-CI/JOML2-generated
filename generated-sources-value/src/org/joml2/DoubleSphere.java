@@ -57,6 +57,16 @@ public value record DoubleSphere(double x, double y, double z, double r) {
         this(0, 0, 0, 0);
     }
 
+    /**
+     * Create a sphere from its center and radius.
+     *
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
+     */
+    public DoubleSphere(Double3 center, double radius) {
+        this(center.x(), center.y(), center.z(), radius);
+    }
+
     /** {@return the {@code x} component} */
     public double x() { return x; }
     /** {@return the {@code y} component} */
@@ -65,6 +75,17 @@ public value record DoubleSphere(double x, double y, double z, double r) {
     public double z() { return z; }
     /** {@return the {@code r} component} */
     public double r() { return r; }
+
+    /**
+     * Create a new sphere from its center and radius.
+     *
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
+     * @return the resulting sphere
+     */
+    public DoubleSphere set(Double3 center, double radius) {
+        return new DoubleSphere(center, radius);
+    }
 
 
     /**

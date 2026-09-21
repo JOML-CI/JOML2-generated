@@ -1147,6 +1147,16 @@ public interface FloatTransform extends FloatTransformR {
     @Mutated default FloatTransform translate(float x, float y, float z) { return translate(x, y, z, Joml.RETURN_NEW ? Joml.floatTransform() : this); }
 
     /**
+     * Set this transform from its translation, rotation and scale.
+     *
+     * @param translation the translation
+     * @param rotation the rotation quaternion, taken as given (not normalized)
+     * @param scale the scale along each local axis
+     * @return this
+     */
+    @Mutated default FloatTransform set(Float3R translation, FloatQuatR rotation, Float3R scale) { return set(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w(), scale.x(), scale.y(), scale.z()); }
+
+    /**
      * Load the elements from the given array.
      *
      * @param src the source array

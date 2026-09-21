@@ -121,6 +121,15 @@ public interface FloatSphere extends FloatSphereR {
     @Mutated default FloatSphere translate(float x, float y, float z) { return translate(x, y, z, Joml.RETURN_NEW ? Joml.floatSphere() : this); }
 
     /**
+     * Set this sphere from its center and radius.
+     *
+     * @param center the center of the sphere
+     * @param radius the radius of the sphere
+     * @return this
+     */
+    @Mutated default FloatSphere set(Float3R center, float radius) { return set(center.x(), center.y(), center.z(), radius); }
+
+    /**
      * Load the elements from the given array.
      *
      * @param src the source array

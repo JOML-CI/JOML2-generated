@@ -231,6 +231,21 @@ public interface DoubleOBB extends DoubleOBBR {
     @Mutated default DoubleOBB translate(double x, double y, double z) { return translate(x, y, z, Joml.RETURN_NEW ? Joml.doubleOBB() : this); }
 
     /**
+     * Set this oriented bounding box from its center, its three local axes and its half-size.
+     *
+     * @param center the center of the box
+     * @param axisX the local x axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param axisY the local y axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param axisZ the local z axis of the box, taken as given (expected to be unit length and
+     *        orthogonal to the other two axes)
+     * @param halfSize the half extent of the box along each local axis
+     * @return this
+     */
+    @Mutated default DoubleOBB set(Double3R center, Double3R axisX, Double3R axisY, Double3R axisZ, Double3R halfSize) { return set(center.x(), center.y(), center.z(), axisX.x(), axisX.y(), axisX.z(), axisY.x(), axisY.y(), axisY.z(), axisZ.x(), axisZ.y(), axisZ.z(), halfSize.x(), halfSize.y(), halfSize.z()); }
+
+    /**
      * Load the elements from the given array.
      *
      * @param src the source array

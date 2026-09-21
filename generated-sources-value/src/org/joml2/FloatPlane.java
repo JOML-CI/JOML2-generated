@@ -57,6 +57,19 @@ public value record FloatPlane(float a, float b, float c, float d) {
         this(0, 0, 0, 0);
     }
 
+    /**
+     * Create a plane from its normal {@code (a, b, c)} and the {@code d} coefficient of the plane
+     * equation {@code a*x + b*y + c*z + d = 0}.
+     *
+     * @param normal the normal {@code (a, b, c)} of the plane, taken as given (not normalized)
+     * @param d the {@code d} coefficient of the plane equation {@code a*x + b*y + c*z + d = 0}; for
+     *        a unit normal, the signed distance of the origin to the plane, positive on the side
+     *        the normal points to
+     */
+    public FloatPlane(Float3 normal, float d) {
+        this(normal.x(), normal.y(), normal.z(), d);
+    }
+
     /** {@return the {@code a} component} */
     public float a() { return a; }
     /** {@return the {@code b} component} */
@@ -65,6 +78,20 @@ public value record FloatPlane(float a, float b, float c, float d) {
     public float c() { return c; }
     /** {@return the {@code d} component} */
     public float d() { return d; }
+
+    /**
+     * Create a new plane from its normal {@code (a, b, c)} and the {@code d} coefficient of the
+     * plane equation {@code a*x + b*y + c*z + d = 0}.
+     *
+     * @param normal the normal {@code (a, b, c)} of the plane, taken as given (not normalized)
+     * @param d the {@code d} coefficient of the plane equation {@code a*x + b*y + c*z + d = 0}; for
+     *        a unit normal, the signed distance of the origin to the plane, positive on the side
+     *        the normal points to
+     * @return the resulting plane
+     */
+    public FloatPlane set(Float3 normal, float d) {
+        return new FloatPlane(normal, d);
+    }
 
 
     /**

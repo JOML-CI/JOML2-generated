@@ -264,6 +264,15 @@ public interface DoubleRect extends DoubleRectR {
     @Mutated default DoubleRect union(double x, double y) { return union(x, y, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
     /**
+     * Set this rectangle from its minimum and maximum corners.
+     *
+     * @param min the minimum corner of the rectangle
+     * @param max the maximum corner of the rectangle
+     * @return this
+     */
+    @Mutated default DoubleRect set(Double2R min, Double2R max) { return set(min.x(), min.y(), max.x(), max.y()); }
+
+    /**
      * Load the elements from the given array.
      *
      * @param src the source array

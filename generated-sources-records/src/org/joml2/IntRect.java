@@ -56,6 +56,16 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
         this(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
     }
 
+    /**
+     * Create a rectangle from its minimum and maximum corners.
+     *
+     * @param min the minimum corner of the rectangle
+     * @param max the maximum corner of the rectangle
+     */
+    public IntRect(Int2 min, Int2 max) {
+        this(min.x(), min.y(), max.x(), max.y());
+    }
+
     /** {@return the {@code minX} component} */
     public int minX() { return minX; }
     /** {@return the {@code minY} component} */
@@ -64,6 +74,17 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
     public int maxX() { return maxX; }
     /** {@return the {@code maxY} component} */
     public int maxY() { return maxY; }
+
+    /**
+     * Create a new rectangle from its minimum and maximum corners.
+     *
+     * @param min the minimum corner of the rectangle
+     * @param max the maximum corner of the rectangle
+     * @return the resulting rectangle
+     */
+    public IntRect set(Int2 min, Int2 max) {
+        return new IntRect(min, max);
+    }
 
 
     /**
