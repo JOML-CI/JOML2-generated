@@ -441,12 +441,29 @@ public class Frustum {
      * @return <code>true</code> iff the box is partly or completely inside the frustum
      */
     public boolean testAabb(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
-        return nxX * (nxX < 0 ? minX : maxX) + nxY * (nxY < 0 ? minY : maxY) + nxZ * (nxZ < 0 ? minZ : maxZ) >= -nxW &&
-               pxX * (pxX < 0 ? minX : maxX) + pxY * (pxY < 0 ? minY : maxY) + pxZ * (pxZ < 0 ? minZ : maxZ) >= -pxW &&
-               nyX * (nyX < 0 ? minX : maxX) + nyY * (nyY < 0 ? minY : maxY) + nyZ * (nyZ < 0 ? minZ : maxZ) >= -nyW &&
-               pyX * (pyX < 0 ? minX : maxX) + pyY * (pyY < 0 ? minY : maxY) + pyZ * (pyZ < 0 ? minZ : maxZ) >= -pyW &&
-               nzX * (nzX < 0 ? minX : maxX) + nzY * (nzY < 0 ? minY : maxY) + nzZ * (nzZ < 0 ? minZ : maxZ) >= -nzW &&
-               pzX * (pzX < 0 ? minX : maxX) + pzY * (pzY < 0 ? minY : maxY) + pzZ * (pzZ < 0 ? minZ : maxZ) >= -pzW;
+        return pv(nxX, nxY, nxZ, nxW, minX, minY, minZ, maxX, maxY, maxZ) && pv(pxX, pxY, pxZ, pxW, minX, minY, minZ, maxX, maxY, maxZ)
+            && pv(nyX, nyY, nyZ, nyW, minX, minY, minZ, maxX, maxY, maxZ) && pv(pyX, pyY, pyZ, pyW, minX, minY, minZ, maxX, maxY, maxZ)
+            && pv(nzX, nzY, nzZ, nzW, minX, minY, minZ, maxX, maxY, maxZ) && pv(pzX, pzY, pzZ, pzW, minX, minY, minZ, maxX, maxY, maxZ);
+    }
+
+    // The box tests are written as one call per plane so that each public method stays
+    // under HotSpot's 325-byte FreqInlineSize: as single bodies (430-1000 bytes) they never
+    // inlined into a culling loop, which cost 25% per box. Each helper is one plane's
+    // p-vertex or n-vertex test with the original operand order, bit for bit.
+
+    /** The box vertex farthest along the plane normal is on the inner side: the box is not wholly outside this plane. */
+    private static boolean pv(float a, float b, float c, float w, float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
+        return a * (a < 0 ? minX : maxX) + b * (b < 0 ? minY : maxY) + c * (c < 0 ? minZ : maxZ) >= -w;
+    }
+
+    /** The box vertex farthest along the plane normal is strictly outside this plane (false for NaN, like the inline test it replaces). */
+    private static boolean outsidePv(float a, float b, float c, float w, float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
+        return a * (a < 0 ? minX : maxX) + b * (b < 0 ? minY : maxY) + c * (c < 0 ? minZ : maxZ) < -w;
+    }
+
+    /** The box vertex nearest along the plane normal is on the inner side: the box is wholly inside this plane. */
+    private static boolean nv(float a, float b, float c, float w, float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
+        return a * (a < 0 ? maxX : minX) + b * (b < 0 ? maxY : minY) + c * (c < 0 ? maxZ : minZ) >= -w;
     }
 
     /**
@@ -583,19 +600,23 @@ public class Frustum {
      * @return how the box relates to the frustum
      */
     public Intersection intersectAabb(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
-        boolean inside = true;
-        if (nxX * (nxX < 0 ? minX : maxX) + nxY * (nxY < 0 ? minY : maxY) + nxZ * (nxZ < 0 ? minZ : maxZ) < -nxW) return Intersection.OUTSIDE;
-        inside &= nxX * (nxX < 0 ? maxX : minX) + nxY * (nxY < 0 ? maxY : minY) + nxZ * (nxZ < 0 ? maxZ : minZ) >= -nxW;
-        if (pxX * (pxX < 0 ? minX : maxX) + pxY * (pxY < 0 ? minY : maxY) + pxZ * (pxZ < 0 ? minZ : maxZ) < -pxW) return Intersection.OUTSIDE;
-        inside &= pxX * (pxX < 0 ? maxX : minX) + pxY * (pxY < 0 ? maxY : minY) + pxZ * (pxZ < 0 ? maxZ : minZ) >= -pxW;
-        if (nyX * (nyX < 0 ? minX : maxX) + nyY * (nyY < 0 ? minY : maxY) + nyZ * (nyZ < 0 ? minZ : maxZ) < -nyW) return Intersection.OUTSIDE;
-        inside &= nyX * (nyX < 0 ? maxX : minX) + nyY * (nyY < 0 ? maxY : minY) + nyZ * (nyZ < 0 ? maxZ : minZ) >= -nyW;
-        if (pyX * (pyX < 0 ? minX : maxX) + pyY * (pyY < 0 ? minY : maxY) + pyZ * (pyZ < 0 ? minZ : maxZ) < -pyW) return Intersection.OUTSIDE;
-        inside &= pyX * (pyX < 0 ? maxX : minX) + pyY * (pyY < 0 ? maxY : minY) + pyZ * (pyZ < 0 ? maxZ : minZ) >= -pyW;
-        if (nzX * (nzX < 0 ? minX : maxX) + nzY * (nzY < 0 ? minY : maxY) + nzZ * (nzZ < 0 ? minZ : maxZ) < -nzW) return Intersection.OUTSIDE;
-        inside &= nzX * (nzX < 0 ? maxX : minX) + nzY * (nzY < 0 ? maxY : minY) + nzZ * (nzZ < 0 ? maxZ : minZ) >= -nzW;
-        if (pzX * (pzX < 0 ? minX : maxX) + pzY * (pzY < 0 ? minY : maxY) + pzZ * (pzZ < 0 ? minZ : maxZ) < -pzW) return Intersection.OUTSIDE;
-        inside &= pzX * (pzX < 0 ? maxX : minX) + pzY * (pzY < 0 ? maxY : minY) + pzZ * (pzZ < 0 ? maxZ : minZ) >= -pzW;
+        if (outsidePv(nxX, nxY, nxZ, nxW, minX, minY, minZ, maxX, maxY, maxZ)) return Intersection.OUTSIDE;
+        boolean inside = nv(nxX, nxY, nxZ, nxW, minX, minY, minZ, maxX, maxY, maxZ);
+        if (outsidePv(pxX, pxY, pxZ, pxW, minX, minY, minZ, maxX, maxY, maxZ)) return Intersection.OUTSIDE;
+        inside &= nv(pxX, pxY, pxZ, pxW, minX, minY, minZ, maxX, maxY, maxZ);
+        if (outsidePv(nyX, nyY, nyZ, nyW, minX, minY, minZ, maxX, maxY, maxZ)) return Intersection.OUTSIDE;
+        inside &= nv(nyX, nyY, nyZ, nyW, minX, minY, minZ, maxX, maxY, maxZ);
+        return intersectAabbYZ(minX, minY, minZ, maxX, maxY, maxZ, inside);
+    }
+
+    /** Second half of {@link #intersectAabb(float, float, float, float, float, float)}: the py, nz and pz planes. */
+    private Intersection intersectAabbYZ(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, boolean inside) {
+        if (outsidePv(pyX, pyY, pyZ, pyW, minX, minY, minZ, maxX, maxY, maxZ)) return Intersection.OUTSIDE;
+        inside &= nv(pyX, pyY, pyZ, pyW, minX, minY, minZ, maxX, maxY, maxZ);
+        if (outsidePv(nzX, nzY, nzZ, nzW, minX, minY, minZ, maxX, maxY, maxZ)) return Intersection.OUTSIDE;
+        inside &= nv(nzX, nzY, nzZ, nzW, minX, minY, minZ, maxX, maxY, maxZ);
+        if (outsidePv(pzX, pzY, pzZ, pzW, minX, minY, minZ, maxX, maxY, maxZ)) return Intersection.OUTSIDE;
+        inside &= nv(pzX, pzY, pzZ, pzW, minX, minY, minZ, maxX, maxY, maxZ);
         return inside ? Intersection.INSIDE : Intersection.INTERSECT;
     }
 
@@ -646,25 +667,23 @@ public class Frustum {
      * @return how the box relates to the frustum
      */
     public Intersection intersectAabb(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, int mask) {
-        boolean inside = true;
-        if ((mask & PLANE_MASK_NX) != 0 && nxX * (nxX < 0 ? minX : maxX) + nxY * (nxY < 0 ? minY : maxY) + nxZ * (nxZ < 0 ? minZ : maxZ) < -nxW)
-            return Intersection.OUTSIDE;
-        inside &= nxX * (nxX < 0 ? maxX : minX) + nxY * (nxY < 0 ? maxY : minY) + nxZ * (nxZ < 0 ? maxZ : minZ) >= -nxW;
-        if ((mask & PLANE_MASK_PX) != 0 && pxX * (pxX < 0 ? minX : maxX) + pxY * (pxY < 0 ? minY : maxY) + pxZ * (pxZ < 0 ? minZ : maxZ) < -pxW)
-            return Intersection.OUTSIDE;
-        inside &= pxX * (pxX < 0 ? maxX : minX) + pxY * (pxY < 0 ? maxY : minY) + pxZ * (pxZ < 0 ? maxZ : minZ) >= -pxW;
-        if ((mask & PLANE_MASK_NY) != 0 && nyX * (nyX < 0 ? minX : maxX) + nyY * (nyY < 0 ? minY : maxY) + nyZ * (nyZ < 0 ? minZ : maxZ) < -nyW)
-            return Intersection.OUTSIDE;
-        inside &= nyX * (nyX < 0 ? maxX : minX) + nyY * (nyY < 0 ? maxY : minY) + nyZ * (nyZ < 0 ? maxZ : minZ) >= -nyW;
-        if ((mask & PLANE_MASK_PY) != 0 && pyX * (pyX < 0 ? minX : maxX) + pyY * (pyY < 0 ? minY : maxY) + pyZ * (pyZ < 0 ? minZ : maxZ) < -pyW)
-            return Intersection.OUTSIDE;
-        inside &= pyX * (pyX < 0 ? maxX : minX) + pyY * (pyY < 0 ? maxY : minY) + pyZ * (pyZ < 0 ? maxZ : minZ) >= -pyW;
-        if ((mask & PLANE_MASK_NZ) != 0 && nzX * (nzX < 0 ? minX : maxX) + nzY * (nzY < 0 ? minY : maxY) + nzZ * (nzZ < 0 ? minZ : maxZ) < -nzW)
-            return Intersection.OUTSIDE;
-        inside &= nzX * (nzX < 0 ? maxX : minX) + nzY * (nzY < 0 ? maxY : minY) + nzZ * (nzZ < 0 ? maxZ : minZ) >= -nzW;
-        if ((mask & PLANE_MASK_PZ) != 0 && pzX * (pzX < 0 ? minX : maxX) + pzY * (pzY < 0 ? minY : maxY) + pzZ * (pzZ < 0 ? minZ : maxZ) < -pzW)
-            return Intersection.OUTSIDE;
-        inside &= pzX * (pzX < 0 ? maxX : minX) + pzY * (pzY < 0 ? maxY : minY) + pzZ * (pzZ < 0 ? maxZ : minZ) >= -pzW;
+        if ((mask & PLANE_MASK_NX) != 0 && outsidePv(nxX, nxY, nxZ, nxW, minX, minY, minZ, maxX, maxY, maxZ)) return Intersection.OUTSIDE;
+        boolean inside = nv(nxX, nxY, nxZ, nxW, minX, minY, minZ, maxX, maxY, maxZ);
+        if ((mask & PLANE_MASK_PX) != 0 && outsidePv(pxX, pxY, pxZ, pxW, minX, minY, minZ, maxX, maxY, maxZ)) return Intersection.OUTSIDE;
+        inside &= nv(pxX, pxY, pxZ, pxW, minX, minY, minZ, maxX, maxY, maxZ);
+        if ((mask & PLANE_MASK_NY) != 0 && outsidePv(nyX, nyY, nyZ, nyW, minX, minY, minZ, maxX, maxY, maxZ)) return Intersection.OUTSIDE;
+        inside &= nv(nyX, nyY, nyZ, nyW, minX, minY, minZ, maxX, maxY, maxZ);
+        return intersectAabbYZ(minX, minY, minZ, maxX, maxY, maxZ, mask, inside);
+    }
+
+    /** Second half of {@link #intersectAabb(float, float, float, float, float, float, int)}: the py, nz and pz planes. */
+    private Intersection intersectAabbYZ(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, int mask, boolean inside) {
+        if ((mask & PLANE_MASK_PY) != 0 && outsidePv(pyX, pyY, pyZ, pyW, minX, minY, minZ, maxX, maxY, maxZ)) return Intersection.OUTSIDE;
+        inside &= nv(pyX, pyY, pyZ, pyW, minX, minY, minZ, maxX, maxY, maxZ);
+        if ((mask & PLANE_MASK_NZ) != 0 && outsidePv(nzX, nzY, nzZ, nzW, minX, minY, minZ, maxX, maxY, maxZ)) return Intersection.OUTSIDE;
+        inside &= nv(nzX, nzY, nzZ, nzW, minX, minY, minZ, maxX, maxY, maxZ);
+        if ((mask & PLANE_MASK_PZ) != 0 && outsidePv(pzX, pzY, pzZ, pzW, minX, minY, minZ, maxX, maxY, maxZ)) return Intersection.OUTSIDE;
+        inside &= nv(pzX, pzY, pzZ, pzW, minX, minY, minZ, maxX, maxY, maxZ);
         return inside ? Intersection.INSIDE : Intersection.INTERSECT;
     }
 
@@ -713,12 +732,12 @@ public class Frustum {
      * @return the plane that culls the box, or <code>null</code> if none does
      */
     public FrustumPlane cullingPlane(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
-        if (nxX * (nxX < 0 ? minX : maxX) + nxY * (nxY < 0 ? minY : maxY) + nxZ * (nxZ < 0 ? minZ : maxZ) < -nxW) return FrustumPlane.NX;
-        if (pxX * (pxX < 0 ? minX : maxX) + pxY * (pxY < 0 ? minY : maxY) + pxZ * (pxZ < 0 ? minZ : maxZ) < -pxW) return FrustumPlane.PX;
-        if (nyX * (nyX < 0 ? minX : maxX) + nyY * (nyY < 0 ? minY : maxY) + nyZ * (nyZ < 0 ? minZ : maxZ) < -nyW) return FrustumPlane.NY;
-        if (pyX * (pyX < 0 ? minX : maxX) + pyY * (pyY < 0 ? minY : maxY) + pyZ * (pyZ < 0 ? minZ : maxZ) < -pyW) return FrustumPlane.PY;
-        if (nzX * (nzX < 0 ? minX : maxX) + nzY * (nzY < 0 ? minY : maxY) + nzZ * (nzZ < 0 ? minZ : maxZ) < -nzW) return FrustumPlane.NZ;
-        if (pzX * (pzX < 0 ? minX : maxX) + pzY * (pzY < 0 ? minY : maxY) + pzZ * (pzZ < 0 ? minZ : maxZ) < -pzW) return FrustumPlane.PZ;
+        if (outsidePv(nxX, nxY, nxZ, nxW, minX, minY, minZ, maxX, maxY, maxZ)) return FrustumPlane.NX;
+        if (outsidePv(pxX, pxY, pxZ, pxW, minX, minY, minZ, maxX, maxY, maxZ)) return FrustumPlane.PX;
+        if (outsidePv(nyX, nyY, nyZ, nyW, minX, minY, minZ, maxX, maxY, maxZ)) return FrustumPlane.NY;
+        if (outsidePv(pyX, pyY, pyZ, pyW, minX, minY, minZ, maxX, maxY, maxZ)) return FrustumPlane.PY;
+        if (outsidePv(nzX, nzY, nzZ, nzW, minX, minY, minZ, maxX, maxY, maxZ)) return FrustumPlane.NZ;
+        if (outsidePv(pzX, pzY, pzZ, pzW, minX, minY, minZ, maxX, maxY, maxZ)) return FrustumPlane.PZ;
         return null;
     }
 
@@ -766,12 +785,12 @@ public class Frustum {
      * @return the plane that culls the box, or <code>null</code> if none does
      */
     public FrustumPlane cullingPlane(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, int mask) {
-        if ((mask & PLANE_MASK_NX) != 0 && nxX * (nxX < 0 ? minX : maxX) + nxY * (nxY < 0 ? minY : maxY) + nxZ * (nxZ < 0 ? minZ : maxZ) < -nxW) return FrustumPlane.NX;
-        if ((mask & PLANE_MASK_PX) != 0 && pxX * (pxX < 0 ? minX : maxX) + pxY * (pxY < 0 ? minY : maxY) + pxZ * (pxZ < 0 ? minZ : maxZ) < -pxW) return FrustumPlane.PX;
-        if ((mask & PLANE_MASK_NY) != 0 && nyX * (nyX < 0 ? minX : maxX) + nyY * (nyY < 0 ? minY : maxY) + nyZ * (nyZ < 0 ? minZ : maxZ) < -nyW) return FrustumPlane.NY;
-        if ((mask & PLANE_MASK_PY) != 0 && pyX * (pyX < 0 ? minX : maxX) + pyY * (pyY < 0 ? minY : maxY) + pyZ * (pyZ < 0 ? minZ : maxZ) < -pyW) return FrustumPlane.PY;
-        if ((mask & PLANE_MASK_NZ) != 0 && nzX * (nzX < 0 ? minX : maxX) + nzY * (nzY < 0 ? minY : maxY) + nzZ * (nzZ < 0 ? minZ : maxZ) < -nzW) return FrustumPlane.NZ;
-        if ((mask & PLANE_MASK_PZ) != 0 && pzX * (pzX < 0 ? minX : maxX) + pzY * (pzY < 0 ? minY : maxY) + pzZ * (pzZ < 0 ? minZ : maxZ) < -pzW) return FrustumPlane.PZ;
+        if ((mask & PLANE_MASK_NX) != 0 && outsidePv(nxX, nxY, nxZ, nxW, minX, minY, minZ, maxX, maxY, maxZ)) return FrustumPlane.NX;
+        if ((mask & PLANE_MASK_PX) != 0 && outsidePv(pxX, pxY, pxZ, pxW, minX, minY, minZ, maxX, maxY, maxZ)) return FrustumPlane.PX;
+        if ((mask & PLANE_MASK_NY) != 0 && outsidePv(nyX, nyY, nyZ, nyW, minX, minY, minZ, maxX, maxY, maxZ)) return FrustumPlane.NY;
+        if ((mask & PLANE_MASK_PY) != 0 && outsidePv(pyX, pyY, pyZ, pyW, minX, minY, minZ, maxX, maxY, maxZ)) return FrustumPlane.PY;
+        if ((mask & PLANE_MASK_NZ) != 0 && outsidePv(nzX, nzY, nzZ, nzW, minX, minY, minZ, maxX, maxY, maxZ)) return FrustumPlane.NZ;
+        if ((mask & PLANE_MASK_PZ) != 0 && outsidePv(pzX, pzY, pzZ, pzW, minX, minY, minZ, maxX, maxY, maxZ)) return FrustumPlane.PZ;
         return null;
     }
 
@@ -969,12 +988,12 @@ public class Frustum {
 
     private boolean cullsAabb(FrustumPlane plane, float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
         switch (plane) {
-            case NX: return nxX * (nxX < 0 ? minX : maxX) + nxY * (nxY < 0 ? minY : maxY) + nxZ * (nxZ < 0 ? minZ : maxZ) < -nxW;
-            case PX: return pxX * (pxX < 0 ? minX : maxX) + pxY * (pxY < 0 ? minY : maxY) + pxZ * (pxZ < 0 ? minZ : maxZ) < -pxW;
-            case NY: return nyX * (nyX < 0 ? minX : maxX) + nyY * (nyY < 0 ? minY : maxY) + nyZ * (nyZ < 0 ? minZ : maxZ) < -nyW;
-            case PY: return pyX * (pyX < 0 ? minX : maxX) + pyY * (pyY < 0 ? minY : maxY) + pyZ * (pyZ < 0 ? minZ : maxZ) < -pyW;
-            case NZ: return nzX * (nzX < 0 ? minX : maxX) + nzY * (nzY < 0 ? minY : maxY) + nzZ * (nzZ < 0 ? minZ : maxZ) < -nzW;
-            case PZ: return pzX * (pzX < 0 ? minX : maxX) + pzY * (pzY < 0 ? minY : maxY) + pzZ * (pzZ < 0 ? minZ : maxZ) < -pzW;
+            case NX: return outsidePv(nxX, nxY, nxZ, nxW, minX, minY, minZ, maxX, maxY, maxZ);
+            case PX: return outsidePv(pxX, pxY, pxZ, pxW, minX, minY, minZ, maxX, maxY, maxZ);
+            case NY: return outsidePv(nyX, nyY, nyZ, nyW, minX, minY, minZ, maxX, maxY, maxZ);
+            case PY: return outsidePv(pyX, pyY, pyZ, pyW, minX, minY, minZ, maxX, maxY, maxZ);
+            case NZ: return outsidePv(nzX, nzY, nzZ, nzW, minX, minY, minZ, maxX, maxY, maxZ);
+            case PZ: return outsidePv(pzX, pzY, pzZ, pzW, minX, minY, minZ, maxX, maxY, maxZ);
             default: throw new IllegalArgumentException("Unknown FrustumPlane: " + plane);
         }
     }
