@@ -2102,6 +2102,38 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         return d;
     }
 
+    /** Private column 0 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c0(Double4x4Impl _dst, double _t0, double _t6, double _r3, double _r0, double _t2, double _t3, double _r1) {
+        _dst.m00 = Math.fma(-2.0, _t0, _t6);
+        _dst.m10 = 2.0 * Math.fma(_r3, _r0, _t2);
+        _dst.m20 = Math.fma(-2.0, _t3, (_r3 + _r3) * _r1);
+        _dst.m30 = 0.0;
+    }
+
+    /** Private column 1 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c1(Double4x4Impl _dst, double _t2, double _r3, double _r0, double _t4, double _t6, double _r2, double _t5) {
+        _dst.m01 = Math.fma(-2.0, _t2, (_r3 + _r3) * _r0);
+        _dst.m11 = Math.fma(-2.0, _t4, _t6);
+        _dst.m21 = 2.0 * Math.fma(_r3, _r2, _t5);
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c2(Double4x4Impl _dst, double _r3, double _r1, double _t3, double _r2, double _t5, double _t4, double _t0) {
+        _dst.m02 = 2.0 * Math.fma(_r3, _r1, _t3);
+        _dst.m12 = Math.fma(-2.0, _r3 * _r2, _t5 + _t5);
+        _dst.m22 = Math.fma(-2.0, _t4, Math.fma(-2.0, _t0, 1.0));
+        _dst.m32 = 0.0;
+    }
+
+    /** Private column 3 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c3(Double4x4Impl _dst, double _r0, double _r4, double _r1, double _r5, double _r2, double _r6, double _r3, double _r7) {
+        _dst.m03 = 2.0 * (Math.fma(_r0, _r4, -(_r1 * _r5)) + Math.fma(_r2, _r6, -(_r3 * _r7)));
+        _dst.m13 = 2.0 * (Math.fma(_r1, _r6, -(_r3 * _r4)) + Math.fma(_r2, _r5, -(_r0 * _r7)));
+        _dst.m23 = 2.0 * (Math.fma(_r3, _r5, -(_r0 * _r6)) + Math.fma(_r2, _r4, -(_r1 * _r7)));
+        _dst.m33 = 1.0;
+    }
+
 
     /**
      * Compute the matrix representation of this dual quaternion (which must be a unit dual
@@ -2112,36 +2144,24 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      */
     public Double4x4 toMatrix(@Mutated Double4x4 dest) {
         Double4x4Impl d = (Double4x4Impl) dest;
-        double _t0 = this.rY * this.rY;
-        double _t2 = this.rZ * this.rW;
-        double _t3 = this.rY * this.rW;
-        double _t4 = this.rX * this.rX;
-        double _t5 = this.rY * this.rZ;
-        double _t6 = Math.fma(-2.0, this.rZ * this.rZ, 1.0);
-        double _buf0 = Math.fma(-2.0, _t0, _t6);
-        double _buf1 = 2.0 * Math.fma(this.rX, this.rY, _t2);
-        d.m20 = Math.fma(-2.0, _t3, (this.rX + this.rX) * this.rZ);
-        d.m30 = 0.0;
-        double _buf2 = Math.fma(-2.0, _t2, (this.rX + this.rX) * this.rY);
-        double _buf3 = Math.fma(-2.0, _t4, _t6);
-        d.m21 = 2.0 * Math.fma(this.rX, this.rW, _t5);
-        d.m31 = 0.0;
-        double _buf4 = 2.0 * Math.fma(this.rX, this.rZ, _t3);
-        double _buf5 = Math.fma(-2.0, this.rX * this.rW, _t5 + _t5);
-        d.m22 = Math.fma(-2.0, _t4, Math.fma(-2.0, _t0, 1.0));
-        d.m32 = 0.0;
-        double _buf6 = 2.0 * (Math.fma(this.rY, this.dZ, -(this.rZ * this.dY)) + Math.fma(this.rW, this.dX, -(this.rX * this.dW)));
-        double _buf7 = 2.0 * (Math.fma(this.rZ, this.dX, -(this.rX * this.dZ)) + Math.fma(this.rW, this.dY, -(this.rY * this.dW)));
-        d.m23 = 2.0 * (Math.fma(this.rX, this.dY, -(this.rY * this.dX)) + Math.fma(this.rW, this.dZ, -(this.rZ * this.dW)));
-        d.m33 = 1.0;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m01 = _buf2;
-        d.m11 = _buf3;
-        d.m02 = _buf4;
-        d.m12 = _buf5;
-        d.m03 = _buf6;
-        d.m13 = _buf7;
+        double _r0 = this.rY;
+        double _r1 = this.rZ;
+        double _r2 = this.rW;
+        double _r3 = this.rX;
+        double _r4 = this.dZ;
+        double _r5 = this.dY;
+        double _r6 = this.dX;
+        double _r7 = this.dW;
+        double _t0 = _r0 * _r0;
+        double _t2 = _r1 * _r2;
+        double _t3 = _r0 * _r2;
+        double _t4 = _r3 * _r3;
+        double _t5 = _r0 * _r1;
+        double _t6 = Math.fma(-2.0, _r1 * _r1, 1.0);
+        toMatrix_s20bb8ca5_c0(d, _t0, _t6, _r3, _r0, _t2, _t3, _r1);
+        toMatrix_s20bb8ca5_c1(d, _t2, _r3, _r0, _t4, _t6, _r2, _t5);
+        toMatrix_s20bb8ca5_c2(d, _r3, _r1, _t3, _r2, _t5, _t4, _t0);
+        toMatrix_s20bb8ca5_c3(d, _r0, _r4, _r1, _r5, _r2, _r6, _r3, _r7);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -2178,6 +2198,34 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         return d;
     }
 
+    /** Private column 0 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s38da5fc6_c0(Double3x4Impl _dst, double _t0, double _t6, double _r3, double _r0, double _t2, double _t3, double _r1) {
+        _dst.m00 = Math.fma(-2.0, _t0, _t6);
+        _dst.m10 = 2.0 * Math.fma(_r3, _r0, _t2);
+        _dst.m20 = Math.fma(-2.0, _t3, (_r3 + _r3) * _r1);
+    }
+
+    /** Private column 1 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s38da5fc6_c1(Double3x4Impl _dst, double _t2, double _r3, double _r0, double _t4, double _t6, double _r2, double _t5) {
+        _dst.m01 = Math.fma(-2.0, _t2, (_r3 + _r3) * _r0);
+        _dst.m11 = Math.fma(-2.0, _t4, _t6);
+        _dst.m21 = 2.0 * Math.fma(_r3, _r2, _t5);
+    }
+
+    /** Private column 2 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s38da5fc6_c2(Double3x4Impl _dst, double _r3, double _r1, double _t3, double _r2, double _t5, double _t4, double _t0) {
+        _dst.m02 = 2.0 * Math.fma(_r3, _r1, _t3);
+        _dst.m12 = Math.fma(-2.0, _r3 * _r2, _t5 + _t5);
+        _dst.m22 = Math.fma(-2.0, _t4, Math.fma(-2.0, _t0, 1.0));
+    }
+
+    /** Private column 3 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s38da5fc6_c3(Double3x4Impl _dst, double _r0, double _r4, double _r1, double _r5, double _r2, double _r6, double _r3, double _r7) {
+        _dst.m03 = 2.0 * (Math.fma(_r0, _r4, -(_r1 * _r5)) + Math.fma(_r2, _r6, -(_r3 * _r7)));
+        _dst.m13 = 2.0 * (Math.fma(_r1, _r6, -(_r3 * _r4)) + Math.fma(_r2, _r5, -(_r0 * _r7)));
+        _dst.m23 = 2.0 * (Math.fma(_r3, _r5, -(_r0 * _r6)) + Math.fma(_r2, _r4, -(_r1 * _r7)));
+    }
+
 
     /**
      * Compute the 3x4 matrix representation of this dual quaternion (which must be a unit dual
@@ -2189,32 +2237,24 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      */
     public Double3x4 toMatrix3x4(@Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = this.rY * this.rY;
-        double _t2 = this.rZ * this.rW;
-        double _t3 = this.rY * this.rW;
-        double _t4 = this.rX * this.rX;
-        double _t5 = this.rY * this.rZ;
-        double _t6 = Math.fma(-2.0, this.rZ * this.rZ, 1.0);
-        double _buf0 = Math.fma(-2.0, _t0, _t6);
-        double _buf1 = Math.fma(-2.0, _t2, (this.rX + this.rX) * this.rY);
-        double _buf2 = 2.0 * Math.fma(this.rX, this.rZ, _t3);
-        double _buf3 = 2.0 * (Math.fma(this.rY, this.dZ, -(this.rZ * this.dY)) + Math.fma(this.rW, this.dX, -(this.rX * this.dW)));
-        double _buf4 = 2.0 * Math.fma(this.rX, this.rY, _t2);
-        double _buf5 = Math.fma(-2.0, _t4, _t6);
-        double _buf6 = Math.fma(-2.0, this.rX * this.rW, _t5 + _t5);
-        double _buf7 = 2.0 * (Math.fma(this.rZ, this.dX, -(this.rX * this.dZ)) + Math.fma(this.rW, this.dY, -(this.rY * this.dW)));
-        d.m20 = Math.fma(-2.0, _t3, (this.rX + this.rX) * this.rZ);
-        d.m21 = 2.0 * Math.fma(this.rX, this.rW, _t5);
-        d.m22 = Math.fma(-2.0, _t4, Math.fma(-2.0, _t0, 1.0));
-        d.m23 = 2.0 * (Math.fma(this.rX, this.dY, -(this.rY * this.dX)) + Math.fma(this.rW, this.dZ, -(this.rZ * this.dW)));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m13 = _buf7;
+        double _r0 = this.rY;
+        double _r1 = this.rZ;
+        double _r2 = this.rW;
+        double _r3 = this.rX;
+        double _r4 = this.dZ;
+        double _r5 = this.dY;
+        double _r6 = this.dX;
+        double _r7 = this.dW;
+        double _t0 = _r0 * _r0;
+        double _t2 = _r1 * _r2;
+        double _t3 = _r0 * _r2;
+        double _t4 = _r3 * _r3;
+        double _t5 = _r0 * _r1;
+        double _t6 = Math.fma(-2.0, _r1 * _r1, 1.0);
+        toMatrix3x4_s38da5fc6_c0(d, _t0, _t6, _r3, _r0, _t2, _t3, _r1);
+        toMatrix3x4_s38da5fc6_c1(d, _t2, _r3, _r0, _t4, _t6, _r2, _t5);
+        toMatrix3x4_s38da5fc6_c2(d, _r3, _r1, _t3, _r2, _t5, _t4, _t0);
+        toMatrix3x4_s38da5fc6_c3(d, _r0, _r4, _r1, _r5, _r2, _r6, _r3, _r7);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }

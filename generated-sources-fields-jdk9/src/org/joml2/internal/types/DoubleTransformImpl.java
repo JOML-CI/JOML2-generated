@@ -741,6 +741,38 @@ public final class DoubleTransformImpl implements DoubleTransform {
         return d;
     }
 
+    /** Private column 0 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c0(Double4x4Impl _dst, double _r5, double _t3, double _t0, double _r0, double _r6, double _t4, double _r3, double _t5) {
+        _dst.m00 = Math.fma(-Math.fma(_r5, _r5, _t3), _t0, _r0);
+        _dst.m10 = Math.fma(_r6, _r5, _t4) * _t0;
+        _dst.m20 = Math.fma(_r6, _r3, -_t5) * _t0;
+        _dst.m30 = 0.0;
+    }
+
+    /** Private column 1 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c1(Double4x4Impl _dst, double _r6, double _r5, double _t4, double _t1, double _t3, double _r1, double _r4, double _r3) {
+        _dst.m01 = Math.fma(_r6, _r5, -_t4) * _t1;
+        _dst.m11 = Math.fma(-Math.fma(_r6, _r6, _t3), _t1, _r1);
+        _dst.m21 = Math.fma(_r6, _r4, _r5 * _r3) * _t1;
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c2(Double4x4Impl _dst, double _r6, double _r3, double _t5, double _t2, double _r5, double _r4, double _r2) {
+        _dst.m02 = Math.fma(_r6, _r3, _t5) * _t2;
+        _dst.m12 = Math.fma(_r5, _r3, -(_r6 * _r4)) * _t2;
+        _dst.m22 = Math.fma(-Math.fma(_r6, _r6, _r5 * _r5), _t2, _r2);
+        _dst.m32 = 0.0;
+    }
+
+    /** Private column 3 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c3(Double4x4Impl _dst, double _r7, double _r8, double _r9) {
+        _dst.m03 = _r7;
+        _dst.m13 = _r8;
+        _dst.m23 = _r9;
+        _dst.m33 = 1.0;
+    }
+
 
     /**
      * Compute the matrix representation of this transform and store the result in {@code dest}.
@@ -750,35 +782,26 @@ public final class DoubleTransformImpl implements DoubleTransform {
      */
     public Double4x4 toMatrix(@Mutated Double4x4 dest) {
         Double4x4Impl d = (Double4x4Impl) dest;
-        double _t0 = this.sX + this.sX;
-        double _t1 = this.sY + this.sY;
-        double _t2 = this.sZ + this.sZ;
-        double _t3 = this.rZ * this.rZ;
-        double _t4 = this.rZ * this.rW;
-        double _t5 = this.rY * this.rW;
-        double _buf0 = Math.fma(-Math.fma(this.rY, this.rY, _t3), _t0, this.sX);
-        double _buf1 = Math.fma(this.rX, this.rY, _t4) * _t0;
-        double _buf2 = Math.fma(this.rX, this.rZ, -_t5) * _t0;
-        d.m30 = 0.0;
-        double _buf3 = Math.fma(this.rX, this.rY, -_t4) * _t1;
-        double _buf4 = Math.fma(-Math.fma(this.rX, this.rX, _t3), _t1, this.sY);
-        double _buf5 = Math.fma(this.rX, this.rW, this.rY * this.rZ) * _t1;
-        d.m31 = 0.0;
-        double _buf6 = Math.fma(this.rX, this.rZ, _t5) * _t2;
-        d.m12 = Math.fma(this.rY, this.rZ, -(this.rX * this.rW)) * _t2;
-        d.m22 = Math.fma(-Math.fma(this.rX, this.rX, this.rY * this.rY), _t2, this.sZ);
-        d.m32 = 0.0;
-        d.m03 = this.tX;
-        d.m13 = this.tY;
-        d.m23 = this.tZ;
-        d.m33 = 1.0;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
-        d.m02 = _buf6;
+        double _r0 = this.sX;
+        double _r1 = this.sY;
+        double _r2 = this.sZ;
+        double _r3 = this.rZ;
+        double _r4 = this.rW;
+        double _r5 = this.rY;
+        double _r6 = this.rX;
+        double _r7 = this.tX;
+        double _r8 = this.tY;
+        double _r9 = this.tZ;
+        double _t0 = _r0 + _r0;
+        double _t1 = _r1 + _r1;
+        double _t2 = _r2 + _r2;
+        double _t3 = _r3 * _r3;
+        double _t4 = _r3 * _r4;
+        double _t5 = _r5 * _r4;
+        toMatrix_s20bb8ca5_c0(d, _r5, _t3, _t0, _r0, _r6, _t4, _r3, _t5);
+        toMatrix_s20bb8ca5_c1(d, _r6, _r5, _t4, _t1, _t3, _r1, _r4, _r3);
+        toMatrix_s20bb8ca5_c2(d, _r6, _r3, _t5, _t2, _r5, _r4, _r2);
+        toMatrix_s20bb8ca5_c3(d, _r7, _r8, _r9);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }

@@ -803,6 +803,38 @@ public class Float4x3Impl implements Float4x3 {
         return d;
     }
 
+    /** Private column 0 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s161385dd_c0(Float4x3Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20) {
+        _dst.m00 = _r0 * _r1 + _r2 * _r3 + _r4 * _r5;
+        _dst.m10 = _r0 * _r12 + _r2 * _r13 + _r4 * _r14;
+        _dst.m20 = _r0 * _r15 + _r2 * _r16 + _r4 * _r17;
+        _dst.m30 = _r0 * _r18 + _r2 * _r19 + _r4 * _r20;
+    }
+
+    /** Private column 1 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s161385dd_c1(Float4x3Impl _dst, float _r6, float _r1, float _r7, float _r3, float _r8, float _r5, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20) {
+        _dst.m01 = _r6 * _r1 + _r7 * _r3 + _r8 * _r5;
+        _dst.m11 = _r6 * _r12 + _r7 * _r13 + _r8 * _r14;
+        _dst.m21 = _r6 * _r15 + _r7 * _r16 + _r8 * _r17;
+        _dst.m31 = _r6 * _r18 + _r7 * _r19 + _r8 * _r20;
+    }
+
+    /** Private column 2 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s161385dd_c2(Float4x3Impl _dst, float _r9, float _r1, float _r10, float _r3, float _r11, float _r5, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20) {
+        _dst.m02 = _r9 * _r1 + _r10 * _r3 + _r11 * _r5;
+        _dst.m12 = _r9 * _r12 + _r10 * _r13 + _r11 * _r14;
+        _dst.m22 = _r9 * _r15 + _r10 * _r16 + _r11 * _r17;
+        _dst.m32 = _r9 * _r18 + _r10 * _r19 + _r11 * _r20;
+    }
+
+    /** Private tail of {@code mul}; reached only through it. */
+    private void mul_s161385dd_tail(Float4x3Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19) {
+        float _r20 = this.m32;
+        mul_s161385dd_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19, _r20);
+        mul_s161385dd_c1(_dst, _r6, _r1, _r7, _r3, _r8, _r5, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19, _r20);
+        mul_s161385dd_c2(_dst, _r9, _r1, _r10, _r3, _r11, _r5, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19, _r20);
+    }
+
 
     /**
      * Multiply this matrix by {@code right} and store the result in {@code dest}.
@@ -820,27 +852,60 @@ public class Float4x3Impl implements Float4x3 {
      */
     public Float4x3 mul(Float3x3R right, @Mutated Float4x3 dest) {
         Float4x3Impl d = (Float4x3Impl) dest;
-        float _buf0 = right.m00() * this.m00 + right.m10() * this.m01 + right.m20() * this.m02;
-        float _buf1 = right.m00() * this.m10 + right.m10() * this.m11 + right.m20() * this.m12;
-        float _buf2 = right.m00() * this.m20 + right.m10() * this.m21 + right.m20() * this.m22;
-        float _buf3 = right.m00() * this.m30 + right.m10() * this.m31 + right.m20() * this.m32;
-        float _buf4 = right.m01() * this.m00 + right.m11() * this.m01 + right.m21() * this.m02;
-        float _buf5 = right.m01() * this.m10 + right.m11() * this.m11 + right.m21() * this.m12;
-        float _buf6 = right.m01() * this.m20 + right.m11() * this.m21 + right.m21() * this.m22;
-        float _buf7 = right.m01() * this.m30 + right.m11() * this.m31 + right.m21() * this.m32;
-        d.m02 = right.m02() * this.m00 + right.m12() * this.m01 + right.m22() * this.m02;
-        d.m12 = right.m02() * this.m10 + right.m12() * this.m11 + right.m22() * this.m12;
-        d.m22 = right.m02() * this.m20 + right.m12() * this.m21 + right.m22() * this.m22;
-        d.m32 = right.m02() * this.m30 + right.m12() * this.m31 + right.m22() * this.m32;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m30 = _buf3;
-        d.m01 = _buf4;
-        d.m11 = _buf5;
-        d.m21 = _buf6;
-        d.m31 = _buf7;
+        float _r0 = right.m00();
+        float _r1 = this.m00;
+        float _r2 = right.m10();
+        float _r3 = this.m01;
+        float _r4 = right.m20();
+        float _r5 = this.m02;
+        float _r6 = right.m01();
+        float _r7 = right.m11();
+        float _r8 = right.m21();
+        float _r9 = right.m02();
+        float _r10 = right.m12();
+        float _r11 = right.m22();
+        float _r12 = this.m10;
+        float _r13 = this.m11;
+        float _r14 = this.m12;
+        float _r15 = this.m20;
+        float _r16 = this.m21;
+        float _r17 = this.m22;
+        float _r18 = this.m30;
+        float _r19 = this.m31;
+        mul_s161385dd_tail(d, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         return d;
+    }
+
+    /** Private column 0 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s7cf23976_c0(Double4x3Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20) {
+        _dst.m00 = _r0 * _r1 + _r2 * _r3 + _r4 * _r5;
+        _dst.m10 = _r0 * _r12 + _r2 * _r13 + _r4 * _r14;
+        _dst.m20 = _r0 * _r15 + _r2 * _r16 + _r4 * _r17;
+        _dst.m30 = _r0 * _r18 + _r2 * _r19 + _r4 * _r20;
+    }
+
+    /** Private column 1 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s7cf23976_c1(Double4x3Impl _dst, float _r6, float _r1, float _r7, float _r3, float _r8, float _r5, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20) {
+        _dst.m01 = _r6 * _r1 + _r7 * _r3 + _r8 * _r5;
+        _dst.m11 = _r6 * _r12 + _r7 * _r13 + _r8 * _r14;
+        _dst.m21 = _r6 * _r15 + _r7 * _r16 + _r8 * _r17;
+        _dst.m31 = _r6 * _r18 + _r7 * _r19 + _r8 * _r20;
+    }
+
+    /** Private column 2 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s7cf23976_c2(Double4x3Impl _dst, float _r9, float _r1, float _r10, float _r3, float _r11, float _r5, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20) {
+        _dst.m02 = _r9 * _r1 + _r10 * _r3 + _r11 * _r5;
+        _dst.m12 = _r9 * _r12 + _r10 * _r13 + _r11 * _r14;
+        _dst.m22 = _r9 * _r15 + _r10 * _r16 + _r11 * _r17;
+        _dst.m32 = _r9 * _r18 + _r10 * _r19 + _r11 * _r20;
+    }
+
+    /** Private tail of {@code mul}; reached only through it. */
+    private void mul_s7cf23976_tail(Double4x3Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19) {
+        float _r20 = this.m32;
+        mul_s7cf23976_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19, _r20);
+        mul_s7cf23976_c1(_dst, _r6, _r1, _r7, _r3, _r8, _r5, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19, _r20);
+        mul_s7cf23976_c2(_dst, _r9, _r1, _r10, _r3, _r11, _r5, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19, _r20);
     }
 
 
@@ -863,27 +928,67 @@ public class Float4x3Impl implements Float4x3 {
      */
     public Double4x3 mul(Float3x3R right, @Mutated Double4x3 dest) {
         Double4x3Impl d = (Double4x3Impl) dest;
-        float _buf0 = right.m00() * this.m00 + right.m10() * this.m01 + right.m20() * this.m02;
-        float _buf1 = right.m00() * this.m10 + right.m10() * this.m11 + right.m20() * this.m12;
-        float _buf2 = right.m00() * this.m20 + right.m10() * this.m21 + right.m20() * this.m22;
-        float _buf3 = right.m00() * this.m30 + right.m10() * this.m31 + right.m20() * this.m32;
-        float _buf4 = right.m01() * this.m00 + right.m11() * this.m01 + right.m21() * this.m02;
-        float _buf5 = right.m01() * this.m10 + right.m11() * this.m11 + right.m21() * this.m12;
-        float _buf6 = right.m01() * this.m20 + right.m11() * this.m21 + right.m21() * this.m22;
-        float _buf7 = right.m01() * this.m30 + right.m11() * this.m31 + right.m21() * this.m32;
-        d.m02 = right.m02() * this.m00 + right.m12() * this.m01 + right.m22() * this.m02;
-        d.m12 = right.m02() * this.m10 + right.m12() * this.m11 + right.m22() * this.m12;
-        d.m22 = right.m02() * this.m20 + right.m12() * this.m21 + right.m22() * this.m22;
-        d.m32 = right.m02() * this.m30 + right.m12() * this.m31 + right.m22() * this.m32;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m30 = _buf3;
-        d.m01 = _buf4;
-        d.m11 = _buf5;
-        d.m21 = _buf6;
-        d.m31 = _buf7;
+        float _r0 = right.m00();
+        float _r1 = this.m00;
+        float _r2 = right.m10();
+        float _r3 = this.m01;
+        float _r4 = right.m20();
+        float _r5 = this.m02;
+        float _r6 = right.m01();
+        float _r7 = right.m11();
+        float _r8 = right.m21();
+        float _r9 = right.m02();
+        float _r10 = right.m12();
+        float _r11 = right.m22();
+        float _r12 = this.m10;
+        float _r13 = this.m11;
+        float _r14 = this.m12;
+        float _r15 = this.m20;
+        float _r16 = this.m21;
+        float _r17 = this.m22;
+        float _r18 = this.m30;
+        float _r19 = this.m31;
+        mul_s7cf23976_tail(d, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         return d;
+    }
+
+    /** Private column 0 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s63d3aacf_c0(Float4x3Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r16, float _r17, float _r18, float _r19, float _r20, float _r21, float _r22, float _r23, float _r24, float _r25, float _r26, float _r27) {
+        _dst.m00 = _r0 * _r1 + _r2 * _r3 + _r4 * _r5 + _r6 * _r7;
+        _dst.m10 = _r16 * _r1 + _r17 * _r3 + _r18 * _r5 + _r19 * _r7;
+        _dst.m20 = _r20 * _r1 + _r21 * _r3 + _r22 * _r5 + _r23 * _r7;
+        _dst.m30 = _r24 * _r1 + _r25 * _r3 + _r26 * _r5 + _r27 * _r7;
+    }
+
+    /** Private column 1 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s63d3aacf_c1(Float4x3Impl _dst, float _r0, float _r8, float _r2, float _r9, float _r4, float _r10, float _r6, float _r11, float _r16, float _r17, float _r18, float _r19, float _r20, float _r21, float _r22, float _r23, float _r24, float _r25, float _r26, float _r27) {
+        _dst.m01 = _r0 * _r8 + _r2 * _r9 + _r4 * _r10 + _r6 * _r11;
+        _dst.m11 = _r16 * _r8 + _r17 * _r9 + _r18 * _r10 + _r19 * _r11;
+        _dst.m21 = _r20 * _r8 + _r21 * _r9 + _r22 * _r10 + _r23 * _r11;
+        _dst.m31 = _r24 * _r8 + _r25 * _r9 + _r26 * _r10 + _r27 * _r11;
+    }
+
+    /** Private column 2 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s63d3aacf_c2(Float4x3Impl _dst, float _r0, float _r12, float _r2, float _r13, float _r4, float _r14, float _r6, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20, float _r21, float _r22, float _r23, float _r24, float _r25, float _r26, float _r27) {
+        _dst.m02 = _r0 * _r12 + _r2 * _r13 + _r4 * _r14 + _r6 * _r15;
+        _dst.m12 = _r16 * _r12 + _r17 * _r13 + _r18 * _r14 + _r19 * _r15;
+        _dst.m22 = _r20 * _r12 + _r21 * _r13 + _r22 * _r14 + _r23 * _r15;
+        _dst.m32 = _r24 * _r12 + _r25 * _r13 + _r26 * _r14 + _r27 * _r15;
+    }
+
+    /** Private tail of {@code preMul}; reached only through it. */
+    private void preMul_s63d3aacf_tail(Float4x3Impl _dst, Float4x4R other, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19) {
+        float _r20 = other.m20();
+        float _r21 = other.m21();
+        float _r22 = other.m22();
+        float _r23 = other.m23();
+        float _r24 = other.m30();
+        float _r25 = other.m31();
+        float _r26 = other.m32();
+        float _r27 = other.m33();
+        preMul_s63d3aacf_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r16, _r17, _r18, _r19, _r20, _r21, _r22, _r23, _r24, _r25, _r26, _r27);
+        preMul_s63d3aacf_c1(_dst, _r0, _r8, _r2, _r9, _r4, _r10, _r6, _r11, _r16, _r17, _r18, _r19, _r20, _r21, _r22, _r23, _r24, _r25, _r26, _r27);
+        preMul_s63d3aacf_c2(_dst, _r0, _r12, _r2, _r13, _r4, _r14, _r6, _r15, _r16, _r17, _r18, _r19, _r20, _r21, _r22, _r23, _r24, _r25, _r26, _r27);
     }
 
 
@@ -901,28 +1006,67 @@ public class Float4x3Impl implements Float4x3 {
      */
     public Float4x3 preMul(Float4x4R other, @Mutated Float4x3 dest) {
         Float4x3Impl d = (Float4x3Impl) dest;
-        float _buf0 = other.m00() * this.m00 + other.m01() * this.m10 + other.m02() * this.m20 + other.m03() * this.m30;
-        float _buf1 = other.m10() * this.m00 + other.m11() * this.m10 + other.m12() * this.m20 + other.m13() * this.m30;
-        float _buf2 = other.m20() * this.m00 + other.m21() * this.m10 + other.m22() * this.m20 + other.m23() * this.m30;
-        d.m30 = other.m30() * this.m00 + other.m31() * this.m10 + other.m32() * this.m20 + other.m33() * this.m30;
-        float _buf3 = other.m00() * this.m01 + other.m01() * this.m11 + other.m02() * this.m21 + other.m03() * this.m31;
-        float _buf4 = other.m10() * this.m01 + other.m11() * this.m11 + other.m12() * this.m21 + other.m13() * this.m31;
-        float _buf5 = other.m20() * this.m01 + other.m21() * this.m11 + other.m22() * this.m21 + other.m23() * this.m31;
-        d.m31 = other.m30() * this.m01 + other.m31() * this.m11 + other.m32() * this.m21 + other.m33() * this.m31;
-        float _buf6 = other.m00() * this.m02 + other.m01() * this.m12 + other.m02() * this.m22 + other.m03() * this.m32;
-        float _buf7 = other.m10() * this.m02 + other.m11() * this.m12 + other.m12() * this.m22 + other.m13() * this.m32;
-        float _buf8 = other.m20() * this.m02 + other.m21() * this.m12 + other.m22() * this.m22 + other.m23() * this.m32;
-        d.m32 = other.m30() * this.m02 + other.m31() * this.m12 + other.m32() * this.m22 + other.m33() * this.m32;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
-        d.m02 = _buf6;
-        d.m12 = _buf7;
-        d.m22 = _buf8;
+        float _r0 = other.m00();
+        float _r1 = this.m00;
+        float _r2 = other.m01();
+        float _r3 = this.m10;
+        float _r4 = other.m02();
+        float _r5 = this.m20;
+        float _r6 = other.m03();
+        float _r7 = this.m30;
+        float _r8 = this.m01;
+        float _r9 = this.m11;
+        float _r10 = this.m21;
+        float _r11 = this.m31;
+        float _r12 = this.m02;
+        float _r13 = this.m12;
+        float _r14 = this.m22;
+        float _r15 = this.m32;
+        float _r16 = other.m10();
+        float _r17 = other.m11();
+        float _r18 = other.m12();
+        float _r19 = other.m13();
+        preMul_s63d3aacf_tail(d, other, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         return d;
+    }
+
+    /** Private column 0 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s6736b2c4_c0(Double4x3Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r16, float _r17, float _r18, float _r19, float _r20, float _r21, float _r22, float _r23, float _r24, float _r25, float _r26, float _r27) {
+        _dst.m00 = _r0 * _r1 + _r2 * _r3 + _r4 * _r5 + _r6 * _r7;
+        _dst.m10 = _r16 * _r1 + _r17 * _r3 + _r18 * _r5 + _r19 * _r7;
+        _dst.m20 = _r20 * _r1 + _r21 * _r3 + _r22 * _r5 + _r23 * _r7;
+        _dst.m30 = _r24 * _r1 + _r25 * _r3 + _r26 * _r5 + _r27 * _r7;
+    }
+
+    /** Private column 1 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s6736b2c4_c1(Double4x3Impl _dst, float _r0, float _r8, float _r2, float _r9, float _r4, float _r10, float _r6, float _r11, float _r16, float _r17, float _r18, float _r19, float _r20, float _r21, float _r22, float _r23, float _r24, float _r25, float _r26, float _r27) {
+        _dst.m01 = _r0 * _r8 + _r2 * _r9 + _r4 * _r10 + _r6 * _r11;
+        _dst.m11 = _r16 * _r8 + _r17 * _r9 + _r18 * _r10 + _r19 * _r11;
+        _dst.m21 = _r20 * _r8 + _r21 * _r9 + _r22 * _r10 + _r23 * _r11;
+        _dst.m31 = _r24 * _r8 + _r25 * _r9 + _r26 * _r10 + _r27 * _r11;
+    }
+
+    /** Private column 2 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s6736b2c4_c2(Double4x3Impl _dst, float _r0, float _r12, float _r2, float _r13, float _r4, float _r14, float _r6, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20, float _r21, float _r22, float _r23, float _r24, float _r25, float _r26, float _r27) {
+        _dst.m02 = _r0 * _r12 + _r2 * _r13 + _r4 * _r14 + _r6 * _r15;
+        _dst.m12 = _r16 * _r12 + _r17 * _r13 + _r18 * _r14 + _r19 * _r15;
+        _dst.m22 = _r20 * _r12 + _r21 * _r13 + _r22 * _r14 + _r23 * _r15;
+        _dst.m32 = _r24 * _r12 + _r25 * _r13 + _r26 * _r14 + _r27 * _r15;
+    }
+
+    /** Private tail of {@code preMul}; reached only through it. */
+    private void preMul_s6736b2c4_tail(Double4x3Impl _dst, Float4x4R other, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19) {
+        float _r20 = other.m20();
+        float _r21 = other.m21();
+        float _r22 = other.m22();
+        float _r23 = other.m23();
+        float _r24 = other.m30();
+        float _r25 = other.m31();
+        float _r26 = other.m32();
+        float _r27 = other.m33();
+        preMul_s6736b2c4_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r16, _r17, _r18, _r19, _r20, _r21, _r22, _r23, _r24, _r25, _r26, _r27);
+        preMul_s6736b2c4_c1(_dst, _r0, _r8, _r2, _r9, _r4, _r10, _r6, _r11, _r16, _r17, _r18, _r19, _r20, _r21, _r22, _r23, _r24, _r25, _r26, _r27);
+        preMul_s6736b2c4_c2(_dst, _r0, _r12, _r2, _r13, _r4, _r14, _r6, _r15, _r16, _r17, _r18, _r19, _r20, _r21, _r22, _r23, _r24, _r25, _r26, _r27);
     }
 
 
@@ -943,27 +1087,27 @@ public class Float4x3Impl implements Float4x3 {
      */
     public Double4x3 preMul(Float4x4R other, @Mutated Double4x3 dest) {
         Double4x3Impl d = (Double4x3Impl) dest;
-        float _buf0 = other.m00() * this.m00 + other.m01() * this.m10 + other.m02() * this.m20 + other.m03() * this.m30;
-        float _buf1 = other.m10() * this.m00 + other.m11() * this.m10 + other.m12() * this.m20 + other.m13() * this.m30;
-        float _buf2 = other.m20() * this.m00 + other.m21() * this.m10 + other.m22() * this.m20 + other.m23() * this.m30;
-        d.m30 = other.m30() * this.m00 + other.m31() * this.m10 + other.m32() * this.m20 + other.m33() * this.m30;
-        float _buf3 = other.m00() * this.m01 + other.m01() * this.m11 + other.m02() * this.m21 + other.m03() * this.m31;
-        float _buf4 = other.m10() * this.m01 + other.m11() * this.m11 + other.m12() * this.m21 + other.m13() * this.m31;
-        float _buf5 = other.m20() * this.m01 + other.m21() * this.m11 + other.m22() * this.m21 + other.m23() * this.m31;
-        d.m31 = other.m30() * this.m01 + other.m31() * this.m11 + other.m32() * this.m21 + other.m33() * this.m31;
-        float _buf6 = other.m00() * this.m02 + other.m01() * this.m12 + other.m02() * this.m22 + other.m03() * this.m32;
-        float _buf7 = other.m10() * this.m02 + other.m11() * this.m12 + other.m12() * this.m22 + other.m13() * this.m32;
-        float _buf8 = other.m20() * this.m02 + other.m21() * this.m12 + other.m22() * this.m22 + other.m23() * this.m32;
-        d.m32 = other.m30() * this.m02 + other.m31() * this.m12 + other.m32() * this.m22 + other.m33() * this.m32;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
-        d.m02 = _buf6;
-        d.m12 = _buf7;
-        d.m22 = _buf8;
+        float _r0 = other.m00();
+        float _r1 = this.m00;
+        float _r2 = other.m01();
+        float _r3 = this.m10;
+        float _r4 = other.m02();
+        float _r5 = this.m20;
+        float _r6 = other.m03();
+        float _r7 = this.m30;
+        float _r8 = this.m01;
+        float _r9 = this.m11;
+        float _r10 = this.m21;
+        float _r11 = this.m31;
+        float _r12 = this.m02;
+        float _r13 = this.m12;
+        float _r14 = this.m22;
+        float _r15 = this.m32;
+        float _r16 = other.m10();
+        float _r17 = other.m11();
+        float _r18 = other.m12();
+        float _r19 = other.m13();
+        preMul_s6736b2c4_tail(d, other, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         return d;
     }
 

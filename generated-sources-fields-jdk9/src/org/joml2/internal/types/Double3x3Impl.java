@@ -1490,6 +1490,27 @@ public class Double3x3Impl implements Double3x3 {
         return d;
     }
 
+    /** Private column 0 of {@code invert_general}: computes and stores it; reached only through it. */
+    private void invert_general_s37258727_c0(Double3x3Impl _dst, double _t6, double _t12_inv, double _r2, double _r5, double _r4, double _r1, double _t7) {
+        _dst.m00 = _t6 * _t12_inv;
+        _dst.m10 = Math.fma(_r2, _r5, -(_r4 * _r1)) * _t12_inv;
+        _dst.m20 = _t7 * _t12_inv;
+    }
+
+    /** Private column 1 of {@code invert_general}: computes and stores it; reached only through it. */
+    private void invert_general_s37258727_c1(Double3x3Impl _dst, double _r6, double _r3, double _r8, double _r1, double _t12_inv, double _r7, double _r5) {
+        _dst.m01 = Math.fma(_r6, _r3, -(_r8 * _r1)) * _t12_inv;
+        _dst.m11 = Math.fma(_r7, _r1, -(_r6 * _r5)) * _t12_inv;
+        _dst.m21 = Math.fma(_r8, _r5, -(_r7 * _r3)) * _t12_inv;
+    }
+
+    /** Private column 2 of {@code invert_general}: computes and stores it; reached only through it. */
+    private void invert_general_s37258727_c2(Double3x3Impl _dst, double _r8, double _r2, double _r6, double _r0, double _t12_inv, double _r4, double _r7) {
+        _dst.m02 = Math.fma(_r8, _r2, -(_r6 * _r0)) * _t12_inv;
+        _dst.m12 = Math.fma(_r6, _r4, -(_r7 * _r2)) * _t12_inv;
+        _dst.m22 = Math.fma(_r7, _r0, -(_r8 * _r4)) * _t12_inv;
+    }
+
 
     /**
      * Private body of {@code invert}, specialized by runtime matrix properties; reached only
@@ -1497,25 +1518,22 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 invert_general(@Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
-        double _t6 = Math.fma(this.m11, this.m22, -(this.m12 * this.m21));
-        double _t7 = Math.fma(this.m10, this.m21, -(this.m11 * this.m20));
-        double _t12 = Math.fma(this.m02, _t7, Math.fma(this.m00, _t6, -(this.m01 * Math.fma(this.m10, this.m22, -(this.m12 * this.m20)))));
+        double _r0 = this.m11;
+        double _r1 = this.m22;
+        double _r2 = this.m12;
+        double _r3 = this.m21;
+        double _r4 = this.m10;
+        double _r5 = this.m20;
+        double _r6 = this.m02;
+        double _r7 = this.m00;
+        double _r8 = this.m01;
+        double _t6 = Math.fma(_r0, _r1, -(_r2 * _r3));
+        double _t7 = Math.fma(_r4, _r3, -(_r0 * _r5));
+        double _t12 = Math.fma(_r6, _t7, Math.fma(_r7, _t6, -(_r8 * Math.fma(_r4, _r1, -(_r2 * _r5)))));
         double _t12_inv = 1.0 / _t12;
-        double _buf0 = _t6 * _t12_inv;
-        double _buf1 = Math.fma(this.m12, this.m20, -(this.m10 * this.m22)) * _t12_inv;
-        double _buf2 = _t7 * _t12_inv;
-        double _buf3 = Math.fma(this.m02, this.m21, -(this.m01 * this.m22)) * _t12_inv;
-        double _buf4 = Math.fma(this.m00, this.m22, -(this.m02 * this.m20)) * _t12_inv;
-        d.m21 = Math.fma(this.m01, this.m20, -(this.m00 * this.m21)) * _t12_inv;
-        double _buf5 = Math.fma(this.m01, this.m12, -(this.m02 * this.m11)) * _t12_inv;
-        d.m12 = Math.fma(this.m02, this.m10, -(this.m00 * this.m12)) * _t12_inv;
-        d.m22 = Math.fma(this.m00, this.m11, -(this.m01 * this.m10)) * _t12_inv;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m02 = _buf5;
+        invert_general_s37258727_c0(d, _t6, _t12_inv, _r2, _r5, _r4, _r1, _t7);
+        invert_general_s37258727_c1(d, _r6, _r3, _r8, _r1, _t12_inv, _r7, _r5);
+        invert_general_s37258727_c2(d, _r8, _r2, _r6, _r0, _t12_inv, _r4, _r7);
         d.properties = 0;
         return d;
     }
@@ -1552,6 +1570,46 @@ public class Double3x3Impl implements Double3x3 {
         return invert_general(this);
     }
 
+    /** Private column 0 of {@code invertProduct_general}: computes and stores it; reached only through it. */
+    private void invertProduct_general_s1154904e_c0(Double3x3Impl _dst, double _t33, double _t39_inv, double _t24, double _t21, double _t23, double _t19, double _t34) {
+        _dst.m00 = _t33 * _t39_inv;
+        _dst.m10 = Math.fma(_t24, _t21, -(_t23 * _t19)) * _t39_inv;
+        _dst.m20 = _t34 * _t39_inv;
+    }
+
+    /** Private column 1 of {@code invertProduct_general}: computes and stores it; reached only through it. */
+    private void invertProduct_general_s1154904e_c1(Double3x3Impl _dst, double _t20, double _t22, double _t26, double _t19, double _t39_inv, double _t25, double _t24) {
+        _dst.m01 = Math.fma(_t20, _t22, -(_t26 * _t19)) * _t39_inv;
+        _dst.m11 = Math.fma(_t25, _t19, -(_t24 * _t22)) * _t39_inv;
+        _dst.m21 = Math.fma(_t24, _t26, -(_t25 * _t20)) * _t39_inv;
+    }
+
+    /** Private column 2 of {@code invertProduct_general}: computes and stores it; reached only through it. */
+    private void invertProduct_general_s1154904e_c2(Double3x3Impl _dst, double _t26, double _t21, double _t18, double _t22, double _t39_inv, double _t23, double _t25) {
+        _dst.m02 = Math.fma(_t26, _t21, -(_t18 * _t22)) * _t39_inv;
+        _dst.m12 = Math.fma(_t23, _t22, -(_t25 * _t21)) * _t39_inv;
+        _dst.m22 = Math.fma(_t25, _t18, -(_t23 * _t26)) * _t39_inv;
+    }
+
+    /** Private tail of {@code invertProduct_general}; reached only through it. */
+    private void invertProduct_general_s1154904e_tail(Double3x3Impl _dst, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r0, double _r2, double _r4, double _r1, double _r3, double _r5, double _r12, double _r13, double _r14, double _r15, double _r16, double _r17, double _t18) {
+        double _t19 = Math.fma(_r6, _r7, Math.fma(_r8, _r9, _r10 * _r11));
+        double _t20 = Math.fma(_r0, _r7, Math.fma(_r2, _r9, _r4 * _r11));
+        double _t21 = Math.fma(_r6, _r1, Math.fma(_r8, _r3, _r10 * _r5));
+        double _t22 = Math.fma(_r6, _r12, Math.fma(_r8, _r13, _r10 * _r14));
+        double _t23 = Math.fma(_r15, _r1, Math.fma(_r16, _r3, _r17 * _r5));
+        double _t24 = Math.fma(_r15, _r7, Math.fma(_r16, _r9, _r17 * _r11));
+        double _t25 = Math.fma(_r15, _r12, Math.fma(_r16, _r13, _r17 * _r14));
+        double _t26 = Math.fma(_r0, _r12, Math.fma(_r2, _r13, _r4 * _r14));
+        double _t33 = Math.fma(_t18, _t19, -(_t20 * _t21));
+        double _t34 = Math.fma(_t23, _t20, -(_t24 * _t18));
+        double _t39 = Math.fma(_t22, _t34, Math.fma(_t25, _t33, -(_t26 * Math.fma(_t23, _t19, -(_t24 * _t21)))));
+        double _t39_inv = 1.0 / _t39;
+        invertProduct_general_s1154904e_c0(_dst, _t33, _t39_inv, _t24, _t21, _t23, _t19, _t34);
+        invertProduct_general_s1154904e_c1(_dst, _t20, _t22, _t26, _t19, _t39_inv, _t25, _t24);
+        invertProduct_general_s1154904e_c2(_dst, _t26, _t21, _t18, _t22, _t39_inv, _t23, _t25);
+    }
+
 
     /**
      * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
@@ -1559,30 +1617,49 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 invertProduct_general(Double3x3R other, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
-        double _t18 = Math.fma(other.m21(), this.m12, Math.fma(other.m01(), this.m10, other.m11() * this.m11));
-        double _t19 = Math.fma(other.m22(), this.m22, Math.fma(other.m02(), this.m20, other.m12() * this.m21));
-        double _t20 = Math.fma(other.m21(), this.m22, Math.fma(other.m01(), this.m20, other.m11() * this.m21));
-        double _t21 = Math.fma(other.m22(), this.m12, Math.fma(other.m02(), this.m10, other.m12() * this.m11));
-        double _t22 = Math.fma(other.m22(), this.m02, Math.fma(other.m02(), this.m00, other.m12() * this.m01));
-        double _t23 = Math.fma(other.m20(), this.m12, Math.fma(other.m00(), this.m10, other.m10() * this.m11));
-        double _t24 = Math.fma(other.m20(), this.m22, Math.fma(other.m00(), this.m20, other.m10() * this.m21));
-        double _t25 = Math.fma(other.m20(), this.m02, Math.fma(other.m00(), this.m00, other.m10() * this.m01));
-        double _t26 = Math.fma(other.m21(), this.m02, Math.fma(other.m01(), this.m00, other.m11() * this.m01));
-        double _t33 = Math.fma(_t18, _t19, -(_t20 * _t21));
-        double _t34 = Math.fma(_t23, _t20, -(_t24 * _t18));
-        double _t39 = Math.fma(_t22, _t34, Math.fma(_t25, _t33, -(_t26 * Math.fma(_t23, _t19, -(_t24 * _t21)))));
-        double _t39_inv = 1.0 / _t39;
-        d.m00 = _t33 * _t39_inv;
-        d.m10 = Math.fma(_t24, _t21, -(_t23 * _t19)) * _t39_inv;
-        d.m20 = _t34 * _t39_inv;
-        d.m01 = Math.fma(_t20, _t22, -(_t26 * _t19)) * _t39_inv;
-        d.m11 = Math.fma(_t25, _t19, -(_t24 * _t22)) * _t39_inv;
-        d.m21 = Math.fma(_t24, _t26, -(_t25 * _t20)) * _t39_inv;
-        d.m02 = Math.fma(_t26, _t21, -(_t18 * _t22)) * _t39_inv;
-        d.m12 = Math.fma(_t23, _t22, -(_t25 * _t21)) * _t39_inv;
-        d.m22 = Math.fma(_t25, _t18, -(_t23 * _t26)) * _t39_inv;
+        double _r0 = other.m21();
+        double _r1 = this.m12;
+        double _r2 = other.m01();
+        double _r3 = this.m10;
+        double _r4 = other.m11();
+        double _r5 = this.m11;
+        double _r6 = other.m22();
+        double _r7 = this.m22;
+        double _r8 = other.m02();
+        double _r9 = this.m20;
+        double _r10 = other.m12();
+        double _r11 = this.m21;
+        double _r12 = this.m02;
+        double _r13 = this.m00;
+        double _r14 = this.m01;
+        double _r15 = other.m20();
+        double _r16 = other.m00();
+        double _r17 = other.m10();
+        double _t18 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5));
+        invertProduct_general_s1154904e_tail(d, _r6, _r7, _r8, _r9, _r10, _r11, _r0, _r2, _r4, _r1, _r3, _r5, _r12, _r13, _r14, _r15, _r16, _r17, _t18);
         d.properties = 0;
         return d;
+    }
+
+    /** Private column 0 of {@code invertProduct_identity}: computes and stores it; reached only through it. */
+    private void invertProduct_identity_s1154904e_c0(Double3x3Impl _dst, double _t6, double _t12_inv, double _r2, double _r5, double _r4, double _r1, double _t7) {
+        _dst.m00 = _t6 * _t12_inv;
+        _dst.m10 = Math.fma(_r2, _r5, -(_r4 * _r1)) * _t12_inv;
+        _dst.m20 = _t7 * _t12_inv;
+    }
+
+    /** Private column 1 of {@code invertProduct_identity}: computes and stores it; reached only through it. */
+    private void invertProduct_identity_s1154904e_c1(Double3x3Impl _dst, double _r6, double _r3, double _r8, double _r1, double _t12_inv, double _r7, double _r5) {
+        _dst.m01 = Math.fma(_r6, _r3, -(_r8 * _r1)) * _t12_inv;
+        _dst.m11 = Math.fma(_r7, _r1, -(_r6 * _r5)) * _t12_inv;
+        _dst.m21 = Math.fma(_r8, _r5, -(_r7 * _r3)) * _t12_inv;
+    }
+
+    /** Private column 2 of {@code invertProduct_identity}: computes and stores it; reached only through it. */
+    private void invertProduct_identity_s1154904e_c2(Double3x3Impl _dst, double _r8, double _r2, double _r6, double _r0, double _t12_inv, double _r4, double _r7) {
+        _dst.m02 = Math.fma(_r8, _r2, -(_r6 * _r0)) * _t12_inv;
+        _dst.m12 = Math.fma(_r6, _r4, -(_r7 * _r2)) * _t12_inv;
+        _dst.m22 = Math.fma(_r7, _r0, -(_r8 * _r4)) * _t12_inv;
     }
 
 
@@ -1592,27 +1669,45 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 invertProduct_identity(Double3x3R other, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
-        double _t6 = Math.fma(other.m11(), other.m22(), -(other.m12() * other.m21()));
-        double _t7 = Math.fma(other.m10(), other.m21(), -(other.m11() * other.m20()));
-        double _t12 = Math.fma(other.m02(), _t7, Math.fma(other.m00(), _t6, -(other.m01() * Math.fma(other.m10(), other.m22(), -(other.m12() * other.m20())))));
+        double _r0 = other.m11();
+        double _r1 = other.m22();
+        double _r2 = other.m12();
+        double _r3 = other.m21();
+        double _r4 = other.m10();
+        double _r5 = other.m20();
+        double _r6 = other.m02();
+        double _r7 = other.m00();
+        double _r8 = other.m01();
+        double _t6 = Math.fma(_r0, _r1, -(_r2 * _r3));
+        double _t7 = Math.fma(_r4, _r3, -(_r0 * _r5));
+        double _t12 = Math.fma(_r6, _t7, Math.fma(_r7, _t6, -(_r8 * Math.fma(_r4, _r1, -(_r2 * _r5)))));
         double _t12_inv = 1.0 / _t12;
-        double _buf0 = _t6 * _t12_inv;
-        double _buf1 = Math.fma(other.m12(), other.m20(), -(other.m10() * other.m22())) * _t12_inv;
-        double _buf2 = _t7 * _t12_inv;
-        double _buf3 = Math.fma(other.m02(), other.m21(), -(other.m01() * other.m22())) * _t12_inv;
-        double _buf4 = Math.fma(other.m00(), other.m22(), -(other.m02() * other.m20())) * _t12_inv;
-        d.m21 = Math.fma(other.m01(), other.m20(), -(other.m00() * other.m21())) * _t12_inv;
-        double _buf5 = Math.fma(other.m01(), other.m12(), -(other.m02() * other.m11())) * _t12_inv;
-        d.m12 = Math.fma(other.m02(), other.m10(), -(other.m00() * other.m12())) * _t12_inv;
-        d.m22 = Math.fma(other.m00(), other.m11(), -(other.m01() * other.m10())) * _t12_inv;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m02 = _buf5;
+        invertProduct_identity_s1154904e_c0(d, _t6, _t12_inv, _r2, _r5, _r4, _r1, _t7);
+        invertProduct_identity_s1154904e_c1(d, _r6, _r3, _r8, _r1, _t12_inv, _r7, _r5);
+        invertProduct_identity_s1154904e_c2(d, _r8, _r2, _r6, _r0, _t12_inv, _r4, _r7);
         d.properties = ((Double3x3Impl) other).properties;
         return d;
+    }
+
+    /** Private column 0 of {@code invertProduct_translation}: computes and stores it; reached only through it. */
+    private void invertProduct_translation_s1154904e_c0(Double3x3Impl _dst, double _t12, double _t18_inv, double _r7, double _t1, double _r3, double _t3, double _t13) {
+        _dst.m00 = _t12 * _t18_inv;
+        _dst.m10 = Math.fma(_r7, _t1, -(_r3 * _t3)) * _t18_inv;
+        _dst.m20 = _t13 * _t18_inv;
+    }
+
+    /** Private column 1 of {@code invertProduct_translation}: computes and stores it; reached only through it. */
+    private void invertProduct_translation_s1154904e_c1(Double3x3Impl _dst, double _r0, double _t2, double _r3, double _t5, double _t18_inv, double _t4, double _r7) {
+        _dst.m01 = Math.fma(_r0, _t2, -(_r3 * _t5)) * _t18_inv;
+        _dst.m11 = Math.fma(_r3, _t4, -(_r7 * _t2)) * _t18_inv;
+        _dst.m21 = Math.fma(_r7, _t5, -(_r0 * _t4)) * _t18_inv;
+    }
+
+    /** Private column 2 of {@code invertProduct_translation}: computes and stores it; reached only through it. */
+    private void invertProduct_translation_s1154904e_c2(Double3x3Impl _dst, double _t5, double _t1, double _t2, double _t0, double _t18_inv, double _t3, double _t4) {
+        _dst.m02 = Math.fma(_t5, _t1, -(_t2 * _t0)) * _t18_inv;
+        _dst.m12 = Math.fma(_t2, _t3, -(_t4 * _t1)) * _t18_inv;
+        _dst.m22 = Math.fma(_t4, _t0, -(_t5 * _t3)) * _t18_inv;
     }
 
 
@@ -1622,28 +1717,66 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 invertProduct_translation(Double3x3R other, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
-        double _t0 = Math.fma(other.m21(), this.m12, other.m11());
-        double _t1 = Math.fma(other.m22(), this.m12, other.m12());
-        double _t2 = Math.fma(other.m22(), this.m02, other.m02());
-        double _t3 = Math.fma(other.m20(), this.m12, other.m10());
-        double _t4 = Math.fma(other.m20(), this.m02, other.m00());
-        double _t5 = Math.fma(other.m21(), this.m02, other.m01());
-        double _t12 = Math.fma(other.m22(), _t0, -(other.m21() * _t1));
-        double _t13 = Math.fma(other.m21(), _t3, -(other.m20() * _t0));
-        double _t18 = Math.fma(_t2, _t13, Math.fma(_t4, _t12, -(_t5 * Math.fma(other.m22(), _t3, -(other.m20() * _t1)))));
+        double _r0 = other.m21();
+        double _r1 = this.m12;
+        double _r2 = other.m11();
+        double _r3 = other.m22();
+        double _r4 = other.m12();
+        double _r5 = this.m02;
+        double _r6 = other.m02();
+        double _r7 = other.m20();
+        double _r8 = other.m10();
+        double _r9 = other.m00();
+        double _r10 = other.m01();
+        double _t0 = Math.fma(_r0, _r1, _r2);
+        double _t1 = Math.fma(_r3, _r1, _r4);
+        double _t2 = Math.fma(_r3, _r5, _r6);
+        double _t3 = Math.fma(_r7, _r1, _r8);
+        double _t4 = Math.fma(_r7, _r5, _r9);
+        double _t5 = Math.fma(_r0, _r5, _r10);
+        double _t12 = Math.fma(_r3, _t0, -(_r0 * _t1));
+        double _t13 = Math.fma(_r0, _t3, -(_r7 * _t0));
+        double _t18 = Math.fma(_t2, _t13, Math.fma(_t4, _t12, -(_t5 * Math.fma(_r3, _t3, -(_r7 * _t1)))));
         double _t18_inv = 1.0 / _t18;
-        d.m00 = _t12 * _t18_inv;
-        d.m10 = Math.fma(other.m20(), _t1, -(other.m22() * _t3)) * _t18_inv;
-        double _buf0 = _t13 * _t18_inv;
-        d.m01 = Math.fma(other.m21(), _t2, -(other.m22() * _t5)) * _t18_inv;
-        d.m11 = Math.fma(other.m22(), _t4, -(other.m20() * _t2)) * _t18_inv;
-        d.m21 = Math.fma(other.m20(), _t5, -(other.m21() * _t4)) * _t18_inv;
-        d.m02 = Math.fma(_t5, _t1, -(_t2 * _t0)) * _t18_inv;
-        d.m12 = Math.fma(_t2, _t3, -(_t4 * _t1)) * _t18_inv;
-        d.m22 = Math.fma(_t4, _t0, -(_t5 * _t3)) * _t18_inv;
-        d.m20 = _buf0;
+        invertProduct_translation_s1154904e_c0(d, _t12, _t18_inv, _r7, _t1, _r3, _t3, _t13);
+        invertProduct_translation_s1154904e_c1(d, _r0, _t2, _r3, _t5, _t18_inv, _t4, _r7);
+        invertProduct_translation_s1154904e_c2(d, _t5, _t1, _t2, _t0, _t18_inv, _t3, _t4);
         d.properties = Joml.BIT_TRANSLATION & ((Double3x3Impl) other).properties;
         return d;
+    }
+
+    /** Private column 0 of {@code invertProduct_orthogonal}: computes and stores it; reached only through it. */
+    private void invertProduct_orthogonal_s40da5184_c0(Double3x3Impl _dst, double _t24, double _t30_inv, double _r12, double _t13, double _r6, double _t15, double _t25) {
+        _dst.m00 = _t24 * _t30_inv;
+        _dst.m10 = Math.fma(_r12, _t13, -(_r6 * _t15)) * _t30_inv;
+        _dst.m20 = _t25 * _t30_inv;
+    }
+
+    /** Private column 1 of {@code invertProduct_orthogonal}: computes and stores it; reached only through it. */
+    private void invertProduct_orthogonal_s40da5184_c1(Double3x3Impl _dst, double _r0, double _t14, double _r6, double _t17, double _t30_inv, double _t16, double _r12) {
+        _dst.m01 = Math.fma(_r0, _t14, -(_r6 * _t17)) * _t30_inv;
+        _dst.m11 = Math.fma(_r6, _t16, -(_r12 * _t14)) * _t30_inv;
+        _dst.m21 = Math.fma(_r12, _t17, -(_r0 * _t16)) * _t30_inv;
+    }
+
+    /** Private column 2 of {@code invertProduct_orthogonal}: computes and stores it; reached only through it. */
+    private void invertProduct_orthogonal_s40da5184_c2(Double3x3Impl _dst, double _t17, double _t13, double _t12, double _t14, double _t30_inv, double _t15, double _t16) {
+        _dst.m02 = Math.fma(_t17, _t13, -(_t12 * _t14)) * _t30_inv;
+        _dst.m12 = Math.fma(_t15, _t14, -(_t16 * _t13)) * _t30_inv;
+        _dst.m22 = Math.fma(_t16, _t12, -(_t15 * _t17)) * _t30_inv;
+    }
+
+    /** Private tail of {@code invertProduct_orthogonal}; reached only through it. */
+    private void invertProduct_orthogonal_s40da5184_tail(Double3x3Impl _dst, double _r12, double _r9, double _r13, double _r10, double _r14, double _r11, double _r0, double _r2, double _r4, double _r6, double _t12, double _t13, double _t15, double _t14) {
+        double _t16 = Math.fma(_r12, _r9, Math.fma(_r13, _r10, _r14 * _r11));
+        double _t17 = Math.fma(_r0, _r9, Math.fma(_r2, _r10, _r4 * _r11));
+        double _t24 = Math.fma(_r6, _t12, -(_r0 * _t13));
+        double _t25 = Math.fma(_r0, _t15, -(_r12 * _t12));
+        double _t30 = Math.fma(_t14, _t25, Math.fma(_t16, _t24, -(_t17 * Math.fma(_r6, _t15, -(_r12 * _t13)))));
+        double _t30_inv = 1.0 / _t30;
+        invertProduct_orthogonal_s40da5184_c0(_dst, _t24, _t30_inv, _r12, _t13, _r6, _t15, _t25);
+        invertProduct_orthogonal_s40da5184_c1(_dst, _r0, _t14, _r6, _t17, _t30_inv, _t16, _r12);
+        invertProduct_orthogonal_s40da5184_c2(_dst, _t17, _t13, _t12, _t14, _t30_inv, _t15, _t16);
     }
 
 
@@ -1653,26 +1786,26 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 invertProduct_orthogonal(Double3x3R other, @Mutated Double3x3 dest, int _props) {
         Double3x3Impl d = (Double3x3Impl) dest;
-        double _t12 = Math.fma(other.m21(), this.m12, Math.fma(other.m01(), this.m10, other.m11() * this.m11));
-        double _t13 = Math.fma(other.m22(), this.m12, Math.fma(other.m02(), this.m10, other.m12() * this.m11));
-        double _t14 = Math.fma(other.m22(), this.m02, Math.fma(other.m02(), this.m00, other.m12() * this.m01));
-        double _t15 = Math.fma(other.m20(), this.m12, Math.fma(other.m00(), this.m10, other.m10() * this.m11));
-        double _t16 = Math.fma(other.m20(), this.m02, Math.fma(other.m00(), this.m00, other.m10() * this.m01));
-        double _t17 = Math.fma(other.m21(), this.m02, Math.fma(other.m01(), this.m00, other.m11() * this.m01));
-        double _t24 = Math.fma(other.m22(), _t12, -(other.m21() * _t13));
-        double _t25 = Math.fma(other.m21(), _t15, -(other.m20() * _t12));
-        double _t30 = Math.fma(_t14, _t25, Math.fma(_t16, _t24, -(_t17 * Math.fma(other.m22(), _t15, -(other.m20() * _t13)))));
-        double _t30_inv = 1.0 / _t30;
-        d.m00 = _t24 * _t30_inv;
-        d.m10 = Math.fma(other.m20(), _t13, -(other.m22() * _t15)) * _t30_inv;
-        double _buf0 = _t25 * _t30_inv;
-        d.m01 = Math.fma(other.m21(), _t14, -(other.m22() * _t17)) * _t30_inv;
-        d.m11 = Math.fma(other.m22(), _t16, -(other.m20() * _t14)) * _t30_inv;
-        d.m21 = Math.fma(other.m20(), _t17, -(other.m21() * _t16)) * _t30_inv;
-        d.m02 = Math.fma(_t17, _t13, -(_t12 * _t14)) * _t30_inv;
-        d.m12 = Math.fma(_t15, _t14, -(_t16 * _t13)) * _t30_inv;
-        d.m22 = Math.fma(_t16, _t12, -(_t15 * _t17)) * _t30_inv;
-        d.m20 = _buf0;
+        double _r0 = other.m21();
+        double _r1 = this.m12;
+        double _r2 = other.m01();
+        double _r3 = this.m10;
+        double _r4 = other.m11();
+        double _r5 = this.m11;
+        double _r6 = other.m22();
+        double _r7 = other.m02();
+        double _r8 = other.m12();
+        double _r9 = this.m02;
+        double _r10 = this.m00;
+        double _r11 = this.m01;
+        double _r12 = other.m20();
+        double _r13 = other.m00();
+        double _r14 = other.m10();
+        double _t12 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5));
+        double _t13 = Math.fma(_r6, _r1, Math.fma(_r7, _r3, _r8 * _r5));
+        double _t14 = Math.fma(_r6, _r9, Math.fma(_r7, _r10, _r8 * _r11));
+        double _t15 = Math.fma(_r12, _r1, Math.fma(_r13, _r3, _r14 * _r5));
+        invertProduct_orthogonal_s40da5184_tail(d, _r12, _r9, _r13, _r10, _r14, _r11, _r0, _r2, _r4, _r6, _t12, _t13, _t15, _t14);
         d.properties = _props;
         return d;
     }
@@ -1942,6 +2075,27 @@ public class Double3x3Impl implements Double3x3 {
         return d;
     }
 
+    /** Private column 0 of {@code invertProduct_general_identity}: computes and stores it; reached only through it. */
+    private void invertProduct_general_identity_s1154904e_c0(Double3x3Impl _dst, double _t6, double _t12_inv, double _r2, double _r5, double _r4, double _r1, double _t7) {
+        _dst.m00 = _t6 * _t12_inv;
+        _dst.m10 = Math.fma(_r2, _r5, -(_r4 * _r1)) * _t12_inv;
+        _dst.m20 = _t7 * _t12_inv;
+    }
+
+    /** Private column 1 of {@code invertProduct_general_identity}: computes and stores it; reached only through it. */
+    private void invertProduct_general_identity_s1154904e_c1(Double3x3Impl _dst, double _r6, double _r3, double _r8, double _r1, double _t12_inv, double _r7, double _r5) {
+        _dst.m01 = Math.fma(_r6, _r3, -(_r8 * _r1)) * _t12_inv;
+        _dst.m11 = Math.fma(_r7, _r1, -(_r6 * _r5)) * _t12_inv;
+        _dst.m21 = Math.fma(_r8, _r5, -(_r7 * _r3)) * _t12_inv;
+    }
+
+    /** Private column 2 of {@code invertProduct_general_identity}: computes and stores it; reached only through it. */
+    private void invertProduct_general_identity_s1154904e_c2(Double3x3Impl _dst, double _r8, double _r2, double _r6, double _r0, double _t12_inv, double _r4, double _r7) {
+        _dst.m02 = Math.fma(_r8, _r2, -(_r6 * _r0)) * _t12_inv;
+        _dst.m12 = Math.fma(_r6, _r4, -(_r7 * _r2)) * _t12_inv;
+        _dst.m22 = Math.fma(_r7, _r0, -(_r8 * _r4)) * _t12_inv;
+    }
+
 
     /**
      * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
@@ -1949,27 +2103,45 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 invertProduct_general_identity(Double3x3R other, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
-        double _t6 = Math.fma(this.m11, this.m22, -(this.m12 * this.m21));
-        double _t7 = Math.fma(this.m10, this.m21, -(this.m11 * this.m20));
-        double _t12 = Math.fma(this.m02, _t7, Math.fma(this.m00, _t6, -(this.m01 * Math.fma(this.m10, this.m22, -(this.m12 * this.m20)))));
+        double _r0 = this.m11;
+        double _r1 = this.m22;
+        double _r2 = this.m12;
+        double _r3 = this.m21;
+        double _r4 = this.m10;
+        double _r5 = this.m20;
+        double _r6 = this.m02;
+        double _r7 = this.m00;
+        double _r8 = this.m01;
+        double _t6 = Math.fma(_r0, _r1, -(_r2 * _r3));
+        double _t7 = Math.fma(_r4, _r3, -(_r0 * _r5));
+        double _t12 = Math.fma(_r6, _t7, Math.fma(_r7, _t6, -(_r8 * Math.fma(_r4, _r1, -(_r2 * _r5)))));
         double _t12_inv = 1.0 / _t12;
-        double _buf0 = _t6 * _t12_inv;
-        double _buf1 = Math.fma(this.m12, this.m20, -(this.m10 * this.m22)) * _t12_inv;
-        double _buf2 = _t7 * _t12_inv;
-        double _buf3 = Math.fma(this.m02, this.m21, -(this.m01 * this.m22)) * _t12_inv;
-        double _buf4 = Math.fma(this.m00, this.m22, -(this.m02 * this.m20)) * _t12_inv;
-        d.m21 = Math.fma(this.m01, this.m20, -(this.m00 * this.m21)) * _t12_inv;
-        double _buf5 = Math.fma(this.m01, this.m12, -(this.m02 * this.m11)) * _t12_inv;
-        d.m12 = Math.fma(this.m02, this.m10, -(this.m00 * this.m12)) * _t12_inv;
-        d.m22 = Math.fma(this.m00, this.m11, -(this.m01 * this.m10)) * _t12_inv;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m02 = _buf5;
+        invertProduct_general_identity_s1154904e_c0(d, _t6, _t12_inv, _r2, _r5, _r4, _r1, _t7);
+        invertProduct_general_identity_s1154904e_c1(d, _r6, _r3, _r8, _r1, _t12_inv, _r7, _r5);
+        invertProduct_general_identity_s1154904e_c2(d, _r8, _r2, _r6, _r0, _t12_inv, _r4, _r7);
         d.properties = 0;
         return d;
+    }
+
+    /** Private column 0 of {@code invertProduct_general_translation}: computes and stores it; reached only through it. */
+    private void invertProduct_general_translation_s1154904e_c0(Double3x3Impl _dst, double _t13, double _t18_inv, double _r3, double _t7, double _r0, double _t6, double _t5) {
+        _dst.m00 = _t13 * _t18_inv;
+        _dst.m10 = Math.fma(_r3, _t7, -(_r0 * _t6)) * _t18_inv;
+        _dst.m20 = _t5 * _t18_inv;
+    }
+
+    /** Private column 1 of {@code invertProduct_general_translation}: computes and stores it; reached only through it. */
+    private void invertProduct_general_translation_s1154904e_c1(Double3x3Impl _dst, double _r1, double _t8, double _r9, double _t6, double _t18_inv, double _r8, double _r3) {
+        _dst.m01 = Math.fma(_r1, _t8, -(_r9 * _t6)) * _t18_inv;
+        _dst.m11 = Math.fma(_r8, _t6, -(_r3 * _t8)) * _t18_inv;
+        _dst.m21 = Math.fma(_r9, _r3, -(_r8 * _r1)) * _t18_inv;
+    }
+
+    /** Private column 2 of {@code invertProduct_general_translation}: computes and stores it; reached only through it. */
+    private void invertProduct_general_translation_s1154904e_c2(Double3x3Impl _dst, double _r9, double _t7, double _r2, double _t8, double _t18_inv, double _r0, double _r8) {
+        _dst.m02 = Math.fma(_r9, _t7, -(_r2 * _t8)) * _t18_inv;
+        _dst.m12 = Math.fma(_r0, _t8, -(_r8 * _t7)) * _t18_inv;
+        _dst.m22 = Math.fma(_r8, _r2, -(_r9 * _r0)) * _t18_inv;
     }
 
 
@@ -1979,29 +2151,65 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 invertProduct_general_translation(Double3x3R other, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
-        double _t5 = Math.fma(this.m10, this.m21, -(this.m11 * this.m20));
-        double _t6 = Math.fma(other.m02(), this.m20, Math.fma(other.m12(), this.m21, this.m22));
-        double _t7 = Math.fma(other.m02(), this.m10, Math.fma(other.m12(), this.m11, this.m12));
-        double _t8 = Math.fma(other.m02(), this.m00, Math.fma(other.m12(), this.m01, this.m02));
-        double _t13 = Math.fma(this.m11, _t6, -(this.m21 * _t7));
-        double _t18 = Math.fma(_t8, _t5, Math.fma(this.m00, _t13, -(this.m01 * Math.fma(this.m10, _t6, -(this.m20 * _t7)))));
+        double _r0 = this.m10;
+        double _r1 = this.m21;
+        double _r2 = this.m11;
+        double _r3 = this.m20;
+        double _r4 = other.m02();
+        double _r5 = other.m12();
+        double _r6 = this.m22;
+        double _r7 = this.m12;
+        double _r8 = this.m00;
+        double _r9 = this.m01;
+        double _r10 = this.m02;
+        double _t5 = Math.fma(_r0, _r1, -(_r2 * _r3));
+        double _t6 = Math.fma(_r4, _r3, Math.fma(_r5, _r1, _r6));
+        double _t7 = Math.fma(_r4, _r0, Math.fma(_r5, _r2, _r7));
+        double _t8 = Math.fma(_r4, _r8, Math.fma(_r5, _r9, _r10));
+        double _t13 = Math.fma(_r2, _t6, -(_r1 * _t7));
+        double _t18 = Math.fma(_t8, _t5, Math.fma(_r8, _t13, -(_r9 * Math.fma(_r0, _t6, -(_r3 * _t7)))));
         double _t18_inv = 1.0 / _t18;
-        double _buf0 = _t13 * _t18_inv;
-        double _buf1 = Math.fma(this.m20, _t7, -(this.m10 * _t6)) * _t18_inv;
-        double _buf2 = _t5 * _t18_inv;
-        double _buf3 = Math.fma(this.m21, _t8, -(this.m01 * _t6)) * _t18_inv;
-        double _buf4 = Math.fma(this.m00, _t6, -(this.m20 * _t8)) * _t18_inv;
-        d.m21 = Math.fma(this.m01, this.m20, -(this.m00 * this.m21)) * _t18_inv;
-        d.m02 = Math.fma(this.m01, _t7, -(this.m11 * _t8)) * _t18_inv;
-        d.m12 = Math.fma(this.m10, _t8, -(this.m00 * _t7)) * _t18_inv;
-        d.m22 = Math.fma(this.m00, this.m11, -(this.m01 * this.m10)) * _t18_inv;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
+        invertProduct_general_translation_s1154904e_c0(d, _t13, _t18_inv, _r3, _t7, _r0, _t6, _t5);
+        invertProduct_general_translation_s1154904e_c1(d, _r1, _t8, _r9, _t6, _t18_inv, _r8, _r3);
+        invertProduct_general_translation_s1154904e_c2(d, _r9, _t7, _r2, _t8, _t18_inv, _r0, _r8);
         d.properties = 0;
         return d;
+    }
+
+    /** Private column 0 of {@code invertProduct_general_affine}: computes and stores it; reached only through it. */
+    private void invertProduct_general_affine_s1154904e_c0(Double3x3Impl _dst, double _t25, double _t30_inv, double _t16, double _t12, double _t15, double _t11, double _t24) {
+        _dst.m00 = _t25 * _t30_inv;
+        _dst.m10 = Math.fma(_t16, _t12, -(_t15 * _t11)) * _t30_inv;
+        _dst.m20 = _t24 * _t30_inv;
+    }
+
+    /** Private column 1 of {@code invertProduct_general_affine}: computes and stores it; reached only through it. */
+    private void invertProduct_general_affine_s1154904e_c1(Double3x3Impl _dst, double _t17, double _t10, double _t15, double _t14, double _t30_inv, double _t13, double _t12) {
+        _dst.m01 = Math.fma(_t17, _t10, -(_t15 * _t14)) * _t30_inv;
+        _dst.m11 = Math.fma(_t15, _t13, -(_t17 * _t12)) * _t30_inv;
+        _dst.m21 = Math.fma(_t12, _t14, -(_t13 * _t10)) * _t30_inv;
+    }
+
+    /** Private column 2 of {@code invertProduct_general_affine}: computes and stores it; reached only through it. */
+    private void invertProduct_general_affine_s1154904e_c2(Double3x3Impl _dst, double _t16, double _t14, double _t17, double _t9, double _t30_inv, double _t11, double _t13) {
+        _dst.m02 = Math.fma(_t16, _t14, -(_t17 * _t9)) * _t30_inv;
+        _dst.m12 = Math.fma(_t17, _t11, -(_t16 * _t13)) * _t30_inv;
+        _dst.m22 = Math.fma(_t13, _t9, -(_t11 * _t14)) * _t30_inv;
+    }
+
+    /** Private tail of {@code invertProduct_general_affine}; reached only through it. */
+    private void invertProduct_general_affine_s1154904e_tail(Double3x3Impl _dst, double _r0, double _r8, double _r2, double _r9, double _r10, double _r4, double _r11, double _r5, double _r12, double _r1, double _r3, double _r13, double _r14, double _t11, double _t10, double _t12, double _t9, double _t13) {
+        double _t14 = Math.fma(_r0, _r8, _r2 * _r9);
+        double _t15 = Math.fma(_r10, _r4, Math.fma(_r11, _r5, _r12));
+        double _t16 = Math.fma(_r10, _r1, Math.fma(_r11, _r3, _r13));
+        double _t17 = Math.fma(_r10, _r8, Math.fma(_r11, _r9, _r14));
+        double _t24 = Math.fma(_t11, _t10, -(_t12 * _t9));
+        double _t25 = Math.fma(_t15, _t9, -(_t16 * _t10));
+        double _t30 = Math.fma(_t17, _t24, Math.fma(_t13, _t25, -(_t14 * Math.fma(_t15, _t11, -(_t16 * _t12)))));
+        double _t30_inv = 1.0 / _t30;
+        invertProduct_general_affine_s1154904e_c0(_dst, _t25, _t30_inv, _t16, _t12, _t15, _t11, _t24);
+        invertProduct_general_affine_s1154904e_c1(_dst, _t17, _t10, _t15, _t14, _t30_inv, _t13, _t12);
+        invertProduct_general_affine_s1154904e_c2(_dst, _t16, _t14, _t17, _t9, _t30_inv, _t11, _t13);
     }
 
 
@@ -2011,28 +2219,27 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 invertProduct_general_affine(Double3x3R other, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
-        double _t9 = Math.fma(other.m01(), this.m10, other.m11() * this.m11);
-        double _t10 = Math.fma(other.m01(), this.m20, other.m11() * this.m21);
-        double _t11 = Math.fma(other.m00(), this.m10, other.m10() * this.m11);
-        double _t12 = Math.fma(other.m00(), this.m20, other.m10() * this.m21);
-        double _t13 = Math.fma(other.m00(), this.m00, other.m10() * this.m01);
-        double _t14 = Math.fma(other.m01(), this.m00, other.m11() * this.m01);
-        double _t15 = Math.fma(other.m02(), this.m20, Math.fma(other.m12(), this.m21, this.m22));
-        double _t16 = Math.fma(other.m02(), this.m10, Math.fma(other.m12(), this.m11, this.m12));
-        double _t17 = Math.fma(other.m02(), this.m00, Math.fma(other.m12(), this.m01, this.m02));
-        double _t24 = Math.fma(_t11, _t10, -(_t12 * _t9));
-        double _t25 = Math.fma(_t15, _t9, -(_t16 * _t10));
-        double _t30 = Math.fma(_t17, _t24, Math.fma(_t13, _t25, -(_t14 * Math.fma(_t15, _t11, -(_t16 * _t12)))));
-        double _t30_inv = 1.0 / _t30;
-        d.m00 = _t25 * _t30_inv;
-        d.m10 = Math.fma(_t16, _t12, -(_t15 * _t11)) * _t30_inv;
-        d.m20 = _t24 * _t30_inv;
-        d.m01 = Math.fma(_t17, _t10, -(_t15 * _t14)) * _t30_inv;
-        d.m11 = Math.fma(_t15, _t13, -(_t17 * _t12)) * _t30_inv;
-        d.m21 = Math.fma(_t12, _t14, -(_t13 * _t10)) * _t30_inv;
-        d.m02 = Math.fma(_t16, _t14, -(_t17 * _t9)) * _t30_inv;
-        d.m12 = Math.fma(_t17, _t11, -(_t16 * _t13)) * _t30_inv;
-        d.m22 = Math.fma(_t13, _t9, -(_t11 * _t14)) * _t30_inv;
+        double _r0 = other.m01();
+        double _r1 = this.m10;
+        double _r2 = other.m11();
+        double _r3 = this.m11;
+        double _r4 = this.m20;
+        double _r5 = this.m21;
+        double _r6 = other.m00();
+        double _r7 = other.m10();
+        double _r8 = this.m00;
+        double _r9 = this.m01;
+        double _r10 = other.m02();
+        double _r11 = other.m12();
+        double _r12 = this.m22;
+        double _r13 = this.m12;
+        double _r14 = this.m02;
+        double _t9 = Math.fma(_r0, _r1, _r2 * _r3);
+        double _t10 = Math.fma(_r0, _r4, _r2 * _r5);
+        double _t11 = Math.fma(_r6, _r1, _r7 * _r3);
+        double _t12 = Math.fma(_r6, _r4, _r7 * _r5);
+        double _t13 = Math.fma(_r6, _r8, _r7 * _r9);
+        invertProduct_general_affine_s1154904e_tail(d, _r0, _r8, _r2, _r9, _r10, _r4, _r11, _r5, _r12, _r1, _r3, _r13, _r14, _t11, _t10, _t12, _t9, _t13);
         d.properties = 0;
         return d;
     }
@@ -2133,6 +2340,40 @@ public class Double3x3Impl implements Double3x3 {
         return invertProduct_general(other, this);
     }
 
+    /** Private column 0 of {@code invertProduct}: computes and stores it; reached only through it. */
+    private void invertProduct_s34872ae5_c0(Double3x3Impl _dst, double _t33, double _t39_inv, double _t24, double _t21, double _t23, double _t19, double _t34) {
+        _dst.m00 = _t33 * _t39_inv;
+        _dst.m10 = Math.fma(_t24, _t21, -(_t23 * _t19)) * _t39_inv;
+        _dst.m20 = _t34 * _t39_inv;
+    }
+
+    /** Private column 1 of {@code invertProduct}: computes and stores it; reached only through it. */
+    private void invertProduct_s34872ae5_c1(Double3x3Impl _dst, double _t20, double _t22, double _t26, double _t19, double _t39_inv, double _t25, double _t24) {
+        _dst.m01 = Math.fma(_t20, _t22, -(_t26 * _t19)) * _t39_inv;
+        _dst.m11 = Math.fma(_t25, _t19, -(_t24 * _t22)) * _t39_inv;
+        _dst.m21 = Math.fma(_t24, _t26, -(_t25 * _t20)) * _t39_inv;
+    }
+
+    /** Private column 2 of {@code invertProduct}: computes and stores it; reached only through it. */
+    private void invertProduct_s34872ae5_c2(Double3x3Impl _dst, double _t26, double _t21, double _t18, double _t22, double _t39_inv, double _t23, double _t25) {
+        _dst.m02 = Math.fma(_t26, _t21, -(_t18 * _t22)) * _t39_inv;
+        _dst.m12 = Math.fma(_t23, _t22, -(_t25 * _t21)) * _t39_inv;
+        _dst.m22 = Math.fma(_t25, _t18, -(_t23 * _t26)) * _t39_inv;
+    }
+
+    /** Private tail of {@code invertProduct}; reached only through it. */
+    private void invertProduct_s34872ae5_tail(Double3x3Impl _dst, double m20, double _r6, double m00, double _r7, double m10, double _r8, double m21, double m01, double m11, double _t18, double _t19, double _t20, double _t21, double _t23, double _t24, double _t22) {
+        double _t25 = Math.fma(m20, _r6, Math.fma(m00, _r7, m10 * _r8));
+        double _t26 = Math.fma(m21, _r6, Math.fma(m01, _r7, m11 * _r8));
+        double _t33 = Math.fma(_t18, _t19, -(_t20 * _t21));
+        double _t34 = Math.fma(_t23, _t20, -(_t24 * _t18));
+        double _t39 = Math.fma(_t22, _t34, Math.fma(_t25, _t33, -(_t26 * Math.fma(_t23, _t19, -(_t24 * _t21)))));
+        double _t39_inv = 1.0 / _t39;
+        invertProduct_s34872ae5_c0(_dst, _t33, _t39_inv, _t24, _t21, _t23, _t19, _t34);
+        invertProduct_s34872ae5_c1(_dst, _t20, _t22, _t26, _t19, _t39_inv, _t25, _t24);
+        invertProduct_s34872ae5_c2(_dst, _t26, _t21, _t18, _t22, _t39_inv, _t23, _t25);
+    }
+
 
     /**
      * Compute the inverse of the product of this matrix and ({@code m00}, {@code m01}, {@code m02},
@@ -2159,28 +2400,23 @@ public class Double3x3Impl implements Double3x3 {
      */
     public Double3x3 invertProduct(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
-        double _t18 = Math.fma(m21, this.m12, Math.fma(m01, this.m10, m11 * this.m11));
-        double _t19 = Math.fma(m22, this.m22, Math.fma(m02, this.m20, m12 * this.m21));
-        double _t20 = Math.fma(m21, this.m22, Math.fma(m01, this.m20, m11 * this.m21));
-        double _t21 = Math.fma(m22, this.m12, Math.fma(m02, this.m10, m12 * this.m11));
-        double _t22 = Math.fma(m22, this.m02, Math.fma(m02, this.m00, m12 * this.m01));
-        double _t23 = Math.fma(m20, this.m12, Math.fma(m00, this.m10, m10 * this.m11));
-        double _t24 = Math.fma(m20, this.m22, Math.fma(m00, this.m20, m10 * this.m21));
-        double _t25 = Math.fma(m20, this.m02, Math.fma(m00, this.m00, m10 * this.m01));
-        double _t26 = Math.fma(m21, this.m02, Math.fma(m01, this.m00, m11 * this.m01));
-        double _t33 = Math.fma(_t18, _t19, -(_t20 * _t21));
-        double _t34 = Math.fma(_t23, _t20, -(_t24 * _t18));
-        double _t39 = Math.fma(_t22, _t34, Math.fma(_t25, _t33, -(_t26 * Math.fma(_t23, _t19, -(_t24 * _t21)))));
-        double _t39_inv = 1.0 / _t39;
-        d.m00 = _t33 * _t39_inv;
-        d.m10 = Math.fma(_t24, _t21, -(_t23 * _t19)) * _t39_inv;
-        d.m20 = _t34 * _t39_inv;
-        d.m01 = Math.fma(_t20, _t22, -(_t26 * _t19)) * _t39_inv;
-        d.m11 = Math.fma(_t25, _t19, -(_t24 * _t22)) * _t39_inv;
-        d.m21 = Math.fma(_t24, _t26, -(_t25 * _t20)) * _t39_inv;
-        d.m02 = Math.fma(_t26, _t21, -(_t18 * _t22)) * _t39_inv;
-        d.m12 = Math.fma(_t23, _t22, -(_t25 * _t21)) * _t39_inv;
-        d.m22 = Math.fma(_t25, _t18, -(_t23 * _t26)) * _t39_inv;
+        double _r0 = this.m12;
+        double _r1 = this.m10;
+        double _r2 = this.m11;
+        double _r3 = this.m22;
+        double _r4 = this.m20;
+        double _r5 = this.m21;
+        double _r6 = this.m02;
+        double _r7 = this.m00;
+        double _r8 = this.m01;
+        double _t18 = Math.fma(m21, _r0, Math.fma(m01, _r1, m11 * _r2));
+        double _t19 = Math.fma(m22, _r3, Math.fma(m02, _r4, m12 * _r5));
+        double _t20 = Math.fma(m21, _r3, Math.fma(m01, _r4, m11 * _r5));
+        double _t21 = Math.fma(m22, _r0, Math.fma(m02, _r1, m12 * _r2));
+        double _t22 = Math.fma(m22, _r6, Math.fma(m02, _r7, m12 * _r8));
+        double _t23 = Math.fma(m20, _r0, Math.fma(m00, _r1, m10 * _r2));
+        double _t24 = Math.fma(m20, _r3, Math.fma(m00, _r4, m10 * _r5));
+        invertProduct_s34872ae5_tail(d, m20, _r6, m00, _r7, m10, _r8, m21, m01, m11, _t18, _t19, _t20, _t21, _t23, _t24, _t22);
         d.properties = 0;
         return d;
     }
@@ -2286,6 +2522,27 @@ public class Double3x3Impl implements Double3x3 {
         return d;
     }
 
+    /** Private column 0 of {@code normal_general}: computes and stores it; reached only through it. */
+    private void normal_general_s37258727_c0(Double3x3Impl _dst, double _t6, double _t12_inv, double _r6, double _r3, double _r8, double _r1, double _r2, double _r0) {
+        _dst.m00 = _t6 * _t12_inv;
+        _dst.m10 = Math.fma(_r6, _r3, -(_r8 * _r1)) * _t12_inv;
+        _dst.m20 = Math.fma(_r8, _r2, -(_r6 * _r0)) * _t12_inv;
+    }
+
+    /** Private column 1 of {@code normal_general}: computes and stores it; reached only through it. */
+    private void normal_general_s37258727_c1(Double3x3Impl _dst, double _r2, double _r5, double _r4, double _r1, double _t12_inv, double _r7, double _r6) {
+        _dst.m01 = Math.fma(_r2, _r5, -(_r4 * _r1)) * _t12_inv;
+        _dst.m11 = Math.fma(_r7, _r1, -(_r6 * _r5)) * _t12_inv;
+        _dst.m21 = Math.fma(_r6, _r4, -(_r7 * _r2)) * _t12_inv;
+    }
+
+    /** Private column 2 of {@code normal_general}: computes and stores it; reached only through it. */
+    private void normal_general_s37258727_c2(Double3x3Impl _dst, double _t7, double _t12_inv, double _r8, double _r5, double _r7, double _r3, double _r0, double _r4) {
+        _dst.m02 = _t7 * _t12_inv;
+        _dst.m12 = Math.fma(_r8, _r5, -(_r7 * _r3)) * _t12_inv;
+        _dst.m22 = Math.fma(_r7, _r0, -(_r8 * _r4)) * _t12_inv;
+    }
+
 
     /**
      * Private body of {@code normal}, specialized by runtime matrix properties; reached only
@@ -2293,25 +2550,22 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 normal_general(@Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
-        double _t6 = Math.fma(this.m11, this.m22, -(this.m12 * this.m21));
-        double _t7 = Math.fma(this.m10, this.m21, -(this.m11 * this.m20));
-        double _t12 = Math.fma(this.m02, _t7, Math.fma(this.m00, _t6, -(this.m01 * Math.fma(this.m10, this.m22, -(this.m12 * this.m20)))));
+        double _r0 = this.m11;
+        double _r1 = this.m22;
+        double _r2 = this.m12;
+        double _r3 = this.m21;
+        double _r4 = this.m10;
+        double _r5 = this.m20;
+        double _r6 = this.m02;
+        double _r7 = this.m00;
+        double _r8 = this.m01;
+        double _t6 = Math.fma(_r0, _r1, -(_r2 * _r3));
+        double _t7 = Math.fma(_r4, _r3, -(_r0 * _r5));
+        double _t12 = Math.fma(_r6, _t7, Math.fma(_r7, _t6, -(_r8 * Math.fma(_r4, _r1, -(_r2 * _r5)))));
         double _t12_inv = 1.0 / _t12;
-        double _buf0 = _t6 * _t12_inv;
-        double _buf1 = Math.fma(this.m02, this.m21, -(this.m01 * this.m22)) * _t12_inv;
-        double _buf2 = Math.fma(this.m01, this.m12, -(this.m02 * this.m11)) * _t12_inv;
-        double _buf3 = Math.fma(this.m12, this.m20, -(this.m10 * this.m22)) * _t12_inv;
-        double _buf4 = Math.fma(this.m00, this.m22, -(this.m02 * this.m20)) * _t12_inv;
-        double _buf5 = Math.fma(this.m02, this.m10, -(this.m00 * this.m12)) * _t12_inv;
-        d.m02 = _t7 * _t12_inv;
-        d.m12 = Math.fma(this.m01, this.m20, -(this.m00 * this.m21)) * _t12_inv;
-        d.m22 = Math.fma(this.m00, this.m11, -(this.m01 * this.m10)) * _t12_inv;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
+        normal_general_s37258727_c0(d, _t6, _t12_inv, _r6, _r3, _r8, _r1, _r2, _r0);
+        normal_general_s37258727_c1(d, _r2, _r5, _r4, _r1, _t12_inv, _r7, _r6);
+        normal_general_s37258727_c2(d, _t7, _t12_inv, _r8, _r5, _r7, _r3, _r0, _r4);
         d.properties = 0;
         return d;
     }
@@ -7344,6 +7598,49 @@ public class Double3x3Impl implements Double3x3 {
         return lookAlong(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code lookAlong}: computes and stores it; reached only through it. */
+    private void lookAlong_s2d83ce2f_c0(Double3x3Impl _dst, double _r0, double _t26, double _r1, double _t27, double _r2, double _t28, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m00 = Math.fma(_r0, _t26, Math.fma(_r1, _t27, _r2 * _t28));
+        _dst.m10 = Math.fma(_r3, _t26, Math.fma(_r4, _t27, _r5 * _t28));
+        _dst.m20 = Math.fma(_r6, _t26, Math.fma(_r7, _t27, _r8 * _t28));
+    }
+
+    /** Private column 1 of {@code lookAlong}: computes and stores it; reached only through it. */
+    private void lookAlong_s2d83ce2f_c1(Double3x3Impl _dst, double _r0, double _t35, double _r1, double _t36, double _r2, double _t37, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m01 = Math.fma(_r0, _t35, Math.fma(_r1, _t36, _r2 * _t37));
+        _dst.m11 = Math.fma(_r3, _t35, Math.fma(_r4, _t36, _r5 * _t37));
+        _dst.m21 = Math.fma(_r6, _t35, Math.fma(_r7, _t36, _r8 * _t37));
+    }
+
+    /** Private column 2 of {@code lookAlong}: computes and stores it; reached only through it. */
+    private void lookAlong_s2d83ce2f_c2(Double3x3Impl _dst, double _r0, double _t9, double _r1, double _t8, double _r2, double _t7, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m02 = Math.fma(_r0, _t9, Math.fma(_r1, _t8, _r2 * _t7));
+        _dst.m12 = Math.fma(_r3, _t9, Math.fma(_r4, _t8, _r5 * _t7));
+        _dst.m22 = Math.fma(_r6, _t9, Math.fma(_r7, _t8, _r8 * _t7));
+    }
+
+    /** Private tail of {@code lookAlong}; reached only through it. */
+    private void lookAlong_s2d83ce2f_tail(Double3x3Impl _dst, double _t16, double _t17, double _t18, double _t8, double _t7, double _t9, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        double _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
+        double _t22 = (1.0 / Math.sqrt(_t21));
+        double _t26, _t27, _t28;
+        if (_t21 > 0.0) {
+            _t26 = _t16 * _t22;
+            _t27 = _t17 * _t22;
+            _t28 = _t18 * _t22;
+        } else {
+            _t26 = 0.0;
+            _t27 = 0.0;
+            _t28 = 0.0;
+        }
+        double _t35 = Math.fma(_t8, _t28, -(_t7 * _t27));
+        double _t36 = Math.fma(_t7, _t26, -(_t9 * _t28));
+        double _t37 = Math.fma(_t9, _t27, -(_t8 * _t26));
+        lookAlong_s2d83ce2f_c0(_dst, _r0, _t26, _r1, _t27, _r2, _t28, _r3, _r4, _r5, _r6, _r7, _r8);
+        lookAlong_s2d83ce2f_c1(_dst, _r0, _t35, _r1, _t36, _r2, _t37, _r3, _r4, _r5, _r6, _r7, _r8);
+        lookAlong_s2d83ce2f_c2(_dst, _r0, _t9, _r1, _t8, _r2, _t7, _r3, _r4, _r5, _r6, _r7, _r8);
+    }
+
 
     /**
      * Apply a rotation transformation that makes {@code +z} point along ({@code dirX},
@@ -7364,6 +7661,15 @@ public class Double3x3Impl implements Double3x3 {
      */
     public Double3x3 lookAlong(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
+        double _r0 = this.m02;
+        double _r1 = this.m00;
+        double _r2 = this.m01;
+        double _r3 = this.m12;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
+        double _r6 = this.m22;
+        double _r7 = this.m20;
+        double _r8 = this.m21;
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
@@ -7379,36 +7685,7 @@ public class Double3x3Impl implements Double3x3 {
         double _t16 = Math.fma(upX, _t7, -(upY * _t8));
         double _t17 = Math.fma(upY, _t9, -(upZ * _t7));
         double _t18 = Math.fma(upZ, _t8, -(upX * _t9));
-        double _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
-        double _t22 = (1.0 / Math.sqrt(_t21));
-        double _t26, _t27, _t28;
-        if (_t21 > 0.0) {
-            _t26 = _t16 * _t22;
-            _t27 = _t17 * _t22;
-            _t28 = _t18 * _t22;
-        } else {
-            _t26 = 0.0;
-            _t27 = 0.0;
-            _t28 = 0.0;
-        }
-        double _t35 = Math.fma(_t8, _t28, -(_t7 * _t27));
-        double _t36 = Math.fma(_t7, _t26, -(_t9 * _t28));
-        double _t37 = Math.fma(_t9, _t27, -(_t8 * _t26));
-        double _buf0 = Math.fma(this.m02, _t26, Math.fma(this.m00, _t27, this.m01 * _t28));
-        double _buf1 = Math.fma(this.m12, _t26, Math.fma(this.m10, _t27, this.m11 * _t28));
-        double _buf2 = Math.fma(this.m22, _t26, Math.fma(this.m20, _t27, this.m21 * _t28));
-        double _buf3 = Math.fma(this.m02, _t35, Math.fma(this.m00, _t36, this.m01 * _t37));
-        double _buf4 = Math.fma(this.m12, _t35, Math.fma(this.m10, _t36, this.m11 * _t37));
-        double _buf5 = Math.fma(this.m22, _t35, Math.fma(this.m20, _t36, this.m21 * _t37));
-        d.m02 = Math.fma(this.m02, _t9, Math.fma(this.m00, _t8, this.m01 * _t7));
-        d.m12 = Math.fma(this.m12, _t9, Math.fma(this.m10, _t8, this.m11 * _t7));
-        d.m22 = Math.fma(this.m22, _t9, Math.fma(this.m20, _t8, this.m21 * _t7));
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
+        lookAlong_s2d83ce2f_tail(d, _t16, _t17, _t18, _t8, _t7, _t9, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8);
         d.properties = 0;
         return d;
     }
@@ -8597,6 +8874,27 @@ public class Double3x3Impl implements Double3x3 {
         return d;
     }
 
+    /** Private column 0 of {@code preRotateAxis_orthogonal}: computes and stores it; reached only through it. */
+    private void preRotateAxis_orthogonal_s140fcbd8_c0(Double3x3Impl _dst, double _r0, double _t14, double _r1, double _t18, double _t16, double _t15, double _t19, double _t17) {
+        _dst.m00 = Math.fma(_r0, _t14, _r1 * _t18);
+        _dst.m10 = Math.fma(_r0, _t16, _r1 * _t15);
+        _dst.m20 = Math.fma(_r0, _t19, _r1 * _t17);
+    }
+
+    /** Private column 1 of {@code preRotateAxis_orthogonal}: computes and stores it; reached only through it. */
+    private void preRotateAxis_orthogonal_s140fcbd8_c1(Double3x3Impl _dst, double _r2, double _t14, double _r3, double _t18, double _t16, double _t15, double _t19, double _t17) {
+        _dst.m01 = Math.fma(_r2, _t14, _r3 * _t18);
+        _dst.m11 = Math.fma(_r2, _t16, _r3 * _t15);
+        _dst.m21 = Math.fma(_r2, _t19, _r3 * _t17);
+    }
+
+    /** Private column 2 of {@code preRotateAxis_orthogonal}: computes and stores it; reached only through it. */
+    private void preRotateAxis_orthogonal_s140fcbd8_c2(Double3x3Impl _dst, double axisY, double _t1, double _t2, double _t6, double _r4, double _t14, double _r5, double _t18, double _t16, double _t15, double _t8, double axisX, double _t19, double _t17, double axisZ, double _t0) {
+        _dst.m02 = Math.fma(axisY, _t1, _t2 * _t6) + Math.fma(_r4, _t14, _r5 * _t18);
+        _dst.m12 = Math.fma(_r4, _t16, _r5 * _t15) + Math.fma(_t2, _t8, -(axisX * _t1));
+        _dst.m22 = Math.fma(_r4, _t19, Math.fma(_r5, _t17, Math.fma(_t2, axisZ * axisZ, _t0)));
+    }
+
 
     /**
      * Private body of {@code preRotateAxis}, specialized by runtime matrix properties; reached only
@@ -8604,6 +8902,12 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 preRotateAxis_orthogonal(double angle, double axisX, double axisY, double axisZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
+        double _r0 = this.m00;
+        double _r1 = this.m10;
+        double _r2 = this.m01;
+        double _r3 = this.m11;
+        double _r4 = this.m02;
+        double _r5 = this.m12;
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
         double _t2 = 1.0 - _t0;
@@ -8616,23 +8920,42 @@ public class Double3x3Impl implements Double3x3 {
         double _t17 = Math.fma(axisX, _t1, _t2 * _t8);
         double _t18 = Math.fma(_t2, _t4, -(axisZ * _t1));
         double _t19 = Math.fma(_t2, _t6, -(axisY * _t1));
-        double _buf0 = Math.fma(this.m00, _t14, this.m10 * _t18);
-        double _buf1 = Math.fma(this.m00, _t16, this.m10 * _t15);
-        d.m20 = Math.fma(this.m00, _t19, this.m10 * _t17);
-        double _buf2 = Math.fma(this.m01, _t14, this.m11 * _t18);
-        double _buf3 = Math.fma(this.m01, _t16, this.m11 * _t15);
-        d.m21 = Math.fma(this.m01, _t19, this.m11 * _t17);
-        double _buf4 = Math.fma(axisY, _t1, _t2 * _t6) + Math.fma(this.m02, _t14, this.m12 * _t18);
-        double _buf5 = Math.fma(this.m02, _t16, this.m12 * _t15) + Math.fma(_t2, _t8, -(axisX * _t1));
-        d.m22 = Math.fma(this.m02, _t19, Math.fma(this.m12, _t17, Math.fma(_t2, axisZ * axisZ, _t0)));
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m01 = _buf2;
-        d.m11 = _buf3;
-        d.m02 = _buf4;
-        d.m12 = _buf5;
+        preRotateAxis_orthogonal_s140fcbd8_c0(d, _r0, _t14, _r1, _t18, _t16, _t15, _t19, _t17);
+        preRotateAxis_orthogonal_s140fcbd8_c1(d, _r2, _t14, _r3, _t18, _t16, _t15, _t19, _t17);
+        preRotateAxis_orthogonal_s140fcbd8_c2(d, axisY, _t1, _t2, _t6, _r4, _t14, _r5, _t18, _t16, _t15, _t8, axisX, _t19, _t17, axisZ, _t0);
         d.properties = 0;
         return d;
+    }
+
+    /** Private column 0 of {@code preRotateAxis_general}: computes and stores it; reached only through it. */
+    private void preRotateAxis_general_s140fcbd8_c0(Double3x3Impl _dst, double _r0, double _t21, double _r1, double _t18, double _r2, double _t24, double _t25, double _t22, double _t19, double _t20, double _t26, double _t23) {
+        _dst.m00 = Math.fma(_r0, _t21, Math.fma(_r1, _t18, _r2 * _t24));
+        _dst.m10 = Math.fma(_r0, _t25, Math.fma(_r1, _t22, _r2 * _t19));
+        _dst.m20 = Math.fma(_r0, _t20, Math.fma(_r1, _t26, _r2 * _t23));
+    }
+
+    /** Private column 1 of {@code preRotateAxis_general}: computes and stores it; reached only through it. */
+    private void preRotateAxis_general_s140fcbd8_c1(Double3x3Impl _dst, double _r3, double _t21, double _r4, double _t18, double _r5, double _t24, double _t25, double _t22, double _t19, double _t20, double _t26, double _t23) {
+        _dst.m01 = Math.fma(_r3, _t21, Math.fma(_r4, _t18, _r5 * _t24));
+        _dst.m11 = Math.fma(_r3, _t25, Math.fma(_r4, _t22, _r5 * _t19));
+        _dst.m21 = Math.fma(_r3, _t20, Math.fma(_r4, _t26, _r5 * _t23));
+    }
+
+    /** Private column 2 of {@code preRotateAxis_general}: computes and stores it; reached only through it. */
+    private void preRotateAxis_general_s140fcbd8_c2(Double3x3Impl _dst, double _r6, double _t21, double _r7, double _t18, double _r8, double _t24, double _t25, double _t22, double _t19, double _t20, double _t26, double _t23) {
+        _dst.m02 = Math.fma(_r6, _t21, Math.fma(_r7, _t18, _r8 * _t24));
+        _dst.m12 = Math.fma(_r6, _t25, Math.fma(_r7, _t22, _r8 * _t19));
+        _dst.m22 = Math.fma(_r6, _t20, Math.fma(_r7, _t26, _r8 * _t23));
+    }
+
+    /** Private tail of {@code preRotateAxis_general}; reached only through it. */
+    private void preRotateAxis_general_s140fcbd8_tail(Double3x3Impl _dst, double _t2, double _t5, double axisZ, double _t0, double _t7, double axisX, double _t3, double axisY, double _r0, double _t21, double _r1, double _t18, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _t22, double _t19, double _t20, double _t23) {
+        double _t24 = Math.fma(_t2, _t5, -(axisZ * _t0));
+        double _t25 = Math.fma(_t2, _t7, -(axisX * _t0));
+        double _t26 = Math.fma(_t2, _t3, -(axisY * _t0));
+        preRotateAxis_general_s140fcbd8_c0(_dst, _r0, _t21, _r1, _t18, _r2, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
+        preRotateAxis_general_s140fcbd8_c1(_dst, _r3, _t21, _r4, _t18, _r5, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
+        preRotateAxis_general_s140fcbd8_c2(_dst, _r6, _t21, _r7, _t18, _r8, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
     }
 
 
@@ -8642,6 +8965,15 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 preRotateAxis_general(double angle, double axisX, double axisY, double axisZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
+        double _r0 = this.m20;
+        double _r1 = this.m00;
+        double _r2 = this.m10;
+        double _r3 = this.m21;
+        double _r4 = this.m01;
+        double _r5 = this.m11;
+        double _r6 = this.m22;
+        double _r7 = this.m02;
+        double _r8 = this.m12;
         double _t0 = Math.sin(angle);
         double _t1 = Math.cos(angle);
         double _t2 = 1.0 - _t1;
@@ -8654,24 +8986,7 @@ public class Double3x3Impl implements Double3x3 {
         double _t21 = Math.fma(axisY, _t0, _t2 * _t3);
         double _t22 = Math.fma(axisZ, _t0, _t2 * _t5);
         double _t23 = Math.fma(axisX, _t0, _t2 * _t7);
-        double _t24 = Math.fma(_t2, _t5, -(axisZ * _t0));
-        double _t25 = Math.fma(_t2, _t7, -(axisX * _t0));
-        double _t26 = Math.fma(_t2, _t3, -(axisY * _t0));
-        double _buf0 = Math.fma(this.m20, _t21, Math.fma(this.m00, _t18, this.m10 * _t24));
-        double _buf1 = Math.fma(this.m20, _t25, Math.fma(this.m00, _t22, this.m10 * _t19));
-        d.m20 = Math.fma(this.m20, _t20, Math.fma(this.m00, _t26, this.m10 * _t23));
-        double _buf2 = Math.fma(this.m21, _t21, Math.fma(this.m01, _t18, this.m11 * _t24));
-        double _buf3 = Math.fma(this.m21, _t25, Math.fma(this.m01, _t22, this.m11 * _t19));
-        d.m21 = Math.fma(this.m21, _t20, Math.fma(this.m01, _t26, this.m11 * _t23));
-        double _buf4 = Math.fma(this.m22, _t21, Math.fma(this.m02, _t18, this.m12 * _t24));
-        double _buf5 = Math.fma(this.m22, _t25, Math.fma(this.m02, _t22, this.m12 * _t19));
-        d.m22 = Math.fma(this.m22, _t20, Math.fma(this.m02, _t26, this.m12 * _t23));
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m01 = _buf2;
-        d.m11 = _buf3;
-        d.m02 = _buf4;
-        d.m12 = _buf5;
+        preRotateAxis_general_s140fcbd8_tail(d, _t2, _t5, axisZ, _t0, _t7, axisX, _t3, axisY, _r0, _t21, _r1, _t18, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _t22, _t19, _t20, _t23);
         d.properties = 0;
         return d;
     }
@@ -10617,6 +10932,27 @@ public class Double3x3Impl implements Double3x3 {
         return d;
     }
 
+    /** Private column 0 of {@code rotateAxis_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateAxis_orthogonal_s140fcbd8_c0(Double3x3Impl _dst, double _r0, double _t24, double _r1, double _t18, double _r2, double _t21, double _r3, double _r4, double _r5) {
+        _dst.m00 = Math.fma(_r0, _t24, Math.fma(_r1, _t18, _r2 * _t21));
+        _dst.m10 = Math.fma(_r3, _t24, Math.fma(_r4, _t18, _r5 * _t21));
+        _dst.m20 = _t24;
+    }
+
+    /** Private column 1 of {@code rotateAxis_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateAxis_orthogonal_s140fcbd8_c1(Double3x3Impl _dst, double _r0, double _t22, double _r1, double _t25, double _r2, double _t19, double _r3, double _r4, double _r5) {
+        _dst.m01 = Math.fma(_r0, _t22, Math.fma(_r1, _t25, _r2 * _t19));
+        _dst.m11 = Math.fma(_r3, _t22, Math.fma(_r4, _t25, _r5 * _t19));
+        _dst.m21 = _t22;
+    }
+
+    /** Private column 2 of {@code rotateAxis_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateAxis_orthogonal_s140fcbd8_c2(Double3x3Impl _dst, double _r0, double _t20, double _r1, double _t23, double _r2, double _t26, double _r3, double _r4, double _r5) {
+        _dst.m02 = Math.fma(_r0, _t20, Math.fma(_r1, _t23, _r2 * _t26));
+        _dst.m12 = Math.fma(_r3, _t20, Math.fma(_r4, _t23, _r5 * _t26));
+        _dst.m22 = _t20;
+    }
+
 
     /**
      * Private body of {@code rotateAxis}, specialized by runtime matrix properties; reached only
@@ -10624,6 +10960,12 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 rotateAxis_orthogonal(double angle, double axisX, double axisY, double axisZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
+        double _r0 = this.m02;
+        double _r1 = this.m00;
+        double _r2 = this.m01;
+        double _r3 = this.m12;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
         double _t2 = 1.0 - _t0;
@@ -10639,21 +10981,42 @@ public class Double3x3Impl implements Double3x3 {
         double _t24 = Math.fma(_t2, _t3, -(axisY * _t1));
         double _t25 = Math.fma(_t2, _t6, -(axisZ * _t1));
         double _t26 = Math.fma(_t2, _t7, -(axisX * _t1));
-        double _buf0 = Math.fma(this.m02, _t24, Math.fma(this.m00, _t18, this.m01 * _t21));
-        double _buf1 = Math.fma(this.m12, _t24, Math.fma(this.m10, _t18, this.m11 * _t21));
-        d.m20 = _t24;
-        double _buf2 = Math.fma(this.m02, _t22, Math.fma(this.m00, _t25, this.m01 * _t19));
-        double _buf3 = Math.fma(this.m12, _t22, Math.fma(this.m10, _t25, this.m11 * _t19));
-        d.m21 = _t22;
-        d.m02 = Math.fma(this.m02, _t20, Math.fma(this.m00, _t23, this.m01 * _t26));
-        d.m12 = Math.fma(this.m12, _t20, Math.fma(this.m10, _t23, this.m11 * _t26));
-        d.m22 = _t20;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m01 = _buf2;
-        d.m11 = _buf3;
+        rotateAxis_orthogonal_s140fcbd8_c0(d, _r0, _t24, _r1, _t18, _r2, _t21, _r3, _r4, _r5);
+        rotateAxis_orthogonal_s140fcbd8_c1(d, _r0, _t22, _r1, _t25, _r2, _t19, _r3, _r4, _r5);
+        rotateAxis_orthogonal_s140fcbd8_c2(d, _r0, _t20, _r1, _t23, _r2, _t26, _r3, _r4, _r5);
         d.properties = 0;
         return d;
+    }
+
+    /** Private column 0 of {@code rotateAxis_general}: computes and stores it; reached only through it. */
+    private void rotateAxis_general_s140fcbd8_c0(Double3x3Impl _dst, double _r0, double _t24, double _r1, double _t18, double _r2, double _t21, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m00 = Math.fma(_r0, _t24, Math.fma(_r1, _t18, _r2 * _t21));
+        _dst.m10 = Math.fma(_r3, _t24, Math.fma(_r4, _t18, _r5 * _t21));
+        _dst.m20 = Math.fma(_r6, _t24, Math.fma(_r7, _t18, _r8 * _t21));
+    }
+
+    /** Private column 1 of {@code rotateAxis_general}: computes and stores it; reached only through it. */
+    private void rotateAxis_general_s140fcbd8_c1(Double3x3Impl _dst, double _r0, double _t22, double _r1, double _t25, double _r2, double _t19, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m01 = Math.fma(_r0, _t22, Math.fma(_r1, _t25, _r2 * _t19));
+        _dst.m11 = Math.fma(_r3, _t22, Math.fma(_r4, _t25, _r5 * _t19));
+        _dst.m21 = Math.fma(_r6, _t22, Math.fma(_r7, _t25, _r8 * _t19));
+    }
+
+    /** Private column 2 of {@code rotateAxis_general}: computes and stores it; reached only through it. */
+    private void rotateAxis_general_s140fcbd8_c2(Double3x3Impl _dst, double _r0, double _t20, double _r1, double _t23, double _r2, double _t26, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m02 = Math.fma(_r0, _t20, Math.fma(_r1, _t23, _r2 * _t26));
+        _dst.m12 = Math.fma(_r3, _t20, Math.fma(_r4, _t23, _r5 * _t26));
+        _dst.m22 = Math.fma(_r6, _t20, Math.fma(_r7, _t23, _r8 * _t26));
+    }
+
+    /** Private tail of {@code rotateAxis_general}; reached only through it. */
+    private void rotateAxis_general_s140fcbd8_tail(Double3x3Impl _dst, double _t2, double _t3, double axisY, double _t1, double _t6, double axisZ, double _t7, double axisX, double _r0, double _r1, double _t18, double _r2, double _t21, double _t22, double _t19, double _t20, double _t23, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        double _t24 = Math.fma(_t2, _t3, -(axisY * _t1));
+        double _t25 = Math.fma(_t2, _t6, -(axisZ * _t1));
+        double _t26 = Math.fma(_t2, _t7, -(axisX * _t1));
+        rotateAxis_general_s140fcbd8_c0(_dst, _r0, _t24, _r1, _t18, _r2, _t21, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateAxis_general_s140fcbd8_c1(_dst, _r0, _t22, _r1, _t25, _r2, _t19, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateAxis_general_s140fcbd8_c2(_dst, _r0, _t20, _r1, _t23, _r2, _t26, _r3, _r4, _r5, _r6, _r7, _r8);
     }
 
 
@@ -10663,6 +11026,15 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 rotateAxis_general(double angle, double axisX, double axisY, double axisZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
+        double _r0 = this.m02;
+        double _r1 = this.m00;
+        double _r2 = this.m01;
+        double _r3 = this.m12;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
+        double _r6 = this.m22;
+        double _r7 = this.m20;
+        double _r8 = this.m21;
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
         double _t2 = 1.0 - _t0;
@@ -10675,24 +11047,7 @@ public class Double3x3Impl implements Double3x3 {
         double _t21 = Math.fma(axisZ, _t1, _t2 * _t6);
         double _t22 = Math.fma(axisX, _t1, _t2 * _t7);
         double _t23 = Math.fma(axisY, _t1, _t2 * _t3);
-        double _t24 = Math.fma(_t2, _t3, -(axisY * _t1));
-        double _t25 = Math.fma(_t2, _t6, -(axisZ * _t1));
-        double _t26 = Math.fma(_t2, _t7, -(axisX * _t1));
-        double _buf0 = Math.fma(this.m02, _t24, Math.fma(this.m00, _t18, this.m01 * _t21));
-        double _buf1 = Math.fma(this.m12, _t24, Math.fma(this.m10, _t18, this.m11 * _t21));
-        double _buf2 = Math.fma(this.m22, _t24, Math.fma(this.m20, _t18, this.m21 * _t21));
-        double _buf3 = Math.fma(this.m02, _t22, Math.fma(this.m00, _t25, this.m01 * _t19));
-        double _buf4 = Math.fma(this.m12, _t22, Math.fma(this.m10, _t25, this.m11 * _t19));
-        double _buf5 = Math.fma(this.m22, _t22, Math.fma(this.m20, _t25, this.m21 * _t19));
-        d.m02 = Math.fma(this.m02, _t20, Math.fma(this.m00, _t23, this.m01 * _t26));
-        d.m12 = Math.fma(this.m12, _t20, Math.fma(this.m10, _t23, this.m11 * _t26));
-        d.m22 = Math.fma(this.m22, _t20, Math.fma(this.m20, _t23, this.m21 * _t26));
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
+        rotateAxis_general_s140fcbd8_tail(d, _t2, _t3, axisY, _t1, _t6, axisZ, _t7, axisX, _r0, _r1, _t18, _r2, _t21, _t22, _t19, _t20, _t23, _r3, _r4, _r5, _r6, _r7, _r8);
         d.properties = 0;
         return d;
     }
@@ -11643,6 +11998,27 @@ public class Double3x3Impl implements Double3x3 {
         return d;
     }
 
+    /** Private column 0 of {@code rotateXYZ_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateXYZ_orthogonal_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t20, double _r1, double _t7, double _r2, double _t18, double _r3, double _r4, double _r5) {
+        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t7, _r2 * _t18));
+        _dst.m10 = Math.fma(_r3, _t20, Math.fma(_r4, _t7, _r5 * _t18));
+        _dst.m20 = _t20;
+    }
+
+    /** Private column 1 of {@code rotateXYZ_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateXYZ_orthogonal_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t19, double _r2, double _t21, double _r1, double _t11, double _r3, double _r5, double _r4) {
+        _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r2, _t21, -(_r1 * _t11)));
+        _dst.m11 = Math.fma(_r3, _t19, Math.fma(_r5, _t21, -(_r4 * _t11)));
+        _dst.m21 = _t19;
+    }
+
+    /** Private column 2 of {@code rotateXYZ_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateXYZ_orthogonal_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t12, double _r1, double _t2, double _r2, double _t13, double _r3, double _r4, double _r5) {
+        _dst.m02 = Math.fma(_r0, _t12, Math.fma(_r1, _t2, -(_r2 * _t13)));
+        _dst.m12 = Math.fma(_r3, _t12, Math.fma(_r4, _t2, -(_r5 * _t13)));
+        _dst.m22 = _t12;
+    }
+
 
     /**
      * Private body of {@code rotateXYZ}, specialized by runtime matrix properties; reached only
@@ -11650,6 +12026,12 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 rotateXYZ_orthogonal(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
+        double _r0 = this.m02;
+        double _r1 = this.m00;
+        double _r2 = this.m01;
+        double _r3 = this.m12;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleY);
@@ -11666,21 +12048,32 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t6, _t1, _t0 * _t4);
         double _t20 = Math.fma(_t0, _t1, -(_t6 * _t4));
         double _t21 = Math.fma(_t3, _t4, -(_t8 * _t1));
-        double _buf0 = Math.fma(this.m02, _t20, Math.fma(this.m00, _t7, this.m01 * _t18));
-        double _buf1 = Math.fma(this.m12, _t20, Math.fma(this.m10, _t7, this.m11 * _t18));
-        d.m20 = _t20;
-        double _buf2 = Math.fma(this.m02, _t19, Math.fma(this.m01, _t21, -(this.m00 * _t11)));
-        double _buf3 = Math.fma(this.m12, _t19, Math.fma(this.m11, _t21, -(this.m10 * _t11)));
-        d.m21 = _t19;
-        d.m02 = Math.fma(this.m02, _t12, Math.fma(this.m00, _t2, -(this.m01 * _t13)));
-        d.m12 = Math.fma(this.m12, _t12, Math.fma(this.m10, _t2, -(this.m11 * _t13)));
-        d.m22 = _t12;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m01 = _buf2;
-        d.m11 = _buf3;
+        rotateXYZ_orthogonal_s406dbcde_c0(d, _r0, _t20, _r1, _t7, _r2, _t18, _r3, _r4, _r5);
+        rotateXYZ_orthogonal_s406dbcde_c1(d, _r0, _t19, _r2, _t21, _r1, _t11, _r3, _r5, _r4);
+        rotateXYZ_orthogonal_s406dbcde_c2(d, _r0, _t12, _r1, _t2, _r2, _t13, _r3, _r4, _r5);
         d.properties = 0;
         return d;
+    }
+
+    /** Private column 0 of {@code rotateXYZ_general}: computes and stores it; reached only through it. */
+    private void rotateXYZ_general_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t20, double _r1, double _t7, double _r2, double _t18, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t7, _r2 * _t18));
+        _dst.m10 = Math.fma(_r3, _t20, Math.fma(_r4, _t7, _r5 * _t18));
+        _dst.m20 = Math.fma(_r6, _t20, Math.fma(_r7, _t7, _r8 * _t18));
+    }
+
+    /** Private column 1 of {@code rotateXYZ_general}: computes and stores it; reached only through it. */
+    private void rotateXYZ_general_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t19, double _r2, double _t21, double _r1, double _t11, double _r3, double _r5, double _r4, double _r6, double _r8, double _r7) {
+        _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r2, _t21, -(_r1 * _t11)));
+        _dst.m11 = Math.fma(_r3, _t19, Math.fma(_r5, _t21, -(_r4 * _t11)));
+        _dst.m21 = Math.fma(_r6, _t19, Math.fma(_r8, _t21, -(_r7 * _t11)));
+    }
+
+    /** Private column 2 of {@code rotateXYZ_general}: computes and stores it; reached only through it. */
+    private void rotateXYZ_general_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t12, double _r1, double _t2, double _r2, double _t13, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m02 = Math.fma(_r0, _t12, Math.fma(_r1, _t2, -(_r2 * _t13)));
+        _dst.m12 = Math.fma(_r3, _t12, Math.fma(_r4, _t2, -(_r5 * _t13)));
+        _dst.m22 = Math.fma(_r6, _t12, Math.fma(_r7, _t2, -(_r8 * _t13)));
     }
 
 
@@ -11690,6 +12083,15 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 rotateXYZ_general(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
+        double _r0 = this.m02;
+        double _r1 = this.m00;
+        double _r2 = this.m01;
+        double _r3 = this.m12;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
+        double _r6 = this.m22;
+        double _r7 = this.m20;
+        double _r8 = this.m21;
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleY);
@@ -11706,21 +12108,9 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t6, _t1, _t0 * _t4);
         double _t20 = Math.fma(_t0, _t1, -(_t6 * _t4));
         double _t21 = Math.fma(_t3, _t4, -(_t8 * _t1));
-        double _buf0 = Math.fma(this.m02, _t20, Math.fma(this.m00, _t7, this.m01 * _t18));
-        double _buf1 = Math.fma(this.m12, _t20, Math.fma(this.m10, _t7, this.m11 * _t18));
-        double _buf2 = Math.fma(this.m22, _t20, Math.fma(this.m20, _t7, this.m21 * _t18));
-        double _buf3 = Math.fma(this.m02, _t19, Math.fma(this.m01, _t21, -(this.m00 * _t11)));
-        double _buf4 = Math.fma(this.m12, _t19, Math.fma(this.m11, _t21, -(this.m10 * _t11)));
-        double _buf5 = Math.fma(this.m22, _t19, Math.fma(this.m21, _t21, -(this.m20 * _t11)));
-        d.m02 = Math.fma(this.m02, _t12, Math.fma(this.m00, _t2, -(this.m01 * _t13)));
-        d.m12 = Math.fma(this.m12, _t12, Math.fma(this.m10, _t2, -(this.m11 * _t13)));
-        d.m22 = Math.fma(this.m22, _t12, Math.fma(this.m20, _t2, -(this.m21 * _t13)));
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
+        rotateXYZ_general_s406dbcde_c0(d, _r0, _t20, _r1, _t7, _r2, _t18, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateXYZ_general_s406dbcde_c1(d, _r0, _t19, _r2, _t21, _r1, _t11, _r3, _r5, _r4, _r6, _r8, _r7);
+        rotateXYZ_general_s406dbcde_c2(d, _r0, _t12, _r1, _t2, _r2, _t13, _r3, _r4, _r5, _r6, _r7, _r8);
         d.properties = 0;
         return d;
     }
@@ -11832,6 +12222,27 @@ public class Double3x3Impl implements Double3x3 {
         return d;
     }
 
+    /** Private column 0 of {@code rotateXZY_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateXZY_orthogonal_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t20, double _r1, double _t8, double _r2, double _t18, double _r3, double _r4, double _r5) {
+        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t8, _r2 * _t18));
+        _dst.m10 = Math.fma(_r3, _t20, Math.fma(_r4, _t8, _r5 * _t18));
+        _dst.m20 = _t20;
+    }
+
+    /** Private column 1 of {@code rotateXZY_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateXZY_orthogonal_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t11, double _r2, double _t12, double _r1, double _t1, double _r3, double _r5, double _r4) {
+        _dst.m01 = Math.fma(_r0, _t11, Math.fma(_r2, _t12, -(_r1 * _t1)));
+        _dst.m11 = Math.fma(_r3, _t11, Math.fma(_r5, _t12, -(_r4 * _t1)));
+        _dst.m21 = _t11;
+    }
+
+    /** Private column 2 of {@code rotateXZY_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateXZY_orthogonal_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t19, double _r1, double _t14, double _r2, double _t21, double _r3, double _r4, double _r5) {
+        _dst.m02 = Math.fma(_r0, _t19, Math.fma(_r1, _t14, _r2 * _t21));
+        _dst.m12 = Math.fma(_r3, _t19, Math.fma(_r4, _t14, _r5 * _t21));
+        _dst.m22 = _t19;
+    }
+
 
     /**
      * Private body of {@code rotateXZY}, specialized by runtime matrix properties; reached only
@@ -11839,6 +12250,12 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 rotateXZY_orthogonal(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
+        double _r0 = this.m02;
+        double _r1 = this.m00;
+        double _r2 = this.m01;
+        double _r3 = this.m12;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleZ);
         double _t2 = Math.cos(angleY);
@@ -11855,21 +12272,32 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t6, _t3, _t4 * _t2);
         double _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
         double _t21 = Math.fma(_t9, _t3, -(_t0 * _t2));
-        double _buf0 = Math.fma(this.m02, _t20, Math.fma(this.m00, _t8, this.m01 * _t18));
-        double _buf1 = Math.fma(this.m12, _t20, Math.fma(this.m10, _t8, this.m11 * _t18));
-        d.m20 = _t20;
-        double _buf2 = Math.fma(this.m02, _t11, Math.fma(this.m01, _t12, -(this.m00 * _t1)));
-        double _buf3 = Math.fma(this.m12, _t11, Math.fma(this.m11, _t12, -(this.m10 * _t1)));
-        d.m21 = _t11;
-        d.m02 = Math.fma(this.m02, _t19, Math.fma(this.m00, _t14, this.m01 * _t21));
-        d.m12 = Math.fma(this.m12, _t19, Math.fma(this.m10, _t14, this.m11 * _t21));
-        d.m22 = _t19;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m01 = _buf2;
-        d.m11 = _buf3;
+        rotateXZY_orthogonal_s406dbcde_c0(d, _r0, _t20, _r1, _t8, _r2, _t18, _r3, _r4, _r5);
+        rotateXZY_orthogonal_s406dbcde_c1(d, _r0, _t11, _r2, _t12, _r1, _t1, _r3, _r5, _r4);
+        rotateXZY_orthogonal_s406dbcde_c2(d, _r0, _t19, _r1, _t14, _r2, _t21, _r3, _r4, _r5);
         d.properties = 0;
         return d;
+    }
+
+    /** Private column 0 of {@code rotateXZY_general}: computes and stores it; reached only through it. */
+    private void rotateXZY_general_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t20, double _r1, double _t8, double _r2, double _t18, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t8, _r2 * _t18));
+        _dst.m10 = Math.fma(_r3, _t20, Math.fma(_r4, _t8, _r5 * _t18));
+        _dst.m20 = Math.fma(_r6, _t20, Math.fma(_r7, _t8, _r8 * _t18));
+    }
+
+    /** Private column 1 of {@code rotateXZY_general}: computes and stores it; reached only through it. */
+    private void rotateXZY_general_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t11, double _r2, double _t12, double _r1, double _t1, double _r3, double _r5, double _r4, double _r6, double _r8, double _r7) {
+        _dst.m01 = Math.fma(_r0, _t11, Math.fma(_r2, _t12, -(_r1 * _t1)));
+        _dst.m11 = Math.fma(_r3, _t11, Math.fma(_r5, _t12, -(_r4 * _t1)));
+        _dst.m21 = Math.fma(_r6, _t11, Math.fma(_r8, _t12, -(_r7 * _t1)));
+    }
+
+    /** Private column 2 of {@code rotateXZY_general}: computes and stores it; reached only through it. */
+    private void rotateXZY_general_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t19, double _r1, double _t14, double _r2, double _t21, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m02 = Math.fma(_r0, _t19, Math.fma(_r1, _t14, _r2 * _t21));
+        _dst.m12 = Math.fma(_r3, _t19, Math.fma(_r4, _t14, _r5 * _t21));
+        _dst.m22 = Math.fma(_r6, _t19, Math.fma(_r7, _t14, _r8 * _t21));
     }
 
 
@@ -11879,6 +12307,15 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 rotateXZY_general(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
+        double _r0 = this.m02;
+        double _r1 = this.m00;
+        double _r2 = this.m01;
+        double _r3 = this.m12;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
+        double _r6 = this.m22;
+        double _r7 = this.m20;
+        double _r8 = this.m21;
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleZ);
         double _t2 = Math.cos(angleY);
@@ -11895,21 +12332,9 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t6, _t3, _t4 * _t2);
         double _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
         double _t21 = Math.fma(_t9, _t3, -(_t0 * _t2));
-        double _buf0 = Math.fma(this.m02, _t20, Math.fma(this.m00, _t8, this.m01 * _t18));
-        double _buf1 = Math.fma(this.m12, _t20, Math.fma(this.m10, _t8, this.m11 * _t18));
-        double _buf2 = Math.fma(this.m22, _t20, Math.fma(this.m20, _t8, this.m21 * _t18));
-        double _buf3 = Math.fma(this.m02, _t11, Math.fma(this.m01, _t12, -(this.m00 * _t1)));
-        double _buf4 = Math.fma(this.m12, _t11, Math.fma(this.m11, _t12, -(this.m10 * _t1)));
-        double _buf5 = Math.fma(this.m22, _t11, Math.fma(this.m21, _t12, -(this.m20 * _t1)));
-        d.m02 = Math.fma(this.m02, _t19, Math.fma(this.m00, _t14, this.m01 * _t21));
-        d.m12 = Math.fma(this.m12, _t19, Math.fma(this.m10, _t14, this.m11 * _t21));
-        d.m22 = Math.fma(this.m22, _t19, Math.fma(this.m20, _t14, this.m21 * _t21));
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
+        rotateXZY_general_s406dbcde_c0(d, _r0, _t20, _r1, _t8, _r2, _t18, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateXZY_general_s406dbcde_c1(d, _r0, _t11, _r2, _t12, _r1, _t1, _r3, _r5, _r4, _r6, _r8, _r7);
+        rotateXZY_general_s406dbcde_c2(d, _r0, _t19, _r1, _t14, _r2, _t21, _r3, _r4, _r5, _r6, _r7, _r8);
         d.properties = 0;
         return d;
     }
@@ -12802,6 +13227,27 @@ public class Double3x3Impl implements Double3x3 {
         return d;
     }
 
+    /** Private column 0 of {@code rotateYXZ_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateYXZ_orthogonal_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t20, double _r1, double _t18, double _r2, double _t10, double _r3, double _r4, double _r5) {
+        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t18, _r2 * _t10));
+        _dst.m10 = Math.fma(_r3, _t20, Math.fma(_r4, _t18, _r5 * _t10));
+        _dst.m20 = _t20;
+    }
+
+    /** Private column 1 of {@code rotateYXZ_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateYXZ_orthogonal_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t19, double _r1, double _t21, double _r2, double _t13, double _r3, double _r4, double _r5) {
+        _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r1, _t21, _r2 * _t13));
+        _dst.m11 = Math.fma(_r3, _t19, Math.fma(_r4, _t21, _r5 * _t13));
+        _dst.m21 = _t19;
+    }
+
+    /** Private column 2 of {@code rotateYXZ_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateYXZ_orthogonal_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t14, double _r1, double _t15, double _r2, double _t0, double _r3, double _r4, double _r5) {
+        _dst.m02 = Math.fma(_r0, _t14, Math.fma(_r1, _t15, -(_r2 * _t0)));
+        _dst.m12 = Math.fma(_r3, _t14, Math.fma(_r4, _t15, -(_r5 * _t0)));
+        _dst.m22 = _t14;
+    }
+
 
     /**
      * Private body of {@code rotateYXZ}, specialized by runtime matrix properties; reached only
@@ -12809,6 +13255,12 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 rotateYXZ_orthogonal(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
+        double _r0 = this.m02;
+        double _r1 = this.m00;
+        double _r2 = this.m01;
+        double _r3 = this.m12;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
         double _t0 = Math.sin(angleX);
         double _t1 = Math.cos(angleY);
         double _t2 = Math.sin(angleZ);
@@ -12825,21 +13277,32 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t6, _t4, _t3 * _t2);
         double _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
         double _t21 = Math.fma(_t8, _t4, -(_t2 * _t1));
-        double _buf0 = Math.fma(this.m02, _t20, Math.fma(this.m00, _t18, this.m01 * _t10));
-        double _buf1 = Math.fma(this.m12, _t20, Math.fma(this.m10, _t18, this.m11 * _t10));
-        d.m20 = _t20;
-        double _buf2 = Math.fma(this.m02, _t19, Math.fma(this.m00, _t21, this.m01 * _t13));
-        double _buf3 = Math.fma(this.m12, _t19, Math.fma(this.m10, _t21, this.m11 * _t13));
-        d.m21 = _t19;
-        d.m02 = Math.fma(this.m02, _t14, Math.fma(this.m00, _t15, -(this.m01 * _t0)));
-        d.m12 = Math.fma(this.m12, _t14, Math.fma(this.m10, _t15, -(this.m11 * _t0)));
-        d.m22 = _t14;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m01 = _buf2;
-        d.m11 = _buf3;
+        rotateYXZ_orthogonal_s406dbcde_c0(d, _r0, _t20, _r1, _t18, _r2, _t10, _r3, _r4, _r5);
+        rotateYXZ_orthogonal_s406dbcde_c1(d, _r0, _t19, _r1, _t21, _r2, _t13, _r3, _r4, _r5);
+        rotateYXZ_orthogonal_s406dbcde_c2(d, _r0, _t14, _r1, _t15, _r2, _t0, _r3, _r4, _r5);
         d.properties = 0;
         return d;
+    }
+
+    /** Private column 0 of {@code rotateYXZ_general}: computes and stores it; reached only through it. */
+    private void rotateYXZ_general_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t20, double _r1, double _t18, double _r2, double _t10, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t18, _r2 * _t10));
+        _dst.m10 = Math.fma(_r3, _t20, Math.fma(_r4, _t18, _r5 * _t10));
+        _dst.m20 = Math.fma(_r6, _t20, Math.fma(_r7, _t18, _r8 * _t10));
+    }
+
+    /** Private column 1 of {@code rotateYXZ_general}: computes and stores it; reached only through it. */
+    private void rotateYXZ_general_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t19, double _r1, double _t21, double _r2, double _t13, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r1, _t21, _r2 * _t13));
+        _dst.m11 = Math.fma(_r3, _t19, Math.fma(_r4, _t21, _r5 * _t13));
+        _dst.m21 = Math.fma(_r6, _t19, Math.fma(_r7, _t21, _r8 * _t13));
+    }
+
+    /** Private column 2 of {@code rotateYXZ_general}: computes and stores it; reached only through it. */
+    private void rotateYXZ_general_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t14, double _r1, double _t15, double _r2, double _t0, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m02 = Math.fma(_r0, _t14, Math.fma(_r1, _t15, -(_r2 * _t0)));
+        _dst.m12 = Math.fma(_r3, _t14, Math.fma(_r4, _t15, -(_r5 * _t0)));
+        _dst.m22 = Math.fma(_r6, _t14, Math.fma(_r7, _t15, -(_r8 * _t0)));
     }
 
 
@@ -12849,6 +13312,15 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 rotateYXZ_general(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
+        double _r0 = this.m02;
+        double _r1 = this.m00;
+        double _r2 = this.m01;
+        double _r3 = this.m12;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
+        double _r6 = this.m22;
+        double _r7 = this.m20;
+        double _r8 = this.m21;
         double _t0 = Math.sin(angleX);
         double _t1 = Math.cos(angleY);
         double _t2 = Math.sin(angleZ);
@@ -12865,21 +13337,9 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t6, _t4, _t3 * _t2);
         double _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
         double _t21 = Math.fma(_t8, _t4, -(_t2 * _t1));
-        double _buf0 = Math.fma(this.m02, _t20, Math.fma(this.m00, _t18, this.m01 * _t10));
-        double _buf1 = Math.fma(this.m12, _t20, Math.fma(this.m10, _t18, this.m11 * _t10));
-        double _buf2 = Math.fma(this.m22, _t20, Math.fma(this.m20, _t18, this.m21 * _t10));
-        double _buf3 = Math.fma(this.m02, _t19, Math.fma(this.m00, _t21, this.m01 * _t13));
-        double _buf4 = Math.fma(this.m12, _t19, Math.fma(this.m10, _t21, this.m11 * _t13));
-        double _buf5 = Math.fma(this.m22, _t19, Math.fma(this.m20, _t21, this.m21 * _t13));
-        d.m02 = Math.fma(this.m02, _t14, Math.fma(this.m00, _t15, -(this.m01 * _t0)));
-        d.m12 = Math.fma(this.m12, _t14, Math.fma(this.m10, _t15, -(this.m11 * _t0)));
-        d.m22 = Math.fma(this.m22, _t14, Math.fma(this.m20, _t15, -(this.m21 * _t0)));
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
+        rotateYXZ_general_s406dbcde_c0(d, _r0, _t20, _r1, _t18, _r2, _t10, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateYXZ_general_s406dbcde_c1(d, _r0, _t19, _r1, _t21, _r2, _t13, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateYXZ_general_s406dbcde_c2(d, _r0, _t14, _r1, _t15, _r2, _t0, _r3, _r4, _r5, _r6, _r7, _r8);
         d.properties = 0;
         return d;
     }
@@ -12991,6 +13451,27 @@ public class Double3x3Impl implements Double3x3 {
         return d;
     }
 
+    /** Private column 0 of {@code rotateYZX_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateYZX_orthogonal_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t6, double _r1, double _t7, double _r2, double _t3, double _r3, double _r4, double _r5) {
+        _dst.m00 = Math.fma(-_r0, _t6, Math.fma(_r1, _t7, _r2 * _t3));
+        _dst.m10 = Math.fma(-_r3, _t6, Math.fma(_r4, _t7, _r5 * _t3));
+        _dst.m20 = -_t6;
+    }
+
+    /** Private column 1 of {@code rotateYZX_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateYZX_orthogonal_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t18, double _r1, double _t20, double _r2, double _t11, double _r3, double _r4, double _r5) {
+        _dst.m01 = Math.fma(_r0, _t18, Math.fma(_r1, _t20, _r2 * _t11));
+        _dst.m11 = Math.fma(_r3, _t18, Math.fma(_r4, _t20, _r5 * _t11));
+        _dst.m21 = _t18;
+    }
+
+    /** Private column 2 of {@code rotateYZX_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateYZX_orthogonal_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t21, double _r1, double _t19, double _r2, double _t13, double _r3, double _r4, double _r5) {
+        _dst.m02 = Math.fma(_r0, _t21, Math.fma(_r1, _t19, -(_r2 * _t13)));
+        _dst.m12 = Math.fma(_r3, _t21, Math.fma(_r4, _t19, -(_r5 * _t13)));
+        _dst.m22 = _t21;
+    }
+
 
     /**
      * Private body of {@code rotateYZX}, specialized by runtime matrix properties; reached only
@@ -12998,6 +13479,12 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 rotateYZX_orthogonal(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
+        double _r0 = this.m02;
+        double _r1 = this.m00;
+        double _r2 = this.m01;
+        double _r3 = this.m12;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
         double _t0 = Math.sin(angleY);
         double _t1 = Math.cos(angleZ);
         double _t2 = Math.cos(angleY);
@@ -13014,21 +13501,32 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t10, _t5, _t0 * _t4);
         double _t20 = Math.fma(_t5, _t0, -(_t10 * _t4));
         double _t21 = Math.fma(_t4, _t2, -(_t8 * _t5));
-        double _buf0 = Math.fma(-this.m02, _t6, Math.fma(this.m00, _t7, this.m01 * _t3));
-        double _buf1 = Math.fma(-this.m12, _t6, Math.fma(this.m10, _t7, this.m11 * _t3));
-        d.m20 = -_t6;
-        double _buf2 = Math.fma(this.m02, _t18, Math.fma(this.m00, _t20, this.m01 * _t11));
-        double _buf3 = Math.fma(this.m12, _t18, Math.fma(this.m10, _t20, this.m11 * _t11));
-        d.m21 = _t18;
-        d.m02 = Math.fma(this.m02, _t21, Math.fma(this.m00, _t19, -(this.m01 * _t13)));
-        d.m12 = Math.fma(this.m12, _t21, Math.fma(this.m10, _t19, -(this.m11 * _t13)));
-        d.m22 = _t21;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m01 = _buf2;
-        d.m11 = _buf3;
+        rotateYZX_orthogonal_s406dbcde_c0(d, _r0, _t6, _r1, _t7, _r2, _t3, _r3, _r4, _r5);
+        rotateYZX_orthogonal_s406dbcde_c1(d, _r0, _t18, _r1, _t20, _r2, _t11, _r3, _r4, _r5);
+        rotateYZX_orthogonal_s406dbcde_c2(d, _r0, _t21, _r1, _t19, _r2, _t13, _r3, _r4, _r5);
         d.properties = 0;
         return d;
+    }
+
+    /** Private column 0 of {@code rotateYZX_general}: computes and stores it; reached only through it. */
+    private void rotateYZX_general_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t6, double _r1, double _t7, double _r2, double _t3, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m00 = Math.fma(-_r0, _t6, Math.fma(_r1, _t7, _r2 * _t3));
+        _dst.m10 = Math.fma(-_r3, _t6, Math.fma(_r4, _t7, _r5 * _t3));
+        _dst.m20 = Math.fma(-_r6, _t6, Math.fma(_r7, _t7, _r8 * _t3));
+    }
+
+    /** Private column 1 of {@code rotateYZX_general}: computes and stores it; reached only through it. */
+    private void rotateYZX_general_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t18, double _r1, double _t20, double _r2, double _t11, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m01 = Math.fma(_r0, _t18, Math.fma(_r1, _t20, _r2 * _t11));
+        _dst.m11 = Math.fma(_r3, _t18, Math.fma(_r4, _t20, _r5 * _t11));
+        _dst.m21 = Math.fma(_r6, _t18, Math.fma(_r7, _t20, _r8 * _t11));
+    }
+
+    /** Private column 2 of {@code rotateYZX_general}: computes and stores it; reached only through it. */
+    private void rotateYZX_general_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t21, double _r1, double _t19, double _r2, double _t13, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m02 = Math.fma(_r0, _t21, Math.fma(_r1, _t19, -(_r2 * _t13)));
+        _dst.m12 = Math.fma(_r3, _t21, Math.fma(_r4, _t19, -(_r5 * _t13)));
+        _dst.m22 = Math.fma(_r6, _t21, Math.fma(_r7, _t19, -(_r8 * _t13)));
     }
 
 
@@ -13038,6 +13536,15 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 rotateYZX_general(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
+        double _r0 = this.m02;
+        double _r1 = this.m00;
+        double _r2 = this.m01;
+        double _r3 = this.m12;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
+        double _r6 = this.m22;
+        double _r7 = this.m20;
+        double _r8 = this.m21;
         double _t0 = Math.sin(angleY);
         double _t1 = Math.cos(angleZ);
         double _t2 = Math.cos(angleY);
@@ -13054,21 +13561,9 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t10, _t5, _t0 * _t4);
         double _t20 = Math.fma(_t5, _t0, -(_t10 * _t4));
         double _t21 = Math.fma(_t4, _t2, -(_t8 * _t5));
-        double _buf0 = Math.fma(-this.m02, _t6, Math.fma(this.m00, _t7, this.m01 * _t3));
-        double _buf1 = Math.fma(-this.m12, _t6, Math.fma(this.m10, _t7, this.m11 * _t3));
-        double _buf2 = Math.fma(-this.m22, _t6, Math.fma(this.m20, _t7, this.m21 * _t3));
-        double _buf3 = Math.fma(this.m02, _t18, Math.fma(this.m00, _t20, this.m01 * _t11));
-        double _buf4 = Math.fma(this.m12, _t18, Math.fma(this.m10, _t20, this.m11 * _t11));
-        double _buf5 = Math.fma(this.m22, _t18, Math.fma(this.m20, _t20, this.m21 * _t11));
-        d.m02 = Math.fma(this.m02, _t21, Math.fma(this.m00, _t19, -(this.m01 * _t13)));
-        d.m12 = Math.fma(this.m12, _t21, Math.fma(this.m10, _t19, -(this.m11 * _t13)));
-        d.m22 = Math.fma(this.m22, _t21, Math.fma(this.m20, _t19, -(this.m21 * _t13)));
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
+        rotateYZX_general_s406dbcde_c0(d, _r0, _t6, _r1, _t7, _r2, _t3, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateYZX_general_s406dbcde_c1(d, _r0, _t18, _r1, _t20, _r2, _t11, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateYZX_general_s406dbcde_c2(d, _r0, _t21, _r1, _t19, _r2, _t13, _r3, _r4, _r5, _r6, _r7, _r8);
         d.properties = 0;
         return d;
     }
@@ -13899,6 +14394,27 @@ public class Double3x3Impl implements Double3x3 {
         return d;
     }
 
+    /** Private column 0 of {@code rotateZXY_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateZXY_orthogonal_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t6, double _r1, double _t20, double _r2, double _t18, double _r3, double _r4, double _r5) {
+        _dst.m00 = Math.fma(-_r0, _t6, Math.fma(_r1, _t20, _r2 * _t18));
+        _dst.m10 = Math.fma(-_r3, _t6, Math.fma(_r4, _t20, _r5 * _t18));
+        _dst.m20 = -_t6;
+    }
+
+    /** Private column 1 of {@code rotateZXY_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateZXY_orthogonal_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t4, double _r2, double _t10, double _r1, double _t11, double _r3, double _r5, double _r4) {
+        _dst.m01 = Math.fma(_r0, _t4, Math.fma(_r2, _t10, -(_r1 * _t11)));
+        _dst.m11 = Math.fma(_r3, _t4, Math.fma(_r5, _t10, -(_r4 * _t11)));
+        _dst.m21 = _t4;
+    }
+
+    /** Private column 2 of {@code rotateZXY_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateZXY_orthogonal_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t12, double _r1, double _t19, double _r2, double _t21, double _r3, double _r4, double _r5) {
+        _dst.m02 = Math.fma(_r0, _t12, Math.fma(_r1, _t19, _r2 * _t21));
+        _dst.m12 = Math.fma(_r3, _t12, Math.fma(_r4, _t19, _r5 * _t21));
+        _dst.m22 = _t12;
+    }
+
 
     /**
      * Private body of {@code rotateZXY}, specialized by runtime matrix properties; reached only
@@ -13906,6 +14422,12 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 rotateZXY_orthogonal(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
+        double _r0 = this.m02;
+        double _r1 = this.m00;
+        double _r2 = this.m01;
+        double _r3 = this.m12;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
         double _t0 = Math.sin(angleY);
         double _t1 = Math.cos(angleX);
         double _t2 = Math.cos(angleY);
@@ -13922,21 +14444,32 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t7, _t2, _t0 * _t3);
         double _t20 = Math.fma(_t2, _t3, -(_t7 * _t0));
         double _t21 = Math.fma(_t0, _t5, -(_t8 * _t2));
-        double _buf0 = Math.fma(-this.m02, _t6, Math.fma(this.m00, _t20, this.m01 * _t18));
-        double _buf1 = Math.fma(-this.m12, _t6, Math.fma(this.m10, _t20, this.m11 * _t18));
-        d.m20 = -_t6;
-        double _buf2 = Math.fma(this.m02, _t4, Math.fma(this.m01, _t10, -(this.m00 * _t11)));
-        double _buf3 = Math.fma(this.m12, _t4, Math.fma(this.m11, _t10, -(this.m10 * _t11)));
-        d.m21 = _t4;
-        d.m02 = Math.fma(this.m02, _t12, Math.fma(this.m00, _t19, this.m01 * _t21));
-        d.m12 = Math.fma(this.m12, _t12, Math.fma(this.m10, _t19, this.m11 * _t21));
-        d.m22 = _t12;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m01 = _buf2;
-        d.m11 = _buf3;
+        rotateZXY_orthogonal_s406dbcde_c0(d, _r0, _t6, _r1, _t20, _r2, _t18, _r3, _r4, _r5);
+        rotateZXY_orthogonal_s406dbcde_c1(d, _r0, _t4, _r2, _t10, _r1, _t11, _r3, _r5, _r4);
+        rotateZXY_orthogonal_s406dbcde_c2(d, _r0, _t12, _r1, _t19, _r2, _t21, _r3, _r4, _r5);
         d.properties = 0;
         return d;
+    }
+
+    /** Private column 0 of {@code rotateZXY_general}: computes and stores it; reached only through it. */
+    private void rotateZXY_general_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t6, double _r1, double _t20, double _r2, double _t18, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m00 = Math.fma(-_r0, _t6, Math.fma(_r1, _t20, _r2 * _t18));
+        _dst.m10 = Math.fma(-_r3, _t6, Math.fma(_r4, _t20, _r5 * _t18));
+        _dst.m20 = Math.fma(-_r6, _t6, Math.fma(_r7, _t20, _r8 * _t18));
+    }
+
+    /** Private column 1 of {@code rotateZXY_general}: computes and stores it; reached only through it. */
+    private void rotateZXY_general_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t4, double _r2, double _t10, double _r1, double _t11, double _r3, double _r5, double _r4, double _r6, double _r8, double _r7) {
+        _dst.m01 = Math.fma(_r0, _t4, Math.fma(_r2, _t10, -(_r1 * _t11)));
+        _dst.m11 = Math.fma(_r3, _t4, Math.fma(_r5, _t10, -(_r4 * _t11)));
+        _dst.m21 = Math.fma(_r6, _t4, Math.fma(_r8, _t10, -(_r7 * _t11)));
+    }
+
+    /** Private column 2 of {@code rotateZXY_general}: computes and stores it; reached only through it. */
+    private void rotateZXY_general_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t12, double _r1, double _t19, double _r2, double _t21, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m02 = Math.fma(_r0, _t12, Math.fma(_r1, _t19, _r2 * _t21));
+        _dst.m12 = Math.fma(_r3, _t12, Math.fma(_r4, _t19, _r5 * _t21));
+        _dst.m22 = Math.fma(_r6, _t12, Math.fma(_r7, _t19, _r8 * _t21));
     }
 
 
@@ -13946,6 +14479,15 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 rotateZXY_general(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
+        double _r0 = this.m02;
+        double _r1 = this.m00;
+        double _r2 = this.m01;
+        double _r3 = this.m12;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
+        double _r6 = this.m22;
+        double _r7 = this.m20;
+        double _r8 = this.m21;
         double _t0 = Math.sin(angleY);
         double _t1 = Math.cos(angleX);
         double _t2 = Math.cos(angleY);
@@ -13962,21 +14504,9 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t7, _t2, _t0 * _t3);
         double _t20 = Math.fma(_t2, _t3, -(_t7 * _t0));
         double _t21 = Math.fma(_t0, _t5, -(_t8 * _t2));
-        double _buf0 = Math.fma(-this.m02, _t6, Math.fma(this.m00, _t20, this.m01 * _t18));
-        double _buf1 = Math.fma(-this.m12, _t6, Math.fma(this.m10, _t20, this.m11 * _t18));
-        double _buf2 = Math.fma(-this.m22, _t6, Math.fma(this.m20, _t20, this.m21 * _t18));
-        double _buf3 = Math.fma(this.m02, _t4, Math.fma(this.m01, _t10, -(this.m00 * _t11)));
-        double _buf4 = Math.fma(this.m12, _t4, Math.fma(this.m11, _t10, -(this.m10 * _t11)));
-        double _buf5 = Math.fma(this.m22, _t4, Math.fma(this.m21, _t10, -(this.m20 * _t11)));
-        d.m02 = Math.fma(this.m02, _t12, Math.fma(this.m00, _t19, this.m01 * _t21));
-        d.m12 = Math.fma(this.m12, _t12, Math.fma(this.m10, _t19, this.m11 * _t21));
-        d.m22 = Math.fma(this.m22, _t12, Math.fma(this.m20, _t19, this.m21 * _t21));
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
+        rotateZXY_general_s406dbcde_c0(d, _r0, _t6, _r1, _t20, _r2, _t18, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateZXY_general_s406dbcde_c1(d, _r0, _t4, _r2, _t10, _r1, _t11, _r3, _r5, _r4, _r6, _r8, _r7);
+        rotateZXY_general_s406dbcde_c2(d, _r0, _t12, _r1, _t19, _r2, _t21, _r3, _r4, _r5, _r6, _r7, _r8);
         d.properties = 0;
         return d;
     }
@@ -14087,6 +14617,27 @@ public class Double3x3Impl implements Double3x3 {
         return d;
     }
 
+    /** Private column 0 of {@code rotateZYX_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateZYX_orthogonal_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t0, double _r1, double _t6, double _r2, double _t7, double _r3, double _r4, double _r5) {
+        _dst.m00 = Math.fma(-_r0, _t0, Math.fma(_r1, _t6, _r2 * _t7));
+        _dst.m10 = Math.fma(-_r3, _t0, Math.fma(_r4, _t6, _r5 * _t7));
+        _dst.m20 = -_t0;
+    }
+
+    /** Private column 1 of {@code rotateZYX_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateZYX_orthogonal_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t8, double _r1, double _t20, double _r2, double _t18, double _r3, double _r4, double _r5) {
+        _dst.m01 = Math.fma(_r0, _t8, Math.fma(_r1, _t20, _r2 * _t18));
+        _dst.m11 = Math.fma(_r3, _t8, Math.fma(_r4, _t20, _r5 * _t18));
+        _dst.m21 = _t8;
+    }
+
+    /** Private column 2 of {@code rotateZYX_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateZYX_orthogonal_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t13, double _r1, double _t19, double _r2, double _t21, double _r3, double _r4, double _r5) {
+        _dst.m02 = Math.fma(_r0, _t13, Math.fma(_r1, _t19, _r2 * _t21));
+        _dst.m12 = Math.fma(_r3, _t13, Math.fma(_r4, _t19, _r5 * _t21));
+        _dst.m22 = _t13;
+    }
+
 
     /**
      * Private body of {@code rotateZYX}, specialized by runtime matrix properties; reached only
@@ -14094,6 +14645,12 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 rotateZYX_orthogonal(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
+        double _r0 = this.m02;
+        double _r1 = this.m00;
+        double _r2 = this.m01;
+        double _r3 = this.m12;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
         double _t0 = Math.sin(angleY);
         double _t1 = Math.cos(angleY);
         double _t2 = Math.cos(angleZ);
@@ -14110,21 +14667,32 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t9, _t5, _t4 * _t3);
         double _t20 = Math.fma(_t9, _t4, -(_t3 * _t5));
         double _t21 = Math.fma(_t11, _t5, -(_t4 * _t2));
-        double _buf0 = Math.fma(-this.m02, _t0, Math.fma(this.m00, _t6, this.m01 * _t7));
-        double _buf1 = Math.fma(-this.m12, _t0, Math.fma(this.m10, _t6, this.m11 * _t7));
-        d.m20 = -_t0;
-        double _buf2 = Math.fma(this.m02, _t8, Math.fma(this.m00, _t20, this.m01 * _t18));
-        double _buf3 = Math.fma(this.m12, _t8, Math.fma(this.m10, _t20, this.m11 * _t18));
-        d.m21 = _t8;
-        d.m02 = Math.fma(this.m02, _t13, Math.fma(this.m00, _t19, this.m01 * _t21));
-        d.m12 = Math.fma(this.m12, _t13, Math.fma(this.m10, _t19, this.m11 * _t21));
-        d.m22 = _t13;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m01 = _buf2;
-        d.m11 = _buf3;
+        rotateZYX_orthogonal_s406dbcde_c0(d, _r0, _t0, _r1, _t6, _r2, _t7, _r3, _r4, _r5);
+        rotateZYX_orthogonal_s406dbcde_c1(d, _r0, _t8, _r1, _t20, _r2, _t18, _r3, _r4, _r5);
+        rotateZYX_orthogonal_s406dbcde_c2(d, _r0, _t13, _r1, _t19, _r2, _t21, _r3, _r4, _r5);
         d.properties = 0;
         return d;
+    }
+
+    /** Private column 0 of {@code rotateZYX_general}: computes and stores it; reached only through it. */
+    private void rotateZYX_general_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t0, double _r1, double _t6, double _r2, double _t7, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m00 = Math.fma(-_r0, _t0, Math.fma(_r1, _t6, _r2 * _t7));
+        _dst.m10 = Math.fma(-_r3, _t0, Math.fma(_r4, _t6, _r5 * _t7));
+        _dst.m20 = Math.fma(-_r6, _t0, Math.fma(_r7, _t6, _r8 * _t7));
+    }
+
+    /** Private column 1 of {@code rotateZYX_general}: computes and stores it; reached only through it. */
+    private void rotateZYX_general_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t8, double _r1, double _t20, double _r2, double _t18, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m01 = Math.fma(_r0, _t8, Math.fma(_r1, _t20, _r2 * _t18));
+        _dst.m11 = Math.fma(_r3, _t8, Math.fma(_r4, _t20, _r5 * _t18));
+        _dst.m21 = Math.fma(_r6, _t8, Math.fma(_r7, _t20, _r8 * _t18));
+    }
+
+    /** Private column 2 of {@code rotateZYX_general}: computes and stores it; reached only through it. */
+    private void rotateZYX_general_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t13, double _r1, double _t19, double _r2, double _t21, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+        _dst.m02 = Math.fma(_r0, _t13, Math.fma(_r1, _t19, _r2 * _t21));
+        _dst.m12 = Math.fma(_r3, _t13, Math.fma(_r4, _t19, _r5 * _t21));
+        _dst.m22 = Math.fma(_r6, _t13, Math.fma(_r7, _t19, _r8 * _t21));
     }
 
 
@@ -14134,6 +14702,15 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3x3 rotateZYX_general(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
+        double _r0 = this.m02;
+        double _r1 = this.m00;
+        double _r2 = this.m01;
+        double _r3 = this.m12;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
+        double _r6 = this.m22;
+        double _r7 = this.m20;
+        double _r8 = this.m21;
         double _t0 = Math.sin(angleY);
         double _t1 = Math.cos(angleY);
         double _t2 = Math.cos(angleZ);
@@ -14150,21 +14727,9 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t9, _t5, _t4 * _t3);
         double _t20 = Math.fma(_t9, _t4, -(_t3 * _t5));
         double _t21 = Math.fma(_t11, _t5, -(_t4 * _t2));
-        double _buf0 = Math.fma(-this.m02, _t0, Math.fma(this.m00, _t6, this.m01 * _t7));
-        double _buf1 = Math.fma(-this.m12, _t0, Math.fma(this.m10, _t6, this.m11 * _t7));
-        double _buf2 = Math.fma(-this.m22, _t0, Math.fma(this.m20, _t6, this.m21 * _t7));
-        double _buf3 = Math.fma(this.m02, _t8, Math.fma(this.m00, _t20, this.m01 * _t18));
-        double _buf4 = Math.fma(this.m12, _t8, Math.fma(this.m10, _t20, this.m11 * _t18));
-        double _buf5 = Math.fma(this.m22, _t8, Math.fma(this.m20, _t20, this.m21 * _t18));
-        d.m02 = Math.fma(this.m02, _t13, Math.fma(this.m00, _t19, this.m01 * _t21));
-        d.m12 = Math.fma(this.m12, _t13, Math.fma(this.m10, _t19, this.m11 * _t21));
-        d.m22 = Math.fma(this.m22, _t13, Math.fma(this.m20, _t19, this.m21 * _t21));
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
+        rotateZYX_general_s406dbcde_c0(d, _r0, _t0, _r1, _t6, _r2, _t7, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateZYX_general_s406dbcde_c1(d, _r0, _t8, _r1, _t20, _r2, _t18, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateZYX_general_s406dbcde_c2(d, _r0, _t13, _r1, _t19, _r2, _t21, _r3, _r4, _r5, _r6, _r7, _r8);
         d.properties = 0;
         return d;
     }

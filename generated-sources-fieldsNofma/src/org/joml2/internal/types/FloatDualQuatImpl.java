@@ -3597,6 +3597,38 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return d;
     }
 
+    /** Private column 0 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s5af251ec_c0(Float4x4Impl _dst, float _t12, float _t10, float _t3, float _t2, float _t5, float _t4) {
+        _dst.m00 = _t12 - _t10;
+        _dst.m10 = 2.0f * (_t3 + _t2);
+        _dst.m20 = -2.0f * _t5 + (_t4 + _t4);
+        _dst.m30 = 0.0f;
+    }
+
+    /** Private column 1 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s5af251ec_c1(Float4x4Impl _dst, float _t2, float _t3, float _t12, float _t11, float _t7, float _t8) {
+        _dst.m01 = -2.0f * _t2 + (_t3 + _t3);
+        _dst.m11 = _t12 - _t11;
+        _dst.m21 = 2.0f * (_t7 + _t8);
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s5af251ec_c2(Float4x4Impl _dst, float _t4, float _t5, float _t7, float _t8, float _t10, float _t11) {
+        _dst.m02 = 2.0f * (_t4 + _t5);
+        _dst.m12 = -2.0f * _t7 + (_t8 + _t8);
+        _dst.m22 = 1.0f - _t10 - _t11;
+        _dst.m32 = 0.0f;
+    }
+
+    /** Private column 3 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s5af251ec_c3(Float4x4Impl _dst, float _r3, float _r4, float _r0, float _r5, float _r1, float _r6, float _r2, float _r7) {
+        _dst.m03 = 2.0f * (_r3 * _r4 - _r0 * _r5 + (_r1 * _r6 - _r2 * _r7));
+        _dst.m13 = 2.0f * (_r0 * _r6 - _r2 * _r4 + (_r1 * _r5 - _r3 * _r7));
+        _dst.m23 = 2.0f * (_r2 * _r5 - _r3 * _r6 + (_r1 * _r4 - _r0 * _r7));
+        _dst.m33 = 1.0f;
+    }
+
 
     /**
      * Compute the matrix representation of this dual quaternion (which must be a unit dual
@@ -3607,41 +3639,61 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public Float4x4 toMatrix(@Mutated Float4x4 dest) {
         Float4x4Impl d = (Float4x4Impl) dest;
-        float _t2 = this.rZ * this.rW;
-        float _t3 = this.rX * this.rY;
-        float _t4 = this.rX * this.rZ;
-        float _t5 = this.rY * this.rW;
-        float _t7 = this.rX * this.rW;
-        float _t8 = this.rY * this.rZ;
-        float _t10 = (this.rY + this.rY) * this.rY;
-        float _t11 = (this.rX + this.rX) * this.rX;
-        float _t12 = 1.0f - (this.rZ + this.rZ) * this.rZ;
-        float _buf0 = _t12 - _t10;
-        float _buf1 = 2.0f * (_t3 + _t2);
-        d.m20 = -2.0f * _t5 + (_t4 + _t4);
-        d.m30 = 0.0f;
-        float _buf2 = -2.0f * _t2 + (_t3 + _t3);
-        float _buf3 = _t12 - _t11;
-        d.m21 = 2.0f * (_t7 + _t8);
-        d.m31 = 0.0f;
-        float _buf4 = 2.0f * (_t4 + _t5);
-        float _buf5 = -2.0f * _t7 + (_t8 + _t8);
-        d.m22 = 1.0f - _t10 - _t11;
-        d.m32 = 0.0f;
-        float _buf6 = 2.0f * (this.rY * this.dZ - this.rZ * this.dY + (this.rW * this.dX - this.rX * this.dW));
-        float _buf7 = 2.0f * (this.rZ * this.dX - this.rX * this.dZ + (this.rW * this.dY - this.rY * this.dW));
-        d.m23 = 2.0f * (this.rX * this.dY - this.rY * this.dX + (this.rW * this.dZ - this.rZ * this.dW));
-        d.m33 = 1.0f;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m01 = _buf2;
-        d.m11 = _buf3;
-        d.m02 = _buf4;
-        d.m12 = _buf5;
-        d.m03 = _buf6;
-        d.m13 = _buf7;
+        float _r0 = this.rZ;
+        float _r1 = this.rW;
+        float _r2 = this.rX;
+        float _r3 = this.rY;
+        float _r4 = this.dZ;
+        float _r5 = this.dY;
+        float _r6 = this.dX;
+        float _r7 = this.dW;
+        float _t2 = _r0 * _r1;
+        float _t3 = _r2 * _r3;
+        float _t4 = _r2 * _r0;
+        float _t5 = _r3 * _r1;
+        float _t7 = _r2 * _r1;
+        float _t8 = _r3 * _r0;
+        float _t10 = (_r3 + _r3) * _r3;
+        float _t11 = (_r2 + _r2) * _r2;
+        float _t12 = 1.0f - (_r0 + _r0) * _r0;
+        toMatrix_s5af251ec_c0(d, _t12, _t10, _t3, _t2, _t5, _t4);
+        toMatrix_s5af251ec_c1(d, _t2, _t3, _t12, _t11, _t7, _t8);
+        toMatrix_s5af251ec_c2(d, _t4, _t5, _t7, _t8, _t10, _t11);
+        toMatrix_s5af251ec_c3(d, _r3, _r4, _r0, _r5, _r1, _r6, _r2, _r7);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
+    }
+
+    /** Private column 0 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c0(Double4x4Impl _dst, float _t12, float _t10, float _t3, float _t2, float _t5, float _t4) {
+        _dst.m00 = _t12 - _t10;
+        _dst.m10 = 2.0f * (_t3 + _t2);
+        _dst.m20 = -2.0f * _t5 + (_t4 + _t4);
+        _dst.m30 = 0.0f;
+    }
+
+    /** Private column 1 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c1(Double4x4Impl _dst, float _t2, float _t3, float _t12, float _t11, float _t7, float _t8) {
+        _dst.m01 = -2.0f * _t2 + (_t3 + _t3);
+        _dst.m11 = _t12 - _t11;
+        _dst.m21 = 2.0f * (_t7 + _t8);
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c2(Double4x4Impl _dst, float _t4, float _t5, float _t7, float _t8, float _t10, float _t11) {
+        _dst.m02 = 2.0f * (_t4 + _t5);
+        _dst.m12 = -2.0f * _t7 + (_t8 + _t8);
+        _dst.m22 = 1.0f - _t10 - _t11;
+        _dst.m32 = 0.0f;
+    }
+
+    /** Private column 3 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c3(Double4x4Impl _dst, float _r3, float _r4, float _r0, float _r5, float _r1, float _r6, float _r2, float _r7) {
+        _dst.m03 = 2.0f * (_r3 * _r4 - _r0 * _r5 + (_r1 * _r6 - _r2 * _r7));
+        _dst.m13 = 2.0f * (_r0 * _r6 - _r2 * _r4 + (_r1 * _r5 - _r3 * _r7));
+        _dst.m23 = 2.0f * (_r2 * _r5 - _r3 * _r6 + (_r1 * _r4 - _r0 * _r7));
+        _dst.m33 = 1.0f;
     }
 
 
@@ -3657,39 +3709,27 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public Double4x4 toMatrix(@Mutated Double4x4 dest) {
         Double4x4Impl d = (Double4x4Impl) dest;
-        float _t2 = this.rZ * this.rW;
-        float _t3 = this.rX * this.rY;
-        float _t4 = this.rX * this.rZ;
-        float _t5 = this.rY * this.rW;
-        float _t7 = this.rX * this.rW;
-        float _t8 = this.rY * this.rZ;
-        float _t10 = (this.rY + this.rY) * this.rY;
-        float _t11 = (this.rX + this.rX) * this.rX;
-        float _t12 = 1.0f - (this.rZ + this.rZ) * this.rZ;
-        float _buf0 = _t12 - _t10;
-        float _buf1 = 2.0f * (_t3 + _t2);
-        d.m20 = -2.0f * _t5 + (_t4 + _t4);
-        d.m30 = 0.0f;
-        float _buf2 = -2.0f * _t2 + (_t3 + _t3);
-        float _buf3 = _t12 - _t11;
-        d.m21 = 2.0f * (_t7 + _t8);
-        d.m31 = 0.0f;
-        float _buf4 = 2.0f * (_t4 + _t5);
-        float _buf5 = -2.0f * _t7 + (_t8 + _t8);
-        d.m22 = 1.0f - _t10 - _t11;
-        d.m32 = 0.0f;
-        float _buf6 = 2.0f * (this.rY * this.dZ - this.rZ * this.dY + (this.rW * this.dX - this.rX * this.dW));
-        float _buf7 = 2.0f * (this.rZ * this.dX - this.rX * this.dZ + (this.rW * this.dY - this.rY * this.dW));
-        d.m23 = 2.0f * (this.rX * this.dY - this.rY * this.dX + (this.rW * this.dZ - this.rZ * this.dW));
-        d.m33 = 1.0f;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m01 = _buf2;
-        d.m11 = _buf3;
-        d.m02 = _buf4;
-        d.m12 = _buf5;
-        d.m03 = _buf6;
-        d.m13 = _buf7;
+        float _r0 = this.rZ;
+        float _r1 = this.rW;
+        float _r2 = this.rX;
+        float _r3 = this.rY;
+        float _r4 = this.dZ;
+        float _r5 = this.dY;
+        float _r6 = this.dX;
+        float _r7 = this.dW;
+        float _t2 = _r0 * _r1;
+        float _t3 = _r2 * _r3;
+        float _t4 = _r2 * _r0;
+        float _t5 = _r3 * _r1;
+        float _t7 = _r2 * _r1;
+        float _t8 = _r3 * _r0;
+        float _t10 = (_r3 + _r3) * _r3;
+        float _t11 = (_r2 + _r2) * _r2;
+        float _t12 = 1.0f - (_r0 + _r0) * _r0;
+        toMatrix_s20bb8ca5_c0(d, _t12, _t10, _t3, _t2, _t5, _t4);
+        toMatrix_s20bb8ca5_c1(d, _t2, _t3, _t12, _t11, _t7, _t8);
+        toMatrix_s20bb8ca5_c2(d, _t4, _t5, _t7, _t8, _t10, _t11);
+        toMatrix_s20bb8ca5_c3(d, _r3, _r4, _r0, _r5, _r1, _r6, _r2, _r7);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -3763,6 +3803,34 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return d;
     }
 
+    /** Private column 0 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s7311250d_c0(Float3x4Impl _dst, float _t12, float _t10, float _t3, float _t2, float _t5, float _t4) {
+        _dst.m00 = _t12 - _t10;
+        _dst.m10 = 2.0f * (_t3 + _t2);
+        _dst.m20 = -2.0f * _t5 + (_t4 + _t4);
+    }
+
+    /** Private column 1 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s7311250d_c1(Float3x4Impl _dst, float _t2, float _t3, float _t12, float _t11, float _t7, float _t8) {
+        _dst.m01 = -2.0f * _t2 + (_t3 + _t3);
+        _dst.m11 = _t12 - _t11;
+        _dst.m21 = 2.0f * (_t7 + _t8);
+    }
+
+    /** Private column 2 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s7311250d_c2(Float3x4Impl _dst, float _t4, float _t5, float _t7, float _t8, float _t10, float _t11) {
+        _dst.m02 = 2.0f * (_t4 + _t5);
+        _dst.m12 = -2.0f * _t7 + (_t8 + _t8);
+        _dst.m22 = 1.0f - _t10 - _t11;
+    }
+
+    /** Private column 3 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s7311250d_c3(Float3x4Impl _dst, float _r3, float _r4, float _r0, float _r5, float _r1, float _r6, float _r2, float _r7) {
+        _dst.m03 = 2.0f * (_r3 * _r4 - _r0 * _r5 + (_r1 * _r6 - _r2 * _r7));
+        _dst.m13 = 2.0f * (_r0 * _r6 - _r2 * _r4 + (_r1 * _r5 - _r3 * _r7));
+        _dst.m23 = 2.0f * (_r2 * _r5 - _r3 * _r6 + (_r1 * _r4 - _r0 * _r7));
+    }
+
 
     /**
      * Compute the 3x4 matrix representation of this dual quaternion (which must be a unit dual
@@ -3774,37 +3842,57 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public Float3x4 toMatrix3x4(@Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t2 = this.rZ * this.rW;
-        float _t3 = this.rX * this.rY;
-        float _t4 = this.rX * this.rZ;
-        float _t5 = this.rY * this.rW;
-        float _t7 = this.rX * this.rW;
-        float _t8 = this.rY * this.rZ;
-        float _t10 = (this.rY + this.rY) * this.rY;
-        float _t11 = (this.rX + this.rX) * this.rX;
-        float _t12 = 1.0f - (this.rZ + this.rZ) * this.rZ;
-        float _buf0 = _t12 - _t10;
-        float _buf1 = -2.0f * _t2 + (_t3 + _t3);
-        float _buf2 = 2.0f * (_t4 + _t5);
-        float _buf3 = 2.0f * (this.rY * this.dZ - this.rZ * this.dY + (this.rW * this.dX - this.rX * this.dW));
-        float _buf4 = 2.0f * (_t3 + _t2);
-        float _buf5 = _t12 - _t11;
-        float _buf6 = -2.0f * _t7 + (_t8 + _t8);
-        float _buf7 = 2.0f * (this.rZ * this.dX - this.rX * this.dZ + (this.rW * this.dY - this.rY * this.dW));
-        d.m20 = -2.0f * _t5 + (_t4 + _t4);
-        d.m21 = 2.0f * (_t7 + _t8);
-        d.m22 = 1.0f - _t10 - _t11;
-        d.m23 = 2.0f * (this.rX * this.dY - this.rY * this.dX + (this.rW * this.dZ - this.rZ * this.dW));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m13 = _buf7;
+        float _r0 = this.rZ;
+        float _r1 = this.rW;
+        float _r2 = this.rX;
+        float _r3 = this.rY;
+        float _r4 = this.dZ;
+        float _r5 = this.dY;
+        float _r6 = this.dX;
+        float _r7 = this.dW;
+        float _t2 = _r0 * _r1;
+        float _t3 = _r2 * _r3;
+        float _t4 = _r2 * _r0;
+        float _t5 = _r3 * _r1;
+        float _t7 = _r2 * _r1;
+        float _t8 = _r3 * _r0;
+        float _t10 = (_r3 + _r3) * _r3;
+        float _t11 = (_r2 + _r2) * _r2;
+        float _t12 = 1.0f - (_r0 + _r0) * _r0;
+        toMatrix3x4_s7311250d_c0(d, _t12, _t10, _t3, _t2, _t5, _t4);
+        toMatrix3x4_s7311250d_c1(d, _t2, _t3, _t12, _t11, _t7, _t8);
+        toMatrix3x4_s7311250d_c2(d, _t4, _t5, _t7, _t8, _t10, _t11);
+        toMatrix3x4_s7311250d_c3(d, _r3, _r4, _r0, _r5, _r1, _r6, _r2, _r7);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
+    }
+
+    /** Private column 0 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s38da5fc6_c0(Double3x4Impl _dst, float _t12, float _t10, float _t3, float _t2, float _t5, float _t4) {
+        _dst.m00 = _t12 - _t10;
+        _dst.m10 = 2.0f * (_t3 + _t2);
+        _dst.m20 = -2.0f * _t5 + (_t4 + _t4);
+    }
+
+    /** Private column 1 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s38da5fc6_c1(Double3x4Impl _dst, float _t2, float _t3, float _t12, float _t11, float _t7, float _t8) {
+        _dst.m01 = -2.0f * _t2 + (_t3 + _t3);
+        _dst.m11 = _t12 - _t11;
+        _dst.m21 = 2.0f * (_t7 + _t8);
+    }
+
+    /** Private column 2 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s38da5fc6_c2(Double3x4Impl _dst, float _t4, float _t5, float _t7, float _t8, float _t10, float _t11) {
+        _dst.m02 = 2.0f * (_t4 + _t5);
+        _dst.m12 = -2.0f * _t7 + (_t8 + _t8);
+        _dst.m22 = 1.0f - _t10 - _t11;
+    }
+
+    /** Private column 3 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s38da5fc6_c3(Double3x4Impl _dst, float _r3, float _r4, float _r0, float _r5, float _r1, float _r6, float _r2, float _r7) {
+        _dst.m03 = 2.0f * (_r3 * _r4 - _r0 * _r5 + (_r1 * _r6 - _r2 * _r7));
+        _dst.m13 = 2.0f * (_r0 * _r6 - _r2 * _r4 + (_r1 * _r5 - _r3 * _r7));
+        _dst.m23 = 2.0f * (_r2 * _r5 - _r3 * _r6 + (_r1 * _r4 - _r0 * _r7));
     }
 
 
@@ -3821,35 +3909,27 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public Double3x4 toMatrix3x4(@Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        float _t2 = this.rZ * this.rW;
-        float _t3 = this.rX * this.rY;
-        float _t4 = this.rX * this.rZ;
-        float _t5 = this.rY * this.rW;
-        float _t7 = this.rX * this.rW;
-        float _t8 = this.rY * this.rZ;
-        float _t10 = (this.rY + this.rY) * this.rY;
-        float _t11 = (this.rX + this.rX) * this.rX;
-        float _t12 = 1.0f - (this.rZ + this.rZ) * this.rZ;
-        float _buf0 = _t12 - _t10;
-        float _buf1 = -2.0f * _t2 + (_t3 + _t3);
-        float _buf2 = 2.0f * (_t4 + _t5);
-        float _buf3 = 2.0f * (this.rY * this.dZ - this.rZ * this.dY + (this.rW * this.dX - this.rX * this.dW));
-        float _buf4 = 2.0f * (_t3 + _t2);
-        float _buf5 = _t12 - _t11;
-        float _buf6 = -2.0f * _t7 + (_t8 + _t8);
-        float _buf7 = 2.0f * (this.rZ * this.dX - this.rX * this.dZ + (this.rW * this.dY - this.rY * this.dW));
-        d.m20 = -2.0f * _t5 + (_t4 + _t4);
-        d.m21 = 2.0f * (_t7 + _t8);
-        d.m22 = 1.0f - _t10 - _t11;
-        d.m23 = 2.0f * (this.rX * this.dY - this.rY * this.dX + (this.rW * this.dZ - this.rZ * this.dW));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m13 = _buf7;
+        float _r0 = this.rZ;
+        float _r1 = this.rW;
+        float _r2 = this.rX;
+        float _r3 = this.rY;
+        float _r4 = this.dZ;
+        float _r5 = this.dY;
+        float _r6 = this.dX;
+        float _r7 = this.dW;
+        float _t2 = _r0 * _r1;
+        float _t3 = _r2 * _r3;
+        float _t4 = _r2 * _r0;
+        float _t5 = _r3 * _r1;
+        float _t7 = _r2 * _r1;
+        float _t8 = _r3 * _r0;
+        float _t10 = (_r3 + _r3) * _r3;
+        float _t11 = (_r2 + _r2) * _r2;
+        float _t12 = 1.0f - (_r0 + _r0) * _r0;
+        toMatrix3x4_s38da5fc6_c0(d, _t12, _t10, _t3, _t2, _t5, _t4);
+        toMatrix3x4_s38da5fc6_c1(d, _t2, _t3, _t12, _t11, _t7, _t8);
+        toMatrix3x4_s38da5fc6_c2(d, _t4, _t5, _t7, _t8, _t10, _t11);
+        toMatrix3x4_s38da5fc6_c3(d, _r3, _r4, _r0, _r5, _r1, _r6, _r2, _r7);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }

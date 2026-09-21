@@ -932,6 +932,38 @@ public final class FloatTransformImpl implements FloatTransform {
         return d;
     }
 
+    /** Private column 0 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s5af251ec_c0(Float4x4Impl _dst, float _r5, float _t3, float _t0, float _r0, float _r6, float _t4, float _r3, float _t5) {
+        _dst.m00 = Math.fma(-Math.fma(_r5, _r5, _t3), _t0, _r0);
+        _dst.m10 = Math.fma(_r6, _r5, _t4) * _t0;
+        _dst.m20 = Math.fma(_r6, _r3, -_t5) * _t0;
+        _dst.m30 = 0.0f;
+    }
+
+    /** Private column 1 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s5af251ec_c1(Float4x4Impl _dst, float _r6, float _r5, float _t4, float _t1, float _t3, float _r1, float _r4, float _r3) {
+        _dst.m01 = Math.fma(_r6, _r5, -_t4) * _t1;
+        _dst.m11 = Math.fma(-Math.fma(_r6, _r6, _t3), _t1, _r1);
+        _dst.m21 = Math.fma(_r6, _r4, _r5 * _r3) * _t1;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s5af251ec_c2(Float4x4Impl _dst, float _r6, float _r3, float _t5, float _t2, float _r5, float _r4, float _r2) {
+        _dst.m02 = Math.fma(_r6, _r3, _t5) * _t2;
+        _dst.m12 = Math.fma(_r5, _r3, -(_r6 * _r4)) * _t2;
+        _dst.m22 = Math.fma(-Math.fma(_r6, _r6, _r5 * _r5), _t2, _r2);
+        _dst.m32 = 0.0f;
+    }
+
+    /** Private column 3 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s5af251ec_c3(Float4x4Impl _dst, float _r7, float _r8, float _r9) {
+        _dst.m03 = _r7;
+        _dst.m13 = _r8;
+        _dst.m23 = _r9;
+        _dst.m33 = 1.0f;
+    }
+
 
     /**
      * Compute the matrix representation of this transform and store the result in {@code dest}.
@@ -941,37 +973,60 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public Float4x4 toMatrix(@Mutated Float4x4 dest) {
         Float4x4Impl d = (Float4x4Impl) dest;
-        float _t0 = this.sX + this.sX;
-        float _t1 = this.sY + this.sY;
-        float _t2 = this.sZ + this.sZ;
-        float _t3 = this.rZ * this.rZ;
-        float _t4 = this.rZ * this.rW;
-        float _t5 = this.rY * this.rW;
-        float _buf0 = Math.fma(-Math.fma(this.rY, this.rY, _t3), _t0, this.sX);
-        float _buf1 = Math.fma(this.rX, this.rY, _t4) * _t0;
-        float _buf2 = Math.fma(this.rX, this.rZ, -_t5) * _t0;
-        d.m30 = 0.0f;
-        float _buf3 = Math.fma(this.rX, this.rY, -_t4) * _t1;
-        float _buf4 = Math.fma(-Math.fma(this.rX, this.rX, _t3), _t1, this.sY);
-        float _buf5 = Math.fma(this.rX, this.rW, this.rY * this.rZ) * _t1;
-        d.m31 = 0.0f;
-        float _buf6 = Math.fma(this.rX, this.rZ, _t5) * _t2;
-        d.m12 = Math.fma(this.rY, this.rZ, -(this.rX * this.rW)) * _t2;
-        d.m22 = Math.fma(-Math.fma(this.rX, this.rX, this.rY * this.rY), _t2, this.sZ);
-        d.m32 = 0.0f;
-        d.m03 = this.tX;
-        d.m13 = this.tY;
-        d.m23 = this.tZ;
-        d.m33 = 1.0f;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
-        d.m02 = _buf6;
+        float _r0 = this.sX;
+        float _r1 = this.sY;
+        float _r2 = this.sZ;
+        float _r3 = this.rZ;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rX;
+        float _r7 = this.tX;
+        float _r8 = this.tY;
+        float _r9 = this.tZ;
+        float _t0 = _r0 + _r0;
+        float _t1 = _r1 + _r1;
+        float _t2 = _r2 + _r2;
+        float _t3 = _r3 * _r3;
+        float _t4 = _r3 * _r4;
+        float _t5 = _r5 * _r4;
+        toMatrix_s5af251ec_c0(d, _r5, _t3, _t0, _r0, _r6, _t4, _r3, _t5);
+        toMatrix_s5af251ec_c1(d, _r6, _r5, _t4, _t1, _t3, _r1, _r4, _r3);
+        toMatrix_s5af251ec_c2(d, _r6, _r3, _t5, _t2, _r5, _r4, _r2);
+        toMatrix_s5af251ec_c3(d, _r7, _r8, _r9);
         d.properties = Joml.BIT_AFFINE;
         return d;
+    }
+
+    /** Private column 0 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c0(Double4x4Impl _dst, float _r5, float _t3, float _t0, float _r0, float _r6, float _t4, float _r3, float _t5) {
+        _dst.m00 = Math.fma(-Math.fma(_r5, _r5, _t3), _t0, _r0);
+        _dst.m10 = Math.fma(_r6, _r5, _t4) * _t0;
+        _dst.m20 = Math.fma(_r6, _r3, -_t5) * _t0;
+        _dst.m30 = 0.0f;
+    }
+
+    /** Private column 1 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c1(Double4x4Impl _dst, float _r6, float _r5, float _t4, float _t1, float _t3, float _r1, float _r4, float _r3) {
+        _dst.m01 = Math.fma(_r6, _r5, -_t4) * _t1;
+        _dst.m11 = Math.fma(-Math.fma(_r6, _r6, _t3), _t1, _r1);
+        _dst.m21 = Math.fma(_r6, _r4, _r5 * _r3) * _t1;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c2(Double4x4Impl _dst, float _r6, float _r3, float _t5, float _t2, float _r5, float _r4, float _r2) {
+        _dst.m02 = Math.fma(_r6, _r3, _t5) * _t2;
+        _dst.m12 = Math.fma(_r5, _r3, -(_r6 * _r4)) * _t2;
+        _dst.m22 = Math.fma(-Math.fma(_r6, _r6, _r5 * _r5), _t2, _r2);
+        _dst.m32 = 0.0f;
+    }
+
+    /** Private column 3 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c3(Double4x4Impl _dst, float _r7, float _r8, float _r9) {
+        _dst.m03 = _r7;
+        _dst.m13 = _r8;
+        _dst.m23 = _r9;
+        _dst.m33 = 1.0f;
     }
 
 
@@ -986,35 +1041,26 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public Double4x4 toMatrix(@Mutated Double4x4 dest) {
         Double4x4Impl d = (Double4x4Impl) dest;
-        float _t0 = this.sX + this.sX;
-        float _t1 = this.sY + this.sY;
-        float _t2 = this.sZ + this.sZ;
-        float _t3 = this.rZ * this.rZ;
-        float _t4 = this.rZ * this.rW;
-        float _t5 = this.rY * this.rW;
-        float _buf0 = Math.fma(-Math.fma(this.rY, this.rY, _t3), _t0, this.sX);
-        float _buf1 = Math.fma(this.rX, this.rY, _t4) * _t0;
-        float _buf2 = Math.fma(this.rX, this.rZ, -_t5) * _t0;
-        d.m30 = 0.0f;
-        float _buf3 = Math.fma(this.rX, this.rY, -_t4) * _t1;
-        float _buf4 = Math.fma(-Math.fma(this.rX, this.rX, _t3), _t1, this.sY);
-        float _buf5 = Math.fma(this.rX, this.rW, this.rY * this.rZ) * _t1;
-        d.m31 = 0.0f;
-        float _buf6 = Math.fma(this.rX, this.rZ, _t5) * _t2;
-        d.m12 = Math.fma(this.rY, this.rZ, -(this.rX * this.rW)) * _t2;
-        d.m22 = Math.fma(-Math.fma(this.rX, this.rX, this.rY * this.rY), _t2, this.sZ);
-        d.m32 = 0.0f;
-        d.m03 = this.tX;
-        d.m13 = this.tY;
-        d.m23 = this.tZ;
-        d.m33 = 1.0f;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
-        d.m02 = _buf6;
+        float _r0 = this.sX;
+        float _r1 = this.sY;
+        float _r2 = this.sZ;
+        float _r3 = this.rZ;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rX;
+        float _r7 = this.tX;
+        float _r8 = this.tY;
+        float _r9 = this.tZ;
+        float _t0 = _r0 + _r0;
+        float _t1 = _r1 + _r1;
+        float _t2 = _r2 + _r2;
+        float _t3 = _r3 * _r3;
+        float _t4 = _r3 * _r4;
+        float _t5 = _r5 * _r4;
+        toMatrix_s20bb8ca5_c0(d, _r5, _t3, _t0, _r0, _r6, _t4, _r3, _t5);
+        toMatrix_s20bb8ca5_c1(d, _r6, _r5, _t4, _t1, _t3, _r1, _r4, _r3);
+        toMatrix_s20bb8ca5_c2(d, _r6, _r3, _t5, _t2, _r5, _r4, _r2);
+        toMatrix_s20bb8ca5_c3(d, _r7, _r8, _r9);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }

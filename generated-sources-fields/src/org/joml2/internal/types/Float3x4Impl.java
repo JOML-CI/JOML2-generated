@@ -3370,6 +3370,47 @@ public class Float3x4Impl implements Float3x4 {
         return d;
     }
 
+    /** Private column 0 of {@code invert_general}: computes and stores it; reached only through it. */
+    private void invert_general_s7311250d_c0(Float3x4Impl _dst, float _t20, float _t33_inv, float _t25, float _t21) {
+        _dst.m00 = _t20 * _t33_inv;
+        _dst.m10 = _t25 * _t33_inv;
+        _dst.m20 = _t21 * _t33_inv;
+    }
+
+    /** Private column 1 of {@code invert_general}: computes and stores it; reached only through it. */
+    private void invert_general_s7311250d_c1(Float3x4Impl _dst, float _t23, float _t33_inv, float _t26, float _t28) {
+        _dst.m01 = _t23 * _t33_inv;
+        _dst.m11 = _t26 * _t33_inv;
+        _dst.m21 = _t28 * _t33_inv;
+    }
+
+    /** Private column 2 of {@code invert_general}: computes and stores it; reached only through it. */
+    private void invert_general_s7311250d_c2(Float3x4Impl _dst, float _t24, float _t33_inv, float _t27, float _t29) {
+        _dst.m02 = _t24 * _t33_inv;
+        _dst.m12 = _t27 * _t33_inv;
+        _dst.m22 = _t29 * _t33_inv;
+    }
+
+    /** Private column 3 of {@code invert_general}: computes and stores it; reached only through it. */
+    private void invert_general_s7311250d_c3(Float3x4Impl _dst, float _r9, float _t24, float _r10, float _t20, float _r11, float _t23, float _t33_inv, float _t27, float _t25, float _t26, float _t29, float _t21, float _t28) {
+        _dst.m03 = -(Math.fma(_r9, _t24, Math.fma(_r10, _t20, _r11 * _t23)) * _t33_inv);
+        _dst.m13 = -(Math.fma(_r9, _t27, Math.fma(_r10, _t25, _r11 * _t26)) * _t33_inv);
+        _dst.m23 = -(Math.fma(_r9, _t29, Math.fma(_r10, _t21, _r11 * _t28)) * _t33_inv);
+    }
+
+    /** Private tail of {@code invert_general}; reached only through it. */
+    private void invert_general_s7311250d_tail(Float3x4Impl _dst, float _r6, float _r4, float _r8, float _r2, float _r7, float _r5, float _r3, float _r0, float _t21, float _t20, float _r1, float _t23, float _t24, float _r9, float _r10, float _r11, float _t25, float _t26) {
+        float _t27 = Math.fma(_r6, _r4, -(_r8 * _r2));
+        float _t28 = Math.fma(_r7, _r5, -(_r8 * _r3));
+        float _t29 = Math.fma(_r8, _r0, -(_r7 * _r4));
+        float _t33 = Math.fma(_r6, _t21, Math.fma(_r8, _t20, -(_r7 * Math.fma(_r4, _r1, -(_r2 * _r5)))));
+        float _t33_inv = 1.0f / _t33;
+        invert_general_s7311250d_c0(_dst, _t20, _t33_inv, _t25, _t21);
+        invert_general_s7311250d_c1(_dst, _t23, _t33_inv, _t26, _t28);
+        invert_general_s7311250d_c2(_dst, _t24, _t33_inv, _t27, _t29);
+        invert_general_s7311250d_c3(_dst, _r9, _t24, _r10, _t20, _r11, _t23, _t33_inv, _t27, _t25, _t26, _t29, _t21, _t28);
+    }
+
 
     /**
      * Private body of {@code invert}, specialized by runtime matrix properties; reached only
@@ -3377,31 +3418,25 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 invert_general(@Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t20 = Math.fma(this.m11, this.m22, -(this.m12 * this.m21));
-        float _t21 = Math.fma(this.m10, this.m21, -(this.m11 * this.m20));
-        float _t23 = Math.fma(this.m02, this.m21, -(this.m01 * this.m22));
-        float _t24 = Math.fma(this.m01, this.m12, -(this.m02 * this.m11));
-        float _t25 = Math.fma(this.m12, this.m20, -(this.m10 * this.m22));
-        float _t26 = Math.fma(this.m00, this.m22, -(this.m02 * this.m20));
-        float _t27 = Math.fma(this.m02, this.m10, -(this.m00 * this.m12));
-        float _t28 = Math.fma(this.m01, this.m20, -(this.m00 * this.m21));
-        float _t29 = Math.fma(this.m00, this.m11, -(this.m01 * this.m10));
-        float _t33 = Math.fma(this.m02, _t21, Math.fma(this.m00, _t20, -(this.m01 * Math.fma(this.m10, this.m22, -(this.m12 * this.m20)))));
-        float _t33_inv = 1.0f / _t33;
-        d.m00 = _t20 * _t33_inv;
-        d.m01 = _t23 * _t33_inv;
-        d.m02 = _t24 * _t33_inv;
-        float _buf0 = -(Math.fma(this.m23, _t24, Math.fma(this.m03, _t20, this.m13 * _t23)) * _t33_inv);
-        d.m10 = _t25 * _t33_inv;
-        d.m11 = _t26 * _t33_inv;
-        d.m12 = _t27 * _t33_inv;
-        float _buf1 = -(Math.fma(this.m23, _t27, Math.fma(this.m03, _t25, this.m13 * _t26)) * _t33_inv);
-        d.m20 = _t21 * _t33_inv;
-        d.m21 = _t28 * _t33_inv;
-        d.m22 = _t29 * _t33_inv;
-        d.m23 = -(Math.fma(this.m23, _t29, Math.fma(this.m03, _t21, this.m13 * _t28)) * _t33_inv);
-        d.m03 = _buf0;
-        d.m13 = _buf1;
+        float _r0 = this.m11;
+        float _r1 = this.m22;
+        float _r2 = this.m12;
+        float _r3 = this.m21;
+        float _r4 = this.m10;
+        float _r5 = this.m20;
+        float _r6 = this.m02;
+        float _r7 = this.m01;
+        float _r8 = this.m00;
+        float _r9 = this.m23;
+        float _r10 = this.m03;
+        float _r11 = this.m13;
+        float _t20 = Math.fma(_r0, _r1, -(_r2 * _r3));
+        float _t21 = Math.fma(_r4, _r3, -(_r0 * _r5));
+        float _t23 = Math.fma(_r6, _r3, -(_r7 * _r1));
+        float _t24 = Math.fma(_r7, _r2, -(_r6 * _r0));
+        float _t25 = Math.fma(_r2, _r5, -(_r4 * _r1));
+        float _t26 = Math.fma(_r8, _r1, -(_r6 * _r5));
+        invert_general_s7311250d_tail(d, _r6, _r4, _r8, _r2, _r7, _r5, _r3, _r0, _t21, _t20, _r1, _t23, _t24, _r9, _r10, _r11, _t25, _t26);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -3437,6 +3472,47 @@ public class Float3x4Impl implements Float3x4 {
         return invert_general(this);
     }
 
+    /** Private column 0 of {@code invert}: computes and stores it; reached only through it. */
+    private void invert_s38da5fc6_c0(Double3x4Impl _dst, float _t20, float _t33_inv, float _t25, float _t21) {
+        _dst.m00 = _t20 * _t33_inv;
+        _dst.m10 = _t25 * _t33_inv;
+        _dst.m20 = _t21 * _t33_inv;
+    }
+
+    /** Private column 1 of {@code invert}: computes and stores it; reached only through it. */
+    private void invert_s38da5fc6_c1(Double3x4Impl _dst, float _t23, float _t33_inv, float _t26, float _t28) {
+        _dst.m01 = _t23 * _t33_inv;
+        _dst.m11 = _t26 * _t33_inv;
+        _dst.m21 = _t28 * _t33_inv;
+    }
+
+    /** Private column 2 of {@code invert}: computes and stores it; reached only through it. */
+    private void invert_s38da5fc6_c2(Double3x4Impl _dst, float _t24, float _t33_inv, float _t27, float _t29) {
+        _dst.m02 = _t24 * _t33_inv;
+        _dst.m12 = _t27 * _t33_inv;
+        _dst.m22 = _t29 * _t33_inv;
+    }
+
+    /** Private column 3 of {@code invert}: computes and stores it; reached only through it. */
+    private void invert_s38da5fc6_c3(Double3x4Impl _dst, float _r9, float _t24, float _r10, float _t20, float _r11, float _t23, float _t33_inv, float _t27, float _t25, float _t26, float _t29, float _t21, float _t28) {
+        _dst.m03 = -(Math.fma(_r9, _t24, Math.fma(_r10, _t20, _r11 * _t23)) * _t33_inv);
+        _dst.m13 = -(Math.fma(_r9, _t27, Math.fma(_r10, _t25, _r11 * _t26)) * _t33_inv);
+        _dst.m23 = -(Math.fma(_r9, _t29, Math.fma(_r10, _t21, _r11 * _t28)) * _t33_inv);
+    }
+
+    /** Private tail of {@code invert}; reached only through it. */
+    private void invert_s38da5fc6_tail(Double3x4Impl _dst, float _r6, float _r4, float _r8, float _r2, float _r7, float _r5, float _r3, float _r0, float _t21, float _t20, float _r1, float _t23, float _t24, float _r9, float _r10, float _r11, float _t25, float _t26) {
+        float _t27 = Math.fma(_r6, _r4, -(_r8 * _r2));
+        float _t28 = Math.fma(_r7, _r5, -(_r8 * _r3));
+        float _t29 = Math.fma(_r8, _r0, -(_r7 * _r4));
+        float _t33 = Math.fma(_r6, _t21, Math.fma(_r8, _t20, -(_r7 * Math.fma(_r4, _r1, -(_r2 * _r5)))));
+        float _t33_inv = 1.0f / _t33;
+        invert_s38da5fc6_c0(_dst, _t20, _t33_inv, _t25, _t21);
+        invert_s38da5fc6_c1(_dst, _t23, _t33_inv, _t26, _t28);
+        invert_s38da5fc6_c2(_dst, _t24, _t33_inv, _t27, _t29);
+        invert_s38da5fc6_c3(_dst, _r9, _t24, _r10, _t20, _r11, _t23, _t33_inv, _t27, _t25, _t26, _t29, _t21, _t28);
+    }
+
 
     /**
      * Invert this affine matrix, i.e. compute the inverse of the implied square homogeneous matrix
@@ -3450,54 +3526,80 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 invert(@Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        float _t20 = Math.fma(this.m11, this.m22, -(this.m12 * this.m21));
-        float _t21 = Math.fma(this.m10, this.m21, -(this.m11 * this.m20));
-        float _t23 = Math.fma(this.m02, this.m21, -(this.m01 * this.m22));
-        float _t24 = Math.fma(this.m01, this.m12, -(this.m02 * this.m11));
-        float _t25 = Math.fma(this.m12, this.m20, -(this.m10 * this.m22));
-        float _t26 = Math.fma(this.m00, this.m22, -(this.m02 * this.m20));
-        float _t27 = Math.fma(this.m02, this.m10, -(this.m00 * this.m12));
-        float _t28 = Math.fma(this.m01, this.m20, -(this.m00 * this.m21));
-        float _t29 = Math.fma(this.m00, this.m11, -(this.m01 * this.m10));
-        float _t33 = Math.fma(this.m02, _t21, Math.fma(this.m00, _t20, -(this.m01 * Math.fma(this.m10, this.m22, -(this.m12 * this.m20)))));
-        float _t33_inv = 1.0f / _t33;
-        d.m00 = _t20 * _t33_inv;
-        d.m01 = _t23 * _t33_inv;
-        d.m02 = _t24 * _t33_inv;
-        float _buf0 = -(Math.fma(this.m23, _t24, Math.fma(this.m03, _t20, this.m13 * _t23)) * _t33_inv);
-        d.m10 = _t25 * _t33_inv;
-        d.m11 = _t26 * _t33_inv;
-        d.m12 = _t27 * _t33_inv;
-        float _buf1 = -(Math.fma(this.m23, _t27, Math.fma(this.m03, _t25, this.m13 * _t26)) * _t33_inv);
-        d.m20 = _t21 * _t33_inv;
-        d.m21 = _t28 * _t33_inv;
-        d.m22 = _t29 * _t33_inv;
-        d.m23 = -(Math.fma(this.m23, _t29, Math.fma(this.m03, _t21, this.m13 * _t28)) * _t33_inv);
-        d.m03 = _buf0;
-        d.m13 = _buf1;
+        float _r0 = this.m11;
+        float _r1 = this.m22;
+        float _r2 = this.m12;
+        float _r3 = this.m21;
+        float _r4 = this.m10;
+        float _r5 = this.m20;
+        float _r6 = this.m02;
+        float _r7 = this.m01;
+        float _r8 = this.m00;
+        float _r9 = this.m23;
+        float _r10 = this.m03;
+        float _r11 = this.m13;
+        float _t20 = Math.fma(_r0, _r1, -(_r2 * _r3));
+        float _t21 = Math.fma(_r4, _r3, -(_r0 * _r5));
+        float _t23 = Math.fma(_r6, _r3, -(_r7 * _r1));
+        float _t24 = Math.fma(_r7, _r2, -(_r6 * _r0));
+        float _t25 = Math.fma(_r2, _r5, -(_r4 * _r1));
+        float _t26 = Math.fma(_r8, _r1, -(_r6 * _r5));
+        invert_s38da5fc6_tail(d, _r6, _r4, _r8, _r2, _r7, _r5, _r3, _r0, _t21, _t20, _r1, _t23, _t24, _r9, _r10, _r11, _t25, _t26);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
 
+    /** Private column 0 of {@code invertProduct_general}: computes and stores it; reached only through it. */
+    private void invertProduct_general_s6f0130a6_c0(Float3x4Impl _dst, float _t56, float _t69_inv, float _t61, float _t57) {
+        _dst.m00 = _t56 * _t69_inv;
+        _dst.m10 = _t61 * _t69_inv;
+        _dst.m20 = _t57 * _t69_inv;
+    }
 
-    /**
-     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
-     * through the public {@code invertProduct} dispatcher.
-     */
-    private Float3x4 invertProduct_general(Float3x4R other, @Mutated Float3x4 dest, int _props) {
-        Float3x4Impl d = (Float3x4Impl) dest;
-        float _t24 = Math.fma(other.m21(), this.m12, Math.fma(other.m01(), this.m10, other.m11() * this.m11));
-        float _t25 = Math.fma(other.m22(), this.m22, Math.fma(other.m02(), this.m20, other.m12() * this.m21));
-        float _t26 = Math.fma(other.m21(), this.m22, Math.fma(other.m01(), this.m20, other.m11() * this.m21));
-        float _t27 = Math.fma(other.m22(), this.m12, Math.fma(other.m02(), this.m10, other.m12() * this.m11));
-        float _t28 = Math.fma(other.m22(), this.m02, Math.fma(other.m02(), this.m00, other.m12() * this.m01));
-        float _t29 = Math.fma(other.m20(), this.m12, Math.fma(other.m00(), this.m10, other.m10() * this.m11));
-        float _t30 = Math.fma(other.m20(), this.m22, Math.fma(other.m00(), this.m20, other.m10() * this.m21));
-        float _t31 = Math.fma(other.m20(), this.m02, Math.fma(other.m00(), this.m00, other.m10() * this.m01));
-        float _t32 = Math.fma(other.m21(), this.m02, Math.fma(other.m01(), this.m00, other.m11() * this.m01));
-        float _t33 = Math.fma(other.m03(), this.m20, Math.fma(other.m13(), this.m21, Math.fma(other.m23(), this.m22, this.m23)));
-        float _t34 = Math.fma(other.m03(), this.m00, Math.fma(other.m13(), this.m01, Math.fma(other.m23(), this.m02, this.m03)));
-        float _t35 = Math.fma(other.m03(), this.m10, Math.fma(other.m13(), this.m11, Math.fma(other.m23(), this.m12, this.m13)));
+    /** Private column 1 of {@code invertProduct_general}: computes and stores it; reached only through it. */
+    private void invertProduct_general_s6f0130a6_c1(Float3x4Impl _dst, float _t59, float _t69_inv, float _t62, float _t64) {
+        _dst.m01 = _t59 * _t69_inv;
+        _dst.m11 = _t62 * _t69_inv;
+        _dst.m21 = _t64 * _t69_inv;
+    }
+
+    /** Private column 2 of {@code invertProduct_general}: computes and stores it; reached only through it. */
+    private void invertProduct_general_s6f0130a6_c2(Float3x4Impl _dst, float _t60, float _t69_inv, float _t63, float _t65) {
+        _dst.m02 = _t60 * _t69_inv;
+        _dst.m12 = _t63 * _t69_inv;
+        _dst.m22 = _t65 * _t69_inv;
+    }
+
+    /** Private column 3 of {@code invertProduct_general}: computes and stores it; reached only through it. */
+    private void invertProduct_general_s6f0130a6_c3(Float3x4Impl _dst, float _t33, float _t60, float _t34, float _t56, float _t35, float _t59, float _t69_inv, float _t63, float _t61, float _t62, float _t65, float _t57, float _t64) {
+        _dst.m03 = -(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv);
+        _dst.m13 = -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv);
+        _dst.m23 = -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv);
+    }
+
+    /** Private tail of {@code invertProduct_general}; reached only through it. */
+    private void invertProduct_general_s6f0130a6_tail(Float3x4Impl _dst, Float3x4R other, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19) {
+        float _r20 = other.m23();
+        float _r21 = this.m23;
+        float _r22 = this.m03;
+        float _r23 = this.m13;
+        float _t24 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5));
+        float _t25 = Math.fma(_r6, _r7, Math.fma(_r8, _r9, _r10 * _r11));
+        float _t26 = Math.fma(_r0, _r7, Math.fma(_r2, _r9, _r4 * _r11));
+        float _t27 = Math.fma(_r6, _r1, Math.fma(_r8, _r3, _r10 * _r5));
+        float _t28 = Math.fma(_r6, _r12, Math.fma(_r8, _r13, _r10 * _r14));
+        float _t29 = Math.fma(_r15, _r1, Math.fma(_r16, _r3, _r17 * _r5));
+        float _t30 = Math.fma(_r15, _r7, Math.fma(_r16, _r9, _r17 * _r11));
+        float _t31 = Math.fma(_r15, _r12, Math.fma(_r16, _r13, _r17 * _r14));
+        float _t32 = Math.fma(_r0, _r12, Math.fma(_r2, _r13, _r4 * _r14));
+        invertProduct_general_s6f0130a6_tail2(_dst, _r18, _r9, _r19, _r11, _r20, _r7, _r21, _r13, _r14, _r12, _r22, _r3, _r5, _r1, _r23, _t24, _t25, _t26, _t27, _t29, _t30, _t28, _t32, _t31);
+    }
+
+    /** Private tail of {@code invertProduct_general}; reached only through it. */
+    private void invertProduct_general_s6f0130a6_tail2(Float3x4Impl _dst, float _r18, float _r9, float _r19, float _r11, float _r20, float _r7, float _r21, float _r13, float _r14, float _r12, float _r22, float _r3, float _r5, float _r1, float _r23, float _t24, float _t25, float _t26, float _t27, float _t29, float _t30, float _t28, float _t32, float _t31) {
+        float _t33 = Math.fma(_r18, _r9, Math.fma(_r19, _r11, Math.fma(_r20, _r7, _r21)));
+        float _t34 = Math.fma(_r18, _r13, Math.fma(_r19, _r14, Math.fma(_r20, _r12, _r22)));
+        float _t35 = Math.fma(_r18, _r3, Math.fma(_r19, _r5, Math.fma(_r20, _r1, _r23)));
         float _t56 = Math.fma(_t24, _t25, -(_t26 * _t27));
         float _t57 = Math.fma(_t29, _t26, -(_t30 * _t24));
         float _t59 = Math.fma(_t26, _t28, -(_t32 * _t25));
@@ -3509,20 +3611,83 @@ public class Float3x4Impl implements Float3x4 {
         float _t65 = Math.fma(_t31, _t24, -(_t29 * _t32));
         float _t69 = Math.fma(_t28, _t57, Math.fma(_t31, _t56, -(_t32 * Math.fma(_t29, _t25, -(_t30 * _t27)))));
         float _t69_inv = 1.0f / _t69;
-        d.m00 = _t56 * _t69_inv;
-        d.m01 = _t59 * _t69_inv;
-        d.m02 = _t60 * _t69_inv;
-        d.m03 = -(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv);
-        d.m10 = _t61 * _t69_inv;
-        d.m11 = _t62 * _t69_inv;
-        d.m12 = _t63 * _t69_inv;
-        d.m13 = -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv);
-        d.m20 = _t57 * _t69_inv;
-        d.m21 = _t64 * _t69_inv;
-        d.m22 = _t65 * _t69_inv;
-        d.m23 = -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv);
+        invertProduct_general_s6f0130a6_c0(_dst, _t56, _t69_inv, _t61, _t57);
+        invertProduct_general_s6f0130a6_c1(_dst, _t59, _t69_inv, _t62, _t64);
+        invertProduct_general_s6f0130a6_c2(_dst, _t60, _t69_inv, _t63, _t65);
+        invertProduct_general_s6f0130a6_c3(_dst, _t33, _t60, _t34, _t56, _t35, _t59, _t69_inv, _t63, _t61, _t62, _t65, _t57, _t64);
+    }
+
+
+    /**
+     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
+     * through the public {@code invertProduct} dispatcher.
+     */
+    private Float3x4 invertProduct_general(Float3x4R other, @Mutated Float3x4 dest, int _props) {
+        Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = other.m21();
+        float _r1 = this.m12;
+        float _r2 = other.m01();
+        float _r3 = this.m10;
+        float _r4 = other.m11();
+        float _r5 = this.m11;
+        float _r6 = other.m22();
+        float _r7 = this.m22;
+        float _r8 = other.m02();
+        float _r9 = this.m20;
+        float _r10 = other.m12();
+        float _r11 = this.m21;
+        float _r12 = this.m02;
+        float _r13 = this.m00;
+        float _r14 = this.m01;
+        float _r15 = other.m20();
+        float _r16 = other.m00();
+        float _r17 = other.m10();
+        float _r18 = other.m03();
+        float _r19 = other.m13();
+        invertProduct_general_s6f0130a6_tail(d, other, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         d.properties = _props;
         return d;
+    }
+
+    /** Private column 0 of {@code invertProduct_identity}: computes and stores it; reached only through it. */
+    private void invertProduct_identity_s40879270_c0(Float3x4Impl _dst, float _t20, float _t33_inv, float _t25, float _t21) {
+        _dst.m00 = _t20 * _t33_inv;
+        _dst.m10 = _t25 * _t33_inv;
+        _dst.m20 = _t21 * _t33_inv;
+    }
+
+    /** Private column 1 of {@code invertProduct_identity}: computes and stores it; reached only through it. */
+    private void invertProduct_identity_s40879270_c1(Float3x4Impl _dst, float _t23, float _t33_inv, float _t26, float _t28) {
+        _dst.m01 = _t23 * _t33_inv;
+        _dst.m11 = _t26 * _t33_inv;
+        _dst.m21 = _t28 * _t33_inv;
+    }
+
+    /** Private column 2 of {@code invertProduct_identity}: computes and stores it; reached only through it. */
+    private void invertProduct_identity_s40879270_c2(Float3x4Impl _dst, float _t24, float _t33_inv, float _t27, float _t29) {
+        _dst.m02 = _t24 * _t33_inv;
+        _dst.m12 = _t27 * _t33_inv;
+        _dst.m22 = _t29 * _t33_inv;
+    }
+
+    /** Private column 3 of {@code invertProduct_identity}: computes and stores it; reached only through it. */
+    private void invertProduct_identity_s40879270_c3(Float3x4Impl _dst, float _r9, float _t24, float _r10, float _t20, float _r11, float _t23, float _t33_inv, float _t27, float _t25, float _t26, float _t29, float _t21, float _t28) {
+        _dst.m03 = -(Math.fma(_r9, _t24, Math.fma(_r10, _t20, _r11 * _t23)) * _t33_inv);
+        _dst.m13 = -(Math.fma(_r9, _t27, Math.fma(_r10, _t25, _r11 * _t26)) * _t33_inv);
+        _dst.m23 = -(Math.fma(_r9, _t29, Math.fma(_r10, _t21, _r11 * _t28)) * _t33_inv);
+    }
+
+    /** Private tail of {@code invertProduct_identity}; reached only through it. */
+    private void invertProduct_identity_s40879270_tail(Float3x4Impl _dst, float _r6, float _r4, float _r8, float _r2, float _r7, float _r5, float _r3, float _r0, float _t21, float _t20, float _r1, float _t23, float _t24, float _r9, float _r10, float _r11, float _t25, float _t26) {
+        float _t27 = Math.fma(_r6, _r4, -(_r8 * _r2));
+        float _t28 = Math.fma(_r7, _r5, -(_r8 * _r3));
+        float _t29 = Math.fma(_r8, _r0, -(_r7 * _r4));
+        float _t33 = Math.fma(_r6, _t21, Math.fma(_r8, _t20, -(_r7 * Math.fma(_r4, _r1, -(_r2 * _r5)))));
+        float _t33_inv = 1.0f / _t33;
+        invertProduct_identity_s40879270_c0(_dst, _t20, _t33_inv, _t25, _t21);
+        invertProduct_identity_s40879270_c1(_dst, _t23, _t33_inv, _t26, _t28);
+        invertProduct_identity_s40879270_c2(_dst, _t24, _t33_inv, _t27, _t29);
+        invertProduct_identity_s40879270_c3(_dst, _r9, _t24, _r10, _t20, _r11, _t23, _t33_inv, _t27, _t25, _t26, _t29, _t21, _t28);
     }
 
 
@@ -3532,33 +3697,71 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 invertProduct_identity(Float3x4R other, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t20 = Math.fma(other.m11(), other.m22(), -(other.m12() * other.m21()));
-        float _t21 = Math.fma(other.m10(), other.m21(), -(other.m11() * other.m20()));
-        float _t23 = Math.fma(other.m02(), other.m21(), -(other.m01() * other.m22()));
-        float _t24 = Math.fma(other.m01(), other.m12(), -(other.m02() * other.m11()));
-        float _t25 = Math.fma(other.m12(), other.m20(), -(other.m10() * other.m22()));
-        float _t26 = Math.fma(other.m00(), other.m22(), -(other.m02() * other.m20()));
-        float _t27 = Math.fma(other.m02(), other.m10(), -(other.m00() * other.m12()));
-        float _t28 = Math.fma(other.m01(), other.m20(), -(other.m00() * other.m21()));
-        float _t29 = Math.fma(other.m00(), other.m11(), -(other.m01() * other.m10()));
-        float _t33 = Math.fma(other.m02(), _t21, Math.fma(other.m00(), _t20, -(other.m01() * Math.fma(other.m10(), other.m22(), -(other.m12() * other.m20())))));
-        float _t33_inv = 1.0f / _t33;
-        d.m00 = _t20 * _t33_inv;
-        d.m01 = _t23 * _t33_inv;
-        d.m02 = _t24 * _t33_inv;
-        float _buf0 = -(Math.fma(other.m23(), _t24, Math.fma(other.m03(), _t20, other.m13() * _t23)) * _t33_inv);
-        d.m10 = _t25 * _t33_inv;
-        d.m11 = _t26 * _t33_inv;
-        d.m12 = _t27 * _t33_inv;
-        float _buf1 = -(Math.fma(other.m23(), _t27, Math.fma(other.m03(), _t25, other.m13() * _t26)) * _t33_inv);
-        d.m20 = _t21 * _t33_inv;
-        d.m21 = _t28 * _t33_inv;
-        d.m22 = _t29 * _t33_inv;
-        d.m23 = -(Math.fma(other.m23(), _t29, Math.fma(other.m03(), _t21, other.m13() * _t28)) * _t33_inv);
-        d.m03 = _buf0;
-        d.m13 = _buf1;
+        float _r0 = other.m11();
+        float _r1 = other.m22();
+        float _r2 = other.m12();
+        float _r3 = other.m21();
+        float _r4 = other.m10();
+        float _r5 = other.m20();
+        float _r6 = other.m02();
+        float _r7 = other.m01();
+        float _r8 = other.m00();
+        float _r9 = other.m23();
+        float _r10 = other.m03();
+        float _r11 = other.m13();
+        float _t20 = Math.fma(_r0, _r1, -(_r2 * _r3));
+        float _t21 = Math.fma(_r4, _r3, -(_r0 * _r5));
+        float _t23 = Math.fma(_r6, _r3, -(_r7 * _r1));
+        float _t24 = Math.fma(_r7, _r2, -(_r6 * _r0));
+        float _t25 = Math.fma(_r2, _r5, -(_r4 * _r1));
+        float _t26 = Math.fma(_r8, _r1, -(_r6 * _r5));
+        invertProduct_identity_s40879270_tail(d, _r6, _r4, _r8, _r2, _r7, _r5, _r3, _r0, _t21, _t20, _r1, _t23, _t24, _r9, _r10, _r11, _t25, _t26);
         d.properties = ((Float3x4Impl) other).properties;
         return d;
+    }
+
+    /** Private column 0 of {@code invertProduct_translation}: computes and stores it; reached only through it. */
+    private void invertProduct_translation_s40879270_c0(Float3x4Impl _dst, float _t23, float _t36_inv, float _t28, float _t24) {
+        _dst.m00 = _t23 * _t36_inv;
+        _dst.m10 = _t28 * _t36_inv;
+        _dst.m20 = _t24 * _t36_inv;
+    }
+
+    /** Private column 1 of {@code invertProduct_translation}: computes and stores it; reached only through it. */
+    private void invertProduct_translation_s40879270_c1(Float3x4Impl _dst, float _t26, float _t36_inv, float _t29, float _t31) {
+        _dst.m01 = _t26 * _t36_inv;
+        _dst.m11 = _t29 * _t36_inv;
+        _dst.m21 = _t31 * _t36_inv;
+    }
+
+    /** Private column 2 of {@code invertProduct_translation}: computes and stores it; reached only through it. */
+    private void invertProduct_translation_s40879270_c2(Float3x4Impl _dst, float _t27, float _t36_inv, float _t30, float _t32) {
+        _dst.m02 = _t27 * _t36_inv;
+        _dst.m12 = _t30 * _t36_inv;
+        _dst.m22 = _t32 * _t36_inv;
+    }
+
+    /** Private column 3 of {@code invertProduct_translation}: computes and stores it; reached only through it. */
+    private void invertProduct_translation_s40879270_c3(Float3x4Impl _dst, float _t5, float _t27, float _t6, float _t23, float _t7, float _t26, float _t36_inv, float _t30, float _t28, float _t29, float _t32, float _t24, float _t31) {
+        _dst.m03 = -(Math.fma(_t5, _t27, Math.fma(_t6, _t23, _t7 * _t26)) * _t36_inv);
+        _dst.m13 = -(Math.fma(_t5, _t30, Math.fma(_t6, _t28, _t7 * _t29)) * _t36_inv);
+        _dst.m23 = -(Math.fma(_t5, _t32, Math.fma(_t6, _t24, _t7 * _t31)) * _t36_inv);
+    }
+
+    /** Private tail of {@code invertProduct_translation}; reached only through it. */
+    private void invertProduct_translation_s40879270_tail(Float3x4Impl _dst, float _r13, float _r8, float _r12, float _r6, float _r11, float _r10, float _r7, float _r14, float _r9, float _t24, float _t23, float _t26, float _t5, float _t6, float _t7) {
+        float _t27 = Math.fma(_r13, _r8, -(_r12 * _r6));
+        float _t28 = Math.fma(_r8, _r11, -(_r10 * _r7));
+        float _t29 = Math.fma(_r14, _r7, -(_r12 * _r11));
+        float _t30 = Math.fma(_r12, _r10, -(_r14 * _r8));
+        float _t31 = Math.fma(_r13, _r11, -(_r14 * _r9));
+        float _t32 = Math.fma(_r14, _r6, -(_r13 * _r10));
+        float _t36 = Math.fma(_r12, _t24, Math.fma(_r14, _t23, -(_r13 * Math.fma(_r10, _r7, -(_r8 * _r11)))));
+        float _t36_inv = 1.0f / _t36;
+        invertProduct_translation_s40879270_c0(_dst, _t23, _t36_inv, _t28, _t24);
+        invertProduct_translation_s40879270_c1(_dst, _t26, _t36_inv, _t29, _t31);
+        invertProduct_translation_s40879270_c2(_dst, _t27, _t36_inv, _t30, _t32);
+        invertProduct_translation_s40879270_c3(_dst, _t5, _t27, _t6, _t23, _t7, _t26, _t36_inv, _t30, _t28, _t29, _t32, _t24, _t31);
     }
 
 
@@ -3568,32 +3771,28 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 invertProduct_translation(Float3x4R other, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t5 = other.m23() + this.m23;
-        float _t6 = other.m03() + this.m03;
-        float _t7 = other.m13() + this.m13;
-        float _t23 = Math.fma(other.m11(), other.m22(), -(other.m12() * other.m21()));
-        float _t24 = Math.fma(other.m10(), other.m21(), -(other.m11() * other.m20()));
-        float _t26 = Math.fma(other.m02(), other.m21(), -(other.m01() * other.m22()));
-        float _t27 = Math.fma(other.m01(), other.m12(), -(other.m02() * other.m11()));
-        float _t28 = Math.fma(other.m12(), other.m20(), -(other.m10() * other.m22()));
-        float _t29 = Math.fma(other.m00(), other.m22(), -(other.m02() * other.m20()));
-        float _t30 = Math.fma(other.m02(), other.m10(), -(other.m00() * other.m12()));
-        float _t31 = Math.fma(other.m01(), other.m20(), -(other.m00() * other.m21()));
-        float _t32 = Math.fma(other.m00(), other.m11(), -(other.m01() * other.m10()));
-        float _t36 = Math.fma(other.m02(), _t24, Math.fma(other.m00(), _t23, -(other.m01() * Math.fma(other.m10(), other.m22(), -(other.m12() * other.m20())))));
-        float _t36_inv = 1.0f / _t36;
-        d.m00 = _t23 * _t36_inv;
-        d.m01 = _t26 * _t36_inv;
-        d.m02 = _t27 * _t36_inv;
-        d.m03 = -(Math.fma(_t5, _t27, Math.fma(_t6, _t23, _t7 * _t26)) * _t36_inv);
-        d.m10 = _t28 * _t36_inv;
-        d.m11 = _t29 * _t36_inv;
-        d.m12 = _t30 * _t36_inv;
-        d.m13 = -(Math.fma(_t5, _t30, Math.fma(_t6, _t28, _t7 * _t29)) * _t36_inv);
-        d.m20 = _t24 * _t36_inv;
-        d.m21 = _t31 * _t36_inv;
-        d.m22 = _t32 * _t36_inv;
-        d.m23 = -(Math.fma(_t5, _t32, Math.fma(_t6, _t24, _t7 * _t31)) * _t36_inv);
+        float _r0 = other.m23();
+        float _r1 = this.m23;
+        float _r2 = other.m03();
+        float _r3 = this.m03;
+        float _r4 = other.m13();
+        float _r5 = this.m13;
+        float _r6 = other.m11();
+        float _r7 = other.m22();
+        float _r8 = other.m12();
+        float _r9 = other.m21();
+        float _r10 = other.m10();
+        float _r11 = other.m20();
+        float _r12 = other.m02();
+        float _r13 = other.m01();
+        float _r14 = other.m00();
+        float _t5 = _r0 + _r1;
+        float _t6 = _r2 + _r3;
+        float _t7 = _r4 + _r5;
+        float _t23 = Math.fma(_r6, _r7, -(_r8 * _r9));
+        float _t24 = Math.fma(_r10, _r9, -(_r6 * _r11));
+        float _t26 = Math.fma(_r12, _r9, -(_r13 * _r7));
+        invertProduct_translation_s40879270_tail(d, _r13, _r8, _r12, _r6, _r11, _r10, _r7, _r14, _r9, _t24, _t23, _t26, _t5, _t6, _t7);
         d.properties = Joml.BIT_TRANSLATION & ((Float3x4Impl) other).properties;
         return d;
     }
@@ -3752,6 +3951,47 @@ public class Float3x4Impl implements Float3x4 {
         return d;
     }
 
+    /** Private column 0 of {@code invertProduct_general_identity}: computes and stores it; reached only through it. */
+    private void invertProduct_general_identity_s40879270_c0(Float3x4Impl _dst, float _t20, float _t33_inv, float _t25, float _t21) {
+        _dst.m00 = _t20 * _t33_inv;
+        _dst.m10 = _t25 * _t33_inv;
+        _dst.m20 = _t21 * _t33_inv;
+    }
+
+    /** Private column 1 of {@code invertProduct_general_identity}: computes and stores it; reached only through it. */
+    private void invertProduct_general_identity_s40879270_c1(Float3x4Impl _dst, float _t23, float _t33_inv, float _t26, float _t28) {
+        _dst.m01 = _t23 * _t33_inv;
+        _dst.m11 = _t26 * _t33_inv;
+        _dst.m21 = _t28 * _t33_inv;
+    }
+
+    /** Private column 2 of {@code invertProduct_general_identity}: computes and stores it; reached only through it. */
+    private void invertProduct_general_identity_s40879270_c2(Float3x4Impl _dst, float _t24, float _t33_inv, float _t27, float _t29) {
+        _dst.m02 = _t24 * _t33_inv;
+        _dst.m12 = _t27 * _t33_inv;
+        _dst.m22 = _t29 * _t33_inv;
+    }
+
+    /** Private column 3 of {@code invertProduct_general_identity}: computes and stores it; reached only through it. */
+    private void invertProduct_general_identity_s40879270_c3(Float3x4Impl _dst, float _r9, float _t24, float _r10, float _t20, float _r11, float _t23, float _t33_inv, float _t27, float _t25, float _t26, float _t29, float _t21, float _t28) {
+        _dst.m03 = -(Math.fma(_r9, _t24, Math.fma(_r10, _t20, _r11 * _t23)) * _t33_inv);
+        _dst.m13 = -(Math.fma(_r9, _t27, Math.fma(_r10, _t25, _r11 * _t26)) * _t33_inv);
+        _dst.m23 = -(Math.fma(_r9, _t29, Math.fma(_r10, _t21, _r11 * _t28)) * _t33_inv);
+    }
+
+    /** Private tail of {@code invertProduct_general_identity}; reached only through it. */
+    private void invertProduct_general_identity_s40879270_tail(Float3x4Impl _dst, float _r6, float _r4, float _r8, float _r2, float _r7, float _r5, float _r3, float _r0, float _t21, float _t20, float _r1, float _t23, float _t24, float _r9, float _r10, float _r11, float _t25, float _t26) {
+        float _t27 = Math.fma(_r6, _r4, -(_r8 * _r2));
+        float _t28 = Math.fma(_r7, _r5, -(_r8 * _r3));
+        float _t29 = Math.fma(_r8, _r0, -(_r7 * _r4));
+        float _t33 = Math.fma(_r6, _t21, Math.fma(_r8, _t20, -(_r7 * Math.fma(_r4, _r1, -(_r2 * _r5)))));
+        float _t33_inv = 1.0f / _t33;
+        invertProduct_general_identity_s40879270_c0(_dst, _t20, _t33_inv, _t25, _t21);
+        invertProduct_general_identity_s40879270_c1(_dst, _t23, _t33_inv, _t26, _t28);
+        invertProduct_general_identity_s40879270_c2(_dst, _t24, _t33_inv, _t27, _t29);
+        invertProduct_general_identity_s40879270_c3(_dst, _r9, _t24, _r10, _t20, _r11, _t23, _t33_inv, _t27, _t25, _t26, _t29, _t21, _t28);
+    }
+
 
     /**
      * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
@@ -3759,33 +3999,73 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 invertProduct_general_identity(Float3x4R other, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t20 = Math.fma(this.m11, this.m22, -(this.m12 * this.m21));
-        float _t21 = Math.fma(this.m10, this.m21, -(this.m11 * this.m20));
-        float _t23 = Math.fma(this.m02, this.m21, -(this.m01 * this.m22));
-        float _t24 = Math.fma(this.m01, this.m12, -(this.m02 * this.m11));
-        float _t25 = Math.fma(this.m12, this.m20, -(this.m10 * this.m22));
-        float _t26 = Math.fma(this.m00, this.m22, -(this.m02 * this.m20));
-        float _t27 = Math.fma(this.m02, this.m10, -(this.m00 * this.m12));
-        float _t28 = Math.fma(this.m01, this.m20, -(this.m00 * this.m21));
-        float _t29 = Math.fma(this.m00, this.m11, -(this.m01 * this.m10));
-        float _t33 = Math.fma(this.m02, _t21, Math.fma(this.m00, _t20, -(this.m01 * Math.fma(this.m10, this.m22, -(this.m12 * this.m20)))));
-        float _t33_inv = 1.0f / _t33;
-        d.m00 = _t20 * _t33_inv;
-        d.m01 = _t23 * _t33_inv;
-        d.m02 = _t24 * _t33_inv;
-        float _buf0 = -(Math.fma(this.m23, _t24, Math.fma(this.m03, _t20, this.m13 * _t23)) * _t33_inv);
-        d.m10 = _t25 * _t33_inv;
-        d.m11 = _t26 * _t33_inv;
-        d.m12 = _t27 * _t33_inv;
-        float _buf1 = -(Math.fma(this.m23, _t27, Math.fma(this.m03, _t25, this.m13 * _t26)) * _t33_inv);
-        d.m20 = _t21 * _t33_inv;
-        d.m21 = _t28 * _t33_inv;
-        d.m22 = _t29 * _t33_inv;
-        d.m23 = -(Math.fma(this.m23, _t29, Math.fma(this.m03, _t21, this.m13 * _t28)) * _t33_inv);
-        d.m03 = _buf0;
-        d.m13 = _buf1;
+        float _r0 = this.m11;
+        float _r1 = this.m22;
+        float _r2 = this.m12;
+        float _r3 = this.m21;
+        float _r4 = this.m10;
+        float _r5 = this.m20;
+        float _r6 = this.m02;
+        float _r7 = this.m01;
+        float _r8 = this.m00;
+        float _r9 = this.m23;
+        float _r10 = this.m03;
+        float _r11 = this.m13;
+        float _t20 = Math.fma(_r0, _r1, -(_r2 * _r3));
+        float _t21 = Math.fma(_r4, _r3, -(_r0 * _r5));
+        float _t23 = Math.fma(_r6, _r3, -(_r7 * _r1));
+        float _t24 = Math.fma(_r7, _r2, -(_r6 * _r0));
+        float _t25 = Math.fma(_r2, _r5, -(_r4 * _r1));
+        float _t26 = Math.fma(_r8, _r1, -(_r6 * _r5));
+        invertProduct_general_identity_s40879270_tail(d, _r6, _r4, _r8, _r2, _r7, _r5, _r3, _r0, _t21, _t20, _r1, _t23, _t24, _r9, _r10, _r11, _t25, _t26);
         d.properties = Joml.BIT_AFFINE & ((Float3x4Impl) other).properties;
         return d;
+    }
+
+    /** Private column 0 of {@code invertProduct_general_translation}: computes and stores it; reached only through it. */
+    private void invertProduct_general_translation_s40879270_c0(Float3x4Impl _dst, float _t23, float _t42_inv, float _t28, float _t24) {
+        _dst.m00 = _t23 * _t42_inv;
+        _dst.m10 = _t28 * _t42_inv;
+        _dst.m20 = _t24 * _t42_inv;
+    }
+
+    /** Private column 1 of {@code invertProduct_general_translation}: computes and stores it; reached only through it. */
+    private void invertProduct_general_translation_s40879270_c1(Float3x4Impl _dst, float _t26, float _t42_inv, float _t29, float _t31) {
+        _dst.m01 = _t26 * _t42_inv;
+        _dst.m11 = _t29 * _t42_inv;
+        _dst.m21 = _t31 * _t42_inv;
+    }
+
+    /** Private column 2 of {@code invertProduct_general_translation}: computes and stores it; reached only through it. */
+    private void invertProduct_general_translation_s40879270_c2(Float3x4Impl _dst, float _t27, float _t42_inv, float _t30, float _t32) {
+        _dst.m02 = _t27 * _t42_inv;
+        _dst.m12 = _t30 * _t42_inv;
+        _dst.m22 = _t32 * _t42_inv;
+    }
+
+    /** Private column 3 of {@code invertProduct_general_translation}: computes and stores it; reached only through it. */
+    private void invertProduct_general_translation_s40879270_c3(Float3x4Impl _dst, float _t38, float _t27, float _t39, float _t23, float _t40, float _t26, float _t42_inv, float _t30, float _t28, float _t29, float _t32, float _t24, float _t31) {
+        _dst.m03 = -(Math.fma(_t38, _t27, Math.fma(_t39, _t23, _t40 * _t26)) * _t42_inv);
+        _dst.m13 = -(Math.fma(_t38, _t30, Math.fma(_t39, _t28, _t40 * _t29)) * _t42_inv);
+        _dst.m23 = -(Math.fma(_t38, _t32, Math.fma(_t39, _t24, _t40 * _t31)) * _t42_inv);
+    }
+
+    /** Private tail of {@code invertProduct_general_translation}; reached only through it. */
+    private void invertProduct_general_translation_s40879270_tail(Float3x4Impl _dst, float _r2, float _r5, float _r4, float _r1, float _r8, float _r6, float _r7, float _r3, float _r0, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _t24, float _t23, float _t26, float _t27) {
+        float _t28 = Math.fma(_r2, _r5, -(_r4 * _r1));
+        float _t29 = Math.fma(_r8, _r1, -(_r6 * _r5));
+        float _t30 = Math.fma(_r6, _r4, -(_r8 * _r2));
+        float _t31 = Math.fma(_r7, _r5, -(_r8 * _r3));
+        float _t32 = Math.fma(_r8, _r0, -(_r7 * _r4));
+        float _t38 = Math.fma(_r9, _r5, Math.fma(_r10, _r3, Math.fma(_r11, _r1, _r12)));
+        float _t39 = Math.fma(_r9, _r8, Math.fma(_r10, _r7, Math.fma(_r11, _r6, _r13)));
+        float _t40 = Math.fma(_r9, _r4, Math.fma(_r10, _r0, Math.fma(_r11, _r2, _r14)));
+        float _t42 = Math.fma(_r6, _t24, Math.fma(_r8, _t23, -(_r7 * Math.fma(_r4, _r1, -(_r2 * _r5)))));
+        float _t42_inv = 1.0f / _t42;
+        invertProduct_general_translation_s40879270_c0(_dst, _t23, _t42_inv, _t28, _t24);
+        invertProduct_general_translation_s40879270_c1(_dst, _t26, _t42_inv, _t29, _t31);
+        invertProduct_general_translation_s40879270_c2(_dst, _t27, _t42_inv, _t30, _t32);
+        invertProduct_general_translation_s40879270_c3(_dst, _t38, _t27, _t39, _t23, _t40, _t26, _t42_inv, _t30, _t28, _t29, _t32, _t24, _t31);
     }
 
 
@@ -3795,32 +4075,26 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 invertProduct_general_translation(Float3x4R other, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t23 = Math.fma(this.m11, this.m22, -(this.m12 * this.m21));
-        float _t24 = Math.fma(this.m10, this.m21, -(this.m11 * this.m20));
-        float _t26 = Math.fma(this.m02, this.m21, -(this.m01 * this.m22));
-        float _t27 = Math.fma(this.m01, this.m12, -(this.m02 * this.m11));
-        float _t28 = Math.fma(this.m12, this.m20, -(this.m10 * this.m22));
-        float _t29 = Math.fma(this.m00, this.m22, -(this.m02 * this.m20));
-        float _t30 = Math.fma(this.m02, this.m10, -(this.m00 * this.m12));
-        float _t31 = Math.fma(this.m01, this.m20, -(this.m00 * this.m21));
-        float _t32 = Math.fma(this.m00, this.m11, -(this.m01 * this.m10));
-        float _t38 = Math.fma(other.m03(), this.m20, Math.fma(other.m13(), this.m21, Math.fma(other.m23(), this.m22, this.m23)));
-        float _t39 = Math.fma(other.m03(), this.m00, Math.fma(other.m13(), this.m01, Math.fma(other.m23(), this.m02, this.m03)));
-        float _t40 = Math.fma(other.m03(), this.m10, Math.fma(other.m13(), this.m11, Math.fma(other.m23(), this.m12, this.m13)));
-        float _t42 = Math.fma(this.m02, _t24, Math.fma(this.m00, _t23, -(this.m01 * Math.fma(this.m10, this.m22, -(this.m12 * this.m20)))));
-        float _t42_inv = 1.0f / _t42;
-        d.m00 = _t23 * _t42_inv;
-        d.m01 = _t26 * _t42_inv;
-        d.m02 = _t27 * _t42_inv;
-        d.m03 = -(Math.fma(_t38, _t27, Math.fma(_t39, _t23, _t40 * _t26)) * _t42_inv);
-        d.m10 = _t28 * _t42_inv;
-        d.m11 = _t29 * _t42_inv;
-        d.m12 = _t30 * _t42_inv;
-        d.m13 = -(Math.fma(_t38, _t30, Math.fma(_t39, _t28, _t40 * _t29)) * _t42_inv);
-        d.m20 = _t24 * _t42_inv;
-        d.m21 = _t31 * _t42_inv;
-        d.m22 = _t32 * _t42_inv;
-        d.m23 = -(Math.fma(_t38, _t32, Math.fma(_t39, _t24, _t40 * _t31)) * _t42_inv);
+        float _r0 = this.m11;
+        float _r1 = this.m22;
+        float _r2 = this.m12;
+        float _r3 = this.m21;
+        float _r4 = this.m10;
+        float _r5 = this.m20;
+        float _r6 = this.m02;
+        float _r7 = this.m01;
+        float _r8 = this.m00;
+        float _r9 = other.m03();
+        float _r10 = other.m13();
+        float _r11 = other.m23();
+        float _r12 = this.m23;
+        float _r13 = this.m03;
+        float _r14 = this.m13;
+        float _t23 = Math.fma(_r0, _r1, -(_r2 * _r3));
+        float _t24 = Math.fma(_r4, _r3, -(_r0 * _r5));
+        float _t26 = Math.fma(_r6, _r3, -(_r7 * _r1));
+        float _t27 = Math.fma(_r7, _r2, -(_r6 * _r0));
+        invertProduct_general_translation_s40879270_tail(d, _r2, _r5, _r4, _r1, _r8, _r6, _r7, _r3, _r0, _r9, _r10, _r11, _r12, _r13, _r14, _t24, _t23, _t26, _t27);
         d.properties = Joml.BIT_AFFINE & ((Float3x4Impl) other).properties;
         return d;
     }
@@ -3923,6 +4197,66 @@ public class Float3x4Impl implements Float3x4 {
         return invertProduct(other.m00(), other.m01(), other.m02(), other.m03(), other.m10(), other.m11(), other.m12(), other.m13(), other.m20(), other.m21(), other.m22(), other.m23(), dest);
     }
 
+    /** Private column 0 of {@code invertProduct}: computes and stores it; reached only through it. */
+    private void invertProduct_s1c264d13_c0(Float3x4Impl _dst, float _t56, float _t69_inv, float _t61, float _t57) {
+        _dst.m00 = _t56 * _t69_inv;
+        _dst.m10 = _t61 * _t69_inv;
+        _dst.m20 = _t57 * _t69_inv;
+    }
+
+    /** Private column 1 of {@code invertProduct}: computes and stores it; reached only through it. */
+    private void invertProduct_s1c264d13_c1(Float3x4Impl _dst, float _t59, float _t69_inv, float _t62, float _t64) {
+        _dst.m01 = _t59 * _t69_inv;
+        _dst.m11 = _t62 * _t69_inv;
+        _dst.m21 = _t64 * _t69_inv;
+    }
+
+    /** Private column 2 of {@code invertProduct}: computes and stores it; reached only through it. */
+    private void invertProduct_s1c264d13_c2(Float3x4Impl _dst, float _t60, float _t69_inv, float _t63, float _t65) {
+        _dst.m02 = _t60 * _t69_inv;
+        _dst.m12 = _t63 * _t69_inv;
+        _dst.m22 = _t65 * _t69_inv;
+    }
+
+    /** Private column 3 of {@code invertProduct}: computes and stores it; reached only through it. */
+    private void invertProduct_s1c264d13_c3(Float3x4Impl _dst, float _t33, float _t60, float _t34, float _t56, float _t35, float _t59, float _t69_inv, float _t63, float _t61, float _t62, float _t65, float _t57, float _t64) {
+        _dst.m03 = -(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv);
+        _dst.m13 = -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv);
+        _dst.m23 = -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv);
+    }
+
+    /** Private tail of {@code invertProduct}; reached only through it. */
+    private void invertProduct_s1c264d13_tail(Float3x4Impl _dst, float m22, float _r6, float m02, float _r7, float m12, float _r8, float m20, float _r0, float m00, float _r1, float m10, float _r2, float _r3, float _r4, float _r5, float m21, float m01, float m11, float m03, float m13, float m23, float _r9, float _r10, float _r11, float _t24, float _t25, float _t26, float _t27) {
+        float _t28 = Math.fma(m22, _r6, Math.fma(m02, _r7, m12 * _r8));
+        float _t29 = Math.fma(m20, _r0, Math.fma(m00, _r1, m10 * _r2));
+        float _t30 = Math.fma(m20, _r3, Math.fma(m00, _r4, m10 * _r5));
+        float _t31 = Math.fma(m20, _r6, Math.fma(m00, _r7, m10 * _r8));
+        float _t32 = Math.fma(m21, _r6, Math.fma(m01, _r7, m11 * _r8));
+        float _t33 = Math.fma(m03, _r4, Math.fma(m13, _r5, Math.fma(m23, _r3, _r9)));
+        float _t34 = Math.fma(m03, _r7, Math.fma(m13, _r8, Math.fma(m23, _r6, _r10)));
+        float _t35 = Math.fma(m03, _r1, Math.fma(m13, _r2, Math.fma(m23, _r0, _r11)));
+        float _t56 = Math.fma(_t24, _t25, -(_t26 * _t27));
+        float _t57 = Math.fma(_t29, _t26, -(_t30 * _t24));
+        float _t59 = Math.fma(_t26, _t28, -(_t32 * _t25));
+        float _t60 = Math.fma(_t32, _t27, -(_t24 * _t28));
+        invertProduct_s1c264d13_tail2(_dst, _t30, _t27, _t29, _t25, _t31, _t28, _t32, _t26, _t24, _t57, _t56, _t59, _t60, _t33, _t34, _t35);
+    }
+
+    /** Private tail of {@code invertProduct}; reached only through it. */
+    private void invertProduct_s1c264d13_tail2(Float3x4Impl _dst, float _t30, float _t27, float _t29, float _t25, float _t31, float _t28, float _t32, float _t26, float _t24, float _t57, float _t56, float _t59, float _t60, float _t33, float _t34, float _t35) {
+        float _t61 = Math.fma(_t30, _t27, -(_t29 * _t25));
+        float _t62 = Math.fma(_t31, _t25, -(_t30 * _t28));
+        float _t63 = Math.fma(_t29, _t28, -(_t31 * _t27));
+        float _t64 = Math.fma(_t30, _t32, -(_t31 * _t26));
+        float _t65 = Math.fma(_t31, _t24, -(_t29 * _t32));
+        float _t69 = Math.fma(_t28, _t57, Math.fma(_t31, _t56, -(_t32 * Math.fma(_t29, _t25, -(_t30 * _t27)))));
+        float _t69_inv = 1.0f / _t69;
+        invertProduct_s1c264d13_c0(_dst, _t56, _t69_inv, _t61, _t57);
+        invertProduct_s1c264d13_c1(_dst, _t59, _t69_inv, _t62, _t64);
+        invertProduct_s1c264d13_c2(_dst, _t60, _t69_inv, _t63, _t65);
+        invertProduct_s1c264d13_c3(_dst, _t33, _t60, _t34, _t56, _t35, _t59, _t69_inv, _t63, _t61, _t62, _t65, _t57, _t64);
+    }
+
 
     /**
      * Compute the inverse of the product of this matrix and ({@code m00}, {@code m01}, {@code m02},
@@ -3952,22 +4286,74 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Float3x4 invertProduct(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t24 = Math.fma(m21, this.m12, Math.fma(m01, this.m10, m11 * this.m11));
-        float _t25 = Math.fma(m22, this.m22, Math.fma(m02, this.m20, m12 * this.m21));
-        float _t26 = Math.fma(m21, this.m22, Math.fma(m01, this.m20, m11 * this.m21));
-        float _t27 = Math.fma(m22, this.m12, Math.fma(m02, this.m10, m12 * this.m11));
-        float _t28 = Math.fma(m22, this.m02, Math.fma(m02, this.m00, m12 * this.m01));
-        float _t29 = Math.fma(m20, this.m12, Math.fma(m00, this.m10, m10 * this.m11));
-        float _t30 = Math.fma(m20, this.m22, Math.fma(m00, this.m20, m10 * this.m21));
-        float _t31 = Math.fma(m20, this.m02, Math.fma(m00, this.m00, m10 * this.m01));
-        float _t32 = Math.fma(m21, this.m02, Math.fma(m01, this.m00, m11 * this.m01));
-        float _t33 = Math.fma(m03, this.m20, Math.fma(m13, this.m21, Math.fma(m23, this.m22, this.m23)));
-        float _t34 = Math.fma(m03, this.m00, Math.fma(m13, this.m01, Math.fma(m23, this.m02, this.m03)));
-        float _t35 = Math.fma(m03, this.m10, Math.fma(m13, this.m11, Math.fma(m23, this.m12, this.m13)));
+        float _r0 = this.m12;
+        float _r1 = this.m10;
+        float _r2 = this.m11;
+        float _r3 = this.m22;
+        float _r4 = this.m20;
+        float _r5 = this.m21;
+        float _r6 = this.m02;
+        float _r7 = this.m00;
+        float _r8 = this.m01;
+        float _r9 = this.m23;
+        float _r10 = this.m03;
+        float _r11 = this.m13;
+        float _t24 = Math.fma(m21, _r0, Math.fma(m01, _r1, m11 * _r2));
+        float _t25 = Math.fma(m22, _r3, Math.fma(m02, _r4, m12 * _r5));
+        float _t26 = Math.fma(m21, _r3, Math.fma(m01, _r4, m11 * _r5));
+        float _t27 = Math.fma(m22, _r0, Math.fma(m02, _r1, m12 * _r2));
+        invertProduct_s1c264d13_tail(d, m22, _r6, m02, _r7, m12, _r8, m20, _r0, m00, _r1, m10, _r2, _r3, _r4, _r5, m21, m01, m11, m03, m13, m23, _r9, _r10, _r11, _t24, _t25, _t26, _t27);
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+    /** Private column 0 of {@code invertProduct}: computes and stores it; reached only through it. */
+    private void invertProduct_s326a3880_c0(Double3x4Impl _dst, float _t56, float _t69_inv, float _t61, float _t57) {
+        _dst.m00 = _t56 * _t69_inv;
+        _dst.m10 = _t61 * _t69_inv;
+        _dst.m20 = _t57 * _t69_inv;
+    }
+
+    /** Private column 1 of {@code invertProduct}: computes and stores it; reached only through it. */
+    private void invertProduct_s326a3880_c1(Double3x4Impl _dst, float _t59, float _t69_inv, float _t62, float _t64) {
+        _dst.m01 = _t59 * _t69_inv;
+        _dst.m11 = _t62 * _t69_inv;
+        _dst.m21 = _t64 * _t69_inv;
+    }
+
+    /** Private column 2 of {@code invertProduct}: computes and stores it; reached only through it. */
+    private void invertProduct_s326a3880_c2(Double3x4Impl _dst, float _t60, float _t69_inv, float _t63, float _t65) {
+        _dst.m02 = _t60 * _t69_inv;
+        _dst.m12 = _t63 * _t69_inv;
+        _dst.m22 = _t65 * _t69_inv;
+    }
+
+    /** Private column 3 of {@code invertProduct}: computes and stores it; reached only through it. */
+    private void invertProduct_s326a3880_c3(Double3x4Impl _dst, float _t33, float _t60, float _t34, float _t56, float _t35, float _t59, float _t69_inv, float _t63, float _t61, float _t62, float _t65, float _t57, float _t64) {
+        _dst.m03 = -(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv);
+        _dst.m13 = -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv);
+        _dst.m23 = -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv);
+    }
+
+    /** Private tail of {@code invertProduct}; reached only through it. */
+    private void invertProduct_s326a3880_tail(Double3x4Impl _dst, float m22, float _r6, float m02, float _r7, float m12, float _r8, float m20, float _r0, float m00, float _r1, float m10, float _r2, float _r3, float _r4, float _r5, float m21, float m01, float m11, float m03, float m13, float m23, float _r9, float _r10, float _r11, float _t24, float _t25, float _t26, float _t27) {
+        float _t28 = Math.fma(m22, _r6, Math.fma(m02, _r7, m12 * _r8));
+        float _t29 = Math.fma(m20, _r0, Math.fma(m00, _r1, m10 * _r2));
+        float _t30 = Math.fma(m20, _r3, Math.fma(m00, _r4, m10 * _r5));
+        float _t31 = Math.fma(m20, _r6, Math.fma(m00, _r7, m10 * _r8));
+        float _t32 = Math.fma(m21, _r6, Math.fma(m01, _r7, m11 * _r8));
+        float _t33 = Math.fma(m03, _r4, Math.fma(m13, _r5, Math.fma(m23, _r3, _r9)));
+        float _t34 = Math.fma(m03, _r7, Math.fma(m13, _r8, Math.fma(m23, _r6, _r10)));
+        float _t35 = Math.fma(m03, _r1, Math.fma(m13, _r2, Math.fma(m23, _r0, _r11)));
         float _t56 = Math.fma(_t24, _t25, -(_t26 * _t27));
         float _t57 = Math.fma(_t29, _t26, -(_t30 * _t24));
         float _t59 = Math.fma(_t26, _t28, -(_t32 * _t25));
         float _t60 = Math.fma(_t32, _t27, -(_t24 * _t28));
+        invertProduct_s326a3880_tail2(_dst, _t30, _t27, _t29, _t25, _t31, _t28, _t32, _t26, _t24, _t57, _t56, _t59, _t60, _t33, _t34, _t35);
+    }
+
+    /** Private tail of {@code invertProduct}; reached only through it. */
+    private void invertProduct_s326a3880_tail2(Double3x4Impl _dst, float _t30, float _t27, float _t29, float _t25, float _t31, float _t28, float _t32, float _t26, float _t24, float _t57, float _t56, float _t59, float _t60, float _t33, float _t34, float _t35) {
         float _t61 = Math.fma(_t30, _t27, -(_t29 * _t25));
         float _t62 = Math.fma(_t31, _t25, -(_t30 * _t28));
         float _t63 = Math.fma(_t29, _t28, -(_t31 * _t27));
@@ -3975,20 +4361,10 @@ public class Float3x4Impl implements Float3x4 {
         float _t65 = Math.fma(_t31, _t24, -(_t29 * _t32));
         float _t69 = Math.fma(_t28, _t57, Math.fma(_t31, _t56, -(_t32 * Math.fma(_t29, _t25, -(_t30 * _t27)))));
         float _t69_inv = 1.0f / _t69;
-        d.m00 = _t56 * _t69_inv;
-        d.m01 = _t59 * _t69_inv;
-        d.m02 = _t60 * _t69_inv;
-        d.m03 = -(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv);
-        d.m10 = _t61 * _t69_inv;
-        d.m11 = _t62 * _t69_inv;
-        d.m12 = _t63 * _t69_inv;
-        d.m13 = -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv);
-        d.m20 = _t57 * _t69_inv;
-        d.m21 = _t64 * _t69_inv;
-        d.m22 = _t65 * _t69_inv;
-        d.m23 = -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv);
-        d.properties = Joml.BIT_AFFINE;
-        return d;
+        invertProduct_s326a3880_c0(_dst, _t56, _t69_inv, _t61, _t57);
+        invertProduct_s326a3880_c1(_dst, _t59, _t69_inv, _t62, _t64);
+        invertProduct_s326a3880_c2(_dst, _t60, _t69_inv, _t63, _t65);
+        invertProduct_s326a3880_c3(_dst, _t33, _t60, _t34, _t56, _t35, _t59, _t69_inv, _t63, _t61, _t62, _t65, _t57, _t64);
     }
 
 
@@ -4023,41 +4399,23 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 invertProduct(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        float _t24 = Math.fma(m21, this.m12, Math.fma(m01, this.m10, m11 * this.m11));
-        float _t25 = Math.fma(m22, this.m22, Math.fma(m02, this.m20, m12 * this.m21));
-        float _t26 = Math.fma(m21, this.m22, Math.fma(m01, this.m20, m11 * this.m21));
-        float _t27 = Math.fma(m22, this.m12, Math.fma(m02, this.m10, m12 * this.m11));
-        float _t28 = Math.fma(m22, this.m02, Math.fma(m02, this.m00, m12 * this.m01));
-        float _t29 = Math.fma(m20, this.m12, Math.fma(m00, this.m10, m10 * this.m11));
-        float _t30 = Math.fma(m20, this.m22, Math.fma(m00, this.m20, m10 * this.m21));
-        float _t31 = Math.fma(m20, this.m02, Math.fma(m00, this.m00, m10 * this.m01));
-        float _t32 = Math.fma(m21, this.m02, Math.fma(m01, this.m00, m11 * this.m01));
-        float _t33 = Math.fma(m03, this.m20, Math.fma(m13, this.m21, Math.fma(m23, this.m22, this.m23)));
-        float _t34 = Math.fma(m03, this.m00, Math.fma(m13, this.m01, Math.fma(m23, this.m02, this.m03)));
-        float _t35 = Math.fma(m03, this.m10, Math.fma(m13, this.m11, Math.fma(m23, this.m12, this.m13)));
-        float _t56 = Math.fma(_t24, _t25, -(_t26 * _t27));
-        float _t57 = Math.fma(_t29, _t26, -(_t30 * _t24));
-        float _t59 = Math.fma(_t26, _t28, -(_t32 * _t25));
-        float _t60 = Math.fma(_t32, _t27, -(_t24 * _t28));
-        float _t61 = Math.fma(_t30, _t27, -(_t29 * _t25));
-        float _t62 = Math.fma(_t31, _t25, -(_t30 * _t28));
-        float _t63 = Math.fma(_t29, _t28, -(_t31 * _t27));
-        float _t64 = Math.fma(_t30, _t32, -(_t31 * _t26));
-        float _t65 = Math.fma(_t31, _t24, -(_t29 * _t32));
-        float _t69 = Math.fma(_t28, _t57, Math.fma(_t31, _t56, -(_t32 * Math.fma(_t29, _t25, -(_t30 * _t27)))));
-        float _t69_inv = 1.0f / _t69;
-        d.m00 = _t56 * _t69_inv;
-        d.m01 = _t59 * _t69_inv;
-        d.m02 = _t60 * _t69_inv;
-        d.m03 = -(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv);
-        d.m10 = _t61 * _t69_inv;
-        d.m11 = _t62 * _t69_inv;
-        d.m12 = _t63 * _t69_inv;
-        d.m13 = -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv);
-        d.m20 = _t57 * _t69_inv;
-        d.m21 = _t64 * _t69_inv;
-        d.m22 = _t65 * _t69_inv;
-        d.m23 = -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv);
+        float _r0 = this.m12;
+        float _r1 = this.m10;
+        float _r2 = this.m11;
+        float _r3 = this.m22;
+        float _r4 = this.m20;
+        float _r5 = this.m21;
+        float _r6 = this.m02;
+        float _r7 = this.m00;
+        float _r8 = this.m01;
+        float _r9 = this.m23;
+        float _r10 = this.m03;
+        float _r11 = this.m13;
+        float _t24 = Math.fma(m21, _r0, Math.fma(m01, _r1, m11 * _r2));
+        float _t25 = Math.fma(m22, _r3, Math.fma(m02, _r4, m12 * _r5));
+        float _t26 = Math.fma(m21, _r3, Math.fma(m01, _r4, m11 * _r5));
+        float _t27 = Math.fma(m22, _r0, Math.fma(m02, _r1, m12 * _r2));
+        invertProduct_s326a3880_tail(d, m22, _r6, m02, _r7, m12, _r8, m20, _r0, m00, _r1, m10, _r2, _r3, _r4, _r5, m21, m01, m11, m03, m13, m23, _r9, _r10, _r11, _t24, _t25, _t26, _t27);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -7528,6 +7886,46 @@ public class Float3x4Impl implements Float3x4 {
         return d;
     }
 
+    /** Private column 0 of {@code mul_general}: computes and stores it; reached only through it. */
+    private void mul_general_s58deddb2_c0(Float3x4Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r16, float _r17, float _r18, float _r20, float _r21, float _r22) {
+        _dst.m00 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5));
+        _dst.m10 = Math.fma(_r0, _r16, Math.fma(_r2, _r17, _r4 * _r18));
+        _dst.m20 = Math.fma(_r0, _r20, Math.fma(_r2, _r21, _r4 * _r22));
+    }
+
+    /** Private column 1 of {@code mul_general}: computes and stores it; reached only through it. */
+    private void mul_general_s58deddb2_c1(Float3x4Impl _dst, float _r6, float _r1, float _r7, float _r3, float _r8, float _r5, float _r16, float _r17, float _r18, float _r20, float _r21, float _r22) {
+        _dst.m01 = Math.fma(_r6, _r1, Math.fma(_r7, _r3, _r8 * _r5));
+        _dst.m11 = Math.fma(_r6, _r16, Math.fma(_r7, _r17, _r8 * _r18));
+        _dst.m21 = Math.fma(_r6, _r20, Math.fma(_r7, _r21, _r8 * _r22));
+    }
+
+    /** Private column 2 of {@code mul_general}: computes and stores it; reached only through it. */
+    private void mul_general_s58deddb2_c2(Float3x4Impl _dst, float _r9, float _r1, float _r10, float _r3, float _r11, float _r5, float _r16, float _r17, float _r18, float _r20, float _r21, float _r22) {
+        _dst.m02 = Math.fma(_r9, _r1, Math.fma(_r10, _r3, _r11 * _r5));
+        _dst.m12 = Math.fma(_r9, _r16, Math.fma(_r10, _r17, _r11 * _r18));
+        _dst.m22 = Math.fma(_r9, _r20, Math.fma(_r10, _r21, _r11 * _r22));
+    }
+
+    /** Private column 3 of {@code mul_general}: computes and stores it; reached only through it. */
+    private void mul_general_s58deddb2_c3(Float3x4Impl _dst, float _r12, float _r3, float _r13, float _r5, float _r14, float _r1, float _r15, float _r17, float _r18, float _r16, float _r19, float _r21, float _r22, float _r20, float _r23) {
+        _dst.m03 = Math.fma(_r12, _r3, Math.fma(_r13, _r5, Math.fma(_r14, _r1, _r15)));
+        _dst.m13 = Math.fma(_r12, _r17, Math.fma(_r13, _r18, Math.fma(_r14, _r16, _r19)));
+        _dst.m23 = Math.fma(_r12, _r21, Math.fma(_r13, _r22, Math.fma(_r14, _r20, _r23)));
+    }
+
+    /** Private tail of {@code mul_general}; reached only through it. */
+    private void mul_general_s58deddb2_tail(Float3x4Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19) {
+        float _r20 = this.m22;
+        float _r21 = this.m20;
+        float _r22 = this.m21;
+        float _r23 = this.m23;
+        mul_general_s58deddb2_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r16, _r17, _r18, _r20, _r21, _r22);
+        mul_general_s58deddb2_c1(_dst, _r6, _r1, _r7, _r3, _r8, _r5, _r16, _r17, _r18, _r20, _r21, _r22);
+        mul_general_s58deddb2_c2(_dst, _r9, _r1, _r10, _r3, _r11, _r5, _r16, _r17, _r18, _r20, _r21, _r22);
+        mul_general_s58deddb2_c3(_dst, _r12, _r3, _r13, _r5, _r14, _r1, _r15, _r17, _r18, _r16, _r19, _r21, _r22, _r20, _r23);
+    }
+
 
     /**
      * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
@@ -7535,29 +7933,27 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 mul_general(Float3x4R right, @Mutated Float3x4 dest, int _props) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _buf0 = Math.fma(right.m20(), this.m02, Math.fma(right.m00(), this.m00, right.m10() * this.m01));
-        float _buf1 = Math.fma(right.m21(), this.m02, Math.fma(right.m01(), this.m00, right.m11() * this.m01));
-        float _buf2 = Math.fma(right.m22(), this.m02, Math.fma(right.m02(), this.m00, right.m12() * this.m01));
-        float _buf3 = Math.fma(right.m03(), this.m00, Math.fma(right.m13(), this.m01, Math.fma(right.m23(), this.m02, this.m03)));
-        float _buf4 = Math.fma(right.m20(), this.m12, Math.fma(right.m00(), this.m10, right.m10() * this.m11));
-        float _buf5 = Math.fma(right.m21(), this.m12, Math.fma(right.m01(), this.m10, right.m11() * this.m11));
-        float _buf6 = Math.fma(right.m22(), this.m12, Math.fma(right.m02(), this.m10, right.m12() * this.m11));
-        float _buf7 = Math.fma(right.m03(), this.m10, Math.fma(right.m13(), this.m11, Math.fma(right.m23(), this.m12, this.m13)));
-        float _buf8 = Math.fma(right.m20(), this.m22, Math.fma(right.m00(), this.m20, right.m10() * this.m21));
-        float _buf9 = Math.fma(right.m21(), this.m22, Math.fma(right.m01(), this.m20, right.m11() * this.m21));
-        float _buf10 = Math.fma(right.m22(), this.m22, Math.fma(right.m02(), this.m20, right.m12() * this.m21));
-        d.m23 = Math.fma(right.m03(), this.m20, Math.fma(right.m13(), this.m21, Math.fma(right.m23(), this.m22, this.m23)));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m13 = _buf7;
-        d.m20 = _buf8;
-        d.m21 = _buf9;
-        d.m22 = _buf10;
+        float _r0 = right.m20();
+        float _r1 = this.m02;
+        float _r2 = right.m00();
+        float _r3 = this.m00;
+        float _r4 = right.m10();
+        float _r5 = this.m01;
+        float _r6 = right.m21();
+        float _r7 = right.m01();
+        float _r8 = right.m11();
+        float _r9 = right.m22();
+        float _r10 = right.m02();
+        float _r11 = right.m12();
+        float _r12 = right.m03();
+        float _r13 = right.m13();
+        float _r14 = right.m23();
+        float _r15 = this.m03;
+        float _r16 = this.m12;
+        float _r17 = this.m10;
+        float _r18 = this.m11;
+        float _r19 = this.m13;
+        mul_general_s58deddb2_tail(d, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         d.properties = _props;
         return d;
     }
@@ -7728,6 +8124,34 @@ public class Float3x4Impl implements Float3x4 {
         return mul(right.m00(), right.m01(), right.m02(), right.m03(), right.m10(), right.m11(), right.m12(), right.m13(), right.m20(), right.m21(), right.m22(), right.m23(), dest);
     }
 
+    /** Private column 0 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s1c264d13_c0(Float3x4Impl _dst, float m20, float _r0, float m00, float _r1, float m10, float _r2, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(m20, _r0, Math.fma(m00, _r1, m10 * _r2));
+        _dst.m10 = Math.fma(m20, _r4, Math.fma(m00, _r5, m10 * _r6));
+        _dst.m20 = Math.fma(m20, _r8, Math.fma(m00, _r9, m10 * _r10));
+    }
+
+    /** Private column 1 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s1c264d13_c1(Float3x4Impl _dst, float m21, float _r0, float m01, float _r1, float m11, float _r2, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(m21, _r0, Math.fma(m01, _r1, m11 * _r2));
+        _dst.m11 = Math.fma(m21, _r4, Math.fma(m01, _r5, m11 * _r6));
+        _dst.m21 = Math.fma(m21, _r8, Math.fma(m01, _r9, m11 * _r10));
+    }
+
+    /** Private column 2 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s1c264d13_c2(Float3x4Impl _dst, float m22, float _r0, float m02, float _r1, float m12, float _r2, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(m22, _r0, Math.fma(m02, _r1, m12 * _r2));
+        _dst.m12 = Math.fma(m22, _r4, Math.fma(m02, _r5, m12 * _r6));
+        _dst.m22 = Math.fma(m22, _r8, Math.fma(m02, _r9, m12 * _r10));
+    }
+
+    /** Private column 3 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s1c264d13_c3(Float3x4Impl _dst, float m03, float _r1, float m13, float _r2, float m23, float _r0, float _r3, float _r5, float _r6, float _r4, float _r7, float _r9, float _r10, float _r8, float _r11) {
+        _dst.m03 = Math.fma(m03, _r1, Math.fma(m13, _r2, Math.fma(m23, _r0, _r3)));
+        _dst.m13 = Math.fma(m03, _r5, Math.fma(m13, _r6, Math.fma(m23, _r4, _r7)));
+        _dst.m23 = Math.fma(m03, _r9, Math.fma(m13, _r10, Math.fma(m23, _r8, _r11)));
+    }
+
 
     /**
      * Multiply this matrix by ({@code m00}, {@code m01}, {@code m02}, {@code m03}, {@code m10},
@@ -7758,29 +8182,52 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Float3x4 mul(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _buf0 = Math.fma(m20, this.m02, Math.fma(m00, this.m00, m10 * this.m01));
-        float _buf1 = Math.fma(m21, this.m02, Math.fma(m01, this.m00, m11 * this.m01));
-        float _buf2 = Math.fma(m22, this.m02, Math.fma(m02, this.m00, m12 * this.m01));
-        d.m03 = Math.fma(m03, this.m00, Math.fma(m13, this.m01, Math.fma(m23, this.m02, this.m03)));
-        float _buf3 = Math.fma(m20, this.m12, Math.fma(m00, this.m10, m10 * this.m11));
-        float _buf4 = Math.fma(m21, this.m12, Math.fma(m01, this.m10, m11 * this.m11));
-        float _buf5 = Math.fma(m22, this.m12, Math.fma(m02, this.m10, m12 * this.m11));
-        d.m13 = Math.fma(m03, this.m10, Math.fma(m13, this.m11, Math.fma(m23, this.m12, this.m13)));
-        float _buf6 = Math.fma(m20, this.m22, Math.fma(m00, this.m20, m10 * this.m21));
-        float _buf7 = Math.fma(m21, this.m22, Math.fma(m01, this.m20, m11 * this.m21));
-        float _buf8 = Math.fma(m22, this.m22, Math.fma(m02, this.m20, m12 * this.m21));
-        d.m23 = Math.fma(m03, this.m20, Math.fma(m13, this.m21, Math.fma(m23, this.m22, this.m23)));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m10 = _buf3;
-        d.m11 = _buf4;
-        d.m12 = _buf5;
-        d.m20 = _buf6;
-        d.m21 = _buf7;
-        d.m22 = _buf8;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
+        mul_s1c264d13_c0(d, m20, _r0, m00, _r1, m10, _r2, _r4, _r5, _r6, _r8, _r9, _r10);
+        mul_s1c264d13_c1(d, m21, _r0, m01, _r1, m11, _r2, _r4, _r5, _r6, _r8, _r9, _r10);
+        mul_s1c264d13_c2(d, m22, _r0, m02, _r1, m12, _r2, _r4, _r5, _r6, _r8, _r9, _r10);
+        mul_s1c264d13_c3(d, m03, _r1, m13, _r2, m23, _r0, _r3, _r5, _r6, _r4, _r7, _r9, _r10, _r8, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
+    }
+
+    /** Private column 0 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s326a3880_c0(Double3x4Impl _dst, float m20, float _r0, float m00, float _r1, float m10, float _r2, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(m20, _r0, Math.fma(m00, _r1, m10 * _r2));
+        _dst.m10 = Math.fma(m20, _r4, Math.fma(m00, _r5, m10 * _r6));
+        _dst.m20 = Math.fma(m20, _r8, Math.fma(m00, _r9, m10 * _r10));
+    }
+
+    /** Private column 1 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s326a3880_c1(Double3x4Impl _dst, float m21, float _r0, float m01, float _r1, float m11, float _r2, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(m21, _r0, Math.fma(m01, _r1, m11 * _r2));
+        _dst.m11 = Math.fma(m21, _r4, Math.fma(m01, _r5, m11 * _r6));
+        _dst.m21 = Math.fma(m21, _r8, Math.fma(m01, _r9, m11 * _r10));
+    }
+
+    /** Private column 2 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s326a3880_c2(Double3x4Impl _dst, float m22, float _r0, float m02, float _r1, float m12, float _r2, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(m22, _r0, Math.fma(m02, _r1, m12 * _r2));
+        _dst.m12 = Math.fma(m22, _r4, Math.fma(m02, _r5, m12 * _r6));
+        _dst.m22 = Math.fma(m22, _r8, Math.fma(m02, _r9, m12 * _r10));
+    }
+
+    /** Private column 3 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s326a3880_c3(Double3x4Impl _dst, float m03, float _r1, float m13, float _r2, float m23, float _r0, float _r3, float _r5, float _r6, float _r4, float _r7, float _r9, float _r10, float _r8, float _r11) {
+        _dst.m03 = Math.fma(m03, _r1, Math.fma(m13, _r2, Math.fma(m23, _r0, _r3)));
+        _dst.m13 = Math.fma(m03, _r5, Math.fma(m13, _r6, Math.fma(m23, _r4, _r7)));
+        _dst.m23 = Math.fma(m03, _r9, Math.fma(m13, _r10, Math.fma(m23, _r8, _r11)));
     }
 
 
@@ -7816,27 +8263,22 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 mul(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        float _buf0 = Math.fma(m20, this.m02, Math.fma(m00, this.m00, m10 * this.m01));
-        float _buf1 = Math.fma(m21, this.m02, Math.fma(m01, this.m00, m11 * this.m01));
-        float _buf2 = Math.fma(m22, this.m02, Math.fma(m02, this.m00, m12 * this.m01));
-        d.m03 = Math.fma(m03, this.m00, Math.fma(m13, this.m01, Math.fma(m23, this.m02, this.m03)));
-        float _buf3 = Math.fma(m20, this.m12, Math.fma(m00, this.m10, m10 * this.m11));
-        float _buf4 = Math.fma(m21, this.m12, Math.fma(m01, this.m10, m11 * this.m11));
-        float _buf5 = Math.fma(m22, this.m12, Math.fma(m02, this.m10, m12 * this.m11));
-        d.m13 = Math.fma(m03, this.m10, Math.fma(m13, this.m11, Math.fma(m23, this.m12, this.m13)));
-        float _buf6 = Math.fma(m20, this.m22, Math.fma(m00, this.m20, m10 * this.m21));
-        float _buf7 = Math.fma(m21, this.m22, Math.fma(m01, this.m20, m11 * this.m21));
-        float _buf8 = Math.fma(m22, this.m22, Math.fma(m02, this.m20, m12 * this.m21));
-        d.m23 = Math.fma(m03, this.m20, Math.fma(m13, this.m21, Math.fma(m23, this.m22, this.m23)));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m10 = _buf3;
-        d.m11 = _buf4;
-        d.m12 = _buf5;
-        d.m20 = _buf6;
-        d.m21 = _buf7;
-        d.m22 = _buf8;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
+        mul_s326a3880_c0(d, m20, _r0, m00, _r1, m10, _r2, _r4, _r5, _r6, _r8, _r9, _r10);
+        mul_s326a3880_c1(d, m21, _r0, m01, _r1, m11, _r2, _r4, _r5, _r6, _r8, _r9, _r10);
+        mul_s326a3880_c2(d, m22, _r0, m02, _r1, m12, _r2, _r4, _r5, _r6, _r8, _r9, _r10);
+        mul_s326a3880_c3(d, m03, _r1, m13, _r2, m23, _r0, _r3, _r5, _r6, _r4, _r7, _r9, _r10, _r8, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -8352,6 +8794,43 @@ public class Float3x4Impl implements Float3x4 {
         return d;
     }
 
+    /** Private column 0 of {@code mul_orthogonal}: computes and stores it; reached only through it. */
+    private void mul_orthogonal_s2fe7319d_c0(Float3x4Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r13, float _r14, float _r15, float _r17, float _r18, float _r19) {
+        _dst.m00 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5));
+        _dst.m10 = Math.fma(_r0, _r13, Math.fma(_r2, _r14, _r4 * _r15));
+        _dst.m20 = Math.fma(_r0, _r17, Math.fma(_r2, _r18, _r4 * _r19));
+    }
+
+    /** Private column 1 of {@code mul_orthogonal}: computes and stores it; reached only through it. */
+    private void mul_orthogonal_s2fe7319d_c1(Float3x4Impl _dst, float _r6, float _r1, float _r7, float _r3, float _r8, float _r5, float _r13, float _r14, float _r15, float _r17, float _r18, float _r19) {
+        _dst.m01 = Math.fma(_r6, _r1, Math.fma(_r7, _r3, _r8 * _r5));
+        _dst.m11 = Math.fma(_r6, _r13, Math.fma(_r7, _r14, _r8 * _r15));
+        _dst.m21 = Math.fma(_r6, _r17, Math.fma(_r7, _r18, _r8 * _r19));
+    }
+
+    /** Private column 2 of {@code mul_orthogonal}: computes and stores it; reached only through it. */
+    private void mul_orthogonal_s2fe7319d_c2(Float3x4Impl _dst, float _r9, float _r1, float _r10, float _r3, float _r11, float _r5, float _r13, float _r14, float _r15, float _r17, float _r18, float _r19) {
+        _dst.m02 = Math.fma(_r9, _r1, Math.fma(_r10, _r3, _r11 * _r5));
+        _dst.m12 = Math.fma(_r9, _r13, Math.fma(_r10, _r14, _r11 * _r15));
+        _dst.m22 = Math.fma(_r9, _r17, Math.fma(_r10, _r18, _r11 * _r19));
+    }
+
+    /** Private column 3 of {@code mul_orthogonal}: computes and stores it; reached only through it. */
+    private void mul_orthogonal_s2fe7319d_c3(Float3x4Impl _dst, float _r12, float _r16, float _r20) {
+        _dst.m03 = _r12;
+        _dst.m13 = _r16;
+        _dst.m23 = _r20;
+    }
+
+    /** Private tail of {@code mul_orthogonal}; reached only through it. */
+    private void mul_orthogonal_s2fe7319d_tail(Float3x4Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19) {
+        float _r20 = this.m23;
+        mul_orthogonal_s2fe7319d_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r13, _r14, _r15, _r17, _r18, _r19);
+        mul_orthogonal_s2fe7319d_c1(_dst, _r6, _r1, _r7, _r3, _r8, _r5, _r13, _r14, _r15, _r17, _r18, _r19);
+        mul_orthogonal_s2fe7319d_c2(_dst, _r9, _r1, _r10, _r3, _r11, _r5, _r13, _r14, _r15, _r17, _r18, _r19);
+        mul_orthogonal_s2fe7319d_c3(_dst, _r12, _r16, _r20);
+    }
+
 
     /**
      * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
@@ -8359,26 +8838,66 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 mul_orthogonal(Float3x3R right, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _buf0 = Math.fma(right.m20(), this.m02, Math.fma(right.m00(), this.m00, right.m10() * this.m01));
-        float _buf1 = Math.fma(right.m21(), this.m02, Math.fma(right.m01(), this.m00, right.m11() * this.m01));
-        d.m02 = Math.fma(right.m22(), this.m02, Math.fma(right.m02(), this.m00, right.m12() * this.m01));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(right.m20(), this.m12, Math.fma(right.m00(), this.m10, right.m10() * this.m11));
-        float _buf3 = Math.fma(right.m21(), this.m12, Math.fma(right.m01(), this.m10, right.m11() * this.m11));
-        d.m12 = Math.fma(right.m22(), this.m12, Math.fma(right.m02(), this.m10, right.m12() * this.m11));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(right.m20(), this.m22, Math.fma(right.m00(), this.m20, right.m10() * this.m21));
-        float _buf5 = Math.fma(right.m21(), this.m22, Math.fma(right.m01(), this.m20, right.m11() * this.m21));
-        d.m22 = Math.fma(right.m22(), this.m22, Math.fma(right.m02(), this.m20, right.m12() * this.m21));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        float _r0 = right.m20();
+        float _r1 = this.m02;
+        float _r2 = right.m00();
+        float _r3 = this.m00;
+        float _r4 = right.m10();
+        float _r5 = this.m01;
+        float _r6 = right.m21();
+        float _r7 = right.m01();
+        float _r8 = right.m11();
+        float _r9 = right.m22();
+        float _r10 = right.m02();
+        float _r11 = right.m12();
+        float _r12 = this.m03;
+        float _r13 = this.m12;
+        float _r14 = this.m10;
+        float _r15 = this.m11;
+        float _r16 = this.m13;
+        float _r17 = this.m22;
+        float _r18 = this.m20;
+        float _r19 = this.m21;
+        mul_orthogonal_s2fe7319d_tail(d, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         d.properties = (((Float3x3Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_ORTHOGONAL : Joml.BIT_AFFINE;
         return d;
+    }
+
+    /** Private column 0 of {@code mul_general}: computes and stores it; reached only through it. */
+    private void mul_general_s2fe7319d_c0(Float3x4Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r13, float _r14, float _r15, float _r17, float _r18, float _r19) {
+        _dst.m00 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5));
+        _dst.m10 = Math.fma(_r0, _r13, Math.fma(_r2, _r14, _r4 * _r15));
+        _dst.m20 = Math.fma(_r0, _r17, Math.fma(_r2, _r18, _r4 * _r19));
+    }
+
+    /** Private column 1 of {@code mul_general}: computes and stores it; reached only through it. */
+    private void mul_general_s2fe7319d_c1(Float3x4Impl _dst, float _r6, float _r1, float _r7, float _r3, float _r8, float _r5, float _r13, float _r14, float _r15, float _r17, float _r18, float _r19) {
+        _dst.m01 = Math.fma(_r6, _r1, Math.fma(_r7, _r3, _r8 * _r5));
+        _dst.m11 = Math.fma(_r6, _r13, Math.fma(_r7, _r14, _r8 * _r15));
+        _dst.m21 = Math.fma(_r6, _r17, Math.fma(_r7, _r18, _r8 * _r19));
+    }
+
+    /** Private column 2 of {@code mul_general}: computes and stores it; reached only through it. */
+    private void mul_general_s2fe7319d_c2(Float3x4Impl _dst, float _r9, float _r1, float _r10, float _r3, float _r11, float _r5, float _r13, float _r14, float _r15, float _r17, float _r18, float _r19) {
+        _dst.m02 = Math.fma(_r9, _r1, Math.fma(_r10, _r3, _r11 * _r5));
+        _dst.m12 = Math.fma(_r9, _r13, Math.fma(_r10, _r14, _r11 * _r15));
+        _dst.m22 = Math.fma(_r9, _r17, Math.fma(_r10, _r18, _r11 * _r19));
+    }
+
+    /** Private column 3 of {@code mul_general}: computes and stores it; reached only through it. */
+    private void mul_general_s2fe7319d_c3(Float3x4Impl _dst, float _r12, float _r16, float _r20) {
+        _dst.m03 = _r12;
+        _dst.m13 = _r16;
+        _dst.m23 = _r20;
+    }
+
+    /** Private tail of {@code mul_general}; reached only through it. */
+    private void mul_general_s2fe7319d_tail(Float3x4Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19) {
+        float _r20 = this.m23;
+        mul_general_s2fe7319d_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r13, _r14, _r15, _r17, _r18, _r19);
+        mul_general_s2fe7319d_c1(_dst, _r6, _r1, _r7, _r3, _r8, _r5, _r13, _r14, _r15, _r17, _r18, _r19);
+        mul_general_s2fe7319d_c2(_dst, _r9, _r1, _r10, _r3, _r11, _r5, _r13, _r14, _r15, _r17, _r18, _r19);
+        mul_general_s2fe7319d_c3(_dst, _r12, _r16, _r20);
     }
 
 
@@ -8388,24 +8907,27 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 mul_general(Float3x3R right, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _buf0 = Math.fma(right.m20(), this.m02, Math.fma(right.m00(), this.m00, right.m10() * this.m01));
-        float _buf1 = Math.fma(right.m21(), this.m02, Math.fma(right.m01(), this.m00, right.m11() * this.m01));
-        d.m02 = Math.fma(right.m22(), this.m02, Math.fma(right.m02(), this.m00, right.m12() * this.m01));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(right.m20(), this.m12, Math.fma(right.m00(), this.m10, right.m10() * this.m11));
-        float _buf3 = Math.fma(right.m21(), this.m12, Math.fma(right.m01(), this.m10, right.m11() * this.m11));
-        d.m12 = Math.fma(right.m22(), this.m12, Math.fma(right.m02(), this.m10, right.m12() * this.m11));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(right.m20(), this.m22, Math.fma(right.m00(), this.m20, right.m10() * this.m21));
-        float _buf5 = Math.fma(right.m21(), this.m22, Math.fma(right.m01(), this.m20, right.m11() * this.m21));
-        d.m22 = Math.fma(right.m22(), this.m22, Math.fma(right.m02(), this.m20, right.m12() * this.m21));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        float _r0 = right.m20();
+        float _r1 = this.m02;
+        float _r2 = right.m00();
+        float _r3 = this.m00;
+        float _r4 = right.m10();
+        float _r5 = this.m01;
+        float _r6 = right.m21();
+        float _r7 = right.m01();
+        float _r8 = right.m11();
+        float _r9 = right.m22();
+        float _r10 = right.m02();
+        float _r11 = right.m12();
+        float _r12 = this.m03;
+        float _r13 = this.m12;
+        float _r14 = this.m10;
+        float _r15 = this.m11;
+        float _r16 = this.m13;
+        float _r17 = this.m22;
+        float _r18 = this.m20;
+        float _r19 = this.m21;
+        mul_general_s2fe7319d_tail(d, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -8456,6 +8978,43 @@ public class Float3x4Impl implements Float3x4 {
         return mul_general(right, this);
     }
 
+    /** Private column 0 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s16c5e536_c0(Double3x4Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r13, float _r14, float _r15, float _r17, float _r18, float _r19) {
+        _dst.m00 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5));
+        _dst.m10 = Math.fma(_r0, _r13, Math.fma(_r2, _r14, _r4 * _r15));
+        _dst.m20 = Math.fma(_r0, _r17, Math.fma(_r2, _r18, _r4 * _r19));
+    }
+
+    /** Private column 1 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s16c5e536_c1(Double3x4Impl _dst, float _r6, float _r1, float _r7, float _r3, float _r8, float _r5, float _r13, float _r14, float _r15, float _r17, float _r18, float _r19) {
+        _dst.m01 = Math.fma(_r6, _r1, Math.fma(_r7, _r3, _r8 * _r5));
+        _dst.m11 = Math.fma(_r6, _r13, Math.fma(_r7, _r14, _r8 * _r15));
+        _dst.m21 = Math.fma(_r6, _r17, Math.fma(_r7, _r18, _r8 * _r19));
+    }
+
+    /** Private column 2 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s16c5e536_c2(Double3x4Impl _dst, float _r9, float _r1, float _r10, float _r3, float _r11, float _r5, float _r13, float _r14, float _r15, float _r17, float _r18, float _r19) {
+        _dst.m02 = Math.fma(_r9, _r1, Math.fma(_r10, _r3, _r11 * _r5));
+        _dst.m12 = Math.fma(_r9, _r13, Math.fma(_r10, _r14, _r11 * _r15));
+        _dst.m22 = Math.fma(_r9, _r17, Math.fma(_r10, _r18, _r11 * _r19));
+    }
+
+    /** Private column 3 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s16c5e536_c3(Double3x4Impl _dst, float _r12, float _r16, float _r20) {
+        _dst.m03 = _r12;
+        _dst.m13 = _r16;
+        _dst.m23 = _r20;
+    }
+
+    /** Private tail of {@code mul}; reached only through it. */
+    private void mul_s16c5e536_tail(Double3x4Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19) {
+        float _r20 = this.m23;
+        mul_s16c5e536_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r13, _r14, _r15, _r17, _r18, _r19);
+        mul_s16c5e536_c1(_dst, _r6, _r1, _r7, _r3, _r8, _r5, _r13, _r14, _r15, _r17, _r18, _r19);
+        mul_s16c5e536_c2(_dst, _r9, _r1, _r10, _r3, _r11, _r5, _r13, _r14, _r15, _r17, _r18, _r19);
+        mul_s16c5e536_c3(_dst, _r12, _r16, _r20);
+    }
+
 
     /**
      * Multiply this matrix by {@code right} and store the result in {@code dest}.
@@ -8476,26 +9035,77 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 mul(Float3x3R right, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        float _buf0 = Math.fma(right.m20(), this.m02, Math.fma(right.m00(), this.m00, right.m10() * this.m01));
-        float _buf1 = Math.fma(right.m21(), this.m02, Math.fma(right.m01(), this.m00, right.m11() * this.m01));
-        d.m02 = Math.fma(right.m22(), this.m02, Math.fma(right.m02(), this.m00, right.m12() * this.m01));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(right.m20(), this.m12, Math.fma(right.m00(), this.m10, right.m10() * this.m11));
-        float _buf3 = Math.fma(right.m21(), this.m12, Math.fma(right.m01(), this.m10, right.m11() * this.m11));
-        d.m12 = Math.fma(right.m22(), this.m12, Math.fma(right.m02(), this.m10, right.m12() * this.m11));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(right.m20(), this.m22, Math.fma(right.m00(), this.m20, right.m10() * this.m21));
-        float _buf5 = Math.fma(right.m21(), this.m22, Math.fma(right.m01(), this.m20, right.m11() * this.m21));
-        d.m22 = Math.fma(right.m22(), this.m22, Math.fma(right.m02(), this.m20, right.m12() * this.m21));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        float _r0 = right.m20();
+        float _r1 = this.m02;
+        float _r2 = right.m00();
+        float _r3 = this.m00;
+        float _r4 = right.m10();
+        float _r5 = this.m01;
+        float _r6 = right.m21();
+        float _r7 = right.m01();
+        float _r8 = right.m11();
+        float _r9 = right.m22();
+        float _r10 = right.m02();
+        float _r11 = right.m12();
+        float _r12 = this.m03;
+        float _r13 = this.m12;
+        float _r14 = this.m10;
+        float _r15 = this.m11;
+        float _r16 = this.m13;
+        float _r17 = this.m22;
+        float _r18 = this.m20;
+        float _r19 = this.m21;
+        mul_s16c5e536_tail(d, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         d.properties = Joml.BIT_AFFINE;
         return d;
+    }
+
+    /** Private column 0 of {@code mul_general}: computes and stores it; reached only through it. */
+    private void mul_general_s79f841b0_c0(Float4x4Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r20, float _r21, float _r22, float _r23, float _r24, float _r25, float _r26, float _r27) {
+        _dst.m00 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7)));
+        _dst.m10 = Math.fma(_r0, _r20, Math.fma(_r2, _r21, Math.fma(_r4, _r22, _r6 * _r23)));
+        _dst.m20 = Math.fma(_r0, _r24, Math.fma(_r2, _r25, Math.fma(_r4, _r26, _r6 * _r27)));
+        _dst.m30 = _r0;
+    }
+
+    /** Private column 1 of {@code mul_general}: computes and stores it; reached only through it. */
+    private void mul_general_s79f841b0_c1(Float4x4Impl _dst, float _r8, float _r1, float _r9, float _r3, float _r10, float _r5, float _r11, float _r7, float _r20, float _r21, float _r22, float _r23, float _r24, float _r25, float _r26, float _r27) {
+        _dst.m01 = Math.fma(_r8, _r1, Math.fma(_r9, _r3, Math.fma(_r10, _r5, _r11 * _r7)));
+        _dst.m11 = Math.fma(_r8, _r20, Math.fma(_r9, _r21, Math.fma(_r10, _r22, _r11 * _r23)));
+        _dst.m21 = Math.fma(_r8, _r24, Math.fma(_r9, _r25, Math.fma(_r10, _r26, _r11 * _r27)));
+        _dst.m31 = _r8;
+    }
+
+    /** Private column 2 of {@code mul_general}: computes and stores it; reached only through it. */
+    private void mul_general_s79f841b0_c2(Float4x4Impl _dst, float _r12, float _r1, float _r13, float _r3, float _r14, float _r5, float _r15, float _r7, float _r20, float _r21, float _r22, float _r23, float _r24, float _r25, float _r26, float _r27) {
+        _dst.m02 = Math.fma(_r12, _r1, Math.fma(_r13, _r3, Math.fma(_r14, _r5, _r15 * _r7)));
+        _dst.m12 = Math.fma(_r12, _r20, Math.fma(_r13, _r21, Math.fma(_r14, _r22, _r15 * _r23)));
+        _dst.m22 = Math.fma(_r12, _r24, Math.fma(_r13, _r25, Math.fma(_r14, _r26, _r15 * _r27)));
+        _dst.m32 = _r12;
+    }
+
+    /** Private column 3 of {@code mul_general}: computes and stores it; reached only through it. */
+    private void mul_general_s79f841b0_c3(Float4x4Impl _dst, float _r16, float _r1, float _r17, float _r3, float _r18, float _r5, float _r19, float _r7, float _r20, float _r21, float _r22, float _r23, float _r24, float _r25, float _r26, float _r27) {
+        _dst.m03 = Math.fma(_r16, _r1, Math.fma(_r17, _r3, Math.fma(_r18, _r5, _r19 * _r7)));
+        _dst.m13 = Math.fma(_r16, _r20, Math.fma(_r17, _r21, Math.fma(_r18, _r22, _r19 * _r23)));
+        _dst.m23 = Math.fma(_r16, _r24, Math.fma(_r17, _r25, Math.fma(_r18, _r26, _r19 * _r27)));
+        _dst.m33 = _r16;
+    }
+
+    /** Private tail of {@code mul_general}; reached only through it. */
+    private void mul_general_s79f841b0_tail(Float4x4Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19) {
+        float _r20 = this.m13;
+        float _r21 = this.m12;
+        float _r22 = this.m10;
+        float _r23 = this.m11;
+        float _r24 = this.m23;
+        float _r25 = this.m22;
+        float _r26 = this.m20;
+        float _r27 = this.m21;
+        mul_general_s79f841b0_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r20, _r21, _r22, _r23, _r24, _r25, _r26, _r27);
+        mul_general_s79f841b0_c1(_dst, _r8, _r1, _r9, _r3, _r10, _r5, _r11, _r7, _r20, _r21, _r22, _r23, _r24, _r25, _r26, _r27);
+        mul_general_s79f841b0_c2(_dst, _r12, _r1, _r13, _r3, _r14, _r5, _r15, _r7, _r20, _r21, _r22, _r23, _r24, _r25, _r26, _r27);
+        mul_general_s79f841b0_c3(_dst, _r16, _r1, _r17, _r3, _r18, _r5, _r19, _r7, _r20, _r21, _r22, _r23, _r24, _r25, _r26, _r27);
     }
 
 
@@ -8505,33 +9115,27 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float4x4 mul_general(Float4x4R right, @Mutated Float4x4 dest, int _props) {
         Float4x4Impl d = (Float4x4Impl) dest;
-        float _buf0 = Math.fma(right.m30(), this.m03, Math.fma(right.m20(), this.m02, Math.fma(right.m00(), this.m00, right.m10() * this.m01)));
-        float _buf1 = Math.fma(right.m30(), this.m13, Math.fma(right.m20(), this.m12, Math.fma(right.m00(), this.m10, right.m10() * this.m11)));
-        float _buf2 = Math.fma(right.m30(), this.m23, Math.fma(right.m20(), this.m22, Math.fma(right.m00(), this.m20, right.m10() * this.m21)));
-        d.m30 = right.m30();
-        float _buf3 = Math.fma(right.m31(), this.m03, Math.fma(right.m21(), this.m02, Math.fma(right.m01(), this.m00, right.m11() * this.m01)));
-        float _buf4 = Math.fma(right.m31(), this.m13, Math.fma(right.m21(), this.m12, Math.fma(right.m01(), this.m10, right.m11() * this.m11)));
-        float _buf5 = Math.fma(right.m31(), this.m23, Math.fma(right.m21(), this.m22, Math.fma(right.m01(), this.m20, right.m11() * this.m21)));
-        d.m31 = right.m31();
-        float _buf6 = Math.fma(right.m32(), this.m03, Math.fma(right.m22(), this.m02, Math.fma(right.m02(), this.m00, right.m12() * this.m01)));
-        float _buf7 = Math.fma(right.m32(), this.m13, Math.fma(right.m22(), this.m12, Math.fma(right.m02(), this.m10, right.m12() * this.m11)));
-        float _buf8 = Math.fma(right.m32(), this.m23, Math.fma(right.m22(), this.m22, Math.fma(right.m02(), this.m20, right.m12() * this.m21)));
-        d.m32 = right.m32();
-        float _buf9 = Math.fma(right.m33(), this.m03, Math.fma(right.m23(), this.m02, Math.fma(right.m03(), this.m00, right.m13() * this.m01)));
-        float _buf10 = Math.fma(right.m33(), this.m13, Math.fma(right.m23(), this.m12, Math.fma(right.m03(), this.m10, right.m13() * this.m11)));
-        d.m23 = Math.fma(right.m33(), this.m23, Math.fma(right.m23(), this.m22, Math.fma(right.m03(), this.m20, right.m13() * this.m21)));
-        d.m33 = right.m33();
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
-        d.m02 = _buf6;
-        d.m12 = _buf7;
-        d.m22 = _buf8;
-        d.m03 = _buf9;
-        d.m13 = _buf10;
+        float _r0 = right.m30();
+        float _r1 = this.m03;
+        float _r2 = right.m20();
+        float _r3 = this.m02;
+        float _r4 = right.m00();
+        float _r5 = this.m00;
+        float _r6 = right.m10();
+        float _r7 = this.m01;
+        float _r8 = right.m31();
+        float _r9 = right.m21();
+        float _r10 = right.m01();
+        float _r11 = right.m11();
+        float _r12 = right.m32();
+        float _r13 = right.m22();
+        float _r14 = right.m02();
+        float _r15 = right.m12();
+        float _r16 = right.m33();
+        float _r17 = right.m23();
+        float _r18 = right.m03();
+        float _r19 = right.m13();
+        mul_general_s79f841b0_tail(d, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         d.properties = _props;
         return d;
     }
@@ -8709,6 +9313,54 @@ public class Float3x4Impl implements Float3x4 {
         return mul_general(right, dest, 0);
     }
 
+    /** Private column 0 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s63578dd7_c0(Double4x4Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r20, float _r21, float _r22, float _r23, float _r24, float _r25, float _r26, float _r27) {
+        _dst.m00 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7)));
+        _dst.m10 = Math.fma(_r0, _r20, Math.fma(_r2, _r21, Math.fma(_r4, _r22, _r6 * _r23)));
+        _dst.m20 = Math.fma(_r0, _r24, Math.fma(_r2, _r25, Math.fma(_r4, _r26, _r6 * _r27)));
+        _dst.m30 = _r0;
+    }
+
+    /** Private column 1 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s63578dd7_c1(Double4x4Impl _dst, float _r8, float _r1, float _r9, float _r3, float _r10, float _r5, float _r11, float _r7, float _r20, float _r21, float _r22, float _r23, float _r24, float _r25, float _r26, float _r27) {
+        _dst.m01 = Math.fma(_r8, _r1, Math.fma(_r9, _r3, Math.fma(_r10, _r5, _r11 * _r7)));
+        _dst.m11 = Math.fma(_r8, _r20, Math.fma(_r9, _r21, Math.fma(_r10, _r22, _r11 * _r23)));
+        _dst.m21 = Math.fma(_r8, _r24, Math.fma(_r9, _r25, Math.fma(_r10, _r26, _r11 * _r27)));
+        _dst.m31 = _r8;
+    }
+
+    /** Private column 2 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s63578dd7_c2(Double4x4Impl _dst, float _r12, float _r1, float _r13, float _r3, float _r14, float _r5, float _r15, float _r7, float _r20, float _r21, float _r22, float _r23, float _r24, float _r25, float _r26, float _r27) {
+        _dst.m02 = Math.fma(_r12, _r1, Math.fma(_r13, _r3, Math.fma(_r14, _r5, _r15 * _r7)));
+        _dst.m12 = Math.fma(_r12, _r20, Math.fma(_r13, _r21, Math.fma(_r14, _r22, _r15 * _r23)));
+        _dst.m22 = Math.fma(_r12, _r24, Math.fma(_r13, _r25, Math.fma(_r14, _r26, _r15 * _r27)));
+        _dst.m32 = _r12;
+    }
+
+    /** Private column 3 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s63578dd7_c3(Double4x4Impl _dst, float _r16, float _r1, float _r17, float _r3, float _r18, float _r5, float _r19, float _r7, float _r20, float _r21, float _r22, float _r23, float _r24, float _r25, float _r26, float _r27) {
+        _dst.m03 = Math.fma(_r16, _r1, Math.fma(_r17, _r3, Math.fma(_r18, _r5, _r19 * _r7)));
+        _dst.m13 = Math.fma(_r16, _r20, Math.fma(_r17, _r21, Math.fma(_r18, _r22, _r19 * _r23)));
+        _dst.m23 = Math.fma(_r16, _r24, Math.fma(_r17, _r25, Math.fma(_r18, _r26, _r19 * _r27)));
+        _dst.m33 = _r16;
+    }
+
+    /** Private tail of {@code mul}; reached only through it. */
+    private void mul_s63578dd7_tail(Double4x4Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19) {
+        float _r20 = this.m13;
+        float _r21 = this.m12;
+        float _r22 = this.m10;
+        float _r23 = this.m11;
+        float _r24 = this.m23;
+        float _r25 = this.m22;
+        float _r26 = this.m20;
+        float _r27 = this.m21;
+        mul_s63578dd7_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r20, _r21, _r22, _r23, _r24, _r25, _r26, _r27);
+        mul_s63578dd7_c1(_dst, _r8, _r1, _r9, _r3, _r10, _r5, _r11, _r7, _r20, _r21, _r22, _r23, _r24, _r25, _r26, _r27);
+        mul_s63578dd7_c2(_dst, _r12, _r1, _r13, _r3, _r14, _r5, _r15, _r7, _r20, _r21, _r22, _r23, _r24, _r25, _r26, _r27);
+        mul_s63578dd7_c3(_dst, _r16, _r1, _r17, _r3, _r18, _r5, _r19, _r7, _r20, _r21, _r22, _r23, _r24, _r25, _r26, _r27);
+    }
+
 
     /**
      * Multiply this matrix by the given matrix and store the result in {@code dest}.
@@ -8722,35 +9374,69 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double4x4 mul(Float4x4R right, @Mutated Double4x4 dest) {
         Double4x4Impl d = (Double4x4Impl) dest;
-        float _buf0 = Math.fma(right.m30(), this.m03, Math.fma(right.m20(), this.m02, Math.fma(right.m00(), this.m00, right.m10() * this.m01)));
-        float _buf1 = Math.fma(right.m30(), this.m13, Math.fma(right.m20(), this.m12, Math.fma(right.m00(), this.m10, right.m10() * this.m11)));
-        float _buf2 = Math.fma(right.m30(), this.m23, Math.fma(right.m20(), this.m22, Math.fma(right.m00(), this.m20, right.m10() * this.m21)));
-        d.m30 = right.m30();
-        float _buf3 = Math.fma(right.m31(), this.m03, Math.fma(right.m21(), this.m02, Math.fma(right.m01(), this.m00, right.m11() * this.m01)));
-        float _buf4 = Math.fma(right.m31(), this.m13, Math.fma(right.m21(), this.m12, Math.fma(right.m01(), this.m10, right.m11() * this.m11)));
-        float _buf5 = Math.fma(right.m31(), this.m23, Math.fma(right.m21(), this.m22, Math.fma(right.m01(), this.m20, right.m11() * this.m21)));
-        d.m31 = right.m31();
-        float _buf6 = Math.fma(right.m32(), this.m03, Math.fma(right.m22(), this.m02, Math.fma(right.m02(), this.m00, right.m12() * this.m01)));
-        float _buf7 = Math.fma(right.m32(), this.m13, Math.fma(right.m22(), this.m12, Math.fma(right.m02(), this.m10, right.m12() * this.m11)));
-        float _buf8 = Math.fma(right.m32(), this.m23, Math.fma(right.m22(), this.m22, Math.fma(right.m02(), this.m20, right.m12() * this.m21)));
-        d.m32 = right.m32();
-        float _buf9 = Math.fma(right.m33(), this.m03, Math.fma(right.m23(), this.m02, Math.fma(right.m03(), this.m00, right.m13() * this.m01)));
-        float _buf10 = Math.fma(right.m33(), this.m13, Math.fma(right.m23(), this.m12, Math.fma(right.m03(), this.m10, right.m13() * this.m11)));
-        d.m23 = Math.fma(right.m33(), this.m23, Math.fma(right.m23(), this.m22, Math.fma(right.m03(), this.m20, right.m13() * this.m21)));
-        d.m33 = right.m33();
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
-        d.m02 = _buf6;
-        d.m12 = _buf7;
-        d.m22 = _buf8;
-        d.m03 = _buf9;
-        d.m13 = _buf10;
+        float _r0 = right.m30();
+        float _r1 = this.m03;
+        float _r2 = right.m20();
+        float _r3 = this.m02;
+        float _r4 = right.m00();
+        float _r5 = this.m00;
+        float _r6 = right.m10();
+        float _r7 = this.m01;
+        float _r8 = right.m31();
+        float _r9 = right.m21();
+        float _r10 = right.m01();
+        float _r11 = right.m11();
+        float _r12 = right.m32();
+        float _r13 = right.m22();
+        float _r14 = right.m02();
+        float _r15 = right.m12();
+        float _r16 = right.m33();
+        float _r17 = right.m23();
+        float _r18 = right.m03();
+        float _r19 = right.m13();
+        mul_s63578dd7_tail(d, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         d.properties = 0;
         return d;
+    }
+
+    /** Private column 0 of {@code preMul_general}: computes and stores it; reached only through it. */
+    private void preMul_general_s6f0130a6_c0(Float3x4Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r16, float _r17, float _r18, float _r20, float _r21, float _r22) {
+        _dst.m00 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5));
+        _dst.m10 = Math.fma(_r16, _r1, Math.fma(_r17, _r3, _r18 * _r5));
+        _dst.m20 = Math.fma(_r20, _r1, Math.fma(_r21, _r3, _r22 * _r5));
+    }
+
+    /** Private column 1 of {@code preMul_general}: computes and stores it; reached only through it. */
+    private void preMul_general_s6f0130a6_c1(Float3x4Impl _dst, float _r0, float _r6, float _r2, float _r7, float _r4, float _r8, float _r16, float _r17, float _r18, float _r20, float _r21, float _r22) {
+        _dst.m01 = Math.fma(_r0, _r6, Math.fma(_r2, _r7, _r4 * _r8));
+        _dst.m11 = Math.fma(_r16, _r6, Math.fma(_r17, _r7, _r18 * _r8));
+        _dst.m21 = Math.fma(_r20, _r6, Math.fma(_r21, _r7, _r22 * _r8));
+    }
+
+    /** Private column 2 of {@code preMul_general}: computes and stores it; reached only through it. */
+    private void preMul_general_s6f0130a6_c2(Float3x4Impl _dst, float _r0, float _r9, float _r2, float _r10, float _r4, float _r11, float _r16, float _r17, float _r18, float _r20, float _r21, float _r22) {
+        _dst.m02 = Math.fma(_r0, _r9, Math.fma(_r2, _r10, _r4 * _r11));
+        _dst.m12 = Math.fma(_r16, _r9, Math.fma(_r17, _r10, _r18 * _r11));
+        _dst.m22 = Math.fma(_r20, _r9, Math.fma(_r21, _r10, _r22 * _r11));
+    }
+
+    /** Private column 3 of {@code preMul_general}: computes and stores it; reached only through it. */
+    private void preMul_general_s6f0130a6_c3(Float3x4Impl _dst, float _r2, float _r12, float _r4, float _r13, float _r0, float _r14, float _r15, float _r17, float _r18, float _r16, float _r19, float _r21, float _r22, float _r20, float _r23) {
+        _dst.m03 = Math.fma(_r2, _r12, Math.fma(_r4, _r13, Math.fma(_r0, _r14, _r15)));
+        _dst.m13 = Math.fma(_r17, _r12, Math.fma(_r18, _r13, Math.fma(_r16, _r14, _r19)));
+        _dst.m23 = Math.fma(_r21, _r12, Math.fma(_r22, _r13, Math.fma(_r20, _r14, _r23)));
+    }
+
+    /** Private tail of {@code preMul_general}; reached only through it. */
+    private void preMul_general_s6f0130a6_tail(Float3x4Impl _dst, Float3x4R other, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19) {
+        float _r20 = other.m22();
+        float _r21 = other.m20();
+        float _r22 = other.m21();
+        float _r23 = other.m23();
+        preMul_general_s6f0130a6_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r16, _r17, _r18, _r20, _r21, _r22);
+        preMul_general_s6f0130a6_c1(_dst, _r0, _r6, _r2, _r7, _r4, _r8, _r16, _r17, _r18, _r20, _r21, _r22);
+        preMul_general_s6f0130a6_c2(_dst, _r0, _r9, _r2, _r10, _r4, _r11, _r16, _r17, _r18, _r20, _r21, _r22);
+        preMul_general_s6f0130a6_c3(_dst, _r2, _r12, _r4, _r13, _r0, _r14, _r15, _r17, _r18, _r16, _r19, _r21, _r22, _r20, _r23);
     }
 
 
@@ -8760,29 +9446,27 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preMul_general(Float3x4R other, @Mutated Float3x4 dest, int _props) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _buf0 = Math.fma(other.m02(), this.m20, Math.fma(other.m00(), this.m00, other.m01() * this.m10));
-        float _buf1 = Math.fma(other.m02(), this.m21, Math.fma(other.m00(), this.m01, other.m01() * this.m11));
-        float _buf2 = Math.fma(other.m02(), this.m22, Math.fma(other.m00(), this.m02, other.m01() * this.m12));
-        float _buf3 = Math.fma(other.m00(), this.m03, Math.fma(other.m01(), this.m13, Math.fma(other.m02(), this.m23, other.m03())));
-        float _buf4 = Math.fma(other.m12(), this.m20, Math.fma(other.m10(), this.m00, other.m11() * this.m10));
-        float _buf5 = Math.fma(other.m12(), this.m21, Math.fma(other.m10(), this.m01, other.m11() * this.m11));
-        float _buf6 = Math.fma(other.m12(), this.m22, Math.fma(other.m10(), this.m02, other.m11() * this.m12));
-        float _buf7 = Math.fma(other.m10(), this.m03, Math.fma(other.m11(), this.m13, Math.fma(other.m12(), this.m23, other.m13())));
-        float _buf8 = Math.fma(other.m22(), this.m20, Math.fma(other.m20(), this.m00, other.m21() * this.m10));
-        float _buf9 = Math.fma(other.m22(), this.m21, Math.fma(other.m20(), this.m01, other.m21() * this.m11));
-        float _buf10 = Math.fma(other.m22(), this.m22, Math.fma(other.m20(), this.m02, other.m21() * this.m12));
-        d.m23 = Math.fma(other.m20(), this.m03, Math.fma(other.m21(), this.m13, Math.fma(other.m22(), this.m23, other.m23())));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m13 = _buf7;
-        d.m20 = _buf8;
-        d.m21 = _buf9;
-        d.m22 = _buf10;
+        float _r0 = other.m02();
+        float _r1 = this.m20;
+        float _r2 = other.m00();
+        float _r3 = this.m00;
+        float _r4 = other.m01();
+        float _r5 = this.m10;
+        float _r6 = this.m21;
+        float _r7 = this.m01;
+        float _r8 = this.m11;
+        float _r9 = this.m22;
+        float _r10 = this.m02;
+        float _r11 = this.m12;
+        float _r12 = this.m03;
+        float _r13 = this.m13;
+        float _r14 = this.m23;
+        float _r15 = other.m03();
+        float _r16 = other.m12();
+        float _r17 = other.m10();
+        float _r18 = other.m11();
+        float _r19 = other.m13();
+        preMul_general_s6f0130a6_tail(d, other, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         d.properties = _props;
         return d;
     }
@@ -8946,6 +9630,34 @@ public class Float3x4Impl implements Float3x4 {
         return preMul(other.m00(), other.m01(), other.m02(), other.m03(), other.m10(), other.m11(), other.m12(), other.m13(), other.m20(), other.m21(), other.m22(), other.m23(), dest);
     }
 
+    /** Private column 0 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s1c264d13_c0(Float3x4Impl _dst, float m02, float _r0, float m00, float _r1, float m01, float _r2, float m12, float m10, float m11, float m22, float m20, float m21) {
+        _dst.m00 = Math.fma(m02, _r0, Math.fma(m00, _r1, m01 * _r2));
+        _dst.m10 = Math.fma(m12, _r0, Math.fma(m10, _r1, m11 * _r2));
+        _dst.m20 = Math.fma(m22, _r0, Math.fma(m20, _r1, m21 * _r2));
+    }
+
+    /** Private column 1 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s1c264d13_c1(Float3x4Impl _dst, float m02, float _r3, float m00, float _r4, float m01, float _r5, float m12, float m10, float m11, float m22, float m20, float m21) {
+        _dst.m01 = Math.fma(m02, _r3, Math.fma(m00, _r4, m01 * _r5));
+        _dst.m11 = Math.fma(m12, _r3, Math.fma(m10, _r4, m11 * _r5));
+        _dst.m21 = Math.fma(m22, _r3, Math.fma(m20, _r4, m21 * _r5));
+    }
+
+    /** Private column 2 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s1c264d13_c2(Float3x4Impl _dst, float m02, float _r6, float m00, float _r7, float m01, float _r8, float m12, float m10, float m11, float m22, float m20, float m21) {
+        _dst.m02 = Math.fma(m02, _r6, Math.fma(m00, _r7, m01 * _r8));
+        _dst.m12 = Math.fma(m12, _r6, Math.fma(m10, _r7, m11 * _r8));
+        _dst.m22 = Math.fma(m22, _r6, Math.fma(m20, _r7, m21 * _r8));
+    }
+
+    /** Private column 3 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s1c264d13_c3(Float3x4Impl _dst, float m00, float _r9, float m01, float _r10, float m02, float _r11, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23) {
+        _dst.m03 = Math.fma(m00, _r9, Math.fma(m01, _r10, Math.fma(m02, _r11, m03)));
+        _dst.m13 = Math.fma(m10, _r9, Math.fma(m11, _r10, Math.fma(m12, _r11, m13)));
+        _dst.m23 = Math.fma(m20, _r9, Math.fma(m21, _r10, Math.fma(m22, _r11, m23)));
+    }
+
 
     /**
      * Pre-multiply the transformation ({@code m00}, {@code m01}, {@code m02}, {@code m03},
@@ -8973,28 +9685,52 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Float3x4 preMul(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _buf0 = Math.fma(m02, this.m20, Math.fma(m00, this.m00, m01 * this.m10));
-        float _buf1 = Math.fma(m02, this.m21, Math.fma(m00, this.m01, m01 * this.m11));
-        float _buf2 = Math.fma(m02, this.m22, Math.fma(m00, this.m02, m01 * this.m12));
-        float _buf3 = Math.fma(m00, this.m03, Math.fma(m01, this.m13, Math.fma(m02, this.m23, m03)));
-        float _buf4 = Math.fma(m12, this.m20, Math.fma(m10, this.m00, m11 * this.m10));
-        float _buf5 = Math.fma(m12, this.m21, Math.fma(m10, this.m01, m11 * this.m11));
-        float _buf6 = Math.fma(m12, this.m22, Math.fma(m10, this.m02, m11 * this.m12));
-        float _buf7 = Math.fma(m10, this.m03, Math.fma(m11, this.m13, Math.fma(m12, this.m23, m13)));
-        d.m20 = Math.fma(m22, this.m20, Math.fma(m20, this.m00, m21 * this.m10));
-        d.m21 = Math.fma(m22, this.m21, Math.fma(m20, this.m01, m21 * this.m11));
-        d.m22 = Math.fma(m22, this.m22, Math.fma(m20, this.m02, m21 * this.m12));
-        d.m23 = Math.fma(m20, this.m03, Math.fma(m21, this.m13, Math.fma(m22, this.m23, m23)));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m13 = _buf7;
+        float _r0 = this.m20;
+        float _r1 = this.m00;
+        float _r2 = this.m10;
+        float _r3 = this.m21;
+        float _r4 = this.m01;
+        float _r5 = this.m11;
+        float _r6 = this.m22;
+        float _r7 = this.m02;
+        float _r8 = this.m12;
+        float _r9 = this.m03;
+        float _r10 = this.m13;
+        float _r11 = this.m23;
+        preMul_s1c264d13_c0(d, m02, _r0, m00, _r1, m01, _r2, m12, m10, m11, m22, m20, m21);
+        preMul_s1c264d13_c1(d, m02, _r3, m00, _r4, m01, _r5, m12, m10, m11, m22, m20, m21);
+        preMul_s1c264d13_c2(d, m02, _r6, m00, _r7, m01, _r8, m12, m10, m11, m22, m20, m21);
+        preMul_s1c264d13_c3(d, m00, _r9, m01, _r10, m02, _r11, m03, m10, m11, m12, m13, m20, m21, m22, m23);
         d.properties = Joml.BIT_AFFINE;
         return d;
+    }
+
+    /** Private column 0 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s326a3880_c0(Double3x4Impl _dst, float m02, float _r0, float m00, float _r1, float m01, float _r2, float m12, float m10, float m11, float m22, float m20, float m21) {
+        _dst.m00 = Math.fma(m02, _r0, Math.fma(m00, _r1, m01 * _r2));
+        _dst.m10 = Math.fma(m12, _r0, Math.fma(m10, _r1, m11 * _r2));
+        _dst.m20 = Math.fma(m22, _r0, Math.fma(m20, _r1, m21 * _r2));
+    }
+
+    /** Private column 1 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s326a3880_c1(Double3x4Impl _dst, float m02, float _r3, float m00, float _r4, float m01, float _r5, float m12, float m10, float m11, float m22, float m20, float m21) {
+        _dst.m01 = Math.fma(m02, _r3, Math.fma(m00, _r4, m01 * _r5));
+        _dst.m11 = Math.fma(m12, _r3, Math.fma(m10, _r4, m11 * _r5));
+        _dst.m21 = Math.fma(m22, _r3, Math.fma(m20, _r4, m21 * _r5));
+    }
+
+    /** Private column 2 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s326a3880_c2(Double3x4Impl _dst, float m02, float _r6, float m00, float _r7, float m01, float _r8, float m12, float m10, float m11, float m22, float m20, float m21) {
+        _dst.m02 = Math.fma(m02, _r6, Math.fma(m00, _r7, m01 * _r8));
+        _dst.m12 = Math.fma(m12, _r6, Math.fma(m10, _r7, m11 * _r8));
+        _dst.m22 = Math.fma(m22, _r6, Math.fma(m20, _r7, m21 * _r8));
+    }
+
+    /** Private column 3 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s326a3880_c3(Double3x4Impl _dst, float m00, float _r9, float m01, float _r10, float m02, float _r11, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23) {
+        _dst.m03 = Math.fma(m00, _r9, Math.fma(m01, _r10, Math.fma(m02, _r11, m03)));
+        _dst.m13 = Math.fma(m10, _r9, Math.fma(m11, _r10, Math.fma(m12, _r11, m13)));
+        _dst.m23 = Math.fma(m20, _r9, Math.fma(m21, _r10, Math.fma(m22, _r11, m23)));
     }
 
 
@@ -9027,26 +9763,22 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 preMul(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        float _buf0 = Math.fma(m02, this.m20, Math.fma(m00, this.m00, m01 * this.m10));
-        float _buf1 = Math.fma(m02, this.m21, Math.fma(m00, this.m01, m01 * this.m11));
-        float _buf2 = Math.fma(m02, this.m22, Math.fma(m00, this.m02, m01 * this.m12));
-        float _buf3 = Math.fma(m00, this.m03, Math.fma(m01, this.m13, Math.fma(m02, this.m23, m03)));
-        float _buf4 = Math.fma(m12, this.m20, Math.fma(m10, this.m00, m11 * this.m10));
-        float _buf5 = Math.fma(m12, this.m21, Math.fma(m10, this.m01, m11 * this.m11));
-        float _buf6 = Math.fma(m12, this.m22, Math.fma(m10, this.m02, m11 * this.m12));
-        float _buf7 = Math.fma(m10, this.m03, Math.fma(m11, this.m13, Math.fma(m12, this.m23, m13)));
-        d.m20 = Math.fma(m22, this.m20, Math.fma(m20, this.m00, m21 * this.m10));
-        d.m21 = Math.fma(m22, this.m21, Math.fma(m20, this.m01, m21 * this.m11));
-        d.m22 = Math.fma(m22, this.m22, Math.fma(m20, this.m02, m21 * this.m12));
-        d.m23 = Math.fma(m20, this.m03, Math.fma(m21, this.m13, Math.fma(m22, this.m23, m23)));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m13 = _buf7;
+        float _r0 = this.m20;
+        float _r1 = this.m00;
+        float _r2 = this.m10;
+        float _r3 = this.m21;
+        float _r4 = this.m01;
+        float _r5 = this.m11;
+        float _r6 = this.m22;
+        float _r7 = this.m02;
+        float _r8 = this.m12;
+        float _r9 = this.m03;
+        float _r10 = this.m13;
+        float _r11 = this.m23;
+        preMul_s326a3880_c0(d, m02, _r0, m00, _r1, m01, _r2, m12, m10, m11, m22, m20, m21);
+        preMul_s326a3880_c1(d, m02, _r3, m00, _r4, m01, _r5, m12, m10, m11, m22, m20, m21);
+        preMul_s326a3880_c2(d, m02, _r6, m00, _r7, m01, _r8, m12, m10, m11, m22, m20, m21);
+        preMul_s326a3880_c3(d, m00, _r9, m01, _r10, m02, _r11, m03, m10, m11, m12, m13, m20, m21, m22, m23);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -9565,6 +10297,43 @@ public class Float3x4Impl implements Float3x4 {
         return d;
     }
 
+    /** Private column 0 of {@code preMul_orthogonal}: computes and stores it; reached only through it. */
+    private void preMul_orthogonal_s38575291_c0(Float3x4Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20) {
+        _dst.m00 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5));
+        _dst.m10 = Math.fma(_r15, _r1, Math.fma(_r16, _r3, _r17 * _r5));
+        _dst.m20 = Math.fma(_r18, _r1, Math.fma(_r19, _r3, _r20 * _r5));
+    }
+
+    /** Private column 1 of {@code preMul_orthogonal}: computes and stores it; reached only through it. */
+    private void preMul_orthogonal_s38575291_c1(Float3x4Impl _dst, float _r0, float _r6, float _r2, float _r7, float _r4, float _r8, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20) {
+        _dst.m01 = Math.fma(_r0, _r6, Math.fma(_r2, _r7, _r4 * _r8));
+        _dst.m11 = Math.fma(_r15, _r6, Math.fma(_r16, _r7, _r17 * _r8));
+        _dst.m21 = Math.fma(_r18, _r6, Math.fma(_r19, _r7, _r20 * _r8));
+    }
+
+    /** Private column 2 of {@code preMul_orthogonal}: computes and stores it; reached only through it. */
+    private void preMul_orthogonal_s38575291_c2(Float3x4Impl _dst, float _r0, float _r9, float _r2, float _r10, float _r4, float _r11, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20) {
+        _dst.m02 = Math.fma(_r0, _r9, Math.fma(_r2, _r10, _r4 * _r11));
+        _dst.m12 = Math.fma(_r15, _r9, Math.fma(_r16, _r10, _r17 * _r11));
+        _dst.m22 = Math.fma(_r18, _r9, Math.fma(_r19, _r10, _r20 * _r11));
+    }
+
+    /** Private column 3 of {@code preMul_orthogonal}: computes and stores it; reached only through it. */
+    private void preMul_orthogonal_s38575291_c3(Float3x4Impl _dst, float _r0, float _r12, float _r2, float _r13, float _r4, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20) {
+        _dst.m03 = Math.fma(_r0, _r12, Math.fma(_r2, _r13, _r4 * _r14));
+        _dst.m13 = Math.fma(_r15, _r12, Math.fma(_r16, _r13, _r17 * _r14));
+        _dst.m23 = Math.fma(_r18, _r12, Math.fma(_r19, _r13, _r20 * _r14));
+    }
+
+    /** Private tail of {@code preMul_orthogonal}; reached only through it. */
+    private void preMul_orthogonal_s38575291_tail(Float3x4Impl _dst, Float3x3R other, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19) {
+        float _r20 = other.m21();
+        preMul_orthogonal_s38575291_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r15, _r16, _r17, _r18, _r19, _r20);
+        preMul_orthogonal_s38575291_c1(_dst, _r0, _r6, _r2, _r7, _r4, _r8, _r15, _r16, _r17, _r18, _r19, _r20);
+        preMul_orthogonal_s38575291_c2(_dst, _r0, _r9, _r2, _r10, _r4, _r11, _r15, _r16, _r17, _r18, _r19, _r20);
+        preMul_orthogonal_s38575291_c3(_dst, _r0, _r12, _r2, _r13, _r4, _r14, _r15, _r16, _r17, _r18, _r19, _r20);
+    }
+
 
     /**
      * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
@@ -9572,28 +10341,66 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preMul_orthogonal(Float3x3R other, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _buf0 = Math.fma(other.m02(), this.m20, Math.fma(other.m00(), this.m00, other.m01() * this.m10));
-        float _buf1 = Math.fma(other.m02(), this.m21, Math.fma(other.m00(), this.m01, other.m01() * this.m11));
-        float _buf2 = Math.fma(other.m02(), this.m22, Math.fma(other.m00(), this.m02, other.m01() * this.m12));
-        float _buf3 = Math.fma(other.m02(), this.m23, Math.fma(other.m00(), this.m03, other.m01() * this.m13));
-        float _buf4 = Math.fma(other.m12(), this.m20, Math.fma(other.m10(), this.m00, other.m11() * this.m10));
-        float _buf5 = Math.fma(other.m12(), this.m21, Math.fma(other.m10(), this.m01, other.m11() * this.m11));
-        float _buf6 = Math.fma(other.m12(), this.m22, Math.fma(other.m10(), this.m02, other.m11() * this.m12));
-        float _buf7 = Math.fma(other.m12(), this.m23, Math.fma(other.m10(), this.m03, other.m11() * this.m13));
-        d.m20 = Math.fma(other.m22(), this.m20, Math.fma(other.m20(), this.m00, other.m21() * this.m10));
-        d.m21 = Math.fma(other.m22(), this.m21, Math.fma(other.m20(), this.m01, other.m21() * this.m11));
-        d.m22 = Math.fma(other.m22(), this.m22, Math.fma(other.m20(), this.m02, other.m21() * this.m12));
-        d.m23 = Math.fma(other.m22(), this.m23, Math.fma(other.m20(), this.m03, other.m21() * this.m13));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m13 = _buf7;
+        float _r0 = other.m02();
+        float _r1 = this.m20;
+        float _r2 = other.m00();
+        float _r3 = this.m00;
+        float _r4 = other.m01();
+        float _r5 = this.m10;
+        float _r6 = this.m21;
+        float _r7 = this.m01;
+        float _r8 = this.m11;
+        float _r9 = this.m22;
+        float _r10 = this.m02;
+        float _r11 = this.m12;
+        float _r12 = this.m23;
+        float _r13 = this.m03;
+        float _r14 = this.m13;
+        float _r15 = other.m12();
+        float _r16 = other.m10();
+        float _r17 = other.m11();
+        float _r18 = other.m22();
+        float _r19 = other.m20();
+        preMul_orthogonal_s38575291_tail(d, other, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         d.properties = (((Float3x3Impl) other).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_ORTHOGONAL : Joml.BIT_AFFINE;
         return d;
+    }
+
+    /** Private column 0 of {@code preMul_general}: computes and stores it; reached only through it. */
+    private void preMul_general_s38575291_c0(Float3x4Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20) {
+        _dst.m00 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5));
+        _dst.m10 = Math.fma(_r15, _r1, Math.fma(_r16, _r3, _r17 * _r5));
+        _dst.m20 = Math.fma(_r18, _r1, Math.fma(_r19, _r3, _r20 * _r5));
+    }
+
+    /** Private column 1 of {@code preMul_general}: computes and stores it; reached only through it. */
+    private void preMul_general_s38575291_c1(Float3x4Impl _dst, float _r0, float _r6, float _r2, float _r7, float _r4, float _r8, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20) {
+        _dst.m01 = Math.fma(_r0, _r6, Math.fma(_r2, _r7, _r4 * _r8));
+        _dst.m11 = Math.fma(_r15, _r6, Math.fma(_r16, _r7, _r17 * _r8));
+        _dst.m21 = Math.fma(_r18, _r6, Math.fma(_r19, _r7, _r20 * _r8));
+    }
+
+    /** Private column 2 of {@code preMul_general}: computes and stores it; reached only through it. */
+    private void preMul_general_s38575291_c2(Float3x4Impl _dst, float _r0, float _r9, float _r2, float _r10, float _r4, float _r11, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20) {
+        _dst.m02 = Math.fma(_r0, _r9, Math.fma(_r2, _r10, _r4 * _r11));
+        _dst.m12 = Math.fma(_r15, _r9, Math.fma(_r16, _r10, _r17 * _r11));
+        _dst.m22 = Math.fma(_r18, _r9, Math.fma(_r19, _r10, _r20 * _r11));
+    }
+
+    /** Private column 3 of {@code preMul_general}: computes and stores it; reached only through it. */
+    private void preMul_general_s38575291_c3(Float3x4Impl _dst, float _r0, float _r12, float _r2, float _r13, float _r4, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20) {
+        _dst.m03 = Math.fma(_r0, _r12, Math.fma(_r2, _r13, _r4 * _r14));
+        _dst.m13 = Math.fma(_r15, _r12, Math.fma(_r16, _r13, _r17 * _r14));
+        _dst.m23 = Math.fma(_r18, _r12, Math.fma(_r19, _r13, _r20 * _r14));
+    }
+
+    /** Private tail of {@code preMul_general}; reached only through it. */
+    private void preMul_general_s38575291_tail(Float3x4Impl _dst, Float3x3R other, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19) {
+        float _r20 = other.m21();
+        preMul_general_s38575291_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r15, _r16, _r17, _r18, _r19, _r20);
+        preMul_general_s38575291_c1(_dst, _r0, _r6, _r2, _r7, _r4, _r8, _r15, _r16, _r17, _r18, _r19, _r20);
+        preMul_general_s38575291_c2(_dst, _r0, _r9, _r2, _r10, _r4, _r11, _r15, _r16, _r17, _r18, _r19, _r20);
+        preMul_general_s38575291_c3(_dst, _r0, _r12, _r2, _r13, _r4, _r14, _r15, _r16, _r17, _r18, _r19, _r20);
     }
 
 
@@ -9603,26 +10410,27 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preMul_general(Float3x3R other, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _buf0 = Math.fma(other.m02(), this.m20, Math.fma(other.m00(), this.m00, other.m01() * this.m10));
-        float _buf1 = Math.fma(other.m02(), this.m21, Math.fma(other.m00(), this.m01, other.m01() * this.m11));
-        float _buf2 = Math.fma(other.m02(), this.m22, Math.fma(other.m00(), this.m02, other.m01() * this.m12));
-        float _buf3 = Math.fma(other.m02(), this.m23, Math.fma(other.m00(), this.m03, other.m01() * this.m13));
-        float _buf4 = Math.fma(other.m12(), this.m20, Math.fma(other.m10(), this.m00, other.m11() * this.m10));
-        float _buf5 = Math.fma(other.m12(), this.m21, Math.fma(other.m10(), this.m01, other.m11() * this.m11));
-        float _buf6 = Math.fma(other.m12(), this.m22, Math.fma(other.m10(), this.m02, other.m11() * this.m12));
-        float _buf7 = Math.fma(other.m12(), this.m23, Math.fma(other.m10(), this.m03, other.m11() * this.m13));
-        d.m20 = Math.fma(other.m22(), this.m20, Math.fma(other.m20(), this.m00, other.m21() * this.m10));
-        d.m21 = Math.fma(other.m22(), this.m21, Math.fma(other.m20(), this.m01, other.m21() * this.m11));
-        d.m22 = Math.fma(other.m22(), this.m22, Math.fma(other.m20(), this.m02, other.m21() * this.m12));
-        d.m23 = Math.fma(other.m22(), this.m23, Math.fma(other.m20(), this.m03, other.m21() * this.m13));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m13 = _buf7;
+        float _r0 = other.m02();
+        float _r1 = this.m20;
+        float _r2 = other.m00();
+        float _r3 = this.m00;
+        float _r4 = other.m01();
+        float _r5 = this.m10;
+        float _r6 = this.m21;
+        float _r7 = this.m01;
+        float _r8 = this.m11;
+        float _r9 = this.m22;
+        float _r10 = this.m02;
+        float _r11 = this.m12;
+        float _r12 = this.m23;
+        float _r13 = this.m03;
+        float _r14 = this.m13;
+        float _r15 = other.m12();
+        float _r16 = other.m10();
+        float _r17 = other.m11();
+        float _r18 = other.m22();
+        float _r19 = other.m20();
+        preMul_general_s38575291_tail(d, other, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -9673,6 +10481,43 @@ public class Float3x4Impl implements Float3x4 {
         return preMul_general(other, this);
     }
 
+    /** Private column 0 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s1c59e2c2_c0(Double3x4Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20) {
+        _dst.m00 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5));
+        _dst.m10 = Math.fma(_r15, _r1, Math.fma(_r16, _r3, _r17 * _r5));
+        _dst.m20 = Math.fma(_r18, _r1, Math.fma(_r19, _r3, _r20 * _r5));
+    }
+
+    /** Private column 1 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s1c59e2c2_c1(Double3x4Impl _dst, float _r0, float _r6, float _r2, float _r7, float _r4, float _r8, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20) {
+        _dst.m01 = Math.fma(_r0, _r6, Math.fma(_r2, _r7, _r4 * _r8));
+        _dst.m11 = Math.fma(_r15, _r6, Math.fma(_r16, _r7, _r17 * _r8));
+        _dst.m21 = Math.fma(_r18, _r6, Math.fma(_r19, _r7, _r20 * _r8));
+    }
+
+    /** Private column 2 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s1c59e2c2_c2(Double3x4Impl _dst, float _r0, float _r9, float _r2, float _r10, float _r4, float _r11, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20) {
+        _dst.m02 = Math.fma(_r0, _r9, Math.fma(_r2, _r10, _r4 * _r11));
+        _dst.m12 = Math.fma(_r15, _r9, Math.fma(_r16, _r10, _r17 * _r11));
+        _dst.m22 = Math.fma(_r18, _r9, Math.fma(_r19, _r10, _r20 * _r11));
+    }
+
+    /** Private column 3 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s1c59e2c2_c3(Double3x4Impl _dst, float _r0, float _r12, float _r2, float _r13, float _r4, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20) {
+        _dst.m03 = Math.fma(_r0, _r12, Math.fma(_r2, _r13, _r4 * _r14));
+        _dst.m13 = Math.fma(_r15, _r12, Math.fma(_r16, _r13, _r17 * _r14));
+        _dst.m23 = Math.fma(_r18, _r12, Math.fma(_r19, _r13, _r20 * _r14));
+    }
+
+    /** Private tail of {@code preMul}; reached only through it. */
+    private void preMul_s1c59e2c2_tail(Double3x4Impl _dst, Float3x3R other, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19) {
+        float _r20 = other.m21();
+        preMul_s1c59e2c2_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r15, _r16, _r17, _r18, _r19, _r20);
+        preMul_s1c59e2c2_c1(_dst, _r0, _r6, _r2, _r7, _r4, _r8, _r15, _r16, _r17, _r18, _r19, _r20);
+        preMul_s1c59e2c2_c2(_dst, _r0, _r9, _r2, _r10, _r4, _r11, _r15, _r16, _r17, _r18, _r19, _r20);
+        preMul_s1c59e2c2_c3(_dst, _r0, _r12, _r2, _r13, _r4, _r14, _r15, _r16, _r17, _r18, _r19, _r20);
+    }
+
 
     /**
      * Pre-multiply {@code other} onto this matrix and store the result in {@code dest}.
@@ -9693,28 +10538,77 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 preMul(Float3x3R other, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        float _buf0 = Math.fma(other.m02(), this.m20, Math.fma(other.m00(), this.m00, other.m01() * this.m10));
-        float _buf1 = Math.fma(other.m02(), this.m21, Math.fma(other.m00(), this.m01, other.m01() * this.m11));
-        float _buf2 = Math.fma(other.m02(), this.m22, Math.fma(other.m00(), this.m02, other.m01() * this.m12));
-        float _buf3 = Math.fma(other.m02(), this.m23, Math.fma(other.m00(), this.m03, other.m01() * this.m13));
-        float _buf4 = Math.fma(other.m12(), this.m20, Math.fma(other.m10(), this.m00, other.m11() * this.m10));
-        float _buf5 = Math.fma(other.m12(), this.m21, Math.fma(other.m10(), this.m01, other.m11() * this.m11));
-        float _buf6 = Math.fma(other.m12(), this.m22, Math.fma(other.m10(), this.m02, other.m11() * this.m12));
-        float _buf7 = Math.fma(other.m12(), this.m23, Math.fma(other.m10(), this.m03, other.m11() * this.m13));
-        d.m20 = Math.fma(other.m22(), this.m20, Math.fma(other.m20(), this.m00, other.m21() * this.m10));
-        d.m21 = Math.fma(other.m22(), this.m21, Math.fma(other.m20(), this.m01, other.m21() * this.m11));
-        d.m22 = Math.fma(other.m22(), this.m22, Math.fma(other.m20(), this.m02, other.m21() * this.m12));
-        d.m23 = Math.fma(other.m22(), this.m23, Math.fma(other.m20(), this.m03, other.m21() * this.m13));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m13 = _buf7;
+        float _r0 = other.m02();
+        float _r1 = this.m20;
+        float _r2 = other.m00();
+        float _r3 = this.m00;
+        float _r4 = other.m01();
+        float _r5 = this.m10;
+        float _r6 = this.m21;
+        float _r7 = this.m01;
+        float _r8 = this.m11;
+        float _r9 = this.m22;
+        float _r10 = this.m02;
+        float _r11 = this.m12;
+        float _r12 = this.m23;
+        float _r13 = this.m03;
+        float _r14 = this.m13;
+        float _r15 = other.m12();
+        float _r16 = other.m10();
+        float _r17 = other.m11();
+        float _r18 = other.m22();
+        float _r19 = other.m20();
+        preMul_s1c59e2c2_tail(d, other, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         d.properties = Joml.BIT_AFFINE;
         return d;
+    }
+
+    /** Private column 0 of {@code preMul_general}: computes and stores it; reached only through it. */
+    private void preMul_general_s101a94a4_c0(Float4x4Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r16, float _r17, float _r18, float _r20, float _r21, float _r22, float _r24, float _r25, float _r26) {
+        _dst.m00 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5));
+        _dst.m10 = Math.fma(_r16, _r1, Math.fma(_r17, _r3, _r18 * _r5));
+        _dst.m20 = Math.fma(_r20, _r1, Math.fma(_r21, _r3, _r22 * _r5));
+        _dst.m30 = Math.fma(_r24, _r1, Math.fma(_r25, _r3, _r26 * _r5));
+    }
+
+    /** Private column 1 of {@code preMul_general}: computes and stores it; reached only through it. */
+    private void preMul_general_s101a94a4_c1(Float4x4Impl _dst, float _r0, float _r6, float _r2, float _r7, float _r4, float _r8, float _r16, float _r17, float _r18, float _r20, float _r21, float _r22, float _r24, float _r25, float _r26) {
+        _dst.m01 = Math.fma(_r0, _r6, Math.fma(_r2, _r7, _r4 * _r8));
+        _dst.m11 = Math.fma(_r16, _r6, Math.fma(_r17, _r7, _r18 * _r8));
+        _dst.m21 = Math.fma(_r20, _r6, Math.fma(_r21, _r7, _r22 * _r8));
+        _dst.m31 = Math.fma(_r24, _r6, Math.fma(_r25, _r7, _r26 * _r8));
+    }
+
+    /** Private column 2 of {@code preMul_general}: computes and stores it; reached only through it. */
+    private void preMul_general_s101a94a4_c2(Float4x4Impl _dst, float _r0, float _r9, float _r2, float _r10, float _r4, float _r11, float _r16, float _r17, float _r18, float _r20, float _r21, float _r22, float _r24, float _r25, float _r26) {
+        _dst.m02 = Math.fma(_r0, _r9, Math.fma(_r2, _r10, _r4 * _r11));
+        _dst.m12 = Math.fma(_r16, _r9, Math.fma(_r17, _r10, _r18 * _r11));
+        _dst.m22 = Math.fma(_r20, _r9, Math.fma(_r21, _r10, _r22 * _r11));
+        _dst.m32 = Math.fma(_r24, _r9, Math.fma(_r25, _r10, _r26 * _r11));
+    }
+
+    /** Private column 3 of {@code preMul_general}: computes and stores it; reached only through it. */
+    private void preMul_general_s101a94a4_c3(Float4x4Impl _dst, float _r2, float _r12, float _r4, float _r13, float _r0, float _r14, float _r15, float _r17, float _r18, float _r16, float _r19, float _r21, float _r22, float _r20, float _r23, float _r25, float _r26, float _r24, float _r27) {
+        _dst.m03 = Math.fma(_r2, _r12, Math.fma(_r4, _r13, Math.fma(_r0, _r14, _r15)));
+        _dst.m13 = Math.fma(_r17, _r12, Math.fma(_r18, _r13, Math.fma(_r16, _r14, _r19)));
+        _dst.m23 = Math.fma(_r21, _r12, Math.fma(_r22, _r13, Math.fma(_r20, _r14, _r23)));
+        _dst.m33 = Math.fma(_r25, _r12, Math.fma(_r26, _r13, Math.fma(_r24, _r14, _r27)));
+    }
+
+    /** Private tail of {@code preMul_general}; reached only through it. */
+    private void preMul_general_s101a94a4_tail(Float4x4Impl _dst, Float4x4R other, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19) {
+        float _r20 = other.m22();
+        float _r21 = other.m20();
+        float _r22 = other.m21();
+        float _r23 = other.m23();
+        float _r24 = other.m32();
+        float _r25 = other.m30();
+        float _r26 = other.m31();
+        float _r27 = other.m33();
+        preMul_general_s101a94a4_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r16, _r17, _r18, _r20, _r21, _r22, _r24, _r25, _r26);
+        preMul_general_s101a94a4_c1(_dst, _r0, _r6, _r2, _r7, _r4, _r8, _r16, _r17, _r18, _r20, _r21, _r22, _r24, _r25, _r26);
+        preMul_general_s101a94a4_c2(_dst, _r0, _r9, _r2, _r10, _r4, _r11, _r16, _r17, _r18, _r20, _r21, _r22, _r24, _r25, _r26);
+        preMul_general_s101a94a4_c3(_dst, _r2, _r12, _r4, _r13, _r0, _r14, _r15, _r17, _r18, _r16, _r19, _r21, _r22, _r20, _r23, _r25, _r26, _r24, _r27);
     }
 
 
@@ -9724,37 +10618,27 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float4x4 preMul_general(Float4x4R other, @Mutated Float4x4 dest, int _props) {
         Float4x4Impl d = (Float4x4Impl) dest;
-        float _buf0 = Math.fma(other.m02(), this.m20, Math.fma(other.m00(), this.m00, other.m01() * this.m10));
-        float _buf1 = Math.fma(other.m12(), this.m20, Math.fma(other.m10(), this.m00, other.m11() * this.m10));
-        float _buf2 = Math.fma(other.m22(), this.m20, Math.fma(other.m20(), this.m00, other.m21() * this.m10));
-        float _buf3 = Math.fma(other.m32(), this.m20, Math.fma(other.m30(), this.m00, other.m31() * this.m10));
-        float _buf4 = Math.fma(other.m02(), this.m21, Math.fma(other.m00(), this.m01, other.m01() * this.m11));
-        float _buf5 = Math.fma(other.m12(), this.m21, Math.fma(other.m10(), this.m01, other.m11() * this.m11));
-        float _buf6 = Math.fma(other.m22(), this.m21, Math.fma(other.m20(), this.m01, other.m21() * this.m11));
-        float _buf7 = Math.fma(other.m32(), this.m21, Math.fma(other.m30(), this.m01, other.m31() * this.m11));
-        float _buf8 = Math.fma(other.m02(), this.m22, Math.fma(other.m00(), this.m02, other.m01() * this.m12));
-        float _buf9 = Math.fma(other.m12(), this.m22, Math.fma(other.m10(), this.m02, other.m11() * this.m12));
-        float _buf10 = Math.fma(other.m22(), this.m22, Math.fma(other.m20(), this.m02, other.m21() * this.m12));
-        float _buf11 = Math.fma(other.m32(), this.m22, Math.fma(other.m30(), this.m02, other.m31() * this.m12));
-        float _buf12 = Math.fma(other.m00(), this.m03, Math.fma(other.m01(), this.m13, Math.fma(other.m02(), this.m23, other.m03())));
-        float _buf13 = Math.fma(other.m10(), this.m03, Math.fma(other.m11(), this.m13, Math.fma(other.m12(), this.m23, other.m13())));
-        float _buf14 = Math.fma(other.m20(), this.m03, Math.fma(other.m21(), this.m13, Math.fma(other.m22(), this.m23, other.m23())));
-        d.m33 = Math.fma(other.m30(), this.m03, Math.fma(other.m31(), this.m13, Math.fma(other.m32(), this.m23, other.m33())));
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m30 = _buf3;
-        d.m01 = _buf4;
-        d.m11 = _buf5;
-        d.m21 = _buf6;
-        d.m31 = _buf7;
-        d.m02 = _buf8;
-        d.m12 = _buf9;
-        d.m22 = _buf10;
-        d.m32 = _buf11;
-        d.m03 = _buf12;
-        d.m13 = _buf13;
-        d.m23 = _buf14;
+        float _r0 = other.m02();
+        float _r1 = this.m20;
+        float _r2 = other.m00();
+        float _r3 = this.m00;
+        float _r4 = other.m01();
+        float _r5 = this.m10;
+        float _r6 = this.m21;
+        float _r7 = this.m01;
+        float _r8 = this.m11;
+        float _r9 = this.m22;
+        float _r10 = this.m02;
+        float _r11 = this.m12;
+        float _r12 = this.m03;
+        float _r13 = this.m13;
+        float _r14 = this.m23;
+        float _r15 = other.m03();
+        float _r16 = other.m12();
+        float _r17 = other.m10();
+        float _r18 = other.m11();
+        float _r19 = other.m13();
+        preMul_general_s101a94a4_tail(d, other, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         d.properties = _props;
         return d;
     }
@@ -9937,6 +10821,54 @@ public class Float3x4Impl implements Float3x4 {
         return preMul_general(other, dest, 0);
     }
 
+    /** Private column 0 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s68eb8b63_c0(Double4x4Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r16, float _r17, float _r18, float _r20, float _r21, float _r22, float _r24, float _r25, float _r26) {
+        _dst.m00 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5));
+        _dst.m10 = Math.fma(_r16, _r1, Math.fma(_r17, _r3, _r18 * _r5));
+        _dst.m20 = Math.fma(_r20, _r1, Math.fma(_r21, _r3, _r22 * _r5));
+        _dst.m30 = Math.fma(_r24, _r1, Math.fma(_r25, _r3, _r26 * _r5));
+    }
+
+    /** Private column 1 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s68eb8b63_c1(Double4x4Impl _dst, float _r0, float _r6, float _r2, float _r7, float _r4, float _r8, float _r16, float _r17, float _r18, float _r20, float _r21, float _r22, float _r24, float _r25, float _r26) {
+        _dst.m01 = Math.fma(_r0, _r6, Math.fma(_r2, _r7, _r4 * _r8));
+        _dst.m11 = Math.fma(_r16, _r6, Math.fma(_r17, _r7, _r18 * _r8));
+        _dst.m21 = Math.fma(_r20, _r6, Math.fma(_r21, _r7, _r22 * _r8));
+        _dst.m31 = Math.fma(_r24, _r6, Math.fma(_r25, _r7, _r26 * _r8));
+    }
+
+    /** Private column 2 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s68eb8b63_c2(Double4x4Impl _dst, float _r0, float _r9, float _r2, float _r10, float _r4, float _r11, float _r16, float _r17, float _r18, float _r20, float _r21, float _r22, float _r24, float _r25, float _r26) {
+        _dst.m02 = Math.fma(_r0, _r9, Math.fma(_r2, _r10, _r4 * _r11));
+        _dst.m12 = Math.fma(_r16, _r9, Math.fma(_r17, _r10, _r18 * _r11));
+        _dst.m22 = Math.fma(_r20, _r9, Math.fma(_r21, _r10, _r22 * _r11));
+        _dst.m32 = Math.fma(_r24, _r9, Math.fma(_r25, _r10, _r26 * _r11));
+    }
+
+    /** Private column 3 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s68eb8b63_c3(Double4x4Impl _dst, float _r2, float _r12, float _r4, float _r13, float _r0, float _r14, float _r15, float _r17, float _r18, float _r16, float _r19, float _r21, float _r22, float _r20, float _r23, float _r25, float _r26, float _r24, float _r27) {
+        _dst.m03 = Math.fma(_r2, _r12, Math.fma(_r4, _r13, Math.fma(_r0, _r14, _r15)));
+        _dst.m13 = Math.fma(_r17, _r12, Math.fma(_r18, _r13, Math.fma(_r16, _r14, _r19)));
+        _dst.m23 = Math.fma(_r21, _r12, Math.fma(_r22, _r13, Math.fma(_r20, _r14, _r23)));
+        _dst.m33 = Math.fma(_r25, _r12, Math.fma(_r26, _r13, Math.fma(_r24, _r14, _r27)));
+    }
+
+    /** Private tail of {@code preMul}; reached only through it. */
+    private void preMul_s68eb8b63_tail(Double4x4Impl _dst, Float4x4R other, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19) {
+        float _r20 = other.m22();
+        float _r21 = other.m20();
+        float _r22 = other.m21();
+        float _r23 = other.m23();
+        float _r24 = other.m32();
+        float _r25 = other.m30();
+        float _r26 = other.m31();
+        float _r27 = other.m33();
+        preMul_s68eb8b63_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r16, _r17, _r18, _r20, _r21, _r22, _r24, _r25, _r26);
+        preMul_s68eb8b63_c1(_dst, _r0, _r6, _r2, _r7, _r4, _r8, _r16, _r17, _r18, _r20, _r21, _r22, _r24, _r25, _r26);
+        preMul_s68eb8b63_c2(_dst, _r0, _r9, _r2, _r10, _r4, _r11, _r16, _r17, _r18, _r20, _r21, _r22, _r24, _r25, _r26);
+        preMul_s68eb8b63_c3(_dst, _r2, _r12, _r4, _r13, _r0, _r14, _r15, _r17, _r18, _r16, _r19, _r21, _r22, _r20, _r23, _r25, _r26, _r24, _r27);
+    }
+
 
     /**
      * Pre-multiply the given matrix onto this matrix, i.e. compute {@code other * this} and store
@@ -9951,37 +10883,27 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double4x4 preMul(Float4x4R other, @Mutated Double4x4 dest) {
         Double4x4Impl d = (Double4x4Impl) dest;
-        float _buf0 = Math.fma(other.m02(), this.m20, Math.fma(other.m00(), this.m00, other.m01() * this.m10));
-        float _buf1 = Math.fma(other.m12(), this.m20, Math.fma(other.m10(), this.m00, other.m11() * this.m10));
-        float _buf2 = Math.fma(other.m22(), this.m20, Math.fma(other.m20(), this.m00, other.m21() * this.m10));
-        float _buf3 = Math.fma(other.m32(), this.m20, Math.fma(other.m30(), this.m00, other.m31() * this.m10));
-        float _buf4 = Math.fma(other.m02(), this.m21, Math.fma(other.m00(), this.m01, other.m01() * this.m11));
-        float _buf5 = Math.fma(other.m12(), this.m21, Math.fma(other.m10(), this.m01, other.m11() * this.m11));
-        float _buf6 = Math.fma(other.m22(), this.m21, Math.fma(other.m20(), this.m01, other.m21() * this.m11));
-        float _buf7 = Math.fma(other.m32(), this.m21, Math.fma(other.m30(), this.m01, other.m31() * this.m11));
-        float _buf8 = Math.fma(other.m02(), this.m22, Math.fma(other.m00(), this.m02, other.m01() * this.m12));
-        float _buf9 = Math.fma(other.m12(), this.m22, Math.fma(other.m10(), this.m02, other.m11() * this.m12));
-        float _buf10 = Math.fma(other.m22(), this.m22, Math.fma(other.m20(), this.m02, other.m21() * this.m12));
-        float _buf11 = Math.fma(other.m32(), this.m22, Math.fma(other.m30(), this.m02, other.m31() * this.m12));
-        float _buf12 = Math.fma(other.m00(), this.m03, Math.fma(other.m01(), this.m13, Math.fma(other.m02(), this.m23, other.m03())));
-        float _buf13 = Math.fma(other.m10(), this.m03, Math.fma(other.m11(), this.m13, Math.fma(other.m12(), this.m23, other.m13())));
-        float _buf14 = Math.fma(other.m20(), this.m03, Math.fma(other.m21(), this.m13, Math.fma(other.m22(), this.m23, other.m23())));
-        d.m33 = Math.fma(other.m30(), this.m03, Math.fma(other.m31(), this.m13, Math.fma(other.m32(), this.m23, other.m33())));
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m30 = _buf3;
-        d.m01 = _buf4;
-        d.m11 = _buf5;
-        d.m21 = _buf6;
-        d.m31 = _buf7;
-        d.m02 = _buf8;
-        d.m12 = _buf9;
-        d.m22 = _buf10;
-        d.m32 = _buf11;
-        d.m03 = _buf12;
-        d.m13 = _buf13;
-        d.m23 = _buf14;
+        float _r0 = other.m02();
+        float _r1 = this.m20;
+        float _r2 = other.m00();
+        float _r3 = this.m00;
+        float _r4 = other.m01();
+        float _r5 = this.m10;
+        float _r6 = this.m21;
+        float _r7 = this.m01;
+        float _r8 = this.m11;
+        float _r9 = this.m22;
+        float _r10 = this.m02;
+        float _r11 = this.m12;
+        float _r12 = this.m03;
+        float _r13 = this.m13;
+        float _r14 = this.m23;
+        float _r15 = other.m03();
+        float _r16 = other.m12();
+        float _r17 = other.m10();
+        float _r18 = other.m11();
+        float _r19 = other.m13();
+        preMul_s68eb8b63_tail(d, other, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         d.properties = 0;
         return d;
     }
@@ -10340,25 +11262,36 @@ public class Float3x4Impl implements Float3x4 {
         return d;
     }
 
+    /** Private column 0 of {@code lookAlong_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAlong_orthogonal_s112b96f_c0(Float3x4Impl _dst, float _r0, float _t26, float _r1, float _t27, float _r2, float _t28, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t26, Math.fma(_r1, _t27, _r2 * _t28));
+        _dst.m10 = Math.fma(_r4, _t26, Math.fma(_r5, _t27, _r6 * _t28));
+        _dst.m20 = Math.fma(_r8, _t26, Math.fma(_r9, _t27, _r10 * _t28));
+    }
 
-    /**
-     * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
-     * through the public {@code lookAlong} dispatcher.
-     */
-    private Float3x4 lookAlong_orthogonal(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
-        Float3x4Impl d = (Float3x4Impl) dest;
-        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
-            _t7 = dirY * _t3;
-            _t8 = dirX * _t3;
-            _t9 = dirZ * _t3;
-        } else {
-            _t7 = 0.0f;
-            _t8 = 0.0f;
-            _t9 = 0.0f;
-        }
+    /** Private column 1 of {@code lookAlong_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAlong_orthogonal_s112b96f_c1(Float3x4Impl _dst, float _r0, float _t35, float _r1, float _t36, float _r2, float _t37, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t35, Math.fma(_r1, _t36, _r2 * _t37));
+        _dst.m11 = Math.fma(_r4, _t35, Math.fma(_r5, _t36, _r6 * _t37));
+        _dst.m21 = Math.fma(_r8, _t35, Math.fma(_r9, _t36, _r10 * _t37));
+    }
+
+    /** Private column 2 of {@code lookAlong_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAlong_orthogonal_s112b96f_c2(Float3x4Impl _dst, float _r0, float _t9, float _r1, float _t8, float _r2, float _t7, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t9, Math.fma(_r1, _t8, _r2 * _t7));
+        _dst.m12 = Math.fma(_r4, _t9, Math.fma(_r5, _t8, _r6 * _t7));
+        _dst.m22 = Math.fma(_r8, _t9, Math.fma(_r9, _t8, _r10 * _t7));
+    }
+
+    /** Private column 3 of {@code lookAlong_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAlong_orthogonal_s112b96f_c3(Float3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code lookAlong_orthogonal}; reached only through it. */
+    private void lookAlong_orthogonal_s112b96f_tail(Float3x4Impl _dst, float upX, float _t7, float upY, float _t8, float _t9, float upZ, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
         float _t16 = Math.fma(upX, _t7, -(upY * _t8));
         float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
         float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
@@ -10377,26 +11310,100 @@ public class Float3x4Impl implements Float3x4 {
         float _t35 = Math.fma(_t8, _t28, -(_t7 * _t27));
         float _t36 = Math.fma(_t7, _t26, -(_t9 * _t28));
         float _t37 = Math.fma(_t9, _t27, -(_t8 * _t26));
-        float _buf0 = Math.fma(this.m02, _t26, Math.fma(this.m00, _t27, this.m01 * _t28));
-        float _buf1 = Math.fma(this.m02, _t35, Math.fma(this.m00, _t36, this.m01 * _t37));
-        d.m02 = Math.fma(this.m02, _t9, Math.fma(this.m00, _t8, this.m01 * _t7));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(this.m12, _t26, Math.fma(this.m10, _t27, this.m11 * _t28));
-        float _buf3 = Math.fma(this.m12, _t35, Math.fma(this.m10, _t36, this.m11 * _t37));
-        d.m12 = Math.fma(this.m12, _t9, Math.fma(this.m10, _t8, this.m11 * _t7));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(this.m22, _t26, Math.fma(this.m20, _t27, this.m21 * _t28));
-        float _buf5 = Math.fma(this.m22, _t35, Math.fma(this.m20, _t36, this.m21 * _t37));
-        d.m22 = Math.fma(this.m22, _t9, Math.fma(this.m20, _t8, this.m21 * _t7));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        lookAlong_orthogonal_s112b96f_c0(_dst, _r0, _t26, _r1, _t27, _r2, _t28, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAlong_orthogonal_s112b96f_c1(_dst, _r0, _t35, _r1, _t36, _r2, _t37, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAlong_orthogonal_s112b96f_c2(_dst, _r0, _t9, _r1, _t8, _r2, _t7, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAlong_orthogonal_s112b96f_c3(_dst, _r3, _r7, _r11);
+    }
+
+
+    /**
+     * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
+     * through the public {@code lookAlong} dispatcher.
+     */
+    private Float3x4 lookAlong_orthogonal(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
+        Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
+        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9;
+        if (_t2 > 0.0f) {
+            _t7 = dirY * _t3;
+            _t8 = dirX * _t3;
+            _t9 = dirZ * _t3;
+        } else {
+            _t7 = 0.0f;
+            _t8 = 0.0f;
+            _t9 = 0.0f;
+        }
+        lookAlong_orthogonal_s112b96f_tail(d, upX, _t7, upY, _t8, _t9, upZ, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
+    }
+
+    /** Private column 0 of {@code lookAlong_general}: computes and stores it; reached only through it. */
+    private void lookAlong_general_s112b96f_c0(Float3x4Impl _dst, float _r0, float _t26, float _r1, float _t27, float _r2, float _t28, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t26, Math.fma(_r1, _t27, _r2 * _t28));
+        _dst.m10 = Math.fma(_r4, _t26, Math.fma(_r5, _t27, _r6 * _t28));
+        _dst.m20 = Math.fma(_r8, _t26, Math.fma(_r9, _t27, _r10 * _t28));
+    }
+
+    /** Private column 1 of {@code lookAlong_general}: computes and stores it; reached only through it. */
+    private void lookAlong_general_s112b96f_c1(Float3x4Impl _dst, float _r0, float _t35, float _r1, float _t36, float _r2, float _t37, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t35, Math.fma(_r1, _t36, _r2 * _t37));
+        _dst.m11 = Math.fma(_r4, _t35, Math.fma(_r5, _t36, _r6 * _t37));
+        _dst.m21 = Math.fma(_r8, _t35, Math.fma(_r9, _t36, _r10 * _t37));
+    }
+
+    /** Private column 2 of {@code lookAlong_general}: computes and stores it; reached only through it. */
+    private void lookAlong_general_s112b96f_c2(Float3x4Impl _dst, float _r0, float _t9, float _r1, float _t8, float _r2, float _t7, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t9, Math.fma(_r1, _t8, _r2 * _t7));
+        _dst.m12 = Math.fma(_r4, _t9, Math.fma(_r5, _t8, _r6 * _t7));
+        _dst.m22 = Math.fma(_r8, _t9, Math.fma(_r9, _t8, _r10 * _t7));
+    }
+
+    /** Private column 3 of {@code lookAlong_general}: computes and stores it; reached only through it. */
+    private void lookAlong_general_s112b96f_c3(Float3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code lookAlong_general}; reached only through it. */
+    private void lookAlong_general_s112b96f_tail(Float3x4Impl _dst, float upX, float _t7, float upY, float _t8, float _t9, float upZ, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
+        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
+        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
+        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
+        float _t22 = (1.0f / (float) Math.sqrt(_t21));
+        float _t26, _t27, _t28;
+        if (_t21 > 0.0f) {
+            _t26 = _t16 * _t22;
+            _t27 = _t17 * _t22;
+            _t28 = _t18 * _t22;
+        } else {
+            _t26 = 0.0f;
+            _t27 = 0.0f;
+            _t28 = 0.0f;
+        }
+        float _t35 = Math.fma(_t8, _t28, -(_t7 * _t27));
+        float _t36 = Math.fma(_t7, _t26, -(_t9 * _t28));
+        float _t37 = Math.fma(_t9, _t27, -(_t8 * _t26));
+        lookAlong_general_s112b96f_c0(_dst, _r0, _t26, _r1, _t27, _r2, _t28, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAlong_general_s112b96f_c1(_dst, _r0, _t35, _r1, _t36, _r2, _t37, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAlong_general_s112b96f_c2(_dst, _r0, _t9, _r1, _t8, _r2, _t7, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAlong_general_s112b96f_c3(_dst, _r3, _r7, _r11);
     }
 
 
@@ -10406,6 +11413,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 lookAlong_general(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
@@ -10418,42 +11437,7 @@ public class Float3x4Impl implements Float3x4 {
             _t8 = 0.0f;
             _t9 = 0.0f;
         }
-        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
-        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
-        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
-        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
-        float _t22 = (1.0f / (float) Math.sqrt(_t21));
-        float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
-            _t26 = _t16 * _t22;
-            _t27 = _t17 * _t22;
-            _t28 = _t18 * _t22;
-        } else {
-            _t26 = 0.0f;
-            _t27 = 0.0f;
-            _t28 = 0.0f;
-        }
-        float _t35 = Math.fma(_t8, _t28, -(_t7 * _t27));
-        float _t36 = Math.fma(_t7, _t26, -(_t9 * _t28));
-        float _t37 = Math.fma(_t9, _t27, -(_t8 * _t26));
-        float _buf0 = Math.fma(this.m02, _t26, Math.fma(this.m00, _t27, this.m01 * _t28));
-        float _buf1 = Math.fma(this.m02, _t35, Math.fma(this.m00, _t36, this.m01 * _t37));
-        d.m02 = Math.fma(this.m02, _t9, Math.fma(this.m00, _t8, this.m01 * _t7));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(this.m12, _t26, Math.fma(this.m10, _t27, this.m11 * _t28));
-        float _buf3 = Math.fma(this.m12, _t35, Math.fma(this.m10, _t36, this.m11 * _t37));
-        d.m12 = Math.fma(this.m12, _t9, Math.fma(this.m10, _t8, this.m11 * _t7));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(this.m22, _t26, Math.fma(this.m20, _t27, this.m21 * _t28));
-        float _buf5 = Math.fma(this.m22, _t35, Math.fma(this.m20, _t36, this.m21 * _t37));
-        d.m22 = Math.fma(this.m22, _t9, Math.fma(this.m20, _t8, this.m21 * _t7));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        lookAlong_general_s112b96f_tail(d, upX, _t7, upY, _t8, _t9, upZ, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -10510,6 +11494,60 @@ public class Float3x4Impl implements Float3x4 {
         return lookAlong_general(dirX, dirY, dirZ, upX, upY, upZ, this);
     }
 
+    /** Private column 0 of {@code lookAlong}: computes and stores it; reached only through it. */
+    private void lookAlong_s6b0b57a4_c0(Double3x4Impl _dst, float _r0, float _t26, float _r1, float _t27, float _r2, float _t28, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t26, Math.fma(_r1, _t27, _r2 * _t28));
+        _dst.m10 = Math.fma(_r4, _t26, Math.fma(_r5, _t27, _r6 * _t28));
+        _dst.m20 = Math.fma(_r8, _t26, Math.fma(_r9, _t27, _r10 * _t28));
+    }
+
+    /** Private column 1 of {@code lookAlong}: computes and stores it; reached only through it. */
+    private void lookAlong_s6b0b57a4_c1(Double3x4Impl _dst, float _r0, float _t35, float _r1, float _t36, float _r2, float _t37, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t35, Math.fma(_r1, _t36, _r2 * _t37));
+        _dst.m11 = Math.fma(_r4, _t35, Math.fma(_r5, _t36, _r6 * _t37));
+        _dst.m21 = Math.fma(_r8, _t35, Math.fma(_r9, _t36, _r10 * _t37));
+    }
+
+    /** Private column 2 of {@code lookAlong}: computes and stores it; reached only through it. */
+    private void lookAlong_s6b0b57a4_c2(Double3x4Impl _dst, float _r0, float _t9, float _r1, float _t8, float _r2, float _t7, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t9, Math.fma(_r1, _t8, _r2 * _t7));
+        _dst.m12 = Math.fma(_r4, _t9, Math.fma(_r5, _t8, _r6 * _t7));
+        _dst.m22 = Math.fma(_r8, _t9, Math.fma(_r9, _t8, _r10 * _t7));
+    }
+
+    /** Private column 3 of {@code lookAlong}: computes and stores it; reached only through it. */
+    private void lookAlong_s6b0b57a4_c3(Double3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code lookAlong}; reached only through it. */
+    private void lookAlong_s6b0b57a4_tail(Double3x4Impl _dst, float upX, float _t7, float upY, float _t8, float _t9, float upZ, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
+        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
+        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
+        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
+        float _t22 = (1.0f / (float) Math.sqrt(_t21));
+        float _t26, _t27, _t28;
+        if (_t21 > 0.0f) {
+            _t26 = _t16 * _t22;
+            _t27 = _t17 * _t22;
+            _t28 = _t18 * _t22;
+        } else {
+            _t26 = 0.0f;
+            _t27 = 0.0f;
+            _t28 = 0.0f;
+        }
+        float _t35 = Math.fma(_t8, _t28, -(_t7 * _t27));
+        float _t36 = Math.fma(_t7, _t26, -(_t9 * _t28));
+        float _t37 = Math.fma(_t9, _t27, -(_t8 * _t26));
+        lookAlong_s6b0b57a4_c0(_dst, _r0, _t26, _r1, _t27, _r2, _t28, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAlong_s6b0b57a4_c1(_dst, _r0, _t35, _r1, _t36, _r2, _t37, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAlong_s6b0b57a4_c2(_dst, _r0, _t9, _r1, _t8, _r2, _t7, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAlong_s6b0b57a4_c3(_dst, _r3, _r7, _r11);
+    }
+
 
     /**
      * Apply a rotation transformation that makes {@code +z} point along ({@code dirX},
@@ -10533,6 +11571,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 lookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
@@ -10545,42 +11595,7 @@ public class Float3x4Impl implements Float3x4 {
             _t8 = 0.0f;
             _t9 = 0.0f;
         }
-        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
-        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
-        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
-        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
-        float _t22 = (1.0f / (float) Math.sqrt(_t21));
-        float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
-            _t26 = _t16 * _t22;
-            _t27 = _t17 * _t22;
-            _t28 = _t18 * _t22;
-        } else {
-            _t26 = 0.0f;
-            _t27 = 0.0f;
-            _t28 = 0.0f;
-        }
-        float _t35 = Math.fma(_t8, _t28, -(_t7 * _t27));
-        float _t36 = Math.fma(_t7, _t26, -(_t9 * _t28));
-        float _t37 = Math.fma(_t9, _t27, -(_t8 * _t26));
-        float _buf0 = Math.fma(this.m02, _t26, Math.fma(this.m00, _t27, this.m01 * _t28));
-        float _buf1 = Math.fma(this.m02, _t35, Math.fma(this.m00, _t36, this.m01 * _t37));
-        d.m02 = Math.fma(this.m02, _t9, Math.fma(this.m00, _t8, this.m01 * _t7));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(this.m12, _t26, Math.fma(this.m10, _t27, this.m11 * _t28));
-        float _buf3 = Math.fma(this.m12, _t35, Math.fma(this.m10, _t36, this.m11 * _t37));
-        d.m12 = Math.fma(this.m12, _t9, Math.fma(this.m10, _t8, this.m11 * _t7));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(this.m22, _t26, Math.fma(this.m20, _t27, this.m21 * _t28));
-        float _buf5 = Math.fma(this.m22, _t35, Math.fma(this.m20, _t36, this.m21 * _t37));
-        d.m22 = Math.fma(this.m22, _t9, Math.fma(this.m20, _t8, this.m21 * _t7));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        lookAlong_s6b0b57a4_tail(d, upX, _t7, upY, _t8, _t9, upZ, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -10610,6 +11625,45 @@ public class Float3x4Impl implements Float3x4 {
      */
     private @Mutated Float3x4 lookAt_lh(Float3R eye, Float3R center, Float3R up) {
         return lookAt_lh(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
+    }
+
+    /** Private column 0 of {@code lookAt_lh_identity}: computes and stores it; reached only through it. */
+    private void lookAt_lh_identity_s73128447_c0(Float3x4Impl _dst, float _t29, float _t38, float _t11) {
+        _dst.m00 = _t29;
+        _dst.m10 = _t38;
+        _dst.m20 = _t11;
+    }
+
+    /** Private column 1 of {@code lookAt_lh_identity}: computes and stores it; reached only through it. */
+    private void lookAt_lh_identity_s73128447_c1(Float3x4Impl _dst, float _t30, float _t39, float _t10) {
+        _dst.m01 = _t30;
+        _dst.m11 = _t39;
+        _dst.m21 = _t10;
+    }
+
+    /** Private column 2 of {@code lookAt_lh_identity}: computes and stores it; reached only through it. */
+    private void lookAt_lh_identity_s73128447_c2(Float3x4Impl _dst, float _t31, float _t40, float _t12) {
+        _dst.m02 = _t31;
+        _dst.m12 = _t40;
+        _dst.m22 = _t12;
+    }
+
+    /** Private column 3 of {@code lookAt_lh_identity}: computes and stores it; reached only through it. */
+    private void lookAt_lh_identity_s73128447_c3(Float3x4Impl _dst, float eyeZ, float _t31, float eyeX, float _t29, float eyeY, float _t30, float _t40, float _t38, float _t39, float _t12, float _t11, float _t10) {
+        _dst.m03 = -Math.fma(eyeZ, _t31, Math.fma(eyeX, _t29, eyeY * _t30));
+        _dst.m13 = -Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
+        _dst.m23 = -Math.fma(eyeZ, _t12, Math.fma(eyeX, _t11, eyeY * _t10));
+    }
+
+    /** Private tail of {@code lookAt_lh_identity}; reached only through it. */
+    private void lookAt_lh_identity_s73128447_tail(Float3x4Impl _dst, float _t10, float _t31, float _t12, float _t30, float _t29, float _t11, float eyeZ, float eyeX, float eyeY) {
+        float _t38 = Math.fma(_t10, _t31, -(_t12 * _t30));
+        float _t39 = Math.fma(_t12, _t29, -(_t11 * _t31));
+        float _t40 = Math.fma(_t11, _t30, -(_t10 * _t29));
+        lookAt_lh_identity_s73128447_c0(_dst, _t29, _t38, _t11);
+        lookAt_lh_identity_s73128447_c1(_dst, _t30, _t39, _t10);
+        lookAt_lh_identity_s73128447_c2(_dst, _t31, _t40, _t12);
+        lookAt_lh_identity_s73128447_c3(_dst, eyeZ, _t31, eyeX, _t29, eyeY, _t30, _t40, _t38, _t39, _t12, _t11, _t10);
     }
 
 
@@ -10649,23 +11703,58 @@ public class Float3x4Impl implements Float3x4 {
             _t30 = 0.0f;
             _t31 = 0.0f;
         }
-        float _t38 = Math.fma(_t10, _t31, -(_t12 * _t30));
-        float _t39 = Math.fma(_t12, _t29, -(_t11 * _t31));
-        float _t40 = Math.fma(_t11, _t30, -(_t10 * _t29));
-        d.m00 = _t29;
-        d.m01 = _t30;
-        d.m02 = _t31;
-        d.m03 = -Math.fma(eyeZ, _t31, Math.fma(eyeX, _t29, eyeY * _t30));
-        d.m10 = _t38;
-        d.m11 = _t39;
-        d.m12 = _t40;
-        d.m13 = -Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
-        d.m20 = _t11;
-        d.m21 = _t10;
-        d.m22 = _t12;
-        d.m23 = -Math.fma(eyeZ, _t12, Math.fma(eyeX, _t11, eyeY * _t10));
+        lookAt_lh_identity_s73128447_tail(d, _t10, _t31, _t12, _t30, _t29, _t11, eyeZ, eyeX, eyeY);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
+    }
+
+    /** Private column 0 of {@code lookAt_lh_translation}: computes and stores it; reached only through it. */
+    private void lookAt_lh_translation_s73128447_c0(Float3x4Impl _dst, float _t32, float _t41, float _t14) {
+        _dst.m00 = _t32;
+        _dst.m10 = _t41;
+        _dst.m20 = _t14;
+    }
+
+    /** Private column 1 of {@code lookAt_lh_translation}: computes and stores it; reached only through it. */
+    private void lookAt_lh_translation_s73128447_c1(Float3x4Impl _dst, float _t33, float _t42, float _t13) {
+        _dst.m01 = _t33;
+        _dst.m11 = _t42;
+        _dst.m21 = _t13;
+    }
+
+    /** Private column 2 of {@code lookAt_lh_translation}: computes and stores it; reached only through it. */
+    private void lookAt_lh_translation_s73128447_c2(Float3x4Impl _dst, float _t34, float _t43, float _t15) {
+        _dst.m02 = _t34;
+        _dst.m12 = _t43;
+        _dst.m22 = _t15;
+    }
+
+    /** Private column 3 of {@code lookAt_lh_translation}: computes and stores it; reached only through it. */
+    private void lookAt_lh_translation_s73128447_c3(Float3x4Impl _dst, float _t0, float _t32, float _t1, float _t33, float _t2, float _t34, float _r0, float _t41, float _t42, float _t43, float _r1, float _t14, float _t13, float _t15, float _r2) {
+        _dst.m03 = Math.fma(_t0, _t32, Math.fma(_t1, _t33, Math.fma(_t2, _t34, _r0)));
+        _dst.m13 = Math.fma(_t0, _t41, Math.fma(_t1, _t42, Math.fma(_t2, _t43, _r1)));
+        _dst.m23 = Math.fma(_t0, _t14, Math.fma(_t1, _t13, Math.fma(_t2, _t15, _r2)));
+    }
+
+    /** Private tail of {@code lookAt_lh_translation}; reached only through it. */
+    private void lookAt_lh_translation_s73128447_tail(Float3x4Impl _dst, float _t27, float _t23, float _t28, float _t24, float _t22, float _t13, float _t15, float _t14, float _t0, float _t1, float _t2, float _r0, float _r1, float _r2) {
+        float _t32, _t33, _t34;
+        if (_t27 > 0.0f) {
+            _t32 = _t23 * _t28;
+            _t33 = _t24 * _t28;
+            _t34 = _t22 * _t28;
+        } else {
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+            _t34 = 0.0f;
+        }
+        float _t41 = Math.fma(_t13, _t34, -(_t15 * _t33));
+        float _t42 = Math.fma(_t15, _t32, -(_t14 * _t34));
+        float _t43 = Math.fma(_t14, _t33, -(_t13 * _t32));
+        lookAt_lh_translation_s73128447_c0(_dst, _t32, _t41, _t14);
+        lookAt_lh_translation_s73128447_c1(_dst, _t33, _t42, _t13);
+        lookAt_lh_translation_s73128447_c2(_dst, _t34, _t43, _t15);
+        lookAt_lh_translation_s73128447_c3(_dst, _t0, _t32, _t1, _t33, _t2, _t34, _r0, _t41, _t42, _t43, _r1, _t14, _t13, _t15, _r2);
     }
 
 
@@ -10675,6 +11764,9 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 lookAt_lh_translation(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m03;
+        float _r1 = this.m13;
+        float _r2 = this.m23;
         float _t0 = -eyeX;
         float _t1 = -eyeY;
         float _t2 = -eyeZ;
@@ -10698,33 +11790,81 @@ public class Float3x4Impl implements Float3x4 {
         float _t24 = Math.fma(upZ, _t14, -(upX * _t15));
         float _t27 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
+        lookAt_lh_translation_s73128447_tail(d, _t27, _t23, _t28, _t24, _t22, _t13, _t15, _t14, _t0, _t1, _t2, _r0, _r1, _r2);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+    /** Private column 0 of {@code lookAt_lh_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAt_lh_orthogonal_s73128447_c0(Float3x4Impl _dst, float _r0, float _t10, float _r1, float _t32, float _r2, float _t43, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t10, Math.fma(_r1, _t32, _r2 * _t43));
+        _dst.m10 = Math.fma(_r4, _t10, Math.fma(_r5, _t32, _r6 * _t43));
+        _dst.m20 = Math.fma(_r8, _t10, Math.fma(_r9, _t32, _r10 * _t43));
+    }
+
+    /** Private column 1 of {@code lookAt_lh_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAt_lh_orthogonal_s73128447_c1(Float3x4Impl _dst, float _r0, float _t11, float _r1, float _t34, float _r2, float _t44, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t11, Math.fma(_r1, _t34, _r2 * _t44));
+        _dst.m11 = Math.fma(_r4, _t11, Math.fma(_r5, _t34, _r6 * _t44));
+        _dst.m21 = Math.fma(_r8, _t11, Math.fma(_r9, _t34, _r10 * _t44));
+    }
+
+    /** Private column 2 of {@code lookAt_lh_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAt_lh_orthogonal_s73128447_c2(Float3x4Impl _dst, float _r0, float _t12, float _r1, float _t33, float _r2, float _t45, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t12, Math.fma(_r1, _t33, _r2 * _t45));
+        _dst.m12 = Math.fma(_r4, _t12, Math.fma(_r5, _t33, _r6 * _t45));
+        _dst.m22 = Math.fma(_r8, _t12, Math.fma(_r9, _t33, _r10 * _t45));
+    }
+
+    /** Private column 3 of {@code lookAt_lh_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAt_lh_orthogonal_s73128447_c3(Float3x4Impl _dst, float _r1, float _t47, float _r2, float _t49, float _r0, float _t24, float _r3, float _r5, float _r6, float _r4, float _r7, float _r9, float _r10, float _r8, float _r11) {
+        _dst.m03 = Math.fma(-_r1, _t47, Math.fma(-_r2, _t49, Math.fma(-_r0, _t24, _r3)));
+        _dst.m13 = Math.fma(-_r5, _t47, Math.fma(-_r6, _t49, Math.fma(-_r4, _t24, _r7)));
+        _dst.m23 = Math.fma(-_r9, _t47, Math.fma(-_r10, _t49, Math.fma(-_r8, _t24, _r11)));
+    }
+
+    /** Private tail of {@code lookAt_lh_orthogonal}; reached only through it. */
+    private void lookAt_lh_orthogonal_s73128447_tail(Float3x4Impl _dst, float _t5, float _t1, float _t6, float _t2, float _t0, float upX, float upY, float upZ, float eyeZ, float eyeX, float eyeY, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t10, _t11, _t12;
+        if (_t5 > 0.0f) {
+            _t10 = _t1 * _t6;
+            _t11 = _t2 * _t6;
+            _t12 = _t0 * _t6;
+        } else {
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 0.0f;
+        }
+        float _t21 = Math.fma(upX, _t11, -(upY * _t10));
+        float _t22 = Math.fma(upY, _t12, -(upZ * _t11));
+        float _t23 = Math.fma(upZ, _t10, -(upX * _t12));
+        float _t24 = Math.fma(eyeZ, _t12, Math.fma(eyeX, _t10, eyeY * _t11));
+        float _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
+        float _t28 = (1.0f / (float) Math.sqrt(_t27));
         float _t32, _t33, _t34;
         if (_t27 > 0.0f) {
-            _t32 = _t23 * _t28;
-            _t33 = _t24 * _t28;
-            _t34 = _t22 * _t28;
+            _t32 = _t22 * _t28;
+            _t33 = _t21 * _t28;
+            _t34 = _t23 * _t28;
         } else {
             _t32 = 0.0f;
             _t33 = 0.0f;
             _t34 = 0.0f;
         }
-        float _t41 = Math.fma(_t13, _t34, -(_t15 * _t33));
-        float _t42 = Math.fma(_t15, _t32, -(_t14 * _t34));
-        float _t43 = Math.fma(_t14, _t33, -(_t13 * _t32));
-        d.m00 = _t32;
-        d.m01 = _t33;
-        d.m02 = _t34;
-        d.m03 = Math.fma(_t0, _t32, Math.fma(_t1, _t33, Math.fma(_t2, _t34, this.m03)));
-        d.m10 = _t41;
-        d.m11 = _t42;
-        d.m12 = _t43;
-        d.m13 = Math.fma(_t0, _t41, Math.fma(_t1, _t42, Math.fma(_t2, _t43, this.m13)));
-        d.m20 = _t14;
-        d.m21 = _t13;
-        d.m22 = _t15;
-        d.m23 = Math.fma(_t0, _t14, Math.fma(_t1, _t13, Math.fma(_t2, _t15, this.m23)));
-        d.properties = Joml.BIT_ORTHOGONAL;
-        return d;
+        lookAt_lh_orthogonal_s73128447_tail2(_dst, _t11, _t33, _t12, _t34, _t32, _t10, eyeZ, eyeX, eyeY, _r0, _r1, _r2, _t24, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+    }
+
+    /** Private tail of {@code lookAt_lh_orthogonal}; reached only through it. */
+    private void lookAt_lh_orthogonal_s73128447_tail2(Float3x4Impl _dst, float _t11, float _t33, float _t12, float _t34, float _t32, float _t10, float eyeZ, float eyeX, float eyeY, float _r0, float _r1, float _r2, float _t24, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t43 = Math.fma(_t11, _t33, -(_t12 * _t34));
+        float _t44 = Math.fma(_t12, _t32, -(_t10 * _t33));
+        float _t45 = Math.fma(_t10, _t34, -(_t11 * _t32));
+        float _t47 = Math.fma(eyeZ, _t33, Math.fma(eyeX, _t32, eyeY * _t34));
+        float _t49 = Math.fma(eyeZ, _t45, Math.fma(eyeX, _t43, eyeY * _t44));
+        lookAt_lh_orthogonal_s73128447_c0(_dst, _r0, _t10, _r1, _t32, _r2, _t43, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_orthogonal_s73128447_c1(_dst, _r0, _t11, _r1, _t34, _r2, _t44, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_orthogonal_s73128447_c2(_dst, _r0, _t12, _r1, _t33, _r2, _t45, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_orthogonal_s73128447_c3(_dst, _r1, _t47, _r2, _t49, _r0, _t24, _r3, _r5, _r6, _r4, _r7, _r9, _r10, _r8, _r11);
     }
 
 
@@ -10734,11 +11874,58 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 lookAt_lh_orthogonal(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = centerZ - eyeZ;
         float _t1 = centerX - eyeX;
         float _t2 = centerY - eyeY;
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
+        lookAt_lh_orthogonal_s73128447_tail(d, _t5, _t1, _t6, _t2, _t0, upX, upY, upZ, eyeZ, eyeX, eyeY, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+    /** Private column 0 of {@code lookAt_lh_general}: computes and stores it; reached only through it. */
+    private void lookAt_lh_general_s73128447_c0(Float3x4Impl _dst, float _r0, float _t10, float _r1, float _t32, float _r2, float _t43, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t10, Math.fma(_r1, _t32, _r2 * _t43));
+        _dst.m10 = Math.fma(_r4, _t10, Math.fma(_r5, _t32, _r6 * _t43));
+        _dst.m20 = Math.fma(_r8, _t10, Math.fma(_r9, _t32, _r10 * _t43));
+    }
+
+    /** Private column 1 of {@code lookAt_lh_general}: computes and stores it; reached only through it. */
+    private void lookAt_lh_general_s73128447_c1(Float3x4Impl _dst, float _r0, float _t11, float _r1, float _t34, float _r2, float _t44, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t11, Math.fma(_r1, _t34, _r2 * _t44));
+        _dst.m11 = Math.fma(_r4, _t11, Math.fma(_r5, _t34, _r6 * _t44));
+        _dst.m21 = Math.fma(_r8, _t11, Math.fma(_r9, _t34, _r10 * _t44));
+    }
+
+    /** Private column 2 of {@code lookAt_lh_general}: computes and stores it; reached only through it. */
+    private void lookAt_lh_general_s73128447_c2(Float3x4Impl _dst, float _r0, float _t12, float _r1, float _t33, float _r2, float _t45, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t12, Math.fma(_r1, _t33, _r2 * _t45));
+        _dst.m12 = Math.fma(_r4, _t12, Math.fma(_r5, _t33, _r6 * _t45));
+        _dst.m22 = Math.fma(_r8, _t12, Math.fma(_r9, _t33, _r10 * _t45));
+    }
+
+    /** Private column 3 of {@code lookAt_lh_general}: computes and stores it; reached only through it. */
+    private void lookAt_lh_general_s73128447_c3(Float3x4Impl _dst, float _r1, float _t47, float _r2, float _t49, float _r0, float _t24, float _r3, float _r5, float _r6, float _r4, float _r7, float _r9, float _r10, float _r8, float _r11) {
+        _dst.m03 = Math.fma(-_r1, _t47, Math.fma(-_r2, _t49, Math.fma(-_r0, _t24, _r3)));
+        _dst.m13 = Math.fma(-_r5, _t47, Math.fma(-_r6, _t49, Math.fma(-_r4, _t24, _r7)));
+        _dst.m23 = Math.fma(-_r9, _t47, Math.fma(-_r10, _t49, Math.fma(-_r8, _t24, _r11)));
+    }
+
+    /** Private tail of {@code lookAt_lh_general}; reached only through it. */
+    private void lookAt_lh_general_s73128447_tail(Float3x4Impl _dst, float _t5, float _t1, float _t6, float _t2, float _t0, float upX, float upY, float upZ, float eyeZ, float eyeX, float eyeY, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
         float _t10, _t11, _t12;
         if (_t5 > 0.0f) {
             _t10 = _t1 * _t6;
@@ -10765,34 +11952,20 @@ public class Float3x4Impl implements Float3x4 {
             _t33 = 0.0f;
             _t34 = 0.0f;
         }
+        lookAt_lh_general_s73128447_tail2(_dst, _t11, _t33, _t12, _t34, _t32, _t10, eyeZ, eyeX, eyeY, _r0, _r1, _r2, _t24, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+    }
+
+    /** Private tail of {@code lookAt_lh_general}; reached only through it. */
+    private void lookAt_lh_general_s73128447_tail2(Float3x4Impl _dst, float _t11, float _t33, float _t12, float _t34, float _t32, float _t10, float eyeZ, float eyeX, float eyeY, float _r0, float _r1, float _r2, float _t24, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
         float _t43 = Math.fma(_t11, _t33, -(_t12 * _t34));
         float _t44 = Math.fma(_t12, _t32, -(_t10 * _t33));
         float _t45 = Math.fma(_t10, _t34, -(_t11 * _t32));
         float _t47 = Math.fma(eyeZ, _t33, Math.fma(eyeX, _t32, eyeY * _t34));
         float _t49 = Math.fma(eyeZ, _t45, Math.fma(eyeX, _t43, eyeY * _t44));
-        float _buf0 = Math.fma(this.m02, _t10, Math.fma(this.m00, _t32, this.m01 * _t43));
-        float _buf1 = Math.fma(this.m02, _t11, Math.fma(this.m00, _t34, this.m01 * _t44));
-        float _buf2 = Math.fma(this.m02, _t12, Math.fma(this.m00, _t33, this.m01 * _t45));
-        d.m03 = Math.fma(-this.m00, _t47, Math.fma(-this.m01, _t49, Math.fma(-this.m02, _t24, this.m03)));
-        float _buf3 = Math.fma(this.m12, _t10, Math.fma(this.m10, _t32, this.m11 * _t43));
-        float _buf4 = Math.fma(this.m12, _t11, Math.fma(this.m10, _t34, this.m11 * _t44));
-        float _buf5 = Math.fma(this.m12, _t12, Math.fma(this.m10, _t33, this.m11 * _t45));
-        d.m13 = Math.fma(-this.m10, _t47, Math.fma(-this.m11, _t49, Math.fma(-this.m12, _t24, this.m13)));
-        float _buf6 = Math.fma(this.m22, _t10, Math.fma(this.m20, _t32, this.m21 * _t43));
-        float _buf7 = Math.fma(this.m22, _t11, Math.fma(this.m20, _t34, this.m21 * _t44));
-        float _buf8 = Math.fma(this.m22, _t12, Math.fma(this.m20, _t33, this.m21 * _t45));
-        d.m23 = Math.fma(-this.m20, _t47, Math.fma(-this.m21, _t49, Math.fma(-this.m22, _t24, this.m23)));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m10 = _buf3;
-        d.m11 = _buf4;
-        d.m12 = _buf5;
-        d.m20 = _buf6;
-        d.m21 = _buf7;
-        d.m22 = _buf8;
-        d.properties = Joml.BIT_ORTHOGONAL;
-        return d;
+        lookAt_lh_general_s73128447_c0(_dst, _r0, _t10, _r1, _t32, _r2, _t43, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_general_s73128447_c1(_dst, _r0, _t11, _r1, _t34, _r2, _t44, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_general_s73128447_c2(_dst, _r0, _t12, _r1, _t33, _r2, _t45, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_general_s73128447_c3(_dst, _r1, _t47, _r2, _t49, _r0, _t24, _r3, _r5, _r6, _r4, _r7, _r9, _r10, _r8, _r11);
     }
 
 
@@ -10802,63 +11975,24 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 lookAt_lh_general(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = centerZ - eyeZ;
         float _t1 = centerX - eyeX;
         float _t2 = centerY - eyeY;
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
-        float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
-            _t10 = _t1 * _t6;
-            _t11 = _t2 * _t6;
-            _t12 = _t0 * _t6;
-        } else {
-            _t10 = 0.0f;
-            _t11 = 0.0f;
-            _t12 = 0.0f;
-        }
-        float _t21 = Math.fma(upX, _t11, -(upY * _t10));
-        float _t22 = Math.fma(upY, _t12, -(upZ * _t11));
-        float _t23 = Math.fma(upZ, _t10, -(upX * _t12));
-        float _t24 = Math.fma(eyeZ, _t12, Math.fma(eyeX, _t10, eyeY * _t11));
-        float _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        float _t28 = (1.0f / (float) Math.sqrt(_t27));
-        float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
-            _t32 = _t22 * _t28;
-            _t33 = _t21 * _t28;
-            _t34 = _t23 * _t28;
-        } else {
-            _t32 = 0.0f;
-            _t33 = 0.0f;
-            _t34 = 0.0f;
-        }
-        float _t43 = Math.fma(_t11, _t33, -(_t12 * _t34));
-        float _t44 = Math.fma(_t12, _t32, -(_t10 * _t33));
-        float _t45 = Math.fma(_t10, _t34, -(_t11 * _t32));
-        float _t47 = Math.fma(eyeZ, _t33, Math.fma(eyeX, _t32, eyeY * _t34));
-        float _t49 = Math.fma(eyeZ, _t45, Math.fma(eyeX, _t43, eyeY * _t44));
-        float _buf0 = Math.fma(this.m02, _t10, Math.fma(this.m00, _t32, this.m01 * _t43));
-        float _buf1 = Math.fma(this.m02, _t11, Math.fma(this.m00, _t34, this.m01 * _t44));
-        float _buf2 = Math.fma(this.m02, _t12, Math.fma(this.m00, _t33, this.m01 * _t45));
-        d.m03 = Math.fma(-this.m00, _t47, Math.fma(-this.m01, _t49, Math.fma(-this.m02, _t24, this.m03)));
-        float _buf3 = Math.fma(this.m12, _t10, Math.fma(this.m10, _t32, this.m11 * _t43));
-        float _buf4 = Math.fma(this.m12, _t11, Math.fma(this.m10, _t34, this.m11 * _t44));
-        float _buf5 = Math.fma(this.m12, _t12, Math.fma(this.m10, _t33, this.m11 * _t45));
-        d.m13 = Math.fma(-this.m10, _t47, Math.fma(-this.m11, _t49, Math.fma(-this.m12, _t24, this.m13)));
-        float _buf6 = Math.fma(this.m22, _t10, Math.fma(this.m20, _t32, this.m21 * _t43));
-        float _buf7 = Math.fma(this.m22, _t11, Math.fma(this.m20, _t34, this.m21 * _t44));
-        float _buf8 = Math.fma(this.m22, _t12, Math.fma(this.m20, _t33, this.m21 * _t45));
-        d.m23 = Math.fma(-this.m20, _t47, Math.fma(-this.m21, _t49, Math.fma(-this.m22, _t24, this.m23)));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m10 = _buf3;
-        d.m11 = _buf4;
-        d.m12 = _buf5;
-        d.m20 = _buf6;
-        d.m21 = _buf7;
-        d.m22 = _buf8;
+        lookAt_lh_general_s73128447_tail(d, _t5, _t1, _t6, _t2, _t0, upX, upY, upZ, eyeZ, eyeX, eyeY, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -10890,18 +12024,36 @@ public class Float3x4Impl implements Float3x4 {
         return lookAt_lh_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
     }
 
+    /** Private column 0 of {@code lookAt_lh}: computes and stores it; reached only through it. */
+    private void lookAt_lh_s3904e7cc_c0(Double3x4Impl _dst, float _r0, float _t10, float _r1, float _t32, float _r2, float _t43, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t10, Math.fma(_r1, _t32, _r2 * _t43));
+        _dst.m10 = Math.fma(_r4, _t10, Math.fma(_r5, _t32, _r6 * _t43));
+        _dst.m20 = Math.fma(_r8, _t10, Math.fma(_r9, _t32, _r10 * _t43));
+    }
 
-    /**
-     * Private body of {@code lookAt} for {@code Handedness.LEFT_HANDED}; reached only through the
-     * public {@code lookAt} dispatcher.
-     */
-    private Double3x4 lookAt_lh(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Double3x4 dest) {
-        Double3x4Impl d = (Double3x4Impl) dest;
-        float _t0 = centerZ - eyeZ;
-        float _t1 = centerX - eyeX;
-        float _t2 = centerY - eyeY;
-        float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
-        float _t6 = (1.0f / (float) Math.sqrt(_t5));
+    /** Private column 1 of {@code lookAt_lh}: computes and stores it; reached only through it. */
+    private void lookAt_lh_s3904e7cc_c1(Double3x4Impl _dst, float _r0, float _t11, float _r1, float _t34, float _r2, float _t44, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t11, Math.fma(_r1, _t34, _r2 * _t44));
+        _dst.m11 = Math.fma(_r4, _t11, Math.fma(_r5, _t34, _r6 * _t44));
+        _dst.m21 = Math.fma(_r8, _t11, Math.fma(_r9, _t34, _r10 * _t44));
+    }
+
+    /** Private column 2 of {@code lookAt_lh}: computes and stores it; reached only through it. */
+    private void lookAt_lh_s3904e7cc_c2(Double3x4Impl _dst, float _r0, float _t12, float _r1, float _t33, float _r2, float _t45, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t12, Math.fma(_r1, _t33, _r2 * _t45));
+        _dst.m12 = Math.fma(_r4, _t12, Math.fma(_r5, _t33, _r6 * _t45));
+        _dst.m22 = Math.fma(_r8, _t12, Math.fma(_r9, _t33, _r10 * _t45));
+    }
+
+    /** Private column 3 of {@code lookAt_lh}: computes and stores it; reached only through it. */
+    private void lookAt_lh_s3904e7cc_c3(Double3x4Impl _dst, float _r1, float _t47, float _r2, float _t49, float _r0, float _t24, float _r3, float _r5, float _r6, float _r4, float _r7, float _r9, float _r10, float _r8, float _r11) {
+        _dst.m03 = Math.fma(-_r1, _t47, Math.fma(-_r2, _t49, Math.fma(-_r0, _t24, _r3)));
+        _dst.m13 = Math.fma(-_r5, _t47, Math.fma(-_r6, _t49, Math.fma(-_r4, _t24, _r7)));
+        _dst.m23 = Math.fma(-_r9, _t47, Math.fma(-_r10, _t49, Math.fma(-_r8, _t24, _r11)));
+    }
+
+    /** Private tail of {@code lookAt_lh}; reached only through it. */
+    private void lookAt_lh_s3904e7cc_tail(Double3x4Impl _dst, float _t5, float _t1, float _t6, float _t2, float _t0, float upX, float upY, float upZ, float eyeZ, float eyeX, float eyeY, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
         float _t10, _t11, _t12;
         if (_t5 > 0.0f) {
             _t10 = _t1 * _t6;
@@ -10928,32 +12080,47 @@ public class Float3x4Impl implements Float3x4 {
             _t33 = 0.0f;
             _t34 = 0.0f;
         }
+        lookAt_lh_s3904e7cc_tail2(_dst, _t11, _t33, _t12, _t34, _t32, _t10, eyeZ, eyeX, eyeY, _r0, _r1, _r2, _t24, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+    }
+
+    /** Private tail of {@code lookAt_lh}; reached only through it. */
+    private void lookAt_lh_s3904e7cc_tail2(Double3x4Impl _dst, float _t11, float _t33, float _t12, float _t34, float _t32, float _t10, float eyeZ, float eyeX, float eyeY, float _r0, float _r1, float _r2, float _t24, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
         float _t43 = Math.fma(_t11, _t33, -(_t12 * _t34));
         float _t44 = Math.fma(_t12, _t32, -(_t10 * _t33));
         float _t45 = Math.fma(_t10, _t34, -(_t11 * _t32));
         float _t47 = Math.fma(eyeZ, _t33, Math.fma(eyeX, _t32, eyeY * _t34));
         float _t49 = Math.fma(eyeZ, _t45, Math.fma(eyeX, _t43, eyeY * _t44));
-        float _buf0 = Math.fma(this.m02, _t10, Math.fma(this.m00, _t32, this.m01 * _t43));
-        float _buf1 = Math.fma(this.m02, _t11, Math.fma(this.m00, _t34, this.m01 * _t44));
-        float _buf2 = Math.fma(this.m02, _t12, Math.fma(this.m00, _t33, this.m01 * _t45));
-        d.m03 = Math.fma(-this.m00, _t47, Math.fma(-this.m01, _t49, Math.fma(-this.m02, _t24, this.m03)));
-        float _buf3 = Math.fma(this.m12, _t10, Math.fma(this.m10, _t32, this.m11 * _t43));
-        float _buf4 = Math.fma(this.m12, _t11, Math.fma(this.m10, _t34, this.m11 * _t44));
-        float _buf5 = Math.fma(this.m12, _t12, Math.fma(this.m10, _t33, this.m11 * _t45));
-        d.m13 = Math.fma(-this.m10, _t47, Math.fma(-this.m11, _t49, Math.fma(-this.m12, _t24, this.m13)));
-        float _buf6 = Math.fma(this.m22, _t10, Math.fma(this.m20, _t32, this.m21 * _t43));
-        float _buf7 = Math.fma(this.m22, _t11, Math.fma(this.m20, _t34, this.m21 * _t44));
-        float _buf8 = Math.fma(this.m22, _t12, Math.fma(this.m20, _t33, this.m21 * _t45));
-        d.m23 = Math.fma(-this.m20, _t47, Math.fma(-this.m21, _t49, Math.fma(-this.m22, _t24, this.m23)));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m10 = _buf3;
-        d.m11 = _buf4;
-        d.m12 = _buf5;
-        d.m20 = _buf6;
-        d.m21 = _buf7;
-        d.m22 = _buf8;
+        lookAt_lh_s3904e7cc_c0(_dst, _r0, _t10, _r1, _t32, _r2, _t43, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_s3904e7cc_c1(_dst, _r0, _t11, _r1, _t34, _r2, _t44, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_s3904e7cc_c2(_dst, _r0, _t12, _r1, _t33, _r2, _t45, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_s3904e7cc_c3(_dst, _r1, _t47, _r2, _t49, _r0, _t24, _r3, _r5, _r6, _r4, _r7, _r9, _r10, _r8, _r11);
+    }
+
+
+    /**
+     * Private body of {@code lookAt} for {@code Handedness.LEFT_HANDED}; reached only through the
+     * public {@code lookAt} dispatcher.
+     */
+    private Double3x4 lookAt_lh(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Double3x4 dest) {
+        Double3x4Impl d = (Double3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
+        float _t0 = centerZ - eyeZ;
+        float _t1 = centerX - eyeX;
+        float _t2 = centerY - eyeY;
+        float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
+        float _t6 = (1.0f / (float) Math.sqrt(_t5));
+        lookAt_lh_s3904e7cc_tail(d, _t5, _t1, _t6, _t2, _t0, upX, upY, upZ, eyeZ, eyeX, eyeY, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -10983,6 +12150,45 @@ public class Float3x4Impl implements Float3x4 {
      */
     private @Mutated Float3x4 lookAt_rh(Float3R eye, Float3R center, Float3R up) {
         return lookAt_rh(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
+    }
+
+    /** Private column 0 of {@code lookAt_rh_identity}: computes and stores it; reached only through it. */
+    private void lookAt_rh_identity_s73128447_c0(Float3x4Impl _dst, float _t29, float _t38, float _t10) {
+        _dst.m00 = _t29;
+        _dst.m10 = _t38;
+        _dst.m20 = -_t10;
+    }
+
+    /** Private column 1 of {@code lookAt_rh_identity}: computes and stores it; reached only through it. */
+    private void lookAt_rh_identity_s73128447_c1(Float3x4Impl _dst, float _t30, float _t39, float _t11) {
+        _dst.m01 = _t30;
+        _dst.m11 = _t39;
+        _dst.m21 = -_t11;
+    }
+
+    /** Private column 2 of {@code lookAt_rh_identity}: computes and stores it; reached only through it. */
+    private void lookAt_rh_identity_s73128447_c2(Float3x4Impl _dst, float _t31, float _t40, float _t12) {
+        _dst.m02 = _t31;
+        _dst.m12 = _t40;
+        _dst.m22 = -_t12;
+    }
+
+    /** Private column 3 of {@code lookAt_rh_identity}: computes and stores it; reached only through it. */
+    private void lookAt_rh_identity_s73128447_c3(Float3x4Impl _dst, float eyeZ, float _t31, float eyeX, float _t29, float eyeY, float _t30, float _t40, float _t38, float _t39, float _t12, float _t10, float _t11) {
+        _dst.m03 = -Math.fma(eyeZ, _t31, Math.fma(eyeX, _t29, eyeY * _t30));
+        _dst.m13 = -Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
+        _dst.m23 = Math.fma(eyeZ, _t12, Math.fma(eyeX, _t10, eyeY * _t11));
+    }
+
+    /** Private tail of {@code lookAt_rh_identity}; reached only through it. */
+    private void lookAt_rh_identity_s73128447_tail(Float3x4Impl _dst, float _t12, float _t30, float _t11, float _t31, float _t10, float _t29, float eyeZ, float eyeX, float eyeY) {
+        float _t38 = Math.fma(_t12, _t30, -(_t11 * _t31));
+        float _t39 = Math.fma(_t10, _t31, -(_t12 * _t29));
+        float _t40 = Math.fma(_t11, _t29, -(_t10 * _t30));
+        lookAt_rh_identity_s73128447_c0(_dst, _t29, _t38, _t10);
+        lookAt_rh_identity_s73128447_c1(_dst, _t30, _t39, _t11);
+        lookAt_rh_identity_s73128447_c2(_dst, _t31, _t40, _t12);
+        lookAt_rh_identity_s73128447_c3(_dst, eyeZ, _t31, eyeX, _t29, eyeY, _t30, _t40, _t38, _t39, _t12, _t10, _t11);
     }
 
 
@@ -11022,23 +12228,58 @@ public class Float3x4Impl implements Float3x4 {
             _t30 = 0.0f;
             _t31 = 0.0f;
         }
-        float _t38 = Math.fma(_t12, _t30, -(_t11 * _t31));
-        float _t39 = Math.fma(_t10, _t31, -(_t12 * _t29));
-        float _t40 = Math.fma(_t11, _t29, -(_t10 * _t30));
-        d.m00 = _t29;
-        d.m01 = _t30;
-        d.m02 = _t31;
-        d.m03 = -Math.fma(eyeZ, _t31, Math.fma(eyeX, _t29, eyeY * _t30));
-        d.m10 = _t38;
-        d.m11 = _t39;
-        d.m12 = _t40;
-        d.m13 = -Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
-        d.m20 = -_t10;
-        d.m21 = -_t11;
-        d.m22 = -_t12;
-        d.m23 = Math.fma(eyeZ, _t12, Math.fma(eyeX, _t10, eyeY * _t11));
+        lookAt_rh_identity_s73128447_tail(d, _t12, _t30, _t11, _t31, _t10, _t29, eyeZ, eyeX, eyeY);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
+    }
+
+    /** Private column 0 of {@code lookAt_rh_translation}: computes and stores it; reached only through it. */
+    private void lookAt_rh_translation_s73128447_c0(Float3x4Impl _dst, float _t32, float _t41, float _t13) {
+        _dst.m00 = _t32;
+        _dst.m10 = _t41;
+        _dst.m20 = -_t13;
+    }
+
+    /** Private column 1 of {@code lookAt_rh_translation}: computes and stores it; reached only through it. */
+    private void lookAt_rh_translation_s73128447_c1(Float3x4Impl _dst, float _t33, float _t42, float _t14) {
+        _dst.m01 = _t33;
+        _dst.m11 = _t42;
+        _dst.m21 = -_t14;
+    }
+
+    /** Private column 2 of {@code lookAt_rh_translation}: computes and stores it; reached only through it. */
+    private void lookAt_rh_translation_s73128447_c2(Float3x4Impl _dst, float _t34, float _t43, float _t15) {
+        _dst.m02 = _t34;
+        _dst.m12 = _t43;
+        _dst.m22 = -_t15;
+    }
+
+    /** Private column 3 of {@code lookAt_rh_translation}: computes and stores it; reached only through it. */
+    private void lookAt_rh_translation_s73128447_c3(Float3x4Impl _dst, float _t0, float _t32, float _t1, float _t33, float _t2, float _t34, float _r0, float _t41, float _t42, float _t43, float _r1, float eyeX, float _t13, float eyeY, float _t14, float eyeZ, float _t15, float _r2) {
+        _dst.m03 = Math.fma(_t0, _t32, Math.fma(_t1, _t33, Math.fma(_t2, _t34, _r0)));
+        _dst.m13 = Math.fma(_t0, _t41, Math.fma(_t1, _t42, Math.fma(_t2, _t43, _r1)));
+        _dst.m23 = Math.fma(eyeX, _t13, Math.fma(eyeY, _t14, Math.fma(eyeZ, _t15, _r2)));
+    }
+
+    /** Private tail of {@code lookAt_rh_translation}; reached only through it. */
+    private void lookAt_rh_translation_s73128447_tail(Float3x4Impl _dst, float _t27, float _t24, float _t28, float _t23, float _t22, float _t15, float _t14, float _t13, float _t0, float _t1, float _t2, float _r0, float _r1, float eyeX, float eyeY, float eyeZ, float _r2) {
+        float _t32, _t33, _t34;
+        if (_t27 > 0.0f) {
+            _t32 = _t24 * _t28;
+            _t33 = _t23 * _t28;
+            _t34 = _t22 * _t28;
+        } else {
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+            _t34 = 0.0f;
+        }
+        float _t41 = Math.fma(_t15, _t33, -(_t14 * _t34));
+        float _t42 = Math.fma(_t13, _t34, -(_t15 * _t32));
+        float _t43 = Math.fma(_t14, _t32, -(_t13 * _t33));
+        lookAt_rh_translation_s73128447_c0(_dst, _t32, _t41, _t13);
+        lookAt_rh_translation_s73128447_c1(_dst, _t33, _t42, _t14);
+        lookAt_rh_translation_s73128447_c2(_dst, _t34, _t43, _t15);
+        lookAt_rh_translation_s73128447_c3(_dst, _t0, _t32, _t1, _t33, _t2, _t34, _r0, _t41, _t42, _t43, _r1, eyeX, _t13, eyeY, _t14, eyeZ, _t15, _r2);
     }
 
 
@@ -11048,6 +12289,9 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 lookAt_rh_translation(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m03;
+        float _r1 = this.m13;
+        float _r2 = this.m23;
         float _t0 = -eyeX;
         float _t1 = -eyeY;
         float _t2 = -eyeZ;
@@ -11071,33 +12315,81 @@ public class Float3x4Impl implements Float3x4 {
         float _t24 = Math.fma(upZ, _t14, -(upY * _t15));
         float _t27 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
-        float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
-            _t32 = _t24 * _t28;
-            _t33 = _t23 * _t28;
-            _t34 = _t22 * _t28;
-        } else {
-            _t32 = 0.0f;
-            _t33 = 0.0f;
-            _t34 = 0.0f;
-        }
-        float _t41 = Math.fma(_t15, _t33, -(_t14 * _t34));
-        float _t42 = Math.fma(_t13, _t34, -(_t15 * _t32));
-        float _t43 = Math.fma(_t14, _t32, -(_t13 * _t33));
-        d.m00 = _t32;
-        d.m01 = _t33;
-        d.m02 = _t34;
-        d.m03 = Math.fma(_t0, _t32, Math.fma(_t1, _t33, Math.fma(_t2, _t34, this.m03)));
-        d.m10 = _t41;
-        d.m11 = _t42;
-        d.m12 = _t43;
-        d.m13 = Math.fma(_t0, _t41, Math.fma(_t1, _t42, Math.fma(_t2, _t43, this.m13)));
-        d.m20 = -_t13;
-        d.m21 = -_t14;
-        d.m22 = -_t15;
-        d.m23 = Math.fma(eyeX, _t13, Math.fma(eyeY, _t14, Math.fma(eyeZ, _t15, this.m23)));
+        lookAt_rh_translation_s73128447_tail(d, _t27, _t24, _t28, _t23, _t22, _t15, _t14, _t13, _t0, _t1, _t2, _r0, _r1, eyeX, eyeY, eyeZ, _r2);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
+    }
+
+    /** Private column 0 of {@code lookAt_rh_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAt_rh_orthogonal_s73128447_c0(Float3x4Impl _dst, float _t0, float _t13, float _r3, float _t35, float _r4, float _t46, float _t1, float _r6, float _r7, float _t2, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_t0, _t13, Math.fma(_r3, _t35, _r4 * _t46));
+        _dst.m10 = Math.fma(_t1, _t13, Math.fma(_r6, _t35, _r7 * _t46));
+        _dst.m20 = Math.fma(_t2, _t13, Math.fma(_r9, _t35, _r10 * _t46));
+    }
+
+    /** Private column 1 of {@code lookAt_rh_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAt_rh_orthogonal_s73128447_c1(Float3x4Impl _dst, float _t0, float _t14, float _r3, float _t36, float _r4, float _t47, float _t1, float _r6, float _r7, float _t2, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_t0, _t14, Math.fma(_r3, _t36, _r4 * _t47));
+        _dst.m11 = Math.fma(_t1, _t14, Math.fma(_r6, _t36, _r7 * _t47));
+        _dst.m21 = Math.fma(_t2, _t14, Math.fma(_r9, _t36, _r10 * _t47));
+    }
+
+    /** Private column 2 of {@code lookAt_rh_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAt_rh_orthogonal_s73128447_c2(Float3x4Impl _dst, float _t0, float _t15, float _r3, float _t37, float _r4, float _t48, float _t1, float _r6, float _r7, float _t2, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_t0, _t15, Math.fma(_r3, _t37, _r4 * _t48));
+        _dst.m12 = Math.fma(_t1, _t15, Math.fma(_r6, _t37, _r7 * _t48));
+        _dst.m22 = Math.fma(_t2, _t15, Math.fma(_r9, _t37, _r10 * _t48));
+    }
+
+    /** Private column 3 of {@code lookAt_rh_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAt_rh_orthogonal_s73128447_c3(Float3x4Impl _dst, float _r3, float _t50, float _r4, float _t52, float _r0, float _t27, float _r5, float _r6, float _r7, float _r1, float _r8, float _r9, float _r10, float _r2, float _r11) {
+        _dst.m03 = Math.fma(-_r3, _t50, Math.fma(-_r4, _t52, Math.fma(_r0, _t27, _r5)));
+        _dst.m13 = Math.fma(-_r6, _t50, Math.fma(-_r7, _t52, Math.fma(_r1, _t27, _r8)));
+        _dst.m23 = Math.fma(-_r9, _t50, Math.fma(-_r10, _t52, Math.fma(_r2, _t27, _r11)));
+    }
+
+    /** Private tail of {@code lookAt_rh_orthogonal}; reached only through it. */
+    private void lookAt_rh_orthogonal_s73128447_tail(Float3x4Impl _dst, float _t8, float _t4, float _t9, float _t5, float _t3, float upY, float upX, float upZ, float eyeZ, float eyeX, float eyeY, float _t0, float _r3, float _r4, float _r0, float _r5, float _t1, float _r6, float _r7, float _r1, float _r8, float _t2, float _r9, float _r10, float _r2, float _r11) {
+        float _t13, _t14, _t15;
+        if (_t8 > 0.0f) {
+            _t13 = _t4 * _t9;
+            _t14 = _t5 * _t9;
+            _t15 = _t3 * _t9;
+        } else {
+            _t13 = 0.0f;
+            _t14 = 0.0f;
+            _t15 = 0.0f;
+        }
+        float _t24 = Math.fma(upY, _t13, -(upX * _t14));
+        float _t25 = Math.fma(upX, _t15, -(upZ * _t13));
+        float _t26 = Math.fma(upZ, _t14, -(upY * _t15));
+        float _t27 = Math.fma(eyeZ, _t15, Math.fma(eyeX, _t13, eyeY * _t14));
+        float _t30 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
+        float _t31 = (1.0f / (float) Math.sqrt(_t30));
+        lookAt_rh_orthogonal_s73128447_tail2(_dst, _t30, _t26, _t31, _t25, _t24, _t15, _t14, _t13, eyeZ, eyeX, eyeY, _t0, _r3, _r4, _r0, _t27, _r5, _t1, _r6, _r7, _r1, _r8, _t2, _r9, _r10, _r2, _r11);
+    }
+
+    /** Private tail of {@code lookAt_rh_orthogonal}; reached only through it. */
+    private void lookAt_rh_orthogonal_s73128447_tail2(Float3x4Impl _dst, float _t30, float _t26, float _t31, float _t25, float _t24, float _t15, float _t14, float _t13, float eyeZ, float eyeX, float eyeY, float _t0, float _r3, float _r4, float _r0, float _t27, float _r5, float _t1, float _r6, float _r7, float _r1, float _r8, float _t2, float _r9, float _r10, float _r2, float _r11) {
+        float _t35, _t36, _t37;
+        if (_t30 > 0.0f) {
+            _t35 = _t26 * _t31;
+            _t36 = _t25 * _t31;
+            _t37 = _t24 * _t31;
+        } else {
+            _t35 = 0.0f;
+            _t36 = 0.0f;
+            _t37 = 0.0f;
+        }
+        float _t46 = Math.fma(_t15, _t36, -(_t14 * _t37));
+        float _t47 = Math.fma(_t13, _t37, -(_t15 * _t35));
+        float _t48 = Math.fma(_t14, _t35, -(_t13 * _t36));
+        float _t50 = Math.fma(eyeZ, _t37, Math.fma(eyeX, _t35, eyeY * _t36));
+        float _t52 = Math.fma(eyeZ, _t48, Math.fma(eyeX, _t46, eyeY * _t47));
+        lookAt_rh_orthogonal_s73128447_c0(_dst, _t0, _t13, _r3, _t35, _r4, _t46, _t1, _r6, _r7, _t2, _r9, _r10);
+        lookAt_rh_orthogonal_s73128447_c1(_dst, _t0, _t14, _r3, _t36, _r4, _t47, _t1, _r6, _r7, _t2, _r9, _r10);
+        lookAt_rh_orthogonal_s73128447_c2(_dst, _t0, _t15, _r3, _t37, _r4, _t48, _t1, _r6, _r7, _t2, _r9, _r10);
+        lookAt_rh_orthogonal_s73128447_c3(_dst, _r3, _t50, _r4, _t52, _r0, _t27, _r5, _r6, _r7, _r1, _r8, _r9, _r10, _r2, _r11);
     }
 
 
@@ -11107,14 +12399,61 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 lookAt_rh_orthogonal(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = -this.m02;
-        float _t1 = -this.m12;
-        float _t2 = -this.m22;
+        float _r0 = this.m02;
+        float _r1 = this.m12;
+        float _r2 = this.m22;
+        float _r3 = this.m00;
+        float _r4 = this.m01;
+        float _r5 = this.m03;
+        float _r6 = this.m10;
+        float _r7 = this.m11;
+        float _r8 = this.m13;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
+        float _t0 = -_r0;
+        float _t1 = -_r1;
+        float _t2 = -_r2;
         float _t3 = centerZ - eyeZ;
         float _t4 = centerX - eyeX;
         float _t5 = centerY - eyeY;
         float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
         float _t9 = (1.0f / (float) Math.sqrt(_t8));
+        lookAt_rh_orthogonal_s73128447_tail(d, _t8, _t4, _t9, _t5, _t3, upY, upX, upZ, eyeZ, eyeX, eyeY, _t0, _r3, _r4, _r0, _r5, _t1, _r6, _r7, _r1, _r8, _t2, _r9, _r10, _r2, _r11);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+    /** Private column 0 of {@code lookAt_rh_general}: computes and stores it; reached only through it. */
+    private void lookAt_rh_general_s73128447_c0(Float3x4Impl _dst, float _t0, float _t13, float _r3, float _t35, float _r4, float _t46, float _t1, float _r6, float _r7, float _t2, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_t0, _t13, Math.fma(_r3, _t35, _r4 * _t46));
+        _dst.m10 = Math.fma(_t1, _t13, Math.fma(_r6, _t35, _r7 * _t46));
+        _dst.m20 = Math.fma(_t2, _t13, Math.fma(_r9, _t35, _r10 * _t46));
+    }
+
+    /** Private column 1 of {@code lookAt_rh_general}: computes and stores it; reached only through it. */
+    private void lookAt_rh_general_s73128447_c1(Float3x4Impl _dst, float _t0, float _t14, float _r3, float _t36, float _r4, float _t47, float _t1, float _r6, float _r7, float _t2, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_t0, _t14, Math.fma(_r3, _t36, _r4 * _t47));
+        _dst.m11 = Math.fma(_t1, _t14, Math.fma(_r6, _t36, _r7 * _t47));
+        _dst.m21 = Math.fma(_t2, _t14, Math.fma(_r9, _t36, _r10 * _t47));
+    }
+
+    /** Private column 2 of {@code lookAt_rh_general}: computes and stores it; reached only through it. */
+    private void lookAt_rh_general_s73128447_c2(Float3x4Impl _dst, float _t0, float _t15, float _r3, float _t37, float _r4, float _t48, float _t1, float _r6, float _r7, float _t2, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_t0, _t15, Math.fma(_r3, _t37, _r4 * _t48));
+        _dst.m12 = Math.fma(_t1, _t15, Math.fma(_r6, _t37, _r7 * _t48));
+        _dst.m22 = Math.fma(_t2, _t15, Math.fma(_r9, _t37, _r10 * _t48));
+    }
+
+    /** Private column 3 of {@code lookAt_rh_general}: computes and stores it; reached only through it. */
+    private void lookAt_rh_general_s73128447_c3(Float3x4Impl _dst, float _r3, float _t50, float _r4, float _t52, float _r0, float _t27, float _r5, float _r6, float _r7, float _r1, float _r8, float _r9, float _r10, float _r2, float _r11) {
+        _dst.m03 = Math.fma(-_r3, _t50, Math.fma(-_r4, _t52, Math.fma(_r0, _t27, _r5)));
+        _dst.m13 = Math.fma(-_r6, _t50, Math.fma(-_r7, _t52, Math.fma(_r1, _t27, _r8)));
+        _dst.m23 = Math.fma(-_r9, _t50, Math.fma(-_r10, _t52, Math.fma(_r2, _t27, _r11)));
+    }
+
+    /** Private tail of {@code lookAt_rh_general}; reached only through it. */
+    private void lookAt_rh_general_s73128447_tail(Float3x4Impl _dst, float _t8, float _t4, float _t9, float _t5, float _t3, float upY, float upX, float upZ, float eyeZ, float eyeX, float eyeY, float _t0, float _r3, float _r4, float _r0, float _r5, float _t1, float _r6, float _r7, float _r1, float _r8, float _t2, float _r9, float _r10, float _r2, float _r11) {
         float _t13, _t14, _t15;
         if (_t8 > 0.0f) {
             _t13 = _t4 * _t9;
@@ -11131,6 +12470,11 @@ public class Float3x4Impl implements Float3x4 {
         float _t27 = Math.fma(eyeZ, _t15, Math.fma(eyeX, _t13, eyeY * _t14));
         float _t30 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
         float _t31 = (1.0f / (float) Math.sqrt(_t30));
+        lookAt_rh_general_s73128447_tail2(_dst, _t30, _t26, _t31, _t25, _t24, _t15, _t14, _t13, eyeZ, eyeX, eyeY, _t0, _r3, _r4, _r0, _t27, _r5, _t1, _r6, _r7, _r1, _r8, _t2, _r9, _r10, _r2, _r11);
+    }
+
+    /** Private tail of {@code lookAt_rh_general}; reached only through it. */
+    private void lookAt_rh_general_s73128447_tail2(Float3x4Impl _dst, float _t30, float _t26, float _t31, float _t25, float _t24, float _t15, float _t14, float _t13, float eyeZ, float eyeX, float eyeY, float _t0, float _r3, float _r4, float _r0, float _t27, float _r5, float _t1, float _r6, float _r7, float _r1, float _r8, float _t2, float _r9, float _r10, float _r2, float _r11) {
         float _t35, _t36, _t37;
         if (_t30 > 0.0f) {
             _t35 = _t26 * _t31;
@@ -11146,29 +12490,10 @@ public class Float3x4Impl implements Float3x4 {
         float _t48 = Math.fma(_t14, _t35, -(_t13 * _t36));
         float _t50 = Math.fma(eyeZ, _t37, Math.fma(eyeX, _t35, eyeY * _t36));
         float _t52 = Math.fma(eyeZ, _t48, Math.fma(eyeX, _t46, eyeY * _t47));
-        float _buf0 = Math.fma(_t0, _t13, Math.fma(this.m00, _t35, this.m01 * _t46));
-        float _buf1 = Math.fma(_t0, _t14, Math.fma(this.m00, _t36, this.m01 * _t47));
-        float _buf2 = Math.fma(_t0, _t15, Math.fma(this.m00, _t37, this.m01 * _t48));
-        d.m03 = Math.fma(-this.m00, _t50, Math.fma(-this.m01, _t52, Math.fma(this.m02, _t27, this.m03)));
-        float _buf3 = Math.fma(_t1, _t13, Math.fma(this.m10, _t35, this.m11 * _t46));
-        float _buf4 = Math.fma(_t1, _t14, Math.fma(this.m10, _t36, this.m11 * _t47));
-        float _buf5 = Math.fma(_t1, _t15, Math.fma(this.m10, _t37, this.m11 * _t48));
-        d.m13 = Math.fma(-this.m10, _t50, Math.fma(-this.m11, _t52, Math.fma(this.m12, _t27, this.m13)));
-        float _buf6 = Math.fma(_t2, _t13, Math.fma(this.m20, _t35, this.m21 * _t46));
-        float _buf7 = Math.fma(_t2, _t14, Math.fma(this.m20, _t36, this.m21 * _t47));
-        float _buf8 = Math.fma(_t2, _t15, Math.fma(this.m20, _t37, this.m21 * _t48));
-        d.m23 = Math.fma(-this.m20, _t50, Math.fma(-this.m21, _t52, Math.fma(this.m22, _t27, this.m23)));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m10 = _buf3;
-        d.m11 = _buf4;
-        d.m12 = _buf5;
-        d.m20 = _buf6;
-        d.m21 = _buf7;
-        d.m22 = _buf8;
-        d.properties = Joml.BIT_ORTHOGONAL;
-        return d;
+        lookAt_rh_general_s73128447_c0(_dst, _t0, _t13, _r3, _t35, _r4, _t46, _t1, _r6, _r7, _t2, _r9, _r10);
+        lookAt_rh_general_s73128447_c1(_dst, _t0, _t14, _r3, _t36, _r4, _t47, _t1, _r6, _r7, _t2, _r9, _r10);
+        lookAt_rh_general_s73128447_c2(_dst, _t0, _t15, _r3, _t37, _r4, _t48, _t1, _r6, _r7, _t2, _r9, _r10);
+        lookAt_rh_general_s73128447_c3(_dst, _r3, _t50, _r4, _t52, _r0, _t27, _r5, _r6, _r7, _r1, _r8, _r9, _r10, _r2, _r11);
     }
 
 
@@ -11178,66 +12503,27 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 lookAt_rh_general(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = -this.m02;
-        float _t1 = -this.m12;
-        float _t2 = -this.m22;
+        float _r0 = this.m02;
+        float _r1 = this.m12;
+        float _r2 = this.m22;
+        float _r3 = this.m00;
+        float _r4 = this.m01;
+        float _r5 = this.m03;
+        float _r6 = this.m10;
+        float _r7 = this.m11;
+        float _r8 = this.m13;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
+        float _t0 = -_r0;
+        float _t1 = -_r1;
+        float _t2 = -_r2;
         float _t3 = centerZ - eyeZ;
         float _t4 = centerX - eyeX;
         float _t5 = centerY - eyeY;
         float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
         float _t9 = (1.0f / (float) Math.sqrt(_t8));
-        float _t13, _t14, _t15;
-        if (_t8 > 0.0f) {
-            _t13 = _t4 * _t9;
-            _t14 = _t5 * _t9;
-            _t15 = _t3 * _t9;
-        } else {
-            _t13 = 0.0f;
-            _t14 = 0.0f;
-            _t15 = 0.0f;
-        }
-        float _t24 = Math.fma(upY, _t13, -(upX * _t14));
-        float _t25 = Math.fma(upX, _t15, -(upZ * _t13));
-        float _t26 = Math.fma(upZ, _t14, -(upY * _t15));
-        float _t27 = Math.fma(eyeZ, _t15, Math.fma(eyeX, _t13, eyeY * _t14));
-        float _t30 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
-        float _t31 = (1.0f / (float) Math.sqrt(_t30));
-        float _t35, _t36, _t37;
-        if (_t30 > 0.0f) {
-            _t35 = _t26 * _t31;
-            _t36 = _t25 * _t31;
-            _t37 = _t24 * _t31;
-        } else {
-            _t35 = 0.0f;
-            _t36 = 0.0f;
-            _t37 = 0.0f;
-        }
-        float _t46 = Math.fma(_t15, _t36, -(_t14 * _t37));
-        float _t47 = Math.fma(_t13, _t37, -(_t15 * _t35));
-        float _t48 = Math.fma(_t14, _t35, -(_t13 * _t36));
-        float _t50 = Math.fma(eyeZ, _t37, Math.fma(eyeX, _t35, eyeY * _t36));
-        float _t52 = Math.fma(eyeZ, _t48, Math.fma(eyeX, _t46, eyeY * _t47));
-        float _buf0 = Math.fma(_t0, _t13, Math.fma(this.m00, _t35, this.m01 * _t46));
-        float _buf1 = Math.fma(_t0, _t14, Math.fma(this.m00, _t36, this.m01 * _t47));
-        float _buf2 = Math.fma(_t0, _t15, Math.fma(this.m00, _t37, this.m01 * _t48));
-        d.m03 = Math.fma(-this.m00, _t50, Math.fma(-this.m01, _t52, Math.fma(this.m02, _t27, this.m03)));
-        float _buf3 = Math.fma(_t1, _t13, Math.fma(this.m10, _t35, this.m11 * _t46));
-        float _buf4 = Math.fma(_t1, _t14, Math.fma(this.m10, _t36, this.m11 * _t47));
-        float _buf5 = Math.fma(_t1, _t15, Math.fma(this.m10, _t37, this.m11 * _t48));
-        d.m13 = Math.fma(-this.m10, _t50, Math.fma(-this.m11, _t52, Math.fma(this.m12, _t27, this.m13)));
-        float _buf6 = Math.fma(_t2, _t13, Math.fma(this.m20, _t35, this.m21 * _t46));
-        float _buf7 = Math.fma(_t2, _t14, Math.fma(this.m20, _t36, this.m21 * _t47));
-        float _buf8 = Math.fma(_t2, _t15, Math.fma(this.m20, _t37, this.m21 * _t48));
-        d.m23 = Math.fma(-this.m20, _t50, Math.fma(-this.m21, _t52, Math.fma(this.m22, _t27, this.m23)));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m10 = _buf3;
-        d.m11 = _buf4;
-        d.m12 = _buf5;
-        d.m20 = _buf6;
-        d.m21 = _buf7;
-        d.m22 = _buf8;
+        lookAt_rh_general_s73128447_tail(d, _t8, _t4, _t9, _t5, _t3, upY, upX, upZ, eyeZ, eyeX, eyeY, _t0, _r3, _r4, _r0, _r5, _t1, _r6, _r7, _r1, _r8, _t2, _r9, _r10, _r2, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -11269,21 +12555,36 @@ public class Float3x4Impl implements Float3x4 {
         return lookAt_rh_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
     }
 
+    /** Private column 0 of {@code lookAt_rh}: computes and stores it; reached only through it. */
+    private void lookAt_rh_s3904e7cc_c0(Double3x4Impl _dst, float _t0, float _t13, float _r3, float _t35, float _r4, float _t46, float _t1, float _r6, float _r7, float _t2, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_t0, _t13, Math.fma(_r3, _t35, _r4 * _t46));
+        _dst.m10 = Math.fma(_t1, _t13, Math.fma(_r6, _t35, _r7 * _t46));
+        _dst.m20 = Math.fma(_t2, _t13, Math.fma(_r9, _t35, _r10 * _t46));
+    }
 
-    /**
-     * Private body of {@code lookAt} for {@code Handedness.RIGHT_HANDED}; reached only through the
-     * public {@code lookAt} dispatcher.
-     */
-    private Double3x4 lookAt_rh(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Double3x4 dest) {
-        Double3x4Impl d = (Double3x4Impl) dest;
-        float _t0 = -this.m02;
-        float _t1 = -this.m12;
-        float _t2 = -this.m22;
-        float _t3 = centerZ - eyeZ;
-        float _t4 = centerX - eyeX;
-        float _t5 = centerY - eyeY;
-        float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
-        float _t9 = (1.0f / (float) Math.sqrt(_t8));
+    /** Private column 1 of {@code lookAt_rh}: computes and stores it; reached only through it. */
+    private void lookAt_rh_s3904e7cc_c1(Double3x4Impl _dst, float _t0, float _t14, float _r3, float _t36, float _r4, float _t47, float _t1, float _r6, float _r7, float _t2, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_t0, _t14, Math.fma(_r3, _t36, _r4 * _t47));
+        _dst.m11 = Math.fma(_t1, _t14, Math.fma(_r6, _t36, _r7 * _t47));
+        _dst.m21 = Math.fma(_t2, _t14, Math.fma(_r9, _t36, _r10 * _t47));
+    }
+
+    /** Private column 2 of {@code lookAt_rh}: computes and stores it; reached only through it. */
+    private void lookAt_rh_s3904e7cc_c2(Double3x4Impl _dst, float _t0, float _t15, float _r3, float _t37, float _r4, float _t48, float _t1, float _r6, float _r7, float _t2, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_t0, _t15, Math.fma(_r3, _t37, _r4 * _t48));
+        _dst.m12 = Math.fma(_t1, _t15, Math.fma(_r6, _t37, _r7 * _t48));
+        _dst.m22 = Math.fma(_t2, _t15, Math.fma(_r9, _t37, _r10 * _t48));
+    }
+
+    /** Private column 3 of {@code lookAt_rh}: computes and stores it; reached only through it. */
+    private void lookAt_rh_s3904e7cc_c3(Double3x4Impl _dst, float _r3, float _t50, float _r4, float _t52, float _r0, float _t27, float _r5, float _r6, float _r7, float _r1, float _r8, float _r9, float _r10, float _r2, float _r11) {
+        _dst.m03 = Math.fma(-_r3, _t50, Math.fma(-_r4, _t52, Math.fma(_r0, _t27, _r5)));
+        _dst.m13 = Math.fma(-_r6, _t50, Math.fma(-_r7, _t52, Math.fma(_r1, _t27, _r8)));
+        _dst.m23 = Math.fma(-_r9, _t50, Math.fma(-_r10, _t52, Math.fma(_r2, _t27, _r11)));
+    }
+
+    /** Private tail of {@code lookAt_rh}; reached only through it. */
+    private void lookAt_rh_s3904e7cc_tail(Double3x4Impl _dst, float _t8, float _t4, float _t9, float _t5, float _t3, float upY, float upX, float upZ, float eyeZ, float eyeX, float eyeY, float _t0, float _r3, float _r4, float _r0, float _r5, float _t1, float _r6, float _r7, float _r1, float _r8, float _t2, float _r9, float _r10, float _r2, float _r11) {
         float _t13, _t14, _t15;
         if (_t8 > 0.0f) {
             _t13 = _t4 * _t9;
@@ -11300,6 +12601,11 @@ public class Float3x4Impl implements Float3x4 {
         float _t27 = Math.fma(eyeZ, _t15, Math.fma(eyeX, _t13, eyeY * _t14));
         float _t30 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
         float _t31 = (1.0f / (float) Math.sqrt(_t30));
+        lookAt_rh_s3904e7cc_tail2(_dst, _t30, _t26, _t31, _t25, _t24, _t15, _t14, _t13, eyeZ, eyeX, eyeY, _t0, _r3, _r4, _r0, _t27, _r5, _t1, _r6, _r7, _r1, _r8, _t2, _r9, _r10, _r2, _r11);
+    }
+
+    /** Private tail of {@code lookAt_rh}; reached only through it. */
+    private void lookAt_rh_s3904e7cc_tail2(Double3x4Impl _dst, float _t30, float _t26, float _t31, float _t25, float _t24, float _t15, float _t14, float _t13, float eyeZ, float eyeX, float eyeY, float _t0, float _r3, float _r4, float _r0, float _t27, float _r5, float _t1, float _r6, float _r7, float _r1, float _r8, float _t2, float _r9, float _r10, float _r2, float _r11) {
         float _t35, _t36, _t37;
         if (_t30 > 0.0f) {
             _t35 = _t26 * _t31;
@@ -11315,27 +12621,40 @@ public class Float3x4Impl implements Float3x4 {
         float _t48 = Math.fma(_t14, _t35, -(_t13 * _t36));
         float _t50 = Math.fma(eyeZ, _t37, Math.fma(eyeX, _t35, eyeY * _t36));
         float _t52 = Math.fma(eyeZ, _t48, Math.fma(eyeX, _t46, eyeY * _t47));
-        float _buf0 = Math.fma(_t0, _t13, Math.fma(this.m00, _t35, this.m01 * _t46));
-        float _buf1 = Math.fma(_t0, _t14, Math.fma(this.m00, _t36, this.m01 * _t47));
-        float _buf2 = Math.fma(_t0, _t15, Math.fma(this.m00, _t37, this.m01 * _t48));
-        d.m03 = Math.fma(-this.m00, _t50, Math.fma(-this.m01, _t52, Math.fma(this.m02, _t27, this.m03)));
-        float _buf3 = Math.fma(_t1, _t13, Math.fma(this.m10, _t35, this.m11 * _t46));
-        float _buf4 = Math.fma(_t1, _t14, Math.fma(this.m10, _t36, this.m11 * _t47));
-        float _buf5 = Math.fma(_t1, _t15, Math.fma(this.m10, _t37, this.m11 * _t48));
-        d.m13 = Math.fma(-this.m10, _t50, Math.fma(-this.m11, _t52, Math.fma(this.m12, _t27, this.m13)));
-        float _buf6 = Math.fma(_t2, _t13, Math.fma(this.m20, _t35, this.m21 * _t46));
-        float _buf7 = Math.fma(_t2, _t14, Math.fma(this.m20, _t36, this.m21 * _t47));
-        float _buf8 = Math.fma(_t2, _t15, Math.fma(this.m20, _t37, this.m21 * _t48));
-        d.m23 = Math.fma(-this.m20, _t50, Math.fma(-this.m21, _t52, Math.fma(this.m22, _t27, this.m23)));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m10 = _buf3;
-        d.m11 = _buf4;
-        d.m12 = _buf5;
-        d.m20 = _buf6;
-        d.m21 = _buf7;
-        d.m22 = _buf8;
+        lookAt_rh_s3904e7cc_c0(_dst, _t0, _t13, _r3, _t35, _r4, _t46, _t1, _r6, _r7, _t2, _r9, _r10);
+        lookAt_rh_s3904e7cc_c1(_dst, _t0, _t14, _r3, _t36, _r4, _t47, _t1, _r6, _r7, _t2, _r9, _r10);
+        lookAt_rh_s3904e7cc_c2(_dst, _t0, _t15, _r3, _t37, _r4, _t48, _t1, _r6, _r7, _t2, _r9, _r10);
+        lookAt_rh_s3904e7cc_c3(_dst, _r3, _t50, _r4, _t52, _r0, _t27, _r5, _r6, _r7, _r1, _r8, _r9, _r10, _r2, _r11);
+    }
+
+
+    /**
+     * Private body of {@code lookAt} for {@code Handedness.RIGHT_HANDED}; reached only through the
+     * public {@code lookAt} dispatcher.
+     */
+    private Double3x4 lookAt_rh(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Double3x4 dest) {
+        Double3x4Impl d = (Double3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m12;
+        float _r2 = this.m22;
+        float _r3 = this.m00;
+        float _r4 = this.m01;
+        float _r5 = this.m03;
+        float _r6 = this.m10;
+        float _r7 = this.m11;
+        float _r8 = this.m13;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
+        float _t0 = -_r0;
+        float _t1 = -_r1;
+        float _t2 = -_r2;
+        float _t3 = centerZ - eyeZ;
+        float _t4 = centerX - eyeX;
+        float _t5 = centerY - eyeY;
+        float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        float _t9 = (1.0f / (float) Math.sqrt(_t8));
+        lookAt_rh_s3904e7cc_tail(d, _t8, _t4, _t9, _t5, _t3, upY, upX, upZ, eyeZ, eyeX, eyeY, _t0, _r3, _r4, _r0, _r5, _t1, _r6, _r7, _r1, _r8, _t2, _r9, _r10, _r2, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -22594,6 +23913,34 @@ public class Float3x4Impl implements Float3x4 {
         return d;
     }
 
+    /** Private column 0 of {@code preRotateAround_translation}: computes and stores it; reached only through it. */
+    private void preRotateAround_translation_s22f129e0_c0(Float3x4Impl _dst, float _t22, float _t17, float _t21) {
+        _dst.m00 = _t22;
+        _dst.m10 = _t17;
+        _dst.m20 = _t21;
+    }
+
+    /** Private column 1 of {@code preRotateAround_translation}: computes and stores it; reached only through it. */
+    private void preRotateAround_translation_s22f129e0_c1(Float3x4Impl _dst, float _t19, float _t23, float _t18) {
+        _dst.m01 = _t19;
+        _dst.m11 = _t23;
+        _dst.m21 = _t18;
+    }
+
+    /** Private column 2 of {@code preRotateAround_translation}: computes and stores it; reached only through it. */
+    private void preRotateAround_translation_s22f129e0_c2(Float3x4Impl _dst, float _t16, float _t20, float _t24) {
+        _dst.m02 = _t16;
+        _dst.m12 = _t20;
+        _dst.m22 = _t24;
+    }
+
+    /** Private column 3 of {@code preRotateAround_translation}: computes and stores it; reached only through it. */
+    private void preRotateAround_translation_s22f129e0_c3(Float3x4Impl _dst, float _r0, float _t16, float _r1, float _t22, float _r2, float _t19, float _t2, float pivotX, float rotY, float _t4, float _t9, float pivotY, float _t20, float _t17, float _t23, float rotX, float _t6, float _t24, float _t21, float _t18, float pivotZ) {
+        _dst.m03 = Math.fma(_r0, _t16, Math.fma(_r1, _t22, _r2 * _t19)) + Math.fma(_t2, _t16, Math.fma(pivotX, Math.fma(rotY, _t4, _t9), -(pivotY * _t19)));
+        _dst.m13 = Math.fma(_r0, _t20, Math.fma(_r1, _t17, _r2 * _t23)) + Math.fma(_t2, _t20, Math.fma(pivotY, Math.fma(rotX, _t6, _t9), -(pivotX * _t17)));
+        _dst.m23 = Math.fma(_r0, _t24, Math.fma(_r1, _t21, _r2 * _t18)) + Math.fma(-pivotY, _t18, Math.fma(pivotZ, Math.fma(rotX, _t6, rotY * _t4), -(pivotX * _t21)));
+    }
+
 
     /**
      * Private body of {@code preRotateAround}, specialized by runtime matrix properties; reached
@@ -22601,6 +23948,9 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateAround_translation(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m23;
+        float _r1 = this.m03;
+        float _r2 = this.m13;
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
@@ -22621,22 +23971,56 @@ public class Float3x4Impl implements Float3x4 {
         float _t22 = Math.fma(_t0, _t4, _t14);
         float _t23 = Math.fma(_t3, _t6, _t14);
         float _t24 = Math.fma(_t3, _t6, Math.fma(_t0, _t4, 1.0f));
-        d.m00 = _t22;
-        d.m01 = _t19;
-        d.m02 = _t16;
-        float _buf0 = Math.fma(this.m23, _t16, Math.fma(this.m03, _t22, this.m13 * _t19)) + Math.fma(_t2, _t16, Math.fma(pivotX, Math.fma(rotY, _t4, _t9), -(pivotY * _t19)));
-        d.m10 = _t17;
-        d.m11 = _t23;
-        d.m12 = _t20;
-        float _buf1 = Math.fma(this.m23, _t20, Math.fma(this.m03, _t17, this.m13 * _t23)) + Math.fma(_t2, _t20, Math.fma(pivotY, Math.fma(rotX, _t6, _t9), -(pivotX * _t17)));
-        d.m20 = _t21;
-        d.m21 = _t18;
-        d.m22 = _t24;
-        d.m23 = Math.fma(this.m23, _t24, Math.fma(this.m03, _t21, this.m13 * _t18)) + Math.fma(-pivotY, _t18, Math.fma(pivotZ, Math.fma(rotX, _t6, rotY * _t4), -(pivotX * _t21)));
-        d.m03 = _buf0;
-        d.m13 = _buf1;
+        preRotateAround_translation_s22f129e0_c0(d, _t22, _t17, _t21);
+        preRotateAround_translation_s22f129e0_c1(d, _t19, _t23, _t18);
+        preRotateAround_translation_s22f129e0_c2(d, _t16, _t20, _t24);
+        preRotateAround_translation_s22f129e0_c3(d, _r0, _t16, _r1, _t22, _r2, _t19, _t2, pivotX, rotY, _t4, _t9, pivotY, _t20, _t17, _t23, rotX, _t6, _t24, _t21, _t18, pivotZ);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
+    }
+
+    /** Private column 0 of {@code preRotateAround_orthogonal}: computes and stores it; reached only through it. */
+    private void preRotateAround_orthogonal_s22f129e0_c0(Float3x4Impl _dst, float _r0, float _t16, float _r1, float _t22, float _r2, float _t19, float _t20, float _t17, float _t23, float _t24, float _t21, float _t18) {
+        _dst.m00 = Math.fma(_r0, _t16, Math.fma(_r1, _t22, _r2 * _t19));
+        _dst.m10 = Math.fma(_r0, _t20, Math.fma(_r1, _t17, _r2 * _t23));
+        _dst.m20 = Math.fma(_r0, _t24, Math.fma(_r1, _t21, _r2 * _t18));
+    }
+
+    /** Private column 1 of {@code preRotateAround_orthogonal}: computes and stores it; reached only through it. */
+    private void preRotateAround_orthogonal_s22f129e0_c1(Float3x4Impl _dst, float _r3, float _t16, float _r4, float _t22, float _r5, float _t19, float _t20, float _t17, float _t23, float _t24, float _t21, float _t18) {
+        _dst.m01 = Math.fma(_r3, _t16, Math.fma(_r4, _t22, _r5 * _t19));
+        _dst.m11 = Math.fma(_r3, _t20, Math.fma(_r4, _t17, _r5 * _t23));
+        _dst.m21 = Math.fma(_r3, _t24, Math.fma(_r4, _t21, _r5 * _t18));
+    }
+
+    /** Private column 2 of {@code preRotateAround_orthogonal}: computes and stores it; reached only through it. */
+    private void preRotateAround_orthogonal_s22f129e0_c2(Float3x4Impl _dst, float _r6, float _t16, float _r7, float _t22, float _r8, float _t19, float _t20, float _t17, float _t23, float _t24, float _t21, float _t18) {
+        _dst.m02 = Math.fma(_r6, _t16, Math.fma(_r7, _t22, _r8 * _t19));
+        _dst.m12 = Math.fma(_r6, _t20, Math.fma(_r7, _t17, _r8 * _t23));
+        _dst.m22 = Math.fma(_r6, _t24, Math.fma(_r7, _t21, _r8 * _t18));
+    }
+
+    /** Private column 3 of {@code preRotateAround_orthogonal}: computes and stores it; reached only through it. */
+    private void preRotateAround_orthogonal_s22f129e0_c3(Float3x4Impl _dst, float _r9, float _t16, float _r10, float _t22, float _r11, float _t19, float _t2, float pivotX, float rotY, float _t5, float _t9, float pivotY, float _t20, float _t17, float _t23, float rotX, float _t4, float _t24, float _t21, float _t18, float pivotZ) {
+        _dst.m03 = Math.fma(_r9, _t16, Math.fma(_r10, _t22, _r11 * _t19)) + Math.fma(_t2, _t16, Math.fma(pivotX, Math.fma(rotY, _t5, _t9), -(pivotY * _t19)));
+        _dst.m13 = Math.fma(_r9, _t20, Math.fma(_r10, _t17, _r11 * _t23)) + Math.fma(_t2, _t20, Math.fma(pivotY, Math.fma(rotX, _t4, _t9), -(pivotX * _t17)));
+        _dst.m23 = Math.fma(_r9, _t24, Math.fma(_r10, _t21, _r11 * _t18)) + Math.fma(-pivotY, _t18, Math.fma(pivotZ, Math.fma(rotX, _t4, rotY * _t5), -(pivotX * _t21)));
+    }
+
+    /** Private tail of {@code preRotateAround_orthogonal}; reached only through it. */
+    private void preRotateAround_orthogonal_s22f129e0_tail(Float3x4Impl _dst, float rotY, float _t4, float _t8, float rotZ, float _t5, float _t10, float _t7, float _t0, float _t14, float _t3, float _r0, float _t16, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t2, float pivotX, float _t9, float pivotY, float rotX, float pivotZ) {
+        float _t17 = Math.fma(rotY, _t4, _t8);
+        float _t18 = Math.fma(rotZ, _t5, _t10);
+        float _t19 = Math.fma(rotY, _t4, -_t8);
+        float _t20 = Math.fma(rotZ, _t5, -_t10);
+        float _t21 = Math.fma(rotZ, _t4, -_t7);
+        float _t22 = Math.fma(_t0, _t5, _t14);
+        float _t23 = Math.fma(_t3, _t4, _t14);
+        float _t24 = Math.fma(_t3, _t4, Math.fma(_t0, _t5, 1.0f));
+        preRotateAround_orthogonal_s22f129e0_c0(_dst, _r0, _t16, _r1, _t22, _r2, _t19, _t20, _t17, _t23, _t24, _t21, _t18);
+        preRotateAround_orthogonal_s22f129e0_c1(_dst, _r3, _t16, _r4, _t22, _r5, _t19, _t20, _t17, _t23, _t24, _t21, _t18);
+        preRotateAround_orthogonal_s22f129e0_c2(_dst, _r6, _t16, _r7, _t22, _r8, _t19, _t20, _t17, _t23, _t24, _t21, _t18);
+        preRotateAround_orthogonal_s22f129e0_c3(_dst, _r9, _t16, _r10, _t22, _r11, _t19, _t2, pivotX, rotY, _t5, _t9, pivotY, _t20, _t17, _t23, rotX, _t4, _t24, _t21, _t18, pivotZ);
     }
 
 
@@ -22646,6 +24030,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateAround_orthogonal(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m20;
+        float _r1 = this.m00;
+        float _r2 = this.m10;
+        float _r3 = this.m21;
+        float _r4 = this.m01;
+        float _r5 = this.m11;
+        float _r6 = this.m22;
+        float _r7 = this.m02;
+        float _r8 = this.m12;
+        float _r9 = this.m23;
+        float _r10 = this.m03;
+        float _r11 = this.m13;
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
@@ -22658,6 +24054,41 @@ public class Float3x4Impl implements Float3x4 {
         float _t10 = rotW * _t4;
         float _t14 = Math.fma(-rotZ, _t6, 1.0f);
         float _t16 = Math.fma(rotZ, _t4, _t7);
+        preRotateAround_orthogonal_s22f129e0_tail(d, rotY, _t4, _t8, rotZ, _t5, _t10, _t7, _t0, _t14, _t3, _r0, _t16, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t2, pivotX, _t9, pivotY, rotX, pivotZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+    /** Private column 0 of {@code preRotateAround_general}: computes and stores it; reached only through it. */
+    private void preRotateAround_general_s22f129e0_c0(Float3x4Impl _dst, float _r0, float _t16, float _r1, float _t22, float _r2, float _t19, float _t20, float _t17, float _t23, float _t24, float _t21, float _t18) {
+        _dst.m00 = Math.fma(_r0, _t16, Math.fma(_r1, _t22, _r2 * _t19));
+        _dst.m10 = Math.fma(_r0, _t20, Math.fma(_r1, _t17, _r2 * _t23));
+        _dst.m20 = Math.fma(_r0, _t24, Math.fma(_r1, _t21, _r2 * _t18));
+    }
+
+    /** Private column 1 of {@code preRotateAround_general}: computes and stores it; reached only through it. */
+    private void preRotateAround_general_s22f129e0_c1(Float3x4Impl _dst, float _r3, float _t16, float _r4, float _t22, float _r5, float _t19, float _t20, float _t17, float _t23, float _t24, float _t21, float _t18) {
+        _dst.m01 = Math.fma(_r3, _t16, Math.fma(_r4, _t22, _r5 * _t19));
+        _dst.m11 = Math.fma(_r3, _t20, Math.fma(_r4, _t17, _r5 * _t23));
+        _dst.m21 = Math.fma(_r3, _t24, Math.fma(_r4, _t21, _r5 * _t18));
+    }
+
+    /** Private column 2 of {@code preRotateAround_general}: computes and stores it; reached only through it. */
+    private void preRotateAround_general_s22f129e0_c2(Float3x4Impl _dst, float _r6, float _t16, float _r7, float _t22, float _r8, float _t19, float _t20, float _t17, float _t23, float _t24, float _t21, float _t18) {
+        _dst.m02 = Math.fma(_r6, _t16, Math.fma(_r7, _t22, _r8 * _t19));
+        _dst.m12 = Math.fma(_r6, _t20, Math.fma(_r7, _t17, _r8 * _t23));
+        _dst.m22 = Math.fma(_r6, _t24, Math.fma(_r7, _t21, _r8 * _t18));
+    }
+
+    /** Private column 3 of {@code preRotateAround_general}: computes and stores it; reached only through it. */
+    private void preRotateAround_general_s22f129e0_c3(Float3x4Impl _dst, float _r9, float _t16, float _r10, float _t22, float _r11, float _t19, float _t2, float pivotX, float rotY, float _t5, float _t9, float pivotY, float _t20, float _t17, float _t23, float rotX, float _t4, float _t24, float _t21, float _t18, float pivotZ) {
+        _dst.m03 = Math.fma(_r9, _t16, Math.fma(_r10, _t22, _r11 * _t19)) + Math.fma(_t2, _t16, Math.fma(pivotX, Math.fma(rotY, _t5, _t9), -(pivotY * _t19)));
+        _dst.m13 = Math.fma(_r9, _t20, Math.fma(_r10, _t17, _r11 * _t23)) + Math.fma(_t2, _t20, Math.fma(pivotY, Math.fma(rotX, _t4, _t9), -(pivotX * _t17)));
+        _dst.m23 = Math.fma(_r9, _t24, Math.fma(_r10, _t21, _r11 * _t18)) + Math.fma(-pivotY, _t18, Math.fma(pivotZ, Math.fma(rotX, _t4, rotY * _t5), -(pivotX * _t21)));
+    }
+
+    /** Private tail of {@code preRotateAround_general}; reached only through it. */
+    private void preRotateAround_general_s22f129e0_tail(Float3x4Impl _dst, float rotY, float _t4, float _t8, float rotZ, float _t5, float _t10, float _t7, float _t0, float _t14, float _t3, float _r0, float _t16, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t2, float pivotX, float _t9, float pivotY, float rotX, float pivotZ) {
         float _t17 = Math.fma(rotY, _t4, _t8);
         float _t18 = Math.fma(rotZ, _t5, _t10);
         float _t19 = Math.fma(rotY, _t4, -_t8);
@@ -22666,28 +24097,10 @@ public class Float3x4Impl implements Float3x4 {
         float _t22 = Math.fma(_t0, _t5, _t14);
         float _t23 = Math.fma(_t3, _t4, _t14);
         float _t24 = Math.fma(_t3, _t4, Math.fma(_t0, _t5, 1.0f));
-        float _buf0 = Math.fma(this.m20, _t16, Math.fma(this.m00, _t22, this.m10 * _t19));
-        float _buf1 = Math.fma(this.m21, _t16, Math.fma(this.m01, _t22, this.m11 * _t19));
-        float _buf2 = Math.fma(this.m22, _t16, Math.fma(this.m02, _t22, this.m12 * _t19));
-        float _buf3 = Math.fma(this.m23, _t16, Math.fma(this.m03, _t22, this.m13 * _t19)) + Math.fma(_t2, _t16, Math.fma(pivotX, Math.fma(rotY, _t5, _t9), -(pivotY * _t19)));
-        float _buf4 = Math.fma(this.m20, _t20, Math.fma(this.m00, _t17, this.m10 * _t23));
-        float _buf5 = Math.fma(this.m21, _t20, Math.fma(this.m01, _t17, this.m11 * _t23));
-        float _buf6 = Math.fma(this.m22, _t20, Math.fma(this.m02, _t17, this.m12 * _t23));
-        float _buf7 = Math.fma(this.m23, _t20, Math.fma(this.m03, _t17, this.m13 * _t23)) + Math.fma(_t2, _t20, Math.fma(pivotY, Math.fma(rotX, _t4, _t9), -(pivotX * _t17)));
-        d.m20 = Math.fma(this.m20, _t24, Math.fma(this.m00, _t21, this.m10 * _t18));
-        d.m21 = Math.fma(this.m21, _t24, Math.fma(this.m01, _t21, this.m11 * _t18));
-        d.m22 = Math.fma(this.m22, _t24, Math.fma(this.m02, _t21, this.m12 * _t18));
-        d.m23 = Math.fma(this.m23, _t24, Math.fma(this.m03, _t21, this.m13 * _t18)) + Math.fma(-pivotY, _t18, Math.fma(pivotZ, Math.fma(rotX, _t4, rotY * _t5), -(pivotX * _t21)));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m13 = _buf7;
-        d.properties = Joml.BIT_ORTHOGONAL;
-        return d;
+        preRotateAround_general_s22f129e0_c0(_dst, _r0, _t16, _r1, _t22, _r2, _t19, _t20, _t17, _t23, _t24, _t21, _t18);
+        preRotateAround_general_s22f129e0_c1(_dst, _r3, _t16, _r4, _t22, _r5, _t19, _t20, _t17, _t23, _t24, _t21, _t18);
+        preRotateAround_general_s22f129e0_c2(_dst, _r6, _t16, _r7, _t22, _r8, _t19, _t20, _t17, _t23, _t24, _t21, _t18);
+        preRotateAround_general_s22f129e0_c3(_dst, _r9, _t16, _r10, _t22, _r11, _t19, _t2, pivotX, rotY, _t5, _t9, pivotY, _t20, _t17, _t23, rotX, _t4, _t24, _t21, _t18, pivotZ);
     }
 
 
@@ -22697,6 +24110,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateAround_general(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m20;
+        float _r1 = this.m00;
+        float _r2 = this.m10;
+        float _r3 = this.m21;
+        float _r4 = this.m01;
+        float _r5 = this.m11;
+        float _r6 = this.m22;
+        float _r7 = this.m02;
+        float _r8 = this.m12;
+        float _r9 = this.m23;
+        float _r10 = this.m03;
+        float _r11 = this.m13;
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
@@ -22709,34 +24134,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t10 = rotW * _t4;
         float _t14 = Math.fma(-rotZ, _t6, 1.0f);
         float _t16 = Math.fma(rotZ, _t4, _t7);
-        float _t17 = Math.fma(rotY, _t4, _t8);
-        float _t18 = Math.fma(rotZ, _t5, _t10);
-        float _t19 = Math.fma(rotY, _t4, -_t8);
-        float _t20 = Math.fma(rotZ, _t5, -_t10);
-        float _t21 = Math.fma(rotZ, _t4, -_t7);
-        float _t22 = Math.fma(_t0, _t5, _t14);
-        float _t23 = Math.fma(_t3, _t4, _t14);
-        float _t24 = Math.fma(_t3, _t4, Math.fma(_t0, _t5, 1.0f));
-        float _buf0 = Math.fma(this.m20, _t16, Math.fma(this.m00, _t22, this.m10 * _t19));
-        float _buf1 = Math.fma(this.m21, _t16, Math.fma(this.m01, _t22, this.m11 * _t19));
-        float _buf2 = Math.fma(this.m22, _t16, Math.fma(this.m02, _t22, this.m12 * _t19));
-        float _buf3 = Math.fma(this.m23, _t16, Math.fma(this.m03, _t22, this.m13 * _t19)) + Math.fma(_t2, _t16, Math.fma(pivotX, Math.fma(rotY, _t5, _t9), -(pivotY * _t19)));
-        float _buf4 = Math.fma(this.m20, _t20, Math.fma(this.m00, _t17, this.m10 * _t23));
-        float _buf5 = Math.fma(this.m21, _t20, Math.fma(this.m01, _t17, this.m11 * _t23));
-        float _buf6 = Math.fma(this.m22, _t20, Math.fma(this.m02, _t17, this.m12 * _t23));
-        float _buf7 = Math.fma(this.m23, _t20, Math.fma(this.m03, _t17, this.m13 * _t23)) + Math.fma(_t2, _t20, Math.fma(pivotY, Math.fma(rotX, _t4, _t9), -(pivotX * _t17)));
-        d.m20 = Math.fma(this.m20, _t24, Math.fma(this.m00, _t21, this.m10 * _t18));
-        d.m21 = Math.fma(this.m21, _t24, Math.fma(this.m01, _t21, this.m11 * _t18));
-        d.m22 = Math.fma(this.m22, _t24, Math.fma(this.m02, _t21, this.m12 * _t18));
-        d.m23 = Math.fma(this.m23, _t24, Math.fma(this.m03, _t21, this.m13 * _t18)) + Math.fma(-pivotY, _t18, Math.fma(pivotZ, Math.fma(rotX, _t4, rotY * _t5), -(pivotX * _t21)));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m13 = _buf7;
+        preRotateAround_general_s22f129e0_tail(d, rotY, _t4, _t8, rotZ, _t5, _t10, _t7, _t0, _t14, _t3, _r0, _t16, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t2, pivotX, _t9, pivotY, rotX, pivotZ);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -22812,6 +24210,50 @@ public class Float3x4Impl implements Float3x4 {
         return preRotateAround_general(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, this);
     }
 
+    /** Private column 0 of {@code preRotateAround}: computes and stores it; reached only through it. */
+    private void preRotateAround_s4faf553_c0(Double3x4Impl _dst, float _r0, float _t16, float _r1, float _t22, float _r2, float _t19, float _t20, float _t17, float _t23, float _t24, float _t21, float _t18) {
+        _dst.m00 = Math.fma(_r0, _t16, Math.fma(_r1, _t22, _r2 * _t19));
+        _dst.m10 = Math.fma(_r0, _t20, Math.fma(_r1, _t17, _r2 * _t23));
+        _dst.m20 = Math.fma(_r0, _t24, Math.fma(_r1, _t21, _r2 * _t18));
+    }
+
+    /** Private column 1 of {@code preRotateAround}: computes and stores it; reached only through it. */
+    private void preRotateAround_s4faf553_c1(Double3x4Impl _dst, float _r3, float _t16, float _r4, float _t22, float _r5, float _t19, float _t20, float _t17, float _t23, float _t24, float _t21, float _t18) {
+        _dst.m01 = Math.fma(_r3, _t16, Math.fma(_r4, _t22, _r5 * _t19));
+        _dst.m11 = Math.fma(_r3, _t20, Math.fma(_r4, _t17, _r5 * _t23));
+        _dst.m21 = Math.fma(_r3, _t24, Math.fma(_r4, _t21, _r5 * _t18));
+    }
+
+    /** Private column 2 of {@code preRotateAround}: computes and stores it; reached only through it. */
+    private void preRotateAround_s4faf553_c2(Double3x4Impl _dst, float _r6, float _t16, float _r7, float _t22, float _r8, float _t19, float _t20, float _t17, float _t23, float _t24, float _t21, float _t18) {
+        _dst.m02 = Math.fma(_r6, _t16, Math.fma(_r7, _t22, _r8 * _t19));
+        _dst.m12 = Math.fma(_r6, _t20, Math.fma(_r7, _t17, _r8 * _t23));
+        _dst.m22 = Math.fma(_r6, _t24, Math.fma(_r7, _t21, _r8 * _t18));
+    }
+
+    /** Private column 3 of {@code preRotateAround}: computes and stores it; reached only through it. */
+    private void preRotateAround_s4faf553_c3(Double3x4Impl _dst, float _r9, float _t16, float _r10, float _t22, float _r11, float _t19, float _t2, float pivotX, float rotY, float _t5, float _t9, float pivotY, float _t20, float _t17, float _t23, float rotX, float _t4, float _t24, float _t21, float _t18, float pivotZ) {
+        _dst.m03 = Math.fma(_r9, _t16, Math.fma(_r10, _t22, _r11 * _t19)) + Math.fma(_t2, _t16, Math.fma(pivotX, Math.fma(rotY, _t5, _t9), -(pivotY * _t19)));
+        _dst.m13 = Math.fma(_r9, _t20, Math.fma(_r10, _t17, _r11 * _t23)) + Math.fma(_t2, _t20, Math.fma(pivotY, Math.fma(rotX, _t4, _t9), -(pivotX * _t17)));
+        _dst.m23 = Math.fma(_r9, _t24, Math.fma(_r10, _t21, _r11 * _t18)) + Math.fma(-pivotY, _t18, Math.fma(pivotZ, Math.fma(rotX, _t4, rotY * _t5), -(pivotX * _t21)));
+    }
+
+    /** Private tail of {@code preRotateAround}; reached only through it. */
+    private void preRotateAround_s4faf553_tail(Double3x4Impl _dst, float rotY, float _t4, float _t8, float rotZ, float _t5, float _t10, float _t7, float _t0, float _t14, float _t3, float _r0, float _t16, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t2, float pivotX, float _t9, float pivotY, float rotX, float pivotZ) {
+        float _t17 = Math.fma(rotY, _t4, _t8);
+        float _t18 = Math.fma(rotZ, _t5, _t10);
+        float _t19 = Math.fma(rotY, _t4, -_t8);
+        float _t20 = Math.fma(rotZ, _t5, -_t10);
+        float _t21 = Math.fma(rotZ, _t4, -_t7);
+        float _t22 = Math.fma(_t0, _t5, _t14);
+        float _t23 = Math.fma(_t3, _t4, _t14);
+        float _t24 = Math.fma(_t3, _t4, Math.fma(_t0, _t5, 1.0f));
+        preRotateAround_s4faf553_c0(_dst, _r0, _t16, _r1, _t22, _r2, _t19, _t20, _t17, _t23, _t24, _t21, _t18);
+        preRotateAround_s4faf553_c1(_dst, _r3, _t16, _r4, _t22, _r5, _t19, _t20, _t17, _t23, _t24, _t21, _t18);
+        preRotateAround_s4faf553_c2(_dst, _r6, _t16, _r7, _t22, _r8, _t19, _t20, _t17, _t23, _t24, _t21, _t18);
+        preRotateAround_s4faf553_c3(_dst, _r9, _t16, _r10, _t22, _r11, _t19, _t2, pivotX, rotY, _t5, _t9, pivotY, _t20, _t17, _t23, rotX, _t4, _t24, _t21, _t18, pivotZ);
+    }
+
 
     /**
      * Pre-multiply the rotation ({@code rotX}, {@code rotY}, {@code rotZ}, {@code rotW}) about the
@@ -22845,6 +24287,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 preRotateAround(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        float _r0 = this.m20;
+        float _r1 = this.m00;
+        float _r2 = this.m10;
+        float _r3 = this.m21;
+        float _r4 = this.m01;
+        float _r5 = this.m11;
+        float _r6 = this.m22;
+        float _r7 = this.m02;
+        float _r8 = this.m12;
+        float _r9 = this.m23;
+        float _r10 = this.m03;
+        float _r11 = this.m13;
         float _t0 = -rotY;
         float _t2 = -pivotZ;
         float _t3 = -rotX;
@@ -22857,34 +24311,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t10 = rotW * _t4;
         float _t14 = Math.fma(-rotZ, _t6, 1.0f);
         float _t16 = Math.fma(rotZ, _t4, _t7);
-        float _t17 = Math.fma(rotY, _t4, _t8);
-        float _t18 = Math.fma(rotZ, _t5, _t10);
-        float _t19 = Math.fma(rotY, _t4, -_t8);
-        float _t20 = Math.fma(rotZ, _t5, -_t10);
-        float _t21 = Math.fma(rotZ, _t4, -_t7);
-        float _t22 = Math.fma(_t0, _t5, _t14);
-        float _t23 = Math.fma(_t3, _t4, _t14);
-        float _t24 = Math.fma(_t3, _t4, Math.fma(_t0, _t5, 1.0f));
-        float _buf0 = Math.fma(this.m20, _t16, Math.fma(this.m00, _t22, this.m10 * _t19));
-        float _buf1 = Math.fma(this.m21, _t16, Math.fma(this.m01, _t22, this.m11 * _t19));
-        float _buf2 = Math.fma(this.m22, _t16, Math.fma(this.m02, _t22, this.m12 * _t19));
-        float _buf3 = Math.fma(this.m23, _t16, Math.fma(this.m03, _t22, this.m13 * _t19)) + Math.fma(_t2, _t16, Math.fma(pivotX, Math.fma(rotY, _t5, _t9), -(pivotY * _t19)));
-        float _buf4 = Math.fma(this.m20, _t20, Math.fma(this.m00, _t17, this.m10 * _t23));
-        float _buf5 = Math.fma(this.m21, _t20, Math.fma(this.m01, _t17, this.m11 * _t23));
-        float _buf6 = Math.fma(this.m22, _t20, Math.fma(this.m02, _t17, this.m12 * _t23));
-        float _buf7 = Math.fma(this.m23, _t20, Math.fma(this.m03, _t17, this.m13 * _t23)) + Math.fma(_t2, _t20, Math.fma(pivotY, Math.fma(rotX, _t4, _t9), -(pivotX * _t17)));
-        d.m20 = Math.fma(this.m20, _t24, Math.fma(this.m00, _t21, this.m10 * _t18));
-        d.m21 = Math.fma(this.m21, _t24, Math.fma(this.m01, _t21, this.m11 * _t18));
-        d.m22 = Math.fma(this.m22, _t24, Math.fma(this.m02, _t21, this.m12 * _t18));
-        d.m23 = Math.fma(this.m23, _t24, Math.fma(this.m03, _t21, this.m13 * _t18)) + Math.fma(-pivotY, _t18, Math.fma(pivotZ, Math.fma(rotX, _t4, rotY * _t5), -(pivotX * _t21)));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m13 = _buf7;
+        preRotateAround_s4faf553_tail(d, rotY, _t4, _t8, rotZ, _t5, _t10, _t7, _t0, _t14, _t3, _r0, _t16, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t2, pivotX, _t9, pivotY, rotX, pivotZ);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -23040,6 +24467,47 @@ public class Float3x4Impl implements Float3x4 {
         return d;
     }
 
+    /** Private column 0 of {@code preRotateAxis_orthogonal}: computes and stores it; reached only through it. */
+    private void preRotateAxis_orthogonal_s32ee4ef2_c0(Float3x4Impl _dst, float _r0, float _t21, float _r1, float _t18, float _r2, float _t24, float _t25, float _t22, float _t19, float _t20, float _t26, float _t23) {
+        _dst.m00 = Math.fma(_r0, _t21, Math.fma(_r1, _t18, _r2 * _t24));
+        _dst.m10 = Math.fma(_r0, _t25, Math.fma(_r1, _t22, _r2 * _t19));
+        _dst.m20 = Math.fma(_r0, _t20, Math.fma(_r1, _t26, _r2 * _t23));
+    }
+
+    /** Private column 1 of {@code preRotateAxis_orthogonal}: computes and stores it; reached only through it. */
+    private void preRotateAxis_orthogonal_s32ee4ef2_c1(Float3x4Impl _dst, float _r3, float _t21, float _r4, float _t18, float _r5, float _t24, float _t25, float _t22, float _t19, float _t20, float _t26, float _t23) {
+        _dst.m01 = Math.fma(_r3, _t21, Math.fma(_r4, _t18, _r5 * _t24));
+        _dst.m11 = Math.fma(_r3, _t25, Math.fma(_r4, _t22, _r5 * _t19));
+        _dst.m21 = Math.fma(_r3, _t20, Math.fma(_r4, _t26, _r5 * _t23));
+    }
+
+    /** Private column 2 of {@code preRotateAxis_orthogonal}: computes and stores it; reached only through it. */
+    private void preRotateAxis_orthogonal_s32ee4ef2_c2(Float3x4Impl _dst, float _r6, float _t21, float _r7, float _t18, float _r8, float _t24, float _t25, float _t22, float _t19, float _t20, float _t26, float _t23) {
+        _dst.m02 = Math.fma(_r6, _t21, Math.fma(_r7, _t18, _r8 * _t24));
+        _dst.m12 = Math.fma(_r6, _t25, Math.fma(_r7, _t22, _r8 * _t19));
+        _dst.m22 = Math.fma(_r6, _t20, Math.fma(_r7, _t26, _r8 * _t23));
+    }
+
+    /** Private column 3 of {@code preRotateAxis_orthogonal}: computes and stores it; reached only through it. */
+    private void preRotateAxis_orthogonal_s32ee4ef2_c3(Float3x4Impl _dst, float _r9, float _t21, float _r10, float _t18, float _r11, float _t24, float _t25, float _t22, float _t19, float _t20, float _t26, float _t23) {
+        _dst.m03 = Math.fma(_r9, _t21, Math.fma(_r10, _t18, _r11 * _t24));
+        _dst.m13 = Math.fma(_r9, _t25, Math.fma(_r10, _t22, _r11 * _t19));
+        _dst.m23 = Math.fma(_r9, _t20, Math.fma(_r10, _t26, _r11 * _t23));
+    }
+
+    /** Private tail of {@code preRotateAxis_orthogonal}; reached only through it. */
+    private void preRotateAxis_orthogonal_s32ee4ef2_tail(Float3x4Impl _dst, float axisZ, float _t0, float _t2, float _t5, float axisX, float _t7, float _t3, float axisY, float _r0, float _t21, float _r1, float _t18, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t19, float _t20) {
+        float _t22 = Math.fma(axisZ, _t0, _t2 * _t5);
+        float _t23 = Math.fma(axisX, _t0, _t2 * _t7);
+        float _t24 = Math.fma(_t2, _t5, -(axisZ * _t0));
+        float _t25 = Math.fma(_t2, _t7, -(axisX * _t0));
+        float _t26 = Math.fma(_t2, _t3, -(axisY * _t0));
+        preRotateAxis_orthogonal_s32ee4ef2_c0(_dst, _r0, _t21, _r1, _t18, _r2, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
+        preRotateAxis_orthogonal_s32ee4ef2_c1(_dst, _r3, _t21, _r4, _t18, _r5, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
+        preRotateAxis_orthogonal_s32ee4ef2_c2(_dst, _r6, _t21, _r7, _t18, _r8, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
+        preRotateAxis_orthogonal_s32ee4ef2_c3(_dst, _r9, _t21, _r10, _t18, _r11, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
+    }
+
 
     /**
      * Private body of {@code preRotateAxis}, specialized by runtime matrix properties; reached only
@@ -23047,6 +24515,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateAxis_orthogonal(float angle, float axisX, float axisY, float axisZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m20;
+        float _r1 = this.m00;
+        float _r2 = this.m10;
+        float _r3 = this.m21;
+        float _r4 = this.m01;
+        float _r5 = this.m11;
+        float _r6 = this.m22;
+        float _r7 = this.m02;
+        float _r8 = this.m12;
+        float _r9 = this.m23;
+        float _r10 = this.m03;
+        float _r11 = this.m13;
         float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cos(angle);
         float _t2 = 1.0f - _t1;
@@ -23057,33 +24537,50 @@ public class Float3x4Impl implements Float3x4 {
         float _t19 = Math.fma(_t2, axisY * axisY, _t1);
         float _t20 = Math.fma(_t2, axisZ * axisZ, _t1);
         float _t21 = Math.fma(axisY, _t0, _t2 * _t3);
+        preRotateAxis_orthogonal_s32ee4ef2_tail(d, axisZ, _t0, _t2, _t5, axisX, _t7, _t3, axisY, _r0, _t21, _r1, _t18, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t19, _t20);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+    /** Private column 0 of {@code preRotateAxis_general}: computes and stores it; reached only through it. */
+    private void preRotateAxis_general_s32ee4ef2_c0(Float3x4Impl _dst, float _r0, float _t21, float _r1, float _t18, float _r2, float _t24, float _t25, float _t22, float _t19, float _t20, float _t26, float _t23) {
+        _dst.m00 = Math.fma(_r0, _t21, Math.fma(_r1, _t18, _r2 * _t24));
+        _dst.m10 = Math.fma(_r0, _t25, Math.fma(_r1, _t22, _r2 * _t19));
+        _dst.m20 = Math.fma(_r0, _t20, Math.fma(_r1, _t26, _r2 * _t23));
+    }
+
+    /** Private column 1 of {@code preRotateAxis_general}: computes and stores it; reached only through it. */
+    private void preRotateAxis_general_s32ee4ef2_c1(Float3x4Impl _dst, float _r3, float _t21, float _r4, float _t18, float _r5, float _t24, float _t25, float _t22, float _t19, float _t20, float _t26, float _t23) {
+        _dst.m01 = Math.fma(_r3, _t21, Math.fma(_r4, _t18, _r5 * _t24));
+        _dst.m11 = Math.fma(_r3, _t25, Math.fma(_r4, _t22, _r5 * _t19));
+        _dst.m21 = Math.fma(_r3, _t20, Math.fma(_r4, _t26, _r5 * _t23));
+    }
+
+    /** Private column 2 of {@code preRotateAxis_general}: computes and stores it; reached only through it. */
+    private void preRotateAxis_general_s32ee4ef2_c2(Float3x4Impl _dst, float _r6, float _t21, float _r7, float _t18, float _r8, float _t24, float _t25, float _t22, float _t19, float _t20, float _t26, float _t23) {
+        _dst.m02 = Math.fma(_r6, _t21, Math.fma(_r7, _t18, _r8 * _t24));
+        _dst.m12 = Math.fma(_r6, _t25, Math.fma(_r7, _t22, _r8 * _t19));
+        _dst.m22 = Math.fma(_r6, _t20, Math.fma(_r7, _t26, _r8 * _t23));
+    }
+
+    /** Private column 3 of {@code preRotateAxis_general}: computes and stores it; reached only through it. */
+    private void preRotateAxis_general_s32ee4ef2_c3(Float3x4Impl _dst, float _r9, float _t21, float _r10, float _t18, float _r11, float _t24, float _t25, float _t22, float _t19, float _t20, float _t26, float _t23) {
+        _dst.m03 = Math.fma(_r9, _t21, Math.fma(_r10, _t18, _r11 * _t24));
+        _dst.m13 = Math.fma(_r9, _t25, Math.fma(_r10, _t22, _r11 * _t19));
+        _dst.m23 = Math.fma(_r9, _t20, Math.fma(_r10, _t26, _r11 * _t23));
+    }
+
+    /** Private tail of {@code preRotateAxis_general}; reached only through it. */
+    private void preRotateAxis_general_s32ee4ef2_tail(Float3x4Impl _dst, float axisZ, float _t0, float _t2, float _t5, float axisX, float _t7, float _t3, float axisY, float _r0, float _t21, float _r1, float _t18, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t19, float _t20) {
         float _t22 = Math.fma(axisZ, _t0, _t2 * _t5);
         float _t23 = Math.fma(axisX, _t0, _t2 * _t7);
         float _t24 = Math.fma(_t2, _t5, -(axisZ * _t0));
         float _t25 = Math.fma(_t2, _t7, -(axisX * _t0));
         float _t26 = Math.fma(_t2, _t3, -(axisY * _t0));
-        float _buf0 = Math.fma(this.m20, _t21, Math.fma(this.m00, _t18, this.m10 * _t24));
-        float _buf1 = Math.fma(this.m21, _t21, Math.fma(this.m01, _t18, this.m11 * _t24));
-        float _buf2 = Math.fma(this.m22, _t21, Math.fma(this.m02, _t18, this.m12 * _t24));
-        float _buf3 = Math.fma(this.m23, _t21, Math.fma(this.m03, _t18, this.m13 * _t24));
-        float _buf4 = Math.fma(this.m20, _t25, Math.fma(this.m00, _t22, this.m10 * _t19));
-        float _buf5 = Math.fma(this.m21, _t25, Math.fma(this.m01, _t22, this.m11 * _t19));
-        float _buf6 = Math.fma(this.m22, _t25, Math.fma(this.m02, _t22, this.m12 * _t19));
-        float _buf7 = Math.fma(this.m23, _t25, Math.fma(this.m03, _t22, this.m13 * _t19));
-        d.m20 = Math.fma(this.m20, _t20, Math.fma(this.m00, _t26, this.m10 * _t23));
-        d.m21 = Math.fma(this.m21, _t20, Math.fma(this.m01, _t26, this.m11 * _t23));
-        d.m22 = Math.fma(this.m22, _t20, Math.fma(this.m02, _t26, this.m12 * _t23));
-        d.m23 = Math.fma(this.m23, _t20, Math.fma(this.m03, _t26, this.m13 * _t23));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m13 = _buf7;
-        d.properties = Joml.BIT_ORTHOGONAL;
-        return d;
+        preRotateAxis_general_s32ee4ef2_c0(_dst, _r0, _t21, _r1, _t18, _r2, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
+        preRotateAxis_general_s32ee4ef2_c1(_dst, _r3, _t21, _r4, _t18, _r5, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
+        preRotateAxis_general_s32ee4ef2_c2(_dst, _r6, _t21, _r7, _t18, _r8, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
+        preRotateAxis_general_s32ee4ef2_c3(_dst, _r9, _t21, _r10, _t18, _r11, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
     }
 
 
@@ -23093,6 +24590,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateAxis_general(float angle, float axisX, float axisY, float axisZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m20;
+        float _r1 = this.m00;
+        float _r2 = this.m10;
+        float _r3 = this.m21;
+        float _r4 = this.m01;
+        float _r5 = this.m11;
+        float _r6 = this.m22;
+        float _r7 = this.m02;
+        float _r8 = this.m12;
+        float _r9 = this.m23;
+        float _r10 = this.m03;
+        float _r11 = this.m13;
         float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cos(angle);
         float _t2 = 1.0f - _t1;
@@ -23103,31 +24612,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t19 = Math.fma(_t2, axisY * axisY, _t1);
         float _t20 = Math.fma(_t2, axisZ * axisZ, _t1);
         float _t21 = Math.fma(axisY, _t0, _t2 * _t3);
-        float _t22 = Math.fma(axisZ, _t0, _t2 * _t5);
-        float _t23 = Math.fma(axisX, _t0, _t2 * _t7);
-        float _t24 = Math.fma(_t2, _t5, -(axisZ * _t0));
-        float _t25 = Math.fma(_t2, _t7, -(axisX * _t0));
-        float _t26 = Math.fma(_t2, _t3, -(axisY * _t0));
-        float _buf0 = Math.fma(this.m20, _t21, Math.fma(this.m00, _t18, this.m10 * _t24));
-        float _buf1 = Math.fma(this.m21, _t21, Math.fma(this.m01, _t18, this.m11 * _t24));
-        float _buf2 = Math.fma(this.m22, _t21, Math.fma(this.m02, _t18, this.m12 * _t24));
-        float _buf3 = Math.fma(this.m23, _t21, Math.fma(this.m03, _t18, this.m13 * _t24));
-        float _buf4 = Math.fma(this.m20, _t25, Math.fma(this.m00, _t22, this.m10 * _t19));
-        float _buf5 = Math.fma(this.m21, _t25, Math.fma(this.m01, _t22, this.m11 * _t19));
-        float _buf6 = Math.fma(this.m22, _t25, Math.fma(this.m02, _t22, this.m12 * _t19));
-        float _buf7 = Math.fma(this.m23, _t25, Math.fma(this.m03, _t22, this.m13 * _t19));
-        d.m20 = Math.fma(this.m20, _t20, Math.fma(this.m00, _t26, this.m10 * _t23));
-        d.m21 = Math.fma(this.m21, _t20, Math.fma(this.m01, _t26, this.m11 * _t23));
-        d.m22 = Math.fma(this.m22, _t20, Math.fma(this.m02, _t26, this.m12 * _t23));
-        d.m23 = Math.fma(this.m23, _t20, Math.fma(this.m03, _t26, this.m13 * _t23));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m13 = _buf7;
+        preRotateAxis_general_s32ee4ef2_tail(d, axisZ, _t0, _t2, _t5, axisX, _t7, _t3, axisY, _r0, _t21, _r1, _t18, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t19, _t20);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -23192,6 +24677,47 @@ public class Float3x4Impl implements Float3x4 {
         return preRotateAxis_general(angle, axisX, axisY, axisZ, this);
     }
 
+    /** Private column 0 of {@code preRotateAxis}: computes and stores it; reached only through it. */
+    private void preRotateAxis_s74a27281_c0(Double3x4Impl _dst, float _r0, float _t21, float _r1, float _t18, float _r2, float _t24, float _t25, float _t22, float _t19, float _t20, float _t26, float _t23) {
+        _dst.m00 = Math.fma(_r0, _t21, Math.fma(_r1, _t18, _r2 * _t24));
+        _dst.m10 = Math.fma(_r0, _t25, Math.fma(_r1, _t22, _r2 * _t19));
+        _dst.m20 = Math.fma(_r0, _t20, Math.fma(_r1, _t26, _r2 * _t23));
+    }
+
+    /** Private column 1 of {@code preRotateAxis}: computes and stores it; reached only through it. */
+    private void preRotateAxis_s74a27281_c1(Double3x4Impl _dst, float _r3, float _t21, float _r4, float _t18, float _r5, float _t24, float _t25, float _t22, float _t19, float _t20, float _t26, float _t23) {
+        _dst.m01 = Math.fma(_r3, _t21, Math.fma(_r4, _t18, _r5 * _t24));
+        _dst.m11 = Math.fma(_r3, _t25, Math.fma(_r4, _t22, _r5 * _t19));
+        _dst.m21 = Math.fma(_r3, _t20, Math.fma(_r4, _t26, _r5 * _t23));
+    }
+
+    /** Private column 2 of {@code preRotateAxis}: computes and stores it; reached only through it. */
+    private void preRotateAxis_s74a27281_c2(Double3x4Impl _dst, float _r6, float _t21, float _r7, float _t18, float _r8, float _t24, float _t25, float _t22, float _t19, float _t20, float _t26, float _t23) {
+        _dst.m02 = Math.fma(_r6, _t21, Math.fma(_r7, _t18, _r8 * _t24));
+        _dst.m12 = Math.fma(_r6, _t25, Math.fma(_r7, _t22, _r8 * _t19));
+        _dst.m22 = Math.fma(_r6, _t20, Math.fma(_r7, _t26, _r8 * _t23));
+    }
+
+    /** Private column 3 of {@code preRotateAxis}: computes and stores it; reached only through it. */
+    private void preRotateAxis_s74a27281_c3(Double3x4Impl _dst, float _r9, float _t21, float _r10, float _t18, float _r11, float _t24, float _t25, float _t22, float _t19, float _t20, float _t26, float _t23) {
+        _dst.m03 = Math.fma(_r9, _t21, Math.fma(_r10, _t18, _r11 * _t24));
+        _dst.m13 = Math.fma(_r9, _t25, Math.fma(_r10, _t22, _r11 * _t19));
+        _dst.m23 = Math.fma(_r9, _t20, Math.fma(_r10, _t26, _r11 * _t23));
+    }
+
+    /** Private tail of {@code preRotateAxis}; reached only through it. */
+    private void preRotateAxis_s74a27281_tail(Double3x4Impl _dst, float axisZ, float _t0, float _t2, float _t5, float axisX, float _t7, float _t3, float axisY, float _r0, float _t21, float _r1, float _t18, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t19, float _t20) {
+        float _t22 = Math.fma(axisZ, _t0, _t2 * _t5);
+        float _t23 = Math.fma(axisX, _t0, _t2 * _t7);
+        float _t24 = Math.fma(_t2, _t5, -(axisZ * _t0));
+        float _t25 = Math.fma(_t2, _t7, -(axisX * _t0));
+        float _t26 = Math.fma(_t2, _t3, -(axisY * _t0));
+        preRotateAxis_s74a27281_c0(_dst, _r0, _t21, _r1, _t18, _r2, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
+        preRotateAxis_s74a27281_c1(_dst, _r3, _t21, _r4, _t18, _r5, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
+        preRotateAxis_s74a27281_c2(_dst, _r6, _t21, _r7, _t18, _r8, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
+        preRotateAxis_s74a27281_c3(_dst, _r9, _t21, _r10, _t18, _r11, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
+    }
+
 
     /**
      * Pre-multiply a rotation of {@code angle} radians about the axis ({@code axisX},
@@ -23219,6 +24745,18 @@ public class Float3x4Impl implements Float3x4 {
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return preRotateY(axisY * angle, dest);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return preRotateZ(axisZ * angle, dest);
         Double3x4Impl d = (Double3x4Impl) dest;
+        float _r0 = this.m20;
+        float _r1 = this.m00;
+        float _r2 = this.m10;
+        float _r3 = this.m21;
+        float _r4 = this.m01;
+        float _r5 = this.m11;
+        float _r6 = this.m22;
+        float _r7 = this.m02;
+        float _r8 = this.m12;
+        float _r9 = this.m23;
+        float _r10 = this.m03;
+        float _r11 = this.m13;
         float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cos(angle);
         float _t2 = 1.0f - _t1;
@@ -23229,31 +24767,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t19 = Math.fma(_t2, axisY * axisY, _t1);
         float _t20 = Math.fma(_t2, axisZ * axisZ, _t1);
         float _t21 = Math.fma(axisY, _t0, _t2 * _t3);
-        float _t22 = Math.fma(axisZ, _t0, _t2 * _t5);
-        float _t23 = Math.fma(axisX, _t0, _t2 * _t7);
-        float _t24 = Math.fma(_t2, _t5, -(axisZ * _t0));
-        float _t25 = Math.fma(_t2, _t7, -(axisX * _t0));
-        float _t26 = Math.fma(_t2, _t3, -(axisY * _t0));
-        float _buf0 = Math.fma(this.m20, _t21, Math.fma(this.m00, _t18, this.m10 * _t24));
-        float _buf1 = Math.fma(this.m21, _t21, Math.fma(this.m01, _t18, this.m11 * _t24));
-        float _buf2 = Math.fma(this.m22, _t21, Math.fma(this.m02, _t18, this.m12 * _t24));
-        float _buf3 = Math.fma(this.m23, _t21, Math.fma(this.m03, _t18, this.m13 * _t24));
-        float _buf4 = Math.fma(this.m20, _t25, Math.fma(this.m00, _t22, this.m10 * _t19));
-        float _buf5 = Math.fma(this.m21, _t25, Math.fma(this.m01, _t22, this.m11 * _t19));
-        float _buf6 = Math.fma(this.m22, _t25, Math.fma(this.m02, _t22, this.m12 * _t19));
-        float _buf7 = Math.fma(this.m23, _t25, Math.fma(this.m03, _t22, this.m13 * _t19));
-        d.m20 = Math.fma(this.m20, _t20, Math.fma(this.m00, _t26, this.m10 * _t23));
-        d.m21 = Math.fma(this.m21, _t20, Math.fma(this.m01, _t26, this.m11 * _t23));
-        d.m22 = Math.fma(this.m22, _t20, Math.fma(this.m02, _t26, this.m12 * _t23));
-        d.m23 = Math.fma(this.m23, _t20, Math.fma(this.m03, _t26, this.m13 * _t23));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m13 = _buf7;
+        preRotateAxis_s74a27281_tail(d, axisZ, _t0, _t2, _t5, axisX, _t7, _t3, axisY, _r0, _t21, _r1, _t18, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t19, _t20);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -23414,6 +24928,48 @@ public class Float3x4Impl implements Float3x4 {
         return d;
     }
 
+    /** Private column 0 of {@code preRotateQuat_orthogonal}: computes and stores it; reached only through it. */
+    private void preRotateQuat_orthogonal_s30bb788b_c0(Float3x4Impl _dst, float _r0, float _t14, float _r1, float _t20, float _r2, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        _dst.m00 = Math.fma(_r0, _t14, Math.fma(_r1, _t20, _r2 * _t17));
+        _dst.m10 = Math.fma(_r0, _t18, Math.fma(_r1, _t15, _r2 * _t21));
+        _dst.m20 = Math.fma(_r0, _t22, Math.fma(_r1, _t19, _r2 * _t16));
+    }
+
+    /** Private column 1 of {@code preRotateQuat_orthogonal}: computes and stores it; reached only through it. */
+    private void preRotateQuat_orthogonal_s30bb788b_c1(Float3x4Impl _dst, float _r3, float _t14, float _r4, float _t20, float _r5, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        _dst.m01 = Math.fma(_r3, _t14, Math.fma(_r4, _t20, _r5 * _t17));
+        _dst.m11 = Math.fma(_r3, _t18, Math.fma(_r4, _t15, _r5 * _t21));
+        _dst.m21 = Math.fma(_r3, _t22, Math.fma(_r4, _t19, _r5 * _t16));
+    }
+
+    /** Private column 2 of {@code preRotateQuat_orthogonal}: computes and stores it; reached only through it. */
+    private void preRotateQuat_orthogonal_s30bb788b_c2(Float3x4Impl _dst, float _r6, float _t14, float _r7, float _t20, float _r8, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        _dst.m02 = Math.fma(_r6, _t14, Math.fma(_r7, _t20, _r8 * _t17));
+        _dst.m12 = Math.fma(_r6, _t18, Math.fma(_r7, _t15, _r8 * _t21));
+        _dst.m22 = Math.fma(_r6, _t22, Math.fma(_r7, _t19, _r8 * _t16));
+    }
+
+    /** Private column 3 of {@code preRotateQuat_orthogonal}: computes and stores it; reached only through it. */
+    private void preRotateQuat_orthogonal_s30bb788b_c3(Float3x4Impl _dst, float _r9, float _t14, float _r10, float _t20, float _r11, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        _dst.m03 = Math.fma(_r9, _t14, Math.fma(_r10, _t20, _r11 * _t17));
+        _dst.m13 = Math.fma(_r9, _t18, Math.fma(_r10, _t15, _r11 * _t21));
+        _dst.m23 = Math.fma(_r9, _t22, Math.fma(_r10, _t19, _r11 * _t16));
+    }
+
+    /** Private tail of {@code preRotateQuat_orthogonal}; reached only through it. */
+    private void preRotateQuat_orthogonal_s30bb788b_tail(Float3x4Impl _dst, float qY, float _t3, float _t7, float qZ, float _t4, float _t8, float _t6, float _t0, float _t12, float _t2, float _r0, float _t14, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t15, float _t16) {
+        float _t17 = Math.fma(qY, _t3, -_t7);
+        float _t18 = Math.fma(qZ, _t4, -_t8);
+        float _t19 = Math.fma(qZ, _t3, -_t6);
+        float _t20 = Math.fma(_t0, _t4, _t12);
+        float _t21 = Math.fma(_t2, _t3, _t12);
+        float _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f));
+        preRotateQuat_orthogonal_s30bb788b_c0(_dst, _r0, _t14, _r1, _t20, _r2, _t17, _t18, _t15, _t21, _t22, _t19, _t16);
+        preRotateQuat_orthogonal_s30bb788b_c1(_dst, _r3, _t14, _r4, _t20, _r5, _t17, _t18, _t15, _t21, _t22, _t19, _t16);
+        preRotateQuat_orthogonal_s30bb788b_c2(_dst, _r6, _t14, _r7, _t20, _r8, _t17, _t18, _t15, _t21, _t22, _t19, _t16);
+        preRotateQuat_orthogonal_s30bb788b_c3(_dst, _r9, _t14, _r10, _t20, _r11, _t17, _t18, _t15, _t21, _t22, _t19, _t16);
+    }
+
 
     /**
      * Private body of {@code preRotateQuat}, specialized by runtime matrix properties; reached only
@@ -23421,6 +24977,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateQuat_orthogonal(float qX, float qY, float qZ, float qW, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m20;
+        float _r1 = this.m00;
+        float _r2 = this.m10;
+        float _r3 = this.m21;
+        float _r4 = this.m01;
+        float _r5 = this.m11;
+        float _r6 = this.m22;
+        float _r7 = this.m02;
+        float _r8 = this.m12;
+        float _r9 = this.m23;
+        float _r10 = this.m03;
+        float _r11 = this.m13;
         float _t0 = -qY;
         float _t2 = -qX;
         float _t3 = qX + qX;
@@ -23433,34 +25001,51 @@ public class Float3x4Impl implements Float3x4 {
         float _t14 = Math.fma(qZ, _t3, _t6);
         float _t15 = Math.fma(qY, _t3, _t7);
         float _t16 = Math.fma(qZ, _t4, _t8);
+        preRotateQuat_orthogonal_s30bb788b_tail(d, qY, _t3, _t7, qZ, _t4, _t8, _t6, _t0, _t12, _t2, _r0, _t14, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t15, _t16);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+    /** Private column 0 of {@code preRotateQuat_general}: computes and stores it; reached only through it. */
+    private void preRotateQuat_general_s30bb788b_c0(Float3x4Impl _dst, float _r0, float _t14, float _r1, float _t20, float _r2, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        _dst.m00 = Math.fma(_r0, _t14, Math.fma(_r1, _t20, _r2 * _t17));
+        _dst.m10 = Math.fma(_r0, _t18, Math.fma(_r1, _t15, _r2 * _t21));
+        _dst.m20 = Math.fma(_r0, _t22, Math.fma(_r1, _t19, _r2 * _t16));
+    }
+
+    /** Private column 1 of {@code preRotateQuat_general}: computes and stores it; reached only through it. */
+    private void preRotateQuat_general_s30bb788b_c1(Float3x4Impl _dst, float _r3, float _t14, float _r4, float _t20, float _r5, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        _dst.m01 = Math.fma(_r3, _t14, Math.fma(_r4, _t20, _r5 * _t17));
+        _dst.m11 = Math.fma(_r3, _t18, Math.fma(_r4, _t15, _r5 * _t21));
+        _dst.m21 = Math.fma(_r3, _t22, Math.fma(_r4, _t19, _r5 * _t16));
+    }
+
+    /** Private column 2 of {@code preRotateQuat_general}: computes and stores it; reached only through it. */
+    private void preRotateQuat_general_s30bb788b_c2(Float3x4Impl _dst, float _r6, float _t14, float _r7, float _t20, float _r8, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        _dst.m02 = Math.fma(_r6, _t14, Math.fma(_r7, _t20, _r8 * _t17));
+        _dst.m12 = Math.fma(_r6, _t18, Math.fma(_r7, _t15, _r8 * _t21));
+        _dst.m22 = Math.fma(_r6, _t22, Math.fma(_r7, _t19, _r8 * _t16));
+    }
+
+    /** Private column 3 of {@code preRotateQuat_general}: computes and stores it; reached only through it. */
+    private void preRotateQuat_general_s30bb788b_c3(Float3x4Impl _dst, float _r9, float _t14, float _r10, float _t20, float _r11, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        _dst.m03 = Math.fma(_r9, _t14, Math.fma(_r10, _t20, _r11 * _t17));
+        _dst.m13 = Math.fma(_r9, _t18, Math.fma(_r10, _t15, _r11 * _t21));
+        _dst.m23 = Math.fma(_r9, _t22, Math.fma(_r10, _t19, _r11 * _t16));
+    }
+
+    /** Private tail of {@code preRotateQuat_general}; reached only through it. */
+    private void preRotateQuat_general_s30bb788b_tail(Float3x4Impl _dst, float qY, float _t3, float _t7, float qZ, float _t4, float _t8, float _t6, float _t0, float _t12, float _t2, float _r0, float _t14, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t15, float _t16) {
         float _t17 = Math.fma(qY, _t3, -_t7);
         float _t18 = Math.fma(qZ, _t4, -_t8);
         float _t19 = Math.fma(qZ, _t3, -_t6);
         float _t20 = Math.fma(_t0, _t4, _t12);
         float _t21 = Math.fma(_t2, _t3, _t12);
         float _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f));
-        float _buf0 = Math.fma(this.m20, _t14, Math.fma(this.m00, _t20, this.m10 * _t17));
-        float _buf1 = Math.fma(this.m21, _t14, Math.fma(this.m01, _t20, this.m11 * _t17));
-        float _buf2 = Math.fma(this.m22, _t14, Math.fma(this.m02, _t20, this.m12 * _t17));
-        float _buf3 = Math.fma(this.m23, _t14, Math.fma(this.m03, _t20, this.m13 * _t17));
-        float _buf4 = Math.fma(this.m20, _t18, Math.fma(this.m00, _t15, this.m10 * _t21));
-        float _buf5 = Math.fma(this.m21, _t18, Math.fma(this.m01, _t15, this.m11 * _t21));
-        float _buf6 = Math.fma(this.m22, _t18, Math.fma(this.m02, _t15, this.m12 * _t21));
-        float _buf7 = Math.fma(this.m23, _t18, Math.fma(this.m03, _t15, this.m13 * _t21));
-        d.m20 = Math.fma(this.m20, _t22, Math.fma(this.m00, _t19, this.m10 * _t16));
-        d.m21 = Math.fma(this.m21, _t22, Math.fma(this.m01, _t19, this.m11 * _t16));
-        d.m22 = Math.fma(this.m22, _t22, Math.fma(this.m02, _t19, this.m12 * _t16));
-        d.m23 = Math.fma(this.m23, _t22, Math.fma(this.m03, _t19, this.m13 * _t16));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m13 = _buf7;
-        d.properties = Joml.BIT_ORTHOGONAL;
-        return d;
+        preRotateQuat_general_s30bb788b_c0(_dst, _r0, _t14, _r1, _t20, _r2, _t17, _t18, _t15, _t21, _t22, _t19, _t16);
+        preRotateQuat_general_s30bb788b_c1(_dst, _r3, _t14, _r4, _t20, _r5, _t17, _t18, _t15, _t21, _t22, _t19, _t16);
+        preRotateQuat_general_s30bb788b_c2(_dst, _r6, _t14, _r7, _t20, _r8, _t17, _t18, _t15, _t21, _t22, _t19, _t16);
+        preRotateQuat_general_s30bb788b_c3(_dst, _r9, _t14, _r10, _t20, _r11, _t17, _t18, _t15, _t21, _t22, _t19, _t16);
     }
 
 
@@ -23470,6 +25055,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateQuat_general(float qX, float qY, float qZ, float qW, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m20;
+        float _r1 = this.m00;
+        float _r2 = this.m10;
+        float _r3 = this.m21;
+        float _r4 = this.m01;
+        float _r5 = this.m11;
+        float _r6 = this.m22;
+        float _r7 = this.m02;
+        float _r8 = this.m12;
+        float _r9 = this.m23;
+        float _r10 = this.m03;
+        float _r11 = this.m13;
         float _t0 = -qY;
         float _t2 = -qX;
         float _t3 = qX + qX;
@@ -23482,32 +25079,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t14 = Math.fma(qZ, _t3, _t6);
         float _t15 = Math.fma(qY, _t3, _t7);
         float _t16 = Math.fma(qZ, _t4, _t8);
-        float _t17 = Math.fma(qY, _t3, -_t7);
-        float _t18 = Math.fma(qZ, _t4, -_t8);
-        float _t19 = Math.fma(qZ, _t3, -_t6);
-        float _t20 = Math.fma(_t0, _t4, _t12);
-        float _t21 = Math.fma(_t2, _t3, _t12);
-        float _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f));
-        float _buf0 = Math.fma(this.m20, _t14, Math.fma(this.m00, _t20, this.m10 * _t17));
-        float _buf1 = Math.fma(this.m21, _t14, Math.fma(this.m01, _t20, this.m11 * _t17));
-        float _buf2 = Math.fma(this.m22, _t14, Math.fma(this.m02, _t20, this.m12 * _t17));
-        float _buf3 = Math.fma(this.m23, _t14, Math.fma(this.m03, _t20, this.m13 * _t17));
-        float _buf4 = Math.fma(this.m20, _t18, Math.fma(this.m00, _t15, this.m10 * _t21));
-        float _buf5 = Math.fma(this.m21, _t18, Math.fma(this.m01, _t15, this.m11 * _t21));
-        float _buf6 = Math.fma(this.m22, _t18, Math.fma(this.m02, _t15, this.m12 * _t21));
-        float _buf7 = Math.fma(this.m23, _t18, Math.fma(this.m03, _t15, this.m13 * _t21));
-        d.m20 = Math.fma(this.m20, _t22, Math.fma(this.m00, _t19, this.m10 * _t16));
-        d.m21 = Math.fma(this.m21, _t22, Math.fma(this.m01, _t19, this.m11 * _t16));
-        d.m22 = Math.fma(this.m22, _t22, Math.fma(this.m02, _t19, this.m12 * _t16));
-        d.m23 = Math.fma(this.m23, _t22, Math.fma(this.m03, _t19, this.m13 * _t16));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m13 = _buf7;
+        preRotateQuat_general_s30bb788b_tail(d, qY, _t3, _t7, qZ, _t4, _t8, _t6, _t0, _t12, _t2, _r0, _t14, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t15, _t16);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -23568,6 +25140,48 @@ public class Float3x4Impl implements Float3x4 {
         return preRotateQuat_general(qX, qY, qZ, qW, this);
     }
 
+    /** Private column 0 of {@code preRotateQuat}: computes and stores it; reached only through it. */
+    private void preRotateQuat_s307a7c08_c0(Double3x4Impl _dst, float _r0, float _t14, float _r1, float _t20, float _r2, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        _dst.m00 = Math.fma(_r0, _t14, Math.fma(_r1, _t20, _r2 * _t17));
+        _dst.m10 = Math.fma(_r0, _t18, Math.fma(_r1, _t15, _r2 * _t21));
+        _dst.m20 = Math.fma(_r0, _t22, Math.fma(_r1, _t19, _r2 * _t16));
+    }
+
+    /** Private column 1 of {@code preRotateQuat}: computes and stores it; reached only through it. */
+    private void preRotateQuat_s307a7c08_c1(Double3x4Impl _dst, float _r3, float _t14, float _r4, float _t20, float _r5, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        _dst.m01 = Math.fma(_r3, _t14, Math.fma(_r4, _t20, _r5 * _t17));
+        _dst.m11 = Math.fma(_r3, _t18, Math.fma(_r4, _t15, _r5 * _t21));
+        _dst.m21 = Math.fma(_r3, _t22, Math.fma(_r4, _t19, _r5 * _t16));
+    }
+
+    /** Private column 2 of {@code preRotateQuat}: computes and stores it; reached only through it. */
+    private void preRotateQuat_s307a7c08_c2(Double3x4Impl _dst, float _r6, float _t14, float _r7, float _t20, float _r8, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        _dst.m02 = Math.fma(_r6, _t14, Math.fma(_r7, _t20, _r8 * _t17));
+        _dst.m12 = Math.fma(_r6, _t18, Math.fma(_r7, _t15, _r8 * _t21));
+        _dst.m22 = Math.fma(_r6, _t22, Math.fma(_r7, _t19, _r8 * _t16));
+    }
+
+    /** Private column 3 of {@code preRotateQuat}: computes and stores it; reached only through it. */
+    private void preRotateQuat_s307a7c08_c3(Double3x4Impl _dst, float _r9, float _t14, float _r10, float _t20, float _r11, float _t17, float _t18, float _t15, float _t21, float _t22, float _t19, float _t16) {
+        _dst.m03 = Math.fma(_r9, _t14, Math.fma(_r10, _t20, _r11 * _t17));
+        _dst.m13 = Math.fma(_r9, _t18, Math.fma(_r10, _t15, _r11 * _t21));
+        _dst.m23 = Math.fma(_r9, _t22, Math.fma(_r10, _t19, _r11 * _t16));
+    }
+
+    /** Private tail of {@code preRotateQuat}; reached only through it. */
+    private void preRotateQuat_s307a7c08_tail(Double3x4Impl _dst, float qY, float _t3, float _t7, float qZ, float _t4, float _t8, float _t6, float _t0, float _t12, float _t2, float _r0, float _t14, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t15, float _t16) {
+        float _t17 = Math.fma(qY, _t3, -_t7);
+        float _t18 = Math.fma(qZ, _t4, -_t8);
+        float _t19 = Math.fma(qZ, _t3, -_t6);
+        float _t20 = Math.fma(_t0, _t4, _t12);
+        float _t21 = Math.fma(_t2, _t3, _t12);
+        float _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f));
+        preRotateQuat_s307a7c08_c0(_dst, _r0, _t14, _r1, _t20, _r2, _t17, _t18, _t15, _t21, _t22, _t19, _t16);
+        preRotateQuat_s307a7c08_c1(_dst, _r3, _t14, _r4, _t20, _r5, _t17, _t18, _t15, _t21, _t22, _t19, _t16);
+        preRotateQuat_s307a7c08_c2(_dst, _r6, _t14, _r7, _t20, _r8, _t17, _t18, _t15, _t21, _t22, _t19, _t16);
+        preRotateQuat_s307a7c08_c3(_dst, _r9, _t14, _r10, _t20, _r11, _t17, _t18, _t15, _t21, _t22, _t19, _t16);
+    }
+
 
     /**
      * Pre-multiply the rotation represented by the quaternion ({@code qX}, {@code qY}, {@code qZ},
@@ -23593,6 +25207,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 preRotateQuat(float qX, float qY, float qZ, float qW, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        float _r0 = this.m20;
+        float _r1 = this.m00;
+        float _r2 = this.m10;
+        float _r3 = this.m21;
+        float _r4 = this.m01;
+        float _r5 = this.m11;
+        float _r6 = this.m22;
+        float _r7 = this.m02;
+        float _r8 = this.m12;
+        float _r9 = this.m23;
+        float _r10 = this.m03;
+        float _r11 = this.m13;
         float _t0 = -qY;
         float _t2 = -qX;
         float _t3 = qX + qX;
@@ -23605,32 +25231,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t14 = Math.fma(qZ, _t3, _t6);
         float _t15 = Math.fma(qY, _t3, _t7);
         float _t16 = Math.fma(qZ, _t4, _t8);
-        float _t17 = Math.fma(qY, _t3, -_t7);
-        float _t18 = Math.fma(qZ, _t4, -_t8);
-        float _t19 = Math.fma(qZ, _t3, -_t6);
-        float _t20 = Math.fma(_t0, _t4, _t12);
-        float _t21 = Math.fma(_t2, _t3, _t12);
-        float _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f));
-        float _buf0 = Math.fma(this.m20, _t14, Math.fma(this.m00, _t20, this.m10 * _t17));
-        float _buf1 = Math.fma(this.m21, _t14, Math.fma(this.m01, _t20, this.m11 * _t17));
-        float _buf2 = Math.fma(this.m22, _t14, Math.fma(this.m02, _t20, this.m12 * _t17));
-        float _buf3 = Math.fma(this.m23, _t14, Math.fma(this.m03, _t20, this.m13 * _t17));
-        float _buf4 = Math.fma(this.m20, _t18, Math.fma(this.m00, _t15, this.m10 * _t21));
-        float _buf5 = Math.fma(this.m21, _t18, Math.fma(this.m01, _t15, this.m11 * _t21));
-        float _buf6 = Math.fma(this.m22, _t18, Math.fma(this.m02, _t15, this.m12 * _t21));
-        float _buf7 = Math.fma(this.m23, _t18, Math.fma(this.m03, _t15, this.m13 * _t21));
-        d.m20 = Math.fma(this.m20, _t22, Math.fma(this.m00, _t19, this.m10 * _t16));
-        d.m21 = Math.fma(this.m21, _t22, Math.fma(this.m01, _t19, this.m11 * _t16));
-        d.m22 = Math.fma(this.m22, _t22, Math.fma(this.m02, _t19, this.m12 * _t16));
-        d.m23 = Math.fma(this.m23, _t22, Math.fma(this.m03, _t19, this.m13 * _t16));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m13 = _buf7;
+        preRotateQuat_s307a7c08_tail(d, qY, _t3, _t7, qZ, _t4, _t8, _t6, _t0, _t12, _t2, _r0, _t14, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t15, _t16);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -25497,6 +27098,43 @@ public class Float3x4Impl implements Float3x4 {
         return d;
     }
 
+    /** Private column 0 of {@code reflect_orthogonal}: computes and stores it; reached only through it. */
+    private void reflect_orthogonal_s773380f_c0(Float3x4Impl _dst, float _t0, float _t9, float _r3, float _t12, float _r4, float _t10, float _t1, float _r6, float _r7, float _t2, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_t0, _t9, Math.fma(_r3, _t12, -(_r4 * _t10)));
+        _dst.m10 = Math.fma(_t1, _t9, Math.fma(_r6, _t12, -(_r7 * _t10)));
+        _dst.m20 = Math.fma(_t2, _t9, Math.fma(_r9, _t12, -(_r10 * _t10)));
+    }
+
+    /** Private column 1 of {@code reflect_orthogonal}: computes and stores it; reached only through it. */
+    private void reflect_orthogonal_s773380f_c1(Float3x4Impl _dst, float _t0, float _t11, float _r4, float _t13, float _r3, float _t10, float _t1, float _r7, float _r6, float _t2, float _r10, float _r9) {
+        _dst.m01 = Math.fma(_t0, _t11, Math.fma(_r4, _t13, -(_r3 * _t10)));
+        _dst.m11 = Math.fma(_t1, _t11, Math.fma(_r7, _t13, -(_r6 * _t10)));
+        _dst.m21 = Math.fma(_t2, _t11, Math.fma(_r10, _t13, -(_r9 * _t10)));
+    }
+
+    /** Private column 2 of {@code reflect_orthogonal}: computes and stores it; reached only through it. */
+    private void reflect_orthogonal_s773380f_c2(Float3x4Impl _dst, float _r0, float _t14, float _r4, float _t11, float _r3, float _t9, float _r1, float _r7, float _r6, float _r2, float _r10, float _r9) {
+        _dst.m02 = Math.fma(_r0, _t14, Math.fma(-_r4, _t11, -(_r3 * _t9)));
+        _dst.m12 = Math.fma(_r1, _t14, Math.fma(-_r7, _t11, -(_r6 * _t9)));
+        _dst.m22 = Math.fma(_r2, _t14, Math.fma(-_r10, _t11, -(_r9 * _t9)));
+    }
+
+    /** Private column 3 of {@code reflect_orthogonal}: computes and stores it; reached only through it. */
+    private void reflect_orthogonal_s773380f_c3(Float3x4Impl _dst, float _r5, float _r8, float _r11) {
+        _dst.m03 = _r5;
+        _dst.m13 = _r8;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code reflect_orthogonal}; reached only through it. */
+    private void reflect_orthogonal_s773380f_tail(Float3x4Impl _dst, float normalZ, float _t0, float _t9, float _r3, float _t12, float _r4, float _t10, float _t11, float _t13, float _r0, float _r5, float _t1, float _r6, float _r7, float _r1, float _r8, float _t2, float _r9, float _r10, float _r2, float _r11) {
+        float _t14 = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
+        reflect_orthogonal_s773380f_c0(_dst, _t0, _t9, _r3, _t12, _r4, _t10, _t1, _r6, _r7, _t2, _r9, _r10);
+        reflect_orthogonal_s773380f_c1(_dst, _t0, _t11, _r4, _t13, _r3, _t10, _t1, _r7, _r6, _t2, _r10, _r9);
+        reflect_orthogonal_s773380f_c2(_dst, _r0, _t14, _r4, _t11, _r3, _t9, _r1, _r7, _r6, _r2, _r10, _r9);
+        reflect_orthogonal_s773380f_c3(_dst, _r5, _r8, _r11);
+    }
+
 
     /**
      * Private body of {@code reflect}, specialized by runtime matrix properties; reached only
@@ -25504,36 +27142,31 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 reflect_orthogonal(float normalX, float normalY, float normalZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = -this.m02;
-        float _t1 = -this.m12;
-        float _t2 = -this.m22;
+        float _r0 = this.m02;
+        float _r1 = this.m12;
+        float _r2 = this.m22;
+        float _r3 = this.m00;
+        float _r4 = this.m01;
+        float _r5 = this.m03;
+        float _r6 = this.m10;
+        float _r7 = this.m11;
+        float _r8 = this.m13;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
+        float _t0 = -_r0;
+        float _t1 = -_r1;
+        float _t2 = -_r2;
         float _t9 = (normalX + normalX) * normalZ;
         float _t10 = (normalX + normalX) * normalY;
         float _t11 = (normalY + normalY) * normalZ;
         float _t12 = Math.fma(-2.0f, normalX * normalX, 1.0f);
         float _t13 = Math.fma(-2.0f, normalY * normalY, 1.0f);
-        float _t14 = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
-        float _buf0 = Math.fma(_t0, _t9, Math.fma(this.m00, _t12, -(this.m01 * _t10)));
-        float _buf1 = Math.fma(_t0, _t11, Math.fma(this.m01, _t13, -(this.m00 * _t10)));
-        d.m02 = Math.fma(this.m02, _t14, Math.fma(-this.m01, _t11, -(this.m00 * _t9)));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(_t1, _t9, Math.fma(this.m10, _t12, -(this.m11 * _t10)));
-        float _buf3 = Math.fma(_t1, _t11, Math.fma(this.m11, _t13, -(this.m10 * _t10)));
-        d.m12 = Math.fma(this.m12, _t14, Math.fma(-this.m11, _t11, -(this.m10 * _t9)));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(_t2, _t9, Math.fma(this.m20, _t12, -(this.m21 * _t10)));
-        float _buf5 = Math.fma(_t2, _t11, Math.fma(this.m21, _t13, -(this.m20 * _t10)));
-        d.m22 = Math.fma(this.m22, _t14, Math.fma(-this.m21, _t11, -(this.m20 * _t9)));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        reflect_orthogonal_s773380f_tail(d, normalZ, _t0, _t9, _r3, _t12, _r4, _t10, _t11, _t13, _r0, _r5, _t1, _r6, _r7, _r1, _r8, _t2, _r9, _r10, _r2, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
+
 
 
     /**
@@ -25596,6 +27229,43 @@ public class Float3x4Impl implements Float3x4 {
         return reflect_general(normalX, normalY, normalZ, this);
     }
 
+    /** Private column 0 of {@code reflect}: computes and stores it; reached only through it. */
+    private void reflect_s30baad04_c0(Double3x4Impl _dst, float _t0, float _t9, float _r3, float _t12, float _r4, float _t10, float _t1, float _r6, float _r7, float _t2, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_t0, _t9, Math.fma(_r3, _t12, -(_r4 * _t10)));
+        _dst.m10 = Math.fma(_t1, _t9, Math.fma(_r6, _t12, -(_r7 * _t10)));
+        _dst.m20 = Math.fma(_t2, _t9, Math.fma(_r9, _t12, -(_r10 * _t10)));
+    }
+
+    /** Private column 1 of {@code reflect}: computes and stores it; reached only through it. */
+    private void reflect_s30baad04_c1(Double3x4Impl _dst, float _t0, float _t11, float _r4, float _t13, float _r3, float _t10, float _t1, float _r7, float _r6, float _t2, float _r10, float _r9) {
+        _dst.m01 = Math.fma(_t0, _t11, Math.fma(_r4, _t13, -(_r3 * _t10)));
+        _dst.m11 = Math.fma(_t1, _t11, Math.fma(_r7, _t13, -(_r6 * _t10)));
+        _dst.m21 = Math.fma(_t2, _t11, Math.fma(_r10, _t13, -(_r9 * _t10)));
+    }
+
+    /** Private column 2 of {@code reflect}: computes and stores it; reached only through it. */
+    private void reflect_s30baad04_c2(Double3x4Impl _dst, float _r0, float _t14, float _r4, float _t11, float _r3, float _t9, float _r1, float _r7, float _r6, float _r2, float _r10, float _r9) {
+        _dst.m02 = Math.fma(_r0, _t14, Math.fma(-_r4, _t11, -(_r3 * _t9)));
+        _dst.m12 = Math.fma(_r1, _t14, Math.fma(-_r7, _t11, -(_r6 * _t9)));
+        _dst.m22 = Math.fma(_r2, _t14, Math.fma(-_r10, _t11, -(_r9 * _t9)));
+    }
+
+    /** Private column 3 of {@code reflect}: computes and stores it; reached only through it. */
+    private void reflect_s30baad04_c3(Double3x4Impl _dst, float _r5, float _r8, float _r11) {
+        _dst.m03 = _r5;
+        _dst.m13 = _r8;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code reflect}; reached only through it. */
+    private void reflect_s30baad04_tail(Double3x4Impl _dst, float normalZ, float _t0, float _t9, float _r3, float _t12, float _r4, float _t10, float _t11, float _t13, float _r0, float _r5, float _t1, float _r6, float _r7, float _r1, float _r8, float _t2, float _r9, float _r10, float _r2, float _r11) {
+        float _t14 = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
+        reflect_s30baad04_c0(_dst, _t0, _t9, _r3, _t12, _r4, _t10, _t1, _r6, _r7, _t2, _r9, _r10);
+        reflect_s30baad04_c1(_dst, _t0, _t11, _r4, _t13, _r3, _t10, _t1, _r7, _r6, _t2, _r10, _r9);
+        reflect_s30baad04_c2(_dst, _r0, _t14, _r4, _t11, _r3, _t9, _r1, _r7, _r6, _r2, _r10, _r9);
+        reflect_s30baad04_c3(_dst, _r5, _r8, _r11);
+    }
+
 
     /**
      * Apply a reflection about the plane through the origin with the normal ({@code normalX},
@@ -25619,33 +27289,27 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 reflect(float normalX, float normalY, float normalZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        float _t0 = -this.m02;
-        float _t1 = -this.m12;
-        float _t2 = -this.m22;
+        float _r0 = this.m02;
+        float _r1 = this.m12;
+        float _r2 = this.m22;
+        float _r3 = this.m00;
+        float _r4 = this.m01;
+        float _r5 = this.m03;
+        float _r6 = this.m10;
+        float _r7 = this.m11;
+        float _r8 = this.m13;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
+        float _t0 = -_r0;
+        float _t1 = -_r1;
+        float _t2 = -_r2;
         float _t9 = (normalX + normalX) * normalZ;
         float _t10 = (normalX + normalX) * normalY;
         float _t11 = (normalY + normalY) * normalZ;
         float _t12 = Math.fma(-2.0f, normalX * normalX, 1.0f);
         float _t13 = Math.fma(-2.0f, normalY * normalY, 1.0f);
-        float _t14 = Math.fma(-2.0f, normalZ * normalZ, 1.0f);
-        float _buf0 = Math.fma(_t0, _t9, Math.fma(this.m00, _t12, -(this.m01 * _t10)));
-        float _buf1 = Math.fma(_t0, _t11, Math.fma(this.m01, _t13, -(this.m00 * _t10)));
-        d.m02 = Math.fma(this.m02, _t14, Math.fma(-this.m01, _t11, -(this.m00 * _t9)));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(_t1, _t9, Math.fma(this.m10, _t12, -(this.m11 * _t10)));
-        float _buf3 = Math.fma(_t1, _t11, Math.fma(this.m11, _t13, -(this.m10 * _t10)));
-        d.m12 = Math.fma(this.m12, _t14, Math.fma(-this.m11, _t11, -(this.m10 * _t9)));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(_t2, _t9, Math.fma(this.m20, _t12, -(this.m21 * _t10)));
-        float _buf5 = Math.fma(_t2, _t11, Math.fma(this.m21, _t13, -(this.m20 * _t10)));
-        d.m22 = Math.fma(this.m22, _t14, Math.fma(-this.m21, _t11, -(this.m20 * _t9)));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        reflect_s30baad04_tail(d, normalZ, _t0, _t9, _r3, _t12, _r4, _t10, _t11, _t13, _r0, _r5, _t1, _r6, _r7, _r1, _r8, _t2, _r9, _r10, _r2, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -25726,6 +27390,34 @@ public class Float3x4Impl implements Float3x4 {
         return preRotateAround_identity(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, dest);
     }
 
+    /** Private column 0 of {@code rotateAround_translation}: computes and stores it; reached only through it. */
+    private void rotateAround_translation_s22f129e0_c0(Float3x4Impl _dst, float _t0, float _t6, float _t16, float _t18, float _t22) {
+        _dst.m00 = Math.fma(_t0, _t6, _t16);
+        _dst.m10 = _t18;
+        _dst.m20 = _t22;
+    }
+
+    /** Private column 1 of {@code rotateAround_translation}: computes and stores it; reached only through it. */
+    private void rotateAround_translation_s22f129e0_c1(Float3x4Impl _dst, float _t20, float _t4, float _t8, float _t16, float _t19) {
+        _dst.m01 = _t20;
+        _dst.m11 = Math.fma(_t4, _t8, _t16);
+        _dst.m21 = _t19;
+    }
+
+    /** Private column 2 of {@code rotateAround_translation}: computes and stores it; reached only through it. */
+    private void rotateAround_translation_s22f129e0_c2(Float3x4Impl _dst, float _t17, float _t21, float _t4, float _t8, float _t0, float _t6) {
+        _dst.m02 = _t17;
+        _dst.m12 = _t21;
+        _dst.m22 = Math.fma(_t4, _t8, Math.fma(_t0, _t6, 1.0f));
+    }
+
+    /** Private column 3 of {@code rotateAround_translation}: computes and stores it; reached only through it. */
+    private void rotateAround_translation_s22f129e0_c3(Float3x4Impl _dst, float pivotX, float rotY, float _t6, float _t11, float _t2, float _t20, float _t3, float _t17, float _r0, float pivotY, float rotX, float _t8, float _t5, float _t18, float _t21, float _r1, float pivotZ, float _t22, float _t19, float _r2) {
+        _dst.m03 = Math.fma(pivotX, Math.fma(rotY, _t6, _t11), Math.fma(_t2, _t20, Math.fma(_t3, _t17, _r0)));
+        _dst.m13 = Math.fma(pivotY, Math.fma(rotX, _t8, _t11), Math.fma(_t5, _t18, Math.fma(_t3, _t21, _r1)));
+        _dst.m23 = Math.fma(pivotZ, Math.fma(rotX, _t8, rotY * _t6), Math.fma(_t5, _t22, Math.fma(_t2, _t19, _r2)));
+    }
+
 
     /**
      * Private body of {@code rotateAround}, specialized by runtime matrix properties; reached only
@@ -25733,6 +27425,9 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateAround_translation(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m03;
+        float _r1 = this.m13;
+        float _r2 = this.m23;
         float _t0 = -rotY;
         float _t2 = -pivotY;
         float _t3 = -pivotZ;
@@ -25752,20 +27447,59 @@ public class Float3x4Impl implements Float3x4 {
         float _t20 = Math.fma(rotY, _t8, -_t9);
         float _t21 = Math.fma(rotZ, _t6, -_t12);
         float _t22 = Math.fma(rotZ, _t8, -_t10);
-        d.m00 = Math.fma(_t0, _t6, _t16);
-        d.m01 = _t20;
-        d.m02 = _t17;
-        d.m03 = Math.fma(pivotX, Math.fma(rotY, _t6, _t11), Math.fma(_t2, _t20, Math.fma(_t3, _t17, this.m03)));
-        d.m10 = _t18;
-        d.m11 = Math.fma(_t4, _t8, _t16);
-        d.m12 = _t21;
-        d.m13 = Math.fma(pivotY, Math.fma(rotX, _t8, _t11), Math.fma(_t5, _t18, Math.fma(_t3, _t21, this.m13)));
-        d.m20 = _t22;
-        d.m21 = _t19;
-        d.m22 = Math.fma(_t4, _t8, Math.fma(_t0, _t6, 1.0f));
-        d.m23 = Math.fma(pivotZ, Math.fma(rotX, _t8, rotY * _t6), Math.fma(_t5, _t22, Math.fma(_t2, _t19, this.m23)));
+        rotateAround_translation_s22f129e0_c0(d, _t0, _t6, _t16, _t18, _t22);
+        rotateAround_translation_s22f129e0_c1(d, _t20, _t4, _t8, _t16, _t19);
+        rotateAround_translation_s22f129e0_c2(d, _t17, _t21, _t4, _t8, _t0, _t6);
+        rotateAround_translation_s22f129e0_c3(d, pivotX, rotY, _t6, _t11, _t2, _t20, _t3, _t17, _r0, pivotY, rotX, _t8, _t5, _t18, _t21, _r1, pivotZ, _t22, _t19, _r2);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
+    }
+
+    /** Private column 0 of {@code rotateAround_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateAround_orthogonal_s22f129e0_c0(Float3x4Impl _dst, float _r0, float _t24, float _r1, float _t27, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t24, Math.fma(_r1, _t27, _r2 * _t18));
+        _dst.m10 = Math.fma(_r4, _t24, Math.fma(_r5, _t27, _r6 * _t18));
+        _dst.m20 = Math.fma(_r8, _t24, Math.fma(_r9, _t27, _r10 * _t18));
+    }
+
+    /** Private column 1 of {@code rotateAround_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateAround_orthogonal_s22f129e0_c1(Float3x4Impl _dst, float _r0, float _t19, float _r1, float _t25, float _r2, float _t28, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r1, _t25, _r2 * _t28));
+        _dst.m11 = Math.fma(_r4, _t19, Math.fma(_r5, _t25, _r6 * _t28));
+        _dst.m21 = Math.fma(_r8, _t19, Math.fma(_r9, _t25, _r10 * _t28));
+    }
+
+    /** Private column 2 of {@code rotateAround_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateAround_orthogonal_s22f129e0_c2(Float3x4Impl _dst, float _r0, float _t29, float _r1, float _t20, float _r2, float _t26, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t29, Math.fma(_r1, _t20, _r2 * _t26));
+        _dst.m12 = Math.fma(_r4, _t29, Math.fma(_r5, _t20, _r6 * _t26));
+        _dst.m22 = Math.fma(_r8, _t29, Math.fma(_r9, _t20, _r10 * _t26));
+    }
+
+    /** Private column 3 of {@code rotateAround_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateAround_orthogonal_s22f129e0_c3(Float3x4Impl _dst, float _r1, float _t39, float _r2, float _t40, float _r0, float _t41, float _r3, float _r5, float _r6, float _r4, float _r7, float _r9, float _r10, float _r8, float _r11) {
+        _dst.m03 = Math.fma(_r1, _t39, Math.fma(_r2, _t40, Math.fma(_r0, _t41, _r3)));
+        _dst.m13 = Math.fma(_r5, _t39, Math.fma(_r6, _t40, Math.fma(_r4, _t41, _r7)));
+        _dst.m23 = Math.fma(_r9, _t39, Math.fma(_r10, _t40, Math.fma(_r8, _t41, _r11)));
+    }
+
+    /** Private tail of {@code rotateAround_orthogonal}; reached only through it. */
+    private void rotateAround_orthogonal_s22f129e0_tail(Float3x4Impl _dst, float rotZ, float _t6, float _t10, float _t5, float _t8, float rotY, float _t9, float _t0, float _t16, float _t2, float _t3, float pivotX, float _t11, float pivotY, float rotX, float _t18, float pivotZ, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(rotZ, _t6, _t10);
+        float _t20 = Math.fma(rotZ, _t5, _t8);
+        float _t24 = Math.fma(rotZ, _t5, -_t8);
+        float _t25 = Math.fma(rotY, _t5, -_t9);
+        float _t26 = Math.fma(rotZ, _t6, -_t10);
+        float _t27 = Math.fma(_t0, _t6, _t16);
+        float _t28 = Math.fma(_t2, _t5, _t16);
+        float _t29 = Math.fma(_t2, _t5, Math.fma(_t0, _t6, 1.0f));
+        float _t39 = Math.fma(_t3, _t20, Math.fma(pivotX, Math.fma(rotY, _t6, _t11), -(pivotY * _t25)));
+        float _t40 = Math.fma(_t3, _t26, Math.fma(pivotY, Math.fma(rotX, _t5, _t11), -(pivotX * _t18)));
+        float _t41 = Math.fma(-pivotY, _t19, Math.fma(pivotZ, Math.fma(rotX, _t5, rotY * _t6), -(pivotX * _t24)));
+        rotateAround_orthogonal_s22f129e0_c0(_dst, _r0, _t24, _r1, _t27, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateAround_orthogonal_s22f129e0_c1(_dst, _r0, _t19, _r1, _t25, _r2, _t28, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateAround_orthogonal_s22f129e0_c2(_dst, _r0, _t29, _r1, _t20, _r2, _t26, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateAround_orthogonal_s22f129e0_c3(_dst, _r1, _t39, _r2, _t40, _r0, _t41, _r3, _r5, _r6, _r4, _r7, _r9, _r10, _r8, _r11);
     }
 
 
@@ -25775,6 +27509,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateAround_orthogonal(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = -rotY;
         float _t2 = -rotX;
         float _t3 = -pivotZ;
@@ -25787,6 +27533,41 @@ public class Float3x4Impl implements Float3x4 {
         float _t11 = rotZ * _t7;
         float _t16 = Math.fma(-rotZ, _t7, 1.0f);
         float _t18 = Math.fma(rotY, _t5, _t9);
+        rotateAround_orthogonal_s22f129e0_tail(d, rotZ, _t6, _t10, _t5, _t8, rotY, _t9, _t0, _t16, _t2, _t3, pivotX, _t11, pivotY, rotX, _t18, pivotZ, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+    /** Private column 0 of {@code rotateAround_general}: computes and stores it; reached only through it. */
+    private void rotateAround_general_s22f129e0_c0(Float3x4Impl _dst, float _r0, float _t24, float _r1, float _t27, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t24, Math.fma(_r1, _t27, _r2 * _t18));
+        _dst.m10 = Math.fma(_r4, _t24, Math.fma(_r5, _t27, _r6 * _t18));
+        _dst.m20 = Math.fma(_r8, _t24, Math.fma(_r9, _t27, _r10 * _t18));
+    }
+
+    /** Private column 1 of {@code rotateAround_general}: computes and stores it; reached only through it. */
+    private void rotateAround_general_s22f129e0_c1(Float3x4Impl _dst, float _r0, float _t19, float _r1, float _t25, float _r2, float _t28, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r1, _t25, _r2 * _t28));
+        _dst.m11 = Math.fma(_r4, _t19, Math.fma(_r5, _t25, _r6 * _t28));
+        _dst.m21 = Math.fma(_r8, _t19, Math.fma(_r9, _t25, _r10 * _t28));
+    }
+
+    /** Private column 2 of {@code rotateAround_general}: computes and stores it; reached only through it. */
+    private void rotateAround_general_s22f129e0_c2(Float3x4Impl _dst, float _r0, float _t29, float _r1, float _t20, float _r2, float _t26, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t29, Math.fma(_r1, _t20, _r2 * _t26));
+        _dst.m12 = Math.fma(_r4, _t29, Math.fma(_r5, _t20, _r6 * _t26));
+        _dst.m22 = Math.fma(_r8, _t29, Math.fma(_r9, _t20, _r10 * _t26));
+    }
+
+    /** Private column 3 of {@code rotateAround_general}: computes and stores it; reached only through it. */
+    private void rotateAround_general_s22f129e0_c3(Float3x4Impl _dst, float _r1, float _t39, float _r2, float _t40, float _r0, float _t41, float _r3, float _r5, float _r6, float _r4, float _r7, float _r9, float _r10, float _r8, float _r11) {
+        _dst.m03 = Math.fma(_r1, _t39, Math.fma(_r2, _t40, Math.fma(_r0, _t41, _r3)));
+        _dst.m13 = Math.fma(_r5, _t39, Math.fma(_r6, _t40, Math.fma(_r4, _t41, _r7)));
+        _dst.m23 = Math.fma(_r9, _t39, Math.fma(_r10, _t40, Math.fma(_r8, _t41, _r11)));
+    }
+
+    /** Private tail of {@code rotateAround_general}; reached only through it. */
+    private void rotateAround_general_s22f129e0_tail(Float3x4Impl _dst, float rotZ, float _t6, float _t10, float _t5, float _t8, float rotY, float _t9, float _t0, float _t16, float _t2, float _t3, float pivotX, float _t11, float pivotY, float rotX, float _t18, float pivotZ, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
         float _t19 = Math.fma(rotZ, _t6, _t10);
         float _t20 = Math.fma(rotZ, _t5, _t8);
         float _t24 = Math.fma(rotZ, _t5, -_t8);
@@ -25798,29 +27579,10 @@ public class Float3x4Impl implements Float3x4 {
         float _t39 = Math.fma(_t3, _t20, Math.fma(pivotX, Math.fma(rotY, _t6, _t11), -(pivotY * _t25)));
         float _t40 = Math.fma(_t3, _t26, Math.fma(pivotY, Math.fma(rotX, _t5, _t11), -(pivotX * _t18)));
         float _t41 = Math.fma(-pivotY, _t19, Math.fma(pivotZ, Math.fma(rotX, _t5, rotY * _t6), -(pivotX * _t24)));
-        float _buf0 = Math.fma(this.m02, _t24, Math.fma(this.m00, _t27, this.m01 * _t18));
-        float _buf1 = Math.fma(this.m02, _t19, Math.fma(this.m00, _t25, this.m01 * _t28));
-        float _buf2 = Math.fma(this.m02, _t29, Math.fma(this.m00, _t20, this.m01 * _t26));
-        d.m03 = Math.fma(this.m00, _t39, Math.fma(this.m01, _t40, Math.fma(this.m02, _t41, this.m03)));
-        float _buf3 = Math.fma(this.m12, _t24, Math.fma(this.m10, _t27, this.m11 * _t18));
-        float _buf4 = Math.fma(this.m12, _t19, Math.fma(this.m10, _t25, this.m11 * _t28));
-        float _buf5 = Math.fma(this.m12, _t29, Math.fma(this.m10, _t20, this.m11 * _t26));
-        d.m13 = Math.fma(this.m10, _t39, Math.fma(this.m11, _t40, Math.fma(this.m12, _t41, this.m13)));
-        float _buf6 = Math.fma(this.m22, _t24, Math.fma(this.m20, _t27, this.m21 * _t18));
-        float _buf7 = Math.fma(this.m22, _t19, Math.fma(this.m20, _t25, this.m21 * _t28));
-        float _buf8 = Math.fma(this.m22, _t29, Math.fma(this.m20, _t20, this.m21 * _t26));
-        d.m23 = Math.fma(this.m20, _t39, Math.fma(this.m21, _t40, Math.fma(this.m22, _t41, this.m23)));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m10 = _buf3;
-        d.m11 = _buf4;
-        d.m12 = _buf5;
-        d.m20 = _buf6;
-        d.m21 = _buf7;
-        d.m22 = _buf8;
-        d.properties = Joml.BIT_ORTHOGONAL;
-        return d;
+        rotateAround_general_s22f129e0_c0(_dst, _r0, _t24, _r1, _t27, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateAround_general_s22f129e0_c1(_dst, _r0, _t19, _r1, _t25, _r2, _t28, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateAround_general_s22f129e0_c2(_dst, _r0, _t29, _r1, _t20, _r2, _t26, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateAround_general_s22f129e0_c3(_dst, _r1, _t39, _r2, _t40, _r0, _t41, _r3, _r5, _r6, _r4, _r7, _r9, _r10, _r8, _r11);
     }
 
 
@@ -25830,6 +27592,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateAround_general(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = -rotY;
         float _t2 = -rotX;
         float _t3 = -pivotZ;
@@ -25842,38 +27616,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t11 = rotZ * _t7;
         float _t16 = Math.fma(-rotZ, _t7, 1.0f);
         float _t18 = Math.fma(rotY, _t5, _t9);
-        float _t19 = Math.fma(rotZ, _t6, _t10);
-        float _t20 = Math.fma(rotZ, _t5, _t8);
-        float _t24 = Math.fma(rotZ, _t5, -_t8);
-        float _t25 = Math.fma(rotY, _t5, -_t9);
-        float _t26 = Math.fma(rotZ, _t6, -_t10);
-        float _t27 = Math.fma(_t0, _t6, _t16);
-        float _t28 = Math.fma(_t2, _t5, _t16);
-        float _t29 = Math.fma(_t2, _t5, Math.fma(_t0, _t6, 1.0f));
-        float _t39 = Math.fma(_t3, _t20, Math.fma(pivotX, Math.fma(rotY, _t6, _t11), -(pivotY * _t25)));
-        float _t40 = Math.fma(_t3, _t26, Math.fma(pivotY, Math.fma(rotX, _t5, _t11), -(pivotX * _t18)));
-        float _t41 = Math.fma(-pivotY, _t19, Math.fma(pivotZ, Math.fma(rotX, _t5, rotY * _t6), -(pivotX * _t24)));
-        float _buf0 = Math.fma(this.m02, _t24, Math.fma(this.m00, _t27, this.m01 * _t18));
-        float _buf1 = Math.fma(this.m02, _t19, Math.fma(this.m00, _t25, this.m01 * _t28));
-        float _buf2 = Math.fma(this.m02, _t29, Math.fma(this.m00, _t20, this.m01 * _t26));
-        d.m03 = Math.fma(this.m00, _t39, Math.fma(this.m01, _t40, Math.fma(this.m02, _t41, this.m03)));
-        float _buf3 = Math.fma(this.m12, _t24, Math.fma(this.m10, _t27, this.m11 * _t18));
-        float _buf4 = Math.fma(this.m12, _t19, Math.fma(this.m10, _t25, this.m11 * _t28));
-        float _buf5 = Math.fma(this.m12, _t29, Math.fma(this.m10, _t20, this.m11 * _t26));
-        d.m13 = Math.fma(this.m10, _t39, Math.fma(this.m11, _t40, Math.fma(this.m12, _t41, this.m13)));
-        float _buf6 = Math.fma(this.m22, _t24, Math.fma(this.m20, _t27, this.m21 * _t18));
-        float _buf7 = Math.fma(this.m22, _t19, Math.fma(this.m20, _t25, this.m21 * _t28));
-        float _buf8 = Math.fma(this.m22, _t29, Math.fma(this.m20, _t20, this.m21 * _t26));
-        d.m23 = Math.fma(this.m20, _t39, Math.fma(this.m21, _t40, Math.fma(this.m22, _t41, this.m23)));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m10 = _buf3;
-        d.m11 = _buf4;
-        d.m12 = _buf5;
-        d.m20 = _buf6;
-        d.m21 = _buf7;
-        d.m22 = _buf8;
+        rotateAround_general_s22f129e0_tail(d, rotZ, _t6, _t10, _t5, _t8, rotY, _t9, _t0, _t16, _t2, _t3, pivotX, _t11, pivotY, rotX, _t18, pivotZ, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -25949,6 +27692,53 @@ public class Float3x4Impl implements Float3x4 {
         return rotateAround_general(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, this);
     }
 
+    /** Private column 0 of {@code rotateAround}: computes and stores it; reached only through it. */
+    private void rotateAround_s4faf553_c0(Double3x4Impl _dst, float _r0, float _t24, float _r1, float _t27, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t24, Math.fma(_r1, _t27, _r2 * _t18));
+        _dst.m10 = Math.fma(_r4, _t24, Math.fma(_r5, _t27, _r6 * _t18));
+        _dst.m20 = Math.fma(_r8, _t24, Math.fma(_r9, _t27, _r10 * _t18));
+    }
+
+    /** Private column 1 of {@code rotateAround}: computes and stores it; reached only through it. */
+    private void rotateAround_s4faf553_c1(Double3x4Impl _dst, float _r0, float _t19, float _r1, float _t25, float _r2, float _t28, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r1, _t25, _r2 * _t28));
+        _dst.m11 = Math.fma(_r4, _t19, Math.fma(_r5, _t25, _r6 * _t28));
+        _dst.m21 = Math.fma(_r8, _t19, Math.fma(_r9, _t25, _r10 * _t28));
+    }
+
+    /** Private column 2 of {@code rotateAround}: computes and stores it; reached only through it. */
+    private void rotateAround_s4faf553_c2(Double3x4Impl _dst, float _r0, float _t29, float _r1, float _t20, float _r2, float _t26, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t29, Math.fma(_r1, _t20, _r2 * _t26));
+        _dst.m12 = Math.fma(_r4, _t29, Math.fma(_r5, _t20, _r6 * _t26));
+        _dst.m22 = Math.fma(_r8, _t29, Math.fma(_r9, _t20, _r10 * _t26));
+    }
+
+    /** Private column 3 of {@code rotateAround}: computes and stores it; reached only through it. */
+    private void rotateAround_s4faf553_c3(Double3x4Impl _dst, float _r1, float _t39, float _r2, float _t40, float _r0, float _t41, float _r3, float _r5, float _r6, float _r4, float _r7, float _r9, float _r10, float _r8, float _r11) {
+        _dst.m03 = Math.fma(_r1, _t39, Math.fma(_r2, _t40, Math.fma(_r0, _t41, _r3)));
+        _dst.m13 = Math.fma(_r5, _t39, Math.fma(_r6, _t40, Math.fma(_r4, _t41, _r7)));
+        _dst.m23 = Math.fma(_r9, _t39, Math.fma(_r10, _t40, Math.fma(_r8, _t41, _r11)));
+    }
+
+    /** Private tail of {@code rotateAround}; reached only through it. */
+    private void rotateAround_s4faf553_tail(Double3x4Impl _dst, float rotZ, float _t6, float _t10, float _t5, float _t8, float rotY, float _t9, float _t0, float _t16, float _t2, float _t3, float pivotX, float _t11, float pivotY, float rotX, float _t18, float pivotZ, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(rotZ, _t6, _t10);
+        float _t20 = Math.fma(rotZ, _t5, _t8);
+        float _t24 = Math.fma(rotZ, _t5, -_t8);
+        float _t25 = Math.fma(rotY, _t5, -_t9);
+        float _t26 = Math.fma(rotZ, _t6, -_t10);
+        float _t27 = Math.fma(_t0, _t6, _t16);
+        float _t28 = Math.fma(_t2, _t5, _t16);
+        float _t29 = Math.fma(_t2, _t5, Math.fma(_t0, _t6, 1.0f));
+        float _t39 = Math.fma(_t3, _t20, Math.fma(pivotX, Math.fma(rotY, _t6, _t11), -(pivotY * _t25)));
+        float _t40 = Math.fma(_t3, _t26, Math.fma(pivotY, Math.fma(rotX, _t5, _t11), -(pivotX * _t18)));
+        float _t41 = Math.fma(-pivotY, _t19, Math.fma(pivotZ, Math.fma(rotX, _t5, rotY * _t6), -(pivotX * _t24)));
+        rotateAround_s4faf553_c0(_dst, _r0, _t24, _r1, _t27, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateAround_s4faf553_c1(_dst, _r0, _t19, _r1, _t25, _r2, _t28, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateAround_s4faf553_c2(_dst, _r0, _t29, _r1, _t20, _r2, _t26, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateAround_s4faf553_c3(_dst, _r1, _t39, _r2, _t40, _r0, _t41, _r3, _r5, _r6, _r4, _r7, _r9, _r10, _r8, _r11);
+    }
+
 
     /**
      * Apply the rotation ({@code rotX}, {@code rotY}, {@code rotZ}, {@code rotW}) about the pivot
@@ -25982,6 +27772,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 rotateAround(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = -rotY;
         float _t2 = -rotX;
         float _t3 = -pivotZ;
@@ -25994,38 +27796,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t11 = rotZ * _t7;
         float _t16 = Math.fma(-rotZ, _t7, 1.0f);
         float _t18 = Math.fma(rotY, _t5, _t9);
-        float _t19 = Math.fma(rotZ, _t6, _t10);
-        float _t20 = Math.fma(rotZ, _t5, _t8);
-        float _t24 = Math.fma(rotZ, _t5, -_t8);
-        float _t25 = Math.fma(rotY, _t5, -_t9);
-        float _t26 = Math.fma(rotZ, _t6, -_t10);
-        float _t27 = Math.fma(_t0, _t6, _t16);
-        float _t28 = Math.fma(_t2, _t5, _t16);
-        float _t29 = Math.fma(_t2, _t5, Math.fma(_t0, _t6, 1.0f));
-        float _t39 = Math.fma(_t3, _t20, Math.fma(pivotX, Math.fma(rotY, _t6, _t11), -(pivotY * _t25)));
-        float _t40 = Math.fma(_t3, _t26, Math.fma(pivotY, Math.fma(rotX, _t5, _t11), -(pivotX * _t18)));
-        float _t41 = Math.fma(-pivotY, _t19, Math.fma(pivotZ, Math.fma(rotX, _t5, rotY * _t6), -(pivotX * _t24)));
-        float _buf0 = Math.fma(this.m02, _t24, Math.fma(this.m00, _t27, this.m01 * _t18));
-        float _buf1 = Math.fma(this.m02, _t19, Math.fma(this.m00, _t25, this.m01 * _t28));
-        float _buf2 = Math.fma(this.m02, _t29, Math.fma(this.m00, _t20, this.m01 * _t26));
-        d.m03 = Math.fma(this.m00, _t39, Math.fma(this.m01, _t40, Math.fma(this.m02, _t41, this.m03)));
-        float _buf3 = Math.fma(this.m12, _t24, Math.fma(this.m10, _t27, this.m11 * _t18));
-        float _buf4 = Math.fma(this.m12, _t19, Math.fma(this.m10, _t25, this.m11 * _t28));
-        float _buf5 = Math.fma(this.m12, _t29, Math.fma(this.m10, _t20, this.m11 * _t26));
-        d.m13 = Math.fma(this.m10, _t39, Math.fma(this.m11, _t40, Math.fma(this.m12, _t41, this.m13)));
-        float _buf6 = Math.fma(this.m22, _t24, Math.fma(this.m20, _t27, this.m21 * _t18));
-        float _buf7 = Math.fma(this.m22, _t19, Math.fma(this.m20, _t25, this.m21 * _t28));
-        float _buf8 = Math.fma(this.m22, _t29, Math.fma(this.m20, _t20, this.m21 * _t26));
-        d.m23 = Math.fma(this.m20, _t39, Math.fma(this.m21, _t40, Math.fma(this.m22, _t41, this.m23)));
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m10 = _buf3;
-        d.m11 = _buf4;
-        d.m12 = _buf5;
-        d.m20 = _buf6;
-        d.m21 = _buf7;
-        d.m22 = _buf8;
+        rotateAround_s4faf553_tail(d, rotZ, _t6, _t10, _t5, _t8, rotY, _t9, _t0, _t16, _t2, _t3, pivotX, _t11, pivotY, rotX, _t18, pivotZ, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -26132,6 +27903,47 @@ public class Float3x4Impl implements Float3x4 {
         return d;
     }
 
+    /** Private column 0 of {@code rotateAxis_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateAxis_orthogonal_s32ee4ef2_c0(Float3x4Impl _dst, float _r0, float _t24, float _r1, float _t18, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t24, Math.fma(_r1, _t18, _r2 * _t21));
+        _dst.m10 = Math.fma(_r4, _t24, Math.fma(_r5, _t18, _r6 * _t21));
+        _dst.m20 = Math.fma(_r8, _t24, Math.fma(_r9, _t18, _r10 * _t21));
+    }
+
+    /** Private column 1 of {@code rotateAxis_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateAxis_orthogonal_s32ee4ef2_c1(Float3x4Impl _dst, float _r0, float _t22, float _r1, float _t25, float _r2, float _t19, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t22, Math.fma(_r1, _t25, _r2 * _t19));
+        _dst.m11 = Math.fma(_r4, _t22, Math.fma(_r5, _t25, _r6 * _t19));
+        _dst.m21 = Math.fma(_r8, _t22, Math.fma(_r9, _t25, _r10 * _t19));
+    }
+
+    /** Private column 2 of {@code rotateAxis_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateAxis_orthogonal_s32ee4ef2_c2(Float3x4Impl _dst, float _r0, float _t20, float _r1, float _t23, float _r2, float _t26, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t20, Math.fma(_r1, _t23, _r2 * _t26));
+        _dst.m12 = Math.fma(_r4, _t20, Math.fma(_r5, _t23, _r6 * _t26));
+        _dst.m22 = Math.fma(_r8, _t20, Math.fma(_r9, _t23, _r10 * _t26));
+    }
+
+    /** Private column 3 of {@code rotateAxis_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateAxis_orthogonal_s32ee4ef2_c3(Float3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code rotateAxis_orthogonal}; reached only through it. */
+    private void rotateAxis_orthogonal_s32ee4ef2_tail(Float3x4Impl _dst, float axisX, float _t1, float _t2, float _t7, float axisY, float _t3, float _t6, float axisZ, float _r0, float _r1, float _t18, float _r2, float _t21, float _t19, float _t20, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t22 = Math.fma(axisX, _t1, _t2 * _t7);
+        float _t23 = Math.fma(axisY, _t1, _t2 * _t3);
+        float _t24 = Math.fma(_t2, _t3, -(axisY * _t1));
+        float _t25 = Math.fma(_t2, _t6, -(axisZ * _t1));
+        float _t26 = Math.fma(_t2, _t7, -(axisX * _t1));
+        rotateAxis_orthogonal_s32ee4ef2_c0(_dst, _r0, _t24, _r1, _t18, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateAxis_orthogonal_s32ee4ef2_c1(_dst, _r0, _t22, _r1, _t25, _r2, _t19, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateAxis_orthogonal_s32ee4ef2_c2(_dst, _r0, _t20, _r1, _t23, _r2, _t26, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateAxis_orthogonal_s32ee4ef2_c3(_dst, _r3, _r7, _r11);
+    }
+
 
     /**
      * Private body of {@code rotateAxis}, specialized by runtime matrix properties; reached only
@@ -26139,6 +27951,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateAxis_orthogonal(float angle, float axisX, float axisY, float axisZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
         float _t2 = 1.0f - _t0;
@@ -26149,31 +27973,50 @@ public class Float3x4Impl implements Float3x4 {
         float _t19 = Math.fma(_t2, axisY * axisY, _t0);
         float _t20 = Math.fma(_t2, axisZ * axisZ, _t0);
         float _t21 = Math.fma(axisZ, _t1, _t2 * _t6);
+        rotateAxis_orthogonal_s32ee4ef2_tail(d, axisX, _t1, _t2, _t7, axisY, _t3, _t6, axisZ, _r0, _r1, _t18, _r2, _t21, _t19, _t20, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+    /** Private column 0 of {@code rotateAxis_general}: computes and stores it; reached only through it. */
+    private void rotateAxis_general_s32ee4ef2_c0(Float3x4Impl _dst, float _r0, float _t24, float _r1, float _t18, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t24, Math.fma(_r1, _t18, _r2 * _t21));
+        _dst.m10 = Math.fma(_r4, _t24, Math.fma(_r5, _t18, _r6 * _t21));
+        _dst.m20 = Math.fma(_r8, _t24, Math.fma(_r9, _t18, _r10 * _t21));
+    }
+
+    /** Private column 1 of {@code rotateAxis_general}: computes and stores it; reached only through it. */
+    private void rotateAxis_general_s32ee4ef2_c1(Float3x4Impl _dst, float _r0, float _t22, float _r1, float _t25, float _r2, float _t19, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t22, Math.fma(_r1, _t25, _r2 * _t19));
+        _dst.m11 = Math.fma(_r4, _t22, Math.fma(_r5, _t25, _r6 * _t19));
+        _dst.m21 = Math.fma(_r8, _t22, Math.fma(_r9, _t25, _r10 * _t19));
+    }
+
+    /** Private column 2 of {@code rotateAxis_general}: computes and stores it; reached only through it. */
+    private void rotateAxis_general_s32ee4ef2_c2(Float3x4Impl _dst, float _r0, float _t20, float _r1, float _t23, float _r2, float _t26, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t20, Math.fma(_r1, _t23, _r2 * _t26));
+        _dst.m12 = Math.fma(_r4, _t20, Math.fma(_r5, _t23, _r6 * _t26));
+        _dst.m22 = Math.fma(_r8, _t20, Math.fma(_r9, _t23, _r10 * _t26));
+    }
+
+    /** Private column 3 of {@code rotateAxis_general}: computes and stores it; reached only through it. */
+    private void rotateAxis_general_s32ee4ef2_c3(Float3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code rotateAxis_general}; reached only through it. */
+    private void rotateAxis_general_s32ee4ef2_tail(Float3x4Impl _dst, float axisX, float _t1, float _t2, float _t7, float axisY, float _t3, float _t6, float axisZ, float _r0, float _r1, float _t18, float _r2, float _t21, float _t19, float _t20, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
         float _t22 = Math.fma(axisX, _t1, _t2 * _t7);
         float _t23 = Math.fma(axisY, _t1, _t2 * _t3);
         float _t24 = Math.fma(_t2, _t3, -(axisY * _t1));
         float _t25 = Math.fma(_t2, _t6, -(axisZ * _t1));
         float _t26 = Math.fma(_t2, _t7, -(axisX * _t1));
-        float _buf0 = Math.fma(this.m02, _t24, Math.fma(this.m00, _t18, this.m01 * _t21));
-        float _buf1 = Math.fma(this.m02, _t22, Math.fma(this.m00, _t25, this.m01 * _t19));
-        d.m02 = Math.fma(this.m02, _t20, Math.fma(this.m00, _t23, this.m01 * _t26));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(this.m12, _t24, Math.fma(this.m10, _t18, this.m11 * _t21));
-        float _buf3 = Math.fma(this.m12, _t22, Math.fma(this.m10, _t25, this.m11 * _t19));
-        d.m12 = Math.fma(this.m12, _t20, Math.fma(this.m10, _t23, this.m11 * _t26));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(this.m22, _t24, Math.fma(this.m20, _t18, this.m21 * _t21));
-        float _buf5 = Math.fma(this.m22, _t22, Math.fma(this.m20, _t25, this.m21 * _t19));
-        d.m22 = Math.fma(this.m22, _t20, Math.fma(this.m20, _t23, this.m21 * _t26));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
-        d.properties = Joml.BIT_ORTHOGONAL;
-        return d;
+        rotateAxis_general_s32ee4ef2_c0(_dst, _r0, _t24, _r1, _t18, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateAxis_general_s32ee4ef2_c1(_dst, _r0, _t22, _r1, _t25, _r2, _t19, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateAxis_general_s32ee4ef2_c2(_dst, _r0, _t20, _r1, _t23, _r2, _t26, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateAxis_general_s32ee4ef2_c3(_dst, _r3, _r7, _r11);
     }
 
 
@@ -26183,6 +28026,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateAxis_general(float angle, float axisX, float axisY, float axisZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
         float _t2 = 1.0f - _t0;
@@ -26193,29 +28048,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t19 = Math.fma(_t2, axisY * axisY, _t0);
         float _t20 = Math.fma(_t2, axisZ * axisZ, _t0);
         float _t21 = Math.fma(axisZ, _t1, _t2 * _t6);
-        float _t22 = Math.fma(axisX, _t1, _t2 * _t7);
-        float _t23 = Math.fma(axisY, _t1, _t2 * _t3);
-        float _t24 = Math.fma(_t2, _t3, -(axisY * _t1));
-        float _t25 = Math.fma(_t2, _t6, -(axisZ * _t1));
-        float _t26 = Math.fma(_t2, _t7, -(axisX * _t1));
-        float _buf0 = Math.fma(this.m02, _t24, Math.fma(this.m00, _t18, this.m01 * _t21));
-        float _buf1 = Math.fma(this.m02, _t22, Math.fma(this.m00, _t25, this.m01 * _t19));
-        d.m02 = Math.fma(this.m02, _t20, Math.fma(this.m00, _t23, this.m01 * _t26));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(this.m12, _t24, Math.fma(this.m10, _t18, this.m11 * _t21));
-        float _buf3 = Math.fma(this.m12, _t22, Math.fma(this.m10, _t25, this.m11 * _t19));
-        d.m12 = Math.fma(this.m12, _t20, Math.fma(this.m10, _t23, this.m11 * _t26));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(this.m22, _t24, Math.fma(this.m20, _t18, this.m21 * _t21));
-        float _buf5 = Math.fma(this.m22, _t22, Math.fma(this.m20, _t25, this.m21 * _t19));
-        d.m22 = Math.fma(this.m22, _t20, Math.fma(this.m20, _t23, this.m21 * _t26));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        rotateAxis_general_s32ee4ef2_tail(d, axisX, _t1, _t2, _t7, axisY, _t3, _t6, axisZ, _r0, _r1, _t18, _r2, _t21, _t19, _t20, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -26280,6 +28113,47 @@ public class Float3x4Impl implements Float3x4 {
         return rotateAxis_general(angle, axisX, axisY, axisZ, this);
     }
 
+    /** Private column 0 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s74a27281_c0(Double3x4Impl _dst, float _r0, float _t24, float _r1, float _t18, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t24, Math.fma(_r1, _t18, _r2 * _t21));
+        _dst.m10 = Math.fma(_r4, _t24, Math.fma(_r5, _t18, _r6 * _t21));
+        _dst.m20 = Math.fma(_r8, _t24, Math.fma(_r9, _t18, _r10 * _t21));
+    }
+
+    /** Private column 1 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s74a27281_c1(Double3x4Impl _dst, float _r0, float _t22, float _r1, float _t25, float _r2, float _t19, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t22, Math.fma(_r1, _t25, _r2 * _t19));
+        _dst.m11 = Math.fma(_r4, _t22, Math.fma(_r5, _t25, _r6 * _t19));
+        _dst.m21 = Math.fma(_r8, _t22, Math.fma(_r9, _t25, _r10 * _t19));
+    }
+
+    /** Private column 2 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s74a27281_c2(Double3x4Impl _dst, float _r0, float _t20, float _r1, float _t23, float _r2, float _t26, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t20, Math.fma(_r1, _t23, _r2 * _t26));
+        _dst.m12 = Math.fma(_r4, _t20, Math.fma(_r5, _t23, _r6 * _t26));
+        _dst.m22 = Math.fma(_r8, _t20, Math.fma(_r9, _t23, _r10 * _t26));
+    }
+
+    /** Private column 3 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s74a27281_c3(Double3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code rotateAxis}; reached only through it. */
+    private void rotateAxis_s74a27281_tail(Double3x4Impl _dst, float axisX, float _t1, float _t2, float _t7, float axisY, float _t3, float _t6, float axisZ, float _r0, float _r1, float _t18, float _r2, float _t21, float _t19, float _t20, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t22 = Math.fma(axisX, _t1, _t2 * _t7);
+        float _t23 = Math.fma(axisY, _t1, _t2 * _t3);
+        float _t24 = Math.fma(_t2, _t3, -(axisY * _t1));
+        float _t25 = Math.fma(_t2, _t6, -(axisZ * _t1));
+        float _t26 = Math.fma(_t2, _t7, -(axisX * _t1));
+        rotateAxis_s74a27281_c0(_dst, _r0, _t24, _r1, _t18, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateAxis_s74a27281_c1(_dst, _r0, _t22, _r1, _t25, _r2, _t19, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateAxis_s74a27281_c2(_dst, _r0, _t20, _r1, _t23, _r2, _t26, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateAxis_s74a27281_c3(_dst, _r3, _r7, _r11);
+    }
+
 
     /**
      * Apply a rotation of {@code angle} radians about the axis ({@code axisX}, {@code axisY},
@@ -26307,6 +28181,18 @@ public class Float3x4Impl implements Float3x4 {
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         Double3x4Impl d = (Double3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
         float _t2 = 1.0f - _t0;
@@ -26317,29 +28203,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t19 = Math.fma(_t2, axisY * axisY, _t0);
         float _t20 = Math.fma(_t2, axisZ * axisZ, _t0);
         float _t21 = Math.fma(axisZ, _t1, _t2 * _t6);
-        float _t22 = Math.fma(axisX, _t1, _t2 * _t7);
-        float _t23 = Math.fma(axisY, _t1, _t2 * _t3);
-        float _t24 = Math.fma(_t2, _t3, -(axisY * _t1));
-        float _t25 = Math.fma(_t2, _t6, -(axisZ * _t1));
-        float _t26 = Math.fma(_t2, _t7, -(axisX * _t1));
-        float _buf0 = Math.fma(this.m02, _t24, Math.fma(this.m00, _t18, this.m01 * _t21));
-        float _buf1 = Math.fma(this.m02, _t22, Math.fma(this.m00, _t25, this.m01 * _t19));
-        d.m02 = Math.fma(this.m02, _t20, Math.fma(this.m00, _t23, this.m01 * _t26));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(this.m12, _t24, Math.fma(this.m10, _t18, this.m11 * _t21));
-        float _buf3 = Math.fma(this.m12, _t22, Math.fma(this.m10, _t25, this.m11 * _t19));
-        d.m12 = Math.fma(this.m12, _t20, Math.fma(this.m10, _t23, this.m11 * _t26));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(this.m22, _t24, Math.fma(this.m20, _t18, this.m21 * _t21));
-        float _buf5 = Math.fma(this.m22, _t22, Math.fma(this.m20, _t25, this.m21 * _t19));
-        d.m22 = Math.fma(this.m22, _t20, Math.fma(this.m20, _t23, this.m21 * _t26));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        rotateAxis_s74a27281_tail(d, axisX, _t1, _t2, _t7, axisY, _t3, _t6, axisZ, _r0, _r1, _t18, _r2, _t21, _t19, _t20, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -26446,6 +28310,48 @@ public class Float3x4Impl implements Float3x4 {
         return d;
     }
 
+    /** Private column 0 of {@code rotateQuat_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateQuat_orthogonal_s30bb788b_c0(Float3x4Impl _dst, float _r0, float _t17, float _r1, float _t20, float _r2, float _t14, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t17, Math.fma(_r1, _t20, _r2 * _t14));
+        _dst.m10 = Math.fma(_r4, _t17, Math.fma(_r5, _t20, _r6 * _t14));
+        _dst.m20 = Math.fma(_r8, _t17, Math.fma(_r9, _t20, _r10 * _t14));
+    }
+
+    /** Private column 1 of {@code rotateQuat_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateQuat_orthogonal_s30bb788b_c1(Float3x4Impl _dst, float _r0, float _t15, float _r1, float _t18, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t15, Math.fma(_r1, _t18, _r2 * _t21));
+        _dst.m11 = Math.fma(_r4, _t15, Math.fma(_r5, _t18, _r6 * _t21));
+        _dst.m21 = Math.fma(_r8, _t15, Math.fma(_r9, _t18, _r10 * _t21));
+    }
+
+    /** Private column 2 of {@code rotateQuat_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateQuat_orthogonal_s30bb788b_c2(Float3x4Impl _dst, float _r0, float _t22, float _r1, float _t16, float _r2, float _t19, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t22, Math.fma(_r1, _t16, _r2 * _t19));
+        _dst.m12 = Math.fma(_r4, _t22, Math.fma(_r5, _t16, _r6 * _t19));
+        _dst.m22 = Math.fma(_r8, _t22, Math.fma(_r9, _t16, _r10 * _t19));
+    }
+
+    /** Private column 3 of {@code rotateQuat_orthogonal}: computes and stores it; reached only through it. */
+    private void rotateQuat_orthogonal_s30bb788b_c3(Float3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code rotateQuat_orthogonal}; reached only through it. */
+    private void rotateQuat_orthogonal_s30bb788b_tail(Float3x4Impl _dst, float qZ, float _t3, float _t6, float qY, float _t7, float _t4, float _t8, float _t0, float _t12, float _t2, float _r0, float _r1, float _r2, float _t14, float _t15, float _t16, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t17 = Math.fma(qZ, _t3, -_t6);
+        float _t18 = Math.fma(qY, _t3, -_t7);
+        float _t19 = Math.fma(qZ, _t4, -_t8);
+        float _t20 = Math.fma(_t0, _t4, _t12);
+        float _t21 = Math.fma(_t2, _t3, _t12);
+        float _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f));
+        rotateQuat_orthogonal_s30bb788b_c0(_dst, _r0, _t17, _r1, _t20, _r2, _t14, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateQuat_orthogonal_s30bb788b_c1(_dst, _r0, _t15, _r1, _t18, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateQuat_orthogonal_s30bb788b_c2(_dst, _r0, _t22, _r1, _t16, _r2, _t19, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateQuat_orthogonal_s30bb788b_c3(_dst, _r3, _r7, _r11);
+    }
+
 
     /**
      * Private body of {@code rotateQuat}, specialized by runtime matrix properties; reached only
@@ -26453,6 +28359,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateQuat_orthogonal(float qX, float qY, float qZ, float qW, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = -qY;
         float _t2 = -qX;
         float _t3 = qX + qX;
@@ -26465,32 +28383,51 @@ public class Float3x4Impl implements Float3x4 {
         float _t14 = Math.fma(qY, _t3, _t7);
         float _t15 = Math.fma(qZ, _t4, _t8);
         float _t16 = Math.fma(qZ, _t3, _t6);
+        rotateQuat_orthogonal_s30bb788b_tail(d, qZ, _t3, _t6, qY, _t7, _t4, _t8, _t0, _t12, _t2, _r0, _r1, _r2, _t14, _t15, _t16, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+    /** Private column 0 of {@code rotateQuat_general}: computes and stores it; reached only through it. */
+    private void rotateQuat_general_s30bb788b_c0(Float3x4Impl _dst, float _r0, float _t17, float _r1, float _t20, float _r2, float _t14, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t17, Math.fma(_r1, _t20, _r2 * _t14));
+        _dst.m10 = Math.fma(_r4, _t17, Math.fma(_r5, _t20, _r6 * _t14));
+        _dst.m20 = Math.fma(_r8, _t17, Math.fma(_r9, _t20, _r10 * _t14));
+    }
+
+    /** Private column 1 of {@code rotateQuat_general}: computes and stores it; reached only through it. */
+    private void rotateQuat_general_s30bb788b_c1(Float3x4Impl _dst, float _r0, float _t15, float _r1, float _t18, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t15, Math.fma(_r1, _t18, _r2 * _t21));
+        _dst.m11 = Math.fma(_r4, _t15, Math.fma(_r5, _t18, _r6 * _t21));
+        _dst.m21 = Math.fma(_r8, _t15, Math.fma(_r9, _t18, _r10 * _t21));
+    }
+
+    /** Private column 2 of {@code rotateQuat_general}: computes and stores it; reached only through it. */
+    private void rotateQuat_general_s30bb788b_c2(Float3x4Impl _dst, float _r0, float _t22, float _r1, float _t16, float _r2, float _t19, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t22, Math.fma(_r1, _t16, _r2 * _t19));
+        _dst.m12 = Math.fma(_r4, _t22, Math.fma(_r5, _t16, _r6 * _t19));
+        _dst.m22 = Math.fma(_r8, _t22, Math.fma(_r9, _t16, _r10 * _t19));
+    }
+
+    /** Private column 3 of {@code rotateQuat_general}: computes and stores it; reached only through it. */
+    private void rotateQuat_general_s30bb788b_c3(Float3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code rotateQuat_general}; reached only through it. */
+    private void rotateQuat_general_s30bb788b_tail(Float3x4Impl _dst, float qZ, float _t3, float _t6, float qY, float _t7, float _t4, float _t8, float _t0, float _t12, float _t2, float _r0, float _r1, float _r2, float _t14, float _t15, float _t16, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
         float _t17 = Math.fma(qZ, _t3, -_t6);
         float _t18 = Math.fma(qY, _t3, -_t7);
         float _t19 = Math.fma(qZ, _t4, -_t8);
         float _t20 = Math.fma(_t0, _t4, _t12);
         float _t21 = Math.fma(_t2, _t3, _t12);
         float _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f));
-        float _buf0 = Math.fma(this.m02, _t17, Math.fma(this.m00, _t20, this.m01 * _t14));
-        float _buf1 = Math.fma(this.m02, _t15, Math.fma(this.m00, _t18, this.m01 * _t21));
-        d.m02 = Math.fma(this.m02, _t22, Math.fma(this.m00, _t16, this.m01 * _t19));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(this.m12, _t17, Math.fma(this.m10, _t20, this.m11 * _t14));
-        float _buf3 = Math.fma(this.m12, _t15, Math.fma(this.m10, _t18, this.m11 * _t21));
-        d.m12 = Math.fma(this.m12, _t22, Math.fma(this.m10, _t16, this.m11 * _t19));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(this.m22, _t17, Math.fma(this.m20, _t20, this.m21 * _t14));
-        float _buf5 = Math.fma(this.m22, _t15, Math.fma(this.m20, _t18, this.m21 * _t21));
-        d.m22 = Math.fma(this.m22, _t22, Math.fma(this.m20, _t16, this.m21 * _t19));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
-        d.properties = Joml.BIT_ORTHOGONAL;
-        return d;
+        rotateQuat_general_s30bb788b_c0(_dst, _r0, _t17, _r1, _t20, _r2, _t14, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateQuat_general_s30bb788b_c1(_dst, _r0, _t15, _r1, _t18, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateQuat_general_s30bb788b_c2(_dst, _r0, _t22, _r1, _t16, _r2, _t19, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateQuat_general_s30bb788b_c3(_dst, _r3, _r7, _r11);
     }
 
 
@@ -26500,6 +28437,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateQuat_general(float qX, float qY, float qZ, float qW, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = -qY;
         float _t2 = -qX;
         float _t3 = qX + qX;
@@ -26512,30 +28461,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t14 = Math.fma(qY, _t3, _t7);
         float _t15 = Math.fma(qZ, _t4, _t8);
         float _t16 = Math.fma(qZ, _t3, _t6);
-        float _t17 = Math.fma(qZ, _t3, -_t6);
-        float _t18 = Math.fma(qY, _t3, -_t7);
-        float _t19 = Math.fma(qZ, _t4, -_t8);
-        float _t20 = Math.fma(_t0, _t4, _t12);
-        float _t21 = Math.fma(_t2, _t3, _t12);
-        float _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f));
-        float _buf0 = Math.fma(this.m02, _t17, Math.fma(this.m00, _t20, this.m01 * _t14));
-        float _buf1 = Math.fma(this.m02, _t15, Math.fma(this.m00, _t18, this.m01 * _t21));
-        d.m02 = Math.fma(this.m02, _t22, Math.fma(this.m00, _t16, this.m01 * _t19));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(this.m12, _t17, Math.fma(this.m10, _t20, this.m11 * _t14));
-        float _buf3 = Math.fma(this.m12, _t15, Math.fma(this.m10, _t18, this.m11 * _t21));
-        d.m12 = Math.fma(this.m12, _t22, Math.fma(this.m10, _t16, this.m11 * _t19));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(this.m22, _t17, Math.fma(this.m20, _t20, this.m21 * _t14));
-        float _buf5 = Math.fma(this.m22, _t15, Math.fma(this.m20, _t18, this.m21 * _t21));
-        d.m22 = Math.fma(this.m22, _t22, Math.fma(this.m20, _t16, this.m21 * _t19));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        rotateQuat_general_s30bb788b_tail(d, qZ, _t3, _t6, qY, _t7, _t4, _t8, _t0, _t12, _t2, _r0, _r1, _r2, _t14, _t15, _t16, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -26596,6 +28522,48 @@ public class Float3x4Impl implements Float3x4 {
         return rotateQuat_general(qX, qY, qZ, qW, this);
     }
 
+    /** Private column 0 of {@code rotateQuat}: computes and stores it; reached only through it. */
+    private void rotateQuat_s307a7c08_c0(Double3x4Impl _dst, float _r0, float _t17, float _r1, float _t20, float _r2, float _t14, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t17, Math.fma(_r1, _t20, _r2 * _t14));
+        _dst.m10 = Math.fma(_r4, _t17, Math.fma(_r5, _t20, _r6 * _t14));
+        _dst.m20 = Math.fma(_r8, _t17, Math.fma(_r9, _t20, _r10 * _t14));
+    }
+
+    /** Private column 1 of {@code rotateQuat}: computes and stores it; reached only through it. */
+    private void rotateQuat_s307a7c08_c1(Double3x4Impl _dst, float _r0, float _t15, float _r1, float _t18, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t15, Math.fma(_r1, _t18, _r2 * _t21));
+        _dst.m11 = Math.fma(_r4, _t15, Math.fma(_r5, _t18, _r6 * _t21));
+        _dst.m21 = Math.fma(_r8, _t15, Math.fma(_r9, _t18, _r10 * _t21));
+    }
+
+    /** Private column 2 of {@code rotateQuat}: computes and stores it; reached only through it. */
+    private void rotateQuat_s307a7c08_c2(Double3x4Impl _dst, float _r0, float _t22, float _r1, float _t16, float _r2, float _t19, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t22, Math.fma(_r1, _t16, _r2 * _t19));
+        _dst.m12 = Math.fma(_r4, _t22, Math.fma(_r5, _t16, _r6 * _t19));
+        _dst.m22 = Math.fma(_r8, _t22, Math.fma(_r9, _t16, _r10 * _t19));
+    }
+
+    /** Private column 3 of {@code rotateQuat}: computes and stores it; reached only through it. */
+    private void rotateQuat_s307a7c08_c3(Double3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code rotateQuat}; reached only through it. */
+    private void rotateQuat_s307a7c08_tail(Double3x4Impl _dst, float qZ, float _t3, float _t6, float qY, float _t7, float _t4, float _t8, float _t0, float _t12, float _t2, float _r0, float _r1, float _r2, float _t14, float _t15, float _t16, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t17 = Math.fma(qZ, _t3, -_t6);
+        float _t18 = Math.fma(qY, _t3, -_t7);
+        float _t19 = Math.fma(qZ, _t4, -_t8);
+        float _t20 = Math.fma(_t0, _t4, _t12);
+        float _t21 = Math.fma(_t2, _t3, _t12);
+        float _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f));
+        rotateQuat_s307a7c08_c0(_dst, _r0, _t17, _r1, _t20, _r2, _t14, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateQuat_s307a7c08_c1(_dst, _r0, _t15, _r1, _t18, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateQuat_s307a7c08_c2(_dst, _r0, _t22, _r1, _t16, _r2, _t19, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateQuat_s307a7c08_c3(_dst, _r3, _r7, _r11);
+    }
+
 
     /**
      * Apply the rotation represented by the quaternion ({@code qX}, {@code qY}, {@code qZ},
@@ -26621,6 +28589,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 rotateQuat(float qX, float qY, float qZ, float qW, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = -qY;
         float _t2 = -qX;
         float _t3 = qX + qX;
@@ -26633,30 +28613,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t14 = Math.fma(qY, _t3, _t7);
         float _t15 = Math.fma(qZ, _t4, _t8);
         float _t16 = Math.fma(qZ, _t3, _t6);
-        float _t17 = Math.fma(qZ, _t3, -_t6);
-        float _t18 = Math.fma(qY, _t3, -_t7);
-        float _t19 = Math.fma(qZ, _t4, -_t8);
-        float _t20 = Math.fma(_t0, _t4, _t12);
-        float _t21 = Math.fma(_t2, _t3, _t12);
-        float _t22 = Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f));
-        float _buf0 = Math.fma(this.m02, _t17, Math.fma(this.m00, _t20, this.m01 * _t14));
-        float _buf1 = Math.fma(this.m02, _t15, Math.fma(this.m00, _t18, this.m01 * _t21));
-        d.m02 = Math.fma(this.m02, _t22, Math.fma(this.m00, _t16, this.m01 * _t19));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(this.m12, _t17, Math.fma(this.m10, _t20, this.m11 * _t14));
-        float _buf3 = Math.fma(this.m12, _t15, Math.fma(this.m10, _t18, this.m11 * _t21));
-        d.m12 = Math.fma(this.m12, _t22, Math.fma(this.m10, _t16, this.m11 * _t19));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(this.m22, _t17, Math.fma(this.m20, _t20, this.m21 * _t14));
-        float _buf5 = Math.fma(this.m22, _t15, Math.fma(this.m20, _t18, this.m21 * _t21));
-        d.m22 = Math.fma(this.m22, _t22, Math.fma(this.m20, _t16, this.m21 * _t19));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        rotateQuat_s307a7c08_tail(d, qZ, _t3, _t6, qY, _t7, _t4, _t8, _t0, _t12, _t2, _r0, _r1, _r2, _t14, _t15, _t16, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -26977,6 +28934,45 @@ public class Float3x4Impl implements Float3x4 {
         return mapXZnY();
     }
 
+    /** Private column 0 of {@code rotateXYZ_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateXYZ_orthogonal_general_s1c0a609d_c0(Float3x4Impl _dst, float _r0, float _t20, float _r1, float _t7, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t7, _r2 * _t18));
+        _dst.m10 = Math.fma(_r4, _t20, Math.fma(_r5, _t7, _r6 * _t18));
+        _dst.m20 = Math.fma(_r8, _t20, Math.fma(_r9, _t7, _r10 * _t18));
+    }
+
+    /** Private column 1 of {@code rotateXYZ_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateXYZ_orthogonal_general_s1c0a609d_c1(Float3x4Impl _dst, float _r0, float _t19, float _r2, float _t21, float _r1, float _t11, float _r4, float _r6, float _r5, float _r8, float _r10, float _r9) {
+        _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r2, _t21, -(_r1 * _t11)));
+        _dst.m11 = Math.fma(_r4, _t19, Math.fma(_r6, _t21, -(_r5 * _t11)));
+        _dst.m21 = Math.fma(_r8, _t19, Math.fma(_r10, _t21, -(_r9 * _t11)));
+    }
+
+    /** Private column 2 of {@code rotateXYZ_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateXYZ_orthogonal_general_s1c0a609d_c2(Float3x4Impl _dst, float _r0, float _t12, float _r1, float _t2, float _r2, float _t13, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t12, Math.fma(_r1, _t2, -(_r2 * _t13)));
+        _dst.m12 = Math.fma(_r4, _t12, Math.fma(_r5, _t2, -(_r6 * _t13)));
+        _dst.m22 = Math.fma(_r8, _t12, Math.fma(_r9, _t2, -(_r10 * _t13)));
+    }
+
+    /** Private column 3 of {@code rotateXYZ_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateXYZ_orthogonal_general_s1c0a609d_c3(Float3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code rotateXYZ_orthogonal_general}; reached only through it. */
+    private void rotateXYZ_orthogonal_general_s1c0a609d_tail(Float3x4Impl _dst, float _t6, float _t1, float _t0, float _t4, float _t3, float _t8, float _r0, float _r1, float _t7, float _r2, float _t18, float _t11, float _t12, float _t2, float _t13, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t6, _t1, _t0 * _t4);
+        float _t20 = Math.fma(_t0, _t1, -(_t6 * _t4));
+        float _t21 = Math.fma(_t3, _t4, -(_t8 * _t1));
+        rotateXYZ_orthogonal_general_s1c0a609d_c0(_dst, _r0, _t20, _r1, _t7, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateXYZ_orthogonal_general_s1c0a609d_c1(_dst, _r0, _t19, _r2, _t21, _r1, _t11, _r4, _r6, _r5, _r8, _r10, _r9);
+        rotateXYZ_orthogonal_general_s1c0a609d_c2(_dst, _r0, _t12, _r1, _t2, _r2, _t13, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateXYZ_orthogonal_general_s1c0a609d_c3(_dst, _r3, _r7, _r11);
+    }
+
 
     /**
      * Private body of {@code rotateXYZ}, specialized by runtime matrix properties; reached only
@@ -26984,6 +28980,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateXYZ_orthogonal_general(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest, int _props) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleY);
@@ -26997,27 +29005,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t12 = _t3 * _t5;
         float _t13 = _t0 * _t5;
         float _t18 = Math.fma(_t8, _t4, _t1 * _t3);
-        float _t19 = Math.fma(_t6, _t1, _t0 * _t4);
-        float _t20 = Math.fma(_t0, _t1, -(_t6 * _t4));
-        float _t21 = Math.fma(_t3, _t4, -(_t8 * _t1));
-        float _buf0 = Math.fma(this.m02, _t20, Math.fma(this.m00, _t7, this.m01 * _t18));
-        float _buf1 = Math.fma(this.m02, _t19, Math.fma(this.m01, _t21, -(this.m00 * _t11)));
-        d.m02 = Math.fma(this.m02, _t12, Math.fma(this.m00, _t2, -(this.m01 * _t13)));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(this.m12, _t20, Math.fma(this.m10, _t7, this.m11 * _t18));
-        float _buf3 = Math.fma(this.m12, _t19, Math.fma(this.m11, _t21, -(this.m10 * _t11)));
-        d.m12 = Math.fma(this.m12, _t12, Math.fma(this.m10, _t2, -(this.m11 * _t13)));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(this.m22, _t20, Math.fma(this.m20, _t7, this.m21 * _t18));
-        float _buf5 = Math.fma(this.m22, _t19, Math.fma(this.m21, _t21, -(this.m20 * _t11)));
-        d.m22 = Math.fma(this.m22, _t12, Math.fma(this.m20, _t2, -(this.m21 * _t13)));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        rotateXYZ_orthogonal_general_s1c0a609d_tail(d, _t6, _t1, _t0, _t4, _t3, _t8, _r0, _r1, _t7, _r2, _t18, _t11, _t12, _t2, _t13, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = _props;
         return d;
     }
@@ -27158,6 +29146,45 @@ public class Float3x4Impl implements Float3x4 {
         return rotateXYZ_orthogonal_general(angleX, angleY, angleZ, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
     }
 
+    /** Private column 0 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_s1526c32c_c0(Double3x4Impl _dst, float _r0, float _t20, float _r1, float _t7, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t7, _r2 * _t18));
+        _dst.m10 = Math.fma(_r4, _t20, Math.fma(_r5, _t7, _r6 * _t18));
+        _dst.m20 = Math.fma(_r8, _t20, Math.fma(_r9, _t7, _r10 * _t18));
+    }
+
+    /** Private column 1 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_s1526c32c_c1(Double3x4Impl _dst, float _r0, float _t19, float _r2, float _t21, float _r1, float _t11, float _r4, float _r6, float _r5, float _r8, float _r10, float _r9) {
+        _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r2, _t21, -(_r1 * _t11)));
+        _dst.m11 = Math.fma(_r4, _t19, Math.fma(_r6, _t21, -(_r5 * _t11)));
+        _dst.m21 = Math.fma(_r8, _t19, Math.fma(_r10, _t21, -(_r9 * _t11)));
+    }
+
+    /** Private column 2 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_s1526c32c_c2(Double3x4Impl _dst, float _r0, float _t12, float _r1, float _t2, float _r2, float _t13, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t12, Math.fma(_r1, _t2, -(_r2 * _t13)));
+        _dst.m12 = Math.fma(_r4, _t12, Math.fma(_r5, _t2, -(_r6 * _t13)));
+        _dst.m22 = Math.fma(_r8, _t12, Math.fma(_r9, _t2, -(_r10 * _t13)));
+    }
+
+    /** Private column 3 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_s1526c32c_c3(Double3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code rotateXYZ}; reached only through it. */
+    private void rotateXYZ_s1526c32c_tail(Double3x4Impl _dst, float _t6, float _t1, float _t0, float _t4, float _t3, float _t8, float _r0, float _r1, float _t7, float _r2, float _t18, float _t11, float _t12, float _t2, float _t13, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t6, _t1, _t0 * _t4);
+        float _t20 = Math.fma(_t0, _t1, -(_t6 * _t4));
+        float _t21 = Math.fma(_t3, _t4, -(_t8 * _t1));
+        rotateXYZ_s1526c32c_c0(_dst, _r0, _t20, _r1, _t7, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateXYZ_s1526c32c_c1(_dst, _r0, _t19, _r2, _t21, _r1, _t11, _r4, _r6, _r5, _r8, _r10, _r9);
+        rotateXYZ_s1526c32c_c2(_dst, _r0, _t12, _r1, _t2, _r2, _t13, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateXYZ_s1526c32c_c3(_dst, _r3, _r7, _r11);
+    }
+
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
@@ -27179,6 +29206,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 rotateXYZ(float angleX, float angleY, float angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleY);
@@ -27192,29 +29231,48 @@ public class Float3x4Impl implements Float3x4 {
         float _t12 = _t3 * _t5;
         float _t13 = _t0 * _t5;
         float _t18 = Math.fma(_t8, _t4, _t1 * _t3);
-        float _t19 = Math.fma(_t6, _t1, _t0 * _t4);
-        float _t20 = Math.fma(_t0, _t1, -(_t6 * _t4));
-        float _t21 = Math.fma(_t3, _t4, -(_t8 * _t1));
-        float _buf0 = Math.fma(this.m02, _t20, Math.fma(this.m00, _t7, this.m01 * _t18));
-        float _buf1 = Math.fma(this.m02, _t19, Math.fma(this.m01, _t21, -(this.m00 * _t11)));
-        d.m02 = Math.fma(this.m02, _t12, Math.fma(this.m00, _t2, -(this.m01 * _t13)));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(this.m12, _t20, Math.fma(this.m10, _t7, this.m11 * _t18));
-        float _buf3 = Math.fma(this.m12, _t19, Math.fma(this.m11, _t21, -(this.m10 * _t11)));
-        d.m12 = Math.fma(this.m12, _t12, Math.fma(this.m10, _t2, -(this.m11 * _t13)));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(this.m22, _t20, Math.fma(this.m20, _t7, this.m21 * _t18));
-        float _buf5 = Math.fma(this.m22, _t19, Math.fma(this.m21, _t21, -(this.m20 * _t11)));
-        d.m22 = Math.fma(this.m22, _t12, Math.fma(this.m20, _t2, -(this.m21 * _t13)));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        rotateXYZ_s1526c32c_tail(d, _t6, _t1, _t0, _t4, _t3, _t8, _r0, _r1, _t7, _r2, _t18, _t11, _t12, _t2, _t13, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
+    }
+
+    /** Private column 0 of {@code rotateXZY_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateXZY_orthogonal_general_s1c0a609d_c0(Float3x4Impl _dst, float _r0, float _t20, float _r1, float _t8, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t8, _r2 * _t18));
+        _dst.m10 = Math.fma(_r4, _t20, Math.fma(_r5, _t8, _r6 * _t18));
+        _dst.m20 = Math.fma(_r8, _t20, Math.fma(_r9, _t8, _r10 * _t18));
+    }
+
+    /** Private column 1 of {@code rotateXZY_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateXZY_orthogonal_general_s1c0a609d_c1(Float3x4Impl _dst, float _r0, float _t11, float _r2, float _t12, float _r1, float _t1, float _r4, float _r6, float _r5, float _r8, float _r10, float _r9) {
+        _dst.m01 = Math.fma(_r0, _t11, Math.fma(_r2, _t12, -(_r1 * _t1)));
+        _dst.m11 = Math.fma(_r4, _t11, Math.fma(_r6, _t12, -(_r5 * _t1)));
+        _dst.m21 = Math.fma(_r8, _t11, Math.fma(_r10, _t12, -(_r9 * _t1)));
+    }
+
+    /** Private column 2 of {@code rotateXZY_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateXZY_orthogonal_general_s1c0a609d_c2(Float3x4Impl _dst, float _r0, float _t19, float _r1, float _t14, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t19, Math.fma(_r1, _t14, _r2 * _t21));
+        _dst.m12 = Math.fma(_r4, _t19, Math.fma(_r5, _t14, _r6 * _t21));
+        _dst.m22 = Math.fma(_r8, _t19, Math.fma(_r9, _t14, _r10 * _t21));
+    }
+
+    /** Private column 3 of {@code rotateXZY_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateXZY_orthogonal_general_s1c0a609d_c3(Float3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code rotateXZY_orthogonal_general}; reached only through it. */
+    private void rotateXZY_orthogonal_general_s1c0a609d_tail(Float3x4Impl _dst, float _t6, float _t3, float _t4, float _t2, float _t9, float _t0, float _r0, float _r1, float _t8, float _r2, float _t18, float _t11, float _t12, float _t1, float _t14, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t6, _t3, _t4 * _t2);
+        float _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
+        float _t21 = Math.fma(_t9, _t3, -(_t0 * _t2));
+        rotateXZY_orthogonal_general_s1c0a609d_c0(_dst, _r0, _t20, _r1, _t8, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateXZY_orthogonal_general_s1c0a609d_c1(_dst, _r0, _t11, _r2, _t12, _r1, _t1, _r4, _r6, _r5, _r8, _r10, _r9);
+        rotateXZY_orthogonal_general_s1c0a609d_c2(_dst, _r0, _t19, _r1, _t14, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateXZY_orthogonal_general_s1c0a609d_c3(_dst, _r3, _r7, _r11);
     }
 
 
@@ -27224,6 +29282,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateXZY_orthogonal_general(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest, int _props) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.cos(angleY);
@@ -27237,27 +29307,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t12 = _t4 * _t5;
         float _t14 = _t3 * _t5;
         float _t18 = Math.fma(_t9, _t2, _t0 * _t3);
-        float _t19 = Math.fma(_t6, _t3, _t4 * _t2);
-        float _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
-        float _t21 = Math.fma(_t9, _t3, -(_t0 * _t2));
-        float _buf0 = Math.fma(this.m02, _t20, Math.fma(this.m00, _t8, this.m01 * _t18));
-        float _buf1 = Math.fma(this.m02, _t11, Math.fma(this.m01, _t12, -(this.m00 * _t1)));
-        d.m02 = Math.fma(this.m02, _t19, Math.fma(this.m00, _t14, this.m01 * _t21));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(this.m12, _t20, Math.fma(this.m10, _t8, this.m11 * _t18));
-        float _buf3 = Math.fma(this.m12, _t11, Math.fma(this.m11, _t12, -(this.m10 * _t1)));
-        d.m12 = Math.fma(this.m12, _t19, Math.fma(this.m10, _t14, this.m11 * _t21));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(this.m22, _t20, Math.fma(this.m20, _t8, this.m21 * _t18));
-        float _buf5 = Math.fma(this.m22, _t11, Math.fma(this.m21, _t12, -(this.m20 * _t1)));
-        d.m22 = Math.fma(this.m22, _t19, Math.fma(this.m20, _t14, this.m21 * _t21));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        rotateXZY_orthogonal_general_s1c0a609d_tail(d, _t6, _t3, _t4, _t2, _t9, _t0, _r0, _r1, _t8, _r2, _t18, _t11, _t12, _t1, _t14, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = _props;
         return d;
     }
@@ -27398,6 +29448,45 @@ public class Float3x4Impl implements Float3x4 {
         return rotateXZY_orthogonal_general(angleX, angleY, angleZ, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
     }
 
+    /** Private column 0 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s1526c32c_c0(Double3x4Impl _dst, float _r0, float _t20, float _r1, float _t8, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t8, _r2 * _t18));
+        _dst.m10 = Math.fma(_r4, _t20, Math.fma(_r5, _t8, _r6 * _t18));
+        _dst.m20 = Math.fma(_r8, _t20, Math.fma(_r9, _t8, _r10 * _t18));
+    }
+
+    /** Private column 1 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s1526c32c_c1(Double3x4Impl _dst, float _r0, float _t11, float _r2, float _t12, float _r1, float _t1, float _r4, float _r6, float _r5, float _r8, float _r10, float _r9) {
+        _dst.m01 = Math.fma(_r0, _t11, Math.fma(_r2, _t12, -(_r1 * _t1)));
+        _dst.m11 = Math.fma(_r4, _t11, Math.fma(_r6, _t12, -(_r5 * _t1)));
+        _dst.m21 = Math.fma(_r8, _t11, Math.fma(_r10, _t12, -(_r9 * _t1)));
+    }
+
+    /** Private column 2 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s1526c32c_c2(Double3x4Impl _dst, float _r0, float _t19, float _r1, float _t14, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t19, Math.fma(_r1, _t14, _r2 * _t21));
+        _dst.m12 = Math.fma(_r4, _t19, Math.fma(_r5, _t14, _r6 * _t21));
+        _dst.m22 = Math.fma(_r8, _t19, Math.fma(_r9, _t14, _r10 * _t21));
+    }
+
+    /** Private column 3 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s1526c32c_c3(Double3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code rotateXZY}; reached only through it. */
+    private void rotateXZY_s1526c32c_tail(Double3x4Impl _dst, float _t6, float _t3, float _t4, float _t2, float _t9, float _t0, float _r0, float _r1, float _t8, float _r2, float _t18, float _t11, float _t12, float _t1, float _t14, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t6, _t3, _t4 * _t2);
+        float _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
+        float _t21 = Math.fma(_t9, _t3, -(_t0 * _t2));
+        rotateXZY_s1526c32c_c0(_dst, _r0, _t20, _r1, _t8, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateXZY_s1526c32c_c1(_dst, _r0, _t11, _r2, _t12, _r1, _t1, _r4, _r6, _r5, _r8, _r10, _r9);
+        rotateXZY_s1526c32c_c2(_dst, _r0, _t19, _r1, _t14, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateXZY_s1526c32c_c3(_dst, _r3, _r7, _r11);
+    }
+
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
@@ -27419,6 +29508,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 rotateXZY(float angleX, float angleY, float angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.cos(angleY);
@@ -27432,27 +29533,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t12 = _t4 * _t5;
         float _t14 = _t3 * _t5;
         float _t18 = Math.fma(_t9, _t2, _t0 * _t3);
-        float _t19 = Math.fma(_t6, _t3, _t4 * _t2);
-        float _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
-        float _t21 = Math.fma(_t9, _t3, -(_t0 * _t2));
-        float _buf0 = Math.fma(this.m02, _t20, Math.fma(this.m00, _t8, this.m01 * _t18));
-        float _buf1 = Math.fma(this.m02, _t11, Math.fma(this.m01, _t12, -(this.m00 * _t1)));
-        d.m02 = Math.fma(this.m02, _t19, Math.fma(this.m00, _t14, this.m01 * _t21));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(this.m12, _t20, Math.fma(this.m10, _t8, this.m11 * _t18));
-        float _buf3 = Math.fma(this.m12, _t11, Math.fma(this.m11, _t12, -(this.m10 * _t1)));
-        d.m12 = Math.fma(this.m12, _t19, Math.fma(this.m10, _t14, this.m11 * _t21));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(this.m22, _t20, Math.fma(this.m20, _t8, this.m21 * _t18));
-        float _buf5 = Math.fma(this.m22, _t11, Math.fma(this.m21, _t12, -(this.m20 * _t1)));
-        d.m22 = Math.fma(this.m22, _t19, Math.fma(this.m20, _t14, this.m21 * _t21));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        rotateXZY_s1526c32c_tail(d, _t6, _t3, _t4, _t2, _t9, _t0, _r0, _r1, _t8, _r2, _t18, _t11, _t12, _t1, _t14, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -27920,6 +30001,45 @@ public class Float3x4Impl implements Float3x4 {
         return mapnZYX();
     }
 
+    /** Private column 0 of {@code rotateYXZ_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateYXZ_orthogonal_general_s1c0a609d_c0(Float3x4Impl _dst, float _r0, float _t20, float _r1, float _t18, float _r2, float _t10, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t18, _r2 * _t10));
+        _dst.m10 = Math.fma(_r4, _t20, Math.fma(_r5, _t18, _r6 * _t10));
+        _dst.m20 = Math.fma(_r8, _t20, Math.fma(_r9, _t18, _r10 * _t10));
+    }
+
+    /** Private column 1 of {@code rotateYXZ_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateYXZ_orthogonal_general_s1c0a609d_c1(Float3x4Impl _dst, float _r0, float _t19, float _r1, float _t21, float _r2, float _t13, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r1, _t21, _r2 * _t13));
+        _dst.m11 = Math.fma(_r4, _t19, Math.fma(_r5, _t21, _r6 * _t13));
+        _dst.m21 = Math.fma(_r8, _t19, Math.fma(_r9, _t21, _r10 * _t13));
+    }
+
+    /** Private column 2 of {@code rotateYXZ_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateYXZ_orthogonal_general_s1c0a609d_c2(Float3x4Impl _dst, float _r0, float _t14, float _r1, float _t15, float _r2, float _t0, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t14, Math.fma(_r1, _t15, -(_r2 * _t0)));
+        _dst.m12 = Math.fma(_r4, _t14, Math.fma(_r5, _t15, -(_r6 * _t0)));
+        _dst.m22 = Math.fma(_r8, _t14, Math.fma(_r9, _t15, -(_r10 * _t0)));
+    }
+
+    /** Private column 3 of {@code rotateYXZ_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateYXZ_orthogonal_general_s1c0a609d_c3(Float3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code rotateYXZ_orthogonal_general}; reached only through it. */
+    private void rotateYXZ_orthogonal_general_s1c0a609d_tail(Float3x4Impl _dst, float _t6, float _t4, float _t3, float _t2, float _t8, float _t1, float _r0, float _r1, float _t18, float _r2, float _t10, float _t13, float _t14, float _t15, float _t0, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t6, _t4, _t3 * _t2);
+        float _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
+        float _t21 = Math.fma(_t8, _t4, -(_t2 * _t1));
+        rotateYXZ_orthogonal_general_s1c0a609d_c0(_dst, _r0, _t20, _r1, _t18, _r2, _t10, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYXZ_orthogonal_general_s1c0a609d_c1(_dst, _r0, _t19, _r1, _t21, _r2, _t13, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYXZ_orthogonal_general_s1c0a609d_c2(_dst, _r0, _t14, _r1, _t15, _r2, _t0, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYXZ_orthogonal_general_s1c0a609d_c3(_dst, _r3, _r7, _r11);
+    }
+
 
     /**
      * Private body of {@code rotateYXZ}, specialized by runtime matrix properties; reached only
@@ -27927,6 +30047,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateYXZ_orthogonal_general(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest, int _props) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.cos(angleY);
         float _t2 = (float) Math.sin(angleZ);
@@ -27940,27 +30072,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t14 = _t5 * _t1;
         float _t15 = _t3 * _t5;
         float _t18 = Math.fma(_t8, _t2, _t1 * _t4);
-        float _t19 = Math.fma(_t6, _t4, _t3 * _t2);
-        float _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
-        float _t21 = Math.fma(_t8, _t4, -(_t2 * _t1));
-        float _buf0 = Math.fma(this.m02, _t20, Math.fma(this.m00, _t18, this.m01 * _t10));
-        float _buf1 = Math.fma(this.m02, _t19, Math.fma(this.m00, _t21, this.m01 * _t13));
-        d.m02 = Math.fma(this.m02, _t14, Math.fma(this.m00, _t15, -(this.m01 * _t0)));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(this.m12, _t20, Math.fma(this.m10, _t18, this.m11 * _t10));
-        float _buf3 = Math.fma(this.m12, _t19, Math.fma(this.m10, _t21, this.m11 * _t13));
-        d.m12 = Math.fma(this.m12, _t14, Math.fma(this.m10, _t15, -(this.m11 * _t0)));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(this.m22, _t20, Math.fma(this.m20, _t18, this.m21 * _t10));
-        float _buf5 = Math.fma(this.m22, _t19, Math.fma(this.m20, _t21, this.m21 * _t13));
-        d.m22 = Math.fma(this.m22, _t14, Math.fma(this.m20, _t15, -(this.m21 * _t0)));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        rotateYXZ_orthogonal_general_s1c0a609d_tail(d, _t6, _t4, _t3, _t2, _t8, _t1, _r0, _r1, _t18, _r2, _t10, _t13, _t14, _t15, _t0, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = _props;
         return d;
     }
@@ -28101,6 +30213,45 @@ public class Float3x4Impl implements Float3x4 {
         return rotateYXZ_orthogonal_general(angleX, angleY, angleZ, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
     }
 
+    /** Private column 0 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s1526c32c_c0(Double3x4Impl _dst, float _r0, float _t20, float _r1, float _t18, float _r2, float _t10, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t18, _r2 * _t10));
+        _dst.m10 = Math.fma(_r4, _t20, Math.fma(_r5, _t18, _r6 * _t10));
+        _dst.m20 = Math.fma(_r8, _t20, Math.fma(_r9, _t18, _r10 * _t10));
+    }
+
+    /** Private column 1 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s1526c32c_c1(Double3x4Impl _dst, float _r0, float _t19, float _r1, float _t21, float _r2, float _t13, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r1, _t21, _r2 * _t13));
+        _dst.m11 = Math.fma(_r4, _t19, Math.fma(_r5, _t21, _r6 * _t13));
+        _dst.m21 = Math.fma(_r8, _t19, Math.fma(_r9, _t21, _r10 * _t13));
+    }
+
+    /** Private column 2 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s1526c32c_c2(Double3x4Impl _dst, float _r0, float _t14, float _r1, float _t15, float _r2, float _t0, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t14, Math.fma(_r1, _t15, -(_r2 * _t0)));
+        _dst.m12 = Math.fma(_r4, _t14, Math.fma(_r5, _t15, -(_r6 * _t0)));
+        _dst.m22 = Math.fma(_r8, _t14, Math.fma(_r9, _t15, -(_r10 * _t0)));
+    }
+
+    /** Private column 3 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s1526c32c_c3(Double3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code rotateYXZ}; reached only through it. */
+    private void rotateYXZ_s1526c32c_tail(Double3x4Impl _dst, float _t6, float _t4, float _t3, float _t2, float _t8, float _t1, float _r0, float _r1, float _t18, float _r2, float _t10, float _t13, float _t14, float _t15, float _t0, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t6, _t4, _t3 * _t2);
+        float _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
+        float _t21 = Math.fma(_t8, _t4, -(_t2 * _t1));
+        rotateYXZ_s1526c32c_c0(_dst, _r0, _t20, _r1, _t18, _r2, _t10, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYXZ_s1526c32c_c1(_dst, _r0, _t19, _r1, _t21, _r2, _t13, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYXZ_s1526c32c_c2(_dst, _r0, _t14, _r1, _t15, _r2, _t0, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYXZ_s1526c32c_c3(_dst, _r3, _r7, _r11);
+    }
+
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
@@ -28122,6 +30273,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 rotateYXZ(float angleX, float angleY, float angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.cos(angleY);
         float _t2 = (float) Math.sin(angleZ);
@@ -28135,29 +30298,48 @@ public class Float3x4Impl implements Float3x4 {
         float _t14 = _t5 * _t1;
         float _t15 = _t3 * _t5;
         float _t18 = Math.fma(_t8, _t2, _t1 * _t4);
-        float _t19 = Math.fma(_t6, _t4, _t3 * _t2);
-        float _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
-        float _t21 = Math.fma(_t8, _t4, -(_t2 * _t1));
-        float _buf0 = Math.fma(this.m02, _t20, Math.fma(this.m00, _t18, this.m01 * _t10));
-        float _buf1 = Math.fma(this.m02, _t19, Math.fma(this.m00, _t21, this.m01 * _t13));
-        d.m02 = Math.fma(this.m02, _t14, Math.fma(this.m00, _t15, -(this.m01 * _t0)));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(this.m12, _t20, Math.fma(this.m10, _t18, this.m11 * _t10));
-        float _buf3 = Math.fma(this.m12, _t19, Math.fma(this.m10, _t21, this.m11 * _t13));
-        d.m12 = Math.fma(this.m12, _t14, Math.fma(this.m10, _t15, -(this.m11 * _t0)));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(this.m22, _t20, Math.fma(this.m20, _t18, this.m21 * _t10));
-        float _buf5 = Math.fma(this.m22, _t19, Math.fma(this.m20, _t21, this.m21 * _t13));
-        d.m22 = Math.fma(this.m22, _t14, Math.fma(this.m20, _t15, -(this.m21 * _t0)));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        rotateYXZ_s1526c32c_tail(d, _t6, _t4, _t3, _t2, _t8, _t1, _r0, _r1, _t18, _r2, _t10, _t13, _t14, _t15, _t0, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
+    }
+
+    /** Private column 0 of {@code rotateYZX_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateYZX_orthogonal_general_s1c0a609d_c0(Float3x4Impl _dst, float _r0, float _t6, float _r1, float _t7, float _r2, float _t3, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(-_r0, _t6, Math.fma(_r1, _t7, _r2 * _t3));
+        _dst.m10 = Math.fma(-_r4, _t6, Math.fma(_r5, _t7, _r6 * _t3));
+        _dst.m20 = Math.fma(-_r8, _t6, Math.fma(_r9, _t7, _r10 * _t3));
+    }
+
+    /** Private column 1 of {@code rotateYZX_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateYZX_orthogonal_general_s1c0a609d_c1(Float3x4Impl _dst, float _r0, float _t18, float _r1, float _t20, float _r2, float _t11, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t18, Math.fma(_r1, _t20, _r2 * _t11));
+        _dst.m11 = Math.fma(_r4, _t18, Math.fma(_r5, _t20, _r6 * _t11));
+        _dst.m21 = Math.fma(_r8, _t18, Math.fma(_r9, _t20, _r10 * _t11));
+    }
+
+    /** Private column 2 of {@code rotateYZX_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateYZX_orthogonal_general_s1c0a609d_c2(Float3x4Impl _dst, float _r0, float _t21, float _r1, float _t19, float _r2, float _t13, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t21, Math.fma(_r1, _t19, -(_r2 * _t13)));
+        _dst.m12 = Math.fma(_r4, _t21, Math.fma(_r5, _t19, -(_r6 * _t13)));
+        _dst.m22 = Math.fma(_r8, _t21, Math.fma(_r9, _t19, -(_r10 * _t13)));
+    }
+
+    /** Private column 3 of {@code rotateYZX_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateYZX_orthogonal_general_s1c0a609d_c3(Float3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code rotateYZX_orthogonal_general}; reached only through it. */
+    private void rotateYZX_orthogonal_general_s1c0a609d_tail(Float3x4Impl _dst, float _t10, float _t5, float _t0, float _t4, float _t2, float _t8, float _r0, float _t6, float _r1, float _t7, float _r2, float _t3, float _t18, float _t11, float _t13, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t10, _t5, _t0 * _t4);
+        float _t20 = Math.fma(_t5, _t0, -(_t10 * _t4));
+        float _t21 = Math.fma(_t4, _t2, -(_t8 * _t5));
+        rotateYZX_orthogonal_general_s1c0a609d_c0(_dst, _r0, _t6, _r1, _t7, _r2, _t3, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYZX_orthogonal_general_s1c0a609d_c1(_dst, _r0, _t18, _r1, _t20, _r2, _t11, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYZX_orthogonal_general_s1c0a609d_c2(_dst, _r0, _t21, _r1, _t19, _r2, _t13, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYZX_orthogonal_general_s1c0a609d_c3(_dst, _r3, _r7, _r11);
     }
 
 
@@ -28167,6 +30349,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateYZX_orthogonal_general(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest, int _props) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.cos(angleZ);
         float _t2 = (float) Math.cos(angleY);
@@ -28180,27 +30374,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t11 = _t4 * _t1;
         float _t13 = _t5 * _t1;
         float _t18 = Math.fma(_t8, _t4, _t5 * _t2);
-        float _t19 = Math.fma(_t10, _t5, _t0 * _t4);
-        float _t20 = Math.fma(_t5, _t0, -(_t10 * _t4));
-        float _t21 = Math.fma(_t4, _t2, -(_t8 * _t5));
-        float _buf0 = Math.fma(-this.m02, _t6, Math.fma(this.m00, _t7, this.m01 * _t3));
-        float _buf1 = Math.fma(this.m02, _t18, Math.fma(this.m00, _t20, this.m01 * _t11));
-        d.m02 = Math.fma(this.m02, _t21, Math.fma(this.m00, _t19, -(this.m01 * _t13)));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(-this.m12, _t6, Math.fma(this.m10, _t7, this.m11 * _t3));
-        float _buf3 = Math.fma(this.m12, _t18, Math.fma(this.m10, _t20, this.m11 * _t11));
-        d.m12 = Math.fma(this.m12, _t21, Math.fma(this.m10, _t19, -(this.m11 * _t13)));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(-this.m22, _t6, Math.fma(this.m20, _t7, this.m21 * _t3));
-        float _buf5 = Math.fma(this.m22, _t18, Math.fma(this.m20, _t20, this.m21 * _t11));
-        d.m22 = Math.fma(this.m22, _t21, Math.fma(this.m20, _t19, -(this.m21 * _t13)));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        rotateYZX_orthogonal_general_s1c0a609d_tail(d, _t10, _t5, _t0, _t4, _t2, _t8, _r0, _t6, _r1, _t7, _r2, _t3, _t18, _t11, _t13, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = _props;
         return d;
     }
@@ -28341,6 +30515,45 @@ public class Float3x4Impl implements Float3x4 {
         return rotateYZX_orthogonal_general(angleX, angleY, angleZ, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
     }
 
+    /** Private column 0 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_s1526c32c_c0(Double3x4Impl _dst, float _r0, float _t6, float _r1, float _t7, float _r2, float _t3, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(-_r0, _t6, Math.fma(_r1, _t7, _r2 * _t3));
+        _dst.m10 = Math.fma(-_r4, _t6, Math.fma(_r5, _t7, _r6 * _t3));
+        _dst.m20 = Math.fma(-_r8, _t6, Math.fma(_r9, _t7, _r10 * _t3));
+    }
+
+    /** Private column 1 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_s1526c32c_c1(Double3x4Impl _dst, float _r0, float _t18, float _r1, float _t20, float _r2, float _t11, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t18, Math.fma(_r1, _t20, _r2 * _t11));
+        _dst.m11 = Math.fma(_r4, _t18, Math.fma(_r5, _t20, _r6 * _t11));
+        _dst.m21 = Math.fma(_r8, _t18, Math.fma(_r9, _t20, _r10 * _t11));
+    }
+
+    /** Private column 2 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_s1526c32c_c2(Double3x4Impl _dst, float _r0, float _t21, float _r1, float _t19, float _r2, float _t13, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t21, Math.fma(_r1, _t19, -(_r2 * _t13)));
+        _dst.m12 = Math.fma(_r4, _t21, Math.fma(_r5, _t19, -(_r6 * _t13)));
+        _dst.m22 = Math.fma(_r8, _t21, Math.fma(_r9, _t19, -(_r10 * _t13)));
+    }
+
+    /** Private column 3 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_s1526c32c_c3(Double3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code rotateYZX}; reached only through it. */
+    private void rotateYZX_s1526c32c_tail(Double3x4Impl _dst, float _t10, float _t5, float _t0, float _t4, float _t2, float _t8, float _r0, float _t6, float _r1, float _t7, float _r2, float _t3, float _t18, float _t11, float _t13, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t10, _t5, _t0 * _t4);
+        float _t20 = Math.fma(_t5, _t0, -(_t10 * _t4));
+        float _t21 = Math.fma(_t4, _t2, -(_t8 * _t5));
+        rotateYZX_s1526c32c_c0(_dst, _r0, _t6, _r1, _t7, _r2, _t3, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYZX_s1526c32c_c1(_dst, _r0, _t18, _r1, _t20, _r2, _t11, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYZX_s1526c32c_c2(_dst, _r0, _t21, _r1, _t19, _r2, _t13, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYZX_s1526c32c_c3(_dst, _r3, _r7, _r11);
+    }
+
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
@@ -28362,6 +30575,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 rotateYZX(float angleX, float angleY, float angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.cos(angleZ);
         float _t2 = (float) Math.cos(angleY);
@@ -28375,27 +30600,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t11 = _t4 * _t1;
         float _t13 = _t5 * _t1;
         float _t18 = Math.fma(_t8, _t4, _t5 * _t2);
-        float _t19 = Math.fma(_t10, _t5, _t0 * _t4);
-        float _t20 = Math.fma(_t5, _t0, -(_t10 * _t4));
-        float _t21 = Math.fma(_t4, _t2, -(_t8 * _t5));
-        float _buf0 = Math.fma(-this.m02, _t6, Math.fma(this.m00, _t7, this.m01 * _t3));
-        float _buf1 = Math.fma(this.m02, _t18, Math.fma(this.m00, _t20, this.m01 * _t11));
-        d.m02 = Math.fma(this.m02, _t21, Math.fma(this.m00, _t19, -(this.m01 * _t13)));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(-this.m12, _t6, Math.fma(this.m10, _t7, this.m11 * _t3));
-        float _buf3 = Math.fma(this.m12, _t18, Math.fma(this.m10, _t20, this.m11 * _t11));
-        d.m12 = Math.fma(this.m12, _t21, Math.fma(this.m10, _t19, -(this.m11 * _t13)));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(-this.m22, _t6, Math.fma(this.m20, _t7, this.m21 * _t3));
-        float _buf5 = Math.fma(this.m22, _t18, Math.fma(this.m20, _t20, this.m21 * _t11));
-        d.m22 = Math.fma(this.m22, _t21, Math.fma(this.m20, _t19, -(this.m21 * _t13)));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        rotateYZX_s1526c32c_tail(d, _t10, _t5, _t0, _t4, _t2, _t8, _r0, _t6, _r1, _t7, _r2, _t3, _t18, _t11, _t13, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -28863,6 +31068,45 @@ public class Float3x4Impl implements Float3x4 {
         return mapYnXZ();
     }
 
+    /** Private column 0 of {@code rotateZXY_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateZXY_orthogonal_general_s1c0a609d_c0(Float3x4Impl _dst, float _r0, float _t6, float _r1, float _t20, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(-_r0, _t6, Math.fma(_r1, _t20, _r2 * _t18));
+        _dst.m10 = Math.fma(-_r4, _t6, Math.fma(_r5, _t20, _r6 * _t18));
+        _dst.m20 = Math.fma(-_r8, _t6, Math.fma(_r9, _t20, _r10 * _t18));
+    }
+
+    /** Private column 1 of {@code rotateZXY_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateZXY_orthogonal_general_s1c0a609d_c1(Float3x4Impl _dst, float _r0, float _t4, float _r2, float _t10, float _r1, float _t11, float _r4, float _r6, float _r5, float _r8, float _r10, float _r9) {
+        _dst.m01 = Math.fma(_r0, _t4, Math.fma(_r2, _t10, -(_r1 * _t11)));
+        _dst.m11 = Math.fma(_r4, _t4, Math.fma(_r6, _t10, -(_r5 * _t11)));
+        _dst.m21 = Math.fma(_r8, _t4, Math.fma(_r10, _t10, -(_r9 * _t11)));
+    }
+
+    /** Private column 2 of {@code rotateZXY_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateZXY_orthogonal_general_s1c0a609d_c2(Float3x4Impl _dst, float _r0, float _t12, float _r1, float _t19, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t12, Math.fma(_r1, _t19, _r2 * _t21));
+        _dst.m12 = Math.fma(_r4, _t12, Math.fma(_r5, _t19, _r6 * _t21));
+        _dst.m22 = Math.fma(_r8, _t12, Math.fma(_r9, _t19, _r10 * _t21));
+    }
+
+    /** Private column 3 of {@code rotateZXY_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateZXY_orthogonal_general_s1c0a609d_c3(Float3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code rotateZXY_orthogonal_general}; reached only through it. */
+    private void rotateZXY_orthogonal_general_s1c0a609d_tail(Float3x4Impl _dst, float _t7, float _t2, float _t0, float _t3, float _t5, float _t8, float _r0, float _t6, float _r1, float _r2, float _t18, float _t4, float _t10, float _t11, float _t12, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t7, _t2, _t0 * _t3);
+        float _t20 = Math.fma(_t2, _t3, -(_t7 * _t0));
+        float _t21 = Math.fma(_t0, _t5, -(_t8 * _t2));
+        rotateZXY_orthogonal_general_s1c0a609d_c0(_dst, _r0, _t6, _r1, _t20, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateZXY_orthogonal_general_s1c0a609d_c1(_dst, _r0, _t4, _r2, _t10, _r1, _t11, _r4, _r6, _r5, _r8, _r10, _r9);
+        rotateZXY_orthogonal_general_s1c0a609d_c2(_dst, _r0, _t12, _r1, _t19, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateZXY_orthogonal_general_s1c0a609d_c3(_dst, _r3, _r7, _r11);
+    }
+
 
     /**
      * Private body of {@code rotateZXY}, specialized by runtime matrix properties; reached only
@@ -28870,6 +31114,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateZXY_orthogonal_general(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest, int _props) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.cos(angleX);
         float _t2 = (float) Math.cos(angleY);
@@ -28883,27 +31139,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t11 = _t5 * _t1;
         float _t12 = _t1 * _t2;
         float _t18 = Math.fma(_t8, _t0, _t5 * _t2);
-        float _t19 = Math.fma(_t7, _t2, _t0 * _t3);
-        float _t20 = Math.fma(_t2, _t3, -(_t7 * _t0));
-        float _t21 = Math.fma(_t0, _t5, -(_t8 * _t2));
-        float _buf0 = Math.fma(-this.m02, _t6, Math.fma(this.m00, _t20, this.m01 * _t18));
-        float _buf1 = Math.fma(this.m02, _t4, Math.fma(this.m01, _t10, -(this.m00 * _t11)));
-        d.m02 = Math.fma(this.m02, _t12, Math.fma(this.m00, _t19, this.m01 * _t21));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(-this.m12, _t6, Math.fma(this.m10, _t20, this.m11 * _t18));
-        float _buf3 = Math.fma(this.m12, _t4, Math.fma(this.m11, _t10, -(this.m10 * _t11)));
-        d.m12 = Math.fma(this.m12, _t12, Math.fma(this.m10, _t19, this.m11 * _t21));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(-this.m22, _t6, Math.fma(this.m20, _t20, this.m21 * _t18));
-        float _buf5 = Math.fma(this.m22, _t4, Math.fma(this.m21, _t10, -(this.m20 * _t11)));
-        d.m22 = Math.fma(this.m22, _t12, Math.fma(this.m20, _t19, this.m21 * _t21));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        rotateZXY_orthogonal_general_s1c0a609d_tail(d, _t7, _t2, _t0, _t3, _t5, _t8, _r0, _t6, _r1, _r2, _t18, _t4, _t10, _t11, _t12, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = _props;
         return d;
     }
@@ -29044,6 +31280,45 @@ public class Float3x4Impl implements Float3x4 {
         return rotateZXY_orthogonal_general(angleX, angleY, angleZ, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
     }
 
+    /** Private column 0 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s1526c32c_c0(Double3x4Impl _dst, float _r0, float _t6, float _r1, float _t20, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(-_r0, _t6, Math.fma(_r1, _t20, _r2 * _t18));
+        _dst.m10 = Math.fma(-_r4, _t6, Math.fma(_r5, _t20, _r6 * _t18));
+        _dst.m20 = Math.fma(-_r8, _t6, Math.fma(_r9, _t20, _r10 * _t18));
+    }
+
+    /** Private column 1 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s1526c32c_c1(Double3x4Impl _dst, float _r0, float _t4, float _r2, float _t10, float _r1, float _t11, float _r4, float _r6, float _r5, float _r8, float _r10, float _r9) {
+        _dst.m01 = Math.fma(_r0, _t4, Math.fma(_r2, _t10, -(_r1 * _t11)));
+        _dst.m11 = Math.fma(_r4, _t4, Math.fma(_r6, _t10, -(_r5 * _t11)));
+        _dst.m21 = Math.fma(_r8, _t4, Math.fma(_r10, _t10, -(_r9 * _t11)));
+    }
+
+    /** Private column 2 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s1526c32c_c2(Double3x4Impl _dst, float _r0, float _t12, float _r1, float _t19, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t12, Math.fma(_r1, _t19, _r2 * _t21));
+        _dst.m12 = Math.fma(_r4, _t12, Math.fma(_r5, _t19, _r6 * _t21));
+        _dst.m22 = Math.fma(_r8, _t12, Math.fma(_r9, _t19, _r10 * _t21));
+    }
+
+    /** Private column 3 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s1526c32c_c3(Double3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code rotateZXY}; reached only through it. */
+    private void rotateZXY_s1526c32c_tail(Double3x4Impl _dst, float _t7, float _t2, float _t0, float _t3, float _t5, float _t8, float _r0, float _t6, float _r1, float _r2, float _t18, float _t4, float _t10, float _t11, float _t12, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t7, _t2, _t0 * _t3);
+        float _t20 = Math.fma(_t2, _t3, -(_t7 * _t0));
+        float _t21 = Math.fma(_t0, _t5, -(_t8 * _t2));
+        rotateZXY_s1526c32c_c0(_dst, _r0, _t6, _r1, _t20, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateZXY_s1526c32c_c1(_dst, _r0, _t4, _r2, _t10, _r1, _t11, _r4, _r6, _r5, _r8, _r10, _r9);
+        rotateZXY_s1526c32c_c2(_dst, _r0, _t12, _r1, _t19, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateZXY_s1526c32c_c3(_dst, _r3, _r7, _r11);
+    }
+
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
@@ -29065,6 +31340,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 rotateZXY(float angleX, float angleY, float angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.cos(angleX);
         float _t2 = (float) Math.cos(angleY);
@@ -29078,29 +31365,48 @@ public class Float3x4Impl implements Float3x4 {
         float _t11 = _t5 * _t1;
         float _t12 = _t1 * _t2;
         float _t18 = Math.fma(_t8, _t0, _t5 * _t2);
-        float _t19 = Math.fma(_t7, _t2, _t0 * _t3);
-        float _t20 = Math.fma(_t2, _t3, -(_t7 * _t0));
-        float _t21 = Math.fma(_t0, _t5, -(_t8 * _t2));
-        float _buf0 = Math.fma(-this.m02, _t6, Math.fma(this.m00, _t20, this.m01 * _t18));
-        float _buf1 = Math.fma(this.m02, _t4, Math.fma(this.m01, _t10, -(this.m00 * _t11)));
-        d.m02 = Math.fma(this.m02, _t12, Math.fma(this.m00, _t19, this.m01 * _t21));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(-this.m12, _t6, Math.fma(this.m10, _t20, this.m11 * _t18));
-        float _buf3 = Math.fma(this.m12, _t4, Math.fma(this.m11, _t10, -(this.m10 * _t11)));
-        d.m12 = Math.fma(this.m12, _t12, Math.fma(this.m10, _t19, this.m11 * _t21));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(-this.m22, _t6, Math.fma(this.m20, _t20, this.m21 * _t18));
-        float _buf5 = Math.fma(this.m22, _t4, Math.fma(this.m21, _t10, -(this.m20 * _t11)));
-        d.m22 = Math.fma(this.m22, _t12, Math.fma(this.m20, _t19, this.m21 * _t21));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        rotateZXY_s1526c32c_tail(d, _t7, _t2, _t0, _t3, _t5, _t8, _r0, _t6, _r1, _r2, _t18, _t4, _t10, _t11, _t12, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
+    }
+
+    /** Private column 0 of {@code rotateZYX_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateZYX_orthogonal_general_s1c0a609d_c0(Float3x4Impl _dst, float _r0, float _t0, float _r1, float _t6, float _r2, float _t7, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(-_r0, _t0, Math.fma(_r1, _t6, _r2 * _t7));
+        _dst.m10 = Math.fma(-_r4, _t0, Math.fma(_r5, _t6, _r6 * _t7));
+        _dst.m20 = Math.fma(-_r8, _t0, Math.fma(_r9, _t6, _r10 * _t7));
+    }
+
+    /** Private column 1 of {@code rotateZYX_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateZYX_orthogonal_general_s1c0a609d_c1(Float3x4Impl _dst, float _r0, float _t8, float _r1, float _t20, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t8, Math.fma(_r1, _t20, _r2 * _t18));
+        _dst.m11 = Math.fma(_r4, _t8, Math.fma(_r5, _t20, _r6 * _t18));
+        _dst.m21 = Math.fma(_r8, _t8, Math.fma(_r9, _t20, _r10 * _t18));
+    }
+
+    /** Private column 2 of {@code rotateZYX_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateZYX_orthogonal_general_s1c0a609d_c2(Float3x4Impl _dst, float _r0, float _t13, float _r1, float _t19, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t13, Math.fma(_r1, _t19, _r2 * _t21));
+        _dst.m12 = Math.fma(_r4, _t13, Math.fma(_r5, _t19, _r6 * _t21));
+        _dst.m22 = Math.fma(_r8, _t13, Math.fma(_r9, _t19, _r10 * _t21));
+    }
+
+    /** Private column 3 of {@code rotateZYX_orthogonal_general}: computes and stores it; reached only through it. */
+    private void rotateZYX_orthogonal_general_s1c0a609d_c3(Float3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code rotateZYX_orthogonal_general}; reached only through it. */
+    private void rotateZYX_orthogonal_general_s1c0a609d_tail(Float3x4Impl _dst, float _t9, float _t5, float _t4, float _t3, float _t11, float _t2, float _r0, float _t0, float _r1, float _t6, float _r2, float _t7, float _t8, float _t18, float _t13, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t9, _t5, _t4 * _t3);
+        float _t20 = Math.fma(_t9, _t4, -(_t3 * _t5));
+        float _t21 = Math.fma(_t11, _t5, -(_t4 * _t2));
+        rotateZYX_orthogonal_general_s1c0a609d_c0(_dst, _r0, _t0, _r1, _t6, _r2, _t7, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateZYX_orthogonal_general_s1c0a609d_c1(_dst, _r0, _t8, _r1, _t20, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateZYX_orthogonal_general_s1c0a609d_c2(_dst, _r0, _t13, _r1, _t19, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateZYX_orthogonal_general_s1c0a609d_c3(_dst, _r3, _r7, _r11);
     }
 
 
@@ -29110,6 +31416,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateZYX_orthogonal_general(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest, int _props) {
         Float3x4Impl d = (Float3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.cos(angleY);
         float _t2 = (float) Math.cos(angleZ);
@@ -29123,27 +31441,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t11 = _t0 * _t3;
         float _t13 = _t5 * _t1;
         float _t18 = Math.fma(_t11, _t4, _t5 * _t2);
-        float _t19 = Math.fma(_t9, _t5, _t4 * _t3);
-        float _t20 = Math.fma(_t9, _t4, -(_t3 * _t5));
-        float _t21 = Math.fma(_t11, _t5, -(_t4 * _t2));
-        float _buf0 = Math.fma(-this.m02, _t0, Math.fma(this.m00, _t6, this.m01 * _t7));
-        float _buf1 = Math.fma(this.m02, _t8, Math.fma(this.m00, _t20, this.m01 * _t18));
-        d.m02 = Math.fma(this.m02, _t13, Math.fma(this.m00, _t19, this.m01 * _t21));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(-this.m12, _t0, Math.fma(this.m10, _t6, this.m11 * _t7));
-        float _buf3 = Math.fma(this.m12, _t8, Math.fma(this.m10, _t20, this.m11 * _t18));
-        d.m12 = Math.fma(this.m12, _t13, Math.fma(this.m10, _t19, this.m11 * _t21));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(-this.m22, _t0, Math.fma(this.m20, _t6, this.m21 * _t7));
-        float _buf5 = Math.fma(this.m22, _t8, Math.fma(this.m20, _t20, this.m21 * _t18));
-        d.m22 = Math.fma(this.m22, _t13, Math.fma(this.m20, _t19, this.m21 * _t21));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        rotateZYX_orthogonal_general_s1c0a609d_tail(d, _t9, _t5, _t4, _t3, _t11, _t2, _r0, _t0, _r1, _t6, _r2, _t7, _t8, _t18, _t13, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = _props;
         return d;
     }
@@ -29284,6 +31582,45 @@ public class Float3x4Impl implements Float3x4 {
         return rotateZYX_orthogonal_general(angleX, angleY, angleZ, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
     }
 
+    /** Private column 0 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s1526c32c_c0(Double3x4Impl _dst, float _r0, float _t0, float _r1, float _t6, float _r2, float _t7, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(-_r0, _t0, Math.fma(_r1, _t6, _r2 * _t7));
+        _dst.m10 = Math.fma(-_r4, _t0, Math.fma(_r5, _t6, _r6 * _t7));
+        _dst.m20 = Math.fma(-_r8, _t0, Math.fma(_r9, _t6, _r10 * _t7));
+    }
+
+    /** Private column 1 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s1526c32c_c1(Double3x4Impl _dst, float _r0, float _t8, float _r1, float _t20, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t8, Math.fma(_r1, _t20, _r2 * _t18));
+        _dst.m11 = Math.fma(_r4, _t8, Math.fma(_r5, _t20, _r6 * _t18));
+        _dst.m21 = Math.fma(_r8, _t8, Math.fma(_r9, _t20, _r10 * _t18));
+    }
+
+    /** Private column 2 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s1526c32c_c2(Double3x4Impl _dst, float _r0, float _t13, float _r1, float _t19, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t13, Math.fma(_r1, _t19, _r2 * _t21));
+        _dst.m12 = Math.fma(_r4, _t13, Math.fma(_r5, _t19, _r6 * _t21));
+        _dst.m22 = Math.fma(_r8, _t13, Math.fma(_r9, _t19, _r10 * _t21));
+    }
+
+    /** Private column 3 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s1526c32c_c3(Double3x4Impl _dst, float _r3, float _r7, float _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code rotateZYX}; reached only through it. */
+    private void rotateZYX_s1526c32c_tail(Double3x4Impl _dst, float _t9, float _t5, float _t4, float _t3, float _t11, float _t2, float _r0, float _t0, float _r1, float _t6, float _r2, float _t7, float _t8, float _t18, float _t13, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t9, _t5, _t4 * _t3);
+        float _t20 = Math.fma(_t9, _t4, -(_t3 * _t5));
+        float _t21 = Math.fma(_t11, _t5, -(_t4 * _t2));
+        rotateZYX_s1526c32c_c0(_dst, _r0, _t0, _r1, _t6, _r2, _t7, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateZYX_s1526c32c_c1(_dst, _r0, _t8, _r1, _t20, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateZYX_s1526c32c_c2(_dst, _r0, _t13, _r1, _t19, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateZYX_s1526c32c_c3(_dst, _r3, _r7, _r11);
+    }
+
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
@@ -29305,6 +31642,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 rotateZYX(float angleX, float angleY, float angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        float _r0 = this.m02;
+        float _r1 = this.m00;
+        float _r2 = this.m01;
+        float _r3 = this.m03;
+        float _r4 = this.m12;
+        float _r5 = this.m10;
+        float _r6 = this.m11;
+        float _r7 = this.m13;
+        float _r8 = this.m22;
+        float _r9 = this.m20;
+        float _r10 = this.m21;
+        float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.cos(angleY);
         float _t2 = (float) Math.cos(angleZ);
@@ -29318,27 +31667,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t11 = _t0 * _t3;
         float _t13 = _t5 * _t1;
         float _t18 = Math.fma(_t11, _t4, _t5 * _t2);
-        float _t19 = Math.fma(_t9, _t5, _t4 * _t3);
-        float _t20 = Math.fma(_t9, _t4, -(_t3 * _t5));
-        float _t21 = Math.fma(_t11, _t5, -(_t4 * _t2));
-        float _buf0 = Math.fma(-this.m02, _t0, Math.fma(this.m00, _t6, this.m01 * _t7));
-        float _buf1 = Math.fma(this.m02, _t8, Math.fma(this.m00, _t20, this.m01 * _t18));
-        d.m02 = Math.fma(this.m02, _t13, Math.fma(this.m00, _t19, this.m01 * _t21));
-        d.m03 = this.m03;
-        float _buf2 = Math.fma(-this.m12, _t0, Math.fma(this.m10, _t6, this.m11 * _t7));
-        float _buf3 = Math.fma(this.m12, _t8, Math.fma(this.m10, _t20, this.m11 * _t18));
-        d.m12 = Math.fma(this.m12, _t13, Math.fma(this.m10, _t19, this.m11 * _t21));
-        d.m13 = this.m13;
-        float _buf4 = Math.fma(-this.m22, _t0, Math.fma(this.m20, _t6, this.m21 * _t7));
-        float _buf5 = Math.fma(this.m22, _t8, Math.fma(this.m20, _t20, this.m21 * _t18));
-        d.m22 = Math.fma(this.m22, _t13, Math.fma(this.m20, _t19, this.m21 * _t21));
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        rotateZYX_s1526c32c_tail(d, _t9, _t5, _t4, _t3, _t11, _t2, _r0, _t0, _r1, _t6, _r2, _t7, _t8, _t18, _t13, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }

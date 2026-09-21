@@ -735,6 +735,32 @@ public class Float4x2Impl implements Float4x2 {
         return d;
     }
 
+    /** Private column 0 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s621ed230_c0(Float4x2Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20, float _r21, float _r22, float _r23) {
+        _dst.m00 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7)));
+        _dst.m10 = Math.fma(_r12, _r1, Math.fma(_r13, _r3, Math.fma(_r14, _r5, _r15 * _r7)));
+        _dst.m20 = Math.fma(_r16, _r1, Math.fma(_r17, _r3, Math.fma(_r18, _r5, _r19 * _r7)));
+        _dst.m30 = Math.fma(_r20, _r1, Math.fma(_r21, _r3, Math.fma(_r22, _r5, _r23 * _r7)));
+    }
+
+    /** Private column 1 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s621ed230_c1(Float4x2Impl _dst, float _r0, float _r8, float _r2, float _r9, float _r4, float _r10, float _r6, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20, float _r21, float _r22, float _r23) {
+        _dst.m01 = Math.fma(_r0, _r8, Math.fma(_r2, _r9, Math.fma(_r4, _r10, _r6 * _r11)));
+        _dst.m11 = Math.fma(_r12, _r8, Math.fma(_r13, _r9, Math.fma(_r14, _r10, _r15 * _r11)));
+        _dst.m21 = Math.fma(_r16, _r8, Math.fma(_r17, _r9, Math.fma(_r18, _r10, _r19 * _r11)));
+        _dst.m31 = Math.fma(_r20, _r8, Math.fma(_r21, _r9, Math.fma(_r22, _r10, _r23 * _r11)));
+    }
+
+    /** Private tail of {@code preMul}; reached only through it. */
+    private void preMul_s621ed230_tail(Float4x2Impl _dst, Float4x4R other, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19) {
+        float _r20 = other.m33();
+        float _r21 = other.m32();
+        float _r22 = other.m30();
+        float _r23 = other.m31();
+        preMul_s621ed230_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19, _r20, _r21, _r22, _r23);
+        preMul_s621ed230_c1(_dst, _r0, _r8, _r2, _r9, _r4, _r10, _r6, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19, _r20, _r21, _r22, _r23);
+    }
+
 
     /**
      * Pre-multiply the transformation {@code other} onto this matrix and store the result in
@@ -750,21 +776,54 @@ public class Float4x2Impl implements Float4x2 {
      */
     public Float4x2 preMul(Float4x4R other, @Mutated Float4x2 dest) {
         Float4x2Impl d = (Float4x2Impl) dest;
-        float _buf0 = Math.fma(other.m03(), this.m30, Math.fma(other.m02(), this.m20, Math.fma(other.m00(), this.m00, other.m01() * this.m10)));
-        float _buf1 = Math.fma(other.m13(), this.m30, Math.fma(other.m12(), this.m20, Math.fma(other.m10(), this.m00, other.m11() * this.m10)));
-        float _buf2 = Math.fma(other.m23(), this.m30, Math.fma(other.m22(), this.m20, Math.fma(other.m20(), this.m00, other.m21() * this.m10)));
-        d.m30 = Math.fma(other.m33(), this.m30, Math.fma(other.m32(), this.m20, Math.fma(other.m30(), this.m00, other.m31() * this.m10)));
-        float _buf3 = Math.fma(other.m03(), this.m31, Math.fma(other.m02(), this.m21, Math.fma(other.m00(), this.m01, other.m01() * this.m11)));
-        float _buf4 = Math.fma(other.m13(), this.m31, Math.fma(other.m12(), this.m21, Math.fma(other.m10(), this.m01, other.m11() * this.m11)));
-        float _buf5 = Math.fma(other.m23(), this.m31, Math.fma(other.m22(), this.m21, Math.fma(other.m20(), this.m01, other.m21() * this.m11)));
-        d.m31 = Math.fma(other.m33(), this.m31, Math.fma(other.m32(), this.m21, Math.fma(other.m30(), this.m01, other.m31() * this.m11)));
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
+        float _r0 = other.m03();
+        float _r1 = this.m30;
+        float _r2 = other.m02();
+        float _r3 = this.m20;
+        float _r4 = other.m00();
+        float _r5 = this.m00;
+        float _r6 = other.m01();
+        float _r7 = this.m10;
+        float _r8 = this.m31;
+        float _r9 = this.m21;
+        float _r10 = this.m01;
+        float _r11 = this.m11;
+        float _r12 = other.m13();
+        float _r13 = other.m12();
+        float _r14 = other.m10();
+        float _r15 = other.m11();
+        float _r16 = other.m23();
+        float _r17 = other.m22();
+        float _r18 = other.m20();
+        float _r19 = other.m21();
+        preMul_s621ed230_tail(d, other, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         return d;
+    }
+
+    /** Private column 0 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s6581da25_c0(Double4x2Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20, float _r21, float _r22, float _r23) {
+        _dst.m00 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7)));
+        _dst.m10 = Math.fma(_r12, _r1, Math.fma(_r13, _r3, Math.fma(_r14, _r5, _r15 * _r7)));
+        _dst.m20 = Math.fma(_r16, _r1, Math.fma(_r17, _r3, Math.fma(_r18, _r5, _r19 * _r7)));
+        _dst.m30 = Math.fma(_r20, _r1, Math.fma(_r21, _r3, Math.fma(_r22, _r5, _r23 * _r7)));
+    }
+
+    /** Private column 1 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s6581da25_c1(Double4x2Impl _dst, float _r0, float _r8, float _r2, float _r9, float _r4, float _r10, float _r6, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20, float _r21, float _r22, float _r23) {
+        _dst.m01 = Math.fma(_r0, _r8, Math.fma(_r2, _r9, Math.fma(_r4, _r10, _r6 * _r11)));
+        _dst.m11 = Math.fma(_r12, _r8, Math.fma(_r13, _r9, Math.fma(_r14, _r10, _r15 * _r11)));
+        _dst.m21 = Math.fma(_r16, _r8, Math.fma(_r17, _r9, Math.fma(_r18, _r10, _r19 * _r11)));
+        _dst.m31 = Math.fma(_r20, _r8, Math.fma(_r21, _r9, Math.fma(_r22, _r10, _r23 * _r11)));
+    }
+
+    /** Private tail of {@code preMul}; reached only through it. */
+    private void preMul_s6581da25_tail(Double4x2Impl _dst, Float4x4R other, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19) {
+        float _r20 = other.m33();
+        float _r21 = other.m32();
+        float _r22 = other.m30();
+        float _r23 = other.m31();
+        preMul_s6581da25_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19, _r20, _r21, _r22, _r23);
+        preMul_s6581da25_c1(_dst, _r0, _r8, _r2, _r9, _r4, _r10, _r6, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19, _r20, _r21, _r22, _r23);
     }
 
 
@@ -785,20 +844,27 @@ public class Float4x2Impl implements Float4x2 {
      */
     public Double4x2 preMul(Float4x4R other, @Mutated Double4x2 dest) {
         Double4x2Impl d = (Double4x2Impl) dest;
-        float _buf0 = Math.fma(other.m03(), this.m30, Math.fma(other.m02(), this.m20, Math.fma(other.m00(), this.m00, other.m01() * this.m10)));
-        float _buf1 = Math.fma(other.m13(), this.m30, Math.fma(other.m12(), this.m20, Math.fma(other.m10(), this.m00, other.m11() * this.m10)));
-        float _buf2 = Math.fma(other.m23(), this.m30, Math.fma(other.m22(), this.m20, Math.fma(other.m20(), this.m00, other.m21() * this.m10)));
-        d.m30 = Math.fma(other.m33(), this.m30, Math.fma(other.m32(), this.m20, Math.fma(other.m30(), this.m00, other.m31() * this.m10)));
-        float _buf3 = Math.fma(other.m03(), this.m31, Math.fma(other.m02(), this.m21, Math.fma(other.m00(), this.m01, other.m01() * this.m11)));
-        float _buf4 = Math.fma(other.m13(), this.m31, Math.fma(other.m12(), this.m21, Math.fma(other.m10(), this.m01, other.m11() * this.m11)));
-        float _buf5 = Math.fma(other.m23(), this.m31, Math.fma(other.m22(), this.m21, Math.fma(other.m20(), this.m01, other.m21() * this.m11)));
-        d.m31 = Math.fma(other.m33(), this.m31, Math.fma(other.m32(), this.m21, Math.fma(other.m30(), this.m01, other.m31() * this.m11)));
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
+        float _r0 = other.m03();
+        float _r1 = this.m30;
+        float _r2 = other.m02();
+        float _r3 = this.m20;
+        float _r4 = other.m00();
+        float _r5 = this.m00;
+        float _r6 = other.m01();
+        float _r7 = this.m10;
+        float _r8 = this.m31;
+        float _r9 = this.m21;
+        float _r10 = this.m01;
+        float _r11 = this.m11;
+        float _r12 = other.m13();
+        float _r13 = other.m12();
+        float _r14 = other.m10();
+        float _r15 = other.m11();
+        float _r16 = other.m23();
+        float _r17 = other.m22();
+        float _r18 = other.m20();
+        float _r19 = other.m21();
+        preMul_s6581da25_tail(d, other, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         return d;
     }
 
