@@ -578,7 +578,7 @@ public class Float2x2Impl implements Float2x2 {
         float[] sd = this.data;
         float[] dd = ((Float2x2Impl) dest).data;
         float _rcp0 = 1.0f / sd[0];
-        dd[0] = 1.0f * _rcp0;
+        dd[0] = _rcp0;
         dd[1] = 0.0f;
         dd[2] = -(sd[2] * _rcp0);
         dd[3] = 1.0f;
@@ -595,7 +595,7 @@ public class Float2x2Impl implements Float2x2 {
         float[] sd = this.data;
         float[] dd = ((Float2x2Impl) dest).data;
         float _rcp0 = 1.0f / sd[0];
-        dd[0] = 1.0f * _rcp0;
+        dd[0] = _rcp0;
         dd[2] = -(sd[2] * _rcp0);
         ((Float2x2Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -800,7 +800,7 @@ public class Float2x2Impl implements Float2x2 {
         float[] otherData = ((Float2x2Impl) other).data;
         float[] dd = ((Float2x2Impl) dest).data;
         float _rcp0 = 1.0f / otherData[0];
-        dd[0] = 1.0f * _rcp0;
+        dd[0] = _rcp0;
         dd[1] = 0.0f;
         dd[2] = -(otherData[2] * _rcp0);
         dd[3] = 1.0f;
@@ -852,7 +852,7 @@ public class Float2x2Impl implements Float2x2 {
         float[] otherData = ((Float2x2Impl) other).data;
         float[] dd = ((Float2x2Impl) dest).data;
         float _rcp0 = 1.0f / otherData[0];
-        dd[0] = 1.0f * _rcp0;
+        dd[0] = _rcp0;
         dd[1] = 0.0f;
         dd[2] = -((otherData[2] + sd[2]) * _rcp0);
         dd[3] = 1.0f;
@@ -888,7 +888,7 @@ public class Float2x2Impl implements Float2x2 {
         float[] dd = ((Float2x2Impl) dest).data;
         float _t0 = otherData[0] * sd[0];
         float _t0_inv = 1.0f / _t0;
-        float _buf0 = 1.0f * _t0_inv;
+        float _buf0 = _t0_inv;
         dd[1] = 0.0f;
         dd[2] = -(Math.fma(otherData[2], sd[0], sd[2]) * _t0_inv);
         dd[3] = 1.0f;
@@ -907,7 +907,7 @@ public class Float2x2Impl implements Float2x2 {
         float[] otherData = ((Float2x2Impl) other).data;
         float[] dd = ((Float2x2Impl) dest).data;
         float _rcp0 = 1.0f / sd[0];
-        dd[0] = 1.0f * _rcp0;
+        dd[0] = _rcp0;
         dd[1] = 0.0f;
         dd[2] = -(sd[2] * _rcp0);
         dd[3] = 1.0f;
@@ -925,7 +925,7 @@ public class Float2x2Impl implements Float2x2 {
         float[] otherData = ((Float2x2Impl) other).data;
         float[] dd = ((Float2x2Impl) dest).data;
         float _rcp0 = 1.0f / sd[0];
-        float _buf0 = 1.0f * _rcp0;
+        float _buf0 = _rcp0;
         dd[1] = 0.0f;
         dd[2] = -(Math.fma(otherData[2], sd[0], sd[2]) * _rcp0);
         dd[3] = 1.0f;
@@ -1235,7 +1235,7 @@ public class Float2x2Impl implements Float2x2 {
         float[] sd = this.data;
         float[] dd = ((Float2x2Impl) dest).data;
         float _rcp0 = 1.0f / sd[0];
-        dd[0] = 1.0f * _rcp0;
+        dd[0] = _rcp0;
         dd[1] = -(sd[2] * _rcp0);
         dd[2] = 0.0f;
         dd[3] = 1.0f;
@@ -1252,7 +1252,7 @@ public class Float2x2Impl implements Float2x2 {
         float[] sd = this.data;
         float[] dd = ((Float2x2Impl) dest).data;
         float _rcp0 = 1.0f / sd[0];
-        dd[0] = 1.0f * _rcp0;
+        dd[0] = _rcp0;
         dd[1] = -(sd[2] * _rcp0);
         dd[2] = 0.0f;
         ((Float2x2Impl) dest).properties = 0;

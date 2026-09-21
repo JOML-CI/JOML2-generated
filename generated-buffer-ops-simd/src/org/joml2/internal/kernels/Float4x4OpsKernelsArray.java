@@ -3266,7 +3266,7 @@ public final class Float4x4OpsKernelsArray {
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
         dest[destOffset + 9] = 0.0f;
-        dest[destOffset + 10] = 1.0f * _t2_inv;
+        dest[destOffset + 10] = _t2_inv;
         dest[destOffset + 11] = 0.0f;
         dest[destOffset + 12] = -((left + right) * _t0_inv);
         dest[destOffset + 13] = -((bottom + top) * _t1_inv);
@@ -3292,7 +3292,7 @@ public final class Float4x4OpsKernelsArray {
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
         dest[destOffset + 9] = 0.0f;
-        dest[destOffset + 10] = -1.0f * _t2_inv;
+        dest[destOffset + 10] = -_t2_inv;
         dest[destOffset + 11] = 0.0f;
         dest[destOffset + 12] = -((left + right) * _t0_inv);
         dest[destOffset + 13] = -((bottom + top) * _t1_inv);
@@ -7981,7 +7981,7 @@ public final class Float4x4OpsKernelsArray {
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
         dest[destOffset + 9] = 0.0f;
-        dest[destOffset + 10] = 1.0f * _t232_inv;
+        dest[destOffset + 10] = _t232_inv;
         dest[destOffset + 11] = 0.0f;
         dest[destOffset + 12] = -((_t225 + _t224) * _t230_inv);
         dest[destOffset + 13] = -((_t227 + _t226) * _t231_inv);
@@ -8120,7 +8120,7 @@ public final class Float4x4OpsKernelsArray {
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
         dest[destOffset + 9] = 0.0f;
-        dest[destOffset + 10] = -1.0f * _t232_inv;
+        dest[destOffset + 10] = -_t232_inv;
         dest[destOffset + 11] = 0.0f;
         dest[destOffset + 12] = -((_t225 + _t224) * _t230_inv);
         dest[destOffset + 13] = -((_t227 + _t226) * _t231_inv);
@@ -8565,7 +8565,7 @@ public final class Float4x4OpsKernelsArray {
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
         dest[destOffset + 9] = 0.0f;
-        dest[destOffset + 10] = 1.0f * _t224_inv;
+        dest[destOffset + 10] = _t224_inv;
         dest[destOffset + 11] = 0.0f;
         dest[destOffset + 12] = -((_t217 + _t216) * _t222_inv);
         dest[destOffset + 13] = -((_t219 + _t218) * _t223_inv);
@@ -8708,7 +8708,7 @@ public final class Float4x4OpsKernelsArray {
         dest[destOffset + 7] = 0.0f;
         dest[destOffset + 8] = 0.0f;
         dest[destOffset + 9] = 0.0f;
-        dest[destOffset + 10] = -1.0f * _t224_inv;
+        dest[destOffset + 10] = -_t224_inv;
         dest[destOffset + 11] = 0.0f;
         dest[destOffset + 12] = -((_t217 + _t216) * _t222_inv);
         dest[destOffset + 13] = -((_t219 + _t218) * _t223_inv);

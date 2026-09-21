@@ -12112,7 +12112,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        return new Double4x4(_t0_inv + _t0_inv, 0.0, 0.0, -((left + right) * _t0_inv), 0.0, _t1_inv + _t1_inv, 0.0, -((bottom + top) * _t1_inv), 0.0, 0.0, 1.0 * _t2_inv, -(zNear * _t2_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE);
+        return new Double4x4(_t0_inv + _t0_inv, 0.0, 0.0, -((left + right) * _t0_inv), 0.0, _t1_inv + _t1_inv, 0.0, -((bottom + top) * _t1_inv), 0.0, 0.0, _t2_inv, -(zNear * _t2_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE);
     }
 
 
@@ -12128,7 +12128,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        return new Double4x4(_t0_inv + _t0_inv, 0.0, 0.0, -((left + right) * _t0_inv), 0.0, _t1_inv + _t1_inv, 0.0, -((bottom + top) * _t1_inv), 0.0, 0.0, -1.0 * _t2_inv, -(zNear * _t2_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE);
+        return new Double4x4(_t0_inv + _t0_inv, 0.0, 0.0, -((left + right) * _t0_inv), 0.0, _t1_inv + _t1_inv, 0.0, -((bottom + top) * _t1_inv), 0.0, 0.0, -_t2_inv, -(zNear * _t2_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE);
     }
 
 
@@ -18438,7 +18438,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        return new Double4x4(_t0_inv + _t0_inv, 0.0, 0.0, -((left + right) * _t0_inv), 0.0, _t1_inv + _t1_inv, 0.0, -((bottom + top) * _t1_inv), 0.0, 0.0, 1.0 * _t2_inv, -(zNear * _t2_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE);
+        return new Double4x4(_t0_inv + _t0_inv, 0.0, 0.0, -((left + right) * _t0_inv), 0.0, _t1_inv + _t1_inv, 0.0, -((bottom + top) * _t1_inv), 0.0, 0.0, _t2_inv, -(zNear * _t2_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE);
     }
 
 
@@ -18454,7 +18454,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        return new Double4x4(_t0_inv + _t0_inv, 0.0, 0.0, this.m03 - (left + right) * _t0_inv, 0.0, _t1_inv + _t1_inv, 0.0, this.m13 - (bottom + top) * _t1_inv, 0.0, 0.0, 1.0 * _t2_inv, this.m23 - zNear * _t2_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE);
+        return new Double4x4(_t0_inv + _t0_inv, 0.0, 0.0, this.m03 - (left + right) * _t0_inv, 0.0, _t1_inv + _t1_inv, 0.0, this.m13 - (bottom + top) * _t1_inv, 0.0, 0.0, _t2_inv, this.m23 - zNear * _t2_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE);
     }
 
     /** Private per-column body of {@code ortho_zo_lh_orthogonal}; reached only through it. */
@@ -18598,7 +18598,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        return new Double4x4(_t0_inv + _t0_inv, 0.0, 0.0, -((left + right) * _t0_inv), 0.0, _t1_inv + _t1_inv, 0.0, -((bottom + top) * _t1_inv), 0.0, 0.0, -1.0 * _t2_inv, -(zNear * _t2_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE);
+        return new Double4x4(_t0_inv + _t0_inv, 0.0, 0.0, -((left + right) * _t0_inv), 0.0, _t1_inv + _t1_inv, 0.0, -((bottom + top) * _t1_inv), 0.0, 0.0, -_t2_inv, -(zNear * _t2_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE);
     }
 
 
@@ -18614,7 +18614,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t1_inv = 1.0 / _t1;
         double _t2 = zFar - zNear;
         double _t2_inv = 1.0 / _t2;
-        return new Double4x4(_t0_inv + _t0_inv, 0.0, 0.0, this.m03 - (left + right) * _t0_inv, 0.0, _t1_inv + _t1_inv, 0.0, this.m13 - (bottom + top) * _t1_inv, 0.0, 0.0, -1.0 * _t2_inv, this.m23 - zNear * _t2_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE);
+        return new Double4x4(_t0_inv + _t0_inv, 0.0, 0.0, this.m03 - (left + right) * _t0_inv, 0.0, _t1_inv + _t1_inv, 0.0, this.m13 - (bottom + top) * _t1_inv, 0.0, 0.0, -_t2_inv, this.m23 - zNear * _t2_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE);
     }
 
     /** Private per-column body of {@code ortho_zo_rh_orthogonal}; reached only through it. */
@@ -20868,7 +20868,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t231_inv = 1.0 / _t231;
         double _t232 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t229;
         double _t232_inv = 1.0 / _t232;
-        return new Double4x4(_t230_inv + _t230_inv, 0.0, 0.0, -((_t225 + _t224) * _t230_inv), 0.0, _t231_inv + _t231_inv, 0.0, -((_t227 + _t226) * _t231_inv), 0.0, 0.0, 1.0 * _t232_inv, -(_t229 * _t232_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t230_inv + _t230_inv, 0.0, 0.0, -((_t225 + _t224) * _t230_inv), 0.0, _t231_inv + _t231_inv, 0.0, -((_t227 + _t226) * _t231_inv), 0.0, 0.0, _t232_inv, -(_t229 * _t232_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_identity}; reached only through it. */
@@ -20925,7 +20925,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t94_inv = 1.0 / _t94;
         double _t95 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t92;
         double _t95_inv = 1.0 / _t95;
-        return new Double4x4(_t93_inv + _t93_inv, 0.0, 0.0, -((_t88 + _t87) * _t93_inv), 0.0, _t94_inv + _t94_inv, 0.0, -((_t90 + _t89) * _t94_inv), 0.0, 0.0, 1.0 * _t95_inv, -(_t92 * _t95_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t93_inv + _t93_inv, 0.0, 0.0, -((_t88 + _t87) * _t93_inv), 0.0, _t94_inv + _t94_inv, 0.0, -((_t90 + _t89) * _t94_inv), 0.0, 0.0, _t95_inv, -(_t92 * _t95_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_translation}; reached only through it. */
@@ -20985,7 +20985,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t90_inv = 1.0 / _t90;
         double _t91 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t88;
         double _t91_inv = 1.0 / _t91;
-        return new Double4x4(_t89_inv + _t89_inv, 0.0, 0.0, -((_t84 + _t83) * _t89_inv), 0.0, _t90_inv + _t90_inv, 0.0, -((_t86 + _t85) * _t90_inv), 0.0, 0.0, 1.0 * _t91_inv, -(_t88 * _t91_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t89_inv + _t89_inv, 0.0, 0.0, -((_t84 + _t83) * _t89_inv), 0.0, _t90_inv + _t90_inv, 0.0, -((_t86 + _t85) * _t90_inv), 0.0, 0.0, _t91_inv, -(_t88 * _t91_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_orthogonal}; reached only through it. */
@@ -21048,7 +21048,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t166_inv = 1.0 / _t166;
         double _t167 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t164;
         double _t167_inv = 1.0 / _t167;
-        return new Double4x4(_t165_inv + _t165_inv, 0.0, 0.0, -((_t160 + _t159) * _t165_inv), 0.0, _t166_inv + _t166_inv, 0.0, -((_t162 + _t161) * _t166_inv), 0.0, 0.0, 1.0 * _t167_inv, -(_t164 * _t167_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t165_inv + _t165_inv, 0.0, 0.0, -((_t160 + _t159) * _t165_inv), 0.0, _t166_inv + _t166_inv, 0.0, -((_t162 + _t161) * _t166_inv), 0.0, 0.0, _t167_inv, -(_t164 * _t167_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -21073,7 +21073,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
 
     /** Private per-column body of {@code orthoCrop_zo_lh_identity_translation}; reached only through it. */
     private Double4 orthoCrop_zo_lh_identity_translation_s3bd0f5c6_c2(double _t39_inv) {
-        return new Double4(0.0, 0.0, 1.0 * _t39_inv, 0.0);
+        return new Double4(0.0, 0.0, _t39_inv, 0.0);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_lh_identity_translation}; reached only through it. */
@@ -21119,7 +21119,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_identity}; reached only through it. */
     private Double4 orthoCrop_zo_lh_translation_identity_s3bd0f5c6_c2(double _t39_inv) {
-        return new Double4(0.0, 0.0, 1.0 * _t39_inv, 0.0);
+        return new Double4(0.0, 0.0, _t39_inv, 0.0);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_identity}; reached only through it. */
@@ -21165,7 +21165,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_translation}; reached only through it. */
     private Double4 orthoCrop_zo_lh_translation_translation_s3bd0f5c6_c2(double _t45_inv) {
-        return new Double4(0.0, 0.0, 1.0 * _t45_inv, 0.0);
+        return new Double4(0.0, 0.0, _t45_inv, 0.0);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_translation}; reached only through it. */
@@ -21254,7 +21254,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t94_inv = 1.0 / _t94;
         double _t95 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t92;
         double _t95_inv = 1.0 / _t95;
-        return new Double4x4(_t93_inv + _t93_inv, 0.0, 0.0, -((_t88 + _t87) * _t93_inv), 0.0, _t94_inv + _t94_inv, 0.0, -((_t90 + _t89) * _t94_inv), 0.0, 0.0, 1.0 * _t95_inv, -(_t92 * _t95_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t93_inv + _t93_inv, 0.0, 0.0, -((_t88 + _t87) * _t93_inv), 0.0, _t94_inv + _t94_inv, 0.0, -((_t90 + _t89) * _t94_inv), 0.0, 0.0, _t95_inv, -(_t92 * _t95_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_orthogonal_translation}; reached only through it. */
@@ -21311,7 +21311,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t118_inv = 1.0 / _t118;
         double _t119 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t116;
         double _t119_inv = 1.0 / _t119;
-        return new Double4x4(_t117_inv + _t117_inv, 0.0, 0.0, -((_t112 + _t111) * _t117_inv), 0.0, _t118_inv + _t118_inv, 0.0, -((_t114 + _t113) * _t118_inv), 0.0, 0.0, 1.0 * _t119_inv, -(_t116 * _t119_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t117_inv + _t117_inv, 0.0, 0.0, -((_t112 + _t111) * _t117_inv), 0.0, _t118_inv + _t118_inv, 0.0, -((_t114 + _t113) * _t118_inv), 0.0, 0.0, _t119_inv, -(_t116 * _t119_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_general_identity}; reached only through it. */
@@ -21376,7 +21376,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t135_inv = 1.0 / _t135;
         double _t136 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t133;
         double _t136_inv = 1.0 / _t136;
-        return new Double4x4(_t134_inv + _t134_inv, 0.0, 0.0, -((_t129 + _t128) * _t134_inv), 0.0, _t135_inv + _t135_inv, 0.0, -((_t131 + _t130) * _t135_inv), 0.0, 0.0, 1.0 * _t136_inv, -(_t133 * _t136_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t134_inv + _t134_inv, 0.0, 0.0, -((_t129 + _t128) * _t134_inv), 0.0, _t135_inv + _t135_inv, 0.0, -((_t131 + _t130) * _t135_inv), 0.0, 0.0, _t136_inv, -(_t133 * _t136_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_general_translation}; reached only through it. */
@@ -21441,7 +21441,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t159_inv = 1.0 / _t159;
         double _t160 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t157;
         double _t160_inv = 1.0 / _t160;
-        return new Double4x4(_t158_inv + _t158_inv, 0.0, 0.0, -((_t153 + _t152) * _t158_inv), 0.0, _t159_inv + _t159_inv, 0.0, -((_t155 + _t154) * _t159_inv), 0.0, 0.0, 1.0 * _t160_inv, -(_t157 * _t160_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t158_inv + _t158_inv, 0.0, 0.0, -((_t153 + _t152) * _t158_inv), 0.0, _t159_inv + _t159_inv, 0.0, -((_t155 + _t154) * _t159_inv), 0.0, 0.0, _t160_inv, -(_t157 * _t160_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -21550,7 +21550,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t231_inv = 1.0 / _t231;
         double _t232 = _t228 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         double _t232_inv = 1.0 / _t232;
-        return new Double4x4(_t230_inv + _t230_inv, 0.0, 0.0, -((_t225 + _t224) * _t230_inv), 0.0, _t231_inv + _t231_inv, 0.0, -((_t227 + _t226) * _t231_inv), 0.0, 0.0, -1.0 * _t232_inv, _t228 * _t232_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t230_inv + _t230_inv, 0.0, 0.0, -((_t225 + _t224) * _t230_inv), 0.0, _t231_inv + _t231_inv, 0.0, -((_t227 + _t226) * _t231_inv), 0.0, 0.0, -_t232_inv, _t228 * _t232_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_identity}; reached only through it. */
@@ -21607,7 +21607,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t94_inv = 1.0 / _t94;
         double _t95 = _t91 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         double _t95_inv = 1.0 / _t95;
-        return new Double4x4(_t93_inv + _t93_inv, 0.0, 0.0, -((_t88 + _t87) * _t93_inv), 0.0, _t94_inv + _t94_inv, 0.0, -((_t90 + _t89) * _t94_inv), 0.0, 0.0, -1.0 * _t95_inv, _t91 * _t95_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t93_inv + _t93_inv, 0.0, 0.0, -((_t88 + _t87) * _t93_inv), 0.0, _t94_inv + _t94_inv, 0.0, -((_t90 + _t89) * _t94_inv), 0.0, 0.0, -_t95_inv, _t91 * _t95_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_translation}; reached only through it. */
@@ -21667,7 +21667,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t90_inv = 1.0 / _t90;
         double _t91 = _t87 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         double _t91_inv = 1.0 / _t91;
-        return new Double4x4(_t89_inv + _t89_inv, 0.0, 0.0, -((_t84 + _t83) * _t89_inv), 0.0, _t90_inv + _t90_inv, 0.0, -((_t86 + _t85) * _t90_inv), 0.0, 0.0, -1.0 * _t91_inv, _t87 * _t91_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t89_inv + _t89_inv, 0.0, 0.0, -((_t84 + _t83) * _t89_inv), 0.0, _t90_inv + _t90_inv, 0.0, -((_t86 + _t85) * _t90_inv), 0.0, 0.0, -_t91_inv, _t87 * _t91_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_orthogonal}; reached only through it. */
@@ -21730,7 +21730,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t166_inv = 1.0 / _t166;
         double _t167 = _t163 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         double _t167_inv = 1.0 / _t167;
-        return new Double4x4(_t165_inv + _t165_inv, 0.0, 0.0, -((_t160 + _t159) * _t165_inv), 0.0, _t166_inv + _t166_inv, 0.0, -((_t162 + _t161) * _t166_inv), 0.0, 0.0, -1.0 * _t167_inv, _t163 * _t167_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t165_inv + _t165_inv, 0.0, 0.0, -((_t160 + _t159) * _t165_inv), 0.0, _t166_inv + _t166_inv, 0.0, -((_t162 + _t161) * _t166_inv), 0.0, 0.0, -_t167_inv, _t163 * _t167_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -21755,7 +21755,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
 
     /** Private per-column body of {@code orthoCrop_zo_rh_identity_translation}; reached only through it. */
     private Double4 orthoCrop_zo_rh_identity_translation_s3bd0f5c6_c2(double _t39_inv) {
-        return new Double4(0.0, 0.0, -1.0 * _t39_inv, 0.0);
+        return new Double4(0.0, 0.0, -_t39_inv, 0.0);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_rh_identity_translation}; reached only through it. */
@@ -21801,7 +21801,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_identity}; reached only through it. */
     private Double4 orthoCrop_zo_rh_translation_identity_s3bd0f5c6_c2(double _t39_inv) {
-        return new Double4(0.0, 0.0, -1.0 * _t39_inv, 0.0);
+        return new Double4(0.0, 0.0, -_t39_inv, 0.0);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_identity}; reached only through it. */
@@ -21847,7 +21847,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_translation}; reached only through it. */
     private Double4 orthoCrop_zo_rh_translation_translation_s3bd0f5c6_c2(double _t45_inv) {
-        return new Double4(0.0, 0.0, -1.0 * _t45_inv, 0.0);
+        return new Double4(0.0, 0.0, -_t45_inv, 0.0);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_translation}; reached only through it. */
@@ -21936,7 +21936,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t94_inv = 1.0 / _t94;
         double _t95 = _t91 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         double _t95_inv = 1.0 / _t95;
-        return new Double4x4(_t93_inv + _t93_inv, 0.0, 0.0, -((_t88 + _t87) * _t93_inv), 0.0, _t94_inv + _t94_inv, 0.0, -((_t90 + _t89) * _t94_inv), 0.0, 0.0, -1.0 * _t95_inv, _t91 * _t95_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t93_inv + _t93_inv, 0.0, 0.0, -((_t88 + _t87) * _t93_inv), 0.0, _t94_inv + _t94_inv, 0.0, -((_t90 + _t89) * _t94_inv), 0.0, 0.0, -_t95_inv, _t91 * _t95_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_orthogonal_translation}; reached only through it. */
@@ -21993,7 +21993,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t118_inv = 1.0 / _t118;
         double _t119 = _t115 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         double _t119_inv = 1.0 / _t119;
-        return new Double4x4(_t117_inv + _t117_inv, 0.0, 0.0, -((_t112 + _t111) * _t117_inv), 0.0, _t118_inv + _t118_inv, 0.0, -((_t114 + _t113) * _t118_inv), 0.0, 0.0, -1.0 * _t119_inv, _t115 * _t119_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t117_inv + _t117_inv, 0.0, 0.0, -((_t112 + _t111) * _t117_inv), 0.0, _t118_inv + _t118_inv, 0.0, -((_t114 + _t113) * _t118_inv), 0.0, 0.0, -_t119_inv, _t115 * _t119_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_general_identity}; reached only through it. */
@@ -22058,7 +22058,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t135_inv = 1.0 / _t135;
         double _t136 = _t132 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         double _t136_inv = 1.0 / _t136;
-        return new Double4x4(_t134_inv + _t134_inv, 0.0, 0.0, -((_t129 + _t128) * _t134_inv), 0.0, _t135_inv + _t135_inv, 0.0, -((_t131 + _t130) * _t135_inv), 0.0, 0.0, -1.0 * _t136_inv, _t132 * _t136_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t134_inv + _t134_inv, 0.0, 0.0, -((_t129 + _t128) * _t134_inv), 0.0, _t135_inv + _t135_inv, 0.0, -((_t131 + _t130) * _t135_inv), 0.0, 0.0, -_t136_inv, _t132 * _t136_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_general_translation}; reached only through it. */
@@ -22123,7 +22123,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t159_inv = 1.0 / _t159;
         double _t160 = _t156 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         double _t160_inv = 1.0 / _t160;
-        return new Double4x4(_t158_inv + _t158_inv, 0.0, 0.0, -((_t153 + _t152) * _t158_inv), 0.0, _t159_inv + _t159_inv, 0.0, -((_t155 + _t154) * _t159_inv), 0.0, 0.0, -1.0 * _t160_inv, _t156 * _t160_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t158_inv + _t158_inv, 0.0, 0.0, -((_t153 + _t152) * _t158_inv), 0.0, _t159_inv + _t159_inv, 0.0, -((_t155 + _t154) * _t159_inv), 0.0, 0.0, -_t160_inv, _t156 * _t160_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -23828,7 +23828,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t223_inv = 1.0 / _t223;
         double _t224 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t221;
         double _t224_inv = 1.0 / _t224;
-        return new Double4x4(_t222_inv + _t222_inv, 0.0, 0.0, -((_t217 + _t216) * _t222_inv), 0.0, _t223_inv + _t223_inv, 0.0, -((_t219 + _t218) * _t223_inv), 0.0, 0.0, 1.0 * _t224_inv, -(_t221 * _t224_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t222_inv + _t222_inv, 0.0, 0.0, -((_t217 + _t216) * _t222_inv), 0.0, _t223_inv + _t223_inv, 0.0, -((_t219 + _t218) * _t223_inv), 0.0, 0.0, _t224_inv, -(_t221 * _t224_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_identity}; reached only through it. */
@@ -23888,7 +23888,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t88_inv = 1.0 / _t88;
         double _t89 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t86;
         double _t89_inv = 1.0 / _t89;
-        return new Double4x4(_t87_inv + _t87_inv, 0.0, 0.0, -((_t82 + _t81) * _t87_inv), 0.0, _t88_inv + _t88_inv, 0.0, -((_t84 + _t83) * _t88_inv), 0.0, 0.0, 1.0 * _t89_inv, -(_t86 * _t89_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t87_inv + _t87_inv, 0.0, 0.0, -((_t82 + _t81) * _t87_inv), 0.0, _t88_inv + _t88_inv, 0.0, -((_t84 + _t83) * _t88_inv), 0.0, 0.0, _t89_inv, -(_t86 * _t89_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_translation}; reached only through it. */
@@ -23949,7 +23949,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t91_inv = 1.0 / _t91;
         double _t92 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t89;
         double _t92_inv = 1.0 / _t92;
-        return new Double4x4(_t90_inv + _t90_inv, 0.0, 0.0, -((_t85 + _t84) * _t90_inv), 0.0, _t91_inv + _t91_inv, 0.0, -((_t87 + _t86) * _t91_inv), 0.0, 0.0, 1.0 * _t92_inv, -(_t89 * _t92_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t90_inv + _t90_inv, 0.0, 0.0, -((_t85 + _t84) * _t90_inv), 0.0, _t91_inv + _t91_inv, 0.0, -((_t87 + _t86) * _t91_inv), 0.0, 0.0, _t92_inv, -(_t89 * _t92_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_orthogonal}; reached only through it. */
@@ -24015,7 +24015,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t160_inv = 1.0 / _t160;
         double _t161 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t158;
         double _t161_inv = 1.0 / _t161;
-        return new Double4x4(_t159_inv + _t159_inv, 0.0, 0.0, -((_t154 + _t153) * _t159_inv), 0.0, _t160_inv + _t160_inv, 0.0, -((_t156 + _t155) * _t160_inv), 0.0, 0.0, 1.0 * _t161_inv, -(_t158 * _t161_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t159_inv + _t159_inv, 0.0, 0.0, -((_t154 + _t153) * _t159_inv), 0.0, _t160_inv + _t160_inv, 0.0, -((_t156 + _t155) * _t160_inv), 0.0, 0.0, _t161_inv, -(_t158 * _t161_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -24028,7 +24028,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t7 = Math.min(Math.min(Math.min(Math.min(minZ, maxZ), maxZ), maxZ), maxZ);
         double _t8 = Math.max(Math.max(Math.max(Math.max(minZ, maxZ), maxZ), maxZ), maxZ) - _t7;
         double _t8_inv = 1.0 / _t8;
-        return new Double4x4(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 * _t8_inv, -(_t7 * _t8_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, _t8_inv, -(_t7 * _t8_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private per-column body of {@code orthoCrop_zo_lh_identity_translation}; reached only through it. */
@@ -24043,7 +24043,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
 
     /** Private per-column body of {@code orthoCrop_zo_lh_identity_translation}; reached only through it. */
     private Double4 orthoCrop_zo_lh_identity_translation_s23ae7254_c2(double _t40_inv) {
-        return new Double4(0.0, 0.0, 1.0 * _t40_inv, 0.0);
+        return new Double4(0.0, 0.0, _t40_inv, 0.0);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_lh_identity_translation}; reached only through it. */
@@ -24090,7 +24090,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_identity}; reached only through it. */
     private Double4 orthoCrop_zo_lh_translation_identity_s23ae7254_c2(double _t40_inv) {
-        return new Double4(0.0, 0.0, 1.0 * _t40_inv, 0.0);
+        return new Double4(0.0, 0.0, _t40_inv, 0.0);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_identity}; reached only through it. */
@@ -24137,7 +24137,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_translation}; reached only through it. */
     private Double4 orthoCrop_zo_lh_translation_translation_s23ae7254_c2(double _t46_inv) {
-        return new Double4(0.0, 0.0, 1.0 * _t46_inv, 0.0);
+        return new Double4(0.0, 0.0, _t46_inv, 0.0);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_translation}; reached only through it. */
@@ -24229,7 +24229,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t88_inv = 1.0 / _t88;
         double _t89 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t86;
         double _t89_inv = 1.0 / _t89;
-        return new Double4x4(_t87_inv + _t87_inv, 0.0, 0.0, -((_t82 + _t81) * _t87_inv), 0.0, _t88_inv + _t88_inv, 0.0, -((_t84 + _t83) * _t88_inv), 0.0, 0.0, 1.0 * _t89_inv, -(_t86 * _t89_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t87_inv + _t87_inv, 0.0, 0.0, -((_t82 + _t81) * _t87_inv), 0.0, _t88_inv + _t88_inv, 0.0, -((_t84 + _t83) * _t88_inv), 0.0, 0.0, _t89_inv, -(_t86 * _t89_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_orthogonal_translation}; reached only through it. */
@@ -24292,7 +24292,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t91_inv = 1.0 / _t91;
         double _t92 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t89;
         double _t92_inv = 1.0 / _t92;
-        return new Double4x4(_t90_inv + _t90_inv, 0.0, 0.0, -((_t85 + _t84) * _t90_inv), 0.0, _t91_inv + _t91_inv, 0.0, -((_t87 + _t86) * _t91_inv), 0.0, 0.0, 1.0 * _t92_inv, -(_t89 * _t92_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t90_inv + _t90_inv, 0.0, 0.0, -((_t85 + _t84) * _t90_inv), 0.0, _t91_inv + _t91_inv, 0.0, -((_t87 + _t86) * _t91_inv), 0.0, 0.0, _t92_inv, -(_t89 * _t92_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_general_identity}; reached only through it. */
@@ -24361,7 +24361,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t127_inv = 1.0 / _t127;
         double _t128 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t125;
         double _t128_inv = 1.0 / _t128;
-        return new Double4x4(_t126_inv + _t126_inv, 0.0, 0.0, -((_t121 + _t120) * _t126_inv), 0.0, _t127_inv + _t127_inv, 0.0, -((_t123 + _t122) * _t127_inv), 0.0, 0.0, 1.0 * _t128_inv, -(_t125 * _t128_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t126_inv + _t126_inv, 0.0, 0.0, -((_t121 + _t120) * _t126_inv), 0.0, _t127_inv + _t127_inv, 0.0, -((_t123 + _t122) * _t127_inv), 0.0, 0.0, _t128_inv, -(_t125 * _t128_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_lh_general_translation}; reached only through it. */
@@ -24430,7 +24430,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t151_inv = 1.0 / _t151;
         double _t152 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z()) - _t149;
         double _t152_inv = 1.0 / _t152;
-        return new Double4x4(_t150_inv + _t150_inv, 0.0, 0.0, -((_t145 + _t144) * _t150_inv), 0.0, _t151_inv + _t151_inv, 0.0, -((_t147 + _t146) * _t151_inv), 0.0, 0.0, 1.0 * _t152_inv, -(_t149 * _t152_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t150_inv + _t150_inv, 0.0, 0.0, -((_t145 + _t144) * _t150_inv), 0.0, _t151_inv + _t151_inv, 0.0, -((_t147 + _t146) * _t151_inv), 0.0, 0.0, _t152_inv, -(_t149 * _t152_inv), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -24543,7 +24543,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t223_inv = 1.0 / _t223;
         double _t224 = _t220 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         double _t224_inv = 1.0 / _t224;
-        return new Double4x4(_t222_inv + _t222_inv, 0.0, 0.0, -((_t217 + _t216) * _t222_inv), 0.0, _t223_inv + _t223_inv, 0.0, -((_t219 + _t218) * _t223_inv), 0.0, 0.0, -1.0 * _t224_inv, _t220 * _t224_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t222_inv + _t222_inv, 0.0, 0.0, -((_t217 + _t216) * _t222_inv), 0.0, _t223_inv + _t223_inv, 0.0, -((_t219 + _t218) * _t223_inv), 0.0, 0.0, -_t224_inv, _t220 * _t224_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_identity}; reached only through it. */
@@ -24603,7 +24603,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t88_inv = 1.0 / _t88;
         double _t89 = _t85 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         double _t89_inv = 1.0 / _t89;
-        return new Double4x4(_t87_inv + _t87_inv, 0.0, 0.0, -((_t82 + _t81) * _t87_inv), 0.0, _t88_inv + _t88_inv, 0.0, -((_t84 + _t83) * _t88_inv), 0.0, 0.0, -1.0 * _t89_inv, _t85 * _t89_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t87_inv + _t87_inv, 0.0, 0.0, -((_t82 + _t81) * _t87_inv), 0.0, _t88_inv + _t88_inv, 0.0, -((_t84 + _t83) * _t88_inv), 0.0, 0.0, -_t89_inv, _t85 * _t89_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_translation}; reached only through it. */
@@ -24664,7 +24664,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t91_inv = 1.0 / _t91;
         double _t92 = _t88 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         double _t92_inv = 1.0 / _t92;
-        return new Double4x4(_t90_inv + _t90_inv, 0.0, 0.0, -((_t85 + _t84) * _t90_inv), 0.0, _t91_inv + _t91_inv, 0.0, -((_t87 + _t86) * _t91_inv), 0.0, 0.0, -1.0 * _t92_inv, _t88 * _t92_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t90_inv + _t90_inv, 0.0, 0.0, -((_t85 + _t84) * _t90_inv), 0.0, _t91_inv + _t91_inv, 0.0, -((_t87 + _t86) * _t91_inv), 0.0, 0.0, -_t92_inv, _t88 * _t92_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_orthogonal}; reached only through it. */
@@ -24730,7 +24730,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t160_inv = 1.0 / _t160;
         double _t161 = _t157 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         double _t161_inv = 1.0 / _t161;
-        return new Double4x4(_t159_inv + _t159_inv, 0.0, 0.0, -((_t154 + _t153) * _t159_inv), 0.0, _t160_inv + _t160_inv, 0.0, -((_t156 + _t155) * _t160_inv), 0.0, 0.0, -1.0 * _t161_inv, _t157 * _t161_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t159_inv + _t159_inv, 0.0, 0.0, -((_t154 + _t153) * _t159_inv), 0.0, _t160_inv + _t160_inv, 0.0, -((_t156 + _t155) * _t160_inv), 0.0, 0.0, -_t161_inv, _t157 * _t161_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
 
@@ -24743,7 +24743,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t6 = Math.max(Math.max(Math.max(Math.max(minZ, maxZ), maxZ), maxZ), maxZ);
         double _t8 = _t6 - Math.min(Math.min(Math.min(Math.min(minZ, maxZ), maxZ), maxZ), maxZ);
         double _t8_inv = 1.0 / _t8;
-        return new Double4x4(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, -1.0 * _t8_inv, _t6 * _t8_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, -_t8_inv, _t6 * _t8_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private per-column body of {@code orthoCrop_zo_rh_identity_translation}; reached only through it. */
@@ -24758,7 +24758,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
 
     /** Private per-column body of {@code orthoCrop_zo_rh_identity_translation}; reached only through it. */
     private Double4 orthoCrop_zo_rh_identity_translation_s23ae7254_c2(double _t40_inv) {
-        return new Double4(0.0, 0.0, -1.0 * _t40_inv, 0.0);
+        return new Double4(0.0, 0.0, -_t40_inv, 0.0);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_rh_identity_translation}; reached only through it. */
@@ -24805,7 +24805,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_identity}; reached only through it. */
     private Double4 orthoCrop_zo_rh_translation_identity_s23ae7254_c2(double _t40_inv) {
-        return new Double4(0.0, 0.0, -1.0 * _t40_inv, 0.0);
+        return new Double4(0.0, 0.0, -_t40_inv, 0.0);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_identity}; reached only through it. */
@@ -24852,7 +24852,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_translation}; reached only through it. */
     private Double4 orthoCrop_zo_rh_translation_translation_s23ae7254_c2(double _t46_inv) {
-        return new Double4(0.0, 0.0, -1.0 * _t46_inv, 0.0);
+        return new Double4(0.0, 0.0, -_t46_inv, 0.0);
     }
 
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_translation}; reached only through it. */
@@ -24944,7 +24944,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t88_inv = 1.0 / _t88;
         double _t89 = _t85 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         double _t89_inv = 1.0 / _t89;
-        return new Double4x4(_t87_inv + _t87_inv, 0.0, 0.0, -((_t82 + _t81) * _t87_inv), 0.0, _t88_inv + _t88_inv, 0.0, -((_t84 + _t83) * _t88_inv), 0.0, 0.0, -1.0 * _t89_inv, _t85 * _t89_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t87_inv + _t87_inv, 0.0, 0.0, -((_t82 + _t81) * _t87_inv), 0.0, _t88_inv + _t88_inv, 0.0, -((_t84 + _t83) * _t88_inv), 0.0, 0.0, -_t89_inv, _t85 * _t89_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_orthogonal_translation}; reached only through it. */
@@ -25007,7 +25007,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t91_inv = 1.0 / _t91;
         double _t92 = _t88 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         double _t92_inv = 1.0 / _t92;
-        return new Double4x4(_t90_inv + _t90_inv, 0.0, 0.0, -((_t85 + _t84) * _t90_inv), 0.0, _t91_inv + _t91_inv, 0.0, -((_t87 + _t86) * _t91_inv), 0.0, 0.0, -1.0 * _t92_inv, _t88 * _t92_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t90_inv + _t90_inv, 0.0, 0.0, -((_t85 + _t84) * _t90_inv), 0.0, _t91_inv + _t91_inv, 0.0, -((_t87 + _t86) * _t91_inv), 0.0, 0.0, -_t92_inv, _t88 * _t92_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_general_identity}; reached only through it. */
@@ -25076,7 +25076,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t127_inv = 1.0 / _t127;
         double _t128 = _t124 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         double _t128_inv = 1.0 / _t128;
-        return new Double4x4(_t126_inv + _t126_inv, 0.0, 0.0, -((_t121 + _t120) * _t126_inv), 0.0, _t127_inv + _t127_inv, 0.0, -((_t123 + _t122) * _t127_inv), 0.0, 0.0, -1.0 * _t128_inv, _t124 * _t128_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t126_inv + _t126_inv, 0.0, 0.0, -((_t121 + _t120) * _t126_inv), 0.0, _t127_inv + _t127_inv, 0.0, -((_t123 + _t122) * _t127_inv), 0.0, 0.0, -_t128_inv, _t124 * _t128_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
     /** Private outlined body of {@code orthoCrop_zo_rh_general_translation}; reached only through it. */
@@ -25145,7 +25145,7 @@ public value record Double4x4(double m00, double m01, double m02, double m03, do
         double _t151_inv = 1.0 / _t151;
         double _t152 = _t148 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_c0.z(), _c1.z()), _c2.z()), _c3.z()), _c4.z()), _c5.z()), _c6.z()), _c7.z());
         double _t152_inv = 1.0 / _t152;
-        return new Double4x4(_t150_inv + _t150_inv, 0.0, 0.0, -((_t145 + _t144) * _t150_inv), 0.0, _t151_inv + _t151_inv, 0.0, -((_t147 + _t146) * _t151_inv), 0.0, 0.0, -1.0 * _t152_inv, _t148 * _t152_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
+        return new Double4x4(_t150_inv + _t150_inv, 0.0, 0.0, -((_t145 + _t144) * _t150_inv), 0.0, _t151_inv + _t151_inv, 0.0, -((_t147 + _t146) * _t151_inv), 0.0, 0.0, -_t152_inv, _t148 * _t152_inv, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE & view.properties());
     }
 
 

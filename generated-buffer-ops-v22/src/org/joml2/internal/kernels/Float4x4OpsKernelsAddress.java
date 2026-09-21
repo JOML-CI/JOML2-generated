@@ -6836,7 +6836,7 @@ public final class Float4x4OpsKernelsAddress {
         UnsafeOpsHolder.U.putFloat(dest + 28L, 0.0f);
         UnsafeOpsHolder.U.putFloat(dest + 32L, 0.0f);
         UnsafeOpsHolder.U.putFloat(dest + 36L, 0.0f);
-        UnsafeOpsHolder.U.putFloat(dest + 40L, 1.0f * _t2_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 40L, _t2_inv);
         UnsafeOpsHolder.U.putFloat(dest + 44L, 0.0f);
         UnsafeOpsHolder.U.putFloat(dest + 48L, -((left + right) * _t0_inv));
         UnsafeOpsHolder.U.putFloat(dest + 52L, -((bottom + top) * _t1_inv));
@@ -6868,7 +6868,7 @@ public final class Float4x4OpsKernelsAddress {
         UnsafeOpsHolder.U.putFloat(dest + 28L, 0.0f);
         UnsafeOpsHolder.U.putFloat(dest + 32L, 0.0f);
         UnsafeOpsHolder.U.putFloat(dest + 36L, 0.0f);
-        UnsafeOpsHolder.U.putFloat(dest + 40L, -1.0f * _t2_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 40L, -_t2_inv);
         UnsafeOpsHolder.U.putFloat(dest + 44L, 0.0f);
         UnsafeOpsHolder.U.putFloat(dest + 48L, -((left + right) * _t0_inv));
         UnsafeOpsHolder.U.putFloat(dest + 52L, -((bottom + top) * _t1_inv));
@@ -12563,7 +12563,7 @@ public final class Float4x4OpsKernelsAddress {
         UnsafeOpsHolder.U.putFloat(dest + 28L, 0.0f);
         UnsafeOpsHolder.U.putFloat(dest + 32L, 0.0f);
         UnsafeOpsHolder.U.putFloat(dest + 36L, 0.0f);
-        UnsafeOpsHolder.U.putFloat(dest + 40L, 1.0f * _t232_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 40L, _t232_inv);
         UnsafeOpsHolder.U.putFloat(dest + 44L, 0.0f);
         UnsafeOpsHolder.U.putFloat(dest + 48L, -((_t225 + _t224) * _t230_inv));
         UnsafeOpsHolder.U.putFloat(dest + 52L, -((_t227 + _t226) * _t231_inv));
@@ -12708,7 +12708,7 @@ public final class Float4x4OpsKernelsAddress {
         UnsafeOpsHolder.U.putFloat(dest + 28L, 0.0f);
         UnsafeOpsHolder.U.putFloat(dest + 32L, 0.0f);
         UnsafeOpsHolder.U.putFloat(dest + 36L, 0.0f);
-        UnsafeOpsHolder.U.putFloat(dest + 40L, -1.0f * _t232_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 40L, -_t232_inv);
         UnsafeOpsHolder.U.putFloat(dest + 44L, 0.0f);
         UnsafeOpsHolder.U.putFloat(dest + 48L, -((_t225 + _t224) * _t230_inv));
         UnsafeOpsHolder.U.putFloat(dest + 52L, -((_t227 + _t226) * _t231_inv));
@@ -13171,7 +13171,7 @@ public final class Float4x4OpsKernelsAddress {
         UnsafeOpsHolder.U.putFloat(dest + 28L, 0.0f);
         UnsafeOpsHolder.U.putFloat(dest + 32L, 0.0f);
         UnsafeOpsHolder.U.putFloat(dest + 36L, 0.0f);
-        UnsafeOpsHolder.U.putFloat(dest + 40L, 1.0f * _t224_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 40L, _t224_inv);
         UnsafeOpsHolder.U.putFloat(dest + 44L, 0.0f);
         UnsafeOpsHolder.U.putFloat(dest + 48L, -((_t217 + _t216) * _t222_inv));
         UnsafeOpsHolder.U.putFloat(dest + 52L, -((_t219 + _t218) * _t223_inv));
@@ -13320,7 +13320,7 @@ public final class Float4x4OpsKernelsAddress {
         UnsafeOpsHolder.U.putFloat(dest + 28L, 0.0f);
         UnsafeOpsHolder.U.putFloat(dest + 32L, 0.0f);
         UnsafeOpsHolder.U.putFloat(dest + 36L, 0.0f);
-        UnsafeOpsHolder.U.putFloat(dest + 40L, -1.0f * _t224_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 40L, -_t224_inv);
         UnsafeOpsHolder.U.putFloat(dest + 44L, 0.0f);
         UnsafeOpsHolder.U.putFloat(dest + 48L, -((_t217 + _t216) * _t222_inv));
         UnsafeOpsHolder.U.putFloat(dest + 52L, -((_t219 + _t218) * _t223_inv));

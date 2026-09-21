@@ -8093,7 +8093,7 @@ public final class Double4x4OpsKernelsByteBuffer {
         dest.putDouble(destOffset + 56, 0.0);
         dest.putDouble(destOffset + 64, 0.0);
         dest.putDouble(destOffset + 72, 0.0);
-        dest.putDouble(destOffset + 80, 1.0 * _t2_inv);
+        dest.putDouble(destOffset + 80, _t2_inv);
         dest.putDouble(destOffset + 88, 0.0);
         dest.putDouble(destOffset + 96, -((left + right) * _t0_inv));
         dest.putDouble(destOffset + 104, -((bottom + top) * _t1_inv));
@@ -8130,7 +8130,7 @@ public final class Double4x4OpsKernelsByteBuffer {
         dest.putDouble(destOffset + 56, 0.0);
         dest.putDouble(destOffset + 64, 0.0);
         dest.putDouble(destOffset + 72, 0.0);
-        dest.putDouble(destOffset + 80, -1.0 * _t2_inv);
+        dest.putDouble(destOffset + 80, -_t2_inv);
         dest.putDouble(destOffset + 88, 0.0);
         dest.putDouble(destOffset + 96, -((left + right) * _t0_inv));
         dest.putDouble(destOffset + 104, -((bottom + top) * _t1_inv));
@@ -14654,7 +14654,7 @@ public final class Double4x4OpsKernelsByteBuffer {
         dest.putDouble(destOffset + 56, 0.0);
         dest.putDouble(destOffset + 64, 0.0);
         dest.putDouble(destOffset + 72, 0.0);
-        dest.putDouble(destOffset + 80, 1.0 * _t232_inv);
+        dest.putDouble(destOffset + 80, _t232_inv);
         dest.putDouble(destOffset + 88, 0.0);
         dest.putDouble(destOffset + 96, -((_t225 + _t224) * _t230_inv));
         dest.putDouble(destOffset + 104, -((_t227 + _t226) * _t231_inv));
@@ -14806,7 +14806,7 @@ public final class Double4x4OpsKernelsByteBuffer {
         dest.putDouble(destOffset + 56, 0.0);
         dest.putDouble(destOffset + 64, 0.0);
         dest.putDouble(destOffset + 72, 0.0);
-        dest.putDouble(destOffset + 80, -1.0 * _t232_inv);
+        dest.putDouble(destOffset + 80, -_t232_inv);
         dest.putDouble(destOffset + 88, 0.0);
         dest.putDouble(destOffset + 96, -((_t225 + _t224) * _t230_inv));
         dest.putDouble(destOffset + 104, -((_t227 + _t226) * _t231_inv));
@@ -15290,7 +15290,7 @@ public final class Double4x4OpsKernelsByteBuffer {
         dest.putDouble(destOffset + 56, 0.0);
         dest.putDouble(destOffset + 64, 0.0);
         dest.putDouble(destOffset + 72, 0.0);
-        dest.putDouble(destOffset + 80, 1.0 * _t224_inv);
+        dest.putDouble(destOffset + 80, _t224_inv);
         dest.putDouble(destOffset + 88, 0.0);
         dest.putDouble(destOffset + 96, -((_t217 + _t216) * _t222_inv));
         dest.putDouble(destOffset + 104, -((_t219 + _t218) * _t223_inv));
@@ -15446,7 +15446,7 @@ public final class Double4x4OpsKernelsByteBuffer {
         dest.putDouble(destOffset + 56, 0.0);
         dest.putDouble(destOffset + 64, 0.0);
         dest.putDouble(destOffset + 72, 0.0);
-        dest.putDouble(destOffset + 80, -1.0 * _t224_inv);
+        dest.putDouble(destOffset + 80, -_t224_inv);
         dest.putDouble(destOffset + 88, 0.0);
         dest.putDouble(destOffset + 96, -((_t217 + _t216) * _t222_inv));
         dest.putDouble(destOffset + 104, -((_t219 + _t218) * _t223_inv));

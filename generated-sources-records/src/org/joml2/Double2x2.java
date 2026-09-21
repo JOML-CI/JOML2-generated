@@ -412,7 +412,7 @@ public record Double2x2(double m00, double m01, double m10, double m11, int prop
      */
     private Double2x2 invert_affine() {
         double _rcp0 = 1.0 / this.m00;
-        return new Double2x2(1.0 * _rcp0, -(this.m01 * _rcp0), 0.0, 1.0, Joml.BIT_AFFINE);
+        return new Double2x2(_rcp0, -(this.m01 * _rcp0), 0.0, 1.0, Joml.BIT_AFFINE);
     }
 
 
@@ -517,7 +517,7 @@ public record Double2x2(double m00, double m01, double m10, double m11, int prop
      */
     private Double2x2 invertProduct_identity_affine(Double2x2 other) {
         double _rcp0 = 1.0 / other.m00();
-        return new Double2x2(1.0 * _rcp0, -(other.m01() * _rcp0), 0.0, 1.0, other.properties());
+        return new Double2x2(_rcp0, -(other.m01() * _rcp0), 0.0, 1.0, other.properties());
     }
 
 
@@ -545,7 +545,7 @@ public record Double2x2(double m00, double m01, double m10, double m11, int prop
      */
     private Double2x2 invertProduct_translation_affine(Double2x2 other) {
         double _rcp0 = 1.0 / other.m00();
-        return new Double2x2(1.0 * _rcp0, -((other.m01() + this.m01) * _rcp0), 0.0, 1.0, Joml.BIT_TRANSLATION & other.properties());
+        return new Double2x2(_rcp0, -((other.m01() + this.m01) * _rcp0), 0.0, 1.0, Joml.BIT_TRANSLATION & other.properties());
     }
 
 
@@ -565,7 +565,7 @@ public record Double2x2(double m00, double m01, double m10, double m11, int prop
     private Double2x2 invertProduct_orthogonal_affine(Double2x2 other, int _props) {
         double _t0 = other.m00() * this.m00;
         double _t0_inv = 1.0 / _t0;
-        return new Double2x2(1.0 * _t0_inv, -(Math.fma(other.m01(), this.m00, this.m01) * _t0_inv), 0.0, 1.0, _props);
+        return new Double2x2(_t0_inv, -(Math.fma(other.m01(), this.m00, this.m01) * _t0_inv), 0.0, 1.0, _props);
     }
 
 
@@ -575,7 +575,7 @@ public record Double2x2(double m00, double m01, double m10, double m11, int prop
      */
     private Double2x2 invertProduct_affine_identity(Double2x2 other) {
         double _rcp0 = 1.0 / this.m00;
-        return new Double2x2(1.0 * _rcp0, -(this.m01 * _rcp0), 0.0, 1.0, Joml.BIT_AFFINE & other.properties());
+        return new Double2x2(_rcp0, -(this.m01 * _rcp0), 0.0, 1.0, Joml.BIT_AFFINE & other.properties());
     }
 
 
@@ -585,7 +585,7 @@ public record Double2x2(double m00, double m01, double m10, double m11, int prop
      */
     private Double2x2 invertProduct_affine_translation(Double2x2 other) {
         double _rcp0 = 1.0 / this.m00;
-        return new Double2x2(1.0 * _rcp0, -(Math.fma(other.m01(), this.m00, this.m01) * _rcp0), 0.0, 1.0, Joml.BIT_AFFINE & other.properties());
+        return new Double2x2(_rcp0, -(Math.fma(other.m01(), this.m00, this.m01) * _rcp0), 0.0, 1.0, Joml.BIT_AFFINE & other.properties());
     }
 
 
@@ -730,7 +730,7 @@ public record Double2x2(double m00, double m01, double m10, double m11, int prop
      */
     private Double2x2 normal_affine() {
         double _rcp0 = 1.0 / this.m00;
-        return new Double2x2(1.0 * _rcp0, 0.0, -(this.m01 * _rcp0), 1.0, 0);
+        return new Double2x2(_rcp0, 0.0, -(this.m01 * _rcp0), 1.0, 0);
     }
 
 

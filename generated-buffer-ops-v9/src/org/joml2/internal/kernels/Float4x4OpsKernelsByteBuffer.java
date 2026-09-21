@@ -8093,7 +8093,7 @@ public final class Float4x4OpsKernelsByteBuffer {
         dest.putFloat(destOffset + 28, 0.0f);
         dest.putFloat(destOffset + 32, 0.0f);
         dest.putFloat(destOffset + 36, 0.0f);
-        dest.putFloat(destOffset + 40, 1.0f * _t2_inv);
+        dest.putFloat(destOffset + 40, _t2_inv);
         dest.putFloat(destOffset + 44, 0.0f);
         dest.putFloat(destOffset + 48, -((left + right) * _t0_inv));
         dest.putFloat(destOffset + 52, -((bottom + top) * _t1_inv));
@@ -8130,7 +8130,7 @@ public final class Float4x4OpsKernelsByteBuffer {
         dest.putFloat(destOffset + 28, 0.0f);
         dest.putFloat(destOffset + 32, 0.0f);
         dest.putFloat(destOffset + 36, 0.0f);
-        dest.putFloat(destOffset + 40, -1.0f * _t2_inv);
+        dest.putFloat(destOffset + 40, -_t2_inv);
         dest.putFloat(destOffset + 44, 0.0f);
         dest.putFloat(destOffset + 48, -((left + right) * _t0_inv));
         dest.putFloat(destOffset + 52, -((bottom + top) * _t1_inv));
@@ -14654,7 +14654,7 @@ public final class Float4x4OpsKernelsByteBuffer {
         dest.putFloat(destOffset + 28, 0.0f);
         dest.putFloat(destOffset + 32, 0.0f);
         dest.putFloat(destOffset + 36, 0.0f);
-        dest.putFloat(destOffset + 40, 1.0f * _t232_inv);
+        dest.putFloat(destOffset + 40, _t232_inv);
         dest.putFloat(destOffset + 44, 0.0f);
         dest.putFloat(destOffset + 48, -((_t225 + _t224) * _t230_inv));
         dest.putFloat(destOffset + 52, -((_t227 + _t226) * _t231_inv));
@@ -14806,7 +14806,7 @@ public final class Float4x4OpsKernelsByteBuffer {
         dest.putFloat(destOffset + 28, 0.0f);
         dest.putFloat(destOffset + 32, 0.0f);
         dest.putFloat(destOffset + 36, 0.0f);
-        dest.putFloat(destOffset + 40, -1.0f * _t232_inv);
+        dest.putFloat(destOffset + 40, -_t232_inv);
         dest.putFloat(destOffset + 44, 0.0f);
         dest.putFloat(destOffset + 48, -((_t225 + _t224) * _t230_inv));
         dest.putFloat(destOffset + 52, -((_t227 + _t226) * _t231_inv));
@@ -15290,7 +15290,7 @@ public final class Float4x4OpsKernelsByteBuffer {
         dest.putFloat(destOffset + 28, 0.0f);
         dest.putFloat(destOffset + 32, 0.0f);
         dest.putFloat(destOffset + 36, 0.0f);
-        dest.putFloat(destOffset + 40, 1.0f * _t224_inv);
+        dest.putFloat(destOffset + 40, _t224_inv);
         dest.putFloat(destOffset + 44, 0.0f);
         dest.putFloat(destOffset + 48, -((_t217 + _t216) * _t222_inv));
         dest.putFloat(destOffset + 52, -((_t219 + _t218) * _t223_inv));
@@ -15446,7 +15446,7 @@ public final class Float4x4OpsKernelsByteBuffer {
         dest.putFloat(destOffset + 28, 0.0f);
         dest.putFloat(destOffset + 32, 0.0f);
         dest.putFloat(destOffset + 36, 0.0f);
-        dest.putFloat(destOffset + 40, -1.0f * _t224_inv);
+        dest.putFloat(destOffset + 40, -_t224_inv);
         dest.putFloat(destOffset + 44, 0.0f);
         dest.putFloat(destOffset + 48, -((_t217 + _t216) * _t222_inv));
         dest.putFloat(destOffset + 52, -((_t219 + _t218) * _t223_inv));

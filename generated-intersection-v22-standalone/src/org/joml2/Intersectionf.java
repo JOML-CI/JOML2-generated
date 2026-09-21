@@ -1098,9 +1098,9 @@ public final class Intersectionf {
         float _t3_inv = 1.0f / _t3;
         float _t6 = p1X - p0X;
         float _t6_inv = 1.0f / _t6;
-        float _t9 = 1.0f * _t0_inv;
-        float _t10 = 1.0f * _t3_inv;
-        float _t11 = 1.0f * _t6_inv;
+        float _t9 = _t0_inv;
+        float _t10 = _t3_inv;
+        float _t11 = _t6_inv;
         float _t12 = (minZ - p0Z) * _t0_inv;
         float _t13 = (maxZ - p0Z) * _t0_inv;
         float _t14 = (minY - p0Y) * _t3_inv;
@@ -1207,8 +1207,8 @@ public final class Intersectionf {
         float _t0_inv = 1.0f / _t0;
         float _t3 = p1X - p0X;
         float _t3_inv = 1.0f / _t3;
-        float _t6 = 1.0f * _t0_inv;
-        float _t7 = 1.0f * _t3_inv;
+        float _t6 = _t0_inv;
+        float _t7 = _t3_inv;
         float _t8 = (minY - p0Y) * _t0_inv;
         float _t9 = (maxY - p0Y) * _t0_inv;
         float _t10 = (minX - p0X) * _t3_inv;
@@ -1620,9 +1620,9 @@ public final class Intersectionf {
         float _rcp0 = 1.0f / dirX;
         float _rcp1 = 1.0f / dirY;
         float _rcp2 = 1.0f / dirZ;
-        float _t0 = 1.0f * _rcp0;
-        float _t3 = 1.0f * _rcp1;
-        float _t6 = 1.0f * _rcp2;
+        float _t0 = _rcp0;
+        float _t3 = _rcp1;
+        float _t6 = _rcp2;
         float _t9 = (minX - originX) * _rcp0;
         float _t10 = (maxX - originX) * _rcp0;
         float _t11 = (maxY - originY) * _rcp1;
@@ -3080,9 +3080,9 @@ public final class Intersectionf {
         float _rcp0 = 1.0f / velocityX;
         float _rcp1 = 1.0f / velocityY;
         float _rcp2 = 1.0f / velocityZ;
-        float _t0 = 1.0f * _rcp0;
-        float _t3 = 1.0f * _rcp1;
-        float _t6 = 1.0f * _rcp2;
+        float _t0 = _rcp0;
+        float _t3 = _rcp1;
+        float _t6 = _rcp2;
         float _t9 = (minBX - maxAX) * _rcp0;
         float _t10 = (maxBX - minAX) * _rcp0;
         float _t11 = (maxBY - minAY) * _rcp1;
@@ -3780,9 +3780,9 @@ public final class Intersectionf {
         float _rcp0 = 1.0f / dirX;
         float _rcp1 = 1.0f / dirY;
         float _rcp2 = 1.0f / dirZ;
-        float _t0 = 1.0f * _rcp0;
-        float _t3 = 1.0f * _rcp1;
-        float _t6 = 1.0f * _rcp2;
+        float _t0 = _rcp0;
+        float _t3 = _rcp1;
+        float _t6 = _rcp2;
         float _t9 = (minX - originX) * _rcp0;
         float _t10 = (maxX - originX) * _rcp0;
         float _t11 = (maxY - originY) * _rcp1;
@@ -3873,8 +3873,8 @@ public final class Intersectionf {
     public static boolean testRayAar(float originX, float originY, float dirX, float dirY, float minX, float minY, float maxX, float maxY) {
         float _rcp0 = 1.0f / dirX;
         float _rcp1 = 1.0f / dirY;
-        float _t0 = 1.0f * _rcp0;
-        float _t3 = 1.0f * _rcp1;
+        float _t0 = _rcp0;
+        float _t3 = _rcp1;
         float _t6 = (minX - originX) * _rcp0;
         float _t7 = (maxX - originX) * _rcp0;
         float _t8 = (maxY - originY) * _rcp1;

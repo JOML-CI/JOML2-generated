@@ -6837,7 +6837,7 @@ public final class Double4x4OpsKernelsAddress {
         UnsafeOpsHolder.U.putDouble(dest + 56L, 0.0);
         UnsafeOpsHolder.U.putDouble(dest + 64L, 0.0);
         UnsafeOpsHolder.U.putDouble(dest + 72L, 0.0);
-        UnsafeOpsHolder.U.putDouble(dest + 80L, 1.0 * _t2_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 80L, _t2_inv);
         UnsafeOpsHolder.U.putDouble(dest + 88L, 0.0);
         UnsafeOpsHolder.U.putDouble(dest + 96L, -((left + right) * _t0_inv));
         UnsafeOpsHolder.U.putDouble(dest + 104L, -((bottom + top) * _t1_inv));
@@ -6869,7 +6869,7 @@ public final class Double4x4OpsKernelsAddress {
         UnsafeOpsHolder.U.putDouble(dest + 56L, 0.0);
         UnsafeOpsHolder.U.putDouble(dest + 64L, 0.0);
         UnsafeOpsHolder.U.putDouble(dest + 72L, 0.0);
-        UnsafeOpsHolder.U.putDouble(dest + 80L, -1.0 * _t2_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 80L, -_t2_inv);
         UnsafeOpsHolder.U.putDouble(dest + 88L, 0.0);
         UnsafeOpsHolder.U.putDouble(dest + 96L, -((left + right) * _t0_inv));
         UnsafeOpsHolder.U.putDouble(dest + 104L, -((bottom + top) * _t1_inv));
@@ -12564,7 +12564,7 @@ public final class Double4x4OpsKernelsAddress {
         UnsafeOpsHolder.U.putDouble(dest + 56L, 0.0);
         UnsafeOpsHolder.U.putDouble(dest + 64L, 0.0);
         UnsafeOpsHolder.U.putDouble(dest + 72L, 0.0);
-        UnsafeOpsHolder.U.putDouble(dest + 80L, 1.0 * _t232_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 80L, _t232_inv);
         UnsafeOpsHolder.U.putDouble(dest + 88L, 0.0);
         UnsafeOpsHolder.U.putDouble(dest + 96L, -((_t225 + _t224) * _t230_inv));
         UnsafeOpsHolder.U.putDouble(dest + 104L, -((_t227 + _t226) * _t231_inv));
@@ -12709,7 +12709,7 @@ public final class Double4x4OpsKernelsAddress {
         UnsafeOpsHolder.U.putDouble(dest + 56L, 0.0);
         UnsafeOpsHolder.U.putDouble(dest + 64L, 0.0);
         UnsafeOpsHolder.U.putDouble(dest + 72L, 0.0);
-        UnsafeOpsHolder.U.putDouble(dest + 80L, -1.0 * _t232_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 80L, -_t232_inv);
         UnsafeOpsHolder.U.putDouble(dest + 88L, 0.0);
         UnsafeOpsHolder.U.putDouble(dest + 96L, -((_t225 + _t224) * _t230_inv));
         UnsafeOpsHolder.U.putDouble(dest + 104L, -((_t227 + _t226) * _t231_inv));
@@ -13172,7 +13172,7 @@ public final class Double4x4OpsKernelsAddress {
         UnsafeOpsHolder.U.putDouble(dest + 56L, 0.0);
         UnsafeOpsHolder.U.putDouble(dest + 64L, 0.0);
         UnsafeOpsHolder.U.putDouble(dest + 72L, 0.0);
-        UnsafeOpsHolder.U.putDouble(dest + 80L, 1.0 * _t224_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 80L, _t224_inv);
         UnsafeOpsHolder.U.putDouble(dest + 88L, 0.0);
         UnsafeOpsHolder.U.putDouble(dest + 96L, -((_t217 + _t216) * _t222_inv));
         UnsafeOpsHolder.U.putDouble(dest + 104L, -((_t219 + _t218) * _t223_inv));
@@ -13321,7 +13321,7 @@ public final class Double4x4OpsKernelsAddress {
         UnsafeOpsHolder.U.putDouble(dest + 56L, 0.0);
         UnsafeOpsHolder.U.putDouble(dest + 64L, 0.0);
         UnsafeOpsHolder.U.putDouble(dest + 72L, 0.0);
-        UnsafeOpsHolder.U.putDouble(dest + 80L, -1.0 * _t224_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 80L, -_t224_inv);
         UnsafeOpsHolder.U.putDouble(dest + 88L, 0.0);
         UnsafeOpsHolder.U.putDouble(dest + 96L, -((_t217 + _t216) * _t222_inv));
         UnsafeOpsHolder.U.putDouble(dest + 104L, -((_t219 + _t218) * _t223_inv));

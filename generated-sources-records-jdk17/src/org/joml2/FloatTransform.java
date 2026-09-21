@@ -1213,7 +1213,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t18 = 2.0f * (this.tX * this.rZ * _rcp0 - this.tZ * this.rX * _rcp1);
         float _t19 = 2.0f * (this.tY * this.rX * _rcp2 - this.tX * this.rY * _rcp0);
         float _t20 = 2.0f * (this.tZ * this.rY * _rcp1 - this.tY * this.rZ * _rcp2);
-        return new FloatTransform(Math.fma(this.rZ, _t18, Math.fma(_t0, _t19, Math.fma(this.rW, _t20, -(this.tX * _rcp0)))), Math.fma(this.rX, _t19, Math.fma(_t1, _t20, Math.fma(this.rW, _t18, -(this.tY * _rcp2)))), Math.fma(this.rY, _t20, Math.fma(_t2, _t18, Math.fma(this.rW, _t19, -(this.tZ * _rcp1)))), _t2, _t0, _t1, this.rW, 1.0f * _rcp0, 1.0f * _rcp2, 1.0f * _rcp1);
+        return new FloatTransform(Math.fma(this.rZ, _t18, Math.fma(_t0, _t19, Math.fma(this.rW, _t20, -(this.tX * _rcp0)))), Math.fma(this.rX, _t19, Math.fma(_t1, _t20, Math.fma(this.rW, _t18, -(this.tY * _rcp2)))), Math.fma(this.rY, _t20, Math.fma(_t2, _t18, Math.fma(this.rW, _t19, -(this.tZ * _rcp1)))), _t2, _t0, _t1, this.rW, _rcp0, _rcp2, _rcp1);
     }
 
 

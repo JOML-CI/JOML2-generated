@@ -1144,9 +1144,9 @@ public final class IntersectionGend {
         double _t3_inv = 1.0 / _t3;
         double _t6 = p1X - p0X;
         double _t6_inv = 1.0 / _t6;
-        double _t9 = 1.0 * _t0_inv;
-        double _t10 = 1.0 * _t3_inv;
-        double _t11 = 1.0 * _t6_inv;
+        double _t9 = _t0_inv;
+        double _t10 = _t3_inv;
+        double _t11 = _t6_inv;
         double _t12 = (minZ - p0Z) * _t0_inv;
         double _t13 = (maxZ - p0Z) * _t0_inv;
         double _t14 = (minY - p0Y) * _t3_inv;
@@ -1271,8 +1271,8 @@ public final class IntersectionGend {
         double _t0_inv = 1.0 / _t0;
         double _t3 = p1X - p0X;
         double _t3_inv = 1.0 / _t3;
-        double _t6 = 1.0 * _t0_inv;
-        double _t7 = 1.0 * _t3_inv;
+        double _t6 = _t0_inv;
+        double _t7 = _t3_inv;
         double _t8 = (minY - p0Y) * _t0_inv;
         double _t9 = (maxY - p0Y) * _t0_inv;
         double _t10 = (minX - p0X) * _t3_inv;
@@ -1701,9 +1701,9 @@ public final class IntersectionGend {
         double _rcp0 = 1.0 / dirX;
         double _rcp1 = 1.0 / dirY;
         double _rcp2 = 1.0 / dirZ;
-        double _t0 = 1.0 * _rcp0;
-        double _t3 = 1.0 * _rcp1;
-        double _t6 = 1.0 * _rcp2;
+        double _t0 = _rcp0;
+        double _t3 = _rcp1;
+        double _t6 = _rcp2;
         double _t9 = (minX - originX) * _rcp0;
         double _t10 = (maxX - originX) * _rcp0;
         double _t11 = (maxY - originY) * _rcp1;
@@ -3168,9 +3168,9 @@ public final class IntersectionGend {
         double _rcp0 = 1.0 / velocityX;
         double _rcp1 = 1.0 / velocityY;
         double _rcp2 = 1.0 / velocityZ;
-        double _t0 = 1.0 * _rcp0;
-        double _t3 = 1.0 * _rcp1;
-        double _t6 = 1.0 * _rcp2;
+        double _t0 = _rcp0;
+        double _t3 = _rcp1;
+        double _t6 = _rcp2;
         double _t9 = (minBX - maxAX) * _rcp0;
         double _t10 = (maxBX - minAX) * _rcp0;
         double _t11 = (maxBY - minAY) * _rcp1;
@@ -3868,9 +3868,9 @@ public final class IntersectionGend {
         double _rcp0 = 1.0 / dirX;
         double _rcp1 = 1.0 / dirY;
         double _rcp2 = 1.0 / dirZ;
-        double _t0 = 1.0 * _rcp0;
-        double _t3 = 1.0 * _rcp1;
-        double _t6 = 1.0 * _rcp2;
+        double _t0 = _rcp0;
+        double _t3 = _rcp1;
+        double _t6 = _rcp2;
         double _t9 = (minX - originX) * _rcp0;
         double _t10 = (maxX - originX) * _rcp0;
         double _t11 = (maxY - originY) * _rcp1;
@@ -3961,8 +3961,8 @@ public final class IntersectionGend {
     public static boolean testRayAar(double originX, double originY, double dirX, double dirY, double minX, double minY, double maxX, double maxY) {
         double _rcp0 = 1.0 / dirX;
         double _rcp1 = 1.0 / dirY;
-        double _t0 = 1.0 * _rcp0;
-        double _t3 = 1.0 * _rcp1;
+        double _t0 = _rcp0;
+        double _t3 = _rcp1;
         double _t6 = (minX - originX) * _rcp0;
         double _t7 = (maxX - originX) * _rcp0;
         double _t8 = (maxY - originY) * _rcp1;

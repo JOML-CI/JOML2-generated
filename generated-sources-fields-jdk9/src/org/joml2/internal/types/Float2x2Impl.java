@@ -554,7 +554,7 @@ public class Float2x2Impl implements Float2x2 {
     private Float2x2 invert_affine(@Mutated Float2x2 dest) {
         Float2x2Impl d = (Float2x2Impl) dest;
         float _rcp0 = 1.0f / this.m00;
-        d.m00 = 1.0f * _rcp0;
+        d.m00 = _rcp0;
         d.m10 = 0.0f;
         d.m01 = -(this.m01 * _rcp0);
         d.m11 = 1.0f;
@@ -570,7 +570,7 @@ public class Float2x2Impl implements Float2x2 {
     private Float2x2 invert_affine_self(@Mutated Float2x2 dest) {
         Float2x2Impl d = (Float2x2Impl) dest;
         float _rcp0 = 1.0f / this.m00;
-        d.m00 = 1.0f * _rcp0;
+        d.m00 = _rcp0;
         d.m01 = -(this.m01 * _rcp0);
         d.properties = Joml.BIT_AFFINE;
         return d;
@@ -762,7 +762,7 @@ public class Float2x2Impl implements Float2x2 {
     private Float2x2 invertProduct_identity_affine(Float2x2R other, @Mutated Float2x2 dest) {
         Float2x2Impl d = (Float2x2Impl) dest;
         float _rcp0 = 1.0f / other.m00();
-        d.m00 = 1.0f * _rcp0;
+        d.m00 = _rcp0;
         d.m10 = 0.0f;
         d.m01 = -(other.m01() * _rcp0);
         d.m11 = 1.0f;
@@ -808,7 +808,7 @@ public class Float2x2Impl implements Float2x2 {
     private Float2x2 invertProduct_translation_affine(Float2x2R other, @Mutated Float2x2 dest) {
         Float2x2Impl d = (Float2x2Impl) dest;
         float _rcp0 = 1.0f / other.m00();
-        d.m00 = 1.0f * _rcp0;
+        d.m00 = _rcp0;
         d.m10 = 0.0f;
         d.m01 = -((other.m01() + this.m01) * _rcp0);
         d.m11 = 1.0f;
@@ -840,7 +840,7 @@ public class Float2x2Impl implements Float2x2 {
         Float2x2Impl d = (Float2x2Impl) dest;
         float _t0 = other.m00() * this.m00;
         float _t0_inv = 1.0f / _t0;
-        float _buf0 = 1.0f * _t0_inv;
+        float _buf0 = _t0_inv;
         d.m10 = 0.0f;
         d.m01 = -(Math.fma(other.m01(), this.m00, this.m01) * _t0_inv);
         d.m11 = 1.0f;
@@ -857,7 +857,7 @@ public class Float2x2Impl implements Float2x2 {
     private Float2x2 invertProduct_affine_identity(Float2x2R other, @Mutated Float2x2 dest) {
         Float2x2Impl d = (Float2x2Impl) dest;
         float _rcp0 = 1.0f / this.m00;
-        d.m00 = 1.0f * _rcp0;
+        d.m00 = _rcp0;
         d.m10 = 0.0f;
         d.m01 = -(this.m01 * _rcp0);
         d.m11 = 1.0f;
@@ -873,7 +873,7 @@ public class Float2x2Impl implements Float2x2 {
     private Float2x2 invertProduct_affine_translation(Float2x2R other, @Mutated Float2x2 dest) {
         Float2x2Impl d = (Float2x2Impl) dest;
         float _rcp0 = 1.0f / this.m00;
-        float _buf0 = 1.0f * _rcp0;
+        float _buf0 = _rcp0;
         d.m10 = 0.0f;
         d.m01 = -(Math.fma(other.m01(), this.m00, this.m01) * _rcp0);
         d.m11 = 1.0f;
@@ -1174,7 +1174,7 @@ public class Float2x2Impl implements Float2x2 {
     private Float2x2 normal_affine(@Mutated Float2x2 dest) {
         Float2x2Impl d = (Float2x2Impl) dest;
         float _rcp0 = 1.0f / this.m00;
-        d.m00 = 1.0f * _rcp0;
+        d.m00 = _rcp0;
         d.m10 = -(this.m01 * _rcp0);
         d.m01 = 0.0f;
         d.m11 = 1.0f;
@@ -1190,7 +1190,7 @@ public class Float2x2Impl implements Float2x2 {
     private Float2x2 normal_affine_self(@Mutated Float2x2 dest) {
         Float2x2Impl d = (Float2x2Impl) dest;
         float _rcp0 = 1.0f / this.m00;
-        d.m00 = 1.0f * _rcp0;
+        d.m00 = _rcp0;
         d.m10 = -(this.m01 * _rcp0);
         d.m01 = 0.0f;
         d.properties = 0;

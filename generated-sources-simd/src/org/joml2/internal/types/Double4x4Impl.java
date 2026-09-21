@@ -18667,7 +18667,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t2_inv);
+        var _col2 = _sv0.withLane(2, _t2_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, left);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, right);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, bottom).add(_sv2.withLane(1, top)).withLane(2, zNear).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
@@ -18687,7 +18687,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t2_inv);
+        var _col2 = _sv0.withLane(2, _t2_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, left);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, right);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, bottom).add(_sv2.withLane(1, top)).withLane(2, zNear).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
@@ -18718,7 +18718,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t2_inv);
+        var _col2 = _sv0.withLane(2, -_t2_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, left);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, right);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, bottom).add(_sv2.withLane(1, top)).withLane(2, zNear).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
@@ -18738,7 +18738,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t2_inv);
+        var _col2 = _sv0.withLane(2, -_t2_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, left);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, right);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, bottom).add(_sv2.withLane(1, top)).withLane(2, zNear).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).neg(), MASK_22);
@@ -27728,7 +27728,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t2_inv);
+        var _col2 = _sv0.withLane(2, _t2_inv);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, left).withLane(1, bottom).add(DoubleVector.broadcast(COL_SPECIES, right).withLane(1, top)).withLane(2, zNear).neg().fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv), DoubleVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
@@ -27747,7 +27747,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t2_inv);
+        var _col2 = _sv0.withLane(2, _t2_inv);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, left).withLane(1, bottom).add(DoubleVector.broadcast(COL_SPECIES, right).withLane(1, top)).withLane(2, zNear).neg().mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).add(DoubleVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
@@ -27867,7 +27867,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t2_inv);
+        var _col2 = _sv0.withLane(2, -_t2_inv);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, left).withLane(1, bottom).add(DoubleVector.broadcast(COL_SPECIES, right).withLane(1, top)).withLane(2, zNear).neg().fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv), DoubleVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
@@ -27886,7 +27886,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t0_inv + _t0_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t1_inv + _t1_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t2_inv);
+        var _col2 = _sv0.withLane(2, -_t2_inv);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, left).withLane(1, bottom).add(DoubleVector.broadcast(COL_SPECIES, right).withLane(1, top)).withLane(2, zNear).neg().mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t0_inv).withLane(1, _t1_inv).withLane(2, _t2_inv)).add(DoubleVector.fromArray(COL_SPECIES, sd, 12)).withLane(3, 1.0);
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
@@ -31800,7 +31800,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t230_inv + _t230_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t231_inv + _t231_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t232_inv);
+        var _col2 = _sv0.withLane(2, _t232_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t225);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t224);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).withLane(2, _t229).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv).withLane(2, _t232_inv)).neg(), MASK_22);
@@ -31899,7 +31899,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t230_inv + _t230_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t231_inv + _t231_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t232_inv);
+        var _col2 = _sv0.withLane(2, _t232_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t225);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t224);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).withLane(2, _t229).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv).withLane(2, _t232_inv)).neg(), MASK_22);
@@ -31973,7 +31973,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t94_inv + _t94_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t95_inv);
+        var _col2 = _sv0.withLane(2, _t95_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).withLane(2, _t92).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv).withLane(2, _t95_inv)).neg(), MASK_22);
@@ -32036,7 +32036,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t94_inv + _t94_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t95_inv);
+        var _col2 = _sv0.withLane(2, _t95_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).withLane(2, _t92).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv).withLane(2, _t95_inv)).neg(), MASK_22);
@@ -32121,7 +32121,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t89_inv + _t89_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t90_inv + _t90_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t91_inv);
+        var _col2 = _sv0.withLane(2, _t91_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t84);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t83);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv).withLane(2, _t91_inv)).neg(), MASK_22);
@@ -32195,7 +32195,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t89_inv + _t89_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t90_inv + _t90_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t91_inv);
+        var _col2 = _sv0.withLane(2, _t91_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t84);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t83);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv).withLane(2, _t91_inv)).neg(), MASK_22);
@@ -32293,7 +32293,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t165_inv + _t165_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t166_inv + _t166_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t167_inv);
+        var _col2 = _sv0.withLane(2, _t167_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t160);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t159);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).withLane(2, _t164).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv).withLane(2, _t167_inv)).neg(), MASK_22);
@@ -32380,7 +32380,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t165_inv + _t165_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t166_inv + _t166_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t167_inv);
+        var _col2 = _sv0.withLane(2, _t167_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t160);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t159);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).withLane(2, _t164).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv).withLane(2, _t167_inv)).neg(), MASK_22);
@@ -32433,7 +32433,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t40_inv + _t40_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t39_inv);
+        var _col2 = _sv0.withLane(2, _t39_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).withLane(2, _t24).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv).withLane(2, _t39_inv)).neg(), MASK_22);
@@ -32465,7 +32465,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t40_inv + _t40_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t39_inv);
+        var _col2 = _sv0.withLane(2, _t39_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).withLane(2, _t24).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv).withLane(2, _t39_inv)).neg(), MASK_22);
@@ -32508,7 +32508,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t40_inv + _t40_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t39_inv);
+        var _col2 = _sv0.withLane(2, _t39_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).withLane(2, _t24).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv).withLane(2, _t39_inv)).neg(), MASK_22);
@@ -32540,7 +32540,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t40_inv + _t40_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t39_inv);
+        var _col2 = _sv0.withLane(2, _t39_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).withLane(2, _t24).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv).withLane(2, _t39_inv)).neg(), MASK_22);
@@ -32584,7 +32584,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t47_inv + _t47_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t46_inv + _t46_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t45_inv);
+        var _col2 = _sv0.withLane(2, _t45_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t44);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t43);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).withLane(2, _t30).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv).withLane(2, _t45_inv)).neg(), MASK_22);
@@ -32617,7 +32617,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t47_inv + _t47_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t46_inv + _t46_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t45_inv);
+        var _col2 = _sv0.withLane(2, _t45_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t44);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t43);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).withLane(2, _t30).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv).withLane(2, _t45_inv)).neg(), MASK_22);
@@ -32691,7 +32691,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t94_inv + _t94_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t95_inv);
+        var _col2 = _sv0.withLane(2, _t95_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).withLane(2, _t92).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv).withLane(2, _t95_inv)).neg(), MASK_22);
@@ -32754,7 +32754,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t94_inv + _t94_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t95_inv);
+        var _col2 = _sv0.withLane(2, _t95_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).withLane(2, _t92).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv).withLane(2, _t95_inv)).neg(), MASK_22);
@@ -32828,7 +32828,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t117_inv + _t117_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t118_inv + _t118_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t119_inv);
+        var _col2 = _sv0.withLane(2, _t119_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t112);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t111);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).withLane(2, _t116).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv).withLane(2, _t119_inv)).neg(), MASK_22);
@@ -32891,7 +32891,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t117_inv + _t117_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t118_inv + _t118_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t119_inv);
+        var _col2 = _sv0.withLane(2, _t119_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t112);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t111);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).withLane(2, _t116).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv).withLane(2, _t119_inv)).neg(), MASK_22);
@@ -32977,7 +32977,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t134_inv + _t134_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t135_inv + _t135_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t136_inv);
+        var _col2 = _sv0.withLane(2, _t136_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t129);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t128);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).withLane(2, _t133).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv).withLane(2, _t136_inv)).neg(), MASK_22);
@@ -33052,7 +33052,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t134_inv + _t134_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t135_inv + _t135_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t136_inv);
+        var _col2 = _sv0.withLane(2, _t136_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t129);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t128);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).withLane(2, _t133).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv).withLane(2, _t136_inv)).neg(), MASK_22);
@@ -33138,7 +33138,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t158_inv + _t158_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t159_inv + _t159_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t160_inv);
+        var _col2 = _sv0.withLane(2, _t160_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t153);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t152);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).withLane(2, _t157).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv).withLane(2, _t160_inv)).neg(), MASK_22);
@@ -33213,7 +33213,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t158_inv + _t158_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t159_inv + _t159_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t160_inv);
+        var _col2 = _sv0.withLane(2, _t160_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t153);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t152);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).withLane(2, _t157).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv).withLane(2, _t160_inv)).neg(), MASK_22);
@@ -33392,7 +33392,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t230_inv + _t230_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t231_inv + _t231_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t232_inv);
+        var _col2 = _sv0.withLane(2, -_t232_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t225);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t224);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t228).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t232_inv))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv)).neg(), MASK_84);
@@ -33491,7 +33491,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t230_inv + _t230_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t231_inv + _t231_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t232_inv);
+        var _col2 = _sv0.withLane(2, -_t232_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t225);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t224);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t228).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t232_inv))).blend(_sv1.withLane(1, _t227).add(_sv2.withLane(1, _t226)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t230_inv).withLane(1, _t231_inv)).neg(), MASK_84);
@@ -33565,7 +33565,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t94_inv + _t94_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t95_inv);
+        var _col2 = _sv0.withLane(2, -_t95_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t91).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_84);
@@ -33628,7 +33628,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t94_inv + _t94_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t95_inv);
+        var _col2 = _sv0.withLane(2, -_t95_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t91).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_84);
@@ -33713,7 +33713,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t89_inv + _t89_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t90_inv + _t90_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t91_inv);
+        var _col2 = _sv0.withLane(2, -_t91_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t84);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t83);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t87).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t91_inv))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv)).neg(), MASK_84);
@@ -33787,7 +33787,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t89_inv + _t89_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t90_inv + _t90_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t91_inv);
+        var _col2 = _sv0.withLane(2, -_t91_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t84);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t83);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t87).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t91_inv))).blend(_sv1.withLane(1, _t86).add(_sv2.withLane(1, _t85)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t89_inv).withLane(1, _t90_inv)).neg(), MASK_84);
@@ -33885,7 +33885,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t165_inv + _t165_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t166_inv + _t166_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t167_inv);
+        var _col2 = _sv0.withLane(2, -_t167_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t160);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t159);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t163).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t167_inv))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv)).neg(), MASK_84);
@@ -33972,7 +33972,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t165_inv + _t165_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t166_inv + _t166_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t167_inv);
+        var _col2 = _sv0.withLane(2, -_t167_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t160);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t159);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t163).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t167_inv))).blend(_sv1.withLane(1, _t162).add(_sv2.withLane(1, _t161)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t165_inv).withLane(1, _t166_inv)).neg(), MASK_84);
@@ -34038,7 +34038,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t40_inv + _t40_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t39_inv);
+        var _col2 = _sv0.withLane(2, -_t39_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t23).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_84);
@@ -34070,7 +34070,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t40_inv + _t40_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t39_inv);
+        var _col2 = _sv0.withLane(2, -_t39_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t23).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_84);
@@ -34113,7 +34113,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t40_inv + _t40_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t39_inv);
+        var _col2 = _sv0.withLane(2, -_t39_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t23).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_84);
@@ -34145,7 +34145,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t41_inv + _t41_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t40_inv + _t40_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t39_inv);
+        var _col2 = _sv0.withLane(2, -_t39_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t37);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t23).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t39_inv))).blend(_sv1.withLane(1, _t36).add(_sv2.withLane(1, _t35)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t41_inv).withLane(1, _t40_inv)).neg(), MASK_84);
@@ -34189,7 +34189,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t47_inv + _t47_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t46_inv + _t46_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t45_inv);
+        var _col2 = _sv0.withLane(2, -_t45_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t44);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t43);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t45_inv))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv)).neg(), MASK_84);
@@ -34222,7 +34222,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t47_inv + _t47_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t46_inv + _t46_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t45_inv);
+        var _col2 = _sv0.withLane(2, -_t45_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t44);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t43);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t45_inv))).blend(_sv1.withLane(1, _t42).add(_sv2.withLane(1, _t41)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t47_inv).withLane(1, _t46_inv)).neg(), MASK_84);
@@ -34296,7 +34296,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t94_inv + _t94_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t95_inv);
+        var _col2 = _sv0.withLane(2, -_t95_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t91).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_84);
@@ -34359,7 +34359,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t93_inv + _t93_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t94_inv + _t94_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t95_inv);
+        var _col2 = _sv0.withLane(2, -_t95_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t88);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t87);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t91).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t95_inv))).blend(_sv1.withLane(1, _t90).add(_sv2.withLane(1, _t89)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t93_inv).withLane(1, _t94_inv)).neg(), MASK_84);
@@ -34433,7 +34433,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t117_inv + _t117_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t118_inv + _t118_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t119_inv);
+        var _col2 = _sv0.withLane(2, -_t119_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t112);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t111);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t115).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t119_inv))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv)).neg(), MASK_84);
@@ -34496,7 +34496,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t117_inv + _t117_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t118_inv + _t118_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t119_inv);
+        var _col2 = _sv0.withLane(2, -_t119_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t112);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t111);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t115).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t119_inv))).blend(_sv1.withLane(1, _t114).add(_sv2.withLane(1, _t113)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t117_inv).withLane(1, _t118_inv)).neg(), MASK_84);
@@ -34582,7 +34582,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t134_inv + _t134_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t135_inv + _t135_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t136_inv);
+        var _col2 = _sv0.withLane(2, -_t136_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t129);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t128);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t132).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t136_inv))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv)).neg(), MASK_84);
@@ -34657,7 +34657,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t134_inv + _t134_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t135_inv + _t135_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t136_inv);
+        var _col2 = _sv0.withLane(2, -_t136_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t129);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t128);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t132).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t136_inv))).blend(_sv1.withLane(1, _t131).add(_sv2.withLane(1, _t130)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t134_inv).withLane(1, _t135_inv)).neg(), MASK_84);
@@ -34743,7 +34743,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t158_inv + _t158_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t159_inv + _t159_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t160_inv);
+        var _col2 = _sv0.withLane(2, -_t160_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t153);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t152);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t156).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t160_inv))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv)).neg(), MASK_84);
@@ -34818,7 +34818,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t158_inv + _t158_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t159_inv + _t159_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t160_inv);
+        var _col2 = _sv0.withLane(2, -_t160_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t153);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t152);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t156).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t160_inv))).blend(_sv1.withLane(1, _t155).add(_sv2.withLane(1, _t154)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t158_inv).withLane(1, _t159_inv)).neg(), MASK_84);
@@ -37911,7 +37911,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t222_inv + _t222_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t223_inv + _t223_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t224_inv);
+        var _col2 = _sv0.withLane(2, _t224_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t217);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t216);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).withLane(2, _t221).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv).withLane(2, _t224_inv)).neg(), MASK_22);
@@ -38014,7 +38014,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t222_inv + _t222_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t223_inv + _t223_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t224_inv);
+        var _col2 = _sv0.withLane(2, _t224_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t217);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t216);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).withLane(2, _t221).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv).withLane(2, _t224_inv)).neg(), MASK_22);
@@ -38091,7 +38091,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t89_inv);
+        var _col2 = _sv0.withLane(2, _t89_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, _t86).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
@@ -38157,7 +38157,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t89_inv);
+        var _col2 = _sv0.withLane(2, _t89_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, _t86).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
@@ -38243,7 +38243,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t92_inv);
+        var _col2 = _sv0.withLane(2, _t92_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, _t89).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
@@ -38318,7 +38318,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t92_inv);
+        var _col2 = _sv0.withLane(2, _t92_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, _t89).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
@@ -38419,7 +38419,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t159_inv + _t159_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t160_inv + _t160_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t161_inv);
+        var _col2 = _sv0.withLane(2, _t161_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t154);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t153);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).withLane(2, _t158).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv).withLane(2, _t161_inv)).neg(), MASK_22);
@@ -38509,7 +38509,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t159_inv + _t159_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t160_inv + _t160_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t161_inv);
+        var _col2 = _sv0.withLane(2, _t161_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t154);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t153);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).withLane(2, _t158).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv).withLane(2, _t161_inv)).neg(), MASK_22);
@@ -38538,7 +38538,7 @@ public class Double4x4Impl implements Double4x4 {
         VEC_3.intoArray(dd, 4);
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = 1.0 * _t8_inv;
+        dd[10] = _t8_inv;
         dd[11] = 0.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
@@ -38580,7 +38580,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t40_inv);
+        var _col2 = _sv0.withLane(2, _t40_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
@@ -38613,7 +38613,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t40_inv);
+        var _col2 = _sv0.withLane(2, _t40_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
@@ -38657,7 +38657,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t40_inv);
+        var _col2 = _sv0.withLane(2, _t40_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
@@ -38690,7 +38690,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t40_inv);
+        var _col2 = _sv0.withLane(2, _t40_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).withLane(2, _t29).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv).withLane(2, _t40_inv)).neg(), MASK_22);
@@ -38734,7 +38734,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t48_inv + _t48_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t47_inv + _t47_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t46_inv);
+        var _col2 = _sv0.withLane(2, _t46_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t45);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t44);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, _t35).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_22);
@@ -38767,7 +38767,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t48_inv + _t48_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t47_inv + _t47_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t46_inv);
+        var _col2 = _sv0.withLane(2, _t46_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t45);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t44);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).withLane(2, _t35).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv).withLane(2, _t46_inv)).neg(), MASK_22);
@@ -38844,7 +38844,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t89_inv);
+        var _col2 = _sv0.withLane(2, _t89_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, _t86).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
@@ -38910,7 +38910,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t89_inv);
+        var _col2 = _sv0.withLane(2, _t89_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).withLane(2, _t86).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv).withLane(2, _t89_inv)).neg(), MASK_22);
@@ -38990,7 +38990,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t92_inv);
+        var _col2 = _sv0.withLane(2, _t92_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, _t89).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
@@ -39059,7 +39059,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t92_inv);
+        var _col2 = _sv0.withLane(2, _t92_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).withLane(2, _t89).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv).withLane(2, _t92_inv)).neg(), MASK_22);
@@ -39149,7 +39149,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t126_inv + _t126_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t127_inv + _t127_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t128_inv);
+        var _col2 = _sv0.withLane(2, _t128_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t121);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t120);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).withLane(2, _t125).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv).withLane(2, _t128_inv)).neg(), MASK_22);
@@ -39228,7 +39228,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t126_inv + _t126_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t127_inv + _t127_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t128_inv);
+        var _col2 = _sv0.withLane(2, _t128_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t121);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t120);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).withLane(2, _t125).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv).withLane(2, _t128_inv)).neg(), MASK_22);
@@ -39318,7 +39318,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t150_inv + _t150_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t151_inv + _t151_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t152_inv);
+        var _col2 = _sv0.withLane(2, _t152_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t145);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t144);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, _t149).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_22);
@@ -39397,7 +39397,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t150_inv + _t150_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t151_inv + _t151_inv);
-        var _col2 = _sv0.withLane(2, 1.0 * _t152_inv);
+        var _col2 = _sv0.withLane(2, _t152_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t145);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t144);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).mul(DoubleVector.zero(COL_SPECIES))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).withLane(2, _t149).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv).withLane(2, _t152_inv)).neg(), MASK_22);
@@ -39580,7 +39580,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t222_inv + _t222_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t223_inv + _t223_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t224_inv);
+        var _col2 = _sv0.withLane(2, -_t224_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t217);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t216);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t220).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t224_inv))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv)).neg(), MASK_84);
@@ -39683,7 +39683,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t222_inv + _t222_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t223_inv + _t223_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t224_inv);
+        var _col2 = _sv0.withLane(2, -_t224_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t217);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t216);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t220).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t224_inv))).blend(_sv1.withLane(1, _t219).add(_sv2.withLane(1, _t218)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t222_inv).withLane(1, _t223_inv)).neg(), MASK_84);
@@ -39760,7 +39760,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t89_inv);
+        var _col2 = _sv0.withLane(2, -_t89_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_84);
@@ -39826,7 +39826,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t89_inv);
+        var _col2 = _sv0.withLane(2, -_t89_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_84);
@@ -39912,7 +39912,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t92_inv);
+        var _col2 = _sv0.withLane(2, -_t92_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_84);
@@ -39987,7 +39987,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t92_inv);
+        var _col2 = _sv0.withLane(2, -_t92_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_84);
@@ -40088,7 +40088,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t159_inv + _t159_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t160_inv + _t160_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t161_inv);
+        var _col2 = _sv0.withLane(2, -_t161_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t154);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t153);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t157).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t161_inv))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv)).neg(), MASK_84);
@@ -40178,7 +40178,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t159_inv + _t159_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t160_inv + _t160_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t161_inv);
+        var _col2 = _sv0.withLane(2, -_t161_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t154);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t153);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t157).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t161_inv))).blend(_sv1.withLane(1, _t156).add(_sv2.withLane(1, _t155)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t159_inv).withLane(1, _t160_inv)).neg(), MASK_84);
@@ -40207,7 +40207,7 @@ public class Double4x4Impl implements Double4x4 {
         VEC_3.intoArray(dd, 4);
         dd[8] = 0.0;
         dd[9] = 0.0;
-        dd[10] = -1.0 * _t8_inv;
+        dd[10] = -_t8_inv;
         dd[11] = 0.0;
         dd[12] = 0.0;
         dd[13] = 0.0;
@@ -40249,7 +40249,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t40_inv);
+        var _col2 = _sv0.withLane(2, -_t40_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_84);
@@ -40282,7 +40282,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t40_inv);
+        var _col2 = _sv0.withLane(2, -_t40_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_84);
@@ -40326,7 +40326,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t40_inv);
+        var _col2 = _sv0.withLane(2, -_t40_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_84);
@@ -40359,7 +40359,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t42_inv + _t42_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t41_inv + _t41_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t40_inv);
+        var _col2 = _sv0.withLane(2, -_t40_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t39);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t38);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t28).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t40_inv))).blend(_sv1.withLane(1, _t37).add(_sv2.withLane(1, _t36)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t42_inv).withLane(1, _t41_inv)).neg(), MASK_84);
@@ -40403,7 +40403,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t48_inv + _t48_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t47_inv + _t47_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t46_inv);
+        var _col2 = _sv0.withLane(2, -_t46_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t45);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t44);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t34).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t46_inv))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv)).neg(), MASK_84);
@@ -40436,7 +40436,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t48_inv + _t48_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t47_inv + _t47_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t46_inv);
+        var _col2 = _sv0.withLane(2, -_t46_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t45);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t44);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t34).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t46_inv))).blend(_sv1.withLane(1, _t43).add(_sv2.withLane(1, _t42)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48_inv).withLane(1, _t47_inv)).neg(), MASK_84);
@@ -40513,7 +40513,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t89_inv);
+        var _col2 = _sv0.withLane(2, -_t89_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_84);
@@ -40579,7 +40579,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t87_inv + _t87_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t88_inv + _t88_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t89_inv);
+        var _col2 = _sv0.withLane(2, -_t89_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t82);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t81);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t85).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t89_inv))).blend(_sv1.withLane(1, _t84).add(_sv2.withLane(1, _t83)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t87_inv).withLane(1, _t88_inv)).neg(), MASK_84);
@@ -40659,7 +40659,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t92_inv);
+        var _col2 = _sv0.withLane(2, -_t92_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_84);
@@ -40728,7 +40728,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t90_inv + _t90_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t91_inv + _t91_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t92_inv);
+        var _col2 = _sv0.withLane(2, -_t92_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t85);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t84);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t88).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t92_inv))).blend(_sv1.withLane(1, _t87).add(_sv2.withLane(1, _t86)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t90_inv).withLane(1, _t91_inv)).neg(), MASK_84);
@@ -40818,7 +40818,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t126_inv + _t126_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t127_inv + _t127_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t128_inv);
+        var _col2 = _sv0.withLane(2, -_t128_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t121);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t120);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t124).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t128_inv))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv)).neg(), MASK_84);
@@ -40897,7 +40897,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t126_inv + _t126_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t127_inv + _t127_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t128_inv);
+        var _col2 = _sv0.withLane(2, -_t128_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t121);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t120);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t124).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t128_inv))).blend(_sv1.withLane(1, _t123).add(_sv2.withLane(1, _t122)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t126_inv).withLane(1, _t127_inv)).neg(), MASK_84);
@@ -40987,7 +40987,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t150_inv + _t150_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t151_inv + _t151_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t152_inv);
+        var _col2 = _sv0.withLane(2, -_t152_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t145);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t144);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).fma(VEC_0, _sv1.add(_sv2).withLane(2, _t148).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t152_inv))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv)).neg(), MASK_84);
@@ -41066,7 +41066,7 @@ public class Double4x4Impl implements Double4x4 {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
         var _col0 = DoubleVector.broadcast(COL_SPECIES, _t150_inv + _t150_inv).blend(_sv0, MASK_8);
         var _col1 = _sv0.withLane(1, _t151_inv + _t151_inv);
-        var _col2 = _sv0.withLane(2, -1.0 * _t152_inv);
+        var _col2 = _sv0.withLane(2, -_t152_inv);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, _t145);
         var _sv2 = DoubleVector.broadcast(COL_SPECIES, _t144);
         var _col3 = DoubleVector.broadcast(COL_SPECIES, 1.0).mul(VEC_0).add(_sv1.add(_sv2).withLane(2, _t148).mul(DoubleVector.zero(COL_SPECIES).withLane(2, _t152_inv))).blend(_sv1.withLane(1, _t147).add(_sv2.withLane(1, _t146)).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t150_inv).withLane(1, _t151_inv)).neg(), MASK_84);

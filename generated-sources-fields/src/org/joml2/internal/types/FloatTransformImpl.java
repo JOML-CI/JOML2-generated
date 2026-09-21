@@ -2125,9 +2125,9 @@ public final class FloatTransformImpl implements FloatTransform {
         d.rY = _t0;
         d.rZ = _t1;
         d.rW = this.rW;
-        d.sX = 1.0f * _rcp0;
-        d.sY = 1.0f * _rcp2;
-        d.sZ = 1.0f * _rcp1;
+        d.sX = _rcp0;
+        d.sY = _rcp2;
+        d.sZ = _rcp1;
         return d;
     }
 
@@ -2160,9 +2160,9 @@ public final class FloatTransformImpl implements FloatTransform {
         d.rY = _t0;
         d.rZ = _t1;
         d.rW = this.rW;
-        d.sX = 1.0f * _rcp0;
-        d.sY = 1.0f * _rcp2;
-        d.sZ = 1.0f * _rcp1;
+        d.sX = _rcp0;
+        d.sY = _rcp2;
+        d.sZ = _rcp1;
         return d;
     }
 

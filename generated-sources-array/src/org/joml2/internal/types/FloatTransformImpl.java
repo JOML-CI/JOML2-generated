@@ -2162,9 +2162,9 @@ public final class FloatTransformImpl implements FloatTransform {
         dd[4] = _t0;
         dd[5] = _t1;
         dd[6] = sd[6];
-        dd[7] = 1.0f * _rcp0;
-        dd[8] = 1.0f * _rcp2;
-        dd[9] = 1.0f * _rcp1;
+        dd[7] = _rcp0;
+        dd[8] = _rcp2;
+        dd[9] = _rcp1;
         return dest;
     }
 
@@ -2198,9 +2198,9 @@ public final class FloatTransformImpl implements FloatTransform {
         dd[4] = _t0;
         dd[5] = _t1;
         dd[6] = sd[6];
-        dd[7] = 1.0f * _rcp0;
-        dd[8] = 1.0f * _rcp2;
-        dd[9] = 1.0f * _rcp1;
+        dd[7] = _rcp0;
+        dd[8] = _rcp2;
+        dd[9] = _rcp1;
         return dest;
     }
 

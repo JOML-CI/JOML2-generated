@@ -25583,7 +25583,7 @@ public class Float4x4Impl implements Float4x4 {
         this.m31 = 0.0f;
         this.m02 = 0.0f;
         this.m12 = 0.0f;
-        this.m22 = 1.0f * _t2_inv;
+        this.m22 = _t2_inv;
         this.m32 = 0.0f;
         this.m03 = -((left + right) * _t0_inv);
         this.m13 = -((bottom + top) * _t1_inv);
@@ -25616,7 +25616,7 @@ public class Float4x4Impl implements Float4x4 {
         this.m31 = 0.0f;
         this.m02 = 0.0f;
         this.m12 = 0.0f;
-        this.m22 = -1.0f * _t2_inv;
+        this.m22 = -_t2_inv;
         this.m32 = 0.0f;
         this.m03 = -((left + right) * _t0_inv);
         this.m13 = -((bottom + top) * _t1_inv);
@@ -45009,7 +45009,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t2_inv;
+        d.m22 = _t2_inv;
         d.m32 = 0.0f;
         d.m03 = -((left + right) * _t0_inv);
         d.m13 = -((bottom + top) * _t1_inv);
@@ -45035,7 +45035,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t2_inv = 1.0f / _t2;
         d.m00 = _t0_inv + _t0_inv;
         d.m11 = _t1_inv + _t1_inv;
-        d.m22 = 1.0f * _t2_inv;
+        d.m22 = _t2_inv;
         d.m03 = -((left + right) * _t0_inv);
         d.m13 = -((bottom + top) * _t1_inv);
         d.m23 = -(zNear * _t2_inv);
@@ -45067,7 +45067,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t2_inv;
+        d.m22 = _t2_inv;
         d.m32 = 0.0f;
         d.m03 = this.m03 - (left + right) * _t0_inv;
         d.m13 = this.m13 - (bottom + top) * _t1_inv;
@@ -45093,7 +45093,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t2_inv = 1.0f / _t2;
         d.m00 = _t0_inv + _t0_inv;
         d.m11 = _t1_inv + _t1_inv;
-        d.m22 = 1.0f * _t2_inv;
+        d.m22 = _t2_inv;
         d.m03 = this.m03 - (left + right) * _t0_inv;
         d.m13 = this.m13 - (bottom + top) * _t1_inv;
         d.m23 = this.m23 - zNear * _t2_inv;
@@ -45421,7 +45421,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t2_inv;
+        d.m22 = -_t2_inv;
         d.m32 = 0.0f;
         d.m03 = -((left + right) * _t0_inv);
         d.m13 = -((bottom + top) * _t1_inv);
@@ -45447,7 +45447,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t2_inv = 1.0f / _t2;
         d.m00 = _t0_inv + _t0_inv;
         d.m11 = _t1_inv + _t1_inv;
-        d.m22 = -1.0f * _t2_inv;
+        d.m22 = -_t2_inv;
         d.m03 = -((left + right) * _t0_inv);
         d.m13 = -((bottom + top) * _t1_inv);
         d.m23 = -(zNear * _t2_inv);
@@ -45479,7 +45479,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t2_inv;
+        d.m22 = -_t2_inv;
         d.m32 = 0.0f;
         d.m03 = this.m03 - (left + right) * _t0_inv;
         d.m13 = this.m13 - (bottom + top) * _t1_inv;
@@ -45505,7 +45505,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t2_inv = 1.0f / _t2;
         d.m00 = _t0_inv + _t0_inv;
         d.m11 = _t1_inv + _t1_inv;
-        d.m22 = -1.0f * _t2_inv;
+        d.m22 = -_t2_inv;
         d.m03 = this.m03 - (left + right) * _t0_inv;
         d.m13 = this.m13 - (bottom + top) * _t1_inv;
         d.m23 = this.m23 - zNear * _t2_inv;
@@ -50241,7 +50241,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t232_inv;
+        d.m22 = _t232_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t225 + _t224) * _t230_inv);
         d.m13 = -((_t227 + _t226) * _t231_inv);
@@ -50316,7 +50316,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t95_inv;
+        d.m22 = _t95_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t88 + _t87) * _t93_inv);
         d.m13 = -((_t90 + _t89) * _t94_inv);
@@ -50402,7 +50402,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t91_inv;
+        d.m22 = _t91_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t84 + _t83) * _t89_inv);
         d.m13 = -((_t86 + _t85) * _t90_inv);
@@ -50501,7 +50501,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t167_inv;
+        d.m22 = _t167_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t160 + _t159) * _t165_inv);
         d.m13 = -((_t162 + _t161) * _t166_inv);
@@ -50555,7 +50555,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t39_inv;
+        d.m22 = _t39_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t38 + _t37) * _t41_inv);
         d.m13 = -((_t36 + _t35) * _t40_inv);
@@ -50599,7 +50599,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t39_inv;
+        d.m22 = _t39_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t38 + _t37) * _t41_inv);
         d.m13 = -((_t36 + _t35) * _t40_inv);
@@ -50644,7 +50644,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t45_inv;
+        d.m22 = _t45_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t44 + _t43) * _t47_inv);
         d.m13 = -((_t42 + _t41) * _t46_inv);
@@ -50719,7 +50719,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t95_inv;
+        d.m22 = _t95_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t88 + _t87) * _t93_inv);
         d.m13 = -((_t90 + _t89) * _t94_inv);
@@ -50794,7 +50794,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t119_inv;
+        d.m22 = _t119_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t112 + _t111) * _t117_inv);
         d.m13 = -((_t114 + _t113) * _t118_inv);
@@ -50889,7 +50889,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t136_inv;
+        d.m22 = _t136_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t129 + _t128) * _t134_inv);
         d.m13 = -((_t131 + _t130) * _t135_inv);
@@ -50984,7 +50984,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t160_inv;
+        d.m22 = _t160_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t153 + _t152) * _t158_inv);
         d.m13 = -((_t155 + _t154) * _t159_inv);
@@ -51171,7 +51171,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t232_inv;
+        d.m22 = _t232_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t225 + _t224) * _t230_inv);
         d.m13 = -((_t227 + _t226) * _t231_inv);
@@ -51290,7 +51290,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t232_inv;
+        d.m22 = -_t232_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t225 + _t224) * _t230_inv);
         d.m13 = -((_t227 + _t226) * _t231_inv);
@@ -51365,7 +51365,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t95_inv;
+        d.m22 = -_t95_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t88 + _t87) * _t93_inv);
         d.m13 = -((_t90 + _t89) * _t94_inv);
@@ -51451,7 +51451,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t91_inv;
+        d.m22 = -_t91_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t84 + _t83) * _t89_inv);
         d.m13 = -((_t86 + _t85) * _t90_inv);
@@ -51550,7 +51550,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t167_inv;
+        d.m22 = -_t167_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t160 + _t159) * _t165_inv);
         d.m13 = -((_t162 + _t161) * _t166_inv);
@@ -51622,7 +51622,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t39_inv;
+        d.m22 = -_t39_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t38 + _t37) * _t41_inv);
         d.m13 = -((_t36 + _t35) * _t40_inv);
@@ -51666,7 +51666,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t39_inv;
+        d.m22 = -_t39_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t38 + _t37) * _t41_inv);
         d.m13 = -((_t36 + _t35) * _t40_inv);
@@ -51711,7 +51711,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t45_inv;
+        d.m22 = -_t45_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t44 + _t43) * _t47_inv);
         d.m13 = -((_t42 + _t41) * _t46_inv);
@@ -51786,7 +51786,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t95_inv;
+        d.m22 = -_t95_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t88 + _t87) * _t93_inv);
         d.m13 = -((_t90 + _t89) * _t94_inv);
@@ -51861,7 +51861,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t119_inv;
+        d.m22 = -_t119_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t112 + _t111) * _t117_inv);
         d.m13 = -((_t114 + _t113) * _t118_inv);
@@ -51956,7 +51956,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t136_inv;
+        d.m22 = -_t136_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t129 + _t128) * _t134_inv);
         d.m13 = -((_t131 + _t130) * _t135_inv);
@@ -52051,7 +52051,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t160_inv;
+        d.m22 = -_t160_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t153 + _t152) * _t158_inv);
         d.m13 = -((_t155 + _t154) * _t159_inv);
@@ -52241,7 +52241,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t232_inv;
+        d.m22 = -_t232_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t225 + _t224) * _t230_inv);
         d.m13 = -((_t227 + _t226) * _t231_inv);
@@ -55021,7 +55021,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t224_inv;
+        d.m22 = _t224_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t217 + _t216) * _t222_inv);
         d.m13 = -((_t219 + _t218) * _t223_inv);
@@ -55099,7 +55099,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t89_inv;
+        d.m22 = _t89_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t82 + _t81) * _t87_inv);
         d.m13 = -((_t84 + _t83) * _t88_inv);
@@ -55186,7 +55186,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t92_inv;
+        d.m22 = _t92_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t85 + _t84) * _t90_inv);
         d.m13 = -((_t87 + _t86) * _t91_inv);
@@ -55288,7 +55288,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t161_inv;
+        d.m22 = _t161_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t154 + _t153) * _t159_inv);
         d.m13 = -((_t156 + _t155) * _t160_inv);
@@ -55319,7 +55319,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t8_inv;
+        d.m22 = _t8_inv;
         d.m32 = 0.0f;
         d.m03 = 0.0f;
         d.m13 = 0.0f;
@@ -55364,7 +55364,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t40_inv;
+        d.m22 = _t40_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t39 + _t38) * _t42_inv);
         d.m13 = -((_t37 + _t36) * _t41_inv);
@@ -55409,7 +55409,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t40_inv;
+        d.m22 = _t40_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t39 + _t38) * _t42_inv);
         d.m13 = -((_t37 + _t36) * _t41_inv);
@@ -55454,7 +55454,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t46_inv;
+        d.m22 = _t46_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t45 + _t44) * _t48_inv);
         d.m13 = -((_t43 + _t42) * _t47_inv);
@@ -55532,7 +55532,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t89_inv;
+        d.m22 = _t89_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t82 + _t81) * _t87_inv);
         d.m13 = -((_t84 + _t83) * _t88_inv);
@@ -55613,7 +55613,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t92_inv;
+        d.m22 = _t92_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t85 + _t84) * _t90_inv);
         d.m13 = -((_t87 + _t86) * _t91_inv);
@@ -55712,7 +55712,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t128_inv;
+        d.m22 = _t128_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t121 + _t120) * _t126_inv);
         d.m13 = -((_t123 + _t122) * _t127_inv);
@@ -55811,7 +55811,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t152_inv;
+        d.m22 = _t152_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t145 + _t144) * _t150_inv);
         d.m13 = -((_t147 + _t146) * _t151_inv);
@@ -56002,7 +56002,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = 1.0f * _t224_inv;
+        d.m22 = _t224_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t217 + _t216) * _t222_inv);
         d.m13 = -((_t219 + _t218) * _t223_inv);
@@ -56125,7 +56125,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t224_inv;
+        d.m22 = -_t224_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t217 + _t216) * _t222_inv);
         d.m13 = -((_t219 + _t218) * _t223_inv);
@@ -56203,7 +56203,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t89_inv;
+        d.m22 = -_t89_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t82 + _t81) * _t87_inv);
         d.m13 = -((_t84 + _t83) * _t88_inv);
@@ -56290,7 +56290,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t92_inv;
+        d.m22 = -_t92_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t85 + _t84) * _t90_inv);
         d.m13 = -((_t87 + _t86) * _t91_inv);
@@ -56392,7 +56392,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t161_inv;
+        d.m22 = -_t161_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t154 + _t153) * _t159_inv);
         d.m13 = -((_t156 + _t155) * _t160_inv);
@@ -56423,7 +56423,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t8_inv;
+        d.m22 = -_t8_inv;
         d.m32 = 0.0f;
         d.m03 = 0.0f;
         d.m13 = 0.0f;
@@ -56468,7 +56468,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t40_inv;
+        d.m22 = -_t40_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t39 + _t38) * _t42_inv);
         d.m13 = -((_t37 + _t36) * _t41_inv);
@@ -56513,7 +56513,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t40_inv;
+        d.m22 = -_t40_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t39 + _t38) * _t42_inv);
         d.m13 = -((_t37 + _t36) * _t41_inv);
@@ -56558,7 +56558,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t46_inv;
+        d.m22 = -_t46_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t45 + _t44) * _t48_inv);
         d.m13 = -((_t43 + _t42) * _t47_inv);
@@ -56636,7 +56636,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t89_inv;
+        d.m22 = -_t89_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t82 + _t81) * _t87_inv);
         d.m13 = -((_t84 + _t83) * _t88_inv);
@@ -56717,7 +56717,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t92_inv;
+        d.m22 = -_t92_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t85 + _t84) * _t90_inv);
         d.m13 = -((_t87 + _t86) * _t91_inv);
@@ -56816,7 +56816,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t128_inv;
+        d.m22 = -_t128_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t121 + _t120) * _t126_inv);
         d.m13 = -((_t123 + _t122) * _t127_inv);
@@ -56915,7 +56915,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t152_inv;
+        d.m22 = -_t152_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t145 + _t144) * _t150_inv);
         d.m13 = -((_t147 + _t146) * _t151_inv);
@@ -57109,7 +57109,7 @@ public class Float4x4Impl implements Float4x4 {
         d.m31 = 0.0f;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
-        d.m22 = -1.0f * _t224_inv;
+        d.m22 = -_t224_inv;
         d.m32 = 0.0f;
         d.m03 = -((_t217 + _t216) * _t222_inv);
         d.m13 = -((_t219 + _t218) * _t223_inv);
