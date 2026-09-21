@@ -3832,12 +3832,12 @@ public class Float2x3Impl implements Float2x3 {
      * @return this
      */
     @Mutated public Float2x3 makeRotation(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        this.m00 = _t0;
-        this.m10 = _t1;
-        this.m01 = -_t1;
-        this.m11 = _t0;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        this.m00 = _t1;
+        this.m10 = _t0;
+        this.m01 = -_t0;
+        this.m11 = _t1;
         this.m02 = 0.0f;
         this.m12 = 0.0f;
         this.properties = Joml.BIT_ORTHOGONAL;
@@ -3955,14 +3955,14 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 preRotate_orthogonal_general(float angle, @Mutated Float2x3 dest, int _props) {
         Float2x3Impl d = (Float2x3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = this.m00 * _t0 - this.m10 * _t1;
-        d.m10 = this.m00 * _t1 + this.m10 * _t0;
-        float _buf1 = this.m01 * _t0 - this.m11 * _t1;
-        d.m11 = this.m01 * _t1 + this.m11 * _t0;
-        float _buf2 = this.m02 * _t0 - this.m12 * _t1;
-        d.m12 = this.m02 * _t1 + this.m12 * _t0;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = this.m00 * _t1 - this.m10 * _t0;
+        d.m10 = this.m00 * _t0 + this.m10 * _t1;
+        float _buf1 = this.m01 * _t1 - this.m11 * _t0;
+        d.m11 = this.m01 * _t0 + this.m11 * _t1;
+        float _buf2 = this.m02 * _t1 - this.m12 * _t0;
+        d.m12 = this.m02 * _t0 + this.m12 * _t1;
         d.m00 = _buf0;
         d.m01 = _buf1;
         d.m02 = _buf2;
@@ -3977,12 +3977,12 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 preRotate_identity(float angle, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        d.m00 = _t0;
-        d.m10 = _t1;
-        d.m01 = -_t1;
-        d.m11 = _t0;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m10 = _t0;
+        d.m01 = -_t0;
+        d.m11 = _t1;
         d.m02 = 0.0f;
         d.m12 = 0.0f;
         d.properties = Joml.BIT_ORTHOGONAL;
@@ -3996,12 +3996,12 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 preRotate_identity_self(float angle, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        d.m00 = _t0;
-        d.m10 = _t1;
-        d.m01 = -_t1;
-        d.m11 = _t0;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m10 = _t0;
+        d.m01 = -_t0;
+        d.m11 = _t1;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -4013,14 +4013,14 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 preRotate_translation(float angle, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        d.m00 = _t0;
-        d.m10 = _t1;
-        d.m01 = -_t1;
-        d.m11 = _t0;
-        float _buf0 = this.m02 * _t0 - this.m12 * _t1;
-        d.m12 = this.m02 * _t1 + this.m12 * _t0;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m10 = _t0;
+        d.m01 = -_t0;
+        d.m11 = _t1;
+        float _buf0 = this.m02 * _t1 - this.m12 * _t0;
+        d.m12 = this.m02 * _t0 + this.m12 * _t1;
         d.m02 = _buf0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -4083,14 +4083,14 @@ public class Float2x3Impl implements Float2x3 {
      */
     public Double2x3 preRotate(float angle, @Mutated Double2x3 dest) {
         Double2x3Impl d = (Double2x3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = this.m00 * _t0 - this.m10 * _t1;
-        d.m10 = this.m00 * _t1 + this.m10 * _t0;
-        float _buf1 = this.m01 * _t0 - this.m11 * _t1;
-        d.m11 = this.m01 * _t1 + this.m11 * _t0;
-        float _buf2 = this.m02 * _t0 - this.m12 * _t1;
-        d.m12 = this.m02 * _t1 + this.m12 * _t0;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = this.m00 * _t1 - this.m10 * _t0;
+        d.m10 = this.m00 * _t0 + this.m10 * _t1;
+        float _buf1 = this.m01 * _t1 - this.m11 * _t0;
+        d.m11 = this.m01 * _t0 + this.m11 * _t1;
+        float _buf2 = this.m02 * _t1 - this.m12 * _t0;
+        d.m12 = this.m02 * _t0 + this.m12 * _t1;
         d.m00 = _buf0;
         d.m01 = _buf1;
         d.m02 = _buf2;
@@ -4172,16 +4172,16 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 preRotateAround_identity(float angle, float pivotX, float pivotY, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t5 = (_t3 + _t3) * _t3;
-        d.m00 = _t0;
-        d.m10 = _t1;
-        d.m01 = -_t1;
-        d.m11 = _t0;
-        d.m02 = pivotX * _t5 + pivotY * _t1;
-        d.m12 = pivotY * _t5 - pivotX * _t1;
+        d.m00 = _t2;
+        d.m10 = _t0;
+        d.m01 = -_t0;
+        d.m11 = _t2;
+        d.m02 = pivotX * _t5 + pivotY * _t0;
+        d.m12 = pivotY * _t5 - pivotX * _t0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -4193,16 +4193,16 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 preRotateAround_translation(float angle, float pivotX, float pivotY, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t5 = (_t3 + _t3) * _t3;
-        d.m00 = _t0;
-        d.m10 = _t1;
-        d.m01 = -_t1;
-        d.m11 = _t0;
-        float _buf0 = pivotX * _t5 + pivotY * _t1 + (this.m02 * _t0 - this.m12 * _t1);
-        d.m12 = this.m02 * _t1 + this.m12 * _t0 + (pivotY * _t5 - pivotX * _t1);
+        d.m00 = _t2;
+        d.m10 = _t0;
+        d.m01 = -_t0;
+        d.m11 = _t2;
+        float _buf0 = pivotX * _t5 + pivotY * _t0 + (this.m02 * _t2 - this.m12 * _t0);
+        d.m12 = this.m02 * _t0 + this.m12 * _t2 + (pivotY * _t5 - pivotX * _t0);
         d.m02 = _buf0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -4215,16 +4215,16 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 preRotateAround_orthogonal(float angle, float pivotX, float pivotY, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t5 = (_t3 + _t3) * _t3;
-        float _buf0 = this.m00 * _t0 - this.m10 * _t1;
-        d.m10 = this.m00 * _t1 + this.m10 * _t0;
-        float _buf1 = this.m01 * _t0 - this.m11 * _t1;
-        d.m11 = this.m01 * _t1 + this.m11 * _t0;
-        float _buf2 = pivotX * _t5 + pivotY * _t1 + (this.m02 * _t0 - this.m12 * _t1);
-        d.m12 = this.m02 * _t1 + this.m12 * _t0 + (pivotY * _t5 - pivotX * _t1);
+        float _buf0 = this.m00 * _t2 - this.m10 * _t0;
+        d.m10 = this.m00 * _t0 + this.m10 * _t2;
+        float _buf1 = this.m01 * _t2 - this.m11 * _t0;
+        d.m11 = this.m01 * _t0 + this.m11 * _t2;
+        float _buf2 = pivotX * _t5 + pivotY * _t0 + (this.m02 * _t2 - this.m12 * _t0);
+        d.m12 = this.m02 * _t0 + this.m12 * _t2 + (pivotY * _t5 - pivotX * _t0);
         d.m00 = _buf0;
         d.m01 = _buf1;
         d.m02 = _buf2;
@@ -4239,16 +4239,16 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 preRotateAround_general(float angle, float pivotX, float pivotY, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t5 = (_t3 + _t3) * _t3;
-        float _buf0 = this.m00 * _t0 - this.m10 * _t1;
-        d.m10 = this.m00 * _t1 + this.m10 * _t0;
-        float _buf1 = this.m01 * _t0 - this.m11 * _t1;
-        d.m11 = this.m01 * _t1 + this.m11 * _t0;
-        float _buf2 = pivotX * _t5 + pivotY * _t1 + (this.m02 * _t0 - this.m12 * _t1);
-        d.m12 = this.m02 * _t1 + this.m12 * _t0 + (pivotY * _t5 - pivotX * _t1);
+        float _buf0 = this.m00 * _t2 - this.m10 * _t0;
+        d.m10 = this.m00 * _t0 + this.m10 * _t2;
+        float _buf1 = this.m01 * _t2 - this.m11 * _t0;
+        d.m11 = this.m01 * _t0 + this.m11 * _t2;
+        float _buf2 = pivotX * _t5 + pivotY * _t0 + (this.m02 * _t2 - this.m12 * _t0);
+        d.m12 = this.m02 * _t0 + this.m12 * _t2 + (pivotY * _t5 - pivotX * _t0);
         d.m00 = _buf0;
         d.m01 = _buf1;
         d.m02 = _buf2;
@@ -4334,16 +4334,16 @@ public class Float2x3Impl implements Float2x3 {
      */
     public Double2x3 preRotateAround(float angle, float pivotX, float pivotY, @Mutated Double2x3 dest) {
         Double2x3Impl d = (Double2x3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t5 = (_t3 + _t3) * _t3;
-        float _buf0 = this.m00 * _t0 - this.m10 * _t1;
-        d.m10 = this.m00 * _t1 + this.m10 * _t0;
-        float _buf1 = this.m01 * _t0 - this.m11 * _t1;
-        d.m11 = this.m01 * _t1 + this.m11 * _t0;
-        float _buf2 = pivotX * _t5 + pivotY * _t1 + (this.m02 * _t0 - this.m12 * _t1);
-        d.m12 = this.m02 * _t1 + this.m12 * _t0 + (pivotY * _t5 - pivotX * _t1);
+        float _buf0 = this.m00 * _t2 - this.m10 * _t0;
+        d.m10 = this.m00 * _t0 + this.m10 * _t2;
+        float _buf1 = this.m01 * _t2 - this.m11 * _t0;
+        d.m11 = this.m01 * _t0 + this.m11 * _t2;
+        float _buf2 = pivotX * _t5 + pivotY * _t0 + (this.m02 * _t2 - this.m12 * _t0);
+        d.m12 = this.m02 * _t0 + this.m12 * _t2 + (pivotY * _t5 - pivotX * _t0);
         d.m00 = _buf0;
         d.m01 = _buf1;
         d.m02 = _buf2;
@@ -5308,12 +5308,12 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 rotate_orthogonal_general(float angle, @Mutated Float2x3 dest, int _props) {
         Float2x3Impl d = (Float2x3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = this.m00 * _t0 + this.m01 * _t1;
-        float _buf1 = this.m10 * _t0 + this.m11 * _t1;
-        d.m01 = this.m01 * _t0 - this.m00 * _t1;
-        d.m11 = this.m11 * _t0 - this.m10 * _t1;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = this.m00 * _t1 + this.m01 * _t0;
+        float _buf1 = this.m10 * _t1 + this.m11 * _t0;
+        d.m01 = this.m01 * _t1 - this.m00 * _t0;
+        d.m11 = this.m11 * _t1 - this.m10 * _t0;
         d.m02 = this.m02;
         d.m12 = this.m12;
         d.m00 = _buf0;
@@ -5347,12 +5347,12 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 rotate_translation(float angle, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        d.m00 = _t0;
-        d.m10 = _t1;
-        d.m01 = -_t1;
-        d.m11 = _t0;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m10 = _t0;
+        d.m01 = -_t0;
+        d.m11 = _t1;
         d.m02 = this.m02;
         d.m12 = this.m12;
         d.properties = Joml.BIT_ORTHOGONAL;
@@ -5414,12 +5414,12 @@ public class Float2x3Impl implements Float2x3 {
      */
     public Double2x3 rotate(float angle, @Mutated Double2x3 dest) {
         Double2x3Impl d = (Double2x3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = this.m00 * _t0 + this.m01 * _t1;
-        float _buf1 = this.m10 * _t0 + this.m11 * _t1;
-        d.m01 = this.m01 * _t0 - this.m00 * _t1;
-        d.m11 = this.m11 * _t0 - this.m10 * _t1;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = this.m00 * _t1 + this.m01 * _t0;
+        float _buf1 = this.m10 * _t1 + this.m11 * _t0;
+        d.m01 = this.m01 * _t1 - this.m00 * _t0;
+        d.m11 = this.m11 * _t1 - this.m10 * _t0;
         d.m02 = this.m02;
         d.m12 = this.m12;
         d.m00 = _buf0;
@@ -5511,16 +5511,16 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 rotateAround_translation(float angle, float pivotX, float pivotY, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t5 = (_t3 + _t3) * _t3;
-        d.m00 = _t0;
-        d.m10 = _t1;
-        d.m01 = -_t1;
-        d.m11 = _t0;
-        d.m02 = pivotX * _t5 + (pivotY * _t1 + this.m02);
-        d.m12 = pivotY * _t5 + (this.m12 - pivotX * _t1);
+        d.m00 = _t2;
+        d.m10 = _t0;
+        d.m01 = -_t0;
+        d.m11 = _t2;
+        d.m02 = pivotX * _t5 + (pivotY * _t0 + this.m02);
+        d.m12 = pivotY * _t5 + (this.m12 - pivotX * _t0);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -5532,16 +5532,16 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 rotateAround_orthogonal(float angle, float pivotX, float pivotY, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t7 = (_t3 + _t3) * _t3;
-        float _t10 = pivotX * _t7 + pivotY * _t1;
-        float _t11 = pivotY * _t7 - pivotX * _t1;
-        float _buf0 = this.m00 * _t0 + this.m01 * _t1;
-        float _buf1 = this.m10 * _t0 + this.m11 * _t1;
-        float _buf2 = this.m01 * _t0 - this.m00 * _t1;
-        float _buf3 = this.m11 * _t0 - this.m10 * _t1;
+        float _t10 = pivotX * _t7 + pivotY * _t0;
+        float _t11 = pivotY * _t7 - pivotX * _t0;
+        float _buf0 = this.m00 * _t2 + this.m01 * _t0;
+        float _buf1 = this.m10 * _t2 + this.m11 * _t0;
+        float _buf2 = this.m01 * _t2 - this.m00 * _t0;
+        float _buf3 = this.m11 * _t2 - this.m10 * _t0;
         d.m02 = this.m00 * _t10 + (this.m01 * _t11 + this.m02);
         d.m12 = this.m10 * _t10 + (this.m11 * _t11 + this.m12);
         d.m00 = _buf0;
@@ -5559,16 +5559,16 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 rotateAround_general(float angle, float pivotX, float pivotY, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t7 = (_t3 + _t3) * _t3;
-        float _t10 = pivotX * _t7 + pivotY * _t1;
-        float _t11 = pivotY * _t7 - pivotX * _t1;
-        float _buf0 = this.m00 * _t0 + this.m01 * _t1;
-        float _buf1 = this.m10 * _t0 + this.m11 * _t1;
-        float _buf2 = this.m01 * _t0 - this.m00 * _t1;
-        float _buf3 = this.m11 * _t0 - this.m10 * _t1;
+        float _t10 = pivotX * _t7 + pivotY * _t0;
+        float _t11 = pivotY * _t7 - pivotX * _t0;
+        float _buf0 = this.m00 * _t2 + this.m01 * _t0;
+        float _buf1 = this.m10 * _t2 + this.m11 * _t0;
+        float _buf2 = this.m01 * _t2 - this.m00 * _t0;
+        float _buf3 = this.m11 * _t2 - this.m10 * _t0;
         d.m02 = this.m00 * _t10 + (this.m01 * _t11 + this.m02);
         d.m12 = this.m10 * _t10 + (this.m11 * _t11 + this.m12);
         d.m00 = _buf0;
@@ -5657,16 +5657,16 @@ public class Float2x3Impl implements Float2x3 {
      */
     public Double2x3 rotateAround(float angle, float pivotX, float pivotY, @Mutated Double2x3 dest) {
         Double2x3Impl d = (Double2x3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t7 = (_t3 + _t3) * _t3;
-        float _t10 = pivotX * _t7 + pivotY * _t1;
-        float _t11 = pivotY * _t7 - pivotX * _t1;
-        float _buf0 = this.m00 * _t0 + this.m01 * _t1;
-        float _buf1 = this.m10 * _t0 + this.m11 * _t1;
-        float _buf2 = this.m01 * _t0 - this.m00 * _t1;
-        float _buf3 = this.m11 * _t0 - this.m10 * _t1;
+        float _t10 = pivotX * _t7 + pivotY * _t0;
+        float _t11 = pivotY * _t7 - pivotX * _t0;
+        float _buf0 = this.m00 * _t2 + this.m01 * _t0;
+        float _buf1 = this.m10 * _t2 + this.m11 * _t0;
+        float _buf2 = this.m01 * _t2 - this.m00 * _t0;
+        float _buf3 = this.m11 * _t2 - this.m10 * _t0;
         d.m02 = this.m00 * _t10 + (this.m01 * _t11 + this.m02);
         d.m12 = this.m10 * _t10 + (this.m11 * _t11 + this.m12);
         d.m00 = _buf0;

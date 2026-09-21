@@ -1879,9 +1879,9 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * @return the resulting matrix
      */
     public static Float2x3 makeRotation(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float2x3(_t0, -_t1, 0.0f, _t1, _t0, 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float2x3(_t1, -_t0, 0.0f, _t0, _t1, 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -1966,9 +1966,9 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * through the public {@code preRotate} dispatcher.
      */
     private Float2x3 preRotate_identity(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float2x3(_t0, -_t1, 0.0f, _t1, _t0, 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float2x3(_t1, -_t0, 0.0f, _t0, _t1, 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -1977,9 +1977,9 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * through the public {@code preRotate} dispatcher.
      */
     private Float2x3 preRotate_translation(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float2x3(_t0, -_t1, Math.fma(this.m02, _t0, -(this.m12 * _t1)), _t1, _t0, Math.fma(this.m02, _t1, this.m12 * _t0), Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float2x3(_t1, -_t0, Math.fma(this.m02, _t1, -(this.m12 * _t0)), _t0, _t1, Math.fma(this.m02, _t0, this.m12 * _t1), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -1988,9 +1988,9 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * through the public {@code preRotate} dispatcher.
      */
     private Float2x3 preRotate_orthogonal(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float2x3(Math.fma(this.m00, _t0, -(this.m10 * _t1)), Math.fma(this.m01, _t0, -(this.m11 * _t1)), Math.fma(this.m02, _t0, -(this.m12 * _t1)), Math.fma(this.m00, _t1, this.m10 * _t0), Math.fma(this.m01, _t1, this.m11 * _t0), Math.fma(this.m02, _t1, this.m12 * _t0), Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float2x3(Math.fma(this.m00, _t1, -(this.m10 * _t0)), Math.fma(this.m01, _t1, -(this.m11 * _t0)), Math.fma(this.m02, _t1, -(this.m12 * _t0)), Math.fma(this.m00, _t0, this.m10 * _t1), Math.fma(this.m01, _t0, this.m11 * _t1), Math.fma(this.m02, _t0, this.m12 * _t1), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -1999,9 +1999,9 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * through the public {@code preRotate} dispatcher.
      */
     private Float2x3 preRotate_general(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float2x3(Math.fma(this.m00, _t0, -(this.m10 * _t1)), Math.fma(this.m01, _t0, -(this.m11 * _t1)), Math.fma(this.m02, _t0, -(this.m12 * _t1)), Math.fma(this.m00, _t1, this.m10 * _t0), Math.fma(this.m01, _t1, this.m11 * _t0), Math.fma(this.m02, _t1, this.m12 * _t0), Joml.BIT_AFFINE);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float2x3(Math.fma(this.m00, _t1, -(this.m10 * _t0)), Math.fma(this.m01, _t1, -(this.m11 * _t0)), Math.fma(this.m02, _t1, -(this.m12 * _t0)), Math.fma(this.m00, _t0, this.m10 * _t1), Math.fma(this.m01, _t0, this.m11 * _t1), Math.fma(this.m02, _t0, this.m12 * _t1), Joml.BIT_AFFINE);
     }
 
 
@@ -2050,11 +2050,11 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * only through the public {@code preRotateAround} dispatcher.
      */
     private Float2x3 preRotateAround_identity(float angle, float pivotX, float pivotY) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t5 = (_t3 + _t3) * _t3;
-        return new Float2x3(_t0, -_t1, Math.fma(pivotX, _t5, pivotY * _t1), _t1, _t0, Math.fma(pivotY, _t5, -(pivotX * _t1)), Joml.BIT_ORTHOGONAL);
+        return new Float2x3(_t2, -_t0, Math.fma(pivotX, _t5, pivotY * _t0), _t0, _t2, Math.fma(pivotY, _t5, -(pivotX * _t0)), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -2063,11 +2063,11 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * only through the public {@code preRotateAround} dispatcher.
      */
     private Float2x3 preRotateAround_translation(float angle, float pivotX, float pivotY) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t5 = (_t3 + _t3) * _t3;
-        return new Float2x3(_t0, -_t1, Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(this.m02, _t0, -(this.m12 * _t1)), _t1, _t0, Math.fma(this.m02, _t1, this.m12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1)), Joml.BIT_ORTHOGONAL);
+        return new Float2x3(_t2, -_t0, Math.fma(pivotX, _t5, pivotY * _t0) + Math.fma(this.m02, _t2, -(this.m12 * _t0)), _t0, _t2, Math.fma(this.m02, _t0, this.m12 * _t2) + Math.fma(pivotY, _t5, -(pivotX * _t0)), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -2076,11 +2076,11 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * only through the public {@code preRotateAround} dispatcher.
      */
     private Float2x3 preRotateAround_orthogonal(float angle, float pivotX, float pivotY) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t5 = (_t3 + _t3) * _t3;
-        return new Float2x3(Math.fma(this.m00, _t0, -(this.m10 * _t1)), Math.fma(this.m01, _t0, -(this.m11 * _t1)), Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(this.m02, _t0, -(this.m12 * _t1)), Math.fma(this.m00, _t1, this.m10 * _t0), Math.fma(this.m01, _t1, this.m11 * _t0), Math.fma(this.m02, _t1, this.m12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1)), Joml.BIT_ORTHOGONAL);
+        return new Float2x3(Math.fma(this.m00, _t2, -(this.m10 * _t0)), Math.fma(this.m01, _t2, -(this.m11 * _t0)), Math.fma(pivotX, _t5, pivotY * _t0) + Math.fma(this.m02, _t2, -(this.m12 * _t0)), Math.fma(this.m00, _t0, this.m10 * _t2), Math.fma(this.m01, _t0, this.m11 * _t2), Math.fma(this.m02, _t0, this.m12 * _t2) + Math.fma(pivotY, _t5, -(pivotX * _t0)), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -2089,11 +2089,11 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * only through the public {@code preRotateAround} dispatcher.
      */
     private Float2x3 preRotateAround_general(float angle, float pivotX, float pivotY) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t5 = (_t3 + _t3) * _t3;
-        return new Float2x3(Math.fma(this.m00, _t0, -(this.m10 * _t1)), Math.fma(this.m01, _t0, -(this.m11 * _t1)), Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(this.m02, _t0, -(this.m12 * _t1)), Math.fma(this.m00, _t1, this.m10 * _t0), Math.fma(this.m01, _t1, this.m11 * _t0), Math.fma(this.m02, _t1, this.m12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1)), Joml.BIT_AFFINE);
+        return new Float2x3(Math.fma(this.m00, _t2, -(this.m10 * _t0)), Math.fma(this.m01, _t2, -(this.m11 * _t0)), Math.fma(pivotX, _t5, pivotY * _t0) + Math.fma(this.m02, _t2, -(this.m12 * _t0)), Math.fma(this.m00, _t0, this.m10 * _t2), Math.fma(this.m01, _t0, this.m11 * _t2), Math.fma(this.m02, _t0, this.m12 * _t2) + Math.fma(pivotY, _t5, -(pivotX * _t0)), Joml.BIT_AFFINE);
     }
 
 
@@ -2437,9 +2437,9 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * through the public {@code rotate} dispatcher.
      */
     private Float2x3 rotate_translation(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float2x3(_t0, -_t1, this.m02, _t1, _t0, this.m12, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float2x3(_t1, -_t0, this.m02, _t0, _t1, this.m12, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -2448,9 +2448,9 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * through the public {@code rotate} dispatcher.
      */
     private Float2x3 rotate_orthogonal(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float2x3(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), this.m02, Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), this.m12, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float2x3(Math.fma(this.m00, _t1, this.m01 * _t0), Math.fma(this.m01, _t1, -(this.m00 * _t0)), this.m02, Math.fma(this.m10, _t1, this.m11 * _t0), Math.fma(this.m11, _t1, -(this.m10 * _t0)), this.m12, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -2459,9 +2459,9 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * through the public {@code rotate} dispatcher.
      */
     private Float2x3 rotate_general(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float2x3(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), this.m02, Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), this.m12, Joml.BIT_AFFINE);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float2x3(Math.fma(this.m00, _t1, this.m01 * _t0), Math.fma(this.m01, _t1, -(this.m00 * _t0)), this.m02, Math.fma(this.m10, _t1, this.m11 * _t0), Math.fma(this.m11, _t1, -(this.m10 * _t0)), this.m12, Joml.BIT_AFFINE);
     }
 
 
@@ -2519,11 +2519,11 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * through the public {@code rotateAround} dispatcher.
      */
     private Float2x3 rotateAround_translation(float angle, float pivotX, float pivotY) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t5 = (_t3 + _t3) * _t3;
-        return new Float2x3(_t0, -_t1, Math.fma(pivotX, _t5, Math.fma(pivotY, _t1, this.m02)), _t1, _t0, Math.fma(pivotY, _t5, Math.fma(-pivotX, _t1, this.m12)), Joml.BIT_ORTHOGONAL);
+        return new Float2x3(_t2, -_t0, Math.fma(pivotX, _t5, Math.fma(pivotY, _t0, this.m02)), _t0, _t2, Math.fma(pivotY, _t5, Math.fma(-pivotX, _t0, this.m12)), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -2532,13 +2532,13 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * through the public {@code rotateAround} dispatcher.
      */
     private Float2x3 rotateAround_orthogonal(float angle, float pivotX, float pivotY) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t8 = (_t3 + _t3) * _t3;
-        float _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
-        float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
-        return new Float2x3(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), Math.fma(this.m00, _t9, Math.fma(this.m01, _t10, this.m02)), Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), Math.fma(this.m10, _t9, Math.fma(this.m11, _t10, this.m12)), Joml.BIT_ORTHOGONAL);
+        float _t9 = Math.fma(pivotX, _t8, pivotY * _t0);
+        float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t0));
+        return new Float2x3(Math.fma(this.m00, _t2, this.m01 * _t0), Math.fma(this.m01, _t2, -(this.m00 * _t0)), Math.fma(this.m00, _t9, Math.fma(this.m01, _t10, this.m02)), Math.fma(this.m10, _t2, this.m11 * _t0), Math.fma(this.m11, _t2, -(this.m10 * _t0)), Math.fma(this.m10, _t9, Math.fma(this.m11, _t10, this.m12)), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -2547,13 +2547,13 @@ public value record Float2x3(float m00, float m01, float m02, float m10, float m
      * through the public {@code rotateAround} dispatcher.
      */
     private Float2x3 rotateAround_general(float angle, float pivotX, float pivotY) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t8 = (_t3 + _t3) * _t3;
-        float _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
-        float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
-        return new Float2x3(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), Math.fma(this.m00, _t9, Math.fma(this.m01, _t10, this.m02)), Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), Math.fma(this.m10, _t9, Math.fma(this.m11, _t10, this.m12)), Joml.BIT_AFFINE);
+        float _t9 = Math.fma(pivotX, _t8, pivotY * _t0);
+        float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t0));
+        return new Float2x3(Math.fma(this.m00, _t2, this.m01 * _t0), Math.fma(this.m01, _t2, -(this.m00 * _t0)), Math.fma(this.m00, _t9, Math.fma(this.m01, _t10, this.m02)), Math.fma(this.m10, _t2, this.m11 * _t0), Math.fma(this.m11, _t2, -(this.m10 * _t0)), Math.fma(this.m10, _t9, Math.fma(this.m11, _t10, this.m12)), Joml.BIT_AFFINE);
     }
 
 

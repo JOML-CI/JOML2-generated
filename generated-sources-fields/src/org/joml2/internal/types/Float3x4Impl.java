@@ -14669,23 +14669,23 @@ public class Float3x4Impl implements Float3x4 {
         if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return makeRotationX(axisX * angle);
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return makeRotationY(axisY * angle);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return makeRotationZ(axisZ * angle);
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _t2 = 1.0f - _t0;
-        float _t3 = axisX * axisY;
-        float _t4 = axisX * axisZ;
-        float _t5 = axisY * axisZ;
-        this.m00 = Math.fma(_t2, axisX * axisX, _t0);
-        this.m01 = Math.fma(_t2, _t3, -(axisZ * _t1));
-        this.m02 = Math.fma(axisY, _t1, _t2 * _t4);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = axisX * axisY;
+        float _t3 = axisX * axisZ;
+        float _t4 = axisY * axisZ;
+        float _t5 = 1.0f - _t1;
+        this.m00 = Math.fma(_t5, axisX * axisX, _t1);
+        this.m01 = Math.fma(_t5, _t2, -(axisZ * _t0));
+        this.m02 = Math.fma(axisY, _t0, _t5 * _t3);
         this.m03 = 0.0f;
-        this.m10 = Math.fma(axisZ, _t1, _t2 * _t3);
-        this.m11 = Math.fma(_t2, axisY * axisY, _t0);
-        this.m12 = Math.fma(_t2, _t5, -(axisX * _t1));
+        this.m10 = Math.fma(axisZ, _t0, _t5 * _t2);
+        this.m11 = Math.fma(_t5, axisY * axisY, _t1);
+        this.m12 = Math.fma(_t5, _t4, -(axisX * _t0));
         this.m13 = 0.0f;
-        this.m20 = Math.fma(_t2, _t4, -(axisY * _t1));
-        this.m21 = Math.fma(axisX, _t1, _t2 * _t5);
-        this.m22 = Math.fma(_t2, axisZ * axisZ, _t0);
+        this.m20 = Math.fma(_t5, _t3, -(axisY * _t0));
+        this.m21 = Math.fma(axisX, _t0, _t5 * _t4);
+        this.m22 = Math.fma(_t5, axisZ * axisZ, _t1);
         this.m23 = 0.0f;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -14815,19 +14815,19 @@ public class Float3x4Impl implements Float3x4 {
      * @return this
      */
     @Mutated public Float3x4 makeRotationX(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
         this.m00 = 1.0f;
         this.m01 = 0.0f;
         this.m02 = 0.0f;
         this.m03 = 0.0f;
         this.m10 = 0.0f;
-        this.m11 = _t0;
-        this.m12 = -_t1;
+        this.m11 = _t1;
+        this.m12 = -_t0;
         this.m13 = 0.0f;
         this.m20 = 0.0f;
-        this.m21 = _t1;
-        this.m22 = _t0;
+        this.m21 = _t0;
+        this.m22 = _t1;
         this.m23 = 0.0f;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -14845,25 +14845,25 @@ public class Float3x4Impl implements Float3x4 {
      * @return this
      */
     @Mutated public Float3x4 makeRotationXYZ(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.sin(angleX);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t4 * _t3;
-        float _t7 = _t3 * _t5;
-        this.m00 = _t0 * _t1;
-        this.m01 = -(_t2 * _t0);
-        this.m02 = _t3;
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t0;
+        float _t7 = _t0 * _t5;
+        this.m00 = _t3 * _t4;
+        this.m01 = -(_t1 * _t3);
+        this.m02 = _t0;
         this.m03 = 0.0f;
-        this.m10 = Math.fma(_t6, _t1, _t2 * _t5);
-        this.m11 = Math.fma(_t5, _t1, -(_t6 * _t2));
-        this.m12 = -(_t4 * _t0);
+        this.m10 = Math.fma(_t6, _t4, _t1 * _t5);
+        this.m11 = Math.fma(_t5, _t4, -(_t6 * _t1));
+        this.m12 = -(_t2 * _t3);
         this.m13 = 0.0f;
-        this.m20 = Math.fma(_t4, _t2, -(_t7 * _t1));
-        this.m21 = Math.fma(_t7, _t2, _t4 * _t1);
-        this.m22 = _t5 * _t0;
+        this.m20 = Math.fma(_t2, _t1, -(_t7 * _t4));
+        this.m21 = Math.fma(_t7, _t1, _t2 * _t4);
+        this.m22 = _t5 * _t3;
         this.m23 = 0.0f;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -14881,25 +14881,25 @@ public class Float3x4Impl implements Float3x4 {
      * @return this
      */
     @Mutated public Float3x4 makeRotationXZY(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.cos(angleX);
-        float _t5 = (float) Math.sin(angleX);
-        float _t6 = _t2 * _t4;
-        float _t7 = _t5 * _t2;
-        this.m00 = _t0 * _t1;
-        this.m01 = -_t2;
-        this.m02 = _t3 * _t1;
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t1;
+        float _t7 = _t1 * _t5;
+        this.m00 = _t3 * _t4;
+        this.m01 = -_t1;
+        this.m02 = _t0 * _t4;
         this.m03 = 0.0f;
-        this.m10 = Math.fma(_t6, _t0, _t5 * _t3);
-        this.m11 = _t4 * _t1;
-        this.m12 = Math.fma(_t6, _t3, -(_t5 * _t0));
+        this.m10 = Math.fma(_t7, _t3, _t2 * _t0);
+        this.m11 = _t5 * _t4;
+        this.m12 = Math.fma(_t7, _t0, -(_t2 * _t3));
         this.m13 = 0.0f;
-        this.m20 = Math.fma(_t7, _t0, -(_t3 * _t4));
-        this.m21 = _t5 * _t1;
-        this.m22 = Math.fma(_t7, _t3, _t4 * _t0);
+        this.m20 = Math.fma(_t6, _t3, -(_t0 * _t5));
+        this.m21 = _t2 * _t4;
+        this.m22 = Math.fma(_t6, _t0, _t5 * _t3);
         this.m23 = 0.0f;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -14913,19 +14913,19 @@ public class Float3x4Impl implements Float3x4 {
      * @return this
      */
     @Mutated public Float3x4 makeRotationY(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        this.m00 = _t0;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        this.m00 = _t1;
         this.m01 = 0.0f;
-        this.m02 = _t1;
+        this.m02 = _t0;
         this.m03 = 0.0f;
         this.m10 = 0.0f;
         this.m11 = 1.0f;
         this.m12 = 0.0f;
         this.m13 = 0.0f;
-        this.m20 = -_t1;
+        this.m20 = -_t0;
         this.m21 = 0.0f;
-        this.m22 = _t0;
+        this.m22 = _t1;
         this.m23 = 0.0f;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -14946,9 +14946,9 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleY);
         float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.cos(angleY);
-        float _t4 = (float) Math.cos(angleZ);
-        float _t5 = (float) Math.cos(angleX);
+        float _t3 = (float) Math.cosFromSin(_t1, angleY);
+        float _t4 = (float) Math.cosFromSin(_t2, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t0, angleX);
         float _t6 = _t0 * _t1;
         float _t7 = _t0 * _t3;
         this.m00 = Math.fma(_t6, _t2, _t3 * _t4);
@@ -14979,25 +14979,25 @@ public class Float3x4Impl implements Float3x4 {
      * @return this
      */
     @Mutated public Float3x4 makeRotationYZX(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.sin(angleZ);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t4 * _t0;
-        float _t7 = _t3 * _t4;
-        this.m00 = _t0 * _t1;
-        this.m01 = Math.fma(_t2, _t3, -(_t6 * _t5));
-        this.m02 = Math.fma(_t6, _t2, _t3 * _t5);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t0 * _t1;
+        float _t7 = _t1 * _t3;
+        this.m00 = _t3 * _t4;
+        this.m01 = Math.fma(_t2, _t0, -(_t7 * _t5));
+        this.m02 = Math.fma(_t7, _t2, _t0 * _t5);
         this.m03 = 0.0f;
-        this.m10 = _t4;
-        this.m11 = _t5 * _t1;
-        this.m12 = -(_t2 * _t1);
+        this.m10 = _t1;
+        this.m11 = _t5 * _t4;
+        this.m12 = -(_t2 * _t4);
         this.m13 = 0.0f;
-        this.m20 = -(_t3 * _t1);
-        this.m21 = Math.fma(_t7, _t5, _t2 * _t0);
-        this.m22 = Math.fma(_t5, _t0, -(_t7 * _t2));
+        this.m20 = -(_t0 * _t4);
+        this.m21 = Math.fma(_t6, _t5, _t2 * _t3);
+        this.m22 = Math.fma(_t5, _t3, -(_t6 * _t2));
         this.m23 = 0.0f;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -15011,14 +15011,14 @@ public class Float3x4Impl implements Float3x4 {
      * @return this
      */
     @Mutated public Float3x4 makeRotationZ(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        this.m00 = _t0;
-        this.m01 = -_t1;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        this.m00 = _t1;
+        this.m01 = -_t0;
         this.m02 = 0.0f;
         this.m03 = 0.0f;
-        this.m10 = _t1;
-        this.m11 = _t0;
+        this.m10 = _t0;
+        this.m11 = _t1;
         this.m12 = 0.0f;
         this.m13 = 0.0f;
         this.m20 = 0.0f;
@@ -15041,25 +15041,25 @@ public class Float3x4Impl implements Float3x4 {
      * @return this
      */
     @Mutated public Float3x4 makeRotationZXY(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
-        float _t3 = (float) Math.sin(angleZ);
-        float _t4 = (float) Math.sin(angleY);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t2 * _t3;
-        float _t7 = _t2 * _t1;
-        this.m00 = Math.fma(_t0, _t1, -(_t6 * _t4));
-        this.m01 = -(_t3 * _t5);
-        this.m02 = Math.fma(_t6, _t0, _t4 * _t1);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t1;
+        float _t7 = _t2 * _t4;
+        this.m00 = Math.fma(_t3, _t4, -(_t6 * _t0));
+        this.m01 = -(_t1 * _t5);
+        this.m02 = Math.fma(_t6, _t3, _t0 * _t4);
         this.m03 = 0.0f;
-        this.m10 = Math.fma(_t7, _t4, _t3 * _t0);
-        this.m11 = _t5 * _t1;
-        this.m12 = Math.fma(_t4, _t3, -(_t7 * _t0));
+        this.m10 = Math.fma(_t7, _t0, _t1 * _t3);
+        this.m11 = _t5 * _t4;
+        this.m12 = Math.fma(_t0, _t1, -(_t7 * _t3));
         this.m13 = 0.0f;
-        this.m20 = -(_t4 * _t5);
+        this.m20 = -(_t0 * _t5);
         this.m21 = _t2;
-        this.m22 = _t5 * _t0;
+        this.m22 = _t5 * _t3;
         this.m23 = 0.0f;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -15077,25 +15077,25 @@ public class Float3x4Impl implements Float3x4 {
      * @return this
      */
     @Mutated public Float3x4 makeRotationZYX(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleY);
-        float _t3 = (float) Math.sin(angleX);
-        float _t4 = (float) Math.sin(angleZ);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t2 * _t1;
-        float _t7 = _t2 * _t4;
-        this.m00 = _t0 * _t1;
-        this.m01 = Math.fma(_t6, _t3, -(_t4 * _t5));
-        this.m02 = Math.fma(_t6, _t5, _t3 * _t4);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t0 * _t1;
+        float _t7 = _t0 * _t4;
+        this.m00 = _t3 * _t4;
+        this.m01 = Math.fma(_t7, _t2, -(_t1 * _t5));
+        this.m02 = Math.fma(_t7, _t5, _t2 * _t1);
         this.m03 = 0.0f;
-        this.m10 = _t4 * _t0;
-        this.m11 = Math.fma(_t7, _t3, _t5 * _t1);
-        this.m12 = Math.fma(_t7, _t5, -(_t3 * _t1));
+        this.m10 = _t1 * _t3;
+        this.m11 = Math.fma(_t6, _t2, _t5 * _t4);
+        this.m12 = Math.fma(_t6, _t5, -(_t2 * _t4));
         this.m13 = 0.0f;
-        this.m20 = -_t2;
-        this.m21 = _t3 * _t0;
-        this.m22 = _t5 * _t0;
+        this.m20 = -_t0;
+        this.m21 = _t2 * _t3;
+        this.m22 = _t5 * _t3;
         this.m23 = 0.0f;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -24379,23 +24379,23 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateAxis_identity(float angle, float axisX, float axisY, float axisZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _t2 = 1.0f - _t0;
-        float _t3 = axisX * axisY;
-        float _t4 = axisX * axisZ;
-        float _t5 = axisY * axisZ;
-        d.m00 = Math.fma(_t2, axisX * axisX, _t0);
-        d.m01 = Math.fma(_t2, _t3, -(axisZ * _t1));
-        d.m02 = Math.fma(axisY, _t1, _t2 * _t4);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = axisX * axisY;
+        float _t3 = axisX * axisZ;
+        float _t4 = axisY * axisZ;
+        float _t5 = 1.0f - _t1;
+        d.m00 = Math.fma(_t5, axisX * axisX, _t1);
+        d.m01 = Math.fma(_t5, _t2, -(axisZ * _t0));
+        d.m02 = Math.fma(axisY, _t0, _t5 * _t3);
         d.m03 = 0.0f;
-        d.m10 = Math.fma(axisZ, _t1, _t2 * _t3);
-        d.m11 = Math.fma(_t2, axisY * axisY, _t0);
-        d.m12 = Math.fma(_t2, _t5, -(axisX * _t1));
+        d.m10 = Math.fma(axisZ, _t0, _t5 * _t2);
+        d.m11 = Math.fma(_t5, axisY * axisY, _t1);
+        d.m12 = Math.fma(_t5, _t4, -(axisX * _t0));
         d.m13 = 0.0f;
-        d.m20 = Math.fma(_t2, _t4, -(axisY * _t1));
-        d.m21 = Math.fma(axisX, _t1, _t2 * _t5);
-        d.m22 = Math.fma(_t2, axisZ * axisZ, _t0);
+        d.m20 = Math.fma(_t5, _t3, -(axisY * _t0));
+        d.m21 = Math.fma(axisX, _t0, _t5 * _t4);
+        d.m22 = Math.fma(_t5, axisZ * axisZ, _t1);
         d.m23 = 0.0f;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -24408,21 +24408,21 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateAxis_identity_self(float angle, float axisX, float axisY, float axisZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _t2 = 1.0f - _t0;
-        float _t3 = axisX * axisY;
-        float _t4 = axisX * axisZ;
-        float _t5 = axisY * axisZ;
-        d.m00 = Math.fma(_t2, axisX * axisX, _t0);
-        d.m01 = Math.fma(_t2, _t3, -(axisZ * _t1));
-        d.m02 = Math.fma(axisY, _t1, _t2 * _t4);
-        d.m10 = Math.fma(axisZ, _t1, _t2 * _t3);
-        d.m11 = Math.fma(_t2, axisY * axisY, _t0);
-        d.m12 = Math.fma(_t2, _t5, -(axisX * _t1));
-        d.m20 = Math.fma(_t2, _t4, -(axisY * _t1));
-        d.m21 = Math.fma(axisX, _t1, _t2 * _t5);
-        d.m22 = Math.fma(_t2, axisZ * axisZ, _t0);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = axisX * axisY;
+        float _t3 = axisX * axisZ;
+        float _t4 = axisY * axisZ;
+        float _t5 = 1.0f - _t1;
+        d.m00 = Math.fma(_t5, axisX * axisX, _t1);
+        d.m01 = Math.fma(_t5, _t2, -(axisZ * _t0));
+        d.m02 = Math.fma(axisY, _t0, _t5 * _t3);
+        d.m10 = Math.fma(axisZ, _t0, _t5 * _t2);
+        d.m11 = Math.fma(_t5, axisY * axisY, _t1);
+        d.m12 = Math.fma(_t5, _t4, -(axisX * _t0));
+        d.m20 = Math.fma(_t5, _t3, -(axisY * _t0));
+        d.m21 = Math.fma(axisX, _t0, _t5 * _t4);
+        d.m22 = Math.fma(_t5, axisZ * axisZ, _t1);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -24434,21 +24434,21 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateAxis_translation(float angle, float axisX, float axisY, float axisZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _t2 = 1.0f - _t0;
-        float _t4 = axisX * axisY;
-        float _t6 = axisX * axisZ;
-        float _t8 = axisY * axisZ;
-        float _t18 = Math.fma(_t2, axisX * axisX, _t0);
-        float _t19 = Math.fma(_t2, axisY * axisY, _t0);
-        float _t20 = Math.fma(_t2, axisZ * axisZ, _t0);
-        float _t21 = Math.fma(axisY, _t1, _t2 * _t6);
-        float _t22 = Math.fma(axisZ, _t1, _t2 * _t4);
-        float _t23 = Math.fma(axisX, _t1, _t2 * _t8);
-        float _t24 = Math.fma(_t2, _t4, -(axisZ * _t1));
-        float _t25 = Math.fma(_t2, _t8, -(axisX * _t1));
-        float _t26 = Math.fma(_t2, _t6, -(axisY * _t1));
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t3 = axisX * axisY;
+        float _t5 = axisX * axisZ;
+        float _t7 = axisY * axisZ;
+        float _t11 = 1.0f - _t1;
+        float _t18 = Math.fma(_t11, axisX * axisX, _t1);
+        float _t19 = Math.fma(_t11, axisY * axisY, _t1);
+        float _t20 = Math.fma(_t11, axisZ * axisZ, _t1);
+        float _t21 = Math.fma(axisY, _t0, _t11 * _t5);
+        float _t22 = Math.fma(axisZ, _t0, _t11 * _t3);
+        float _t23 = Math.fma(axisX, _t0, _t11 * _t7);
+        float _t24 = Math.fma(_t11, _t3, -(axisZ * _t0));
+        float _t25 = Math.fma(_t11, _t7, -(axisX * _t0));
+        float _t26 = Math.fma(_t11, _t5, -(axisY * _t0));
         d.m00 = _t18;
         d.m01 = _t24;
         d.m02 = _t21;
@@ -24496,12 +24496,12 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private tail of {@code preRotateAxis_orthogonal}; reached only through it. */
-    private void preRotateAxis_orthogonal_s32ee4ef2_tail(Float3x4Impl _dst, float axisZ, float _t0, float _t2, float _t5, float axisX, float _t7, float _t3, float axisY, float _r0, float _t21, float _r1, float _t18, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t19, float _t20) {
-        float _t22 = Math.fma(axisZ, _t0, _t2 * _t5);
-        float _t23 = Math.fma(axisX, _t0, _t2 * _t7);
-        float _t24 = Math.fma(_t2, _t5, -(axisZ * _t0));
-        float _t25 = Math.fma(_t2, _t7, -(axisX * _t0));
-        float _t26 = Math.fma(_t2, _t3, -(axisY * _t0));
+    private void preRotateAxis_orthogonal_s32ee4ef2_tail(Float3x4Impl _dst, float axisZ, float _t0, float _t11, float _t4, float axisX, float _t6, float _t2, float axisY, float _r0, float _t21, float _r1, float _t18, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t19, float _t20) {
+        float _t22 = Math.fma(axisZ, _t0, _t11 * _t4);
+        float _t23 = Math.fma(axisX, _t0, _t11 * _t6);
+        float _t24 = Math.fma(_t11, _t4, -(axisZ * _t0));
+        float _t25 = Math.fma(_t11, _t6, -(axisX * _t0));
+        float _t26 = Math.fma(_t11, _t2, -(axisY * _t0));
         preRotateAxis_orthogonal_s32ee4ef2_c0(_dst, _r0, _t21, _r1, _t18, _r2, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
         preRotateAxis_orthogonal_s32ee4ef2_c1(_dst, _r3, _t21, _r4, _t18, _r5, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
         preRotateAxis_orthogonal_s32ee4ef2_c2(_dst, _r6, _t21, _r7, _t18, _r8, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
@@ -24528,16 +24528,16 @@ public class Float3x4Impl implements Float3x4 {
         float _r10 = this.m03;
         float _r11 = this.m13;
         float _t0 = (float) Math.sin(angle);
-        float _t1 = (float) Math.cos(angle);
-        float _t2 = 1.0f - _t1;
-        float _t3 = axisX * axisZ;
-        float _t5 = axisX * axisY;
-        float _t7 = axisY * axisZ;
-        float _t18 = Math.fma(_t2, axisX * axisX, _t1);
-        float _t19 = Math.fma(_t2, axisY * axisY, _t1);
-        float _t20 = Math.fma(_t2, axisZ * axisZ, _t1);
-        float _t21 = Math.fma(axisY, _t0, _t2 * _t3);
-        preRotateAxis_orthogonal_s32ee4ef2_tail(d, axisZ, _t0, _t2, _t5, axisX, _t7, _t3, axisY, _r0, _t21, _r1, _t18, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t19, _t20);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = axisX * axisZ;
+        float _t4 = axisX * axisY;
+        float _t6 = axisY * axisZ;
+        float _t11 = 1.0f - _t1;
+        float _t18 = Math.fma(_t11, axisX * axisX, _t1);
+        float _t19 = Math.fma(_t11, axisY * axisY, _t1);
+        float _t20 = Math.fma(_t11, axisZ * axisZ, _t1);
+        float _t21 = Math.fma(axisY, _t0, _t11 * _t2);
+        preRotateAxis_orthogonal_s32ee4ef2_tail(d, axisZ, _t0, _t11, _t4, axisX, _t6, _t2, axisY, _r0, _t21, _r1, _t18, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t19, _t20);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -24571,12 +24571,12 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private tail of {@code preRotateAxis_general}; reached only through it. */
-    private void preRotateAxis_general_s32ee4ef2_tail(Float3x4Impl _dst, float axisZ, float _t0, float _t2, float _t5, float axisX, float _t7, float _t3, float axisY, float _r0, float _t21, float _r1, float _t18, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t19, float _t20) {
-        float _t22 = Math.fma(axisZ, _t0, _t2 * _t5);
-        float _t23 = Math.fma(axisX, _t0, _t2 * _t7);
-        float _t24 = Math.fma(_t2, _t5, -(axisZ * _t0));
-        float _t25 = Math.fma(_t2, _t7, -(axisX * _t0));
-        float _t26 = Math.fma(_t2, _t3, -(axisY * _t0));
+    private void preRotateAxis_general_s32ee4ef2_tail(Float3x4Impl _dst, float axisZ, float _t0, float _t11, float _t4, float axisX, float _t6, float _t2, float axisY, float _r0, float _t21, float _r1, float _t18, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t19, float _t20) {
+        float _t22 = Math.fma(axisZ, _t0, _t11 * _t4);
+        float _t23 = Math.fma(axisX, _t0, _t11 * _t6);
+        float _t24 = Math.fma(_t11, _t4, -(axisZ * _t0));
+        float _t25 = Math.fma(_t11, _t6, -(axisX * _t0));
+        float _t26 = Math.fma(_t11, _t2, -(axisY * _t0));
         preRotateAxis_general_s32ee4ef2_c0(_dst, _r0, _t21, _r1, _t18, _r2, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
         preRotateAxis_general_s32ee4ef2_c1(_dst, _r3, _t21, _r4, _t18, _r5, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
         preRotateAxis_general_s32ee4ef2_c2(_dst, _r6, _t21, _r7, _t18, _r8, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
@@ -24603,16 +24603,16 @@ public class Float3x4Impl implements Float3x4 {
         float _r10 = this.m03;
         float _r11 = this.m13;
         float _t0 = (float) Math.sin(angle);
-        float _t1 = (float) Math.cos(angle);
-        float _t2 = 1.0f - _t1;
-        float _t3 = axisX * axisZ;
-        float _t5 = axisX * axisY;
-        float _t7 = axisY * axisZ;
-        float _t18 = Math.fma(_t2, axisX * axisX, _t1);
-        float _t19 = Math.fma(_t2, axisY * axisY, _t1);
-        float _t20 = Math.fma(_t2, axisZ * axisZ, _t1);
-        float _t21 = Math.fma(axisY, _t0, _t2 * _t3);
-        preRotateAxis_general_s32ee4ef2_tail(d, axisZ, _t0, _t2, _t5, axisX, _t7, _t3, axisY, _r0, _t21, _r1, _t18, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t19, _t20);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = axisX * axisZ;
+        float _t4 = axisX * axisY;
+        float _t6 = axisY * axisZ;
+        float _t11 = 1.0f - _t1;
+        float _t18 = Math.fma(_t11, axisX * axisX, _t1);
+        float _t19 = Math.fma(_t11, axisY * axisY, _t1);
+        float _t20 = Math.fma(_t11, axisZ * axisZ, _t1);
+        float _t21 = Math.fma(axisY, _t0, _t11 * _t2);
+        preRotateAxis_general_s32ee4ef2_tail(d, axisZ, _t0, _t11, _t4, axisX, _t6, _t2, axisY, _r0, _t21, _r1, _t18, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t19, _t20);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -24706,12 +24706,12 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private tail of {@code preRotateAxis}; reached only through it. */
-    private void preRotateAxis_s74a27281_tail(Double3x4Impl _dst, float axisZ, float _t0, float _t2, float _t5, float axisX, float _t7, float _t3, float axisY, float _r0, float _t21, float _r1, float _t18, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t19, float _t20) {
-        float _t22 = Math.fma(axisZ, _t0, _t2 * _t5);
-        float _t23 = Math.fma(axisX, _t0, _t2 * _t7);
-        float _t24 = Math.fma(_t2, _t5, -(axisZ * _t0));
-        float _t25 = Math.fma(_t2, _t7, -(axisX * _t0));
-        float _t26 = Math.fma(_t2, _t3, -(axisY * _t0));
+    private void preRotateAxis_s74a27281_tail(Double3x4Impl _dst, float axisZ, float _t0, float _t11, float _t4, float axisX, float _t6, float _t2, float axisY, float _r0, float _t21, float _r1, float _t18, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t19, float _t20) {
+        float _t22 = Math.fma(axisZ, _t0, _t11 * _t4);
+        float _t23 = Math.fma(axisX, _t0, _t11 * _t6);
+        float _t24 = Math.fma(_t11, _t4, -(axisZ * _t0));
+        float _t25 = Math.fma(_t11, _t6, -(axisX * _t0));
+        float _t26 = Math.fma(_t11, _t2, -(axisY * _t0));
         preRotateAxis_s74a27281_c0(_dst, _r0, _t21, _r1, _t18, _r2, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
         preRotateAxis_s74a27281_c1(_dst, _r3, _t21, _r4, _t18, _r5, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
         preRotateAxis_s74a27281_c2(_dst, _r6, _t21, _r7, _t18, _r8, _t24, _t25, _t22, _t19, _t20, _t26, _t23);
@@ -24758,16 +24758,16 @@ public class Float3x4Impl implements Float3x4 {
         float _r10 = this.m03;
         float _r11 = this.m13;
         float _t0 = (float) Math.sin(angle);
-        float _t1 = (float) Math.cos(angle);
-        float _t2 = 1.0f - _t1;
-        float _t3 = axisX * axisZ;
-        float _t5 = axisX * axisY;
-        float _t7 = axisY * axisZ;
-        float _t18 = Math.fma(_t2, axisX * axisX, _t1);
-        float _t19 = Math.fma(_t2, axisY * axisY, _t1);
-        float _t20 = Math.fma(_t2, axisZ * axisZ, _t1);
-        float _t21 = Math.fma(axisY, _t0, _t2 * _t3);
-        preRotateAxis_s74a27281_tail(d, axisZ, _t0, _t2, _t5, axisX, _t7, _t3, axisY, _r0, _t21, _r1, _t18, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t19, _t20);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = axisX * axisZ;
+        float _t4 = axisX * axisY;
+        float _t6 = axisY * axisZ;
+        float _t11 = 1.0f - _t1;
+        float _t18 = Math.fma(_t11, axisX * axisX, _t1);
+        float _t19 = Math.fma(_t11, axisY * axisY, _t1);
+        float _t20 = Math.fma(_t11, axisZ * axisZ, _t1);
+        float _t21 = Math.fma(axisY, _t0, _t11 * _t2);
+        preRotateAxis_s74a27281_tail(d, axisZ, _t0, _t11, _t4, axisX, _t6, _t2, axisY, _r0, _t21, _r1, _t18, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t19, _t20);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -25243,20 +25243,20 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateX_orthogonal_general(float angle, @Mutated Float3x4 dest, int _props) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
         d.m00 = this.m00;
         d.m01 = this.m01;
         d.m02 = this.m02;
         d.m03 = this.m03;
-        float _buf0 = Math.fma(this.m10, _t0, -(this.m20 * _t1));
-        float _buf1 = Math.fma(this.m11, _t0, -(this.m21 * _t1));
-        float _buf2 = Math.fma(this.m12, _t0, -(this.m22 * _t1));
-        float _buf3 = Math.fma(this.m13, _t0, -(this.m23 * _t1));
-        d.m20 = Math.fma(this.m10, _t1, this.m20 * _t0);
-        d.m21 = Math.fma(this.m11, _t1, this.m21 * _t0);
-        d.m22 = Math.fma(this.m12, _t1, this.m22 * _t0);
-        d.m23 = Math.fma(this.m13, _t1, this.m23 * _t0);
+        float _buf0 = Math.fma(this.m10, _t1, -(this.m20 * _t0));
+        float _buf1 = Math.fma(this.m11, _t1, -(this.m21 * _t0));
+        float _buf2 = Math.fma(this.m12, _t1, -(this.m22 * _t0));
+        float _buf3 = Math.fma(this.m13, _t1, -(this.m23 * _t0));
+        d.m20 = Math.fma(this.m10, _t0, this.m20 * _t1);
+        d.m21 = Math.fma(this.m11, _t0, this.m21 * _t1);
+        d.m22 = Math.fma(this.m12, _t0, this.m22 * _t1);
+        d.m23 = Math.fma(this.m13, _t0, this.m23 * _t1);
         d.m10 = _buf0;
         d.m11 = _buf1;
         d.m12 = _buf2;
@@ -25272,19 +25272,19 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateX_identity(float angle, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
         d.m00 = 1.0f;
         d.m01 = 0.0f;
         d.m02 = 0.0f;
         d.m03 = 0.0f;
         d.m10 = 0.0f;
-        d.m11 = _t0;
-        d.m12 = -_t1;
+        d.m11 = _t1;
+        d.m12 = -_t0;
         d.m13 = 0.0f;
         d.m20 = 0.0f;
-        d.m21 = _t1;
-        d.m22 = _t0;
+        d.m21 = _t0;
+        d.m22 = _t1;
         d.m23 = 0.0f;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -25297,12 +25297,12 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateX_identity_self(float angle, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        d.m11 = _t0;
-        d.m12 = -_t1;
-        d.m21 = _t1;
-        d.m22 = _t0;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        d.m11 = _t1;
+        d.m12 = -_t0;
+        d.m21 = _t0;
+        d.m22 = _t1;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -25314,20 +25314,20 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateX_translation(float angle, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
         d.m00 = 1.0f;
         d.m01 = 0.0f;
         d.m02 = 0.0f;
         d.m03 = this.m03;
         d.m10 = 0.0f;
-        d.m11 = _t0;
-        d.m12 = -_t1;
-        float _buf0 = Math.fma(this.m13, _t0, -(this.m23 * _t1));
+        d.m11 = _t1;
+        d.m12 = -_t0;
+        float _buf0 = Math.fma(this.m13, _t1, -(this.m23 * _t0));
         d.m20 = 0.0f;
-        d.m21 = _t1;
-        d.m22 = _t0;
-        d.m23 = Math.fma(this.m13, _t1, this.m23 * _t0);
+        d.m21 = _t0;
+        d.m22 = _t1;
+        d.m23 = Math.fma(this.m13, _t0, this.m23 * _t1);
         d.m13 = _buf0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -25340,15 +25340,15 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateX_translation_self(float angle, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
         d.m03 = this.m03;
-        d.m11 = _t0;
-        d.m12 = -_t1;
-        float _buf0 = Math.fma(this.m13, _t0, -(this.m23 * _t1));
-        d.m21 = _t1;
-        d.m22 = _t0;
-        d.m23 = Math.fma(this.m13, _t1, this.m23 * _t0);
+        d.m11 = _t1;
+        d.m12 = -_t0;
+        float _buf0 = Math.fma(this.m13, _t1, -(this.m23 * _t0));
+        d.m21 = _t0;
+        d.m22 = _t1;
+        d.m23 = Math.fma(this.m13, _t0, this.m23 * _t1);
         d.m13 = _buf0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -25411,20 +25411,20 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 preRotateX(float angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
         d.m00 = this.m00;
         d.m01 = this.m01;
         d.m02 = this.m02;
         d.m03 = this.m03;
-        float _buf0 = Math.fma(this.m10, _t0, -(this.m20 * _t1));
-        float _buf1 = Math.fma(this.m11, _t0, -(this.m21 * _t1));
-        float _buf2 = Math.fma(this.m12, _t0, -(this.m22 * _t1));
-        float _buf3 = Math.fma(this.m13, _t0, -(this.m23 * _t1));
-        d.m20 = Math.fma(this.m10, _t1, this.m20 * _t0);
-        d.m21 = Math.fma(this.m11, _t1, this.m21 * _t0);
-        d.m22 = Math.fma(this.m12, _t1, this.m22 * _t0);
-        d.m23 = Math.fma(this.m13, _t1, this.m23 * _t0);
+        float _buf0 = Math.fma(this.m10, _t1, -(this.m20 * _t0));
+        float _buf1 = Math.fma(this.m11, _t1, -(this.m21 * _t0));
+        float _buf2 = Math.fma(this.m12, _t1, -(this.m22 * _t0));
+        float _buf3 = Math.fma(this.m13, _t1, -(this.m23 * _t0));
+        d.m20 = Math.fma(this.m10, _t0, this.m20 * _t1);
+        d.m21 = Math.fma(this.m11, _t0, this.m21 * _t1);
+        d.m22 = Math.fma(this.m12, _t0, this.m22 * _t1);
+        d.m23 = Math.fma(this.m13, _t0, this.m23 * _t1);
         d.m10 = _buf0;
         d.m11 = _buf1;
         d.m12 = _buf2;
@@ -25440,20 +25440,20 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateY_orthogonal_general(float angle, @Mutated Float3x4 dest, int _props) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = Math.fma(this.m00, _t0, this.m20 * _t1);
-        float _buf1 = Math.fma(this.m01, _t0, this.m21 * _t1);
-        float _buf2 = Math.fma(this.m02, _t0, this.m22 * _t1);
-        float _buf3 = Math.fma(this.m03, _t0, this.m23 * _t1);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = Math.fma(this.m00, _t1, this.m20 * _t0);
+        float _buf1 = Math.fma(this.m01, _t1, this.m21 * _t0);
+        float _buf2 = Math.fma(this.m02, _t1, this.m22 * _t0);
+        float _buf3 = Math.fma(this.m03, _t1, this.m23 * _t0);
         d.m10 = this.m10;
         d.m11 = this.m11;
         d.m12 = this.m12;
         d.m13 = this.m13;
-        d.m20 = Math.fma(this.m20, _t0, -(this.m00 * _t1));
-        d.m21 = Math.fma(this.m21, _t0, -(this.m01 * _t1));
-        d.m22 = Math.fma(this.m22, _t0, -(this.m02 * _t1));
-        d.m23 = Math.fma(this.m23, _t0, -(this.m03 * _t1));
+        d.m20 = Math.fma(this.m20, _t1, -(this.m00 * _t0));
+        d.m21 = Math.fma(this.m21, _t1, -(this.m01 * _t0));
+        d.m22 = Math.fma(this.m22, _t1, -(this.m02 * _t0));
+        d.m23 = Math.fma(this.m23, _t1, -(this.m03 * _t0));
         d.m00 = _buf0;
         d.m01 = _buf1;
         d.m02 = _buf2;
@@ -25469,19 +25469,19 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateY_identity(float angle, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        d.m00 = _t0;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
         d.m01 = 0.0f;
-        d.m02 = _t1;
+        d.m02 = _t0;
         d.m03 = 0.0f;
         d.m10 = 0.0f;
         d.m11 = 1.0f;
         d.m12 = 0.0f;
         d.m13 = 0.0f;
-        d.m20 = -_t1;
+        d.m20 = -_t0;
         d.m21 = 0.0f;
-        d.m22 = _t0;
+        d.m22 = _t1;
         d.m23 = 0.0f;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -25494,12 +25494,12 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateY_identity_self(float angle, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        d.m00 = _t0;
-        d.m02 = _t1;
-        d.m20 = -_t1;
-        d.m22 = _t0;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m02 = _t0;
+        d.m20 = -_t0;
+        d.m22 = _t1;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -25511,20 +25511,20 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateY_translation(float angle, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        d.m00 = _t0;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
         d.m01 = 0.0f;
-        d.m02 = _t1;
-        float _buf0 = Math.fma(this.m03, _t0, this.m23 * _t1);
+        d.m02 = _t0;
+        float _buf0 = Math.fma(this.m03, _t1, this.m23 * _t0);
         d.m10 = 0.0f;
         d.m11 = 1.0f;
         d.m12 = 0.0f;
         d.m13 = this.m13;
-        d.m20 = -_t1;
+        d.m20 = -_t0;
         d.m21 = 0.0f;
-        d.m22 = _t0;
-        d.m23 = Math.fma(this.m23, _t0, -(this.m03 * _t1));
+        d.m22 = _t1;
+        d.m23 = Math.fma(this.m23, _t1, -(this.m03 * _t0));
         d.m03 = _buf0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -25537,15 +25537,15 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateY_translation_self(float angle, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        d.m00 = _t0;
-        d.m02 = _t1;
-        float _buf0 = Math.fma(this.m03, _t0, this.m23 * _t1);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m02 = _t0;
+        float _buf0 = Math.fma(this.m03, _t1, this.m23 * _t0);
         d.m13 = this.m13;
-        d.m20 = -_t1;
-        d.m22 = _t0;
-        d.m23 = Math.fma(this.m23, _t0, -(this.m03 * _t1));
+        d.m20 = -_t0;
+        d.m22 = _t1;
+        d.m23 = Math.fma(this.m23, _t1, -(this.m03 * _t0));
         d.m03 = _buf0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -25608,20 +25608,20 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 preRotateY(float angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = Math.fma(this.m00, _t0, this.m20 * _t1);
-        float _buf1 = Math.fma(this.m01, _t0, this.m21 * _t1);
-        float _buf2 = Math.fma(this.m02, _t0, this.m22 * _t1);
-        float _buf3 = Math.fma(this.m03, _t0, this.m23 * _t1);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = Math.fma(this.m00, _t1, this.m20 * _t0);
+        float _buf1 = Math.fma(this.m01, _t1, this.m21 * _t0);
+        float _buf2 = Math.fma(this.m02, _t1, this.m22 * _t0);
+        float _buf3 = Math.fma(this.m03, _t1, this.m23 * _t0);
         d.m10 = this.m10;
         d.m11 = this.m11;
         d.m12 = this.m12;
         d.m13 = this.m13;
-        d.m20 = Math.fma(this.m20, _t0, -(this.m00 * _t1));
-        d.m21 = Math.fma(this.m21, _t0, -(this.m01 * _t1));
-        d.m22 = Math.fma(this.m22, _t0, -(this.m02 * _t1));
-        d.m23 = Math.fma(this.m23, _t0, -(this.m03 * _t1));
+        d.m20 = Math.fma(this.m20, _t1, -(this.m00 * _t0));
+        d.m21 = Math.fma(this.m21, _t1, -(this.m01 * _t0));
+        d.m22 = Math.fma(this.m22, _t1, -(this.m02 * _t0));
+        d.m23 = Math.fma(this.m23, _t1, -(this.m03 * _t0));
         d.m00 = _buf0;
         d.m01 = _buf1;
         d.m02 = _buf2;
@@ -25637,16 +25637,16 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateZ_orthogonal_general(float angle, @Mutated Float3x4 dest, int _props) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = Math.fma(this.m00, _t0, -(this.m10 * _t1));
-        float _buf1 = Math.fma(this.m01, _t0, -(this.m11 * _t1));
-        float _buf2 = Math.fma(this.m02, _t0, -(this.m12 * _t1));
-        float _buf3 = Math.fma(this.m03, _t0, -(this.m13 * _t1));
-        d.m10 = Math.fma(this.m00, _t1, this.m10 * _t0);
-        d.m11 = Math.fma(this.m01, _t1, this.m11 * _t0);
-        d.m12 = Math.fma(this.m02, _t1, this.m12 * _t0);
-        d.m13 = Math.fma(this.m03, _t1, this.m13 * _t0);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = Math.fma(this.m00, _t1, -(this.m10 * _t0));
+        float _buf1 = Math.fma(this.m01, _t1, -(this.m11 * _t0));
+        float _buf2 = Math.fma(this.m02, _t1, -(this.m12 * _t0));
+        float _buf3 = Math.fma(this.m03, _t1, -(this.m13 * _t0));
+        d.m10 = Math.fma(this.m00, _t0, this.m10 * _t1);
+        d.m11 = Math.fma(this.m01, _t0, this.m11 * _t1);
+        d.m12 = Math.fma(this.m02, _t0, this.m12 * _t1);
+        d.m13 = Math.fma(this.m03, _t0, this.m13 * _t1);
         d.m20 = this.m20;
         d.m21 = this.m21;
         d.m22 = this.m22;
@@ -25666,14 +25666,14 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateZ_identity(float angle, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        d.m00 = _t0;
-        d.m01 = -_t1;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m01 = -_t0;
         d.m02 = 0.0f;
         d.m03 = 0.0f;
-        d.m10 = _t1;
-        d.m11 = _t0;
+        d.m10 = _t0;
+        d.m11 = _t1;
         d.m12 = 0.0f;
         d.m13 = 0.0f;
         d.m20 = 0.0f;
@@ -25691,12 +25691,12 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateZ_identity_self(float angle, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        d.m00 = _t0;
-        d.m01 = -_t1;
-        d.m10 = _t1;
-        d.m11 = _t0;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m01 = -_t0;
+        d.m10 = _t0;
+        d.m11 = _t1;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -25708,16 +25708,16 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateZ_translation(float angle, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        d.m00 = _t0;
-        d.m01 = -_t1;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m01 = -_t0;
         d.m02 = 0.0f;
-        float _buf0 = Math.fma(this.m03, _t0, -(this.m13 * _t1));
-        d.m10 = _t1;
-        d.m11 = _t0;
+        float _buf0 = Math.fma(this.m03, _t1, -(this.m13 * _t0));
+        d.m10 = _t0;
+        d.m11 = _t1;
         d.m12 = 0.0f;
-        d.m13 = Math.fma(this.m03, _t1, this.m13 * _t0);
+        d.m13 = Math.fma(this.m03, _t0, this.m13 * _t1);
         d.m20 = 0.0f;
         d.m21 = 0.0f;
         d.m22 = 1.0f;
@@ -25734,14 +25734,14 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 preRotateZ_translation_self(float angle, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        d.m00 = _t0;
-        d.m01 = -_t1;
-        float _buf0 = Math.fma(this.m03, _t0, -(this.m13 * _t1));
-        d.m10 = _t1;
-        d.m11 = _t0;
-        d.m13 = Math.fma(this.m03, _t1, this.m13 * _t0);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m01 = -_t0;
+        float _buf0 = Math.fma(this.m03, _t1, -(this.m13 * _t0));
+        d.m10 = _t0;
+        d.m11 = _t1;
+        d.m13 = Math.fma(this.m03, _t0, this.m13 * _t1);
         d.m23 = this.m23;
         d.m03 = _buf0;
         d.properties = Joml.BIT_ORTHOGONAL;
@@ -25805,16 +25805,16 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 preRotateZ(float angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = Math.fma(this.m00, _t0, -(this.m10 * _t1));
-        float _buf1 = Math.fma(this.m01, _t0, -(this.m11 * _t1));
-        float _buf2 = Math.fma(this.m02, _t0, -(this.m12 * _t1));
-        float _buf3 = Math.fma(this.m03, _t0, -(this.m13 * _t1));
-        d.m10 = Math.fma(this.m00, _t1, this.m10 * _t0);
-        d.m11 = Math.fma(this.m01, _t1, this.m11 * _t0);
-        d.m12 = Math.fma(this.m02, _t1, this.m12 * _t0);
-        d.m13 = Math.fma(this.m03, _t1, this.m13 * _t0);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = Math.fma(this.m00, _t1, -(this.m10 * _t0));
+        float _buf1 = Math.fma(this.m01, _t1, -(this.m11 * _t0));
+        float _buf2 = Math.fma(this.m02, _t1, -(this.m12 * _t0));
+        float _buf3 = Math.fma(this.m03, _t1, -(this.m13 * _t0));
+        d.m10 = Math.fma(this.m00, _t0, this.m10 * _t1);
+        d.m11 = Math.fma(this.m01, _t0, this.m11 * _t1);
+        d.m12 = Math.fma(this.m02, _t0, this.m12 * _t1);
+        d.m13 = Math.fma(this.m03, _t0, this.m13 * _t1);
         d.m20 = this.m20;
         d.m21 = this.m21;
         d.m22 = this.m22;
@@ -27881,23 +27881,23 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateAxis_translation(float angle, float axisX, float axisY, float axisZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _t2 = 1.0f - _t0;
-        float _t3 = axisX * axisY;
-        float _t4 = axisX * axisZ;
-        float _t5 = axisY * axisZ;
-        d.m00 = Math.fma(_t2, axisX * axisX, _t0);
-        d.m01 = Math.fma(_t2, _t3, -(axisZ * _t1));
-        d.m02 = Math.fma(axisY, _t1, _t2 * _t4);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = axisX * axisY;
+        float _t3 = axisX * axisZ;
+        float _t4 = axisY * axisZ;
+        float _t5 = 1.0f - _t1;
+        d.m00 = Math.fma(_t5, axisX * axisX, _t1);
+        d.m01 = Math.fma(_t5, _t2, -(axisZ * _t0));
+        d.m02 = Math.fma(axisY, _t0, _t5 * _t3);
         d.m03 = this.m03;
-        d.m10 = Math.fma(axisZ, _t1, _t2 * _t3);
-        d.m11 = Math.fma(_t2, axisY * axisY, _t0);
-        d.m12 = Math.fma(_t2, _t5, -(axisX * _t1));
+        d.m10 = Math.fma(axisZ, _t0, _t5 * _t2);
+        d.m11 = Math.fma(_t5, axisY * axisY, _t1);
+        d.m12 = Math.fma(_t5, _t4, -(axisX * _t0));
         d.m13 = this.m13;
-        d.m20 = Math.fma(_t2, _t4, -(axisY * _t1));
-        d.m21 = Math.fma(axisX, _t1, _t2 * _t5);
-        d.m22 = Math.fma(_t2, axisZ * axisZ, _t0);
+        d.m20 = Math.fma(_t5, _t3, -(axisY * _t0));
+        d.m21 = Math.fma(axisX, _t0, _t5 * _t4);
+        d.m22 = Math.fma(_t5, axisZ * axisZ, _t1);
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -27932,12 +27932,12 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private tail of {@code rotateAxis_orthogonal}; reached only through it. */
-    private void rotateAxis_orthogonal_s32ee4ef2_tail(Float3x4Impl _dst, float axisX, float _t1, float _t2, float _t7, float axisY, float _t3, float _t6, float axisZ, float _r0, float _r1, float _t18, float _r2, float _t21, float _t19, float _t20, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
-        float _t22 = Math.fma(axisX, _t1, _t2 * _t7);
-        float _t23 = Math.fma(axisY, _t1, _t2 * _t3);
-        float _t24 = Math.fma(_t2, _t3, -(axisY * _t1));
-        float _t25 = Math.fma(_t2, _t6, -(axisZ * _t1));
-        float _t26 = Math.fma(_t2, _t7, -(axisX * _t1));
+    private void rotateAxis_orthogonal_s32ee4ef2_tail(Float3x4Impl _dst, float axisX, float _t0, float _t11, float _t6, float axisY, float _t2, float _t5, float axisZ, float _r0, float _r1, float _t18, float _r2, float _t21, float _t19, float _t20, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t22 = Math.fma(axisX, _t0, _t11 * _t6);
+        float _t23 = Math.fma(axisY, _t0, _t11 * _t2);
+        float _t24 = Math.fma(_t11, _t2, -(axisY * _t0));
+        float _t25 = Math.fma(_t11, _t5, -(axisZ * _t0));
+        float _t26 = Math.fma(_t11, _t6, -(axisX * _t0));
         rotateAxis_orthogonal_s32ee4ef2_c0(_dst, _r0, _t24, _r1, _t18, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateAxis_orthogonal_s32ee4ef2_c1(_dst, _r0, _t22, _r1, _t25, _r2, _t19, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateAxis_orthogonal_s32ee4ef2_c2(_dst, _r0, _t20, _r1, _t23, _r2, _t26, _r4, _r5, _r6, _r8, _r9, _r10);
@@ -27963,17 +27963,17 @@ public class Float3x4Impl implements Float3x4 {
         float _r9 = this.m20;
         float _r10 = this.m21;
         float _r11 = this.m23;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _t2 = 1.0f - _t0;
-        float _t3 = axisX * axisZ;
-        float _t6 = axisX * axisY;
-        float _t7 = axisY * axisZ;
-        float _t18 = Math.fma(_t2, axisX * axisX, _t0);
-        float _t19 = Math.fma(_t2, axisY * axisY, _t0);
-        float _t20 = Math.fma(_t2, axisZ * axisZ, _t0);
-        float _t21 = Math.fma(axisZ, _t1, _t2 * _t6);
-        rotateAxis_orthogonal_s32ee4ef2_tail(d, axisX, _t1, _t2, _t7, axisY, _t3, _t6, axisZ, _r0, _r1, _t18, _r2, _t21, _t19, _t20, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = axisX * axisZ;
+        float _t5 = axisX * axisY;
+        float _t6 = axisY * axisZ;
+        float _t11 = 1.0f - _t1;
+        float _t18 = Math.fma(_t11, axisX * axisX, _t1);
+        float _t19 = Math.fma(_t11, axisY * axisY, _t1);
+        float _t20 = Math.fma(_t11, axisZ * axisZ, _t1);
+        float _t21 = Math.fma(axisZ, _t0, _t11 * _t5);
+        rotateAxis_orthogonal_s32ee4ef2_tail(d, axisX, _t0, _t11, _t6, axisY, _t2, _t5, axisZ, _r0, _r1, _t18, _r2, _t21, _t19, _t20, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -28007,12 +28007,12 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private tail of {@code rotateAxis_general}; reached only through it. */
-    private void rotateAxis_general_s32ee4ef2_tail(Float3x4Impl _dst, float axisX, float _t1, float _t2, float _t7, float axisY, float _t3, float _t6, float axisZ, float _r0, float _r1, float _t18, float _r2, float _t21, float _t19, float _t20, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
-        float _t22 = Math.fma(axisX, _t1, _t2 * _t7);
-        float _t23 = Math.fma(axisY, _t1, _t2 * _t3);
-        float _t24 = Math.fma(_t2, _t3, -(axisY * _t1));
-        float _t25 = Math.fma(_t2, _t6, -(axisZ * _t1));
-        float _t26 = Math.fma(_t2, _t7, -(axisX * _t1));
+    private void rotateAxis_general_s32ee4ef2_tail(Float3x4Impl _dst, float axisX, float _t0, float _t11, float _t6, float axisY, float _t2, float _t5, float axisZ, float _r0, float _r1, float _t18, float _r2, float _t21, float _t19, float _t20, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t22 = Math.fma(axisX, _t0, _t11 * _t6);
+        float _t23 = Math.fma(axisY, _t0, _t11 * _t2);
+        float _t24 = Math.fma(_t11, _t2, -(axisY * _t0));
+        float _t25 = Math.fma(_t11, _t5, -(axisZ * _t0));
+        float _t26 = Math.fma(_t11, _t6, -(axisX * _t0));
         rotateAxis_general_s32ee4ef2_c0(_dst, _r0, _t24, _r1, _t18, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateAxis_general_s32ee4ef2_c1(_dst, _r0, _t22, _r1, _t25, _r2, _t19, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateAxis_general_s32ee4ef2_c2(_dst, _r0, _t20, _r1, _t23, _r2, _t26, _r4, _r5, _r6, _r8, _r9, _r10);
@@ -28038,17 +28038,17 @@ public class Float3x4Impl implements Float3x4 {
         float _r9 = this.m20;
         float _r10 = this.m21;
         float _r11 = this.m23;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _t2 = 1.0f - _t0;
-        float _t3 = axisX * axisZ;
-        float _t6 = axisX * axisY;
-        float _t7 = axisY * axisZ;
-        float _t18 = Math.fma(_t2, axisX * axisX, _t0);
-        float _t19 = Math.fma(_t2, axisY * axisY, _t0);
-        float _t20 = Math.fma(_t2, axisZ * axisZ, _t0);
-        float _t21 = Math.fma(axisZ, _t1, _t2 * _t6);
-        rotateAxis_general_s32ee4ef2_tail(d, axisX, _t1, _t2, _t7, axisY, _t3, _t6, axisZ, _r0, _r1, _t18, _r2, _t21, _t19, _t20, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = axisX * axisZ;
+        float _t5 = axisX * axisY;
+        float _t6 = axisY * axisZ;
+        float _t11 = 1.0f - _t1;
+        float _t18 = Math.fma(_t11, axisX * axisX, _t1);
+        float _t19 = Math.fma(_t11, axisY * axisY, _t1);
+        float _t20 = Math.fma(_t11, axisZ * axisZ, _t1);
+        float _t21 = Math.fma(axisZ, _t0, _t11 * _t5);
+        rotateAxis_general_s32ee4ef2_tail(d, axisX, _t0, _t11, _t6, axisY, _t2, _t5, axisZ, _r0, _r1, _t18, _r2, _t21, _t19, _t20, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -28142,12 +28142,12 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private tail of {@code rotateAxis}; reached only through it. */
-    private void rotateAxis_s74a27281_tail(Double3x4Impl _dst, float axisX, float _t1, float _t2, float _t7, float axisY, float _t3, float _t6, float axisZ, float _r0, float _r1, float _t18, float _r2, float _t21, float _t19, float _t20, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
-        float _t22 = Math.fma(axisX, _t1, _t2 * _t7);
-        float _t23 = Math.fma(axisY, _t1, _t2 * _t3);
-        float _t24 = Math.fma(_t2, _t3, -(axisY * _t1));
-        float _t25 = Math.fma(_t2, _t6, -(axisZ * _t1));
-        float _t26 = Math.fma(_t2, _t7, -(axisX * _t1));
+    private void rotateAxis_s74a27281_tail(Double3x4Impl _dst, float axisX, float _t0, float _t11, float _t6, float axisY, float _t2, float _t5, float axisZ, float _r0, float _r1, float _t18, float _r2, float _t21, float _t19, float _t20, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t22 = Math.fma(axisX, _t0, _t11 * _t6);
+        float _t23 = Math.fma(axisY, _t0, _t11 * _t2);
+        float _t24 = Math.fma(_t11, _t2, -(axisY * _t0));
+        float _t25 = Math.fma(_t11, _t5, -(axisZ * _t0));
+        float _t26 = Math.fma(_t11, _t6, -(axisX * _t0));
         rotateAxis_s74a27281_c0(_dst, _r0, _t24, _r1, _t18, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateAxis_s74a27281_c1(_dst, _r0, _t22, _r1, _t25, _r2, _t19, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateAxis_s74a27281_c2(_dst, _r0, _t20, _r1, _t23, _r2, _t26, _r4, _r5, _r6, _r8, _r9, _r10);
@@ -28193,17 +28193,17 @@ public class Float3x4Impl implements Float3x4 {
         float _r9 = this.m20;
         float _r10 = this.m21;
         float _r11 = this.m23;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _t2 = 1.0f - _t0;
-        float _t3 = axisX * axisZ;
-        float _t6 = axisX * axisY;
-        float _t7 = axisY * axisZ;
-        float _t18 = Math.fma(_t2, axisX * axisX, _t0);
-        float _t19 = Math.fma(_t2, axisY * axisY, _t0);
-        float _t20 = Math.fma(_t2, axisZ * axisZ, _t0);
-        float _t21 = Math.fma(axisZ, _t1, _t2 * _t6);
-        rotateAxis_s74a27281_tail(d, axisX, _t1, _t2, _t7, axisY, _t3, _t6, axisZ, _r0, _r1, _t18, _r2, _t21, _t19, _t20, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = axisX * axisZ;
+        float _t5 = axisX * axisY;
+        float _t6 = axisY * axisZ;
+        float _t11 = 1.0f - _t1;
+        float _t18 = Math.fma(_t11, axisX * axisX, _t1);
+        float _t19 = Math.fma(_t11, axisY * axisY, _t1);
+        float _t20 = Math.fma(_t11, axisZ * axisZ, _t1);
+        float _t21 = Math.fma(axisZ, _t0, _t11 * _t5);
+        rotateAxis_s74a27281_tail(d, axisX, _t0, _t11, _t6, axisY, _t2, _t5, axisZ, _r0, _r1, _t18, _r2, _t21, _t19, _t20, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -28625,19 +28625,19 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateX_orthogonal_general(float angle, @Mutated Float3x4 dest, int _props) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
         d.m00 = this.m00;
-        float _buf0 = Math.fma(this.m01, _t0, this.m02 * _t1);
-        d.m02 = Math.fma(this.m02, _t0, -(this.m01 * _t1));
+        float _buf0 = Math.fma(this.m01, _t1, this.m02 * _t0);
+        d.m02 = Math.fma(this.m02, _t1, -(this.m01 * _t0));
         d.m03 = this.m03;
         d.m10 = this.m10;
-        float _buf1 = Math.fma(this.m11, _t0, this.m12 * _t1);
-        d.m12 = Math.fma(this.m12, _t0, -(this.m11 * _t1));
+        float _buf1 = Math.fma(this.m11, _t1, this.m12 * _t0);
+        d.m12 = Math.fma(this.m12, _t1, -(this.m11 * _t0));
         d.m13 = this.m13;
         d.m20 = this.m20;
-        float _buf2 = Math.fma(this.m21, _t0, this.m22 * _t1);
-        d.m22 = Math.fma(this.m22, _t0, -(this.m21 * _t1));
+        float _buf2 = Math.fma(this.m21, _t1, this.m22 * _t0);
+        d.m22 = Math.fma(this.m22, _t1, -(this.m21 * _t0));
         d.m23 = this.m23;
         d.m01 = _buf0;
         d.m11 = _buf1;
@@ -28671,19 +28671,19 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateX_translation(float angle, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
         d.m00 = 1.0f;
         d.m01 = 0.0f;
         d.m02 = 0.0f;
         d.m03 = this.m03;
         d.m10 = 0.0f;
-        d.m11 = _t0;
-        d.m12 = -_t1;
+        d.m11 = _t1;
+        d.m12 = -_t0;
         d.m13 = this.m13;
         d.m20 = 0.0f;
-        d.m21 = _t1;
-        d.m22 = _t0;
+        d.m21 = _t0;
+        d.m22 = _t1;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -28696,14 +28696,14 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateX_translation_self(float angle, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
         d.m03 = this.m03;
-        d.m11 = _t0;
-        d.m12 = -_t1;
+        d.m11 = _t1;
+        d.m12 = -_t0;
         d.m13 = this.m13;
-        d.m21 = _t1;
-        d.m22 = _t0;
+        d.m21 = _t0;
+        d.m22 = _t1;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -28766,19 +28766,19 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 rotateX(float angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
         d.m00 = this.m00;
-        float _buf0 = Math.fma(this.m01, _t0, this.m02 * _t1);
-        d.m02 = Math.fma(this.m02, _t0, -(this.m01 * _t1));
+        float _buf0 = Math.fma(this.m01, _t1, this.m02 * _t0);
+        d.m02 = Math.fma(this.m02, _t1, -(this.m01 * _t0));
         d.m03 = this.m03;
         d.m10 = this.m10;
-        float _buf1 = Math.fma(this.m11, _t0, this.m12 * _t1);
-        d.m12 = Math.fma(this.m12, _t0, -(this.m11 * _t1));
+        float _buf1 = Math.fma(this.m11, _t1, this.m12 * _t0);
+        d.m12 = Math.fma(this.m12, _t1, -(this.m11 * _t0));
         d.m13 = this.m13;
         d.m20 = this.m20;
-        float _buf2 = Math.fma(this.m21, _t0, this.m22 * _t1);
-        d.m22 = Math.fma(this.m22, _t0, -(this.m21 * _t1));
+        float _buf2 = Math.fma(this.m21, _t1, this.m22 * _t0);
+        d.m22 = Math.fma(this.m22, _t1, -(this.m21 * _t0));
         d.m23 = this.m23;
         d.m01 = _buf0;
         d.m11 = _buf1;
@@ -28935,24 +28935,24 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private column 0 of {@code rotateXYZ_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateXYZ_orthogonal_general_s1c0a609d_c0(Float3x4Impl _dst, float _r0, float _t20, float _r1, float _t7, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t7, _r2 * _t18));
-        _dst.m10 = Math.fma(_r4, _t20, Math.fma(_r5, _t7, _r6 * _t18));
-        _dst.m20 = Math.fma(_r8, _t20, Math.fma(_r9, _t7, _r10 * _t18));
+    private void rotateXYZ_orthogonal_general_s1c0a609d_c0(Float3x4Impl _dst, float _r0, float _t20, float _r1, float _t13, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t13, _r2 * _t18));
+        _dst.m10 = Math.fma(_r4, _t20, Math.fma(_r5, _t13, _r6 * _t18));
+        _dst.m20 = Math.fma(_r8, _t20, Math.fma(_r9, _t13, _r10 * _t18));
     }
 
     /** Private column 1 of {@code rotateXYZ_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateXYZ_orthogonal_general_s1c0a609d_c1(Float3x4Impl _dst, float _r0, float _t19, float _r2, float _t21, float _r1, float _t11, float _r4, float _r6, float _r5, float _r8, float _r10, float _r9) {
-        _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r2, _t21, -(_r1 * _t11)));
-        _dst.m11 = Math.fma(_r4, _t19, Math.fma(_r6, _t21, -(_r5 * _t11)));
-        _dst.m21 = Math.fma(_r8, _t19, Math.fma(_r10, _t21, -(_r9 * _t11)));
+    private void rotateXYZ_orthogonal_general_s1c0a609d_c1(Float3x4Impl _dst, float _r0, float _t19, float _r2, float _t21, float _r1, float _t10, float _r4, float _r6, float _r5, float _r8, float _r10, float _r9) {
+        _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r2, _t21, -(_r1 * _t10)));
+        _dst.m11 = Math.fma(_r4, _t19, Math.fma(_r6, _t21, -(_r5 * _t10)));
+        _dst.m21 = Math.fma(_r8, _t19, Math.fma(_r10, _t21, -(_r9 * _t10)));
     }
 
     /** Private column 2 of {@code rotateXYZ_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateXYZ_orthogonal_general_s1c0a609d_c2(Float3x4Impl _dst, float _r0, float _t12, float _r1, float _t2, float _r2, float _t13, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m02 = Math.fma(_r0, _t12, Math.fma(_r1, _t2, -(_r2 * _t13)));
-        _dst.m12 = Math.fma(_r4, _t12, Math.fma(_r5, _t2, -(_r6 * _t13)));
-        _dst.m22 = Math.fma(_r8, _t12, Math.fma(_r9, _t2, -(_r10 * _t13)));
+    private void rotateXYZ_orthogonal_general_s1c0a609d_c2(Float3x4Impl _dst, float _r0, float _t15, float _r1, float _t2, float _r2, float _t11, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t15, Math.fma(_r1, _t2, -(_r2 * _t11)));
+        _dst.m12 = Math.fma(_r4, _t15, Math.fma(_r5, _t2, -(_r6 * _t11)));
+        _dst.m22 = Math.fma(_r8, _t15, Math.fma(_r9, _t2, -(_r10 * _t11)));
     }
 
     /** Private column 3 of {@code rotateXYZ_orthogonal_general}: computes and stores it; reached only through it. */
@@ -28963,13 +28963,13 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private tail of {@code rotateXYZ_orthogonal_general}; reached only through it. */
-    private void rotateXYZ_orthogonal_general_s1c0a609d_tail(Float3x4Impl _dst, float _t6, float _t1, float _t0, float _t4, float _t3, float _t8, float _r0, float _r1, float _t7, float _r2, float _t18, float _t11, float _t12, float _t2, float _t13, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
-        float _t19 = Math.fma(_t6, _t1, _t0 * _t4);
-        float _t20 = Math.fma(_t0, _t1, -(_t6 * _t4));
-        float _t21 = Math.fma(_t3, _t4, -(_t8 * _t1));
-        rotateXYZ_orthogonal_general_s1c0a609d_c0(_dst, _r0, _t20, _r1, _t7, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateXYZ_orthogonal_general_s1c0a609d_c1(_dst, _r0, _t19, _r2, _t21, _r1, _t11, _r4, _r6, _r5, _r8, _r10, _r9);
-        rotateXYZ_orthogonal_general_s1c0a609d_c2(_dst, _r0, _t12, _r1, _t2, _r2, _t13, _r4, _r5, _r6, _r8, _r9, _r10);
+    private void rotateXYZ_orthogonal_general_s1c0a609d_tail(Float3x4Impl _dst, float _t7, float _t1, float _t0, float _t4, float _t3, float _t6, float _r0, float _r1, float _t13, float _r2, float _t18, float _t10, float _t15, float _t2, float _t11, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t7, _t1, _t0 * _t4);
+        float _t20 = Math.fma(_t0, _t1, -(_t7 * _t4));
+        float _t21 = Math.fma(_t3, _t4, -(_t6 * _t1));
+        rotateXYZ_orthogonal_general_s1c0a609d_c0(_dst, _r0, _t20, _r1, _t13, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateXYZ_orthogonal_general_s1c0a609d_c1(_dst, _r0, _t19, _r2, _t21, _r1, _t10, _r4, _r6, _r5, _r8, _r10, _r9);
+        rotateXYZ_orthogonal_general_s1c0a609d_c2(_dst, _r0, _t15, _r1, _t2, _r2, _t11, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateXYZ_orthogonal_general_s1c0a609d_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -28995,17 +28995,17 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleY);
-        float _t3 = (float) Math.cos(angleX);
-        float _t4 = (float) Math.cos(angleZ);
-        float _t5 = (float) Math.cos(angleY);
-        float _t6 = _t2 * _t3;
-        float _t7 = _t5 * _t4;
-        float _t8 = _t0 * _t2;
-        float _t11 = _t1 * _t5;
-        float _t12 = _t3 * _t5;
-        float _t13 = _t0 * _t5;
-        float _t18 = Math.fma(_t8, _t4, _t1 * _t3);
-        rotateXYZ_orthogonal_general_s1c0a609d_tail(d, _t6, _t1, _t0, _t4, _t3, _t8, _r0, _r1, _t7, _r2, _t18, _t11, _t12, _t2, _t13, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        float _t3 = (float) Math.cosFromSin(_t0, angleX);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleY);
+        float _t6 = _t0 * _t2;
+        float _t7 = _t2 * _t3;
+        float _t10 = _t1 * _t5;
+        float _t11 = _t0 * _t5;
+        float _t13 = _t5 * _t4;
+        float _t15 = _t3 * _t5;
+        float _t18 = Math.fma(_t6, _t4, _t1 * _t3);
+        rotateXYZ_orthogonal_general_s1c0a609d_tail(d, _t7, _t1, _t0, _t4, _t3, _t6, _r0, _r1, _t13, _r2, _t18, _t10, _t15, _t2, _t11, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = _props;
         return d;
     }
@@ -29017,25 +29017,25 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateXYZ_identity(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.sin(angleX);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t4 * _t3;
-        float _t7 = _t3 * _t5;
-        d.m00 = _t0 * _t1;
-        d.m01 = -(_t2 * _t0);
-        d.m02 = _t3;
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t0;
+        float _t7 = _t0 * _t5;
+        d.m00 = _t3 * _t4;
+        d.m01 = -(_t1 * _t3);
+        d.m02 = _t0;
         d.m03 = 0.0f;
-        d.m10 = Math.fma(_t6, _t1, _t2 * _t5);
-        d.m11 = Math.fma(_t5, _t1, -(_t6 * _t2));
-        d.m12 = -(_t4 * _t0);
+        d.m10 = Math.fma(_t6, _t4, _t1 * _t5);
+        d.m11 = Math.fma(_t5, _t4, -(_t6 * _t1));
+        d.m12 = -(_t2 * _t3);
         d.m13 = 0.0f;
-        d.m20 = Math.fma(_t4, _t2, -(_t7 * _t1));
-        d.m21 = Math.fma(_t7, _t2, _t4 * _t1);
-        d.m22 = _t5 * _t0;
+        d.m20 = Math.fma(_t2, _t1, -(_t7 * _t4));
+        d.m21 = Math.fma(_t7, _t1, _t2 * _t4);
+        d.m22 = _t5 * _t3;
         d.m23 = 0.0f;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -29048,23 +29048,23 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateXYZ_identity_self(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.sin(angleX);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t4 * _t3;
-        float _t7 = _t3 * _t5;
-        d.m00 = _t0 * _t1;
-        d.m01 = -(_t2 * _t0);
-        d.m02 = _t3;
-        d.m10 = Math.fma(_t6, _t1, _t2 * _t5);
-        d.m11 = Math.fma(_t5, _t1, -(_t6 * _t2));
-        d.m12 = -(_t4 * _t0);
-        d.m20 = Math.fma(_t4, _t2, -(_t7 * _t1));
-        d.m21 = Math.fma(_t7, _t2, _t4 * _t1);
-        d.m22 = _t5 * _t0;
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t0;
+        float _t7 = _t0 * _t5;
+        d.m00 = _t3 * _t4;
+        d.m01 = -(_t1 * _t3);
+        d.m02 = _t0;
+        d.m10 = Math.fma(_t6, _t4, _t1 * _t5);
+        d.m11 = Math.fma(_t5, _t4, -(_t6 * _t1));
+        d.m12 = -(_t2 * _t3);
+        d.m20 = Math.fma(_t2, _t1, -(_t7 * _t4));
+        d.m21 = Math.fma(_t7, _t1, _t2 * _t4);
+        d.m22 = _t5 * _t3;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -29076,25 +29076,25 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateXYZ_translation(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.sin(angleX);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t4 * _t3;
-        float _t7 = _t3 * _t5;
-        d.m00 = _t0 * _t1;
-        d.m01 = -(_t2 * _t0);
-        d.m02 = _t3;
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t0;
+        float _t7 = _t0 * _t5;
+        d.m00 = _t3 * _t4;
+        d.m01 = -(_t1 * _t3);
+        d.m02 = _t0;
         d.m03 = this.m03;
-        d.m10 = Math.fma(_t6, _t1, _t2 * _t5);
-        d.m11 = Math.fma(_t5, _t1, -(_t6 * _t2));
-        d.m12 = -(_t4 * _t0);
+        d.m10 = Math.fma(_t6, _t4, _t1 * _t5);
+        d.m11 = Math.fma(_t5, _t4, -(_t6 * _t1));
+        d.m12 = -(_t2 * _t3);
         d.m13 = this.m13;
-        d.m20 = Math.fma(_t4, _t2, -(_t7 * _t1));
-        d.m21 = Math.fma(_t7, _t2, _t4 * _t1);
-        d.m22 = _t5 * _t0;
+        d.m20 = Math.fma(_t2, _t1, -(_t7 * _t4));
+        d.m21 = Math.fma(_t7, _t1, _t2 * _t4);
+        d.m22 = _t5 * _t3;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -29147,24 +29147,24 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private column 0 of {@code rotateXYZ}: computes and stores it; reached only through it. */
-    private void rotateXYZ_s1526c32c_c0(Double3x4Impl _dst, float _r0, float _t20, float _r1, float _t7, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t7, _r2 * _t18));
-        _dst.m10 = Math.fma(_r4, _t20, Math.fma(_r5, _t7, _r6 * _t18));
-        _dst.m20 = Math.fma(_r8, _t20, Math.fma(_r9, _t7, _r10 * _t18));
+    private void rotateXYZ_s1526c32c_c0(Double3x4Impl _dst, float _r0, float _t20, float _r1, float _t13, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t13, _r2 * _t18));
+        _dst.m10 = Math.fma(_r4, _t20, Math.fma(_r5, _t13, _r6 * _t18));
+        _dst.m20 = Math.fma(_r8, _t20, Math.fma(_r9, _t13, _r10 * _t18));
     }
 
     /** Private column 1 of {@code rotateXYZ}: computes and stores it; reached only through it. */
-    private void rotateXYZ_s1526c32c_c1(Double3x4Impl _dst, float _r0, float _t19, float _r2, float _t21, float _r1, float _t11, float _r4, float _r6, float _r5, float _r8, float _r10, float _r9) {
-        _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r2, _t21, -(_r1 * _t11)));
-        _dst.m11 = Math.fma(_r4, _t19, Math.fma(_r6, _t21, -(_r5 * _t11)));
-        _dst.m21 = Math.fma(_r8, _t19, Math.fma(_r10, _t21, -(_r9 * _t11)));
+    private void rotateXYZ_s1526c32c_c1(Double3x4Impl _dst, float _r0, float _t19, float _r2, float _t21, float _r1, float _t10, float _r4, float _r6, float _r5, float _r8, float _r10, float _r9) {
+        _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r2, _t21, -(_r1 * _t10)));
+        _dst.m11 = Math.fma(_r4, _t19, Math.fma(_r6, _t21, -(_r5 * _t10)));
+        _dst.m21 = Math.fma(_r8, _t19, Math.fma(_r10, _t21, -(_r9 * _t10)));
     }
 
     /** Private column 2 of {@code rotateXYZ}: computes and stores it; reached only through it. */
-    private void rotateXYZ_s1526c32c_c2(Double3x4Impl _dst, float _r0, float _t12, float _r1, float _t2, float _r2, float _t13, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m02 = Math.fma(_r0, _t12, Math.fma(_r1, _t2, -(_r2 * _t13)));
-        _dst.m12 = Math.fma(_r4, _t12, Math.fma(_r5, _t2, -(_r6 * _t13)));
-        _dst.m22 = Math.fma(_r8, _t12, Math.fma(_r9, _t2, -(_r10 * _t13)));
+    private void rotateXYZ_s1526c32c_c2(Double3x4Impl _dst, float _r0, float _t15, float _r1, float _t2, float _r2, float _t11, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t15, Math.fma(_r1, _t2, -(_r2 * _t11)));
+        _dst.m12 = Math.fma(_r4, _t15, Math.fma(_r5, _t2, -(_r6 * _t11)));
+        _dst.m22 = Math.fma(_r8, _t15, Math.fma(_r9, _t2, -(_r10 * _t11)));
     }
 
     /** Private column 3 of {@code rotateXYZ}: computes and stores it; reached only through it. */
@@ -29175,13 +29175,13 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private tail of {@code rotateXYZ}; reached only through it. */
-    private void rotateXYZ_s1526c32c_tail(Double3x4Impl _dst, float _t6, float _t1, float _t0, float _t4, float _t3, float _t8, float _r0, float _r1, float _t7, float _r2, float _t18, float _t11, float _t12, float _t2, float _t13, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
-        float _t19 = Math.fma(_t6, _t1, _t0 * _t4);
-        float _t20 = Math.fma(_t0, _t1, -(_t6 * _t4));
-        float _t21 = Math.fma(_t3, _t4, -(_t8 * _t1));
-        rotateXYZ_s1526c32c_c0(_dst, _r0, _t20, _r1, _t7, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateXYZ_s1526c32c_c1(_dst, _r0, _t19, _r2, _t21, _r1, _t11, _r4, _r6, _r5, _r8, _r10, _r9);
-        rotateXYZ_s1526c32c_c2(_dst, _r0, _t12, _r1, _t2, _r2, _t13, _r4, _r5, _r6, _r8, _r9, _r10);
+    private void rotateXYZ_s1526c32c_tail(Double3x4Impl _dst, float _t7, float _t1, float _t0, float _t4, float _t3, float _t6, float _r0, float _r1, float _t13, float _r2, float _t18, float _t10, float _t15, float _t2, float _t11, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t7, _t1, _t0 * _t4);
+        float _t20 = Math.fma(_t0, _t1, -(_t7 * _t4));
+        float _t21 = Math.fma(_t3, _t4, -(_t6 * _t1));
+        rotateXYZ_s1526c32c_c0(_dst, _r0, _t20, _r1, _t13, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateXYZ_s1526c32c_c1(_dst, _r0, _t19, _r2, _t21, _r1, _t10, _r4, _r6, _r5, _r8, _r10, _r9);
+        rotateXYZ_s1526c32c_c2(_dst, _r0, _t15, _r1, _t2, _r2, _t11, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateXYZ_s1526c32c_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -29221,40 +29221,40 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleY);
-        float _t3 = (float) Math.cos(angleX);
-        float _t4 = (float) Math.cos(angleZ);
-        float _t5 = (float) Math.cos(angleY);
-        float _t6 = _t2 * _t3;
-        float _t7 = _t5 * _t4;
-        float _t8 = _t0 * _t2;
-        float _t11 = _t1 * _t5;
-        float _t12 = _t3 * _t5;
-        float _t13 = _t0 * _t5;
-        float _t18 = Math.fma(_t8, _t4, _t1 * _t3);
-        rotateXYZ_s1526c32c_tail(d, _t6, _t1, _t0, _t4, _t3, _t8, _r0, _r1, _t7, _r2, _t18, _t11, _t12, _t2, _t13, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        float _t3 = (float) Math.cosFromSin(_t0, angleX);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleY);
+        float _t6 = _t0 * _t2;
+        float _t7 = _t2 * _t3;
+        float _t10 = _t1 * _t5;
+        float _t11 = _t0 * _t5;
+        float _t13 = _t5 * _t4;
+        float _t15 = _t3 * _t5;
+        float _t18 = Math.fma(_t6, _t4, _t1 * _t3);
+        rotateXYZ_s1526c32c_tail(d, _t7, _t1, _t0, _t4, _t3, _t6, _r0, _r1, _t13, _r2, _t18, _t10, _t15, _t2, _t11, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
 
     /** Private column 0 of {@code rotateXZY_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateXZY_orthogonal_general_s1c0a609d_c0(Float3x4Impl _dst, float _r0, float _t20, float _r1, float _t8, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t8, _r2 * _t18));
-        _dst.m10 = Math.fma(_r4, _t20, Math.fma(_r5, _t8, _r6 * _t18));
-        _dst.m20 = Math.fma(_r8, _t20, Math.fma(_r9, _t8, _r10 * _t18));
+    private void rotateXZY_orthogonal_general_s1c0a609d_c0(Float3x4Impl _dst, float _r0, float _t20, float _r1, float _t15, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t15, _r2 * _t18));
+        _dst.m10 = Math.fma(_r4, _t20, Math.fma(_r5, _t15, _r6 * _t18));
+        _dst.m20 = Math.fma(_r8, _t20, Math.fma(_r9, _t15, _r10 * _t18));
     }
 
     /** Private column 1 of {@code rotateXZY_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateXZY_orthogonal_general_s1c0a609d_c1(Float3x4Impl _dst, float _r0, float _t11, float _r2, float _t12, float _r1, float _t1, float _r4, float _r6, float _r5, float _r8, float _r10, float _r9) {
-        _dst.m01 = Math.fma(_r0, _t11, Math.fma(_r2, _t12, -(_r1 * _t1)));
-        _dst.m11 = Math.fma(_r4, _t11, Math.fma(_r6, _t12, -(_r5 * _t1)));
-        _dst.m21 = Math.fma(_r8, _t11, Math.fma(_r10, _t12, -(_r9 * _t1)));
+    private void rotateXZY_orthogonal_general_s1c0a609d_c1(Float3x4Impl _dst, float _r0, float _t10, float _r2, float _t16, float _r1, float _t1, float _r4, float _r6, float _r5, float _r8, float _r10, float _r9) {
+        _dst.m01 = Math.fma(_r0, _t10, Math.fma(_r2, _t16, -(_r1 * _t1)));
+        _dst.m11 = Math.fma(_r4, _t10, Math.fma(_r6, _t16, -(_r5 * _t1)));
+        _dst.m21 = Math.fma(_r8, _t10, Math.fma(_r10, _t16, -(_r9 * _t1)));
     }
 
     /** Private column 2 of {@code rotateXZY_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateXZY_orthogonal_general_s1c0a609d_c2(Float3x4Impl _dst, float _r0, float _t19, float _r1, float _t14, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m02 = Math.fma(_r0, _t19, Math.fma(_r1, _t14, _r2 * _t21));
-        _dst.m12 = Math.fma(_r4, _t19, Math.fma(_r5, _t14, _r6 * _t21));
-        _dst.m22 = Math.fma(_r8, _t19, Math.fma(_r9, _t14, _r10 * _t21));
+    private void rotateXZY_orthogonal_general_s1c0a609d_c2(Float3x4Impl _dst, float _r0, float _t19, float _r1, float _t11, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t19, Math.fma(_r1, _t11, _r2 * _t21));
+        _dst.m12 = Math.fma(_r4, _t19, Math.fma(_r5, _t11, _r6 * _t21));
+        _dst.m22 = Math.fma(_r8, _t19, Math.fma(_r9, _t11, _r10 * _t21));
     }
 
     /** Private column 3 of {@code rotateXZY_orthogonal_general}: computes and stores it; reached only through it. */
@@ -29265,13 +29265,13 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private tail of {@code rotateXZY_orthogonal_general}; reached only through it. */
-    private void rotateXZY_orthogonal_general_s1c0a609d_tail(Float3x4Impl _dst, float _t6, float _t3, float _t4, float _t2, float _t9, float _t0, float _r0, float _r1, float _t8, float _r2, float _t18, float _t11, float _t12, float _t1, float _t14, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
-        float _t19 = Math.fma(_t6, _t3, _t4 * _t2);
-        float _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
-        float _t21 = Math.fma(_t9, _t3, -(_t0 * _t2));
-        rotateXZY_orthogonal_general_s1c0a609d_c0(_dst, _r0, _t20, _r1, _t8, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateXZY_orthogonal_general_s1c0a609d_c1(_dst, _r0, _t11, _r2, _t12, _r1, _t1, _r4, _r6, _r5, _r8, _r10, _r9);
-        rotateXZY_orthogonal_general_s1c0a609d_c2(_dst, _r0, _t19, _r1, _t14, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+    private void rotateXZY_orthogonal_general_s1c0a609d_tail(Float3x4Impl _dst, float _t6, float _t2, float _t4, float _t3, float _t9, float _t0, float _r0, float _r1, float _t15, float _r2, float _t18, float _t10, float _t16, float _t1, float _t11, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t6, _t2, _t4 * _t3);
+        float _t20 = Math.fma(_t6, _t3, -(_t2 * _t4));
+        float _t21 = Math.fma(_t9, _t2, -(_t0 * _t3));
+        rotateXZY_orthogonal_general_s1c0a609d_c0(_dst, _r0, _t20, _r1, _t15, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateXZY_orthogonal_general_s1c0a609d_c1(_dst, _r0, _t10, _r2, _t16, _r1, _t1, _r4, _r6, _r5, _r8, _r10, _r9);
+        rotateXZY_orthogonal_general_s1c0a609d_c2(_dst, _r0, _t19, _r1, _t11, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateXZY_orthogonal_general_s1c0a609d_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -29296,18 +29296,18 @@ public class Float3x4Impl implements Float3x4 {
         float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.cos(angleY);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.cos(angleX);
-        float _t5 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleY);
+        float _t3 = (float) Math.cosFromSin(_t2, angleY);
+        float _t4 = (float) Math.cosFromSin(_t0, angleX);
+        float _t5 = (float) Math.cosFromSin(_t1, angleZ);
         float _t6 = _t0 * _t1;
-        float _t8 = _t2 * _t5;
         float _t9 = _t1 * _t4;
-        float _t11 = _t0 * _t5;
-        float _t12 = _t4 * _t5;
-        float _t14 = _t3 * _t5;
-        float _t18 = Math.fma(_t9, _t2, _t0 * _t3);
-        rotateXZY_orthogonal_general_s1c0a609d_tail(d, _t6, _t3, _t4, _t2, _t9, _t0, _r0, _r1, _t8, _r2, _t18, _t11, _t12, _t1, _t14, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        float _t10 = _t0 * _t5;
+        float _t11 = _t2 * _t5;
+        float _t15 = _t3 * _t5;
+        float _t16 = _t4 * _t5;
+        float _t18 = Math.fma(_t9, _t3, _t0 * _t2);
+        rotateXZY_orthogonal_general_s1c0a609d_tail(d, _t6, _t2, _t4, _t3, _t9, _t0, _r0, _r1, _t15, _r2, _t18, _t10, _t16, _t1, _t11, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = _props;
         return d;
     }
@@ -29319,25 +29319,25 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateXZY_identity(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.cos(angleX);
-        float _t5 = (float) Math.sin(angleX);
-        float _t6 = _t2 * _t4;
-        float _t7 = _t5 * _t2;
-        d.m00 = _t0 * _t1;
-        d.m01 = -_t2;
-        d.m02 = _t3 * _t1;
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t1;
+        float _t7 = _t1 * _t5;
+        d.m00 = _t3 * _t4;
+        d.m01 = -_t1;
+        d.m02 = _t0 * _t4;
         d.m03 = 0.0f;
-        d.m10 = Math.fma(_t6, _t0, _t5 * _t3);
-        d.m11 = _t4 * _t1;
-        d.m12 = Math.fma(_t6, _t3, -(_t5 * _t0));
+        d.m10 = Math.fma(_t7, _t3, _t2 * _t0);
+        d.m11 = _t5 * _t4;
+        d.m12 = Math.fma(_t7, _t0, -(_t2 * _t3));
         d.m13 = 0.0f;
-        d.m20 = Math.fma(_t7, _t0, -(_t3 * _t4));
-        d.m21 = _t5 * _t1;
-        d.m22 = Math.fma(_t7, _t3, _t4 * _t0);
+        d.m20 = Math.fma(_t6, _t3, -(_t0 * _t5));
+        d.m21 = _t2 * _t4;
+        d.m22 = Math.fma(_t6, _t0, _t5 * _t3);
         d.m23 = 0.0f;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -29350,23 +29350,23 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateXZY_identity_self(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.cos(angleX);
-        float _t5 = (float) Math.sin(angleX);
-        float _t6 = _t2 * _t4;
-        float _t7 = _t5 * _t2;
-        d.m00 = _t0 * _t1;
-        d.m01 = -_t2;
-        d.m02 = _t3 * _t1;
-        d.m10 = Math.fma(_t6, _t0, _t5 * _t3);
-        d.m11 = _t4 * _t1;
-        d.m12 = Math.fma(_t6, _t3, -(_t5 * _t0));
-        d.m20 = Math.fma(_t7, _t0, -(_t3 * _t4));
-        d.m21 = _t5 * _t1;
-        d.m22 = Math.fma(_t7, _t3, _t4 * _t0);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t1;
+        float _t7 = _t1 * _t5;
+        d.m00 = _t3 * _t4;
+        d.m01 = -_t1;
+        d.m02 = _t0 * _t4;
+        d.m10 = Math.fma(_t7, _t3, _t2 * _t0);
+        d.m11 = _t5 * _t4;
+        d.m12 = Math.fma(_t7, _t0, -(_t2 * _t3));
+        d.m20 = Math.fma(_t6, _t3, -(_t0 * _t5));
+        d.m21 = _t2 * _t4;
+        d.m22 = Math.fma(_t6, _t0, _t5 * _t3);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -29378,25 +29378,25 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateXZY_translation(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.cos(angleX);
-        float _t5 = (float) Math.sin(angleX);
-        float _t6 = _t2 * _t4;
-        float _t7 = _t5 * _t2;
-        d.m00 = _t0 * _t1;
-        d.m01 = -_t2;
-        d.m02 = _t3 * _t1;
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t1;
+        float _t7 = _t1 * _t5;
+        d.m00 = _t3 * _t4;
+        d.m01 = -_t1;
+        d.m02 = _t0 * _t4;
         d.m03 = this.m03;
-        d.m10 = Math.fma(_t6, _t0, _t5 * _t3);
-        d.m11 = _t4 * _t1;
-        d.m12 = Math.fma(_t6, _t3, -(_t5 * _t0));
+        d.m10 = Math.fma(_t7, _t3, _t2 * _t0);
+        d.m11 = _t5 * _t4;
+        d.m12 = Math.fma(_t7, _t0, -(_t2 * _t3));
         d.m13 = this.m13;
-        d.m20 = Math.fma(_t7, _t0, -(_t3 * _t4));
-        d.m21 = _t5 * _t1;
-        d.m22 = Math.fma(_t7, _t3, _t4 * _t0);
+        d.m20 = Math.fma(_t6, _t3, -(_t0 * _t5));
+        d.m21 = _t2 * _t4;
+        d.m22 = Math.fma(_t6, _t0, _t5 * _t3);
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -29449,24 +29449,24 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private column 0 of {@code rotateXZY}: computes and stores it; reached only through it. */
-    private void rotateXZY_s1526c32c_c0(Double3x4Impl _dst, float _r0, float _t20, float _r1, float _t8, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t8, _r2 * _t18));
-        _dst.m10 = Math.fma(_r4, _t20, Math.fma(_r5, _t8, _r6 * _t18));
-        _dst.m20 = Math.fma(_r8, _t20, Math.fma(_r9, _t8, _r10 * _t18));
+    private void rotateXZY_s1526c32c_c0(Double3x4Impl _dst, float _r0, float _t20, float _r1, float _t15, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t15, _r2 * _t18));
+        _dst.m10 = Math.fma(_r4, _t20, Math.fma(_r5, _t15, _r6 * _t18));
+        _dst.m20 = Math.fma(_r8, _t20, Math.fma(_r9, _t15, _r10 * _t18));
     }
 
     /** Private column 1 of {@code rotateXZY}: computes and stores it; reached only through it. */
-    private void rotateXZY_s1526c32c_c1(Double3x4Impl _dst, float _r0, float _t11, float _r2, float _t12, float _r1, float _t1, float _r4, float _r6, float _r5, float _r8, float _r10, float _r9) {
-        _dst.m01 = Math.fma(_r0, _t11, Math.fma(_r2, _t12, -(_r1 * _t1)));
-        _dst.m11 = Math.fma(_r4, _t11, Math.fma(_r6, _t12, -(_r5 * _t1)));
-        _dst.m21 = Math.fma(_r8, _t11, Math.fma(_r10, _t12, -(_r9 * _t1)));
+    private void rotateXZY_s1526c32c_c1(Double3x4Impl _dst, float _r0, float _t10, float _r2, float _t16, float _r1, float _t1, float _r4, float _r6, float _r5, float _r8, float _r10, float _r9) {
+        _dst.m01 = Math.fma(_r0, _t10, Math.fma(_r2, _t16, -(_r1 * _t1)));
+        _dst.m11 = Math.fma(_r4, _t10, Math.fma(_r6, _t16, -(_r5 * _t1)));
+        _dst.m21 = Math.fma(_r8, _t10, Math.fma(_r10, _t16, -(_r9 * _t1)));
     }
 
     /** Private column 2 of {@code rotateXZY}: computes and stores it; reached only through it. */
-    private void rotateXZY_s1526c32c_c2(Double3x4Impl _dst, float _r0, float _t19, float _r1, float _t14, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m02 = Math.fma(_r0, _t19, Math.fma(_r1, _t14, _r2 * _t21));
-        _dst.m12 = Math.fma(_r4, _t19, Math.fma(_r5, _t14, _r6 * _t21));
-        _dst.m22 = Math.fma(_r8, _t19, Math.fma(_r9, _t14, _r10 * _t21));
+    private void rotateXZY_s1526c32c_c2(Double3x4Impl _dst, float _r0, float _t19, float _r1, float _t11, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t19, Math.fma(_r1, _t11, _r2 * _t21));
+        _dst.m12 = Math.fma(_r4, _t19, Math.fma(_r5, _t11, _r6 * _t21));
+        _dst.m22 = Math.fma(_r8, _t19, Math.fma(_r9, _t11, _r10 * _t21));
     }
 
     /** Private column 3 of {@code rotateXZY}: computes and stores it; reached only through it. */
@@ -29477,13 +29477,13 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private tail of {@code rotateXZY}; reached only through it. */
-    private void rotateXZY_s1526c32c_tail(Double3x4Impl _dst, float _t6, float _t3, float _t4, float _t2, float _t9, float _t0, float _r0, float _r1, float _t8, float _r2, float _t18, float _t11, float _t12, float _t1, float _t14, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
-        float _t19 = Math.fma(_t6, _t3, _t4 * _t2);
-        float _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
-        float _t21 = Math.fma(_t9, _t3, -(_t0 * _t2));
-        rotateXZY_s1526c32c_c0(_dst, _r0, _t20, _r1, _t8, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateXZY_s1526c32c_c1(_dst, _r0, _t11, _r2, _t12, _r1, _t1, _r4, _r6, _r5, _r8, _r10, _r9);
-        rotateXZY_s1526c32c_c2(_dst, _r0, _t19, _r1, _t14, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+    private void rotateXZY_s1526c32c_tail(Double3x4Impl _dst, float _t6, float _t2, float _t4, float _t3, float _t9, float _t0, float _r0, float _r1, float _t15, float _r2, float _t18, float _t10, float _t16, float _t1, float _t11, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t6, _t2, _t4 * _t3);
+        float _t20 = Math.fma(_t6, _t3, -(_t2 * _t4));
+        float _t21 = Math.fma(_t9, _t2, -(_t0 * _t3));
+        rotateXZY_s1526c32c_c0(_dst, _r0, _t20, _r1, _t15, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateXZY_s1526c32c_c1(_dst, _r0, _t10, _r2, _t16, _r1, _t1, _r4, _r6, _r5, _r8, _r10, _r9);
+        rotateXZY_s1526c32c_c2(_dst, _r0, _t19, _r1, _t11, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateXZY_s1526c32c_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -29522,18 +29522,18 @@ public class Float3x4Impl implements Float3x4 {
         float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.cos(angleY);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.cos(angleX);
-        float _t5 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleY);
+        float _t3 = (float) Math.cosFromSin(_t2, angleY);
+        float _t4 = (float) Math.cosFromSin(_t0, angleX);
+        float _t5 = (float) Math.cosFromSin(_t1, angleZ);
         float _t6 = _t0 * _t1;
-        float _t8 = _t2 * _t5;
         float _t9 = _t1 * _t4;
-        float _t11 = _t0 * _t5;
-        float _t12 = _t4 * _t5;
-        float _t14 = _t3 * _t5;
-        float _t18 = Math.fma(_t9, _t2, _t0 * _t3);
-        rotateXZY_s1526c32c_tail(d, _t6, _t3, _t4, _t2, _t9, _t0, _r0, _r1, _t8, _r2, _t18, _t11, _t12, _t1, _t14, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        float _t10 = _t0 * _t5;
+        float _t11 = _t2 * _t5;
+        float _t15 = _t3 * _t5;
+        float _t16 = _t4 * _t5;
+        float _t18 = Math.fma(_t9, _t3, _t0 * _t2);
+        rotateXZY_s1526c32c_tail(d, _t6, _t2, _t4, _t3, _t9, _t0, _r0, _r1, _t15, _r2, _t18, _t10, _t16, _t1, _t11, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -29692,19 +29692,19 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateY_orthogonal_general(float angle, @Mutated Float3x4 dest, int _props) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = Math.fma(this.m00, _t0, -(this.m02 * _t1));
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = Math.fma(this.m00, _t1, -(this.m02 * _t0));
         d.m01 = this.m01;
-        d.m02 = Math.fma(this.m00, _t1, this.m02 * _t0);
+        d.m02 = Math.fma(this.m00, _t0, this.m02 * _t1);
         d.m03 = this.m03;
-        float _buf1 = Math.fma(this.m10, _t0, -(this.m12 * _t1));
+        float _buf1 = Math.fma(this.m10, _t1, -(this.m12 * _t0));
         d.m11 = this.m11;
-        d.m12 = Math.fma(this.m10, _t1, this.m12 * _t0);
+        d.m12 = Math.fma(this.m10, _t0, this.m12 * _t1);
         d.m13 = this.m13;
-        float _buf2 = Math.fma(this.m20, _t0, -(this.m22 * _t1));
+        float _buf2 = Math.fma(this.m20, _t1, -(this.m22 * _t0));
         d.m21 = this.m21;
-        d.m22 = Math.fma(this.m20, _t1, this.m22 * _t0);
+        d.m22 = Math.fma(this.m20, _t0, this.m22 * _t1);
         d.m23 = this.m23;
         d.m00 = _buf0;
         d.m10 = _buf1;
@@ -29738,19 +29738,19 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateY_translation(float angle, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        d.m00 = _t0;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
         d.m01 = 0.0f;
-        d.m02 = _t1;
+        d.m02 = _t0;
         d.m03 = this.m03;
         d.m10 = 0.0f;
         d.m11 = 1.0f;
         d.m12 = 0.0f;
         d.m13 = this.m13;
-        d.m20 = -_t1;
+        d.m20 = -_t0;
         d.m21 = 0.0f;
-        d.m22 = _t0;
+        d.m22 = _t1;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -29763,14 +29763,14 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateY_translation_self(float angle, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        d.m00 = _t0;
-        d.m02 = _t1;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m02 = _t0;
         d.m03 = this.m03;
         d.m13 = this.m13;
-        d.m20 = -_t1;
-        d.m22 = _t0;
+        d.m20 = -_t0;
+        d.m22 = _t1;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -29833,19 +29833,19 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 rotateY(float angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = Math.fma(this.m00, _t0, -(this.m02 * _t1));
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = Math.fma(this.m00, _t1, -(this.m02 * _t0));
         d.m01 = this.m01;
-        d.m02 = Math.fma(this.m00, _t1, this.m02 * _t0);
+        d.m02 = Math.fma(this.m00, _t0, this.m02 * _t1);
         d.m03 = this.m03;
-        float _buf1 = Math.fma(this.m10, _t0, -(this.m12 * _t1));
+        float _buf1 = Math.fma(this.m10, _t1, -(this.m12 * _t0));
         d.m11 = this.m11;
-        d.m12 = Math.fma(this.m10, _t1, this.m12 * _t0);
+        d.m12 = Math.fma(this.m10, _t0, this.m12 * _t1);
         d.m13 = this.m13;
-        float _buf2 = Math.fma(this.m20, _t0, -(this.m22 * _t1));
+        float _buf2 = Math.fma(this.m20, _t1, -(this.m22 * _t0));
         d.m21 = this.m21;
-        d.m22 = Math.fma(this.m20, _t1, this.m22 * _t0);
+        d.m22 = Math.fma(this.m20, _t0, this.m22 * _t1);
         d.m23 = this.m23;
         d.m00 = _buf0;
         d.m10 = _buf1;
@@ -30009,17 +30009,17 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private column 1 of {@code rotateYXZ_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateYXZ_orthogonal_general_s1c0a609d_c1(Float3x4Impl _dst, float _r0, float _t19, float _r1, float _t21, float _r2, float _t13, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r1, _t21, _r2 * _t13));
-        _dst.m11 = Math.fma(_r4, _t19, Math.fma(_r5, _t21, _r6 * _t13));
-        _dst.m21 = Math.fma(_r8, _t19, Math.fma(_r9, _t21, _r10 * _t13));
+    private void rotateYXZ_orthogonal_general_s1c0a609d_c1(Float3x4Impl _dst, float _r0, float _t19, float _r1, float _t21, float _r2, float _t16, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r1, _t21, _r2 * _t16));
+        _dst.m11 = Math.fma(_r4, _t19, Math.fma(_r5, _t21, _r6 * _t16));
+        _dst.m21 = Math.fma(_r8, _t19, Math.fma(_r9, _t21, _r10 * _t16));
     }
 
     /** Private column 2 of {@code rotateYXZ_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateYXZ_orthogonal_general_s1c0a609d_c2(Float3x4Impl _dst, float _r0, float _t14, float _r1, float _t15, float _r2, float _t0, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m02 = Math.fma(_r0, _t14, Math.fma(_r1, _t15, -(_r2 * _t0)));
-        _dst.m12 = Math.fma(_r4, _t14, Math.fma(_r5, _t15, -(_r6 * _t0)));
-        _dst.m22 = Math.fma(_r8, _t14, Math.fma(_r9, _t15, -(_r10 * _t0)));
+    private void rotateYXZ_orthogonal_general_s1c0a609d_c2(Float3x4Impl _dst, float _r0, float _t17, float _r1, float _t12, float _r2, float _t0, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t17, Math.fma(_r1, _t12, -(_r2 * _t0)));
+        _dst.m12 = Math.fma(_r4, _t17, Math.fma(_r5, _t12, -(_r6 * _t0)));
+        _dst.m22 = Math.fma(_r8, _t17, Math.fma(_r9, _t12, -(_r10 * _t0)));
     }
 
     /** Private column 3 of {@code rotateYXZ_orthogonal_general}: computes and stores it; reached only through it. */
@@ -30030,13 +30030,13 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private tail of {@code rotateYXZ_orthogonal_general}; reached only through it. */
-    private void rotateYXZ_orthogonal_general_s1c0a609d_tail(Float3x4Impl _dst, float _t6, float _t4, float _t3, float _t2, float _t8, float _t1, float _r0, float _r1, float _t18, float _r2, float _t10, float _t13, float _t14, float _t15, float _t0, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
-        float _t19 = Math.fma(_t6, _t4, _t3 * _t2);
-        float _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
-        float _t21 = Math.fma(_t8, _t4, -(_t2 * _t1));
+    private void rotateYXZ_orthogonal_general_s1c0a609d_tail(Float3x4Impl _dst, float _t8, float _t4, float _t1, float _t2, float _t6, float _t3, float _r0, float _r1, float _t18, float _r2, float _t10, float _t16, float _t17, float _t12, float _t0, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t8, _t4, _t1 * _t2);
+        float _t20 = Math.fma(_t8, _t2, -(_t1 * _t4));
+        float _t21 = Math.fma(_t6, _t4, -(_t2 * _t3));
         rotateYXZ_orthogonal_general_s1c0a609d_c0(_dst, _r0, _t20, _r1, _t18, _r2, _t10, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateYXZ_orthogonal_general_s1c0a609d_c1(_dst, _r0, _t19, _r1, _t21, _r2, _t13, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateYXZ_orthogonal_general_s1c0a609d_c2(_dst, _r0, _t14, _r1, _t15, _r2, _t0, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYXZ_orthogonal_general_s1c0a609d_c1(_dst, _r0, _t19, _r1, _t21, _r2, _t16, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYXZ_orthogonal_general_s1c0a609d_c2(_dst, _r0, _t17, _r1, _t12, _r2, _t0, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateYXZ_orthogonal_general_s1c0a609d_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -30060,19 +30060,19 @@ public class Float3x4Impl implements Float3x4 {
         float _r10 = this.m21;
         float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.sin(angleY);
         float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.cos(angleZ);
-        float _t5 = (float) Math.cos(angleX);
+        float _t3 = (float) Math.cosFromSin(_t1, angleY);
+        float _t4 = (float) Math.cosFromSin(_t2, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t0, angleX);
         float _t6 = _t0 * _t1;
         float _t8 = _t0 * _t3;
         float _t10 = _t2 * _t5;
-        float _t13 = _t5 * _t4;
-        float _t14 = _t5 * _t1;
-        float _t15 = _t3 * _t5;
-        float _t18 = Math.fma(_t8, _t2, _t1 * _t4);
-        rotateYXZ_orthogonal_general_s1c0a609d_tail(d, _t6, _t4, _t3, _t2, _t8, _t1, _r0, _r1, _t18, _r2, _t10, _t13, _t14, _t15, _t0, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        float _t12 = _t1 * _t5;
+        float _t16 = _t5 * _t4;
+        float _t17 = _t5 * _t3;
+        float _t18 = Math.fma(_t6, _t2, _t3 * _t4);
+        rotateYXZ_orthogonal_general_s1c0a609d_tail(d, _t8, _t4, _t1, _t2, _t6, _t3, _r0, _r1, _t18, _r2, _t10, _t16, _t17, _t12, _t0, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = _props;
         return d;
     }
@@ -30087,9 +30087,9 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleY);
         float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.cos(angleY);
-        float _t4 = (float) Math.cos(angleZ);
-        float _t5 = (float) Math.cos(angleX);
+        float _t3 = (float) Math.cosFromSin(_t1, angleY);
+        float _t4 = (float) Math.cosFromSin(_t2, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t0, angleX);
         float _t6 = _t0 * _t1;
         float _t7 = _t0 * _t3;
         d.m00 = Math.fma(_t6, _t2, _t3 * _t4);
@@ -30118,9 +30118,9 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleY);
         float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.cos(angleY);
-        float _t4 = (float) Math.cos(angleZ);
-        float _t5 = (float) Math.cos(angleX);
+        float _t3 = (float) Math.cosFromSin(_t1, angleY);
+        float _t4 = (float) Math.cosFromSin(_t2, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t0, angleX);
         float _t6 = _t0 * _t1;
         float _t7 = _t0 * _t3;
         d.m00 = Math.fma(_t6, _t2, _t3 * _t4);
@@ -30146,9 +30146,9 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleY);
         float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.cos(angleY);
-        float _t4 = (float) Math.cos(angleZ);
-        float _t5 = (float) Math.cos(angleX);
+        float _t3 = (float) Math.cosFromSin(_t1, angleY);
+        float _t4 = (float) Math.cosFromSin(_t2, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t0, angleX);
         float _t6 = _t0 * _t1;
         float _t7 = _t0 * _t3;
         d.m00 = Math.fma(_t6, _t2, _t3 * _t4);
@@ -30221,17 +30221,17 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private column 1 of {@code rotateYXZ}: computes and stores it; reached only through it. */
-    private void rotateYXZ_s1526c32c_c1(Double3x4Impl _dst, float _r0, float _t19, float _r1, float _t21, float _r2, float _t13, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r1, _t21, _r2 * _t13));
-        _dst.m11 = Math.fma(_r4, _t19, Math.fma(_r5, _t21, _r6 * _t13));
-        _dst.m21 = Math.fma(_r8, _t19, Math.fma(_r9, _t21, _r10 * _t13));
+    private void rotateYXZ_s1526c32c_c1(Double3x4Impl _dst, float _r0, float _t19, float _r1, float _t21, float _r2, float _t16, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r1, _t21, _r2 * _t16));
+        _dst.m11 = Math.fma(_r4, _t19, Math.fma(_r5, _t21, _r6 * _t16));
+        _dst.m21 = Math.fma(_r8, _t19, Math.fma(_r9, _t21, _r10 * _t16));
     }
 
     /** Private column 2 of {@code rotateYXZ}: computes and stores it; reached only through it. */
-    private void rotateYXZ_s1526c32c_c2(Double3x4Impl _dst, float _r0, float _t14, float _r1, float _t15, float _r2, float _t0, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m02 = Math.fma(_r0, _t14, Math.fma(_r1, _t15, -(_r2 * _t0)));
-        _dst.m12 = Math.fma(_r4, _t14, Math.fma(_r5, _t15, -(_r6 * _t0)));
-        _dst.m22 = Math.fma(_r8, _t14, Math.fma(_r9, _t15, -(_r10 * _t0)));
+    private void rotateYXZ_s1526c32c_c2(Double3x4Impl _dst, float _r0, float _t17, float _r1, float _t12, float _r2, float _t0, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t17, Math.fma(_r1, _t12, -(_r2 * _t0)));
+        _dst.m12 = Math.fma(_r4, _t17, Math.fma(_r5, _t12, -(_r6 * _t0)));
+        _dst.m22 = Math.fma(_r8, _t17, Math.fma(_r9, _t12, -(_r10 * _t0)));
     }
 
     /** Private column 3 of {@code rotateYXZ}: computes and stores it; reached only through it. */
@@ -30242,13 +30242,13 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private tail of {@code rotateYXZ}; reached only through it. */
-    private void rotateYXZ_s1526c32c_tail(Double3x4Impl _dst, float _t6, float _t4, float _t3, float _t2, float _t8, float _t1, float _r0, float _r1, float _t18, float _r2, float _t10, float _t13, float _t14, float _t15, float _t0, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
-        float _t19 = Math.fma(_t6, _t4, _t3 * _t2);
-        float _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
-        float _t21 = Math.fma(_t8, _t4, -(_t2 * _t1));
+    private void rotateYXZ_s1526c32c_tail(Double3x4Impl _dst, float _t8, float _t4, float _t1, float _t2, float _t6, float _t3, float _r0, float _r1, float _t18, float _r2, float _t10, float _t16, float _t17, float _t12, float _t0, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t8, _t4, _t1 * _t2);
+        float _t20 = Math.fma(_t8, _t2, -(_t1 * _t4));
+        float _t21 = Math.fma(_t6, _t4, -(_t2 * _t3));
         rotateYXZ_s1526c32c_c0(_dst, _r0, _t20, _r1, _t18, _r2, _t10, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateYXZ_s1526c32c_c1(_dst, _r0, _t19, _r1, _t21, _r2, _t13, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateYXZ_s1526c32c_c2(_dst, _r0, _t14, _r1, _t15, _r2, _t0, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYXZ_s1526c32c_c1(_dst, _r0, _t19, _r1, _t21, _r2, _t16, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYXZ_s1526c32c_c2(_dst, _r0, _t17, _r1, _t12, _r2, _t0, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateYXZ_s1526c32c_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -30286,42 +30286,42 @@ public class Float3x4Impl implements Float3x4 {
         float _r10 = this.m21;
         float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.sin(angleY);
         float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.cos(angleZ);
-        float _t5 = (float) Math.cos(angleX);
+        float _t3 = (float) Math.cosFromSin(_t1, angleY);
+        float _t4 = (float) Math.cosFromSin(_t2, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t0, angleX);
         float _t6 = _t0 * _t1;
         float _t8 = _t0 * _t3;
         float _t10 = _t2 * _t5;
-        float _t13 = _t5 * _t4;
-        float _t14 = _t5 * _t1;
-        float _t15 = _t3 * _t5;
-        float _t18 = Math.fma(_t8, _t2, _t1 * _t4);
-        rotateYXZ_s1526c32c_tail(d, _t6, _t4, _t3, _t2, _t8, _t1, _r0, _r1, _t18, _r2, _t10, _t13, _t14, _t15, _t0, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        float _t12 = _t1 * _t5;
+        float _t16 = _t5 * _t4;
+        float _t17 = _t5 * _t3;
+        float _t18 = Math.fma(_t6, _t2, _t3 * _t4);
+        rotateYXZ_s1526c32c_tail(d, _t8, _t4, _t1, _t2, _t6, _t3, _r0, _r1, _t18, _r2, _t10, _t16, _t17, _t12, _t0, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
 
     /** Private column 0 of {@code rotateYZX_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateYZX_orthogonal_general_s1c0a609d_c0(Float3x4Impl _dst, float _r0, float _t6, float _r1, float _t7, float _r2, float _t3, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m00 = Math.fma(-_r0, _t6, Math.fma(_r1, _t7, _r2 * _t3));
-        _dst.m10 = Math.fma(-_r4, _t6, Math.fma(_r5, _t7, _r6 * _t3));
-        _dst.m20 = Math.fma(-_r8, _t6, Math.fma(_r9, _t7, _r10 * _t3));
+    private void rotateYZX_orthogonal_general_s1c0a609d_c0(Float3x4Impl _dst, float _r0, float _t7, float _r1, float _t13, float _r2, float _t1, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(-_r0, _t7, Math.fma(_r1, _t13, _r2 * _t1));
+        _dst.m10 = Math.fma(-_r4, _t7, Math.fma(_r5, _t13, _r6 * _t1));
+        _dst.m20 = Math.fma(-_r8, _t7, Math.fma(_r9, _t13, _r10 * _t1));
     }
 
     /** Private column 1 of {@code rotateYZX_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateYZX_orthogonal_general_s1c0a609d_c1(Float3x4Impl _dst, float _r0, float _t18, float _r1, float _t20, float _r2, float _t11, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m01 = Math.fma(_r0, _t18, Math.fma(_r1, _t20, _r2 * _t11));
-        _dst.m11 = Math.fma(_r4, _t18, Math.fma(_r5, _t20, _r6 * _t11));
-        _dst.m21 = Math.fma(_r8, _t18, Math.fma(_r9, _t20, _r10 * _t11));
+    private void rotateYZX_orthogonal_general_s1c0a609d_c1(Float3x4Impl _dst, float _r0, float _t18, float _r1, float _t20, float _r2, float _t14, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t18, Math.fma(_r1, _t20, _r2 * _t14));
+        _dst.m11 = Math.fma(_r4, _t18, Math.fma(_r5, _t20, _r6 * _t14));
+        _dst.m21 = Math.fma(_r8, _t18, Math.fma(_r9, _t20, _r10 * _t14));
     }
 
     /** Private column 2 of {@code rotateYZX_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateYZX_orthogonal_general_s1c0a609d_c2(Float3x4Impl _dst, float _r0, float _t21, float _r1, float _t19, float _r2, float _t13, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m02 = Math.fma(_r0, _t21, Math.fma(_r1, _t19, -(_r2 * _t13)));
-        _dst.m12 = Math.fma(_r4, _t21, Math.fma(_r5, _t19, -(_r6 * _t13)));
-        _dst.m22 = Math.fma(_r8, _t21, Math.fma(_r9, _t19, -(_r10 * _t13)));
+    private void rotateYZX_orthogonal_general_s1c0a609d_c2(Float3x4Impl _dst, float _r0, float _t21, float _r1, float _t19, float _r2, float _t11, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t21, Math.fma(_r1, _t19, -(_r2 * _t11)));
+        _dst.m12 = Math.fma(_r4, _t21, Math.fma(_r5, _t19, -(_r6 * _t11)));
+        _dst.m22 = Math.fma(_r8, _t21, Math.fma(_r9, _t19, -(_r10 * _t11)));
     }
 
     /** Private column 3 of {@code rotateYZX_orthogonal_general}: computes and stores it; reached only through it. */
@@ -30332,13 +30332,13 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private tail of {@code rotateYZX_orthogonal_general}; reached only through it. */
-    private void rotateYZX_orthogonal_general_s1c0a609d_tail(Float3x4Impl _dst, float _t10, float _t5, float _t0, float _t4, float _t2, float _t8, float _r0, float _t6, float _r1, float _t7, float _r2, float _t3, float _t18, float _t11, float _t13, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
-        float _t19 = Math.fma(_t10, _t5, _t0 * _t4);
-        float _t20 = Math.fma(_t5, _t0, -(_t10 * _t4));
-        float _t21 = Math.fma(_t4, _t2, -(_t8 * _t5));
-        rotateYZX_orthogonal_general_s1c0a609d_c0(_dst, _r0, _t6, _r1, _t7, _r2, _t3, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateYZX_orthogonal_general_s1c0a609d_c1(_dst, _r0, _t18, _r1, _t20, _r2, _t11, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateYZX_orthogonal_general_s1c0a609d_c2(_dst, _r0, _t21, _r1, _t19, _r2, _t13, _r4, _r5, _r6, _r8, _r9, _r10);
+    private void rotateYZX_orthogonal_general_s1c0a609d_tail(Float3x4Impl _dst, float _t9, float _t2, float _t0, float _t5, float _t4, float _t6, float _r0, float _t7, float _r1, float _t13, float _r2, float _t1, float _t18, float _t14, float _t11, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t9, _t2, _t0 * _t5);
+        float _t20 = Math.fma(_t2, _t0, -(_t9 * _t5));
+        float _t21 = Math.fma(_t5, _t4, -(_t6 * _t2));
+        rotateYZX_orthogonal_general_s1c0a609d_c0(_dst, _r0, _t7, _r1, _t13, _r2, _t1, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYZX_orthogonal_general_s1c0a609d_c1(_dst, _r0, _t18, _r1, _t20, _r2, _t14, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYZX_orthogonal_general_s1c0a609d_c2(_dst, _r0, _t21, _r1, _t19, _r2, _t11, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateYZX_orthogonal_general_s1c0a609d_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -30362,19 +30362,19 @@ public class Float3x4Impl implements Float3x4 {
         float _r10 = this.m21;
         float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.cos(angleY);
-        float _t3 = (float) Math.sin(angleZ);
-        float _t4 = (float) Math.cos(angleX);
-        float _t5 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t4 = (float) Math.cosFromSin(_t0, angleY);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
         float _t6 = _t0 * _t1;
-        float _t7 = _t2 * _t1;
-        float _t8 = _t0 * _t3;
-        float _t10 = _t3 * _t2;
-        float _t11 = _t4 * _t1;
-        float _t13 = _t5 * _t1;
-        float _t18 = Math.fma(_t8, _t4, _t5 * _t2);
-        rotateYZX_orthogonal_general_s1c0a609d_tail(d, _t10, _t5, _t0, _t4, _t2, _t8, _r0, _t6, _r1, _t7, _r2, _t3, _t18, _t11, _t13, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        float _t7 = _t0 * _t3;
+        float _t9 = _t1 * _t4;
+        float _t11 = _t2 * _t3;
+        float _t13 = _t4 * _t3;
+        float _t14 = _t5 * _t3;
+        float _t18 = Math.fma(_t6, _t5, _t2 * _t4);
+        rotateYZX_orthogonal_general_s1c0a609d_tail(d, _t9, _t2, _t0, _t5, _t4, _t6, _r0, _t7, _r1, _t13, _r2, _t1, _t18, _t14, _t11, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = _props;
         return d;
     }
@@ -30386,25 +30386,25 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateYZX_identity(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.sin(angleZ);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t4 * _t0;
-        float _t7 = _t3 * _t4;
-        d.m00 = _t0 * _t1;
-        d.m01 = Math.fma(_t2, _t3, -(_t6 * _t5));
-        d.m02 = Math.fma(_t6, _t2, _t3 * _t5);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t0 * _t1;
+        float _t7 = _t1 * _t3;
+        d.m00 = _t3 * _t4;
+        d.m01 = Math.fma(_t2, _t0, -(_t7 * _t5));
+        d.m02 = Math.fma(_t7, _t2, _t0 * _t5);
         d.m03 = 0.0f;
-        d.m10 = _t4;
-        d.m11 = _t5 * _t1;
-        d.m12 = -(_t2 * _t1);
+        d.m10 = _t1;
+        d.m11 = _t5 * _t4;
+        d.m12 = -(_t2 * _t4);
         d.m13 = 0.0f;
-        d.m20 = -(_t3 * _t1);
-        d.m21 = Math.fma(_t7, _t5, _t2 * _t0);
-        d.m22 = Math.fma(_t5, _t0, -(_t7 * _t2));
+        d.m20 = -(_t0 * _t4);
+        d.m21 = Math.fma(_t6, _t5, _t2 * _t3);
+        d.m22 = Math.fma(_t5, _t3, -(_t6 * _t2));
         d.m23 = 0.0f;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -30417,23 +30417,23 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateYZX_identity_self(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.sin(angleZ);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t4 * _t0;
-        float _t7 = _t3 * _t4;
-        d.m00 = _t0 * _t1;
-        d.m01 = Math.fma(_t2, _t3, -(_t6 * _t5));
-        d.m02 = Math.fma(_t6, _t2, _t3 * _t5);
-        d.m10 = _t4;
-        d.m11 = _t5 * _t1;
-        d.m12 = -(_t2 * _t1);
-        d.m20 = -(_t3 * _t1);
-        d.m21 = Math.fma(_t7, _t5, _t2 * _t0);
-        d.m22 = Math.fma(_t5, _t0, -(_t7 * _t2));
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t0 * _t1;
+        float _t7 = _t1 * _t3;
+        d.m00 = _t3 * _t4;
+        d.m01 = Math.fma(_t2, _t0, -(_t7 * _t5));
+        d.m02 = Math.fma(_t7, _t2, _t0 * _t5);
+        d.m10 = _t1;
+        d.m11 = _t5 * _t4;
+        d.m12 = -(_t2 * _t4);
+        d.m20 = -(_t0 * _t4);
+        d.m21 = Math.fma(_t6, _t5, _t2 * _t3);
+        d.m22 = Math.fma(_t5, _t3, -(_t6 * _t2));
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -30445,25 +30445,25 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateYZX_translation(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.sin(angleZ);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t4 * _t0;
-        float _t7 = _t3 * _t4;
-        d.m00 = _t0 * _t1;
-        d.m01 = Math.fma(_t2, _t3, -(_t6 * _t5));
-        d.m02 = Math.fma(_t6, _t2, _t3 * _t5);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t0 * _t1;
+        float _t7 = _t1 * _t3;
+        d.m00 = _t3 * _t4;
+        d.m01 = Math.fma(_t2, _t0, -(_t7 * _t5));
+        d.m02 = Math.fma(_t7, _t2, _t0 * _t5);
         d.m03 = this.m03;
-        d.m10 = _t4;
-        d.m11 = _t5 * _t1;
-        d.m12 = -(_t2 * _t1);
+        d.m10 = _t1;
+        d.m11 = _t5 * _t4;
+        d.m12 = -(_t2 * _t4);
         d.m13 = this.m13;
-        d.m20 = -(_t3 * _t1);
-        d.m21 = Math.fma(_t7, _t5, _t2 * _t0);
-        d.m22 = Math.fma(_t5, _t0, -(_t7 * _t2));
+        d.m20 = -(_t0 * _t4);
+        d.m21 = Math.fma(_t6, _t5, _t2 * _t3);
+        d.m22 = Math.fma(_t5, _t3, -(_t6 * _t2));
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -30516,24 +30516,24 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private column 0 of {@code rotateYZX}: computes and stores it; reached only through it. */
-    private void rotateYZX_s1526c32c_c0(Double3x4Impl _dst, float _r0, float _t6, float _r1, float _t7, float _r2, float _t3, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m00 = Math.fma(-_r0, _t6, Math.fma(_r1, _t7, _r2 * _t3));
-        _dst.m10 = Math.fma(-_r4, _t6, Math.fma(_r5, _t7, _r6 * _t3));
-        _dst.m20 = Math.fma(-_r8, _t6, Math.fma(_r9, _t7, _r10 * _t3));
+    private void rotateYZX_s1526c32c_c0(Double3x4Impl _dst, float _r0, float _t7, float _r1, float _t13, float _r2, float _t1, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(-_r0, _t7, Math.fma(_r1, _t13, _r2 * _t1));
+        _dst.m10 = Math.fma(-_r4, _t7, Math.fma(_r5, _t13, _r6 * _t1));
+        _dst.m20 = Math.fma(-_r8, _t7, Math.fma(_r9, _t13, _r10 * _t1));
     }
 
     /** Private column 1 of {@code rotateYZX}: computes and stores it; reached only through it. */
-    private void rotateYZX_s1526c32c_c1(Double3x4Impl _dst, float _r0, float _t18, float _r1, float _t20, float _r2, float _t11, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m01 = Math.fma(_r0, _t18, Math.fma(_r1, _t20, _r2 * _t11));
-        _dst.m11 = Math.fma(_r4, _t18, Math.fma(_r5, _t20, _r6 * _t11));
-        _dst.m21 = Math.fma(_r8, _t18, Math.fma(_r9, _t20, _r10 * _t11));
+    private void rotateYZX_s1526c32c_c1(Double3x4Impl _dst, float _r0, float _t18, float _r1, float _t20, float _r2, float _t14, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t18, Math.fma(_r1, _t20, _r2 * _t14));
+        _dst.m11 = Math.fma(_r4, _t18, Math.fma(_r5, _t20, _r6 * _t14));
+        _dst.m21 = Math.fma(_r8, _t18, Math.fma(_r9, _t20, _r10 * _t14));
     }
 
     /** Private column 2 of {@code rotateYZX}: computes and stores it; reached only through it. */
-    private void rotateYZX_s1526c32c_c2(Double3x4Impl _dst, float _r0, float _t21, float _r1, float _t19, float _r2, float _t13, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m02 = Math.fma(_r0, _t21, Math.fma(_r1, _t19, -(_r2 * _t13)));
-        _dst.m12 = Math.fma(_r4, _t21, Math.fma(_r5, _t19, -(_r6 * _t13)));
-        _dst.m22 = Math.fma(_r8, _t21, Math.fma(_r9, _t19, -(_r10 * _t13)));
+    private void rotateYZX_s1526c32c_c2(Double3x4Impl _dst, float _r0, float _t21, float _r1, float _t19, float _r2, float _t11, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t21, Math.fma(_r1, _t19, -(_r2 * _t11)));
+        _dst.m12 = Math.fma(_r4, _t21, Math.fma(_r5, _t19, -(_r6 * _t11)));
+        _dst.m22 = Math.fma(_r8, _t21, Math.fma(_r9, _t19, -(_r10 * _t11)));
     }
 
     /** Private column 3 of {@code rotateYZX}: computes and stores it; reached only through it. */
@@ -30544,13 +30544,13 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private tail of {@code rotateYZX}; reached only through it. */
-    private void rotateYZX_s1526c32c_tail(Double3x4Impl _dst, float _t10, float _t5, float _t0, float _t4, float _t2, float _t8, float _r0, float _t6, float _r1, float _t7, float _r2, float _t3, float _t18, float _t11, float _t13, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
-        float _t19 = Math.fma(_t10, _t5, _t0 * _t4);
-        float _t20 = Math.fma(_t5, _t0, -(_t10 * _t4));
-        float _t21 = Math.fma(_t4, _t2, -(_t8 * _t5));
-        rotateYZX_s1526c32c_c0(_dst, _r0, _t6, _r1, _t7, _r2, _t3, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateYZX_s1526c32c_c1(_dst, _r0, _t18, _r1, _t20, _r2, _t11, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateYZX_s1526c32c_c2(_dst, _r0, _t21, _r1, _t19, _r2, _t13, _r4, _r5, _r6, _r8, _r9, _r10);
+    private void rotateYZX_s1526c32c_tail(Double3x4Impl _dst, float _t9, float _t2, float _t0, float _t5, float _t4, float _t6, float _r0, float _t7, float _r1, float _t13, float _r2, float _t1, float _t18, float _t14, float _t11, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t9, _t2, _t0 * _t5);
+        float _t20 = Math.fma(_t2, _t0, -(_t9 * _t5));
+        float _t21 = Math.fma(_t5, _t4, -(_t6 * _t2));
+        rotateYZX_s1526c32c_c0(_dst, _r0, _t7, _r1, _t13, _r2, _t1, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYZX_s1526c32c_c1(_dst, _r0, _t18, _r1, _t20, _r2, _t14, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYZX_s1526c32c_c2(_dst, _r0, _t21, _r1, _t19, _r2, _t11, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateYZX_s1526c32c_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -30588,19 +30588,19 @@ public class Float3x4Impl implements Float3x4 {
         float _r10 = this.m21;
         float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.cos(angleY);
-        float _t3 = (float) Math.sin(angleZ);
-        float _t4 = (float) Math.cos(angleX);
-        float _t5 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t4 = (float) Math.cosFromSin(_t0, angleY);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
         float _t6 = _t0 * _t1;
-        float _t7 = _t2 * _t1;
-        float _t8 = _t0 * _t3;
-        float _t10 = _t3 * _t2;
-        float _t11 = _t4 * _t1;
-        float _t13 = _t5 * _t1;
-        float _t18 = Math.fma(_t8, _t4, _t5 * _t2);
-        rotateYZX_s1526c32c_tail(d, _t10, _t5, _t0, _t4, _t2, _t8, _r0, _t6, _r1, _t7, _r2, _t3, _t18, _t11, _t13, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        float _t7 = _t0 * _t3;
+        float _t9 = _t1 * _t4;
+        float _t11 = _t2 * _t3;
+        float _t13 = _t4 * _t3;
+        float _t14 = _t5 * _t3;
+        float _t18 = Math.fma(_t6, _t5, _t2 * _t4);
+        rotateYZX_s1526c32c_tail(d, _t9, _t2, _t0, _t5, _t4, _t6, _r0, _t7, _r1, _t13, _r2, _t1, _t18, _t14, _t11, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -30759,18 +30759,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateZ_orthogonal_general(float angle, @Mutated Float3x4 dest, int _props) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = Math.fma(this.m00, _t0, this.m01 * _t1);
-        d.m01 = Math.fma(this.m01, _t0, -(this.m00 * _t1));
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = Math.fma(this.m00, _t1, this.m01 * _t0);
+        d.m01 = Math.fma(this.m01, _t1, -(this.m00 * _t0));
         d.m02 = this.m02;
         d.m03 = this.m03;
-        float _buf1 = Math.fma(this.m10, _t0, this.m11 * _t1);
-        d.m11 = Math.fma(this.m11, _t0, -(this.m10 * _t1));
+        float _buf1 = Math.fma(this.m10, _t1, this.m11 * _t0);
+        d.m11 = Math.fma(this.m11, _t1, -(this.m10 * _t0));
         d.m12 = this.m12;
         d.m13 = this.m13;
-        float _buf2 = Math.fma(this.m20, _t0, this.m21 * _t1);
-        d.m21 = Math.fma(this.m21, _t0, -(this.m20 * _t1));
+        float _buf2 = Math.fma(this.m20, _t1, this.m21 * _t0);
+        d.m21 = Math.fma(this.m21, _t1, -(this.m20 * _t0));
         d.m22 = this.m22;
         d.m23 = this.m23;
         d.m00 = _buf0;
@@ -30805,14 +30805,14 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateZ_translation(float angle, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        d.m00 = _t0;
-        d.m01 = -_t1;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m01 = -_t0;
         d.m02 = 0.0f;
         d.m03 = this.m03;
-        d.m10 = _t1;
-        d.m11 = _t0;
+        d.m10 = _t0;
+        d.m11 = _t1;
         d.m12 = 0.0f;
         d.m13 = this.m13;
         d.m20 = 0.0f;
@@ -30830,13 +30830,13 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateZ_translation_self(float angle, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        d.m00 = _t0;
-        d.m01 = -_t1;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m01 = -_t0;
         d.m03 = this.m03;
-        d.m10 = _t1;
-        d.m11 = _t0;
+        d.m10 = _t0;
+        d.m11 = _t1;
         d.m13 = this.m13;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
@@ -30900,18 +30900,18 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Double3x4 rotateZ(float angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = Math.fma(this.m00, _t0, this.m01 * _t1);
-        d.m01 = Math.fma(this.m01, _t0, -(this.m00 * _t1));
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = Math.fma(this.m00, _t1, this.m01 * _t0);
+        d.m01 = Math.fma(this.m01, _t1, -(this.m00 * _t0));
         d.m02 = this.m02;
         d.m03 = this.m03;
-        float _buf1 = Math.fma(this.m10, _t0, this.m11 * _t1);
-        d.m11 = Math.fma(this.m11, _t0, -(this.m10 * _t1));
+        float _buf1 = Math.fma(this.m10, _t1, this.m11 * _t0);
+        d.m11 = Math.fma(this.m11, _t1, -(this.m10 * _t0));
         d.m12 = this.m12;
         d.m13 = this.m13;
-        float _buf2 = Math.fma(this.m20, _t0, this.m21 * _t1);
-        d.m21 = Math.fma(this.m21, _t0, -(this.m20 * _t1));
+        float _buf2 = Math.fma(this.m20, _t1, this.m21 * _t0);
+        d.m21 = Math.fma(this.m21, _t1, -(this.m20 * _t0));
         d.m22 = this.m22;
         d.m23 = this.m23;
         d.m00 = _buf0;
@@ -31069,24 +31069,24 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private column 0 of {@code rotateZXY_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateZXY_orthogonal_general_s1c0a609d_c0(Float3x4Impl _dst, float _r0, float _t6, float _r1, float _t20, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m00 = Math.fma(-_r0, _t6, Math.fma(_r1, _t20, _r2 * _t18));
-        _dst.m10 = Math.fma(-_r4, _t6, Math.fma(_r5, _t20, _r6 * _t18));
-        _dst.m20 = Math.fma(-_r8, _t6, Math.fma(_r9, _t20, _r10 * _t18));
+    private void rotateZXY_orthogonal_general_s1c0a609d_c0(Float3x4Impl _dst, float _r0, float _t7, float _r1, float _t20, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(-_r0, _t7, Math.fma(_r1, _t20, _r2 * _t18));
+        _dst.m10 = Math.fma(-_r4, _t7, Math.fma(_r5, _t20, _r6 * _t18));
+        _dst.m20 = Math.fma(-_r8, _t7, Math.fma(_r9, _t20, _r10 * _t18));
     }
 
     /** Private column 1 of {@code rotateZXY_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateZXY_orthogonal_general_s1c0a609d_c1(Float3x4Impl _dst, float _r0, float _t4, float _r2, float _t10, float _r1, float _t11, float _r4, float _r6, float _r5, float _r8, float _r10, float _r9) {
-        _dst.m01 = Math.fma(_r0, _t4, Math.fma(_r2, _t10, -(_r1 * _t11)));
-        _dst.m11 = Math.fma(_r4, _t4, Math.fma(_r6, _t10, -(_r5 * _t11)));
-        _dst.m21 = Math.fma(_r8, _t4, Math.fma(_r10, _t10, -(_r9 * _t11)));
+    private void rotateZXY_orthogonal_general_s1c0a609d_c1(Float3x4Impl _dst, float _r0, float _t1, float _r2, float _t14, float _r1, float _t10, float _r4, float _r6, float _r5, float _r8, float _r10, float _r9) {
+        _dst.m01 = Math.fma(_r0, _t1, Math.fma(_r2, _t14, -(_r1 * _t10)));
+        _dst.m11 = Math.fma(_r4, _t1, Math.fma(_r6, _t14, -(_r5 * _t10)));
+        _dst.m21 = Math.fma(_r8, _t1, Math.fma(_r10, _t14, -(_r9 * _t10)));
     }
 
     /** Private column 2 of {@code rotateZXY_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateZXY_orthogonal_general_s1c0a609d_c2(Float3x4Impl _dst, float _r0, float _t12, float _r1, float _t19, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m02 = Math.fma(_r0, _t12, Math.fma(_r1, _t19, _r2 * _t21));
-        _dst.m12 = Math.fma(_r4, _t12, Math.fma(_r5, _t19, _r6 * _t21));
-        _dst.m22 = Math.fma(_r8, _t12, Math.fma(_r9, _t19, _r10 * _t21));
+    private void rotateZXY_orthogonal_general_s1c0a609d_c2(Float3x4Impl _dst, float _r0, float _t15, float _r1, float _t19, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t15, Math.fma(_r1, _t19, _r2 * _t21));
+        _dst.m12 = Math.fma(_r4, _t15, Math.fma(_r5, _t19, _r6 * _t21));
+        _dst.m22 = Math.fma(_r8, _t15, Math.fma(_r9, _t19, _r10 * _t21));
     }
 
     /** Private column 3 of {@code rotateZXY_orthogonal_general}: computes and stores it; reached only through it. */
@@ -31097,13 +31097,13 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private tail of {@code rotateZXY_orthogonal_general}; reached only through it. */
-    private void rotateZXY_orthogonal_general_s1c0a609d_tail(Float3x4Impl _dst, float _t7, float _t2, float _t0, float _t3, float _t5, float _t8, float _r0, float _t6, float _r1, float _r2, float _t18, float _t4, float _t10, float _t11, float _t12, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
-        float _t19 = Math.fma(_t7, _t2, _t0 * _t3);
-        float _t20 = Math.fma(_t2, _t3, -(_t7 * _t0));
-        float _t21 = Math.fma(_t0, _t5, -(_t8 * _t2));
-        rotateZXY_orthogonal_general_s1c0a609d_c0(_dst, _r0, _t6, _r1, _t20, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateZXY_orthogonal_general_s1c0a609d_c1(_dst, _r0, _t4, _r2, _t10, _r1, _t11, _r4, _r6, _r5, _r8, _r10, _r9);
-        rotateZXY_orthogonal_general_s1c0a609d_c2(_dst, _r0, _t12, _r1, _t19, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+    private void rotateZXY_orthogonal_general_s1c0a609d_tail(Float3x4Impl _dst, float _t6, float _t4, float _t0, float _t5, float _t2, float _t8, float _r0, float _t7, float _r1, float _r2, float _t18, float _t1, float _t14, float _t10, float _t15, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t6, _t4, _t0 * _t5);
+        float _t20 = Math.fma(_t4, _t5, -(_t6 * _t0));
+        float _t21 = Math.fma(_t0, _t2, -(_t8 * _t4));
+        rotateZXY_orthogonal_general_s1c0a609d_c0(_dst, _r0, _t7, _r1, _t20, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateZXY_orthogonal_general_s1c0a609d_c1(_dst, _r0, _t1, _r2, _t14, _r1, _t10, _r4, _r6, _r5, _r8, _r10, _r9);
+        rotateZXY_orthogonal_general_s1c0a609d_c2(_dst, _r0, _t15, _r1, _t19, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateZXY_orthogonal_general_s1c0a609d_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -31127,19 +31127,19 @@ public class Float3x4Impl implements Float3x4 {
         float _r10 = this.m21;
         float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.cos(angleX);
-        float _t2 = (float) Math.cos(angleY);
-        float _t3 = (float) Math.cos(angleZ);
-        float _t4 = (float) Math.sin(angleX);
-        float _t5 = (float) Math.sin(angleZ);
-        float _t6 = _t0 * _t1;
-        float _t7 = _t4 * _t5;
-        float _t8 = _t4 * _t3;
-        float _t10 = _t1 * _t3;
-        float _t11 = _t5 * _t1;
-        float _t12 = _t1 * _t2;
-        float _t18 = Math.fma(_t8, _t0, _t5 * _t2);
-        rotateZXY_orthogonal_general_s1c0a609d_tail(d, _t7, _t2, _t0, _t3, _t5, _t8, _r0, _t6, _r1, _r2, _t18, _t4, _t10, _t11, _t12, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        float _t1 = (float) Math.sin(angleX);
+        float _t2 = (float) Math.sin(angleZ);
+        float _t3 = (float) Math.cosFromSin(_t1, angleX);
+        float _t4 = (float) Math.cosFromSin(_t0, angleY);
+        float _t5 = (float) Math.cosFromSin(_t2, angleZ);
+        float _t6 = _t1 * _t2;
+        float _t7 = _t0 * _t3;
+        float _t8 = _t1 * _t5;
+        float _t10 = _t2 * _t3;
+        float _t14 = _t3 * _t5;
+        float _t15 = _t3 * _t4;
+        float _t18 = Math.fma(_t8, _t0, _t2 * _t4);
+        rotateZXY_orthogonal_general_s1c0a609d_tail(d, _t6, _t4, _t0, _t5, _t2, _t8, _r0, _t7, _r1, _r2, _t18, _t1, _t14, _t10, _t15, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = _props;
         return d;
     }
@@ -31151,25 +31151,25 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateZXY_identity(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
-        float _t3 = (float) Math.sin(angleZ);
-        float _t4 = (float) Math.sin(angleY);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t2 * _t3;
-        float _t7 = _t2 * _t1;
-        d.m00 = Math.fma(_t0, _t1, -(_t6 * _t4));
-        d.m01 = -(_t3 * _t5);
-        d.m02 = Math.fma(_t6, _t0, _t4 * _t1);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t1;
+        float _t7 = _t2 * _t4;
+        d.m00 = Math.fma(_t3, _t4, -(_t6 * _t0));
+        d.m01 = -(_t1 * _t5);
+        d.m02 = Math.fma(_t6, _t3, _t0 * _t4);
         d.m03 = 0.0f;
-        d.m10 = Math.fma(_t7, _t4, _t3 * _t0);
-        d.m11 = _t5 * _t1;
-        d.m12 = Math.fma(_t4, _t3, -(_t7 * _t0));
+        d.m10 = Math.fma(_t7, _t0, _t1 * _t3);
+        d.m11 = _t5 * _t4;
+        d.m12 = Math.fma(_t0, _t1, -(_t7 * _t3));
         d.m13 = 0.0f;
-        d.m20 = -(_t4 * _t5);
+        d.m20 = -(_t0 * _t5);
         d.m21 = _t2;
-        d.m22 = _t5 * _t0;
+        d.m22 = _t5 * _t3;
         d.m23 = 0.0f;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -31182,23 +31182,23 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateZXY_identity_self(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
-        float _t3 = (float) Math.sin(angleZ);
-        float _t4 = (float) Math.sin(angleY);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t2 * _t3;
-        float _t7 = _t2 * _t1;
-        d.m00 = Math.fma(_t0, _t1, -(_t6 * _t4));
-        d.m01 = -(_t3 * _t5);
-        d.m02 = Math.fma(_t6, _t0, _t4 * _t1);
-        d.m10 = Math.fma(_t7, _t4, _t3 * _t0);
-        d.m11 = _t5 * _t1;
-        d.m12 = Math.fma(_t4, _t3, -(_t7 * _t0));
-        d.m20 = -(_t4 * _t5);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t1;
+        float _t7 = _t2 * _t4;
+        d.m00 = Math.fma(_t3, _t4, -(_t6 * _t0));
+        d.m01 = -(_t1 * _t5);
+        d.m02 = Math.fma(_t6, _t3, _t0 * _t4);
+        d.m10 = Math.fma(_t7, _t0, _t1 * _t3);
+        d.m11 = _t5 * _t4;
+        d.m12 = Math.fma(_t0, _t1, -(_t7 * _t3));
+        d.m20 = -(_t0 * _t5);
         d.m21 = _t2;
-        d.m22 = _t5 * _t0;
+        d.m22 = _t5 * _t3;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -31210,25 +31210,25 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateZXY_translation(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
-        float _t3 = (float) Math.sin(angleZ);
-        float _t4 = (float) Math.sin(angleY);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t2 * _t3;
-        float _t7 = _t2 * _t1;
-        d.m00 = Math.fma(_t0, _t1, -(_t6 * _t4));
-        d.m01 = -(_t3 * _t5);
-        d.m02 = Math.fma(_t6, _t0, _t4 * _t1);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t1;
+        float _t7 = _t2 * _t4;
+        d.m00 = Math.fma(_t3, _t4, -(_t6 * _t0));
+        d.m01 = -(_t1 * _t5);
+        d.m02 = Math.fma(_t6, _t3, _t0 * _t4);
         d.m03 = this.m03;
-        d.m10 = Math.fma(_t7, _t4, _t3 * _t0);
-        d.m11 = _t5 * _t1;
-        d.m12 = Math.fma(_t4, _t3, -(_t7 * _t0));
+        d.m10 = Math.fma(_t7, _t0, _t1 * _t3);
+        d.m11 = _t5 * _t4;
+        d.m12 = Math.fma(_t0, _t1, -(_t7 * _t3));
         d.m13 = this.m13;
-        d.m20 = -(_t4 * _t5);
+        d.m20 = -(_t0 * _t5);
         d.m21 = _t2;
-        d.m22 = _t5 * _t0;
+        d.m22 = _t5 * _t3;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -31281,24 +31281,24 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private column 0 of {@code rotateZXY}: computes and stores it; reached only through it. */
-    private void rotateZXY_s1526c32c_c0(Double3x4Impl _dst, float _r0, float _t6, float _r1, float _t20, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m00 = Math.fma(-_r0, _t6, Math.fma(_r1, _t20, _r2 * _t18));
-        _dst.m10 = Math.fma(-_r4, _t6, Math.fma(_r5, _t20, _r6 * _t18));
-        _dst.m20 = Math.fma(-_r8, _t6, Math.fma(_r9, _t20, _r10 * _t18));
+    private void rotateZXY_s1526c32c_c0(Double3x4Impl _dst, float _r0, float _t7, float _r1, float _t20, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(-_r0, _t7, Math.fma(_r1, _t20, _r2 * _t18));
+        _dst.m10 = Math.fma(-_r4, _t7, Math.fma(_r5, _t20, _r6 * _t18));
+        _dst.m20 = Math.fma(-_r8, _t7, Math.fma(_r9, _t20, _r10 * _t18));
     }
 
     /** Private column 1 of {@code rotateZXY}: computes and stores it; reached only through it. */
-    private void rotateZXY_s1526c32c_c1(Double3x4Impl _dst, float _r0, float _t4, float _r2, float _t10, float _r1, float _t11, float _r4, float _r6, float _r5, float _r8, float _r10, float _r9) {
-        _dst.m01 = Math.fma(_r0, _t4, Math.fma(_r2, _t10, -(_r1 * _t11)));
-        _dst.m11 = Math.fma(_r4, _t4, Math.fma(_r6, _t10, -(_r5 * _t11)));
-        _dst.m21 = Math.fma(_r8, _t4, Math.fma(_r10, _t10, -(_r9 * _t11)));
+    private void rotateZXY_s1526c32c_c1(Double3x4Impl _dst, float _r0, float _t1, float _r2, float _t14, float _r1, float _t10, float _r4, float _r6, float _r5, float _r8, float _r10, float _r9) {
+        _dst.m01 = Math.fma(_r0, _t1, Math.fma(_r2, _t14, -(_r1 * _t10)));
+        _dst.m11 = Math.fma(_r4, _t1, Math.fma(_r6, _t14, -(_r5 * _t10)));
+        _dst.m21 = Math.fma(_r8, _t1, Math.fma(_r10, _t14, -(_r9 * _t10)));
     }
 
     /** Private column 2 of {@code rotateZXY}: computes and stores it; reached only through it. */
-    private void rotateZXY_s1526c32c_c2(Double3x4Impl _dst, float _r0, float _t12, float _r1, float _t19, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m02 = Math.fma(_r0, _t12, Math.fma(_r1, _t19, _r2 * _t21));
-        _dst.m12 = Math.fma(_r4, _t12, Math.fma(_r5, _t19, _r6 * _t21));
-        _dst.m22 = Math.fma(_r8, _t12, Math.fma(_r9, _t19, _r10 * _t21));
+    private void rotateZXY_s1526c32c_c2(Double3x4Impl _dst, float _r0, float _t15, float _r1, float _t19, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t15, Math.fma(_r1, _t19, _r2 * _t21));
+        _dst.m12 = Math.fma(_r4, _t15, Math.fma(_r5, _t19, _r6 * _t21));
+        _dst.m22 = Math.fma(_r8, _t15, Math.fma(_r9, _t19, _r10 * _t21));
     }
 
     /** Private column 3 of {@code rotateZXY}: computes and stores it; reached only through it. */
@@ -31309,13 +31309,13 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private tail of {@code rotateZXY}; reached only through it. */
-    private void rotateZXY_s1526c32c_tail(Double3x4Impl _dst, float _t7, float _t2, float _t0, float _t3, float _t5, float _t8, float _r0, float _t6, float _r1, float _r2, float _t18, float _t4, float _t10, float _t11, float _t12, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
-        float _t19 = Math.fma(_t7, _t2, _t0 * _t3);
-        float _t20 = Math.fma(_t2, _t3, -(_t7 * _t0));
-        float _t21 = Math.fma(_t0, _t5, -(_t8 * _t2));
-        rotateZXY_s1526c32c_c0(_dst, _r0, _t6, _r1, _t20, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateZXY_s1526c32c_c1(_dst, _r0, _t4, _r2, _t10, _r1, _t11, _r4, _r6, _r5, _r8, _r10, _r9);
-        rotateZXY_s1526c32c_c2(_dst, _r0, _t12, _r1, _t19, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+    private void rotateZXY_s1526c32c_tail(Double3x4Impl _dst, float _t6, float _t4, float _t0, float _t5, float _t2, float _t8, float _r0, float _t7, float _r1, float _r2, float _t18, float _t1, float _t14, float _t10, float _t15, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t6, _t4, _t0 * _t5);
+        float _t20 = Math.fma(_t4, _t5, -(_t6 * _t0));
+        float _t21 = Math.fma(_t0, _t2, -(_t8 * _t4));
+        rotateZXY_s1526c32c_c0(_dst, _r0, _t7, _r1, _t20, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateZXY_s1526c32c_c1(_dst, _r0, _t1, _r2, _t14, _r1, _t10, _r4, _r6, _r5, _r8, _r10, _r9);
+        rotateZXY_s1526c32c_c2(_dst, _r0, _t15, _r1, _t19, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateZXY_s1526c32c_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -31353,42 +31353,42 @@ public class Float3x4Impl implements Float3x4 {
         float _r10 = this.m21;
         float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.cos(angleX);
-        float _t2 = (float) Math.cos(angleY);
-        float _t3 = (float) Math.cos(angleZ);
-        float _t4 = (float) Math.sin(angleX);
-        float _t5 = (float) Math.sin(angleZ);
-        float _t6 = _t0 * _t1;
-        float _t7 = _t4 * _t5;
-        float _t8 = _t4 * _t3;
-        float _t10 = _t1 * _t3;
-        float _t11 = _t5 * _t1;
-        float _t12 = _t1 * _t2;
-        float _t18 = Math.fma(_t8, _t0, _t5 * _t2);
-        rotateZXY_s1526c32c_tail(d, _t7, _t2, _t0, _t3, _t5, _t8, _r0, _t6, _r1, _r2, _t18, _t4, _t10, _t11, _t12, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        float _t1 = (float) Math.sin(angleX);
+        float _t2 = (float) Math.sin(angleZ);
+        float _t3 = (float) Math.cosFromSin(_t1, angleX);
+        float _t4 = (float) Math.cosFromSin(_t0, angleY);
+        float _t5 = (float) Math.cosFromSin(_t2, angleZ);
+        float _t6 = _t1 * _t2;
+        float _t7 = _t0 * _t3;
+        float _t8 = _t1 * _t5;
+        float _t10 = _t2 * _t3;
+        float _t14 = _t3 * _t5;
+        float _t15 = _t3 * _t4;
+        float _t18 = Math.fma(_t8, _t0, _t2 * _t4);
+        rotateZXY_s1526c32c_tail(d, _t6, _t4, _t0, _t5, _t2, _t8, _r0, _t7, _r1, _r2, _t18, _t1, _t14, _t10, _t15, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
 
     /** Private column 0 of {@code rotateZYX_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateZYX_orthogonal_general_s1c0a609d_c0(Float3x4Impl _dst, float _r0, float _t0, float _r1, float _t6, float _r2, float _t7, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m00 = Math.fma(-_r0, _t0, Math.fma(_r1, _t6, _r2 * _t7));
-        _dst.m10 = Math.fma(-_r4, _t0, Math.fma(_r5, _t6, _r6 * _t7));
-        _dst.m20 = Math.fma(-_r8, _t0, Math.fma(_r9, _t6, _r10 * _t7));
+    private void rotateZYX_orthogonal_general_s1c0a609d_c0(Float3x4Impl _dst, float _r0, float _t0, float _r1, float _t15, float _r2, float _t8, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(-_r0, _t0, Math.fma(_r1, _t15, _r2 * _t8));
+        _dst.m10 = Math.fma(-_r4, _t0, Math.fma(_r5, _t15, _r6 * _t8));
+        _dst.m20 = Math.fma(-_r8, _t0, Math.fma(_r9, _t15, _r10 * _t8));
     }
 
     /** Private column 1 of {@code rotateZYX_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateZYX_orthogonal_general_s1c0a609d_c1(Float3x4Impl _dst, float _r0, float _t8, float _r1, float _t20, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m01 = Math.fma(_r0, _t8, Math.fma(_r1, _t20, _r2 * _t18));
-        _dst.m11 = Math.fma(_r4, _t8, Math.fma(_r5, _t20, _r6 * _t18));
-        _dst.m21 = Math.fma(_r8, _t8, Math.fma(_r9, _t20, _r10 * _t18));
+    private void rotateZYX_orthogonal_general_s1c0a609d_c1(Float3x4Impl _dst, float _r0, float _t9, float _r1, float _t20, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t9, Math.fma(_r1, _t20, _r2 * _t18));
+        _dst.m11 = Math.fma(_r4, _t9, Math.fma(_r5, _t20, _r6 * _t18));
+        _dst.m21 = Math.fma(_r8, _t9, Math.fma(_r9, _t20, _r10 * _t18));
     }
 
     /** Private column 2 of {@code rotateZYX_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateZYX_orthogonal_general_s1c0a609d_c2(Float3x4Impl _dst, float _r0, float _t13, float _r1, float _t19, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m02 = Math.fma(_r0, _t13, Math.fma(_r1, _t19, _r2 * _t21));
-        _dst.m12 = Math.fma(_r4, _t13, Math.fma(_r5, _t19, _r6 * _t21));
-        _dst.m22 = Math.fma(_r8, _t13, Math.fma(_r9, _t19, _r10 * _t21));
+    private void rotateZYX_orthogonal_general_s1c0a609d_c2(Float3x4Impl _dst, float _r0, float _t17, float _r1, float _t19, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t17, Math.fma(_r1, _t19, _r2 * _t21));
+        _dst.m12 = Math.fma(_r4, _t17, Math.fma(_r5, _t19, _r6 * _t21));
+        _dst.m22 = Math.fma(_r8, _t17, Math.fma(_r9, _t19, _r10 * _t21));
     }
 
     /** Private column 3 of {@code rotateZYX_orthogonal_general}: computes and stores it; reached only through it. */
@@ -31399,13 +31399,13 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private tail of {@code rotateZYX_orthogonal_general}; reached only through it. */
-    private void rotateZYX_orthogonal_general_s1c0a609d_tail(Float3x4Impl _dst, float _t9, float _t5, float _t4, float _t3, float _t11, float _t2, float _r0, float _t0, float _r1, float _t6, float _r2, float _t7, float _t8, float _t18, float _t13, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
-        float _t19 = Math.fma(_t9, _t5, _t4 * _t3);
-        float _t20 = Math.fma(_t9, _t4, -(_t3 * _t5));
-        float _t21 = Math.fma(_t11, _t5, -(_t4 * _t2));
-        rotateZYX_orthogonal_general_s1c0a609d_c0(_dst, _r0, _t0, _r1, _t6, _r2, _t7, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateZYX_orthogonal_general_s1c0a609d_c1(_dst, _r0, _t8, _r1, _t20, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateZYX_orthogonal_general_s1c0a609d_c2(_dst, _r0, _t13, _r1, _t19, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+    private void rotateZYX_orthogonal_general_s1c0a609d_tail(Float3x4Impl _dst, float _t10, float _t5, float _t2, float _t1, float _t6, float _t4, float _r0, float _t0, float _r1, float _t15, float _r2, float _t8, float _t9, float _t18, float _t17, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t10, _t5, _t2 * _t1);
+        float _t20 = Math.fma(_t10, _t2, -(_t1 * _t5));
+        float _t21 = Math.fma(_t6, _t5, -(_t2 * _t4));
+        rotateZYX_orthogonal_general_s1c0a609d_c0(_dst, _r0, _t0, _r1, _t15, _r2, _t8, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateZYX_orthogonal_general_s1c0a609d_c1(_dst, _r0, _t9, _r1, _t20, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateZYX_orthogonal_general_s1c0a609d_c2(_dst, _r0, _t17, _r1, _t19, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateZYX_orthogonal_general_s1c0a609d_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -31429,19 +31429,19 @@ public class Float3x4Impl implements Float3x4 {
         float _r10 = this.m21;
         float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.cos(angleY);
-        float _t2 = (float) Math.cos(angleZ);
-        float _t3 = (float) Math.sin(angleZ);
-        float _t4 = (float) Math.sin(angleX);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t1 * _t2;
-        float _t7 = _t3 * _t1;
-        float _t8 = _t4 * _t1;
-        float _t9 = _t0 * _t2;
-        float _t11 = _t0 * _t3;
-        float _t13 = _t5 * _t1;
-        float _t18 = Math.fma(_t11, _t4, _t5 * _t2);
-        rotateZYX_orthogonal_general_s1c0a609d_tail(d, _t9, _t5, _t4, _t3, _t11, _t2, _r0, _t0, _r1, _t6, _r2, _t7, _t8, _t18, _t13, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t0 * _t1;
+        float _t8 = _t1 * _t3;
+        float _t9 = _t2 * _t3;
+        float _t10 = _t0 * _t4;
+        float _t15 = _t3 * _t4;
+        float _t17 = _t5 * _t3;
+        float _t18 = Math.fma(_t6, _t2, _t5 * _t4);
+        rotateZYX_orthogonal_general_s1c0a609d_tail(d, _t10, _t5, _t2, _t1, _t6, _t4, _r0, _t0, _r1, _t15, _r2, _t8, _t9, _t18, _t17, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = _props;
         return d;
     }
@@ -31453,25 +31453,25 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateZYX_identity(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleY);
-        float _t3 = (float) Math.sin(angleX);
-        float _t4 = (float) Math.sin(angleZ);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t2 * _t1;
-        float _t7 = _t2 * _t4;
-        d.m00 = _t0 * _t1;
-        d.m01 = Math.fma(_t6, _t3, -(_t4 * _t5));
-        d.m02 = Math.fma(_t6, _t5, _t3 * _t4);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t0 * _t1;
+        float _t7 = _t0 * _t4;
+        d.m00 = _t3 * _t4;
+        d.m01 = Math.fma(_t7, _t2, -(_t1 * _t5));
+        d.m02 = Math.fma(_t7, _t5, _t2 * _t1);
         d.m03 = 0.0f;
-        d.m10 = _t4 * _t0;
-        d.m11 = Math.fma(_t7, _t3, _t5 * _t1);
-        d.m12 = Math.fma(_t7, _t5, -(_t3 * _t1));
+        d.m10 = _t1 * _t3;
+        d.m11 = Math.fma(_t6, _t2, _t5 * _t4);
+        d.m12 = Math.fma(_t6, _t5, -(_t2 * _t4));
         d.m13 = 0.0f;
-        d.m20 = -_t2;
-        d.m21 = _t3 * _t0;
-        d.m22 = _t5 * _t0;
+        d.m20 = -_t0;
+        d.m21 = _t2 * _t3;
+        d.m22 = _t5 * _t3;
         d.m23 = 0.0f;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -31484,23 +31484,23 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateZYX_identity_self(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleY);
-        float _t3 = (float) Math.sin(angleX);
-        float _t4 = (float) Math.sin(angleZ);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t2 * _t1;
-        float _t7 = _t2 * _t4;
-        d.m00 = _t0 * _t1;
-        d.m01 = Math.fma(_t6, _t3, -(_t4 * _t5));
-        d.m02 = Math.fma(_t6, _t5, _t3 * _t4);
-        d.m10 = _t4 * _t0;
-        d.m11 = Math.fma(_t7, _t3, _t5 * _t1);
-        d.m12 = Math.fma(_t7, _t5, -(_t3 * _t1));
-        d.m20 = -_t2;
-        d.m21 = _t3 * _t0;
-        d.m22 = _t5 * _t0;
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t0 * _t1;
+        float _t7 = _t0 * _t4;
+        d.m00 = _t3 * _t4;
+        d.m01 = Math.fma(_t7, _t2, -(_t1 * _t5));
+        d.m02 = Math.fma(_t7, _t5, _t2 * _t1);
+        d.m10 = _t1 * _t3;
+        d.m11 = Math.fma(_t6, _t2, _t5 * _t4);
+        d.m12 = Math.fma(_t6, _t5, -(_t2 * _t4));
+        d.m20 = -_t0;
+        d.m21 = _t2 * _t3;
+        d.m22 = _t5 * _t3;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -31512,25 +31512,25 @@ public class Float3x4Impl implements Float3x4 {
      */
     private Float3x4 rotateZYX_translation(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
         Float3x4Impl d = (Float3x4Impl) dest;
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleY);
-        float _t3 = (float) Math.sin(angleX);
-        float _t4 = (float) Math.sin(angleZ);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t2 * _t1;
-        float _t7 = _t2 * _t4;
-        d.m00 = _t0 * _t1;
-        d.m01 = Math.fma(_t6, _t3, -(_t4 * _t5));
-        d.m02 = Math.fma(_t6, _t5, _t3 * _t4);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t0 * _t1;
+        float _t7 = _t0 * _t4;
+        d.m00 = _t3 * _t4;
+        d.m01 = Math.fma(_t7, _t2, -(_t1 * _t5));
+        d.m02 = Math.fma(_t7, _t5, _t2 * _t1);
         d.m03 = this.m03;
-        d.m10 = _t4 * _t0;
-        d.m11 = Math.fma(_t7, _t3, _t5 * _t1);
-        d.m12 = Math.fma(_t7, _t5, -(_t3 * _t1));
+        d.m10 = _t1 * _t3;
+        d.m11 = Math.fma(_t6, _t2, _t5 * _t4);
+        d.m12 = Math.fma(_t6, _t5, -(_t2 * _t4));
         d.m13 = this.m13;
-        d.m20 = -_t2;
-        d.m21 = _t3 * _t0;
-        d.m22 = _t5 * _t0;
+        d.m20 = -_t0;
+        d.m21 = _t2 * _t3;
+        d.m22 = _t5 * _t3;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -31583,24 +31583,24 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private column 0 of {@code rotateZYX}: computes and stores it; reached only through it. */
-    private void rotateZYX_s1526c32c_c0(Double3x4Impl _dst, float _r0, float _t0, float _r1, float _t6, float _r2, float _t7, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m00 = Math.fma(-_r0, _t0, Math.fma(_r1, _t6, _r2 * _t7));
-        _dst.m10 = Math.fma(-_r4, _t0, Math.fma(_r5, _t6, _r6 * _t7));
-        _dst.m20 = Math.fma(-_r8, _t0, Math.fma(_r9, _t6, _r10 * _t7));
+    private void rotateZYX_s1526c32c_c0(Double3x4Impl _dst, float _r0, float _t0, float _r1, float _t15, float _r2, float _t8, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m00 = Math.fma(-_r0, _t0, Math.fma(_r1, _t15, _r2 * _t8));
+        _dst.m10 = Math.fma(-_r4, _t0, Math.fma(_r5, _t15, _r6 * _t8));
+        _dst.m20 = Math.fma(-_r8, _t0, Math.fma(_r9, _t15, _r10 * _t8));
     }
 
     /** Private column 1 of {@code rotateZYX}: computes and stores it; reached only through it. */
-    private void rotateZYX_s1526c32c_c1(Double3x4Impl _dst, float _r0, float _t8, float _r1, float _t20, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m01 = Math.fma(_r0, _t8, Math.fma(_r1, _t20, _r2 * _t18));
-        _dst.m11 = Math.fma(_r4, _t8, Math.fma(_r5, _t20, _r6 * _t18));
-        _dst.m21 = Math.fma(_r8, _t8, Math.fma(_r9, _t20, _r10 * _t18));
+    private void rotateZYX_s1526c32c_c1(Double3x4Impl _dst, float _r0, float _t9, float _r1, float _t20, float _r2, float _t18, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m01 = Math.fma(_r0, _t9, Math.fma(_r1, _t20, _r2 * _t18));
+        _dst.m11 = Math.fma(_r4, _t9, Math.fma(_r5, _t20, _r6 * _t18));
+        _dst.m21 = Math.fma(_r8, _t9, Math.fma(_r9, _t20, _r10 * _t18));
     }
 
     /** Private column 2 of {@code rotateZYX}: computes and stores it; reached only through it. */
-    private void rotateZYX_s1526c32c_c2(Double3x4Impl _dst, float _r0, float _t13, float _r1, float _t19, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
-        _dst.m02 = Math.fma(_r0, _t13, Math.fma(_r1, _t19, _r2 * _t21));
-        _dst.m12 = Math.fma(_r4, _t13, Math.fma(_r5, _t19, _r6 * _t21));
-        _dst.m22 = Math.fma(_r8, _t13, Math.fma(_r9, _t19, _r10 * _t21));
+    private void rotateZYX_s1526c32c_c2(Double3x4Impl _dst, float _r0, float _t17, float _r1, float _t19, float _r2, float _t21, float _r4, float _r5, float _r6, float _r8, float _r9, float _r10) {
+        _dst.m02 = Math.fma(_r0, _t17, Math.fma(_r1, _t19, _r2 * _t21));
+        _dst.m12 = Math.fma(_r4, _t17, Math.fma(_r5, _t19, _r6 * _t21));
+        _dst.m22 = Math.fma(_r8, _t17, Math.fma(_r9, _t19, _r10 * _t21));
     }
 
     /** Private column 3 of {@code rotateZYX}: computes and stores it; reached only through it. */
@@ -31611,13 +31611,13 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     /** Private tail of {@code rotateZYX}; reached only through it. */
-    private void rotateZYX_s1526c32c_tail(Double3x4Impl _dst, float _t9, float _t5, float _t4, float _t3, float _t11, float _t2, float _r0, float _t0, float _r1, float _t6, float _r2, float _t7, float _t8, float _t18, float _t13, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
-        float _t19 = Math.fma(_t9, _t5, _t4 * _t3);
-        float _t20 = Math.fma(_t9, _t4, -(_t3 * _t5));
-        float _t21 = Math.fma(_t11, _t5, -(_t4 * _t2));
-        rotateZYX_s1526c32c_c0(_dst, _r0, _t0, _r1, _t6, _r2, _t7, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateZYX_s1526c32c_c1(_dst, _r0, _t8, _r1, _t20, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateZYX_s1526c32c_c2(_dst, _r0, _t13, _r1, _t19, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+    private void rotateZYX_s1526c32c_tail(Double3x4Impl _dst, float _t10, float _t5, float _t2, float _t1, float _t6, float _t4, float _r0, float _t0, float _r1, float _t15, float _r2, float _t8, float _t9, float _t18, float _t17, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11) {
+        float _t19 = Math.fma(_t10, _t5, _t2 * _t1);
+        float _t20 = Math.fma(_t10, _t2, -(_t1 * _t5));
+        float _t21 = Math.fma(_t6, _t5, -(_t2 * _t4));
+        rotateZYX_s1526c32c_c0(_dst, _r0, _t0, _r1, _t15, _r2, _t8, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateZYX_s1526c32c_c1(_dst, _r0, _t9, _r1, _t20, _r2, _t18, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateZYX_s1526c32c_c2(_dst, _r0, _t17, _r1, _t19, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateZYX_s1526c32c_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -31655,19 +31655,19 @@ public class Float3x4Impl implements Float3x4 {
         float _r10 = this.m21;
         float _r11 = this.m23;
         float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.cos(angleY);
-        float _t2 = (float) Math.cos(angleZ);
-        float _t3 = (float) Math.sin(angleZ);
-        float _t4 = (float) Math.sin(angleX);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t1 * _t2;
-        float _t7 = _t3 * _t1;
-        float _t8 = _t4 * _t1;
-        float _t9 = _t0 * _t2;
-        float _t11 = _t0 * _t3;
-        float _t13 = _t5 * _t1;
-        float _t18 = Math.fma(_t11, _t4, _t5 * _t2);
-        rotateZYX_s1526c32c_tail(d, _t9, _t5, _t4, _t3, _t11, _t2, _r0, _t0, _r1, _t6, _r2, _t7, _t8, _t18, _t13, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t0 * _t1;
+        float _t8 = _t1 * _t3;
+        float _t9 = _t2 * _t3;
+        float _t10 = _t0 * _t4;
+        float _t15 = _t3 * _t4;
+        float _t17 = _t5 * _t3;
+        float _t18 = Math.fma(_t6, _t2, _t5 * _t4);
+        rotateZYX_s1526c32c_tail(d, _t10, _t5, _t2, _t1, _t6, _t4, _r0, _t0, _r1, _t15, _r2, _t8, _t9, _t18, _t17, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }

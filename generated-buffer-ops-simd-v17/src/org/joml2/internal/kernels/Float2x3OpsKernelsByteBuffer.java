@@ -638,12 +638,12 @@ public final class Float2x3OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer makeRotation_api(java.nio.ByteBuffer dest, int destOffset, float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        dest.putFloat(destOffset + 0, _t0);
-        dest.putFloat(destOffset + 4, _t1);
-        dest.putFloat(destOffset + 8, -_t1);
-        dest.putFloat(destOffset + 12, _t0);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        dest.putFloat(destOffset + 0, _t1);
+        dest.putFloat(destOffset + 4, _t0);
+        dest.putFloat(destOffset + 8, -_t0);
+        dest.putFloat(destOffset + 12, _t1);
         dest.putFloat(destOffset + 16, 0.0f);
         dest.putFloat(destOffset + 20, 0.0f);
         return dest;
@@ -769,14 +769,14 @@ public final class Float2x3OpsKernelsByteBuffer {
         float _self11 = src.getFloat(srcOffset + 12);
         float _self02 = src.getFloat(srcOffset + 16);
         float _self12 = src.getFloat(srcOffset + 20);
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        dest.putFloat(destOffset + 0, Math.fma(_self00, _t0, -(_self10 * _t1)));
-        dest.putFloat(destOffset + 4, Math.fma(_self00, _t1, _self10 * _t0));
-        dest.putFloat(destOffset + 8, Math.fma(_self01, _t0, -(_self11 * _t1)));
-        dest.putFloat(destOffset + 12, Math.fma(_self01, _t1, _self11 * _t0));
-        dest.putFloat(destOffset + 16, Math.fma(_self02, _t0, -(_self12 * _t1)));
-        dest.putFloat(destOffset + 20, Math.fma(_self02, _t1, _self12 * _t0));
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        dest.putFloat(destOffset + 0, Math.fma(_self00, _t1, -(_self10 * _t0)));
+        dest.putFloat(destOffset + 4, Math.fma(_self00, _t0, _self10 * _t1));
+        dest.putFloat(destOffset + 8, Math.fma(_self01, _t1, -(_self11 * _t0)));
+        dest.putFloat(destOffset + 12, Math.fma(_self01, _t0, _self11 * _t1));
+        dest.putFloat(destOffset + 16, Math.fma(_self02, _t1, -(_self12 * _t0)));
+        dest.putFloat(destOffset + 20, Math.fma(_self02, _t0, _self12 * _t1));
         return dest;
     }
 
@@ -794,16 +794,16 @@ public final class Float2x3OpsKernelsByteBuffer {
         float _self11 = src.getFloat(srcOffset + 12);
         float _self02 = src.getFloat(srcOffset + 16);
         float _self12 = src.getFloat(srcOffset + 20);
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t5 = (_t3 + _t3) * _t3;
-        dest.putFloat(destOffset + 0, Math.fma(_self00, _t0, -(_self10 * _t1)));
-        dest.putFloat(destOffset + 4, Math.fma(_self00, _t1, _self10 * _t0));
-        dest.putFloat(destOffset + 8, Math.fma(_self01, _t0, -(_self11 * _t1)));
-        dest.putFloat(destOffset + 12, Math.fma(_self01, _t1, _self11 * _t0));
-        dest.putFloat(destOffset + 16, Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(_self02, _t0, -(_self12 * _t1)));
-        dest.putFloat(destOffset + 20, Math.fma(_self02, _t1, _self12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1)));
+        dest.putFloat(destOffset + 0, Math.fma(_self00, _t2, -(_self10 * _t0)));
+        dest.putFloat(destOffset + 4, Math.fma(_self00, _t0, _self10 * _t2));
+        dest.putFloat(destOffset + 8, Math.fma(_self01, _t2, -(_self11 * _t0)));
+        dest.putFloat(destOffset + 12, Math.fma(_self01, _t0, _self11 * _t2));
+        dest.putFloat(destOffset + 16, Math.fma(pivotX, _t5, pivotY * _t0) + Math.fma(_self02, _t2, -(_self12 * _t0)));
+        dest.putFloat(destOffset + 20, Math.fma(_self02, _t0, _self12 * _t2) + Math.fma(pivotY, _t5, -(pivotX * _t0)));
         return dest;
     }
 
@@ -824,16 +824,16 @@ public final class Float2x3OpsKernelsByteBuffer {
         float _self12 = src.getFloat(srcOffset + 20);
         float _pivotx = pivot.getFloat(pivotOffset + 0);
         float _pivoty = pivot.getFloat(pivotOffset + 4);
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t5 = (_t3 + _t3) * _t3;
-        dest.putFloat(destOffset + 0, Math.fma(_self00, _t0, -(_self10 * _t1)));
-        dest.putFloat(destOffset + 4, Math.fma(_self00, _t1, _self10 * _t0));
-        dest.putFloat(destOffset + 8, Math.fma(_self01, _t0, -(_self11 * _t1)));
-        dest.putFloat(destOffset + 12, Math.fma(_self01, _t1, _self11 * _t0));
-        dest.putFloat(destOffset + 16, Math.fma(_pivotx, _t5, _pivoty * _t1) + Math.fma(_self02, _t0, -(_self12 * _t1)));
-        dest.putFloat(destOffset + 20, Math.fma(_self02, _t1, _self12 * _t0) + Math.fma(_pivoty, _t5, -(_pivotx * _t1)));
+        dest.putFloat(destOffset + 0, Math.fma(_self00, _t2, -(_self10 * _t0)));
+        dest.putFloat(destOffset + 4, Math.fma(_self00, _t0, _self10 * _t2));
+        dest.putFloat(destOffset + 8, Math.fma(_self01, _t2, -(_self11 * _t0)));
+        dest.putFloat(destOffset + 12, Math.fma(_self01, _t0, _self11 * _t2));
+        dest.putFloat(destOffset + 16, Math.fma(_pivotx, _t5, _pivoty * _t0) + Math.fma(_self02, _t2, -(_self12 * _t0)));
+        dest.putFloat(destOffset + 20, Math.fma(_self02, _t0, _self12 * _t2) + Math.fma(_pivoty, _t5, -(_pivotx * _t0)));
         return dest;
     }
 
@@ -1058,12 +1058,12 @@ public final class Float2x3OpsKernelsByteBuffer {
         float _self11 = src.getFloat(srcOffset + 12);
         float _self02 = src.getFloat(srcOffset + 16);
         float _self12 = src.getFloat(srcOffset + 20);
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        dest.putFloat(destOffset + 0, Math.fma(_self00, _t0, _self01 * _t1));
-        dest.putFloat(destOffset + 4, Math.fma(_self10, _t0, _self11 * _t1));
-        dest.putFloat(destOffset + 8, Math.fma(_self01, _t0, -(_self00 * _t1)));
-        dest.putFloat(destOffset + 12, Math.fma(_self11, _t0, -(_self10 * _t1)));
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        dest.putFloat(destOffset + 0, Math.fma(_self00, _t1, _self01 * _t0));
+        dest.putFloat(destOffset + 4, Math.fma(_self10, _t1, _self11 * _t0));
+        dest.putFloat(destOffset + 8, Math.fma(_self01, _t1, -(_self00 * _t0)));
+        dest.putFloat(destOffset + 12, Math.fma(_self11, _t1, -(_self10 * _t0)));
         dest.putFloat(destOffset + 16, _self02);
         dest.putFloat(destOffset + 20, _self12);
         return dest;
@@ -1083,16 +1083,16 @@ public final class Float2x3OpsKernelsByteBuffer {
         float _self11 = src.getFloat(srcOffset + 12);
         float _self02 = src.getFloat(srcOffset + 16);
         float _self12 = src.getFloat(srcOffset + 20);
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t8 = (_t3 + _t3) * _t3;
-        float _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
-        float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
-        dest.putFloat(destOffset + 0, Math.fma(_self00, _t0, _self01 * _t1));
-        dest.putFloat(destOffset + 4, Math.fma(_self10, _t0, _self11 * _t1));
-        dest.putFloat(destOffset + 8, Math.fma(_self01, _t0, -(_self00 * _t1)));
-        dest.putFloat(destOffset + 12, Math.fma(_self11, _t0, -(_self10 * _t1)));
+        float _t9 = Math.fma(pivotX, _t8, pivotY * _t0);
+        float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t0));
+        dest.putFloat(destOffset + 0, Math.fma(_self00, _t2, _self01 * _t0));
+        dest.putFloat(destOffset + 4, Math.fma(_self10, _t2, _self11 * _t0));
+        dest.putFloat(destOffset + 8, Math.fma(_self01, _t2, -(_self00 * _t0)));
+        dest.putFloat(destOffset + 12, Math.fma(_self11, _t2, -(_self10 * _t0)));
         dest.putFloat(destOffset + 16, Math.fma(_self00, _t9, Math.fma(_self01, _t10, _self02)));
         dest.putFloat(destOffset + 20, Math.fma(_self10, _t9, Math.fma(_self11, _t10, _self12)));
         return dest;
@@ -1115,16 +1115,16 @@ public final class Float2x3OpsKernelsByteBuffer {
         float _self12 = src.getFloat(srcOffset + 20);
         float _pivotx = pivot.getFloat(pivotOffset + 0);
         float _pivoty = pivot.getFloat(pivotOffset + 4);
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.cosFromSin(_t0, angle);
         float _t3 = (float) Math.sin(0.5f * angle);
         float _t8 = (_t3 + _t3) * _t3;
-        float _t9 = Math.fma(_pivotx, _t8, _pivoty * _t1);
-        float _t10 = Math.fma(_pivoty, _t8, -(_pivotx * _t1));
-        dest.putFloat(destOffset + 0, Math.fma(_self00, _t0, _self01 * _t1));
-        dest.putFloat(destOffset + 4, Math.fma(_self10, _t0, _self11 * _t1));
-        dest.putFloat(destOffset + 8, Math.fma(_self01, _t0, -(_self00 * _t1)));
-        dest.putFloat(destOffset + 12, Math.fma(_self11, _t0, -(_self10 * _t1)));
+        float _t9 = Math.fma(_pivotx, _t8, _pivoty * _t0);
+        float _t10 = Math.fma(_pivoty, _t8, -(_pivotx * _t0));
+        dest.putFloat(destOffset + 0, Math.fma(_self00, _t2, _self01 * _t0));
+        dest.putFloat(destOffset + 4, Math.fma(_self10, _t2, _self11 * _t0));
+        dest.putFloat(destOffset + 8, Math.fma(_self01, _t2, -(_self00 * _t0)));
+        dest.putFloat(destOffset + 12, Math.fma(_self11, _t2, -(_self10 * _t0)));
         dest.putFloat(destOffset + 16, Math.fma(_self00, _t9, Math.fma(_self01, _t10, _self02)));
         dest.putFloat(destOffset + 20, Math.fma(_self10, _t9, Math.fma(_self11, _t10, _self12)));
         return dest;

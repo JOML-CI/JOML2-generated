@@ -1787,22 +1787,22 @@ public final class Double4x4OpsSimd {
 
     public static double[] arcball_fma(double[] dest, int destOffset, double[] src, int srcOffset, double radius, double centerX, double centerY, double centerZ, double angleX, double angleY) {
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleX);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.sin(angleX);
-        double _t4 = -centerZ;
-        double _t5 = -centerY;
-        double _t6 = _t0 * _t1;
-        double _t7 = _t3 * _t0;
-        double _t8 = _t1 * _t2;
-        double _t9 = _t3 * _t2;
+        double _t1 = Math.sin(angleX);
+        double _t2 = -centerZ;
+        double _t3 = -centerY;
+        double _t4 = Math.cosFromSin(_t1, angleX);
+        double _t5 = Math.cosFromSin(_t0, angleY);
+        double _t6 = _t1 * _t0;
+        double _t7 = _t0 * _t4;
+        double _t8 = _t1 * _t5;
+        double _t12 = _t4 * _t5;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t6), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t7))));
-        var _c1 = _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3)));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t8), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t9))));
-        var _c3 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t4, _t0, -(centerX * _t2))), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(centerZ, _t9, Math.fma(_t5, _t1, -(centerX * _t7)))), _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(centerX, _t6, Math.fma(_t5, _t3, Math.fma(_t4, _t8, -radius)))), DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t7), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t5), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t6))));
+        var _c1 = _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t4), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t12), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t8))));
+        var _c3 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t0, -(centerX * _t5))), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(centerZ, _t8, Math.fma(_t3, _t4, -(centerX * _t6)))), _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(centerX, _t7, Math.fma(_t3, _t1, Math.fma(_t2, _t12, -radius)))), DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -1812,22 +1812,22 @@ public final class Double4x4OpsSimd {
 
     public static double[] arcball_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double radius, double centerX, double centerY, double centerZ, double angleX, double angleY) {
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleX);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.sin(angleX);
-        double _t4 = -centerZ;
-        double _t5 = -centerY;
-        double _t6 = _t0 * _t1;
-        double _t7 = _t3 * _t0;
-        double _t8 = _t1 * _t2;
-        double _t9 = _t3 * _t2;
+        double _t1 = Math.sin(angleX);
+        double _t2 = -centerZ;
+        double _t3 = -centerY;
+        double _t4 = Math.cosFromSin(_t1, angleX);
+        double _t5 = Math.cosFromSin(_t0, angleY);
+        double _t6 = _t1 * _t0;
+        double _t7 = _t0 * _t4;
+        double _t8 = _t1 * _t5;
+        double _t12 = _t4 * _t5;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t6)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t7))));
-        var _c1 = _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3)));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t8)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t9))));
-        var _c3 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t4, _t0, -(centerX * _t2)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(centerZ, _t9, Math.fma(_t5, _t1, -(centerX * _t7))))).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(centerX, _t6, Math.fma(_t5, _t3, Math.fma(_t4, _t8, -radius))))).add(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t7)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t6))));
+        var _c1 = _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t4)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t12)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t8))));
+        var _c3 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t0, -(centerX * _t5)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(centerZ, _t8, Math.fma(_t3, _t4, -(centerX * _t6))))).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(centerX, _t7, Math.fma(_t3, _t1, Math.fma(_t2, _t12, -radius))))).add(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -1842,22 +1842,22 @@ public final class Double4x4OpsSimd {
 
     public static java.lang.foreign.MemorySegment arcball_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double radius, double centerX, double centerY, double centerZ, double angleX, double angleY) {
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleX);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.sin(angleX);
-        double _t4 = -centerZ;
-        double _t5 = -centerY;
-        double _t6 = _t0 * _t1;
-        double _t7 = _t3 * _t0;
-        double _t8 = _t1 * _t2;
-        double _t9 = _t3 * _t2;
+        double _t1 = Math.sin(angleX);
+        double _t2 = -centerZ;
+        double _t3 = -centerY;
+        double _t4 = Math.cosFromSin(_t1, angleX);
+        double _t5 = Math.cosFromSin(_t0, angleY);
+        double _t6 = _t1 * _t0;
+        double _t7 = _t0 * _t4;
+        double _t8 = _t1 * _t5;
+        double _t12 = _t4 * _t5;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t6), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t7))));
-        var _c1 = _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3)));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t8), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t9))));
-        var _c3 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t4, _t0, -(centerX * _t2))), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(centerZ, _t9, Math.fma(_t5, _t1, -(centerX * _t7)))), _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(centerX, _t6, Math.fma(_t5, _t3, Math.fma(_t4, _t8, -radius)))), DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t7), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t5), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t6))));
+        var _c1 = _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t4), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t12), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t8))));
+        var _c3 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t0, -(centerX * _t5))), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(centerZ, _t8, Math.fma(_t3, _t4, -(centerX * _t6)))), _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(centerX, _t7, Math.fma(_t3, _t1, Math.fma(_t2, _t12, -radius)))), DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
         _c2.intoMemorySegment(dest, destOffset + 64L, java.nio.ByteOrder.nativeOrder());
@@ -1867,22 +1867,22 @@ public final class Double4x4OpsSimd {
 
     public static java.lang.foreign.MemorySegment arcball_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double radius, double centerX, double centerY, double centerZ, double angleX, double angleY) {
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleX);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.sin(angleX);
-        double _t4 = -centerZ;
-        double _t5 = -centerY;
-        double _t6 = _t0 * _t1;
-        double _t7 = _t3 * _t0;
-        double _t8 = _t1 * _t2;
-        double _t9 = _t3 * _t2;
+        double _t1 = Math.sin(angleX);
+        double _t2 = -centerZ;
+        double _t3 = -centerY;
+        double _t4 = Math.cosFromSin(_t1, angleX);
+        double _t5 = Math.cosFromSin(_t0, angleY);
+        double _t6 = _t1 * _t0;
+        double _t7 = _t0 * _t4;
+        double _t8 = _t1 * _t5;
+        double _t12 = _t4 * _t5;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t6)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t7))));
-        var _c1 = _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3)));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t8)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t9))));
-        var _c3 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t4, _t0, -(centerX * _t2)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(centerZ, _t9, Math.fma(_t5, _t1, -(centerX * _t7))))).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(centerX, _t6, Math.fma(_t5, _t3, Math.fma(_t4, _t8, -radius))))).add(DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t7)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t6))));
+        var _c1 = _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t4)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t12)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t8))));
+        var _c3 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t0, -(centerX * _t5)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(centerZ, _t8, Math.fma(_t3, _t4, -(centerX * _t6))))).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(centerX, _t7, Math.fma(_t3, _t1, Math.fma(_t2, _t12, -radius))))).add(DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
         _c2.intoMemorySegment(dest, destOffset + 64L, java.nio.ByteOrder.nativeOrder());
@@ -1899,22 +1899,22 @@ public final class Double4x4OpsSimd {
         double _centerx = center[centerOffset + 0];
         double _centerz = center[centerOffset + 2];
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleX);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.sin(angleX);
-        double _t4 = -_centerz;
-        double _t5 = -center[centerOffset + 1];
-        double _t6 = _t0 * _t1;
-        double _t7 = _t3 * _t0;
-        double _t8 = _t1 * _t2;
-        double _t9 = _t3 * _t2;
+        double _t1 = Math.sin(angleX);
+        double _t2 = -_centerz;
+        double _t3 = -center[centerOffset + 1];
+        double _t4 = Math.cosFromSin(_t1, angleX);
+        double _t5 = Math.cosFromSin(_t0, angleY);
+        double _t6 = _t1 * _t0;
+        double _t7 = _t0 * _t4;
+        double _t8 = _t1 * _t5;
+        double _t12 = _t4 * _t5;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t6), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t7))));
-        var _c1 = _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3)));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t8), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t9))));
-        var _c3 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t4, _t0, -(_centerx * _t2))), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerz, _t9, Math.fma(_t5, _t1, -(_centerx * _t7)))), _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerx, _t6, Math.fma(_t5, _t3, Math.fma(_t4, _t8, -radius)))), DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t7), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t5), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t6))));
+        var _c1 = _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t4), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t12), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t8))));
+        var _c3 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t0, -(_centerx * _t5))), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerz, _t8, Math.fma(_t3, _t4, -(_centerx * _t6)))), _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerx, _t7, Math.fma(_t3, _t1, Math.fma(_t2, _t12, -radius)))), DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -1926,22 +1926,22 @@ public final class Double4x4OpsSimd {
         double _centerx = center[centerOffset + 0];
         double _centerz = center[centerOffset + 2];
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleX);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.sin(angleX);
-        double _t4 = -_centerz;
-        double _t5 = -center[centerOffset + 1];
-        double _t6 = _t0 * _t1;
-        double _t7 = _t3 * _t0;
-        double _t8 = _t1 * _t2;
-        double _t9 = _t3 * _t2;
+        double _t1 = Math.sin(angleX);
+        double _t2 = -_centerz;
+        double _t3 = -center[centerOffset + 1];
+        double _t4 = Math.cosFromSin(_t1, angleX);
+        double _t5 = Math.cosFromSin(_t0, angleY);
+        double _t6 = _t1 * _t0;
+        double _t7 = _t0 * _t4;
+        double _t8 = _t1 * _t5;
+        double _t12 = _t4 * _t5;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t6)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t7))));
-        var _c1 = _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3)));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t8)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t9))));
-        var _c3 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t4, _t0, -(_centerx * _t2)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerz, _t9, Math.fma(_t5, _t1, -(_centerx * _t7))))).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerx, _t6, Math.fma(_t5, _t3, Math.fma(_t4, _t8, -radius))))).add(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t7)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t6))));
+        var _c1 = _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t4)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t12)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t8))));
+        var _c3 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t0, -(_centerx * _t5)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerz, _t8, Math.fma(_t3, _t4, -(_centerx * _t6))))).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerx, _t7, Math.fma(_t3, _t1, Math.fma(_t2, _t12, -radius))))).add(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -1964,22 +1964,22 @@ public final class Double4x4OpsSimd {
         double _centerx = UnsafeOpsHolder.U.getDouble(_centerBase + 0L);
         double _centerz = UnsafeOpsHolder.U.getDouble(_centerBase + 16L);
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleX);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.sin(angleX);
-        double _t4 = -_centerz;
-        double _t5 = -UnsafeOpsHolder.U.getDouble(_centerBase + 8L);
-        double _t6 = _t0 * _t1;
-        double _t7 = _t3 * _t0;
-        double _t8 = _t1 * _t2;
-        double _t9 = _t3 * _t2;
+        double _t1 = Math.sin(angleX);
+        double _t2 = -_centerz;
+        double _t3 = -UnsafeOpsHolder.U.getDouble(_centerBase + 8L);
+        double _t4 = Math.cosFromSin(_t1, angleX);
+        double _t5 = Math.cosFromSin(_t0, angleY);
+        double _t6 = _t1 * _t0;
+        double _t7 = _t0 * _t4;
+        double _t8 = _t1 * _t5;
+        double _t12 = _t4 * _t5;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t6), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t7))));
-        var _c1 = _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3)));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t8), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t9))));
-        var _c3 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t4, _t0, -(_centerx * _t2))), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerz, _t9, Math.fma(_t5, _t1, -(_centerx * _t7)))), _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerx, _t6, Math.fma(_t5, _t3, Math.fma(_t4, _t8, -radius)))), DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t7), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t5), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t6))));
+        var _c1 = _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t4), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t12), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t8))));
+        var _c3 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t0, -(_centerx * _t5))), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerz, _t8, Math.fma(_t3, _t4, -(_centerx * _t6)))), _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerx, _t7, Math.fma(_t3, _t1, Math.fma(_t2, _t12, -radius)))), DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
         _c2.intoMemorySegment(dest, destOffset + 64L, java.nio.ByteOrder.nativeOrder());
@@ -1991,22 +1991,22 @@ public final class Double4x4OpsSimd {
         double _centerx = center.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, centerOffset + 0L);
         double _centerz = center.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, centerOffset + 16L);
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleX);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.sin(angleX);
-        double _t4 = -_centerz;
-        double _t5 = -center.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, centerOffset + 8L);
-        double _t6 = _t0 * _t1;
-        double _t7 = _t3 * _t0;
-        double _t8 = _t1 * _t2;
-        double _t9 = _t3 * _t2;
+        double _t1 = Math.sin(angleX);
+        double _t2 = -_centerz;
+        double _t3 = -center.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, centerOffset + 8L);
+        double _t4 = Math.cosFromSin(_t1, angleX);
+        double _t5 = Math.cosFromSin(_t0, angleY);
+        double _t6 = _t1 * _t0;
+        double _t7 = _t0 * _t4;
+        double _t8 = _t1 * _t5;
+        double _t12 = _t4 * _t5;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t6), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t7))));
-        var _c1 = _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3)));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t8), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t9))));
-        var _c3 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t4, _t0, -(_centerx * _t2))), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerz, _t9, Math.fma(_t5, _t1, -(_centerx * _t7)))), _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerx, _t6, Math.fma(_t5, _t3, Math.fma(_t4, _t8, -radius)))), DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t7), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t5), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t6))));
+        var _c1 = _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t4), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t12), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t8))));
+        var _c3 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t0, -(_centerx * _t5))), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerz, _t8, Math.fma(_t3, _t4, -(_centerx * _t6)))), _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerx, _t7, Math.fma(_t3, _t1, Math.fma(_t2, _t12, -radius)))), DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
         _c2.intoMemorySegment(dest, destOffset + 64L, java.nio.ByteOrder.nativeOrder());
@@ -2024,22 +2024,22 @@ public final class Double4x4OpsSimd {
         double _centerx = UnsafeOpsHolder.U.getDouble(_centerBase + 0L);
         double _centerz = UnsafeOpsHolder.U.getDouble(_centerBase + 16L);
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleX);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.sin(angleX);
-        double _t4 = -_centerz;
-        double _t5 = -UnsafeOpsHolder.U.getDouble(_centerBase + 8L);
-        double _t6 = _t0 * _t1;
-        double _t7 = _t3 * _t0;
-        double _t8 = _t1 * _t2;
-        double _t9 = _t3 * _t2;
+        double _t1 = Math.sin(angleX);
+        double _t2 = -_centerz;
+        double _t3 = -UnsafeOpsHolder.U.getDouble(_centerBase + 8L);
+        double _t4 = Math.cosFromSin(_t1, angleX);
+        double _t5 = Math.cosFromSin(_t0, angleY);
+        double _t6 = _t1 * _t0;
+        double _t7 = _t0 * _t4;
+        double _t8 = _t1 * _t5;
+        double _t12 = _t4 * _t5;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t6)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t7))));
-        var _c1 = _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3)));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t8)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t9))));
-        var _c3 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t4, _t0, -(_centerx * _t2)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerz, _t9, Math.fma(_t5, _t1, -(_centerx * _t7))))).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerx, _t6, Math.fma(_t5, _t3, Math.fma(_t4, _t8, -radius))))).add(DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t7)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t6))));
+        var _c1 = _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t4)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t12)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t8))));
+        var _c3 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t0, -(_centerx * _t5)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerz, _t8, Math.fma(_t3, _t4, -(_centerx * _t6))))).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerx, _t7, Math.fma(_t3, _t1, Math.fma(_t2, _t12, -radius))))).add(DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
         _c2.intoMemorySegment(dest, destOffset + 64L, java.nio.ByteOrder.nativeOrder());
@@ -2051,22 +2051,22 @@ public final class Double4x4OpsSimd {
         double _centerx = center.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, centerOffset + 0L);
         double _centerz = center.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, centerOffset + 16L);
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleX);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.sin(angleX);
-        double _t4 = -_centerz;
-        double _t5 = -center.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, centerOffset + 8L);
-        double _t6 = _t0 * _t1;
-        double _t7 = _t3 * _t0;
-        double _t8 = _t1 * _t2;
-        double _t9 = _t3 * _t2;
+        double _t1 = Math.sin(angleX);
+        double _t2 = -_centerz;
+        double _t3 = -center.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, centerOffset + 8L);
+        double _t4 = Math.cosFromSin(_t1, angleX);
+        double _t5 = Math.cosFromSin(_t0, angleY);
+        double _t6 = _t1 * _t0;
+        double _t7 = _t0 * _t4;
+        double _t8 = _t1 * _t5;
+        double _t12 = _t4 * _t5;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t6)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t7))));
-        var _c1 = _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3)));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t8)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t9))));
-        var _c3 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t4, _t0, -(_centerx * _t2)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerz, _t9, Math.fma(_t5, _t1, -(_centerx * _t7))))).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerx, _t6, Math.fma(_t5, _t3, Math.fma(_t4, _t8, -radius))))).add(DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t7)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t6))));
+        var _c1 = _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t4)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t12)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t8))));
+        var _c3 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t0, -(_centerx * _t5)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerz, _t8, Math.fma(_t3, _t4, -(_centerx * _t6))))).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_centerx, _t7, Math.fma(_t3, _t1, Math.fma(_t2, _t12, -radius))))).add(DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder()))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
         _c2.intoMemorySegment(dest, destOffset + 64L, java.nio.ByteOrder.nativeOrder());
@@ -2080,22 +2080,22 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] axonometricDimetric_fma(double[] dest, int destOffset, double[] src, int srcOffset, double alpha) {
-        double _t0 = Math.cos(alpha);
+        double _t0 = Math.sin(alpha);
         double _t1 = Math.sqrt(2.0);
-        double _t2 = Math.sin(alpha);
-        double _t5 = src[srcOffset + 0] * _t1;
-        double _t6 = src[srcOffset + 1] * _t1;
-        double _t7 = src[srcOffset + 2] * _t1;
-        double _t8 = src[srcOffset + 3] * _t1;
+        double _t2 = Math.cosFromSin(_t0, alpha);
+        double _t4 = src[srcOffset + 0] * _t1;
+        double _t5 = src[srcOffset + 1] * _t1;
+        double _t6 = src[srcOffset + 2] * _t1;
+        double _t7 = src[srcOffset + 3] * _t1;
         double _t9 = 0.5 * _t0 * _t1;
         double _t10 = 0.5 * _t2 * _t1;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _sv2 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _sv3 = DoubleVector.zero(SIMD_SPECIES).withLane(0, _t5).withLane(1, _t6).withLane(2, _t7).withLane(3, _t8);
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t9), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t10), _sv2.mul(_sv3)));
-        var _c1 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t9), _sv2.fma(_sv3, _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t10))));
+        var _sv3 = DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(1, _t5).withLane(2, _t6).withLane(3, _t7);
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t10), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t9), _sv2.mul(_sv3)));
+        var _c1 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t10), _sv2.fma(_sv3, _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t9))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -2105,22 +2105,22 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] axonometricDimetric_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double alpha) {
-        double _t0 = Math.cos(alpha);
+        double _t0 = Math.sin(alpha);
         double _t1 = Math.sqrt(2.0);
-        double _t2 = Math.sin(alpha);
-        double _t5 = src[srcOffset + 0] * _t1;
-        double _t6 = src[srcOffset + 1] * _t1;
-        double _t7 = src[srcOffset + 2] * _t1;
-        double _t8 = src[srcOffset + 3] * _t1;
+        double _t2 = Math.cosFromSin(_t0, alpha);
+        double _t4 = src[srcOffset + 0] * _t1;
+        double _t5 = src[srcOffset + 1] * _t1;
+        double _t6 = src[srcOffset + 2] * _t1;
+        double _t7 = src[srcOffset + 3] * _t1;
         double _t9 = 0.5 * _t0 * _t1;
         double _t10 = 0.5 * _t2 * _t1;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _sv2 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _sv3 = DoubleVector.zero(SIMD_SPECIES).withLane(0, _t5).withLane(1, _t6).withLane(2, _t7).withLane(3, _t8);
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t9)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t10)).add(_sv2.mul(_sv3)));
-        var _c1 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t9)).add(_sv2.mul(_sv3).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t10))));
+        var _sv3 = DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(1, _t5).withLane(2, _t6).withLane(3, _t7);
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t10)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t9)).add(_sv2.mul(_sv3)));
+        var _c1 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t10)).add(_sv2.mul(_sv3).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t9))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -2141,22 +2141,22 @@ public final class Double4x4OpsSimd {
 
     public static java.lang.foreign.MemorySegment axonometricDimetric_fma_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double alpha) {
         long _srcBase = src.address() + srcOffset;
-        double _t0 = Math.cos(alpha);
+        double _t0 = Math.sin(alpha);
         double _t1 = Math.sqrt(2.0);
-        double _t2 = Math.sin(alpha);
-        double _t5 = UnsafeOpsHolder.U.getDouble(_srcBase + 0L) * _t1;
-        double _t6 = UnsafeOpsHolder.U.getDouble(_srcBase + 8L) * _t1;
-        double _t7 = UnsafeOpsHolder.U.getDouble(_srcBase + 16L) * _t1;
-        double _t8 = UnsafeOpsHolder.U.getDouble(_srcBase + 24L) * _t1;
+        double _t2 = Math.cosFromSin(_t0, alpha);
+        double _t4 = UnsafeOpsHolder.U.getDouble(_srcBase + 0L) * _t1;
+        double _t5 = UnsafeOpsHolder.U.getDouble(_srcBase + 8L) * _t1;
+        double _t6 = UnsafeOpsHolder.U.getDouble(_srcBase + 16L) * _t1;
+        double _t7 = UnsafeOpsHolder.U.getDouble(_srcBase + 24L) * _t1;
         double _t9 = 0.5 * _t0 * _t1;
         double _t10 = 0.5 * _t2 * _t1;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _sv3 = DoubleVector.zero(SIMD_SPECIES).withLane(0, _t5).withLane(1, _t6).withLane(2, _t7).withLane(3, _t8);
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t9), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t10), _sv2.mul(_sv3)));
-        var _c1 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t9), _sv2.fma(_sv3, _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t10))));
+        var _sv3 = DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(1, _t5).withLane(2, _t6).withLane(3, _t7);
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t10), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t9), _sv2.mul(_sv3)));
+        var _c1 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t10), _sv2.fma(_sv3, _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t9))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -2166,22 +2166,22 @@ public final class Double4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment axonometricDimetric_fma_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double alpha) {
-        double _t0 = Math.cos(alpha);
+        double _t0 = Math.sin(alpha);
         double _t1 = Math.sqrt(2.0);
-        double _t2 = Math.sin(alpha);
-        double _t5 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L) * _t1;
-        double _t6 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L) * _t1;
-        double _t7 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L) * _t1;
-        double _t8 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L) * _t1;
+        double _t2 = Math.cosFromSin(_t0, alpha);
+        double _t4 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L) * _t1;
+        double _t5 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L) * _t1;
+        double _t6 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L) * _t1;
+        double _t7 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L) * _t1;
         double _t9 = 0.5 * _t0 * _t1;
         double _t10 = 0.5 * _t2 * _t1;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _sv3 = DoubleVector.zero(SIMD_SPECIES).withLane(0, _t5).withLane(1, _t6).withLane(2, _t7).withLane(3, _t8);
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t9), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t10), _sv2.mul(_sv3)));
-        var _c1 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t9), _sv2.fma(_sv3, _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t10))));
+        var _sv3 = DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(1, _t5).withLane(2, _t6).withLane(3, _t7);
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t10), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t9), _sv2.mul(_sv3)));
+        var _c1 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t10), _sv2.fma(_sv3, _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t9))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -2197,22 +2197,22 @@ public final class Double4x4OpsSimd {
 
     public static java.lang.foreign.MemorySegment axonometricDimetric_mulAdd_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double alpha) {
         long _srcBase = src.address() + srcOffset;
-        double _t0 = Math.cos(alpha);
+        double _t0 = Math.sin(alpha);
         double _t1 = Math.sqrt(2.0);
-        double _t2 = Math.sin(alpha);
-        double _t5 = UnsafeOpsHolder.U.getDouble(_srcBase + 0L) * _t1;
-        double _t6 = UnsafeOpsHolder.U.getDouble(_srcBase + 8L) * _t1;
-        double _t7 = UnsafeOpsHolder.U.getDouble(_srcBase + 16L) * _t1;
-        double _t8 = UnsafeOpsHolder.U.getDouble(_srcBase + 24L) * _t1;
+        double _t2 = Math.cosFromSin(_t0, alpha);
+        double _t4 = UnsafeOpsHolder.U.getDouble(_srcBase + 0L) * _t1;
+        double _t5 = UnsafeOpsHolder.U.getDouble(_srcBase + 8L) * _t1;
+        double _t6 = UnsafeOpsHolder.U.getDouble(_srcBase + 16L) * _t1;
+        double _t7 = UnsafeOpsHolder.U.getDouble(_srcBase + 24L) * _t1;
         double _t9 = 0.5 * _t0 * _t1;
         double _t10 = 0.5 * _t2 * _t1;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _sv3 = DoubleVector.zero(SIMD_SPECIES).withLane(0, _t5).withLane(1, _t6).withLane(2, _t7).withLane(3, _t8);
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t9)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t10)).add(_sv2.mul(_sv3)));
-        var _c1 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t9)).add(_sv2.mul(_sv3).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t10))));
+        var _sv3 = DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(1, _t5).withLane(2, _t6).withLane(3, _t7);
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t10)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t9)).add(_sv2.mul(_sv3)));
+        var _c1 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t10)).add(_sv2.mul(_sv3).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t9))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -2222,22 +2222,22 @@ public final class Double4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment axonometricDimetric_mulAdd_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double alpha) {
-        double _t0 = Math.cos(alpha);
+        double _t0 = Math.sin(alpha);
         double _t1 = Math.sqrt(2.0);
-        double _t2 = Math.sin(alpha);
-        double _t5 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L) * _t1;
-        double _t6 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L) * _t1;
-        double _t7 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L) * _t1;
-        double _t8 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L) * _t1;
+        double _t2 = Math.cosFromSin(_t0, alpha);
+        double _t4 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L) * _t1;
+        double _t5 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L) * _t1;
+        double _t6 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L) * _t1;
+        double _t7 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L) * _t1;
         double _t9 = 0.5 * _t0 * _t1;
         double _t10 = 0.5 * _t2 * _t1;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _sv3 = DoubleVector.zero(SIMD_SPECIES).withLane(0, _t5).withLane(1, _t6).withLane(2, _t7).withLane(3, _t8);
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t9)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t10)).add(_sv2.mul(_sv3)));
-        var _c1 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t9)).add(_sv2.mul(_sv3).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t10))));
+        var _sv3 = DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(1, _t5).withLane(2, _t6).withLane(3, _t7);
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t10)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t9)).add(_sv2.mul(_sv3)));
+        var _c1 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t10)).add(_sv2.mul(_sv3).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t9))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -2395,15 +2395,15 @@ public final class Double4x4OpsSimd {
 
     public static double[] axonometricTrimetric_fma(double[] dest, int destOffset, double[] src, int srcOffset, double alphaX, double alphaY) {
         double _t0 = Math.sin(alphaY);
-        double _t1 = Math.cos(alphaX);
-        double _t2 = Math.cos(alphaY);
-        double _t3 = Math.sin(alphaX);
+        double _t1 = Math.sin(alphaX);
+        double _t2 = Math.cosFromSin(_t1, alphaX);
+        double _t3 = Math.cosFromSin(_t0, alphaY);
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t1)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t0))));
-        var _c1 = _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3)));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t2), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t3 * _t2)))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t2)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t3), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t0))));
+        var _c1 = _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t3), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t1 * _t3)))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -2414,15 +2414,15 @@ public final class Double4x4OpsSimd {
 
     public static double[] axonometricTrimetric_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double alphaX, double alphaY) {
         double _t0 = Math.sin(alphaY);
-        double _t1 = Math.cos(alphaX);
-        double _t2 = Math.cos(alphaY);
-        double _t3 = Math.sin(alphaX);
+        double _t1 = Math.sin(alphaX);
+        double _t2 = Math.cosFromSin(_t1, alphaX);
+        double _t3 = Math.cosFromSin(_t0, alphaY);
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t1))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t0))));
-        var _c1 = _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3)));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t2)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t3 * _t2)))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t2))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t0))));
+        var _c1 = _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t3)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t1 * _t3)))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -2438,15 +2438,15 @@ public final class Double4x4OpsSimd {
 
     public static java.lang.foreign.MemorySegment axonometricTrimetric_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double alphaX, double alphaY) {
         double _t0 = Math.sin(alphaY);
-        double _t1 = Math.cos(alphaX);
-        double _t2 = Math.cos(alphaY);
-        double _t3 = Math.sin(alphaX);
+        double _t1 = Math.sin(alphaX);
+        double _t2 = Math.cosFromSin(_t1, alphaX);
+        double _t3 = Math.cosFromSin(_t0, alphaY);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t1)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t0))));
-        var _c1 = _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3)));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t2), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t3 * _t2)))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t2)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t3), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t0))));
+        var _c1 = _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2), _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t3), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t1 * _t3)))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -2457,15 +2457,15 @@ public final class Double4x4OpsSimd {
 
     public static java.lang.foreign.MemorySegment axonometricTrimetric_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double alphaX, double alphaY) {
         double _t0 = Math.sin(alphaY);
-        double _t1 = Math.cos(alphaX);
-        double _t2 = Math.cos(alphaY);
-        double _t3 = Math.sin(alphaX);
+        double _t1 = Math.sin(alphaX);
+        double _t2 = Math.cosFromSin(_t1, alphaX);
+        double _t3 = Math.cosFromSin(_t0, alphaY);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t1))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t0))));
-        var _c1 = _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3)));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t2)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t3 * _t2)))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t2))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t0))));
+        var _c1 = _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t3)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t1 * _t3)))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -5320,11 +5320,12 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] obliqueCabinet_fma(double[] dest, int destOffset, double[] src, int srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _c0 = _sv0;
         var _c1 = _sv1;
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -(0.5 * Math.cos(angle))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, -(0.5 * Math.sin(angle))), DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8)));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -(0.5 * Math.cosFromSin(_t0, angle))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, -(0.5 * _t0)), DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8)));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -5334,11 +5335,12 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] obliqueCabinet_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _c0 = _sv0;
         var _c1 = _sv1;
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -(0.5 * Math.cos(angle)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(0.5 * Math.sin(angle)))).add(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8)));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -(0.5 * Math.cosFromSin(_t0, angle)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(0.5 * _t0))).add(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8)));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -5353,11 +5355,12 @@ public final class Double4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment obliqueCabinet_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _c0 = _sv0;
         var _c1 = _sv1;
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -(0.5 * Math.cos(angle))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, -(0.5 * Math.sin(angle))), DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder())));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -(0.5 * Math.cosFromSin(_t0, angle))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, -(0.5 * _t0)), DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder())));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -5367,11 +5370,12 @@ public final class Double4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment obliqueCabinet_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _c0 = _sv0;
         var _c1 = _sv1;
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -(0.5 * Math.cos(angle)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(0.5 * Math.sin(angle)))).add(DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder())));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -(0.5 * Math.cosFromSin(_t0, angle)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(0.5 * _t0))).add(DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder())));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -5386,11 +5390,12 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] obliqueCavalier_fma(double[] dest, int destOffset, double[] src, int srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _c0 = _sv0;
         var _c1 = _sv1;
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -Math.cos(angle)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, -Math.sin(angle)), DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8)));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -Math.cosFromSin(_t0, angle)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t0), DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8)));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -5400,11 +5405,12 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] obliqueCavalier_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _c0 = _sv0;
         var _c1 = _sv1;
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -Math.cos(angle))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -Math.sin(angle))).add(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8)));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -Math.cosFromSin(_t0, angle))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0)).add(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8)));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -5419,11 +5425,12 @@ public final class Double4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment obliqueCavalier_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _c0 = _sv0;
         var _c1 = _sv1;
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -Math.cos(angle)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, -Math.sin(angle)), DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder())));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -Math.cosFromSin(_t0, angle)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t0), DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder())));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -5433,11 +5440,12 @@ public final class Double4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment obliqueCavalier_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _c0 = _sv0;
         var _c1 = _sv1;
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -Math.cos(angle))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -Math.sin(angle))).add(DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder())));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -Math.cosFromSin(_t0, angle))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0)).add(DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder())));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -5452,10 +5460,11 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] obliqueMilitary_fma(double[] dest, int destOffset, double[] src, int srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _c0 = _sv0;
-        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.cos(angle)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(angle)), DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).neg()));
+        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.cosFromSin(_t0, angle)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).neg()));
         var _c2 = _sv1;
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
@@ -5466,10 +5475,11 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] obliqueMilitary_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _c0 = _sv0;
-        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.cos(angle))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(angle))).add(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).neg()));
+        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.cosFromSin(_t0, angle))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).neg()));
         var _c2 = _sv1;
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
@@ -5485,10 +5495,11 @@ public final class Double4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment obliqueMilitary_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _c0 = _sv0;
-        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.cos(angle)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(angle)), DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder()).neg()));
+        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.cosFromSin(_t0, angle)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder()).neg()));
         var _c2 = _sv1;
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
@@ -5499,10 +5510,11 @@ public final class Double4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment obliqueMilitary_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
         var _c0 = _sv0;
-        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.cos(angle))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(angle))).add(DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder()).neg()));
+        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.cosFromSin(_t0, angle))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder()).neg()));
         var _c2 = _sv1;
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
@@ -9370,18 +9382,18 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] rotateAxis_fma(double[] dest, int destOffset, double[] src, int srcOffset, double angle, double axisX, double axisY, double axisZ) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
-        double _t3 = axisX * axisZ;
-        double _t6 = axisX * axisY;
-        double _t7 = axisY * axisZ;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t2 = axisX * axisZ;
+        double _t5 = axisX * axisY;
+        double _t6 = axisY * axisZ;
+        double _t11 = 1.0 - _t1;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, -(axisY * _t1))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, axisX * axisX, _t0)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisZ, _t1, _t2 * _t6)))));
-        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisX, _t1, _t2 * _t7)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t6, -(axisZ * _t1))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, axisY * axisY, _t0)))));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, axisZ * axisZ, _t0)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisY, _t1, _t2 * _t3)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t7, -(axisX * _t1))))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t2, -(axisY * _t0))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, axisX * axisX, _t1)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisZ, _t0, _t11 * _t5)))));
+        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisX, _t0, _t11 * _t6)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t5, -(axisZ * _t0))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, axisY * axisY, _t1)))));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, axisZ * axisZ, _t1)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisY, _t0, _t11 * _t2)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t6, -(axisX * _t0))))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -9391,18 +9403,18 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] rotateAxis_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double angle, double axisX, double axisY, double axisZ) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
-        double _t3 = axisX * axisZ;
-        double _t6 = axisX * axisY;
-        double _t7 = axisY * axisZ;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t2 = axisX * axisZ;
+        double _t5 = axisX * axisY;
+        double _t6 = axisY * axisZ;
+        double _t11 = 1.0 - _t1;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, -(axisY * _t1)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, axisX * axisX, _t0))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisZ, _t1, _t2 * _t6)))));
-        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisX, _t1, _t2 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t6, -(axisZ * _t1)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, axisY * axisY, _t0)))));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, axisZ * axisZ, _t0))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisY, _t1, _t2 * _t3))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t7, -(axisX * _t1))))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t2, -(axisY * _t0)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, axisX * axisX, _t1))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisZ, _t0, _t11 * _t5)))));
+        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisX, _t0, _t11 * _t6))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t5, -(axisZ * _t0)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, axisY * axisY, _t1)))));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, axisZ * axisZ, _t1))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisY, _t0, _t11 * _t2))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t6, -(axisX * _t0))))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -9417,18 +9429,18 @@ public final class Double4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment rotateAxis_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle, double axisX, double axisY, double axisZ) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
-        double _t3 = axisX * axisZ;
-        double _t6 = axisX * axisY;
-        double _t7 = axisY * axisZ;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t2 = axisX * axisZ;
+        double _t5 = axisX * axisY;
+        double _t6 = axisY * axisZ;
+        double _t11 = 1.0 - _t1;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, -(axisY * _t1))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, axisX * axisX, _t0)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisZ, _t1, _t2 * _t6)))));
-        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisX, _t1, _t2 * _t7)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t6, -(axisZ * _t1))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, axisY * axisY, _t0)))));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, axisZ * axisZ, _t0)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisY, _t1, _t2 * _t3)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t7, -(axisX * _t1))))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t2, -(axisY * _t0))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, axisX * axisX, _t1)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisZ, _t0, _t11 * _t5)))));
+        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisX, _t0, _t11 * _t6)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t5, -(axisZ * _t0))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, axisY * axisY, _t1)))));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, axisZ * axisZ, _t1)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisY, _t0, _t11 * _t2)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t6, -(axisX * _t0))))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -9438,18 +9450,18 @@ public final class Double4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment rotateAxis_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle, double axisX, double axisY, double axisZ) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
-        double _t3 = axisX * axisZ;
-        double _t6 = axisX * axisY;
-        double _t7 = axisY * axisZ;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t2 = axisX * axisZ;
+        double _t5 = axisX * axisY;
+        double _t6 = axisY * axisZ;
+        double _t11 = 1.0 - _t1;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, -(axisY * _t1)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, axisX * axisX, _t0))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisZ, _t1, _t2 * _t6)))));
-        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisX, _t1, _t2 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t6, -(axisZ * _t1)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, axisY * axisY, _t0)))));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, axisZ * axisZ, _t0))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisY, _t1, _t2 * _t3))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t7, -(axisX * _t1))))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t2, -(axisY * _t0)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, axisX * axisX, _t1))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisZ, _t0, _t11 * _t5)))));
+        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisX, _t0, _t11 * _t6))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t5, -(axisZ * _t0)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, axisY * axisY, _t1)))));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, axisZ * axisZ, _t1))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(axisY, _t0, _t11 * _t2))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t6, -(axisX * _t0))))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -9467,18 +9479,18 @@ public final class Double4x4OpsSimd {
         double _axisy = axis[axisOffset + 1];
         double _axisx = axis[axisOffset + 0];
         double _axisz = axis[axisOffset + 2];
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
-        double _t3 = _axisx * _axisz;
-        double _t6 = _axisx * _axisy;
-        double _t7 = _axisy * _axisz;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t2 = _axisx * _axisz;
+        double _t5 = _axisx * _axisy;
+        double _t6 = _axisy * _axisz;
+        double _t11 = 1.0 - _t1;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, -(_axisy * _t1))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _axisx * _axisx, _t0)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisz, _t1, _t2 * _t6)))));
-        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisx, _t1, _t2 * _t7)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t6, -(_axisz * _t1))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _axisy * _axisy, _t0)))));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _axisz * _axisz, _t0)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisy, _t1, _t2 * _t3)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t7, -(_axisx * _t1))))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t2, -(_axisy * _t0))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _axisx * _axisx, _t1)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisz, _t0, _t11 * _t5)))));
+        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisx, _t0, _t11 * _t6)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t5, -(_axisz * _t0))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _axisy * _axisy, _t1)))));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _axisz * _axisz, _t1)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisy, _t0, _t11 * _t2)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t6, -(_axisx * _t0))))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -9491,18 +9503,18 @@ public final class Double4x4OpsSimd {
         double _axisy = axis[axisOffset + 1];
         double _axisx = axis[axisOffset + 0];
         double _axisz = axis[axisOffset + 2];
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
-        double _t3 = _axisx * _axisz;
-        double _t6 = _axisx * _axisy;
-        double _t7 = _axisy * _axisz;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t2 = _axisx * _axisz;
+        double _t5 = _axisx * _axisy;
+        double _t6 = _axisy * _axisz;
+        double _t11 = 1.0 - _t1;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, -(_axisy * _t1)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _axisx * _axisx, _t0))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisz, _t1, _t2 * _t6)))));
-        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisx, _t1, _t2 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t6, -(_axisz * _t1)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _axisy * _axisy, _t0)))));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _axisz * _axisz, _t0))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisy, _t1, _t2 * _t3))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t7, -(_axisx * _t1))))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t2, -(_axisy * _t0)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _axisx * _axisx, _t1))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisz, _t0, _t11 * _t5)))));
+        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisx, _t0, _t11 * _t6))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t5, -(_axisz * _t0)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _axisy * _axisy, _t1)))));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _axisz * _axisz, _t1))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisy, _t0, _t11 * _t2))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t6, -(_axisx * _t0))))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -9526,18 +9538,18 @@ public final class Double4x4OpsSimd {
         double _axisy = UnsafeOpsHolder.U.getDouble(_axisBase + 8L);
         double _axisx = UnsafeOpsHolder.U.getDouble(_axisBase + 0L);
         double _axisz = UnsafeOpsHolder.U.getDouble(_axisBase + 16L);
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
-        double _t3 = _axisx * _axisz;
-        double _t6 = _axisx * _axisy;
-        double _t7 = _axisy * _axisz;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t2 = _axisx * _axisz;
+        double _t5 = _axisx * _axisy;
+        double _t6 = _axisy * _axisz;
+        double _t11 = 1.0 - _t1;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, -(_axisy * _t1))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _axisx * _axisx, _t0)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisz, _t1, _t2 * _t6)))));
-        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisx, _t1, _t2 * _t7)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t6, -(_axisz * _t1))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _axisy * _axisy, _t0)))));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _axisz * _axisz, _t0)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisy, _t1, _t2 * _t3)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t7, -(_axisx * _t1))))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t2, -(_axisy * _t0))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _axisx * _axisx, _t1)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisz, _t0, _t11 * _t5)))));
+        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisx, _t0, _t11 * _t6)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t5, -(_axisz * _t0))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _axisy * _axisy, _t1)))));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _axisz * _axisz, _t1)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisy, _t0, _t11 * _t2)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t6, -(_axisx * _t0))))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -9550,18 +9562,18 @@ public final class Double4x4OpsSimd {
         double _axisy = axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 8L);
         double _axisx = axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 0L);
         double _axisz = axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 16L);
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
-        double _t3 = _axisx * _axisz;
-        double _t6 = _axisx * _axisy;
-        double _t7 = _axisy * _axisz;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t2 = _axisx * _axisz;
+        double _t5 = _axisx * _axisy;
+        double _t6 = _axisy * _axisz;
+        double _t11 = 1.0 - _t1;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, -(_axisy * _t1))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _axisx * _axisx, _t0)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisz, _t1, _t2 * _t6)))));
-        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisx, _t1, _t2 * _t7)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t6, -(_axisz * _t1))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _axisy * _axisy, _t0)))));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _axisz * _axisz, _t0)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisy, _t1, _t2 * _t3)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t7, -(_axisx * _t1))))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t2, -(_axisy * _t0))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _axisx * _axisx, _t1)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisz, _t0, _t11 * _t5)))));
+        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisx, _t0, _t11 * _t6)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t5, -(_axisz * _t0))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _axisy * _axisy, _t1)))));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _axisz * _axisz, _t1)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisy, _t0, _t11 * _t2)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t6, -(_axisx * _t0))))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -9580,18 +9592,18 @@ public final class Double4x4OpsSimd {
         double _axisy = UnsafeOpsHolder.U.getDouble(_axisBase + 8L);
         double _axisx = UnsafeOpsHolder.U.getDouble(_axisBase + 0L);
         double _axisz = UnsafeOpsHolder.U.getDouble(_axisBase + 16L);
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
-        double _t3 = _axisx * _axisz;
-        double _t6 = _axisx * _axisy;
-        double _t7 = _axisy * _axisz;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t2 = _axisx * _axisz;
+        double _t5 = _axisx * _axisy;
+        double _t6 = _axisy * _axisz;
+        double _t11 = 1.0 - _t1;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, -(_axisy * _t1)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _axisx * _axisx, _t0))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisz, _t1, _t2 * _t6)))));
-        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisx, _t1, _t2 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t6, -(_axisz * _t1)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _axisy * _axisy, _t0)))));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _axisz * _axisz, _t0))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisy, _t1, _t2 * _t3))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t7, -(_axisx * _t1))))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t2, -(_axisy * _t0)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _axisx * _axisx, _t1))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisz, _t0, _t11 * _t5)))));
+        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisx, _t0, _t11 * _t6))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t5, -(_axisz * _t0)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _axisy * _axisy, _t1)))));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _axisz * _axisz, _t1))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisy, _t0, _t11 * _t2))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t6, -(_axisx * _t0))))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -9604,18 +9616,18 @@ public final class Double4x4OpsSimd {
         double _axisy = axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 8L);
         double _axisx = axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 0L);
         double _axisz = axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 16L);
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
-        double _t3 = _axisx * _axisz;
-        double _t6 = _axisx * _axisy;
-        double _t7 = _axisy * _axisz;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t2 = _axisx * _axisz;
+        double _t5 = _axisx * _axisy;
+        double _t6 = _axisy * _axisz;
+        double _t11 = 1.0 - _t1;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, -(_axisy * _t1)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _axisx * _axisx, _t0))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisz, _t1, _t2 * _t6)))));
-        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisx, _t1, _t2 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t6, -(_axisz * _t1)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _axisy * _axisy, _t0)))));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _axisz * _axisz, _t0))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisy, _t1, _t2 * _t3))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t7, -(_axisx * _t1))))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t2, -(_axisy * _t0)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _axisx * _axisx, _t1))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisz, _t0, _t11 * _t5)))));
+        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisx, _t0, _t11 * _t6))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t5, -(_axisz * _t0)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _axisy * _axisy, _t1)))));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _axisz * _axisz, _t1))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_axisy, _t0, _t11 * _t2))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t6, -(_axisx * _t0))))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -9926,14 +9938,14 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] rotateX_fma(double[] dest, int destOffset, double[] src, int srcOffset, double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t0);
+        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t1);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
-        var _c1 = _sv0.fma(_sv1, _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
-        var _c2 = _sv2.fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t1)));
+        var _c1 = _sv0.fma(_sv1, _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)));
+        var _c2 = _sv2.fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0)));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -9943,14 +9955,14 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] rotateX_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t0);
+        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t1);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
-        var _c1 = _sv0.mul(_sv1).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
-        var _c2 = _sv2.mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t1)));
+        var _c1 = _sv0.mul(_sv1).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)));
+        var _c2 = _sv2.mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0)));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -9965,14 +9977,14 @@ public final class Double4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment rotateX_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t0);
+        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t1);
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
-        var _c1 = _sv0.fma(_sv1, _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
-        var _c2 = _sv2.fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t1)));
+        var _c1 = _sv0.fma(_sv1, _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)));
+        var _c2 = _sv2.fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0)));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -9982,14 +9994,14 @@ public final class Double4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment rotateX_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t0);
+        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t1);
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
-        var _c1 = _sv0.mul(_sv1).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
-        var _c2 = _sv2.mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t1)));
+        var _c1 = _sv0.mul(_sv1).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)));
+        var _c2 = _sv2.mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0)));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -10007,16 +10019,16 @@ public final class Double4x4OpsSimd {
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleY);
-        double _t3 = Math.cos(angleX);
-        double _t4 = Math.cos(angleZ);
-        double _t5 = Math.cos(angleY);
-        double _t6 = _t2 * _t3;
-        double _t8 = _t0 * _t2;
+        double _t3 = Math.cosFromSin(_t0, angleX);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleY);
+        double _t6 = _t0 * _t2;
+        double _t7 = _t2 * _t3;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t1, -(_t6 * _t4))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t4), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t4, _t1 * _t3)))));
-        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t1, _t0 * _t4)), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t4, -(_t8 * _t1))), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t1 * _t5)))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t1, -(_t7 * _t4))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t4), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t4, _t1 * _t3)))));
+        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t7, _t1, _t0 * _t4)), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t4, -(_t6 * _t1))), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t1 * _t5)))));
         var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t5)))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
@@ -10030,16 +10042,16 @@ public final class Double4x4OpsSimd {
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleY);
-        double _t3 = Math.cos(angleX);
-        double _t4 = Math.cos(angleZ);
-        double _t5 = Math.cos(angleY);
-        double _t6 = _t2 * _t3;
-        double _t8 = _t0 * _t2;
+        double _t3 = Math.cosFromSin(_t0, angleX);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleY);
+        double _t6 = _t0 * _t2;
+        double _t7 = _t2 * _t3;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t1, -(_t6 * _t4)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t4)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t4, _t1 * _t3)))));
-        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t1, _t0 * _t4))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t4, -(_t8 * _t1)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t1 * _t5)))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t1, -(_t7 * _t4)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t4)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t4, _t1 * _t3)))));
+        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t7, _t1, _t0 * _t4))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t4, -(_t6 * _t1)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t1 * _t5)))));
         var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t5)))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
@@ -10058,16 +10070,16 @@ public final class Double4x4OpsSimd {
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleY);
-        double _t3 = Math.cos(angleX);
-        double _t4 = Math.cos(angleZ);
-        double _t5 = Math.cos(angleY);
-        double _t6 = _t2 * _t3;
-        double _t8 = _t0 * _t2;
+        double _t3 = Math.cosFromSin(_t0, angleX);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleY);
+        double _t6 = _t0 * _t2;
+        double _t7 = _t2 * _t3;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t1, -(_t6 * _t4))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t4), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t4, _t1 * _t3)))));
-        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t1, _t0 * _t4)), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t4, -(_t8 * _t1))), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t1 * _t5)))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t1, -(_t7 * _t4))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t4), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t4, _t1 * _t3)))));
+        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t7, _t1, _t0 * _t4)), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t4, -(_t6 * _t1))), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t1 * _t5)))));
         var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t5)))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
@@ -10081,16 +10093,16 @@ public final class Double4x4OpsSimd {
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleY);
-        double _t3 = Math.cos(angleX);
-        double _t4 = Math.cos(angleZ);
-        double _t5 = Math.cos(angleY);
-        double _t6 = _t2 * _t3;
-        double _t8 = _t0 * _t2;
+        double _t3 = Math.cosFromSin(_t0, angleX);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleY);
+        double _t6 = _t0 * _t2;
+        double _t7 = _t2 * _t3;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t1, -(_t6 * _t4)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t4)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t4, _t1 * _t3)))));
-        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t1, _t0 * _t4))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t4, -(_t8 * _t1)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t1 * _t5)))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t1, -(_t7 * _t4)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t4)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t4, _t1 * _t3)))));
+        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t7, _t1, _t0 * _t4))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t3, _t4, -(_t6 * _t1)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t1 * _t5)))));
         var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t5)))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
@@ -10108,18 +10120,18 @@ public final class Double4x4OpsSimd {
     public static double[] rotateXZY_fma(double[] dest, int destOffset, double[] src, int srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleZ);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.cos(angleX);
-        double _t5 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleY);
+        double _t3 = Math.cosFromSin(_t2, angleY);
+        double _t4 = Math.cosFromSin(_t0, angleX);
+        double _t5 = Math.cosFromSin(_t1, angleZ);
         double _t6 = _t0 * _t1;
         double _t9 = _t1 * _t4;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, -(_t3 * _t4))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t5), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t2, _t0 * _t3)))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t3, -(_t2 * _t4))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t3, _t0 * _t2)))));
         var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0 * _t5), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t4 * _t5), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t1))));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t3, _t4 * _t2)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t3, -(_t0 * _t2))))));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, _t4 * _t3)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t5), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t2, -(_t0 * _t3))))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -10131,18 +10143,18 @@ public final class Double4x4OpsSimd {
     public static double[] rotateXZY_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleZ);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.cos(angleX);
-        double _t5 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleY);
+        double _t3 = Math.cosFromSin(_t2, angleY);
+        double _t4 = Math.cosFromSin(_t0, angleX);
+        double _t5 = Math.cosFromSin(_t1, angleZ);
         double _t6 = _t0 * _t1;
         double _t9 = _t1 * _t4;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, -(_t3 * _t4)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t5)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t2, _t0 * _t3)))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t3, -(_t2 * _t4)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t3, _t0 * _t2)))));
         var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0 * _t5)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t4 * _t5)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t1))));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t3, _t4 * _t2))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t3, -(_t0 * _t2))))));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, _t4 * _t3))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t5)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t2, -(_t0 * _t3))))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -10159,18 +10171,18 @@ public final class Double4x4OpsSimd {
     public static java.lang.foreign.MemorySegment rotateXZY_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleZ);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.cos(angleX);
-        double _t5 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleY);
+        double _t3 = Math.cosFromSin(_t2, angleY);
+        double _t4 = Math.cosFromSin(_t0, angleX);
+        double _t5 = Math.cosFromSin(_t1, angleZ);
         double _t6 = _t0 * _t1;
         double _t9 = _t1 * _t4;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, -(_t3 * _t4))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t5), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t2, _t0 * _t3)))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t3, -(_t2 * _t4))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t3, _t0 * _t2)))));
         var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0 * _t5), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t4 * _t5), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t1))));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t3, _t4 * _t2)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t3, -(_t0 * _t2))))));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, _t4 * _t3)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t5), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t2, -(_t0 * _t3))))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -10182,18 +10194,18 @@ public final class Double4x4OpsSimd {
     public static java.lang.foreign.MemorySegment rotateXZY_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleZ);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.cos(angleX);
-        double _t5 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleY);
+        double _t3 = Math.cosFromSin(_t2, angleY);
+        double _t4 = Math.cosFromSin(_t0, angleX);
+        double _t5 = Math.cosFromSin(_t1, angleZ);
         double _t6 = _t0 * _t1;
         double _t9 = _t1 * _t4;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, -(_t3 * _t4)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t5)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t2, _t0 * _t3)))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t3, -(_t2 * _t4)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t3, _t0 * _t2)))));
         var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0 * _t5)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t4 * _t5)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t1))));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t3, _t4 * _t2))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t3, -(_t0 * _t2))))));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, _t4 * _t3))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t5)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t2, -(_t0 * _t3))))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -10208,14 +10220,14 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] rotateY_fma(double[] dest, int destOffset, double[] src, int srcOffset, double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
-        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t0);
+        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t1);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
-        var _c0 = _sv0.fma(_sv1, _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t1)));
+        var _c0 = _sv0.fma(_sv1, _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0)));
         var _c1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1), _sv2.mul(_sv1));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), _sv2.mul(_sv1));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -10225,14 +10237,14 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] rotateY_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
-        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t0);
+        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t1);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
-        var _c0 = _sv0.mul(_sv1).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t1)));
+        var _c0 = _sv0.mul(_sv1).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0)));
         var _c1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)).add(_sv2.mul(_sv1));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(_sv2.mul(_sv1));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -10247,14 +10259,14 @@ public final class Double4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment rotateY_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
-        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t0);
+        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t1);
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(_sv1, _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t1)));
+        var _c0 = _sv0.fma(_sv1, _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0)));
         var _c1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1), _sv2.mul(_sv1));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t0), _sv2.mul(_sv1));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -10264,14 +10276,14 @@ public final class Double4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment rotateY_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
-        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t0);
+        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t1);
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(_sv1).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t1)));
+        var _c0 = _sv0.mul(_sv1).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0)));
         var _c1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)).add(_sv2.mul(_sv1));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)).add(_sv2.mul(_sv1));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -10287,19 +10299,19 @@ public final class Double4x4OpsSimd {
 
     public static double[] rotateYXZ_fma(double[] dest, int destOffset, double[] src, int srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleX);
-        double _t1 = Math.cos(angleY);
+        double _t1 = Math.sin(angleY);
         double _t2 = Math.sin(angleZ);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.cos(angleZ);
-        double _t5 = Math.cos(angleX);
+        double _t3 = Math.cosFromSin(_t1, angleY);
+        double _t4 = Math.cosFromSin(_t2, angleZ);
+        double _t5 = Math.cosFromSin(_t0, angleX);
         double _t6 = _t0 * _t1;
         double _t8 = _t0 * _t3;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, -(_t3 * _t4))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t2, _t1 * _t4)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t5))));
-        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t4, _t3 * _t2)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t4, -(_t2 * _t1))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t4))));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t1), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t2, -(_t1 * _t4))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, _t3 * _t4)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t5))));
+        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t4, _t1 * _t2)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t4, -(_t2 * _t3))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t4))));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t3), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t5), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -10310,19 +10322,19 @@ public final class Double4x4OpsSimd {
 
     public static double[] rotateYXZ_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleX);
-        double _t1 = Math.cos(angleY);
+        double _t1 = Math.sin(angleY);
         double _t2 = Math.sin(angleZ);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.cos(angleZ);
-        double _t5 = Math.cos(angleX);
+        double _t3 = Math.cosFromSin(_t1, angleY);
+        double _t4 = Math.cosFromSin(_t2, angleZ);
+        double _t5 = Math.cosFromSin(_t0, angleX);
         double _t6 = _t0 * _t1;
         double _t8 = _t0 * _t3;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, -(_t3 * _t4)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t2, _t1 * _t4))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t5))));
-        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t4, _t3 * _t2))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t4, -(_t2 * _t1)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t4))));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t1)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t2, -(_t1 * _t4)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, _t3 * _t4))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t5))));
+        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t4, _t1 * _t2))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t4, -(_t2 * _t3)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t4))));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t3)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t5)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -10338,19 +10350,19 @@ public final class Double4x4OpsSimd {
 
     public static java.lang.foreign.MemorySegment rotateYXZ_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleX);
-        double _t1 = Math.cos(angleY);
+        double _t1 = Math.sin(angleY);
         double _t2 = Math.sin(angleZ);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.cos(angleZ);
-        double _t5 = Math.cos(angleX);
+        double _t3 = Math.cosFromSin(_t1, angleY);
+        double _t4 = Math.cosFromSin(_t2, angleZ);
+        double _t5 = Math.cosFromSin(_t0, angleX);
         double _t6 = _t0 * _t1;
         double _t8 = _t0 * _t3;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, -(_t3 * _t4))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t2, _t1 * _t4)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t5))));
-        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t4, _t3 * _t2)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t4, -(_t2 * _t1))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t4))));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t1), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t2, -(_t1 * _t4))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, _t3 * _t4)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t5))));
+        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t4, _t1 * _t2)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t4, -(_t2 * _t3))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t4))));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t3), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t5), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -10361,19 +10373,19 @@ public final class Double4x4OpsSimd {
 
     public static java.lang.foreign.MemorySegment rotateYXZ_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleX);
-        double _t1 = Math.cos(angleY);
+        double _t1 = Math.sin(angleY);
         double _t2 = Math.sin(angleZ);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.cos(angleZ);
-        double _t5 = Math.cos(angleX);
+        double _t3 = Math.cosFromSin(_t1, angleY);
+        double _t4 = Math.cosFromSin(_t2, angleZ);
+        double _t5 = Math.cosFromSin(_t0, angleX);
         double _t6 = _t0 * _t1;
         double _t8 = _t0 * _t3;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, -(_t3 * _t4)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t2, _t1 * _t4))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t5))));
-        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t4, _t3 * _t2))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t4, -(_t2 * _t1)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t4))));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t1)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t2, -(_t1 * _t4)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, _t3 * _t4))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t5))));
+        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t4, _t1 * _t2))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t4, -(_t2 * _t3)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t4))));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t3)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t5)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -10389,19 +10401,19 @@ public final class Double4x4OpsSimd {
 
     public static double[] rotateYZX_fma(double[] dest, int destOffset, double[] src, int srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleZ);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.sin(angleZ);
-        double _t4 = Math.cos(angleX);
-        double _t5 = Math.sin(angleX);
-        double _t8 = _t0 * _t3;
-        double _t10 = _t3 * _t2;
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t1, angleZ);
+        double _t4 = Math.cosFromSin(_t0, angleY);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t0 * _t1;
+        double _t9 = _t1 * _t4;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t1)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t1), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3))));
-        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t4, _t5 * _t2)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t5, _t0, -(_t10 * _t4))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t4 * _t1))));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t4, _t2, -(_t8 * _t5))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t10, _t5, _t0 * _t4)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t5 * _t1)))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t3)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t4 * _t3), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1))));
+        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t5, _t2 * _t4)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t0, -(_t9 * _t5))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t3))));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t5, _t4, -(_t6 * _t2))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t2, _t0 * _t5)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t2 * _t3)))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -10412,19 +10424,19 @@ public final class Double4x4OpsSimd {
 
     public static double[] rotateYZX_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleZ);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.sin(angleZ);
-        double _t4 = Math.cos(angleX);
-        double _t5 = Math.sin(angleX);
-        double _t8 = _t0 * _t3;
-        double _t10 = _t3 * _t2;
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t1, angleZ);
+        double _t4 = Math.cosFromSin(_t0, angleY);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t0 * _t1;
+        double _t9 = _t1 * _t4;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t1))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t1)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3))));
-        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t4, _t5 * _t2))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t5, _t0, -(_t10 * _t4)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t4 * _t1))));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t4, _t2, -(_t8 * _t5)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t10, _t5, _t0 * _t4))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t5 * _t1)))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t3))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t4 * _t3)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1))));
+        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t5, _t2 * _t4))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t0, -(_t9 * _t5)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t3))));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t5, _t4, -(_t6 * _t2)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t2, _t0 * _t5))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t2 * _t3)))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -10440,19 +10452,19 @@ public final class Double4x4OpsSimd {
 
     public static java.lang.foreign.MemorySegment rotateYZX_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleZ);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.sin(angleZ);
-        double _t4 = Math.cos(angleX);
-        double _t5 = Math.sin(angleX);
-        double _t8 = _t0 * _t3;
-        double _t10 = _t3 * _t2;
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t1, angleZ);
+        double _t4 = Math.cosFromSin(_t0, angleY);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t0 * _t1;
+        double _t9 = _t1 * _t4;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t1)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t1), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3))));
-        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t4, _t5 * _t2)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t5, _t0, -(_t10 * _t4))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t4 * _t1))));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t4, _t2, -(_t8 * _t5))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t10, _t5, _t0 * _t4)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t5 * _t1)))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t3)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t4 * _t3), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1))));
+        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t5, _t2 * _t4)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t0, -(_t9 * _t5))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t3))));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t5, _t4, -(_t6 * _t2))), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t2, _t0 * _t5)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t2 * _t3)))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -10463,19 +10475,19 @@ public final class Double4x4OpsSimd {
 
     public static java.lang.foreign.MemorySegment rotateYZX_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleZ);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.sin(angleZ);
-        double _t4 = Math.cos(angleX);
-        double _t5 = Math.sin(angleX);
-        double _t8 = _t0 * _t3;
-        double _t10 = _t3 * _t2;
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t1, angleZ);
+        double _t4 = Math.cosFromSin(_t0, angleY);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t0 * _t1;
+        double _t9 = _t1 * _t4;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t1))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t1)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3))));
-        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t4, _t5 * _t2))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t5, _t0, -(_t10 * _t4)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t4 * _t1))));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t4, _t2, -(_t8 * _t5)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t10, _t5, _t0 * _t4))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t5 * _t1)))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t3))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t4 * _t3)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1))));
+        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t5, _t2 * _t4))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t0, -(_t9 * _t5)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t3))));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t5, _t4, -(_t6 * _t2)))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t2, _t0 * _t5))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t2 * _t3)))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -10490,13 +10502,13 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] rotateZ_fma(double[] dest, int destOffset, double[] src, int srcOffset, double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
-        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t0);
+        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t1);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.fma(_sv1, _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
-        var _c1 = _sv2.fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t1)));
+        var _c0 = _sv0.fma(_sv1, _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)));
+        var _c1 = _sv2.fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0)));
         var _c2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
@@ -10507,13 +10519,13 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] rotateZ_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
-        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t0);
+        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t1);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.mul(_sv1).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
-        var _c1 = _sv2.mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t1)));
+        var _c0 = _sv0.mul(_sv1).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)));
+        var _c1 = _sv2.mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0)));
         var _c2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
@@ -10529,13 +10541,13 @@ public final class Double4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment rotateZ_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
-        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t0);
+        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t1);
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(_sv1, _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
-        var _c1 = _sv2.fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t1)));
+        var _c0 = _sv0.fma(_sv1, _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)));
+        var _c1 = _sv2.fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0)));
         var _c2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
@@ -10546,13 +10558,13 @@ public final class Double4x4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment rotateZ_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
-        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t0);
+        var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, _t1);
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(_sv1).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
-        var _c1 = _sv2.mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t1)));
+        var _c0 = _sv0.mul(_sv1).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0)));
+        var _c1 = _sv2.mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0)));
         var _c2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
@@ -10569,19 +10581,19 @@ public final class Double4x4OpsSimd {
 
     public static double[] rotateZXY_fma(double[] dest, int destOffset, double[] src, int srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleX);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.cos(angleZ);
-        double _t4 = Math.sin(angleX);
-        double _t5 = Math.sin(angleZ);
-        double _t7 = _t4 * _t5;
-        double _t8 = _t4 * _t3;
+        double _t1 = Math.sin(angleX);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.cosFromSin(_t1, angleX);
+        double _t4 = Math.cosFromSin(_t0, angleY);
+        double _t5 = Math.cosFromSin(_t2, angleZ);
+        double _t6 = _t1 * _t2;
+        double _t8 = _t1 * _t5;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t1)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, -(_t7 * _t0))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t0, _t5 * _t2)))));
-        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t4), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t3), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t5 * _t1)))));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t2), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t7, _t2, _t0 * _t3)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t5, -(_t8 * _t2))))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t3)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t4, _t5, -(_t6 * _t0))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t0, _t2 * _t4)))));
+        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t2 * _t3)))));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t4), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t4, _t0 * _t5)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t2, -(_t8 * _t4))))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -10592,19 +10604,19 @@ public final class Double4x4OpsSimd {
 
     public static double[] rotateZXY_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleX);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.cos(angleZ);
-        double _t4 = Math.sin(angleX);
-        double _t5 = Math.sin(angleZ);
-        double _t7 = _t4 * _t5;
-        double _t8 = _t4 * _t3;
+        double _t1 = Math.sin(angleX);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.cosFromSin(_t1, angleX);
+        double _t4 = Math.cosFromSin(_t0, angleY);
+        double _t5 = Math.cosFromSin(_t2, angleZ);
+        double _t6 = _t1 * _t2;
+        double _t8 = _t1 * _t5;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t1))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, -(_t7 * _t0)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t0, _t5 * _t2)))));
-        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t4)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t3)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t5 * _t1)))));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t2)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t7, _t2, _t0 * _t3))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t5, -(_t8 * _t2))))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t3))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t4, _t5, -(_t6 * _t0)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t0, _t2 * _t4)))));
+        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t2 * _t3)))));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t4)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t4, _t0 * _t5))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t2, -(_t8 * _t4))))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -10620,19 +10632,19 @@ public final class Double4x4OpsSimd {
 
     public static java.lang.foreign.MemorySegment rotateZXY_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleX);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.cos(angleZ);
-        double _t4 = Math.sin(angleX);
-        double _t5 = Math.sin(angleZ);
-        double _t7 = _t4 * _t5;
-        double _t8 = _t4 * _t3;
+        double _t1 = Math.sin(angleX);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.cosFromSin(_t1, angleX);
+        double _t4 = Math.cosFromSin(_t0, angleY);
+        double _t5 = Math.cosFromSin(_t2, angleZ);
+        double _t6 = _t1 * _t2;
+        double _t8 = _t1 * _t5;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t1)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, -(_t7 * _t0))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t0, _t5 * _t2)))));
-        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t4), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t3), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t5 * _t1)))));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t2), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t7, _t2, _t0 * _t3)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t5, -(_t8 * _t2))))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t3)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t4, _t5, -(_t6 * _t0))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t0, _t2 * _t4)))));
+        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t2 * _t3)))));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t4), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t4, _t0 * _t5)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t2, -(_t8 * _t4))))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -10643,19 +10655,19 @@ public final class Double4x4OpsSimd {
 
     public static java.lang.foreign.MemorySegment rotateZXY_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleX);
-        double _t2 = Math.cos(angleY);
-        double _t3 = Math.cos(angleZ);
-        double _t4 = Math.sin(angleX);
-        double _t5 = Math.sin(angleZ);
-        double _t7 = _t4 * _t5;
-        double _t8 = _t4 * _t3;
+        double _t1 = Math.sin(angleX);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.cosFromSin(_t1, angleX);
+        double _t4 = Math.cosFromSin(_t0, angleY);
+        double _t5 = Math.cosFromSin(_t2, angleZ);
+        double _t6 = _t1 * _t2;
+        double _t8 = _t1 * _t5;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t1))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t2, _t3, -(_t7 * _t0)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t0, _t5 * _t2)))));
-        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t4)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t3)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t5 * _t1)))));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t2)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t7, _t2, _t0 * _t3))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t5, -(_t8 * _t2))))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t0 * _t3))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t4, _t5, -(_t6 * _t0)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t8, _t0, _t2 * _t4)))));
+        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t5)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, -(_t2 * _t3)))));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t4)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t4, _t0 * _t5))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t2, -(_t8 * _t4))))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -10671,19 +10683,19 @@ public final class Double4x4OpsSimd {
 
     public static double[] rotateZYX_fma(double[] dest, int destOffset, double[] src, int srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleY);
-        double _t2 = Math.cos(angleZ);
-        double _t3 = Math.sin(angleZ);
-        double _t4 = Math.sin(angleX);
-        double _t5 = Math.cos(angleX);
-        double _t9 = _t0 * _t2;
-        double _t11 = _t0 * _t3;
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t0 * _t1;
+        double _t10 = _t0 * _t4;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t0), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t2), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t1))));
-        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t4 * _t1), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t4, -(_t3 * _t5))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t4, _t5 * _t2)))));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t1), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t5, _t4 * _t3)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t5, -(_t4 * _t2))))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t0), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t4), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t3))));
+        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t3), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t10, _t2, -(_t1 * _t5))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, _t5 * _t4)))));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t3), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t10, _t5, _t2 * _t1)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t5, -(_t2 * _t4))))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -10694,19 +10706,19 @@ public final class Double4x4OpsSimd {
 
     public static double[] rotateZYX_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleY);
-        double _t2 = Math.cos(angleZ);
-        double _t3 = Math.sin(angleZ);
-        double _t4 = Math.sin(angleX);
-        double _t5 = Math.cos(angleX);
-        double _t9 = _t0 * _t2;
-        double _t11 = _t0 * _t3;
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t0 * _t1;
+        double _t10 = _t0 * _t4;
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t2)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t1))));
-        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t4 * _t1)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t4, -(_t3 * _t5)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t4, _t5 * _t2)))));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t1)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t5, _t4 * _t3))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t5, -(_t4 * _t2))))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t4)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t3))));
+        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t3)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t10, _t2, -(_t1 * _t5)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, _t5 * _t4)))));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t3)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t10, _t5, _t2 * _t1))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t5, -(_t2 * _t4))))));
         var _c3 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
@@ -10722,19 +10734,19 @@ public final class Double4x4OpsSimd {
 
     public static java.lang.foreign.MemorySegment rotateZYX_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleY);
-        double _t2 = Math.cos(angleZ);
-        double _t3 = Math.sin(angleZ);
-        double _t4 = Math.sin(angleX);
-        double _t5 = Math.cos(angleX);
-        double _t9 = _t0 * _t2;
-        double _t11 = _t0 * _t3;
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t0 * _t1;
+        double _t10 = _t0 * _t4;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t0), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t2), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t1))));
-        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t4 * _t1), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t4, -(_t3 * _t5))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t4, _t5 * _t2)))));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t1), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t5, _t4 * _t3)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t5, -(_t4 * _t2))))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, -_t0), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t4), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t3))));
+        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t3), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t10, _t2, -(_t1 * _t5))), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, _t5 * _t4)))));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t3), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t10, _t5, _t2 * _t1)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t5, -(_t2 * _t4))))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());
@@ -10745,19 +10757,19 @@ public final class Double4x4OpsSimd {
 
     public static java.lang.foreign.MemorySegment rotateZYX_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleX, double angleY, double angleZ) {
         double _t0 = Math.sin(angleY);
-        double _t1 = Math.cos(angleY);
-        double _t2 = Math.cos(angleZ);
-        double _t3 = Math.sin(angleZ);
-        double _t4 = Math.sin(angleX);
-        double _t5 = Math.cos(angleX);
-        double _t9 = _t0 * _t2;
-        double _t11 = _t0 * _t3;
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t0 * _t1;
+        double _t10 = _t0 * _t4;
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 64L, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 32L, java.nio.ByteOrder.nativeOrder());
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t2)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t1))));
-        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t4 * _t1)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t4, -(_t3 * _t5)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t4, _t5 * _t2)))));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t1)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t9, _t5, _t4 * _t3))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t11, _t5, -(_t4 * _t2))))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, -_t0)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t3 * _t4)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t1 * _t3))));
+        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t2 * _t3)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t10, _t2, -(_t1 * _t5)))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t2, _t5 * _t4)))));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t5 * _t3)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t10, _t5, _t2 * _t1))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t6, _t5, -(_t2 * _t4))))));
         var _c3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset + 96L, java.nio.ByteOrder.nativeOrder());
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         _c1.intoMemorySegment(dest, destOffset + 32L, java.nio.ByteOrder.nativeOrder());

@@ -157,7 +157,7 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
     public static DoubleTransform makeFromAxisAngle(double axisX, double axisY, double axisZ, double angle, double translationX, double translationY, double translationZ) {
         double _t0 = 0.5 * angle;
         double _t1 = Math.sin(_t0);
-        return new DoubleTransform(translationX, translationY, translationZ, axisX * _t1, axisY * _t1, axisZ * _t1, Math.cos(_t0), 1.0, 1.0, 1.0);
+        return new DoubleTransform(translationX, translationY, translationZ, axisX * _t1, axisY * _t1, axisZ * _t1, Math.cosFromSin(_t1, _t0), 1.0, 1.0, 1.0);
     }
 
 
@@ -1631,7 +1631,7 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return makeRotationZ(axisZ * angle);
         double _t0 = 0.5 * angle;
         double _t1 = Math.sin(_t0);
-        return new DoubleTransform(0.0, 0.0, 0.0, axisX * _t1, axisY * _t1, axisZ * _t1, Math.cos(_t0), 1.0, 1.0, 1.0);
+        return new DoubleTransform(0.0, 0.0, 0.0, axisX * _t1, axisY * _t1, axisZ * _t1, Math.cosFromSin(_t1, _t0), 1.0, 1.0, 1.0);
     }
 
 
@@ -1643,7 +1643,8 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
      */
     public static DoubleTransform makeRotationX(double angle) {
         double _t0 = 0.5 * angle;
-        return new DoubleTransform(0.0, 0.0, 0.0, Math.sin(_t0), 0.0, 0.0, Math.cos(_t0), 1.0, 1.0, 1.0);
+        double _t1 = Math.sin(_t0);
+        return new DoubleTransform(0.0, 0.0, 0.0, _t1, 0.0, 0.0, Math.cosFromSin(_t1, _t0), 1.0, 1.0, 1.0);
     }
 
 
@@ -1662,16 +1663,16 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
         double _t3 = Math.sin(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t1);
-        double _t7 = Math.cos(_t0);
-        double _t8 = Math.sin(_t2);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t4, _t1);
+        double _t7 = Math.cosFromSin(_t5, _t2);
+        double _t8 = Math.cosFromSin(_t3, _t0);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t3 * _t6;
-        double _t12 = _t7 * _t4;
-        return new DoubleTransform(0.0, 0.0, 0.0, Math.fma(_t9, _t5, _t10 * _t8), Math.fma(_t10, _t5, -(_t9 * _t8)), Math.fma(_t11, _t5, _t12 * _t8), Math.fma(_t12, _t5, -(_t11 * _t8)), 1.0, 1.0, 1.0);
+        double _t10 = _t3 * _t6;
+        double _t11 = _t4 * _t8;
+        double _t12 = _t8 * _t6;
+        return new DoubleTransform(0.0, 0.0, 0.0, Math.fma(_t10, _t7, _t11 * _t5), Math.fma(_t11, _t7, -(_t10 * _t5)), Math.fma(_t9, _t7, _t12 * _t5), Math.fma(_t12, _t7, -(_t9 * _t5)), 1.0, 1.0, 1.0);
     }
 
 
@@ -1690,16 +1691,16 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
         double _t3 = Math.sin(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t1);
-        double _t7 = Math.cos(_t0);
-        double _t8 = Math.sin(_t2);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t4, _t1);
+        double _t7 = Math.cosFromSin(_t5, _t2);
+        double _t8 = Math.cosFromSin(_t3, _t0);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t7 * _t4;
-        double _t12 = _t3 * _t6;
-        return new DoubleTransform(0.0, 0.0, 0.0, Math.fma(_t9, _t5, -(_t10 * _t8)), Math.fma(_t11, _t8, -(_t12 * _t5)), Math.fma(_t9, _t8, _t10 * _t5), Math.fma(_t12, _t8, _t11 * _t5), 1.0, 1.0, 1.0);
+        double _t10 = _t3 * _t6;
+        double _t11 = _t4 * _t8;
+        double _t12 = _t8 * _t6;
+        return new DoubleTransform(0.0, 0.0, 0.0, Math.fma(_t10, _t7, -(_t11 * _t5)), Math.fma(_t12, _t5, -(_t9 * _t7)), Math.fma(_t10, _t5, _t11 * _t7), Math.fma(_t9, _t5, _t12 * _t7), 1.0, 1.0, 1.0);
     }
 
 
@@ -1711,7 +1712,8 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
      */
     public static DoubleTransform makeRotationY(double angle) {
         double _t0 = 0.5 * angle;
-        return new DoubleTransform(0.0, 0.0, 0.0, 0.0, Math.sin(_t0), 0.0, Math.cos(_t0), 1.0, 1.0, 1.0);
+        double _t1 = Math.sin(_t0);
+        return new DoubleTransform(0.0, 0.0, 0.0, 0.0, _t1, 0.0, Math.cosFromSin(_t1, _t0), 1.0, 1.0, 1.0);
     }
 
 
@@ -1730,16 +1732,16 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
         double _t3 = Math.sin(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t1);
-        double _t7 = Math.cos(_t0);
-        double _t8 = Math.sin(_t2);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t4, _t1);
+        double _t7 = Math.cosFromSin(_t5, _t2);
+        double _t8 = Math.cosFromSin(_t3, _t0);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t7 * _t4;
-        double _t12 = _t3 * _t6;
-        return new DoubleTransform(0.0, 0.0, 0.0, Math.fma(_t9, _t5, _t10 * _t8), Math.fma(_t10, _t5, -(_t9 * _t8)), Math.fma(_t11, _t8, -(_t12 * _t5)), Math.fma(_t12, _t8, _t11 * _t5), 1.0, 1.0, 1.0);
+        double _t10 = _t3 * _t6;
+        double _t11 = _t4 * _t8;
+        double _t12 = _t8 * _t6;
+        return new DoubleTransform(0.0, 0.0, 0.0, Math.fma(_t10, _t7, _t11 * _t5), Math.fma(_t11, _t7, -(_t10 * _t5)), Math.fma(_t12, _t5, -(_t9 * _t7)), Math.fma(_t9, _t5, _t12 * _t7), 1.0, 1.0, 1.0);
     }
 
 
@@ -1759,15 +1761,15 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
         double _t2 = 0.5 * angleX;
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.cos(_t0);
-        double _t7 = Math.cos(_t1);
-        double _t8 = Math.sin(_t2);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t5, _t2);
+        double _t7 = Math.cosFromSin(_t3, _t0);
+        double _t8 = Math.cosFromSin(_t4, _t1);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t3 * _t7;
-        double _t12 = _t4 * _t6;
-        return new DoubleTransform(0.0, 0.0, 0.0, Math.fma(_t9, _t5, _t10 * _t8), Math.fma(_t11, _t5, _t12 * _t8), Math.fma(_t12, _t5, -(_t11 * _t8)), Math.fma(_t10, _t5, -(_t9 * _t8)), 1.0, 1.0, 1.0);
+        double _t10 = _t3 * _t8;
+        double _t11 = _t4 * _t7;
+        double _t12 = _t7 * _t8;
+        return new DoubleTransform(0.0, 0.0, 0.0, Math.fma(_t9, _t6, _t12 * _t5), Math.fma(_t10, _t6, _t11 * _t5), Math.fma(_t11, _t6, -(_t10 * _t5)), Math.fma(_t12, _t6, -(_t9 * _t5)), 1.0, 1.0, 1.0);
     }
 
 
@@ -1779,7 +1781,8 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
      */
     public static DoubleTransform makeRotationZ(double angle) {
         double _t0 = 0.5 * angle;
-        return new DoubleTransform(0.0, 0.0, 0.0, 0.0, 0.0, Math.sin(_t0), Math.cos(_t0), 1.0, 1.0, 1.0);
+        double _t1 = Math.sin(_t0);
+        return new DoubleTransform(0.0, 0.0, 0.0, 0.0, 0.0, _t1, Math.cosFromSin(_t1, _t0), 1.0, 1.0, 1.0);
     }
 
 
@@ -1798,16 +1801,16 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
         double _t3 = Math.sin(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t1);
-        double _t7 = Math.cos(_t0);
-        double _t8 = Math.sin(_t2);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t4, _t1);
+        double _t7 = Math.cosFromSin(_t5, _t2);
+        double _t8 = Math.cosFromSin(_t3, _t0);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t3 * _t6;
-        double _t12 = _t7 * _t4;
-        return new DoubleTransform(0.0, 0.0, 0.0, Math.fma(_t9, _t5, -(_t10 * _t8)), Math.fma(_t11, _t5, _t12 * _t8), Math.fma(_t9, _t8, _t10 * _t5), Math.fma(_t12, _t5, -(_t11 * _t8)), 1.0, 1.0, 1.0);
+        double _t10 = _t3 * _t6;
+        double _t11 = _t4 * _t8;
+        double _t12 = _t8 * _t6;
+        return new DoubleTransform(0.0, 0.0, 0.0, Math.fma(_t10, _t7, -(_t11 * _t5)), Math.fma(_t9, _t7, _t12 * _t5), Math.fma(_t10, _t5, _t11 * _t7), Math.fma(_t12, _t7, -(_t9 * _t5)), 1.0, 1.0, 1.0);
     }
 
 
@@ -1825,17 +1828,17 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
-        double _t3 = Math.cos(_t0);
-        double _t4 = Math.cos(_t1);
+        double _t3 = Math.sin(_t0);
+        double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
-        double _t6 = Math.sin(_t0);
-        double _t7 = Math.sin(_t1);
-        double _t8 = Math.cos(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t6 * _t4;
-        double _t12 = _t7 * _t3;
-        return new DoubleTransform(0.0, 0.0, 0.0, Math.fma(_t9, _t5, -(_t10 * _t8)), Math.fma(_t11, _t8, _t12 * _t5), Math.fma(_t12, _t8, -(_t11 * _t5)), Math.fma(_t10, _t5, _t9 * _t8), 1.0, 1.0, 1.0);
+        double _t10 = _t3 * _t7;
+        double _t11 = _t4 * _t6;
+        double _t12 = _t6 * _t7;
+        return new DoubleTransform(0.0, 0.0, 0.0, Math.fma(_t12, _t5, -(_t9 * _t8)), Math.fma(_t10, _t8, _t11 * _t5), Math.fma(_t11, _t8, -(_t10 * _t5)), Math.fma(_t9, _t5, _t12 * _t8), 1.0, 1.0, 1.0);
     }
 
 
@@ -1981,12 +1984,12 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle);
         double _t0 = 0.5 * angle;
-        double _t1 = Math.cos(_t0);
-        double _t2 = Math.sin(_t0);
-        double _t3 = axisX * _t2;
-        double _t4 = axisZ * _t2;
-        double _t5 = axisY * _t2;
-        return new DoubleTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t1, this.rW * _t3) + Math.fma(this.rY, _t4, -(this.rZ * _t5)), Math.fma(this.rY, _t1, this.rW * _t5) + Math.fma(this.rZ, _t3, -(this.rX * _t4)), Math.fma(this.rZ, _t1, this.rW * _t4) + Math.fma(this.rX, _t5, -(this.rY * _t3)), Math.fma(this.rW, _t1, -(this.rX * _t3)) - Math.fma(this.rY, _t5, this.rZ * _t4), this.sX, this.sY, this.sZ);
+        double _t1 = Math.sin(_t0);
+        double _t2 = axisX * _t1;
+        double _t3 = axisZ * _t1;
+        double _t4 = axisY * _t1;
+        double _t5 = Math.cosFromSin(_t1, _t0);
+        return new DoubleTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t5, this.rW * _t2) + Math.fma(this.rY, _t3, -(this.rZ * _t4)), Math.fma(this.rY, _t5, this.rW * _t4) + Math.fma(this.rZ, _t2, -(this.rX * _t3)), Math.fma(this.rZ, _t5, this.rW * _t3) + Math.fma(this.rX, _t4, -(this.rY * _t2)), Math.fma(this.rW, _t5, -(this.rX * _t2)) - Math.fma(this.rY, _t4, this.rZ * _t3), this.sX, this.sY, this.sZ);
     }
 
 
@@ -2009,14 +2012,14 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
      */
     public DoubleTransform rotateX(double angle) {
         double _t0 = 0.5 * angle;
-        double _t1 = Math.cos(_t0);
-        double _t2 = Math.sin(_t0);
-        return new DoubleTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t1, this.rW * _t2), Math.fma(this.rY, _t1, this.rZ * _t2), Math.fma(this.rZ, _t1, -(this.rY * _t2)), Math.fma(this.rW, _t1, -(this.rX * _t2)), this.sX, this.sY, this.sZ);
+        double _t1 = Math.sin(_t0);
+        double _t2 = Math.cosFromSin(_t1, _t0);
+        return new DoubleTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t2, this.rW * _t1), Math.fma(this.rY, _t2, this.rZ * _t1), Math.fma(this.rZ, _t2, -(this.rY * _t1)), Math.fma(this.rW, _t2, -(this.rX * _t1)), this.sX, this.sY, this.sZ);
     }
 
     /** Private tail of {@code rotateXYZ}; reached only through it. */
-    private DoubleTransform rotateXYZ_s361a4ff5_tail(double _t12, double _t5, double _t11, double _t8, double _t21, double _t19, double _t20) {
-        double _t22 = Math.fma(_t12, _t5, -(_t11 * _t8));
+    private DoubleTransform rotateXYZ_s361a4ff5_tail(double _t11, double _t8, double _t10, double _t5, double _t21, double _t19, double _t20) {
+        double _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
         return new DoubleTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t21, this.rW * _t22) + Math.fma(this.rZ, _t19, -(this.rX * _t20)), Math.fma(this.rZ, _t21, this.rW * _t20) + Math.fma(this.rX, _t22, -(this.rY * _t19)), Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t22, this.rZ * _t20), this.sX, this.sY, this.sZ);
     }
 
@@ -2045,25 +2048,25 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
-        double _t3 = Math.cos(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t0);
-        double _t7 = Math.sin(_t1);
-        double _t8 = Math.sin(_t2);
+        double _t3 = Math.sin(_t0);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t6 * _t4;
-        double _t12 = _t7 * _t3;
-        double _t19 = Math.fma(_t11, _t5, _t12 * _t8);
-        double _t20 = Math.fma(_t10, _t5, _t9 * _t8);
-        double _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        return rotateXYZ_s361a4ff5_tail(_t12, _t5, _t11, _t8, _t21, _t19, _t20);
+        double _t10 = _t3 * _t7;
+        double _t11 = _t4 * _t6;
+        double _t14 = _t6 * _t7;
+        double _t19 = Math.fma(_t10, _t8, _t11 * _t5);
+        double _t20 = Math.fma(_t9, _t8, _t14 * _t5);
+        double _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        return rotateXYZ_s361a4ff5_tail(_t11, _t8, _t10, _t5, _t21, _t19, _t20);
     }
 
     /** Private tail of {@code rotateXZY}; reached only through it. */
-    private DoubleTransform rotateXZY_s361a4ff5_tail(double _t10, double _t5, double _t9, double _t8, double _t19, double _t21, double _t20) {
-        double _t22 = Math.fma(_t10, _t5, -(_t9 * _t8));
+    private DoubleTransform rotateXZY_s361a4ff5_tail(double _t12, double _t5, double _t9, double _t8, double _t19, double _t21, double _t20) {
+        double _t22 = Math.fma(_t12, _t5, -(_t9 * _t8));
         return new DoubleTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rW * _t22) + Math.fma(this.rZ, _t21, -(this.rX * _t20)), Math.fma(this.rZ, _t19, this.rW * _t20) + Math.fma(this.rX, _t22, -(this.rY * _t21)), Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t22, this.rZ * _t20), this.sX, this.sY, this.sZ);
     }
 
@@ -2095,17 +2098,17 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
-        double _t6 = Math.cos(_t0);
-        double _t7 = Math.cos(_t1);
-        double _t8 = Math.cos(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t3 * _t7;
-        double _t12 = _t4 * _t6;
-        double _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        double _t20 = Math.fma(_t11, _t5, _t12 * _t8);
-        double _t21 = Math.fma(_t11, _t8, -(_t12 * _t5));
-        return rotateXZY_s361a4ff5_tail(_t10, _t5, _t9, _t8, _t19, _t21, _t20);
+        double _t10 = _t3 * _t7;
+        double _t11 = _t4 * _t6;
+        double _t12 = _t6 * _t7;
+        double _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        double _t20 = Math.fma(_t10, _t5, _t11 * _t8);
+        double _t21 = Math.fma(_t10, _t8, -(_t11 * _t5));
+        return rotateXZY_s361a4ff5_tail(_t12, _t5, _t9, _t8, _t19, _t21, _t20);
     }
 
 
@@ -2128,14 +2131,14 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
      */
     public DoubleTransform rotateY(double angle) {
         double _t0 = 0.5 * angle;
-        double _t1 = Math.cos(_t0);
-        double _t2 = Math.sin(_t0);
-        return new DoubleTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t1, -(this.rZ * _t2)), Math.fma(this.rY, _t1, this.rW * _t2), Math.fma(this.rX, _t2, this.rZ * _t1), Math.fma(this.rW, _t1, -(this.rY * _t2)), this.sX, this.sY, this.sZ);
+        double _t1 = Math.sin(_t0);
+        double _t2 = Math.cosFromSin(_t1, _t0);
+        return new DoubleTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t2, -(this.rZ * _t1)), Math.fma(this.rY, _t2, this.rW * _t1), Math.fma(this.rX, _t1, this.rZ * _t2), Math.fma(this.rW, _t2, -(this.rY * _t1)), this.sX, this.sY, this.sZ);
     }
 
     /** Private tail of {@code rotateYXZ}; reached only through it. */
-    private DoubleTransform rotateYXZ_s361a4ff5_tail(double _t12, double _t8, double _t11, double _t5, double _t19, double _t20, double _t21) {
-        double _t22 = Math.fma(_t12, _t8, -(_t11 * _t5));
+    private DoubleTransform rotateYXZ_s361a4ff5_tail(double _t11, double _t8, double _t10, double _t5, double _t19, double _t20, double _t21) {
+        double _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
         return new DoubleTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t20) + Math.fma(this.rY, _t21, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rW * _t22) + Math.fma(this.rZ, _t20, -(this.rX * _t21)), Math.fma(this.rZ, _t19, this.rW * _t21) + Math.fma(this.rX, _t22, -(this.rY * _t20)), Math.fma(this.rW, _t19, -(this.rX * _t20)) - Math.fma(this.rY, _t22, this.rZ * _t21), this.sX, this.sY, this.sZ);
     }
 
@@ -2167,22 +2170,22 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
-        double _t6 = Math.cos(_t0);
-        double _t7 = Math.cos(_t1);
-        double _t8 = Math.cos(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t3 * _t7;
-        double _t12 = _t4 * _t6;
-        double _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        double _t20 = Math.fma(_t11, _t8, _t12 * _t5);
-        double _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        return rotateYXZ_s361a4ff5_tail(_t12, _t8, _t11, _t5, _t19, _t20, _t21);
+        double _t10 = _t3 * _t7;
+        double _t11 = _t4 * _t6;
+        double _t12 = _t6 * _t7;
+        double _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        double _t20 = Math.fma(_t10, _t8, _t11 * _t5);
+        double _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
+        return rotateYXZ_s361a4ff5_tail(_t11, _t8, _t10, _t5, _t19, _t20, _t21);
     }
 
     /** Private tail of {@code rotateYZX}; reached only through it. */
-    private DoubleTransform rotateYZX_s361a4ff5_tail(double _t11, double _t5, double _t12, double _t8, double _t21, double _t19, double _t20) {
-        double _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+    private DoubleTransform rotateYZX_s361a4ff5_tail(double _t10, double _t8, double _t11, double _t5, double _t21, double _t19, double _t20) {
+        double _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         return new DoubleTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rW * _t20) + Math.fma(this.rZ, _t19, -(this.rX * _t22)), Math.fma(this.rZ, _t21, this.rW * _t22) + Math.fma(this.rX, _t20, -(this.rY * _t19)), Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t20, this.rZ * _t22), this.sX, this.sY, this.sZ);
     }
 
@@ -2211,20 +2214,20 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
-        double _t3 = Math.cos(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t0);
-        double _t7 = Math.sin(_t1);
-        double _t8 = Math.sin(_t2);
+        double _t3 = Math.sin(_t0);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t7 * _t3;
-        double _t12 = _t6 * _t4;
-        double _t19 = Math.fma(_t10, _t5, _t9 * _t8);
-        double _t20 = Math.fma(_t12, _t5, _t11 * _t8);
-        double _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        return rotateYZX_s361a4ff5_tail(_t11, _t5, _t12, _t8, _t21, _t19, _t20);
+        double _t10 = _t4 * _t6;
+        double _t11 = _t3 * _t7;
+        double _t14 = _t6 * _t7;
+        double _t19 = Math.fma(_t9, _t8, _t14 * _t5);
+        double _t20 = Math.fma(_t11, _t8, _t10 * _t5);
+        double _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        return rotateYZX_s361a4ff5_tail(_t10, _t8, _t11, _t5, _t21, _t19, _t20);
     }
 
 
@@ -2247,14 +2250,14 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
      */
     public DoubleTransform rotateZ(double angle) {
         double _t0 = 0.5 * angle;
-        double _t1 = Math.cos(_t0);
-        double _t2 = Math.sin(_t0);
-        return new DoubleTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t1, this.rY * _t2), Math.fma(this.rY, _t1, -(this.rX * _t2)), Math.fma(this.rZ, _t1, this.rW * _t2), Math.fma(this.rW, _t1, -(this.rZ * _t2)), this.sX, this.sY, this.sZ);
+        double _t1 = Math.sin(_t0);
+        double _t2 = Math.cosFromSin(_t1, _t0);
+        return new DoubleTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t2, this.rY * _t1), Math.fma(this.rY, _t2, -(this.rX * _t1)), Math.fma(this.rZ, _t2, this.rW * _t1), Math.fma(this.rW, _t2, -(this.rZ * _t1)), this.sX, this.sY, this.sZ);
     }
 
     /** Private tail of {@code rotateZXY}; reached only through it. */
-    private DoubleTransform rotateZXY_s361a4ff5_tail(double _t11, double _t5, double _t12, double _t8, double _t21, double _t19, double _t20) {
-        double _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+    private DoubleTransform rotateZXY_s361a4ff5_tail(double _t10, double _t8, double _t11, double _t5, double _t21, double _t19, double _t20) {
+        double _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         return new DoubleTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t22) + Math.fma(this.rY, _t19, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rW * _t20) + Math.fma(this.rZ, _t22, -(this.rX * _t19)), Math.fma(this.rZ, _t21, this.rW * _t19) + Math.fma(this.rX, _t20, -(this.rY * _t22)), Math.fma(this.rW, _t21, -(this.rX * _t22)) - Math.fma(this.rY, _t20, this.rZ * _t19), this.sX, this.sY, this.sZ);
     }
 
@@ -2283,25 +2286,25 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
-        double _t3 = Math.cos(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t0);
-        double _t7 = Math.sin(_t1);
-        double _t8 = Math.sin(_t2);
+        double _t3 = Math.sin(_t0);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t6 * _t4;
-        double _t12 = _t7 * _t3;
-        double _t19 = Math.fma(_t11, _t8, _t12 * _t5);
-        double _t20 = Math.fma(_t10, _t5, _t9 * _t8);
-        double _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        return rotateZXY_s361a4ff5_tail(_t11, _t5, _t12, _t8, _t21, _t19, _t20);
+        double _t10 = _t3 * _t7;
+        double _t11 = _t4 * _t6;
+        double _t14 = _t6 * _t7;
+        double _t19 = Math.fma(_t10, _t5, _t11 * _t8);
+        double _t20 = Math.fma(_t9, _t8, _t14 * _t5);
+        double _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        return rotateZXY_s361a4ff5_tail(_t10, _t8, _t11, _t5, _t21, _t19, _t20);
     }
 
     /** Private tail of {@code rotateZYX}; reached only through it. */
-    private DoubleTransform rotateZYX_s361a4ff5_tail(double _t11, double _t8, double _t12, double _t5, double _t19, double _t21, double _t20) {
-        double _t22 = Math.fma(_t11, _t8, -(_t12 * _t5));
+    private DoubleTransform rotateZYX_s361a4ff5_tail(double _t10, double _t8, double _t11, double _t5, double _t19, double _t21, double _t20) {
+        double _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         return new DoubleTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t19, this.rW * _t20) + Math.fma(this.rZ, _t21, -(this.rX * _t22)), Math.fma(this.rZ, _t19, this.rW * _t22) + Math.fma(this.rX, _t20, -(this.rY * _t21)), Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t20, this.rZ * _t22), this.sX, this.sY, this.sZ);
     }
 
@@ -2333,17 +2336,17 @@ public value record DoubleTransform(double tX, double tY, double tZ, double rX, 
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
-        double _t6 = Math.cos(_t0);
-        double _t7 = Math.cos(_t1);
-        double _t8 = Math.cos(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t4 * _t6;
-        double _t12 = _t3 * _t7;
-        double _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        double _t20 = Math.fma(_t12, _t8, _t11 * _t5);
-        double _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        return rotateZYX_s361a4ff5_tail(_t11, _t8, _t12, _t5, _t19, _t21, _t20);
+        double _t10 = _t4 * _t6;
+        double _t11 = _t3 * _t7;
+        double _t12 = _t6 * _t7;
+        double _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        double _t20 = Math.fma(_t11, _t8, _t10 * _t5);
+        double _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
+        return rotateZYX_s361a4ff5_tail(_t10, _t8, _t11, _t5, _t19, _t21, _t20);
     }
 
 

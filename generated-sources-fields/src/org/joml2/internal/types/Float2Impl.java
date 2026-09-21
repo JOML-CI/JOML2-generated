@@ -5053,10 +5053,10 @@ public final class Float2Impl implements Float2 {
      */
     public Float2 rotate(float angle, @Mutated Float2 dest) {
         Float2Impl d = (Float2Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = Math.fma(this.x, _t0, -(this.y * _t1));
-        d.y = Math.fma(this.x, _t1, this.y * _t0);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = Math.fma(this.x, _t1, -(this.y * _t0));
+        d.y = Math.fma(this.x, _t0, this.y * _t1);
         d.x = _buf0;
         return d;
     }
@@ -5075,10 +5075,10 @@ public final class Float2Impl implements Float2 {
      */
     public Double2 rotate(float angle, @Mutated Double2 dest) {
         Double2Impl d = (Double2Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = Math.fma(this.x, _t0, -(this.y * _t1));
-        d.y = Math.fma(this.x, _t1, this.y * _t0);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = Math.fma(this.x, _t1, -(this.y * _t0));
+        d.y = Math.fma(this.x, _t0, this.y * _t1);
         d.x = _buf0;
         return d;
     }

@@ -1627,7 +1627,8 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t0 = Math.exp(this.w);
         double _t5 = this.x * this.x + this.y * this.y + this.z * this.z;
         double _t6 = Math.sqrt(_t5);
-        double _t10 = Math.sin(_t6) * _t0 * (1.0 / Math.sqrt(_t5));
+        double _t8 = Math.sin(_t6);
+        double _t10 = _t8 * _t0 * (1.0 / Math.sqrt(_t5));
         if (_t5 > 0.0) {
             d.x = this.x * _t10;
             d.y = this.y * _t10;
@@ -1637,7 +1638,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
             d.y = 0.0;
             d.z = 0.0;
         }
-        d.w = Math.cos(_t6) * _t0;
+        d.w = Math.cosFromSin(_t8, _t6) * _t0;
         return d;
     }
 
@@ -1906,8 +1907,9 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t3 = angularVelZ * _t0;
         double _t8 = _t1 * _t1 + _t2 * _t2 + _t3 * _t3;
         double _t9 = Math.sqrt(_t8);
-        double _t11 = Math.cos(_t9);
-        double _t13 = Math.sin(_t9) * (1.0 / Math.sqrt(_t8));
+        double _t11 = Math.sin(_t9);
+        double _t12 = Math.cosFromSin(_t11, _t9);
+        double _t13 = _t11 * (1.0 / Math.sqrt(_t8));
         double _t17, _t18, _t19;
         if (_t8 > 0.0) {
             _t17 = _t1 * _t13;
@@ -1918,10 +1920,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
             _t18 = 0.0;
             _t19 = 0.0;
         }
-        double _buf0 = this.x * _t11 + this.w * _t17 + (this.z * _t18 - this.y * _t19);
-        double _buf1 = this.x * _t19 + this.w * _t18 + (this.y * _t11 - this.z * _t17);
-        double _buf2 = this.y * _t17 + this.z * _t11 + (this.w * _t19 - this.x * _t18);
-        d.w = this.w * _t11 - this.x * _t17 - (this.y * _t18 + this.z * _t19);
+        double _buf0 = this.x * _t12 + this.w * _t17 + (this.z * _t18 - this.y * _t19);
+        double _buf1 = this.x * _t19 + this.w * _t18 + (this.y * _t12 - this.z * _t17);
+        double _buf2 = this.y * _t17 + this.z * _t12 + (this.w * _t19 - this.x * _t18);
+        d.w = this.w * _t12 - this.x * _t17 - (this.y * _t18 + this.z * _t19);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -2673,7 +2675,8 @@ public final class DoubleQuatImpl implements DoubleQuat {
         }
         double _t28 = _t21 * _t21 + _t22 * _t22 + _t23 * _t23;
         double _t29 = Math.sqrt(_t28);
-        double _t33 = Math.sin(_t29) * _t13 * (1.0 / Math.sqrt(_t28));
+        double _t31 = Math.sin(_t29);
+        double _t33 = _t31 * _t13 * (1.0 / Math.sqrt(_t28));
         if (_t28 > 0.0) {
             d.x = _t21 * _t33;
             d.y = _t22 * _t33;
@@ -2683,7 +2686,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
             d.y = 0.0;
             d.z = 0.0;
         }
-        d.w = Math.cos(_t29) * _t13;
+        d.w = Math.cosFromSin(_t31, _t29) * _t13;
         return d;
     }
 
@@ -2991,7 +2994,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         this.x = axisX * _t1;
         this.y = axisY * _t1;
         this.z = axisZ * _t1;
-        this.w = Math.cos(_t0);
+        this.w = Math.cosFromSin(_t1, _t0);
         return this;
     }
 
@@ -3192,10 +3195,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     @Mutated public DoubleQuat makeRotationX(double angle) {
         double _t0 = 0.5 * angle;
-        this.x = Math.sin(_t0);
+        double _t1 = Math.sin(_t0);
+        this.x = _t1;
         this.y = 0.0;
         this.z = 0.0;
-        this.w = Math.cos(_t0);
+        this.w = Math.cosFromSin(_t1, _t0);
         return this;
     }
 
@@ -3215,19 +3219,19 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
         double _t3 = Math.sin(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t1);
-        double _t7 = Math.cos(_t0);
-        double _t8 = Math.sin(_t2);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t4, _t1);
+        double _t7 = Math.cosFromSin(_t5, _t2);
+        double _t8 = Math.cosFromSin(_t3, _t0);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t3 * _t6;
-        double _t12 = _t7 * _t4;
-        this.x = _t9 * _t5 + _t10 * _t8;
-        this.y = _t10 * _t5 - _t9 * _t8;
-        this.z = _t11 * _t5 + _t12 * _t8;
-        this.w = _t12 * _t5 - _t11 * _t8;
+        double _t10 = _t3 * _t6;
+        double _t11 = _t4 * _t8;
+        double _t12 = _t8 * _t6;
+        this.x = _t10 * _t7 + _t11 * _t5;
+        this.y = _t11 * _t7 - _t10 * _t5;
+        this.z = _t9 * _t7 + _t12 * _t5;
+        this.w = _t12 * _t7 - _t9 * _t5;
         return this;
     }
 
@@ -3247,19 +3251,19 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
         double _t3 = Math.sin(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t1);
-        double _t7 = Math.cos(_t0);
-        double _t8 = Math.sin(_t2);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t4, _t1);
+        double _t7 = Math.cosFromSin(_t5, _t2);
+        double _t8 = Math.cosFromSin(_t3, _t0);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t7 * _t4;
-        double _t12 = _t3 * _t6;
-        this.x = _t9 * _t5 - _t10 * _t8;
-        this.y = _t11 * _t8 - _t12 * _t5;
-        this.z = _t9 * _t8 + _t10 * _t5;
-        this.w = _t12 * _t8 + _t11 * _t5;
+        double _t10 = _t3 * _t6;
+        double _t11 = _t4 * _t8;
+        double _t12 = _t8 * _t6;
+        this.x = _t10 * _t7 - _t11 * _t5;
+        this.y = _t12 * _t5 - _t9 * _t7;
+        this.z = _t10 * _t5 + _t11 * _t7;
+        this.w = _t9 * _t5 + _t12 * _t7;
         return this;
     }
 
@@ -3272,10 +3276,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     @Mutated public DoubleQuat makeRotationY(double angle) {
         double _t0 = 0.5 * angle;
+        double _t1 = Math.sin(_t0);
         this.x = 0.0;
-        this.y = Math.sin(_t0);
+        this.y = _t1;
         this.z = 0.0;
-        this.w = Math.cos(_t0);
+        this.w = Math.cosFromSin(_t1, _t0);
         return this;
     }
 
@@ -3295,19 +3300,19 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
         double _t3 = Math.sin(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t1);
-        double _t7 = Math.cos(_t0);
-        double _t8 = Math.sin(_t2);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t4, _t1);
+        double _t7 = Math.cosFromSin(_t5, _t2);
+        double _t8 = Math.cosFromSin(_t3, _t0);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t7 * _t4;
-        double _t12 = _t3 * _t6;
-        this.x = _t9 * _t5 + _t10 * _t8;
-        this.y = _t10 * _t5 - _t9 * _t8;
-        this.z = _t11 * _t8 - _t12 * _t5;
-        this.w = _t12 * _t8 + _t11 * _t5;
+        double _t10 = _t3 * _t6;
+        double _t11 = _t4 * _t8;
+        double _t12 = _t8 * _t6;
+        this.x = _t10 * _t7 + _t11 * _t5;
+        this.y = _t11 * _t7 - _t10 * _t5;
+        this.z = _t12 * _t5 - _t9 * _t7;
+        this.w = _t9 * _t5 + _t12 * _t7;
         return this;
     }
 
@@ -3328,18 +3333,18 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t2 = 0.5 * angleX;
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.cos(_t0);
-        double _t7 = Math.cos(_t1);
-        double _t8 = Math.sin(_t2);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t5, _t2);
+        double _t7 = Math.cosFromSin(_t3, _t0);
+        double _t8 = Math.cosFromSin(_t4, _t1);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t3 * _t7;
-        double _t12 = _t4 * _t6;
-        this.x = _t9 * _t5 + _t10 * _t8;
-        this.y = _t11 * _t5 + _t12 * _t8;
-        this.z = _t12 * _t5 - _t11 * _t8;
-        this.w = _t10 * _t5 - _t9 * _t8;
+        double _t10 = _t3 * _t8;
+        double _t11 = _t4 * _t7;
+        double _t12 = _t7 * _t8;
+        this.x = _t9 * _t6 + _t12 * _t5;
+        this.y = _t10 * _t6 + _t11 * _t5;
+        this.z = _t11 * _t6 - _t10 * _t5;
+        this.w = _t12 * _t6 - _t9 * _t5;
         return this;
     }
 
@@ -3352,10 +3357,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     @Mutated public DoubleQuat makeRotationZ(double angle) {
         double _t0 = 0.5 * angle;
+        double _t1 = Math.sin(_t0);
         this.x = 0.0;
         this.y = 0.0;
-        this.z = Math.sin(_t0);
-        this.w = Math.cos(_t0);
+        this.z = _t1;
+        this.w = Math.cosFromSin(_t1, _t0);
         return this;
     }
 
@@ -3375,19 +3381,19 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
         double _t3 = Math.sin(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t1);
-        double _t7 = Math.cos(_t0);
-        double _t8 = Math.sin(_t2);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t4, _t1);
+        double _t7 = Math.cosFromSin(_t5, _t2);
+        double _t8 = Math.cosFromSin(_t3, _t0);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t3 * _t6;
-        double _t12 = _t7 * _t4;
-        this.x = _t9 * _t5 - _t10 * _t8;
-        this.y = _t11 * _t5 + _t12 * _t8;
-        this.z = _t9 * _t8 + _t10 * _t5;
-        this.w = _t12 * _t5 - _t11 * _t8;
+        double _t10 = _t3 * _t6;
+        double _t11 = _t4 * _t8;
+        double _t12 = _t8 * _t6;
+        this.x = _t10 * _t7 - _t11 * _t5;
+        this.y = _t9 * _t7 + _t12 * _t5;
+        this.z = _t10 * _t5 + _t11 * _t7;
+        this.w = _t12 * _t7 - _t9 * _t5;
         return this;
     }
 
@@ -3406,20 +3412,20 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
-        double _t3 = Math.cos(_t0);
-        double _t4 = Math.cos(_t1);
+        double _t3 = Math.sin(_t0);
+        double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
-        double _t6 = Math.sin(_t0);
-        double _t7 = Math.sin(_t1);
-        double _t8 = Math.cos(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t6 * _t4;
-        double _t12 = _t7 * _t3;
-        this.x = _t9 * _t5 - _t10 * _t8;
-        this.y = _t11 * _t8 + _t12 * _t5;
-        this.z = _t12 * _t8 - _t11 * _t5;
-        this.w = _t10 * _t5 + _t9 * _t8;
+        double _t10 = _t3 * _t7;
+        double _t11 = _t4 * _t6;
+        double _t12 = _t6 * _t7;
+        this.x = _t12 * _t5 - _t9 * _t8;
+        this.y = _t10 * _t8 + _t11 * _t5;
+        this.z = _t11 * _t8 - _t10 * _t5;
+        this.w = _t9 * _t5 + _t12 * _t8;
         return this;
     }
 
@@ -3439,12 +3445,12 @@ public final class DoubleQuatImpl implements DoubleQuat {
     public DoubleQuat preRotateX(double angle, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         double _t0 = 0.5 * angle;
-        double _t1 = Math.cos(_t0);
-        double _t2 = Math.sin(_t0);
-        double _buf0 = this.x * _t1 + this.w * _t2;
-        double _buf1 = this.y * _t1 - this.z * _t2;
-        d.z = this.y * _t2 + this.z * _t1;
-        d.w = this.w * _t1 - this.x * _t2;
+        double _t1 = Math.sin(_t0);
+        double _t2 = Math.cosFromSin(_t1, _t0);
+        double _buf0 = this.x * _t2 + this.w * _t1;
+        double _buf1 = this.y * _t2 - this.z * _t1;
+        d.z = this.y * _t1 + this.z * _t2;
+        d.w = this.w * _t2 - this.x * _t1;
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -3466,12 +3472,12 @@ public final class DoubleQuatImpl implements DoubleQuat {
     public DoubleQuat preRotateY(double angle, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         double _t0 = 0.5 * angle;
-        double _t1 = Math.cos(_t0);
-        double _t2 = Math.sin(_t0);
-        double _buf0 = this.x * _t1 + this.z * _t2;
-        double _buf1 = this.y * _t1 + this.w * _t2;
-        d.z = this.z * _t1 - this.x * _t2;
-        d.w = this.w * _t1 - this.y * _t2;
+        double _t1 = Math.sin(_t0);
+        double _t2 = Math.cosFromSin(_t1, _t0);
+        double _buf0 = this.x * _t2 + this.z * _t1;
+        double _buf1 = this.y * _t2 + this.w * _t1;
+        d.z = this.z * _t2 - this.x * _t1;
+        d.w = this.w * _t2 - this.y * _t1;
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -3493,12 +3499,12 @@ public final class DoubleQuatImpl implements DoubleQuat {
     public DoubleQuat preRotateZ(double angle, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         double _t0 = 0.5 * angle;
-        double _t1 = Math.cos(_t0);
-        double _t2 = Math.sin(_t0);
-        double _buf0 = this.x * _t1 - this.y * _t2;
-        d.y = this.x * _t2 + this.y * _t1;
-        double _buf1 = this.z * _t1 + this.w * _t2;
-        d.w = this.w * _t1 - this.z * _t2;
+        double _t1 = Math.sin(_t0);
+        double _t2 = Math.cosFromSin(_t1, _t0);
+        double _buf0 = this.x * _t2 - this.y * _t1;
+        d.y = this.x * _t1 + this.y * _t2;
+        double _buf1 = this.z * _t2 + this.w * _t1;
+        d.w = this.w * _t2 - this.z * _t1;
         d.x = _buf0;
         d.z = _buf1;
         return d;
@@ -3547,15 +3553,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         double _t0 = 0.5 * angle;
-        double _t1 = Math.cos(_t0);
-        double _t2 = Math.sin(_t0);
-        double _t3 = axisX * _t2;
-        double _t4 = axisZ * _t2;
-        double _t5 = axisY * _t2;
-        double _buf0 = this.x * _t1 + this.w * _t3 + (this.y * _t4 - this.z * _t5);
-        double _buf1 = this.y * _t1 + this.z * _t3 + (this.w * _t5 - this.x * _t4);
-        double _buf2 = this.x * _t5 + this.w * _t4 + (this.z * _t1 - this.y * _t3);
-        d.w = this.w * _t1 - this.x * _t3 - (this.y * _t5 + this.z * _t4);
+        double _t1 = Math.sin(_t0);
+        double _t2 = axisX * _t1;
+        double _t3 = axisZ * _t1;
+        double _t4 = axisY * _t1;
+        double _t5 = Math.cosFromSin(_t1, _t0);
+        double _buf0 = this.x * _t5 + this.w * _t2 + (this.y * _t3 - this.z * _t4);
+        double _buf1 = this.y * _t5 + this.z * _t2 + (this.w * _t4 - this.x * _t3);
+        double _buf2 = this.x * _t4 + this.w * _t3 + (this.z * _t5 - this.y * _t2);
+        d.w = this.w * _t5 - this.x * _t2 - (this.y * _t4 + this.z * _t3);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -3676,12 +3682,12 @@ public final class DoubleQuatImpl implements DoubleQuat {
     public DoubleQuat rotateX(double angle, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         double _t0 = 0.5 * angle;
-        double _t1 = Math.cos(_t0);
-        double _t2 = Math.sin(_t0);
-        double _buf0 = this.x * _t1 + this.w * _t2;
-        double _buf1 = this.y * _t1 + this.z * _t2;
-        d.z = this.z * _t1 - this.y * _t2;
-        d.w = this.w * _t1 - this.x * _t2;
+        double _t1 = Math.sin(_t0);
+        double _t2 = Math.cosFromSin(_t1, _t0);
+        double _buf0 = this.x * _t2 + this.w * _t1;
+        double _buf1 = this.y * _t2 + this.z * _t1;
+        d.z = this.z * _t2 - this.y * _t1;
+        d.w = this.w * _t2 - this.x * _t1;
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -3709,20 +3715,20 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
-        double _t3 = Math.cos(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t0);
-        double _t7 = Math.sin(_t1);
-        double _t8 = Math.sin(_t2);
+        double _t3 = Math.sin(_t0);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t6 * _t4;
-        double _t12 = _t7 * _t3;
-        double _t21 = _t9 * _t5 - _t10 * _t8;
-        double _t22 = _t11 * _t5 + _t12 * _t8;
-        double _t23 = _t10 * _t5 + _t9 * _t8;
-        double _t24 = _t12 * _t5 - _t11 * _t8;
+        double _t10 = _t3 * _t7;
+        double _t11 = _t4 * _t6;
+        double _t13 = _t6 * _t7;
+        double _t21 = _t13 * _t8 - _t9 * _t5;
+        double _t22 = _t10 * _t8 + _t11 * _t5;
+        double _t23 = _t9 * _t8 + _t13 * _t5;
+        double _t24 = _t11 * _t8 - _t10 * _t5;
         double _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         double _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         double _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
@@ -3758,17 +3764,17 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
-        double _t6 = Math.cos(_t0);
-        double _t7 = Math.cos(_t1);
-        double _t8 = Math.cos(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t3 * _t7;
-        double _t12 = _t4 * _t6;
-        double _t21 = _t9 * _t5 + _t10 * _t8;
-        double _t22 = _t11 * _t8 - _t12 * _t5;
-        double _t23 = _t11 * _t5 + _t12 * _t8;
-        double _t24 = _t10 * _t5 - _t9 * _t8;
+        double _t10 = _t3 * _t7;
+        double _t11 = _t4 * _t6;
+        double _t13 = _t6 * _t7;
+        double _t21 = _t9 * _t5 + _t13 * _t8;
+        double _t22 = _t10 * _t8 - _t11 * _t5;
+        double _t23 = _t10 * _t5 + _t11 * _t8;
+        double _t24 = _t13 * _t5 - _t9 * _t8;
         double _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         double _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         double _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
@@ -3791,12 +3797,12 @@ public final class DoubleQuatImpl implements DoubleQuat {
     public DoubleQuat rotateY(double angle, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         double _t0 = 0.5 * angle;
-        double _t1 = Math.cos(_t0);
-        double _t2 = Math.sin(_t0);
-        double _buf0 = this.x * _t1 - this.z * _t2;
-        double _buf1 = this.y * _t1 + this.w * _t2;
-        d.z = this.x * _t2 + this.z * _t1;
-        d.w = this.w * _t1 - this.y * _t2;
+        double _t1 = Math.sin(_t0);
+        double _t2 = Math.cosFromSin(_t1, _t0);
+        double _buf0 = this.x * _t2 - this.z * _t1;
+        double _buf1 = this.y * _t2 + this.w * _t1;
+        d.z = this.x * _t1 + this.z * _t2;
+        d.w = this.w * _t2 - this.y * _t1;
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -3827,17 +3833,17 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
-        double _t6 = Math.cos(_t0);
-        double _t7 = Math.cos(_t1);
-        double _t8 = Math.cos(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t3 * _t7;
-        double _t12 = _t4 * _t6;
-        double _t21 = _t9 * _t5 + _t10 * _t8;
-        double _t22 = _t11 * _t8 + _t12 * _t5;
-        double _t23 = _t10 * _t5 - _t9 * _t8;
-        double _t24 = _t12 * _t8 - _t11 * _t5;
+        double _t10 = _t3 * _t7;
+        double _t11 = _t4 * _t6;
+        double _t13 = _t6 * _t7;
+        double _t21 = _t9 * _t5 + _t13 * _t8;
+        double _t22 = _t10 * _t8 + _t11 * _t5;
+        double _t23 = _t13 * _t5 - _t9 * _t8;
+        double _t24 = _t11 * _t8 - _t10 * _t5;
         double _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         double _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         double _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
@@ -3870,20 +3876,20 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
-        double _t3 = Math.cos(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t0);
-        double _t7 = Math.sin(_t1);
-        double _t8 = Math.sin(_t2);
+        double _t3 = Math.sin(_t0);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t7 * _t3;
-        double _t12 = _t6 * _t4;
-        double _t21 = _t9 * _t5 - _t10 * _t8;
-        double _t22 = _t10 * _t5 + _t9 * _t8;
-        double _t23 = _t11 * _t5 - _t12 * _t8;
-        double _t24 = _t12 * _t5 + _t11 * _t8;
+        double _t10 = _t4 * _t6;
+        double _t11 = _t3 * _t7;
+        double _t13 = _t6 * _t7;
+        double _t21 = _t13 * _t8 - _t9 * _t5;
+        double _t22 = _t9 * _t8 + _t13 * _t5;
+        double _t23 = _t10 * _t8 - _t11 * _t5;
+        double _t24 = _t11 * _t8 + _t10 * _t5;
         double _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         double _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         double _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
@@ -3906,12 +3912,12 @@ public final class DoubleQuatImpl implements DoubleQuat {
     public DoubleQuat rotateZ(double angle, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         double _t0 = 0.5 * angle;
-        double _t1 = Math.cos(_t0);
-        double _t2 = Math.sin(_t0);
-        double _buf0 = this.x * _t1 + this.y * _t2;
-        d.y = this.y * _t1 - this.x * _t2;
-        double _buf1 = this.z * _t1 + this.w * _t2;
-        d.w = this.w * _t1 - this.z * _t2;
+        double _t1 = Math.sin(_t0);
+        double _t2 = Math.cosFromSin(_t1, _t0);
+        double _buf0 = this.x * _t2 + this.y * _t1;
+        d.y = this.y * _t2 - this.x * _t1;
+        double _buf1 = this.z * _t2 + this.w * _t1;
+        d.w = this.w * _t2 - this.z * _t1;
         d.x = _buf0;
         d.z = _buf1;
         return d;
@@ -3939,20 +3945,20 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
-        double _t3 = Math.cos(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t0);
-        double _t7 = Math.sin(_t1);
-        double _t8 = Math.sin(_t2);
+        double _t3 = Math.sin(_t0);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t6 * _t4;
-        double _t12 = _t7 * _t3;
-        double _t21 = _t9 * _t5 - _t10 * _t8;
-        double _t22 = _t11 * _t5 - _t12 * _t8;
-        double _t23 = _t11 * _t8 + _t12 * _t5;
-        double _t24 = _t10 * _t5 + _t9 * _t8;
+        double _t10 = _t3 * _t7;
+        double _t11 = _t4 * _t6;
+        double _t13 = _t6 * _t7;
+        double _t21 = _t13 * _t8 - _t9 * _t5;
+        double _t22 = _t10 * _t8 - _t11 * _t5;
+        double _t23 = _t10 * _t5 + _t11 * _t8;
+        double _t24 = _t9 * _t8 + _t13 * _t5;
         double _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         double _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         double _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
@@ -3988,17 +3994,17 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
-        double _t6 = Math.cos(_t0);
-        double _t7 = Math.cos(_t1);
-        double _t8 = Math.cos(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t4 * _t6;
-        double _t12 = _t3 * _t7;
-        double _t21 = _t9 * _t5 + _t10 * _t8;
-        double _t22 = _t10 * _t5 - _t9 * _t8;
-        double _t23 = _t11 * _t8 - _t12 * _t5;
-        double _t24 = _t12 * _t8 + _t11 * _t5;
+        double _t10 = _t4 * _t6;
+        double _t11 = _t3 * _t7;
+        double _t13 = _t6 * _t7;
+        double _t21 = _t9 * _t5 + _t13 * _t8;
+        double _t22 = _t13 * _t5 - _t9 * _t8;
+        double _t23 = _t10 * _t8 - _t11 * _t5;
+        double _t24 = _t11 * _t8 + _t10 * _t5;
         double _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         double _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         double _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);

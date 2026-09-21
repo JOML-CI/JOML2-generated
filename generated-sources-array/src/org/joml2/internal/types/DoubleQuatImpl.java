@@ -1661,7 +1661,8 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t0 = Math.exp(sd[3]);
         double _t3 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
         double _t4 = Math.sqrt(_t3);
-        double _t8 = Math.sin(_t4) * _t0 * (1.0 / Math.sqrt(_t3));
+        double _t6 = Math.sin(_t4);
+        double _t8 = _t6 * _t0 * (1.0 / Math.sqrt(_t3));
         if (_t3 > 0.0) {
             dd[0] = sd[0] * _t8;
             dd[1] = sd[1] * _t8;
@@ -1671,7 +1672,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
             dd[1] = 0.0;
             dd[2] = 0.0;
         }
-        dd[3] = Math.cos(_t4) * _t0;
+        dd[3] = Math.cosFromSin(_t6, _t4) * _t0;
         return dest;
     }
 
@@ -1931,8 +1932,9 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t3 = angularVelY * _t0;
         double _t6 = Math.fma(_t1, _t1, Math.fma(_t2, _t2, _t3 * _t3));
         double _t7 = Math.sqrt(_t6);
-        double _t9 = Math.cos(_t7);
-        double _t11 = Math.sin(_t7) * (1.0 / Math.sqrt(_t6));
+        double _t9 = Math.sin(_t7);
+        double _t10 = Math.cosFromSin(_t9, _t7);
+        double _t11 = _t9 * (1.0 / Math.sqrt(_t6));
         double _t15, _t16, _t17;
         if (_t6 > 0.0) {
             _t15 = _t2 * _t11;
@@ -1943,10 +1945,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
             _t16 = 0.0;
             _t17 = 0.0;
         }
-        double _buf0 = Math.fma(sd[0], _t9, sd[3] * _t15) + Math.fma(sd[2], _t16, -(sd[1] * _t17));
-        double _buf1 = Math.fma(sd[0], _t17, sd[3] * _t16) + Math.fma(sd[1], _t9, -(sd[2] * _t15));
-        double _buf2 = Math.fma(sd[1], _t15, sd[2] * _t9) + Math.fma(sd[3], _t17, -(sd[0] * _t16));
-        dd[3] = Math.fma(sd[3], _t9, -(sd[0] * _t15)) - Math.fma(sd[1], _t16, sd[2] * _t17);
+        double _buf0 = Math.fma(sd[0], _t10, sd[3] * _t15) + Math.fma(sd[2], _t16, -(sd[1] * _t17));
+        double _buf1 = Math.fma(sd[0], _t17, sd[3] * _t16) + Math.fma(sd[1], _t10, -(sd[2] * _t15));
+        double _buf2 = Math.fma(sd[1], _t15, sd[2] * _t10) + Math.fma(sd[3], _t17, -(sd[0] * _t16));
+        dd[3] = Math.fma(sd[3], _t10, -(sd[0] * _t15)) - Math.fma(sd[1], _t16, sd[2] * _t17);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -2727,7 +2729,8 @@ public final class DoubleQuatImpl implements DoubleQuat {
         }
         double _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
         double _t24 = Math.sqrt(_t23);
-        double _t28 = Math.sin(_t24) * _t10 * (1.0 / Math.sqrt(_t23));
+        double _t26 = Math.sin(_t24);
+        double _t28 = _t26 * _t10 * (1.0 / Math.sqrt(_t23));
         if (_t23 > 0.0) {
             dd[0] = _t19 * _t28;
             dd[1] = _t20 * _t28;
@@ -2737,7 +2740,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
             dd[1] = 0.0;
             dd[2] = 0.0;
         }
-        dd[3] = Math.cos(_t24) * _t10;
+        dd[3] = Math.cosFromSin(_t26, _t24) * _t10;
         return dest;
     }
 
@@ -3045,7 +3048,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         dd[0] = axisX * _t1;
         dd[1] = axisY * _t1;
         dd[2] = axisZ * _t1;
-        dd[3] = Math.cos(_t0);
+        dd[3] = Math.cosFromSin(_t1, _t0);
         return this;
     }
 
@@ -3246,10 +3249,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
     @Mutated public DoubleQuat makeRotationX(double angle) {
         double[] dd = this.data;
         double _t0 = 0.5 * angle;
-        dd[0] = Math.sin(_t0);
+        double _t1 = Math.sin(_t0);
+        dd[0] = _t1;
         dd[1] = 0.0;
         dd[2] = 0.0;
-        dd[3] = Math.cos(_t0);
+        dd[3] = Math.cosFromSin(_t1, _t0);
         return this;
     }
 
@@ -3270,19 +3274,19 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
         double _t3 = Math.sin(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t1);
-        double _t7 = Math.cos(_t0);
-        double _t8 = Math.sin(_t2);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t4, _t1);
+        double _t7 = Math.cosFromSin(_t5, _t2);
+        double _t8 = Math.cosFromSin(_t3, _t0);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t3 * _t6;
-        double _t12 = _t7 * _t4;
-        dd[0] = Math.fma(_t9, _t5, _t10 * _t8);
-        dd[1] = Math.fma(_t10, _t5, -(_t9 * _t8));
-        dd[2] = Math.fma(_t11, _t5, _t12 * _t8);
-        dd[3] = Math.fma(_t12, _t5, -(_t11 * _t8));
+        double _t10 = _t3 * _t6;
+        double _t11 = _t4 * _t8;
+        double _t12 = _t8 * _t6;
+        dd[0] = Math.fma(_t10, _t7, _t11 * _t5);
+        dd[1] = Math.fma(_t11, _t7, -(_t10 * _t5));
+        dd[2] = Math.fma(_t9, _t7, _t12 * _t5);
+        dd[3] = Math.fma(_t12, _t7, -(_t9 * _t5));
         return this;
     }
 
@@ -3303,19 +3307,19 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
         double _t3 = Math.sin(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t1);
-        double _t7 = Math.cos(_t0);
-        double _t8 = Math.sin(_t2);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t4, _t1);
+        double _t7 = Math.cosFromSin(_t5, _t2);
+        double _t8 = Math.cosFromSin(_t3, _t0);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t7 * _t4;
-        double _t12 = _t3 * _t6;
-        dd[0] = Math.fma(_t9, _t5, -(_t10 * _t8));
-        dd[1] = Math.fma(_t11, _t8, -(_t12 * _t5));
-        dd[2] = Math.fma(_t9, _t8, _t10 * _t5);
-        dd[3] = Math.fma(_t12, _t8, _t11 * _t5);
+        double _t10 = _t3 * _t6;
+        double _t11 = _t4 * _t8;
+        double _t12 = _t8 * _t6;
+        dd[0] = Math.fma(_t10, _t7, -(_t11 * _t5));
+        dd[1] = Math.fma(_t12, _t5, -(_t9 * _t7));
+        dd[2] = Math.fma(_t10, _t5, _t11 * _t7);
+        dd[3] = Math.fma(_t9, _t5, _t12 * _t7);
         return this;
     }
 
@@ -3329,10 +3333,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
     @Mutated public DoubleQuat makeRotationY(double angle) {
         double[] dd = this.data;
         double _t0 = 0.5 * angle;
+        double _t1 = Math.sin(_t0);
         dd[0] = 0.0;
-        dd[1] = Math.sin(_t0);
+        dd[1] = _t1;
         dd[2] = 0.0;
-        dd[3] = Math.cos(_t0);
+        dd[3] = Math.cosFromSin(_t1, _t0);
         return this;
     }
 
@@ -3353,19 +3358,19 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
         double _t3 = Math.sin(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t1);
-        double _t7 = Math.cos(_t0);
-        double _t8 = Math.sin(_t2);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t4, _t1);
+        double _t7 = Math.cosFromSin(_t5, _t2);
+        double _t8 = Math.cosFromSin(_t3, _t0);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t7 * _t4;
-        double _t12 = _t3 * _t6;
-        dd[0] = Math.fma(_t9, _t5, _t10 * _t8);
-        dd[1] = Math.fma(_t10, _t5, -(_t9 * _t8));
-        dd[2] = Math.fma(_t11, _t8, -(_t12 * _t5));
-        dd[3] = Math.fma(_t12, _t8, _t11 * _t5);
+        double _t10 = _t3 * _t6;
+        double _t11 = _t4 * _t8;
+        double _t12 = _t8 * _t6;
+        dd[0] = Math.fma(_t10, _t7, _t11 * _t5);
+        dd[1] = Math.fma(_t11, _t7, -(_t10 * _t5));
+        dd[2] = Math.fma(_t12, _t5, -(_t9 * _t7));
+        dd[3] = Math.fma(_t9, _t5, _t12 * _t7);
         return this;
     }
 
@@ -3387,18 +3392,18 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t2 = 0.5 * angleX;
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.cos(_t0);
-        double _t7 = Math.cos(_t1);
-        double _t8 = Math.sin(_t2);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t5, _t2);
+        double _t7 = Math.cosFromSin(_t3, _t0);
+        double _t8 = Math.cosFromSin(_t4, _t1);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t3 * _t7;
-        double _t12 = _t4 * _t6;
-        dd[0] = Math.fma(_t9, _t5, _t10 * _t8);
-        dd[1] = Math.fma(_t11, _t5, _t12 * _t8);
-        dd[2] = Math.fma(_t12, _t5, -(_t11 * _t8));
-        dd[3] = Math.fma(_t10, _t5, -(_t9 * _t8));
+        double _t10 = _t3 * _t8;
+        double _t11 = _t4 * _t7;
+        double _t12 = _t7 * _t8;
+        dd[0] = Math.fma(_t9, _t6, _t12 * _t5);
+        dd[1] = Math.fma(_t10, _t6, _t11 * _t5);
+        dd[2] = Math.fma(_t11, _t6, -(_t10 * _t5));
+        dd[3] = Math.fma(_t12, _t6, -(_t9 * _t5));
         return this;
     }
 
@@ -3412,10 +3417,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
     @Mutated public DoubleQuat makeRotationZ(double angle) {
         double[] dd = this.data;
         double _t0 = 0.5 * angle;
+        double _t1 = Math.sin(_t0);
         dd[0] = 0.0;
         dd[1] = 0.0;
-        dd[2] = Math.sin(_t0);
-        dd[3] = Math.cos(_t0);
+        dd[2] = _t1;
+        dd[3] = Math.cosFromSin(_t1, _t0);
         return this;
     }
 
@@ -3436,19 +3442,19 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
         double _t3 = Math.sin(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t1);
-        double _t7 = Math.cos(_t0);
-        double _t8 = Math.sin(_t2);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t4, _t1);
+        double _t7 = Math.cosFromSin(_t5, _t2);
+        double _t8 = Math.cosFromSin(_t3, _t0);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t3 * _t6;
-        double _t12 = _t7 * _t4;
-        dd[0] = Math.fma(_t9, _t5, -(_t10 * _t8));
-        dd[1] = Math.fma(_t11, _t5, _t12 * _t8);
-        dd[2] = Math.fma(_t9, _t8, _t10 * _t5);
-        dd[3] = Math.fma(_t12, _t5, -(_t11 * _t8));
+        double _t10 = _t3 * _t6;
+        double _t11 = _t4 * _t8;
+        double _t12 = _t8 * _t6;
+        dd[0] = Math.fma(_t10, _t7, -(_t11 * _t5));
+        dd[1] = Math.fma(_t9, _t7, _t12 * _t5);
+        dd[2] = Math.fma(_t10, _t5, _t11 * _t7);
+        dd[3] = Math.fma(_t12, _t7, -(_t9 * _t5));
         return this;
     }
 
@@ -3468,20 +3474,20 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
-        double _t3 = Math.cos(_t0);
-        double _t4 = Math.cos(_t1);
+        double _t3 = Math.sin(_t0);
+        double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
-        double _t6 = Math.sin(_t0);
-        double _t7 = Math.sin(_t1);
-        double _t8 = Math.cos(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t6 * _t4;
-        double _t12 = _t7 * _t3;
-        dd[0] = Math.fma(_t9, _t5, -(_t10 * _t8));
-        dd[1] = Math.fma(_t11, _t8, _t12 * _t5);
-        dd[2] = Math.fma(_t12, _t8, -(_t11 * _t5));
-        dd[3] = Math.fma(_t10, _t5, _t9 * _t8);
+        double _t10 = _t3 * _t7;
+        double _t11 = _t4 * _t6;
+        double _t12 = _t6 * _t7;
+        dd[0] = Math.fma(_t12, _t5, -(_t9 * _t8));
+        dd[1] = Math.fma(_t10, _t8, _t11 * _t5);
+        dd[2] = Math.fma(_t11, _t8, -(_t10 * _t5));
+        dd[3] = Math.fma(_t9, _t5, _t12 * _t8);
         return this;
     }
 
@@ -3502,12 +3508,12 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 0.5 * angle;
-        double _t1 = Math.cos(_t0);
-        double _t2 = Math.sin(_t0);
-        double _buf0 = Math.fma(sd[0], _t1, sd[3] * _t2);
-        double _buf1 = Math.fma(sd[1], _t1, -(sd[2] * _t2));
-        dd[2] = Math.fma(sd[1], _t2, sd[2] * _t1);
-        dd[3] = Math.fma(sd[3], _t1, -(sd[0] * _t2));
+        double _t1 = Math.sin(_t0);
+        double _t2 = Math.cosFromSin(_t1, _t0);
+        double _buf0 = Math.fma(sd[0], _t2, sd[3] * _t1);
+        double _buf1 = Math.fma(sd[1], _t2, -(sd[2] * _t1));
+        dd[2] = Math.fma(sd[1], _t1, sd[2] * _t2);
+        dd[3] = Math.fma(sd[3], _t2, -(sd[0] * _t1));
         dd[0] = _buf0;
         dd[1] = _buf1;
         return dest;
@@ -3530,12 +3536,12 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 0.5 * angle;
-        double _t1 = Math.cos(_t0);
-        double _t2 = Math.sin(_t0);
-        double _buf0 = Math.fma(sd[0], _t1, sd[2] * _t2);
-        double _buf1 = Math.fma(sd[1], _t1, sd[3] * _t2);
-        dd[2] = Math.fma(sd[2], _t1, -(sd[0] * _t2));
-        dd[3] = Math.fma(sd[3], _t1, -(sd[1] * _t2));
+        double _t1 = Math.sin(_t0);
+        double _t2 = Math.cosFromSin(_t1, _t0);
+        double _buf0 = Math.fma(sd[0], _t2, sd[2] * _t1);
+        double _buf1 = Math.fma(sd[1], _t2, sd[3] * _t1);
+        dd[2] = Math.fma(sd[2], _t2, -(sd[0] * _t1));
+        dd[3] = Math.fma(sd[3], _t2, -(sd[1] * _t1));
         dd[0] = _buf0;
         dd[1] = _buf1;
         return dest;
@@ -3558,12 +3564,12 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 0.5 * angle;
-        double _t1 = Math.cos(_t0);
-        double _t2 = Math.sin(_t0);
-        double _buf0 = Math.fma(sd[0], _t1, -(sd[1] * _t2));
-        dd[1] = Math.fma(sd[0], _t2, sd[1] * _t1);
-        double _buf1 = Math.fma(sd[2], _t1, sd[3] * _t2);
-        dd[3] = Math.fma(sd[3], _t1, -(sd[2] * _t2));
+        double _t1 = Math.sin(_t0);
+        double _t2 = Math.cosFromSin(_t1, _t0);
+        double _buf0 = Math.fma(sd[0], _t2, -(sd[1] * _t1));
+        dd[1] = Math.fma(sd[0], _t1, sd[1] * _t2);
+        double _buf1 = Math.fma(sd[2], _t2, sd[3] * _t1);
+        dd[3] = Math.fma(sd[3], _t2, -(sd[2] * _t1));
         dd[0] = _buf0;
         dd[2] = _buf1;
         return dest;
@@ -3613,15 +3619,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 0.5 * angle;
-        double _t1 = Math.cos(_t0);
-        double _t2 = Math.sin(_t0);
-        double _t3 = axisX * _t2;
-        double _t4 = axisZ * _t2;
-        double _t5 = axisY * _t2;
-        double _buf0 = Math.fma(sd[0], _t1, sd[3] * _t3) + Math.fma(sd[1], _t4, -(sd[2] * _t5));
-        double _buf1 = Math.fma(sd[1], _t1, sd[2] * _t3) + Math.fma(sd[3], _t5, -(sd[0] * _t4));
-        double _buf2 = Math.fma(sd[0], _t5, sd[3] * _t4) + Math.fma(sd[2], _t1, -(sd[1] * _t3));
-        dd[3] = Math.fma(sd[3], _t1, -(sd[0] * _t3)) - Math.fma(sd[1], _t5, sd[2] * _t4);
+        double _t1 = Math.sin(_t0);
+        double _t2 = axisX * _t1;
+        double _t3 = axisZ * _t1;
+        double _t4 = axisY * _t1;
+        double _t5 = Math.cosFromSin(_t1, _t0);
+        double _buf0 = Math.fma(sd[0], _t5, sd[3] * _t2) + Math.fma(sd[1], _t3, -(sd[2] * _t4));
+        double _buf1 = Math.fma(sd[1], _t5, sd[2] * _t2) + Math.fma(sd[3], _t4, -(sd[0] * _t3));
+        double _buf2 = Math.fma(sd[0], _t4, sd[3] * _t3) + Math.fma(sd[2], _t5, -(sd[1] * _t2));
+        dd[3] = Math.fma(sd[3], _t5, -(sd[0] * _t2)) - Math.fma(sd[1], _t4, sd[2] * _t3);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -3744,12 +3750,12 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 0.5 * angle;
-        double _t1 = Math.cos(_t0);
-        double _t2 = Math.sin(_t0);
-        double _buf0 = Math.fma(sd[0], _t1, sd[3] * _t2);
-        double _buf1 = Math.fma(sd[1], _t1, sd[2] * _t2);
-        dd[2] = Math.fma(sd[2], _t1, -(sd[1] * _t2));
-        dd[3] = Math.fma(sd[3], _t1, -(sd[0] * _t2));
+        double _t1 = Math.sin(_t0);
+        double _t2 = Math.cosFromSin(_t1, _t0);
+        double _buf0 = Math.fma(sd[0], _t2, sd[3] * _t1);
+        double _buf1 = Math.fma(sd[1], _t2, sd[2] * _t1);
+        dd[2] = Math.fma(sd[2], _t2, -(sd[1] * _t1));
+        dd[3] = Math.fma(sd[3], _t2, -(sd[0] * _t1));
         dd[0] = _buf0;
         dd[1] = _buf1;
         return dest;
@@ -3778,20 +3784,20 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
-        double _t3 = Math.cos(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t0);
-        double _t7 = Math.sin(_t1);
-        double _t8 = Math.sin(_t2);
+        double _t3 = Math.sin(_t0);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t6 * _t4;
-        double _t12 = _t7 * _t3;
-        double _t19 = Math.fma(_t11, _t5, _t12 * _t8);
-        double _t20 = Math.fma(_t10, _t5, _t9 * _t8);
-        double _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        double _t22 = Math.fma(_t12, _t5, -(_t11 * _t8));
+        double _t10 = _t3 * _t7;
+        double _t11 = _t4 * _t6;
+        double _t14 = _t6 * _t7;
+        double _t19 = Math.fma(_t10, _t8, _t11 * _t5);
+        double _t20 = Math.fma(_t9, _t8, _t14 * _t5);
+        double _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        double _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
         double _buf0 = Math.fma(sd[0], _t21, sd[3] * _t19) + Math.fma(sd[1], _t20, -(sd[2] * _t22));
         double _buf1 = Math.fma(sd[1], _t21, sd[2] * _t19) + Math.fma(sd[3], _t22, -(sd[0] * _t20));
         double _buf2 = Math.fma(sd[0], _t22, sd[3] * _t20) + Math.fma(sd[2], _t21, -(sd[1] * _t19));
@@ -3828,17 +3834,17 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
-        double _t6 = Math.cos(_t0);
-        double _t7 = Math.cos(_t1);
-        double _t8 = Math.cos(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t3 * _t7;
-        double _t12 = _t4 * _t6;
-        double _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        double _t20 = Math.fma(_t11, _t5, _t12 * _t8);
-        double _t21 = Math.fma(_t11, _t8, -(_t12 * _t5));
-        double _t22 = Math.fma(_t10, _t5, -(_t9 * _t8));
+        double _t10 = _t3 * _t7;
+        double _t11 = _t4 * _t6;
+        double _t12 = _t6 * _t7;
+        double _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        double _t20 = Math.fma(_t10, _t5, _t11 * _t8);
+        double _t21 = Math.fma(_t10, _t8, -(_t11 * _t5));
+        double _t22 = Math.fma(_t12, _t5, -(_t9 * _t8));
         double _buf0 = Math.fma(sd[0], _t19, sd[3] * _t21) + Math.fma(sd[1], _t20, -(sd[2] * _t22));
         double _buf1 = Math.fma(sd[1], _t19, sd[2] * _t21) + Math.fma(sd[3], _t22, -(sd[0] * _t20));
         double _buf2 = Math.fma(sd[0], _t22, sd[3] * _t20) + Math.fma(sd[2], _t19, -(sd[1] * _t21));
@@ -3862,12 +3868,12 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 0.5 * angle;
-        double _t1 = Math.cos(_t0);
-        double _t2 = Math.sin(_t0);
-        double _buf0 = Math.fma(sd[0], _t1, -(sd[2] * _t2));
-        double _buf1 = Math.fma(sd[1], _t1, sd[3] * _t2);
-        dd[2] = Math.fma(sd[0], _t2, sd[2] * _t1);
-        dd[3] = Math.fma(sd[3], _t1, -(sd[1] * _t2));
+        double _t1 = Math.sin(_t0);
+        double _t2 = Math.cosFromSin(_t1, _t0);
+        double _buf0 = Math.fma(sd[0], _t2, -(sd[2] * _t1));
+        double _buf1 = Math.fma(sd[1], _t2, sd[3] * _t1);
+        dd[2] = Math.fma(sd[0], _t1, sd[2] * _t2);
+        dd[3] = Math.fma(sd[3], _t2, -(sd[1] * _t1));
         dd[0] = _buf0;
         dd[1] = _buf1;
         return dest;
@@ -3899,17 +3905,17 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
-        double _t6 = Math.cos(_t0);
-        double _t7 = Math.cos(_t1);
-        double _t8 = Math.cos(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t3 * _t7;
-        double _t12 = _t4 * _t6;
-        double _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        double _t20 = Math.fma(_t11, _t8, _t12 * _t5);
-        double _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        double _t22 = Math.fma(_t12, _t8, -(_t11 * _t5));
+        double _t10 = _t3 * _t7;
+        double _t11 = _t4 * _t6;
+        double _t12 = _t6 * _t7;
+        double _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        double _t20 = Math.fma(_t10, _t8, _t11 * _t5);
+        double _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
+        double _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
         double _buf0 = Math.fma(sd[0], _t19, sd[3] * _t20) + Math.fma(sd[1], _t21, -(sd[2] * _t22));
         double _buf1 = Math.fma(sd[1], _t19, sd[2] * _t20) + Math.fma(sd[3], _t22, -(sd[0] * _t21));
         double _buf2 = Math.fma(sd[0], _t22, sd[3] * _t21) + Math.fma(sd[2], _t19, -(sd[1] * _t20));
@@ -3943,20 +3949,20 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
-        double _t3 = Math.cos(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t0);
-        double _t7 = Math.sin(_t1);
-        double _t8 = Math.sin(_t2);
+        double _t3 = Math.sin(_t0);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t7 * _t3;
-        double _t12 = _t6 * _t4;
-        double _t19 = Math.fma(_t10, _t5, _t9 * _t8);
-        double _t20 = Math.fma(_t12, _t5, _t11 * _t8);
-        double _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        double _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+        double _t10 = _t4 * _t6;
+        double _t11 = _t3 * _t7;
+        double _t14 = _t6 * _t7;
+        double _t19 = Math.fma(_t9, _t8, _t14 * _t5);
+        double _t20 = Math.fma(_t11, _t8, _t10 * _t5);
+        double _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        double _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         double _buf0 = Math.fma(sd[0], _t21, sd[3] * _t19) + Math.fma(sd[1], _t22, -(sd[2] * _t20));
         double _buf1 = Math.fma(sd[1], _t21, sd[2] * _t19) + Math.fma(sd[3], _t20, -(sd[0] * _t22));
         double _buf2 = Math.fma(sd[0], _t20, sd[3] * _t22) + Math.fma(sd[2], _t21, -(sd[1] * _t19));
@@ -3980,12 +3986,12 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 0.5 * angle;
-        double _t1 = Math.cos(_t0);
-        double _t2 = Math.sin(_t0);
-        double _buf0 = Math.fma(sd[0], _t1, sd[1] * _t2);
-        dd[1] = Math.fma(sd[1], _t1, -(sd[0] * _t2));
-        double _buf1 = Math.fma(sd[2], _t1, sd[3] * _t2);
-        dd[3] = Math.fma(sd[3], _t1, -(sd[2] * _t2));
+        double _t1 = Math.sin(_t0);
+        double _t2 = Math.cosFromSin(_t1, _t0);
+        double _buf0 = Math.fma(sd[0], _t2, sd[1] * _t1);
+        dd[1] = Math.fma(sd[1], _t2, -(sd[0] * _t1));
+        double _buf1 = Math.fma(sd[2], _t2, sd[3] * _t1);
+        dd[3] = Math.fma(sd[3], _t2, -(sd[2] * _t1));
         dd[0] = _buf0;
         dd[2] = _buf1;
         return dest;
@@ -4014,20 +4020,20 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
-        double _t3 = Math.cos(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t0);
-        double _t7 = Math.sin(_t1);
-        double _t8 = Math.sin(_t2);
+        double _t3 = Math.sin(_t0);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t6 * _t4;
-        double _t12 = _t7 * _t3;
-        double _t19 = Math.fma(_t11, _t8, _t12 * _t5);
-        double _t20 = Math.fma(_t10, _t5, _t9 * _t8);
-        double _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        double _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+        double _t10 = _t3 * _t7;
+        double _t11 = _t4 * _t6;
+        double _t14 = _t6 * _t7;
+        double _t19 = Math.fma(_t10, _t5, _t11 * _t8);
+        double _t20 = Math.fma(_t9, _t8, _t14 * _t5);
+        double _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        double _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         double _buf0 = Math.fma(sd[0], _t21, sd[3] * _t22) + Math.fma(sd[1], _t19, -(sd[2] * _t20));
         double _buf1 = Math.fma(sd[1], _t21, sd[2] * _t22) + Math.fma(sd[3], _t20, -(sd[0] * _t19));
         double _buf2 = Math.fma(sd[0], _t20, sd[3] * _t19) + Math.fma(sd[2], _t21, -(sd[1] * _t22));
@@ -4064,17 +4070,17 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
-        double _t6 = Math.cos(_t0);
-        double _t7 = Math.cos(_t1);
-        double _t8 = Math.cos(_t2);
+        double _t6 = Math.cosFromSin(_t3, _t0);
+        double _t7 = Math.cosFromSin(_t4, _t1);
+        double _t8 = Math.cosFromSin(_t5, _t2);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t4 * _t6;
-        double _t12 = _t3 * _t7;
-        double _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        double _t20 = Math.fma(_t12, _t8, _t11 * _t5);
-        double _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        double _t22 = Math.fma(_t11, _t8, -(_t12 * _t5));
+        double _t10 = _t4 * _t6;
+        double _t11 = _t3 * _t7;
+        double _t12 = _t6 * _t7;
+        double _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        double _t20 = Math.fma(_t11, _t8, _t10 * _t5);
+        double _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
+        double _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         double _buf0 = Math.fma(sd[0], _t19, sd[3] * _t21) + Math.fma(sd[1], _t22, -(sd[2] * _t20));
         double _buf1 = Math.fma(sd[1], _t19, sd[2] * _t21) + Math.fma(sd[3], _t20, -(sd[0] * _t22));
         double _buf2 = Math.fma(sd[0], _t20, sd[3] * _t22) + Math.fma(sd[2], _t19, -(sd[1] * _t21));

@@ -2293,9 +2293,9 @@ public value record Double2(double x, double y) {
      * @return the resulting vector
      */
     public Double2 rotate(double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        return new Double2(Math.fma(this.x, _t0, -(this.y * _t1)), Math.fma(this.x, _t1, this.y * _t0));
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        return new Double2(Math.fma(this.x, _t1, -(this.y * _t0)), Math.fma(this.x, _t0, this.y * _t1));
     }
 
     /**

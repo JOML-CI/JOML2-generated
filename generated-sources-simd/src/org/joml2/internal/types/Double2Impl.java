@@ -2743,10 +2743,10 @@ public final class Double2Impl implements Double2 {
     public Double2 rotate(double angle, @Mutated Double2 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2Impl) dest).data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _buf0 = Math.fma(sd[0], _t0, -(sd[1] * _t1));
-        dd[1] = Math.fma(sd[0], _t1, sd[1] * _t0);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _buf0 = Math.fma(sd[0], _t1, -(sd[1] * _t0));
+        dd[1] = Math.fma(sd[0], _t0, sd[1] * _t1);
         dd[0] = _buf0;
         return dest;
     }

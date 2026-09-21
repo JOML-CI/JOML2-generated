@@ -341,12 +341,12 @@ public final class Float2x2OpsKernelsAddress {
     }
 
     public static long makeRotation_unsafe(long dest, float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        UnsafeOpsHolder.U.putFloat(dest + 0L, _t0);
-        UnsafeOpsHolder.U.putFloat(dest + 4L, _t1);
-        UnsafeOpsHolder.U.putFloat(dest + 8L, -_t1);
-        UnsafeOpsHolder.U.putFloat(dest + 12L, _t0);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        UnsafeOpsHolder.U.putFloat(dest + 0L, _t1);
+        UnsafeOpsHolder.U.putFloat(dest + 4L, _t0);
+        UnsafeOpsHolder.U.putFloat(dest + 8L, -_t0);
+        UnsafeOpsHolder.U.putFloat(dest + 12L, _t1);
         return dest;
     }
 
@@ -381,12 +381,12 @@ public final class Float2x2OpsKernelsAddress {
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self01 = UnsafeOpsHolder.U.getFloat(src + 8L);
         float _self11 = UnsafeOpsHolder.U.getFloat(src + 12L);
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self00, _t0, -(_self10 * _t1)));
-        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self00, _t1, _self10 * _t0));
-        UnsafeOpsHolder.U.putFloat(dest + 8L, Math.fma(_self01, _t0, -(_self11 * _t1)));
-        UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(_self01, _t1, _self11 * _t0));
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self00, _t1, -(_self10 * _t0)));
+        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self00, _t0, _self10 * _t1));
+        UnsafeOpsHolder.U.putFloat(dest + 8L, Math.fma(_self01, _t1, -(_self11 * _t0)));
+        UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(_self01, _t0, _self11 * _t1));
         return dest;
     }
 
@@ -433,12 +433,12 @@ public final class Float2x2OpsKernelsAddress {
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self01 = UnsafeOpsHolder.U.getFloat(src + 8L);
         float _self11 = UnsafeOpsHolder.U.getFloat(src + 12L);
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self00, _t0, _self01 * _t1));
-        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self10, _t0, _self11 * _t1));
-        UnsafeOpsHolder.U.putFloat(dest + 8L, Math.fma(_self01, _t0, -(_self00 * _t1)));
-        UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(_self11, _t0, -(_self10 * _t1)));
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self00, _t1, _self01 * _t0));
+        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self10, _t1, _self11 * _t0));
+        UnsafeOpsHolder.U.putFloat(dest + 8L, Math.fma(_self01, _t1, -(_self00 * _t0)));
+        UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(_self11, _t1, -(_self10 * _t0)));
         return dest;
     }
 

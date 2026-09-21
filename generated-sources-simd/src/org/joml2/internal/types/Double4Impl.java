@@ -3639,13 +3639,13 @@ public final class Double4Impl implements Double4 {
         double[] sd = this.data;
         double[] axisData = ((Double3Impl) axis).data;
         double[] dd = ((Double4Impl) dest).data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t3 = 1.0 - _t1;
         double _t5 = Math.fma(axisData[2], sd[2], Math.fma(axisData[0], sd[0], axisData[1] * sd[1]));
-        double _buf0 = Math.fma(_t2, axisData[0] * _t5, Math.fma(sd[0], _t0, Math.fma(axisData[1], sd[2], -(axisData[2] * sd[1])) * _t1));
-        double _buf1 = Math.fma(_t2, axisData[1] * _t5, Math.fma(sd[1], _t0, Math.fma(axisData[2], sd[0], -(axisData[0] * sd[2])) * _t1));
-        dd[2] = Math.fma(_t2, axisData[2] * _t5, Math.fma(sd[2], _t0, Math.fma(axisData[0], sd[1], -(axisData[1] * sd[0])) * _t1));
+        double _buf0 = Math.fma(_t3, axisData[0] * _t5, Math.fma(sd[0], _t1, Math.fma(axisData[1], sd[2], -(axisData[2] * sd[1])) * _t0));
+        double _buf1 = Math.fma(_t3, axisData[1] * _t5, Math.fma(sd[1], _t1, Math.fma(axisData[2], sd[0], -(axisData[0] * sd[2])) * _t0));
+        dd[2] = Math.fma(_t3, axisData[2] * _t5, Math.fma(sd[2], _t1, Math.fma(axisData[0], sd[1], -(axisData[1] * sd[0])) * _t0));
         dd[3] = sd[3];
         dd[0] = _buf0;
         dd[1] = _buf1;
@@ -3674,13 +3674,13 @@ public final class Double4Impl implements Double4 {
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         double[] sd = this.data;
         double[] dd = ((Double4Impl) dest).data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t3 = 1.0 - _t1;
         double _t5 = Math.fma(axisZ, sd[2], Math.fma(axisX, sd[0], axisY * sd[1]));
-        double _buf0 = Math.fma(_t2, axisX * _t5, Math.fma(sd[0], _t0, Math.fma(axisY, sd[2], -(axisZ * sd[1])) * _t1));
-        double _buf1 = Math.fma(_t2, axisY * _t5, Math.fma(sd[1], _t0, Math.fma(axisZ, sd[0], -(axisX * sd[2])) * _t1));
-        dd[2] = Math.fma(_t2, axisZ * _t5, Math.fma(sd[2], _t0, Math.fma(axisX, sd[1], -(axisY * sd[0])) * _t1));
+        double _buf0 = Math.fma(_t3, axisX * _t5, Math.fma(sd[0], _t1, Math.fma(axisY, sd[2], -(axisZ * sd[1])) * _t0));
+        double _buf1 = Math.fma(_t3, axisY * _t5, Math.fma(sd[1], _t1, Math.fma(axisZ, sd[0], -(axisX * sd[2])) * _t0));
+        dd[2] = Math.fma(_t3, axisZ * _t5, Math.fma(sd[2], _t1, Math.fma(axisX, sd[1], -(axisY * sd[0])) * _t0));
         dd[3] = sd[3];
         dd[0] = _buf0;
         dd[1] = _buf1;
@@ -3751,11 +3751,11 @@ public final class Double4Impl implements Double4 {
     public Double4 rotateX(double angle, @Mutated Double4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4Impl) dest).data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         dd[0] = sd[0];
-        double _buf0 = Math.fma(sd[1], _t0, -(sd[2] * _t1));
-        dd[2] = Math.fma(sd[1], _t1, sd[2] * _t0);
+        double _buf0 = Math.fma(sd[1], _t1, -(sd[2] * _t0));
+        dd[2] = Math.fma(sd[1], _t0, sd[2] * _t1);
         dd[3] = sd[3];
         dd[1] = _buf0;
         return dest;
@@ -3773,11 +3773,11 @@ public final class Double4Impl implements Double4 {
     public Double4 rotateY(double angle, @Mutated Double4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4Impl) dest).data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _buf0 = Math.fma(sd[0], _t0, sd[2] * _t1);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _buf0 = Math.fma(sd[0], _t1, sd[2] * _t0);
         dd[1] = sd[1];
-        dd[2] = Math.fma(sd[2], _t0, -(sd[0] * _t1));
+        dd[2] = Math.fma(sd[2], _t1, -(sd[0] * _t0));
         dd[3] = sd[3];
         dd[0] = _buf0;
         return dest;
@@ -3795,10 +3795,10 @@ public final class Double4Impl implements Double4 {
     public Double4 rotateZ(double angle, @Mutated Double4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4Impl) dest).data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _buf0 = Math.fma(sd[0], _t0, -(sd[1] * _t1));
-        dd[1] = Math.fma(sd[0], _t1, sd[1] * _t0);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _buf0 = Math.fma(sd[0], _t1, -(sd[1] * _t0));
+        dd[1] = Math.fma(sd[0], _t0, sd[1] * _t1);
         dd[2] = sd[2];
         dd[3] = sd[3];
         dd[0] = _buf0;

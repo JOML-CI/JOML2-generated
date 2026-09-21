@@ -3924,12 +3924,12 @@ public class Float2x2Impl implements Float2x2 {
      */
     @Mutated public Float2x2 makeRotation(float angle) {
         float[] dd = this.data;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        dd[0] = _t0;
-        dd[1] = _t1;
-        dd[2] = -_t1;
-        dd[3] = _t0;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        dd[0] = _t1;
+        dd[1] = _t0;
+        dd[2] = -_t0;
+        dd[3] = _t1;
         ((Float2x2Impl) this).properties = 0;
         return this;
     }
@@ -3982,83 +3982,6 @@ public class Float2x2Impl implements Float2x2 {
 
 
     /**
-     * Private body of {@code preRotate}, specialized by runtime matrix properties; reached only
-     * through the public {@code preRotate} dispatcher.
-     */
-    private Float2x2 preRotate_identity(float angle, @Mutated Float2x2 dest) {
-        float[] sd = this.data;
-        float[] dd = ((Float2x2Impl) dest).data;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        dd[0] = _t0;
-        dd[1] = _t1;
-        dd[2] = -_t1;
-        dd[3] = _t0;
-        ((Float2x2Impl) dest).properties = 0;
-        return dest;
-    }
-
-
-    /**
-     * Private body of {@code preRotate}, specialized by runtime matrix properties; reached only
-     * through the public {@code preRotate} dispatcher.
-     */
-    private Float2x2 preRotate_translation(float angle, @Mutated Float2x2 dest) {
-        float[] sd = this.data;
-        float[] dd = ((Float2x2Impl) dest).data;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        dd[0] = _t0;
-        dd[1] = _t1;
-        float _buf0 = Math.fma(sd[2], _t0, -_t1);
-        dd[3] = Math.fma(sd[2], _t1, _t0);
-        dd[2] = _buf0;
-        ((Float2x2Impl) dest).properties = 0;
-        return dest;
-    }
-
-
-    /**
-     * Private body of {@code preRotate}, specialized by runtime matrix properties; reached only
-     * through the public {@code preRotate} dispatcher.
-     */
-    private Float2x2 preRotate_affine(float angle, @Mutated Float2x2 dest) {
-        float[] sd = this.data;
-        float[] dd = ((Float2x2Impl) dest).data;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = sd[0] * _t0;
-        dd[1] = sd[0] * _t1;
-        float _buf1 = Math.fma(sd[2], _t0, -_t1);
-        dd[3] = Math.fma(sd[2], _t1, _t0);
-        dd[0] = _buf0;
-        dd[2] = _buf1;
-        ((Float2x2Impl) dest).properties = 0;
-        return dest;
-    }
-
-
-    /**
-     * Private body of {@code preRotate}, specialized by runtime matrix properties; reached only
-     * through the public {@code preRotate} dispatcher.
-     */
-    private Float2x2 preRotate_general(float angle, @Mutated Float2x2 dest) {
-        float[] sd = this.data;
-        float[] dd = ((Float2x2Impl) dest).data;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = Math.fma(sd[0], _t0, -(sd[1] * _t1));
-        dd[1] = Math.fma(sd[0], _t1, sd[1] * _t0);
-        float _buf1 = Math.fma(sd[2], _t0, -(sd[3] * _t1));
-        dd[3] = Math.fma(sd[2], _t1, sd[3] * _t0);
-        dd[0] = _buf0;
-        dd[2] = _buf1;
-        ((Float2x2Impl) dest).properties = 0;
-        return dest;
-    }
-
-
-    /**
      * Pre-multiply a rotation by {@code angle} onto this matrix and store the result in
      * {@code dest}.
      * <p>
@@ -4071,31 +3994,18 @@ public class Float2x2Impl implements Float2x2 {
      * @return dest
      */
     public Float2x2 preRotate(float angle, @Mutated Float2x2 dest) {
-        int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preRotate_identity(angle, dest);
-        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return preRotate_translation(angle, dest);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preRotate_affine(angle, dest);
-        return preRotate_general(angle, dest);
-    }
-
-
-    /**
-     * Pre-multiply a rotation by {@code angle} onto this matrix.
-     * <p>
-     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
-     * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
-     * {@code R * M * v}, the rotation will be applied last.
-     *
-     * @param angle the angle in radians
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
-     */
-    @Mutated public Float2x2 preRotate(float angle) {
-        if (Joml.RETURN_NEW) return preRotate(angle, Joml.float2x2());
-        int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preRotate_identity(angle, this);
-        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return preRotate_translation(angle, this);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preRotate_affine(angle, this);
-        return preRotate_general(angle, this);
+        float[] sd = this.data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = Math.fma(sd[0], _t1, -(sd[1] * _t0));
+        dd[1] = Math.fma(sd[0], _t0, sd[1] * _t1);
+        float _buf1 = Math.fma(sd[2], _t1, -(sd[3] * _t0));
+        dd[3] = Math.fma(sd[2], _t0, sd[3] * _t1);
+        dd[0] = _buf0;
+        dd[2] = _buf1;
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
     }
 
 
@@ -4117,12 +4027,12 @@ public class Float2x2Impl implements Float2x2 {
     public Double2x2 preRotate(float angle, @Mutated Double2x2 dest) {
         float[] sd = this.data;
         double[] dd = ((Double2x2Impl) dest).data;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = Math.fma(sd[0], _t0, -(sd[1] * _t1));
-        dd[1] = Math.fma(sd[0], _t1, sd[1] * _t0);
-        float _buf1 = Math.fma(sd[2], _t0, -(sd[3] * _t1));
-        dd[3] = Math.fma(sd[2], _t1, sd[3] * _t0);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = Math.fma(sd[0], _t1, -(sd[1] * _t0));
+        dd[1] = Math.fma(sd[0], _t0, sd[1] * _t1);
+        float _buf1 = Math.fma(sd[2], _t1, -(sd[3] * _t0));
+        dd[3] = Math.fma(sd[2], _t0, sd[3] * _t1);
         dd[0] = _buf0;
         dd[2] = _buf1;
         ((Double2x2Impl) dest).properties = 0;
@@ -4534,72 +4444,6 @@ public class Float2x2Impl implements Float2x2 {
 
 
     /**
-     * Private body of {@code rotate}, specialized by runtime matrix properties; reached only
-     * through the public {@code rotate} dispatcher.
-     */
-    private Float2x2 rotate_identity(float angle, @Mutated Float2x2 dest) {
-        return preRotate_identity(angle, dest);
-    }
-
-
-    /**
-     * Private body of {@code rotate}, specialized by runtime matrix properties; reached only
-     * through the public {@code rotate} dispatcher.
-     */
-    private Float2x2 rotate_translation(float angle, @Mutated Float2x2 dest) {
-        float[] sd = this.data;
-        float[] dd = ((Float2x2Impl) dest).data;
-        float _t0 = (float) Math.sin(angle);
-        float _t1 = (float) Math.cos(angle);
-        dd[0] = Math.fma(sd[2], _t0, _t1);
-        dd[1] = _t0;
-        dd[2] = Math.fma(sd[2], _t1, -_t0);
-        dd[3] = _t1;
-        ((Float2x2Impl) dest).properties = 0;
-        return dest;
-    }
-
-
-    /**
-     * Private body of {@code rotate}, specialized by runtime matrix properties; reached only
-     * through the public {@code rotate} dispatcher.
-     */
-    private Float2x2 rotate_affine(float angle, @Mutated Float2x2 dest) {
-        float[] sd = this.data;
-        float[] dd = ((Float2x2Impl) dest).data;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = Math.fma(sd[0], _t0, sd[2] * _t1);
-        dd[1] = _t1;
-        dd[2] = Math.fma(sd[2], _t0, -(sd[0] * _t1));
-        dd[3] = _t0;
-        dd[0] = _buf0;
-        ((Float2x2Impl) dest).properties = 0;
-        return dest;
-    }
-
-
-    /**
-     * Private body of {@code rotate}, specialized by runtime matrix properties; reached only
-     * through the public {@code rotate} dispatcher.
-     */
-    private Float2x2 rotate_general(float angle, @Mutated Float2x2 dest) {
-        float[] sd = this.data;
-        float[] dd = ((Float2x2Impl) dest).data;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = Math.fma(sd[0], _t0, sd[2] * _t1);
-        float _buf1 = Math.fma(sd[1], _t0, sd[3] * _t1);
-        dd[2] = Math.fma(sd[2], _t0, -(sd[0] * _t1));
-        dd[3] = Math.fma(sd[3], _t0, -(sd[1] * _t1));
-        dd[0] = _buf0;
-        dd[1] = _buf1;
-        ((Float2x2Impl) dest).properties = 0;
-        return dest;
-    }
-
-
-    /**
      * Apply a rotation by {@code angle} to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
@@ -4611,31 +4455,18 @@ public class Float2x2Impl implements Float2x2 {
      * @return dest
      */
     public Float2x2 rotate(float angle, @Mutated Float2x2 dest) {
-        int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotate_identity(angle, dest);
-        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return rotate_translation(angle, dest);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotate_affine(angle, dest);
-        return rotate_general(angle, dest);
-    }
-
-
-    /**
-     * Apply a rotation by {@code angle} to this matrix.
-     * <p>
-     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
-     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
-     * {@code M * R * v}, the rotation will be applied first.
-     *
-     * @param angle the angle in radians
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
-     */
-    @Mutated public Float2x2 rotate(float angle) {
-        if (Joml.RETURN_NEW) return rotate(angle, Joml.float2x2());
-        int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotate_identity(angle, this);
-        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return rotate_translation(angle, this);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotate_affine(angle, this);
-        return rotate_general(angle, this);
+        float[] sd = this.data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = Math.fma(sd[0], _t1, sd[2] * _t0);
+        float _buf1 = Math.fma(sd[1], _t1, sd[3] * _t0);
+        dd[2] = Math.fma(sd[2], _t1, -(sd[0] * _t0));
+        dd[3] = Math.fma(sd[3], _t1, -(sd[1] * _t0));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
     }
 
 
@@ -4656,12 +4487,12 @@ public class Float2x2Impl implements Float2x2 {
     public Double2x2 rotate(float angle, @Mutated Double2x2 dest) {
         float[] sd = this.data;
         double[] dd = ((Double2x2Impl) dest).data;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = Math.fma(sd[0], _t0, sd[2] * _t1);
-        float _buf1 = Math.fma(sd[1], _t0, sd[3] * _t1);
-        dd[2] = Math.fma(sd[2], _t0, -(sd[0] * _t1));
-        dd[3] = Math.fma(sd[3], _t0, -(sd[1] * _t1));
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = Math.fma(sd[0], _t1, sd[2] * _t0);
+        float _buf1 = Math.fma(sd[1], _t1, sd[3] * _t0);
+        dd[2] = Math.fma(sd[2], _t1, -(sd[0] * _t0));
+        dd[3] = Math.fma(sd[3], _t1, -(sd[1] * _t0));
         dd[0] = _buf0;
         dd[1] = _buf1;
         ((Double2x2Impl) dest).properties = 0;

@@ -2392,10 +2392,10 @@ public final class Double2OpsKernelsByteBuffer {
     public static java.nio.ByteBuffer rotate_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle) {
         double _selfx = src.getDouble(srcOffset + 0);
         double _selfy = src.getDouble(srcOffset + 8);
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        dest.putDouble(destOffset + 0, Math.fma(_selfx, _t0, -(_selfy * _t1)));
-        dest.putDouble(destOffset + 8, Math.fma(_selfx, _t1, _selfy * _t0));
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        dest.putDouble(destOffset + 0, Math.fma(_selfx, _t1, -(_selfy * _t0)));
+        dest.putDouble(destOffset + 8, Math.fma(_selfx, _t0, _selfy * _t1));
         return dest;
     }
 

@@ -2929,7 +2929,8 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t0 = (float) Math.exp(this.w);
         float _t5 = this.x * this.x + this.y * this.y + this.z * this.z;
         float _t6 = (float) Math.sqrt(_t5);
-        float _t10 = (float) Math.sin(_t6) * _t0 * (1.0f / (float) Math.sqrt(_t5));
+        float _t8 = (float) Math.sin(_t6);
+        float _t10 = _t8 * _t0 * (1.0f / (float) Math.sqrt(_t5));
         if (_t5 > 0.0f) {
             d.x = this.x * _t10;
             d.y = this.y * _t10;
@@ -2939,7 +2940,7 @@ public final class FloatQuatImpl implements FloatQuat {
             d.y = 0.0f;
             d.z = 0.0f;
         }
-        d.w = (float) Math.cos(_t6) * _t0;
+        d.w = (float) Math.cosFromSin(_t8, _t6) * _t0;
         return d;
     }
 
@@ -2958,7 +2959,8 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t0 = (float) Math.exp(this.w);
         float _t5 = this.x * this.x + this.y * this.y + this.z * this.z;
         float _t6 = (float) Math.sqrt(_t5);
-        float _t10 = (float) Math.sin(_t6) * _t0 * (1.0f / (float) Math.sqrt(_t5));
+        float _t8 = (float) Math.sin(_t6);
+        float _t10 = _t8 * _t0 * (1.0f / (float) Math.sqrt(_t5));
         if (_t5 > 0.0f) {
             d.x = this.x * _t10;
             d.y = this.y * _t10;
@@ -2968,7 +2970,7 @@ public final class FloatQuatImpl implements FloatQuat {
             d.y = 0.0f;
             d.z = 0.0f;
         }
-        d.w = (float) Math.cos(_t6) * _t0;
+        d.w = (float) Math.cosFromSin(_t8, _t6) * _t0;
         return d;
     }
 
@@ -3500,8 +3502,9 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = angularVelZ * _t0;
         float _t8 = _t1 * _t1 + _t2 * _t2 + _t3 * _t3;
         float _t9 = (float) Math.sqrt(_t8);
-        float _t11 = (float) Math.cos(_t9);
-        float _t13 = (float) Math.sin(_t9) * (1.0f / (float) Math.sqrt(_t8));
+        float _t11 = (float) Math.sin(_t9);
+        float _t12 = (float) Math.cosFromSin(_t11, _t9);
+        float _t13 = _t11 * (1.0f / (float) Math.sqrt(_t8));
         float _t17, _t18, _t19;
         if (_t8 > 0.0f) {
             _t17 = _t1 * _t13;
@@ -3512,10 +3515,10 @@ public final class FloatQuatImpl implements FloatQuat {
             _t18 = 0.0f;
             _t19 = 0.0f;
         }
-        float _buf0 = this.x * _t11 + this.w * _t17 + (this.z * _t18 - this.y * _t19);
-        float _buf1 = this.x * _t19 + this.w * _t18 + (this.y * _t11 - this.z * _t17);
-        float _buf2 = this.y * _t17 + this.z * _t11 + (this.w * _t19 - this.x * _t18);
-        d.w = this.w * _t11 - this.x * _t17 - (this.y * _t18 + this.z * _t19);
+        float _buf0 = this.x * _t12 + this.w * _t17 + (this.z * _t18 - this.y * _t19);
+        float _buf1 = this.x * _t19 + this.w * _t18 + (this.y * _t12 - this.z * _t17);
+        float _buf2 = this.y * _t17 + this.z * _t12 + (this.w * _t19 - this.x * _t18);
+        d.w = this.w * _t12 - this.x * _t17 - (this.y * _t18 + this.z * _t19);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -3548,8 +3551,9 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = angularVelZ * _t0;
         float _t8 = _t1 * _t1 + _t2 * _t2 + _t3 * _t3;
         float _t9 = (float) Math.sqrt(_t8);
-        float _t11 = (float) Math.cos(_t9);
-        float _t13 = (float) Math.sin(_t9) * (1.0f / (float) Math.sqrt(_t8));
+        float _t11 = (float) Math.sin(_t9);
+        float _t12 = (float) Math.cosFromSin(_t11, _t9);
+        float _t13 = _t11 * (1.0f / (float) Math.sqrt(_t8));
         float _t17, _t18, _t19;
         if (_t8 > 0.0f) {
             _t17 = _t1 * _t13;
@@ -3560,10 +3564,10 @@ public final class FloatQuatImpl implements FloatQuat {
             _t18 = 0.0f;
             _t19 = 0.0f;
         }
-        float _buf0 = this.x * _t11 + this.w * _t17 + (this.z * _t18 - this.y * _t19);
-        float _buf1 = this.x * _t19 + this.w * _t18 + (this.y * _t11 - this.z * _t17);
-        float _buf2 = this.y * _t17 + this.z * _t11 + (this.w * _t19 - this.x * _t18);
-        d.w = this.w * _t11 - this.x * _t17 - (this.y * _t18 + this.z * _t19);
+        float _buf0 = this.x * _t12 + this.w * _t17 + (this.z * _t18 - this.y * _t19);
+        float _buf1 = this.x * _t19 + this.w * _t18 + (this.y * _t12 - this.z * _t17);
+        float _buf2 = this.y * _t17 + this.z * _t12 + (this.w * _t19 - this.x * _t18);
+        d.w = this.w * _t12 - this.x * _t17 - (this.y * _t18 + this.z * _t19);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -5085,7 +5089,8 @@ public final class FloatQuatImpl implements FloatQuat {
         }
         float _t28 = _t21 * _t21 + _t22 * _t22 + _t23 * _t23;
         float _t29 = (float) Math.sqrt(_t28);
-        float _t33 = (float) Math.sin(_t29) * _t13 * (1.0f / (float) Math.sqrt(_t28));
+        float _t31 = (float) Math.sin(_t29);
+        float _t33 = _t31 * _t13 * (1.0f / (float) Math.sqrt(_t28));
         if (_t28 > 0.0f) {
             d.x = _t21 * _t33;
             d.y = _t22 * _t33;
@@ -5095,7 +5100,7 @@ public final class FloatQuatImpl implements FloatQuat {
             d.y = 0.0f;
             d.z = 0.0f;
         }
-        d.w = (float) Math.cos(_t29) * _t13;
+        d.w = (float) Math.cosFromSin(_t31, _t29) * _t13;
         return d;
     }
 
@@ -5131,7 +5136,8 @@ public final class FloatQuatImpl implements FloatQuat {
         }
         float _t28 = _t21 * _t21 + _t22 * _t22 + _t23 * _t23;
         float _t29 = (float) Math.sqrt(_t28);
-        float _t33 = (float) Math.sin(_t29) * _t13 * (1.0f / (float) Math.sqrt(_t28));
+        float _t31 = (float) Math.sin(_t29);
+        float _t33 = _t31 * _t13 * (1.0f / (float) Math.sqrt(_t28));
         if (_t28 > 0.0f) {
             d.x = _t21 * _t33;
             d.y = _t22 * _t33;
@@ -5141,7 +5147,7 @@ public final class FloatQuatImpl implements FloatQuat {
             d.y = 0.0f;
             d.z = 0.0f;
         }
-        d.w = (float) Math.cos(_t29) * _t13;
+        d.w = (float) Math.cosFromSin(_t31, _t29) * _t13;
         return d;
     }
 
@@ -5736,7 +5742,7 @@ public final class FloatQuatImpl implements FloatQuat {
         this.x = axisX * _t1;
         this.y = axisY * _t1;
         this.z = axisZ * _t1;
-        this.w = (float) Math.cos(_t0);
+        this.w = (float) Math.cosFromSin(_t1, _t0);
         return this;
     }
 
@@ -5937,10 +5943,11 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     @Mutated public FloatQuat makeRotationX(float angle) {
         float _t0 = 0.5f * angle;
-        this.x = (float) Math.sin(_t0);
+        float _t1 = (float) Math.sin(_t0);
+        this.x = _t1;
         this.y = 0.0f;
         this.z = 0.0f;
-        this.w = (float) Math.cos(_t0);
+        this.w = (float) Math.cosFromSin(_t1, _t0);
         return this;
     }
 
@@ -5960,19 +5967,19 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t6;
-        float _t12 = _t7 * _t4;
-        this.x = _t9 * _t5 + _t10 * _t8;
-        this.y = _t10 * _t5 - _t9 * _t8;
-        this.z = _t11 * _t5 + _t12 * _t8;
-        this.w = _t12 * _t5 - _t11 * _t8;
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        this.x = _t10 * _t7 + _t11 * _t5;
+        this.y = _t11 * _t7 - _t10 * _t5;
+        this.z = _t9 * _t7 + _t12 * _t5;
+        this.w = _t12 * _t7 - _t9 * _t5;
         return this;
     }
 
@@ -5992,19 +5999,19 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t4;
-        float _t12 = _t3 * _t6;
-        this.x = _t9 * _t5 - _t10 * _t8;
-        this.y = _t11 * _t8 - _t12 * _t5;
-        this.z = _t9 * _t8 + _t10 * _t5;
-        this.w = _t12 * _t8 + _t11 * _t5;
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        this.x = _t10 * _t7 - _t11 * _t5;
+        this.y = _t12 * _t5 - _t9 * _t7;
+        this.z = _t10 * _t5 + _t11 * _t7;
+        this.w = _t9 * _t5 + _t12 * _t7;
         return this;
     }
 
@@ -6017,10 +6024,11 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     @Mutated public FloatQuat makeRotationY(float angle) {
         float _t0 = 0.5f * angle;
+        float _t1 = (float) Math.sin(_t0);
         this.x = 0.0f;
-        this.y = (float) Math.sin(_t0);
+        this.y = _t1;
         this.z = 0.0f;
-        this.w = (float) Math.cos(_t0);
+        this.w = (float) Math.cosFromSin(_t1, _t0);
         return this;
     }
 
@@ -6040,19 +6048,19 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t4;
-        float _t12 = _t3 * _t6;
-        this.x = _t9 * _t5 + _t10 * _t8;
-        this.y = _t10 * _t5 - _t9 * _t8;
-        this.z = _t11 * _t8 - _t12 * _t5;
-        this.w = _t12 * _t8 + _t11 * _t5;
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        this.x = _t10 * _t7 + _t11 * _t5;
+        this.y = _t11 * _t7 - _t10 * _t5;
+        this.z = _t12 * _t5 - _t9 * _t7;
+        this.w = _t9 * _t5 + _t12 * _t7;
         return this;
     }
 
@@ -6073,18 +6081,18 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t2 = 0.5f * angleX;
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t5, _t2);
+        float _t7 = (float) Math.cosFromSin(_t3, _t0);
+        float _t8 = (float) Math.cosFromSin(_t4, _t1);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t7;
-        float _t12 = _t4 * _t6;
-        this.x = _t9 * _t5 + _t10 * _t8;
-        this.y = _t11 * _t5 + _t12 * _t8;
-        this.z = _t12 * _t5 - _t11 * _t8;
-        this.w = _t10 * _t5 - _t9 * _t8;
+        float _t10 = _t3 * _t8;
+        float _t11 = _t4 * _t7;
+        float _t12 = _t7 * _t8;
+        this.x = _t9 * _t6 + _t12 * _t5;
+        this.y = _t10 * _t6 + _t11 * _t5;
+        this.z = _t11 * _t6 - _t10 * _t5;
+        this.w = _t12 * _t6 - _t9 * _t5;
         return this;
     }
 
@@ -6097,10 +6105,11 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     @Mutated public FloatQuat makeRotationZ(float angle) {
         float _t0 = 0.5f * angle;
+        float _t1 = (float) Math.sin(_t0);
         this.x = 0.0f;
         this.y = 0.0f;
-        this.z = (float) Math.sin(_t0);
-        this.w = (float) Math.cos(_t0);
+        this.z = _t1;
+        this.w = (float) Math.cosFromSin(_t1, _t0);
         return this;
     }
 
@@ -6120,19 +6129,19 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t6;
-        float _t12 = _t7 * _t4;
-        this.x = _t9 * _t5 - _t10 * _t8;
-        this.y = _t11 * _t5 + _t12 * _t8;
-        this.z = _t9 * _t8 + _t10 * _t5;
-        this.w = _t12 * _t5 - _t11 * _t8;
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        this.x = _t10 * _t7 - _t11 * _t5;
+        this.y = _t9 * _t7 + _t12 * _t5;
+        this.z = _t10 * _t5 + _t11 * _t7;
+        this.w = _t12 * _t7 - _t9 * _t5;
         return this;
     }
 
@@ -6151,20 +6160,20 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t6 * _t4;
-        float _t12 = _t7 * _t3;
-        this.x = _t9 * _t5 - _t10 * _t8;
-        this.y = _t11 * _t8 + _t12 * _t5;
-        this.z = _t12 * _t8 - _t11 * _t5;
-        this.w = _t10 * _t5 + _t9 * _t8;
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t12 = _t6 * _t7;
+        this.x = _t12 * _t5 - _t9 * _t8;
+        this.y = _t10 * _t8 + _t11 * _t5;
+        this.z = _t11 * _t8 - _t10 * _t5;
+        this.w = _t9 * _t5 + _t12 * _t8;
         return this;
     }
 
@@ -6184,12 +6193,12 @@ public final class FloatQuatImpl implements FloatQuat {
     public FloatQuat preRotateX(float angle, @Mutated FloatQuat dest) {
         FloatQuatImpl d = (FloatQuatImpl) dest;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _buf0 = this.x * _t1 + this.w * _t2;
-        float _buf1 = this.y * _t1 - this.z * _t2;
-        d.z = this.y * _t2 + this.z * _t1;
-        d.w = this.w * _t1 - this.x * _t2;
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = this.x * _t2 + this.w * _t1;
+        float _buf1 = this.y * _t2 - this.z * _t1;
+        d.z = this.y * _t1 + this.z * _t2;
+        d.w = this.w * _t2 - this.x * _t1;
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -6214,12 +6223,12 @@ public final class FloatQuatImpl implements FloatQuat {
     public DoubleQuat preRotateX(float angle, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _buf0 = this.x * _t1 + this.w * _t2;
-        float _buf1 = this.y * _t1 - this.z * _t2;
-        d.z = this.y * _t2 + this.z * _t1;
-        d.w = this.w * _t1 - this.x * _t2;
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = this.x * _t2 + this.w * _t1;
+        float _buf1 = this.y * _t2 - this.z * _t1;
+        d.z = this.y * _t1 + this.z * _t2;
+        d.w = this.w * _t2 - this.x * _t1;
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -6241,12 +6250,12 @@ public final class FloatQuatImpl implements FloatQuat {
     public FloatQuat preRotateY(float angle, @Mutated FloatQuat dest) {
         FloatQuatImpl d = (FloatQuatImpl) dest;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _buf0 = this.x * _t1 + this.z * _t2;
-        float _buf1 = this.y * _t1 + this.w * _t2;
-        d.z = this.z * _t1 - this.x * _t2;
-        d.w = this.w * _t1 - this.y * _t2;
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = this.x * _t2 + this.z * _t1;
+        float _buf1 = this.y * _t2 + this.w * _t1;
+        d.z = this.z * _t2 - this.x * _t1;
+        d.w = this.w * _t2 - this.y * _t1;
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -6271,12 +6280,12 @@ public final class FloatQuatImpl implements FloatQuat {
     public DoubleQuat preRotateY(float angle, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _buf0 = this.x * _t1 + this.z * _t2;
-        float _buf1 = this.y * _t1 + this.w * _t2;
-        d.z = this.z * _t1 - this.x * _t2;
-        d.w = this.w * _t1 - this.y * _t2;
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = this.x * _t2 + this.z * _t1;
+        float _buf1 = this.y * _t2 + this.w * _t1;
+        d.z = this.z * _t2 - this.x * _t1;
+        d.w = this.w * _t2 - this.y * _t1;
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -6298,12 +6307,12 @@ public final class FloatQuatImpl implements FloatQuat {
     public FloatQuat preRotateZ(float angle, @Mutated FloatQuat dest) {
         FloatQuatImpl d = (FloatQuatImpl) dest;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _buf0 = this.x * _t1 - this.y * _t2;
-        d.y = this.x * _t2 + this.y * _t1;
-        float _buf1 = this.z * _t1 + this.w * _t2;
-        d.w = this.w * _t1 - this.z * _t2;
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = this.x * _t2 - this.y * _t1;
+        d.y = this.x * _t1 + this.y * _t2;
+        float _buf1 = this.z * _t2 + this.w * _t1;
+        d.w = this.w * _t2 - this.z * _t1;
         d.x = _buf0;
         d.z = _buf1;
         return d;
@@ -6328,12 +6337,12 @@ public final class FloatQuatImpl implements FloatQuat {
     public DoubleQuat preRotateZ(float angle, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _buf0 = this.x * _t1 - this.y * _t2;
-        d.y = this.x * _t2 + this.y * _t1;
-        float _buf1 = this.z * _t1 + this.w * _t2;
-        d.w = this.w * _t1 - this.z * _t2;
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = this.x * _t2 - this.y * _t1;
+        d.y = this.x * _t1 + this.y * _t2;
+        float _buf1 = this.z * _t2 + this.w * _t1;
+        d.w = this.w * _t2 - this.z * _t1;
         d.x = _buf0;
         d.z = _buf1;
         return d;
@@ -6403,15 +6412,15 @@ public final class FloatQuatImpl implements FloatQuat {
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         FloatQuatImpl d = (FloatQuatImpl) dest;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _t3 = axisX * _t2;
-        float _t4 = axisZ * _t2;
-        float _t5 = axisY * _t2;
-        float _buf0 = this.x * _t1 + this.w * _t3 + (this.y * _t4 - this.z * _t5);
-        float _buf1 = this.y * _t1 + this.z * _t3 + (this.w * _t5 - this.x * _t4);
-        float _buf2 = this.x * _t5 + this.w * _t4 + (this.z * _t1 - this.y * _t3);
-        d.w = this.w * _t1 - this.x * _t3 - (this.y * _t5 + this.z * _t4);
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = axisX * _t1;
+        float _t3 = axisZ * _t1;
+        float _t4 = axisY * _t1;
+        float _t5 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = this.x * _t5 + this.w * _t2 + (this.y * _t3 - this.z * _t4);
+        float _buf1 = this.y * _t5 + this.z * _t2 + (this.w * _t4 - this.x * _t3);
+        float _buf2 = this.x * _t4 + this.w * _t3 + (this.z * _t5 - this.y * _t2);
+        d.w = this.w * _t5 - this.x * _t2 - (this.y * _t4 + this.z * _t3);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -6446,15 +6455,15 @@ public final class FloatQuatImpl implements FloatQuat {
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _t3 = axisX * _t2;
-        float _t4 = axisZ * _t2;
-        float _t5 = axisY * _t2;
-        float _buf0 = this.x * _t1 + this.w * _t3 + (this.y * _t4 - this.z * _t5);
-        float _buf1 = this.y * _t1 + this.z * _t3 + (this.w * _t5 - this.x * _t4);
-        float _buf2 = this.x * _t5 + this.w * _t4 + (this.z * _t1 - this.y * _t3);
-        d.w = this.w * _t1 - this.x * _t3 - (this.y * _t5 + this.z * _t4);
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = axisX * _t1;
+        float _t3 = axisZ * _t1;
+        float _t4 = axisY * _t1;
+        float _t5 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = this.x * _t5 + this.w * _t2 + (this.y * _t3 - this.z * _t4);
+        float _buf1 = this.y * _t5 + this.z * _t2 + (this.w * _t4 - this.x * _t3);
+        float _buf2 = this.x * _t4 + this.w * _t3 + (this.z * _t5 - this.y * _t2);
+        d.w = this.w * _t5 - this.x * _t2 - (this.y * _t4 + this.z * _t3);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -6683,12 +6692,12 @@ public final class FloatQuatImpl implements FloatQuat {
     public FloatQuat rotateX(float angle, @Mutated FloatQuat dest) {
         FloatQuatImpl d = (FloatQuatImpl) dest;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _buf0 = this.x * _t1 + this.w * _t2;
-        float _buf1 = this.y * _t1 + this.z * _t2;
-        d.z = this.z * _t1 - this.y * _t2;
-        d.w = this.w * _t1 - this.x * _t2;
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = this.x * _t2 + this.w * _t1;
+        float _buf1 = this.y * _t2 + this.z * _t1;
+        d.z = this.z * _t2 - this.y * _t1;
+        d.w = this.w * _t2 - this.x * _t1;
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -6709,12 +6718,12 @@ public final class FloatQuatImpl implements FloatQuat {
     public DoubleQuat rotateX(float angle, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _buf0 = this.x * _t1 + this.w * _t2;
-        float _buf1 = this.y * _t1 + this.z * _t2;
-        d.z = this.z * _t1 - this.y * _t2;
-        d.w = this.w * _t1 - this.x * _t2;
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = this.x * _t2 + this.w * _t1;
+        float _buf1 = this.y * _t2 + this.z * _t1;
+        d.z = this.z * _t2 - this.y * _t1;
+        d.w = this.w * _t2 - this.x * _t1;
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -6742,20 +6751,20 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t6 * _t4;
-        float _t12 = _t7 * _t3;
-        float _t21 = _t9 * _t5 - _t10 * _t8;
-        float _t22 = _t11 * _t5 + _t12 * _t8;
-        float _t23 = _t10 * _t5 + _t9 * _t8;
-        float _t24 = _t12 * _t5 - _t11 * _t8;
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t13 = _t6 * _t7;
+        float _t21 = _t13 * _t8 - _t9 * _t5;
+        float _t22 = _t10 * _t8 + _t11 * _t5;
+        float _t23 = _t9 * _t8 + _t13 * _t5;
+        float _t24 = _t11 * _t8 - _t10 * _t5;
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
@@ -6791,20 +6800,20 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t6 * _t4;
-        float _t12 = _t7 * _t3;
-        float _t21 = _t9 * _t5 - _t10 * _t8;
-        float _t22 = _t11 * _t5 + _t12 * _t8;
-        float _t23 = _t10 * _t5 + _t9 * _t8;
-        float _t24 = _t12 * _t5 - _t11 * _t8;
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t13 = _t6 * _t7;
+        float _t21 = _t13 * _t8 - _t9 * _t5;
+        float _t22 = _t10 * _t8 + _t11 * _t5;
+        float _t23 = _t9 * _t8 + _t13 * _t5;
+        float _t24 = _t11 * _t8 - _t10 * _t5;
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
@@ -6840,17 +6849,17 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t7;
-        float _t12 = _t4 * _t6;
-        float _t21 = _t9 * _t5 + _t10 * _t8;
-        float _t22 = _t11 * _t8 - _t12 * _t5;
-        float _t23 = _t11 * _t5 + _t12 * _t8;
-        float _t24 = _t10 * _t5 - _t9 * _t8;
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t13 = _t6 * _t7;
+        float _t21 = _t9 * _t5 + _t13 * _t8;
+        float _t22 = _t10 * _t8 - _t11 * _t5;
+        float _t23 = _t10 * _t5 + _t11 * _t8;
+        float _t24 = _t13 * _t5 - _t9 * _t8;
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
@@ -6889,17 +6898,17 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t7;
-        float _t12 = _t4 * _t6;
-        float _t21 = _t9 * _t5 + _t10 * _t8;
-        float _t22 = _t11 * _t8 - _t12 * _t5;
-        float _t23 = _t11 * _t5 + _t12 * _t8;
-        float _t24 = _t10 * _t5 - _t9 * _t8;
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t13 = _t6 * _t7;
+        float _t21 = _t9 * _t5 + _t13 * _t8;
+        float _t22 = _t10 * _t8 - _t11 * _t5;
+        float _t23 = _t10 * _t5 + _t11 * _t8;
+        float _t24 = _t13 * _t5 - _t9 * _t8;
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
@@ -6922,12 +6931,12 @@ public final class FloatQuatImpl implements FloatQuat {
     public FloatQuat rotateY(float angle, @Mutated FloatQuat dest) {
         FloatQuatImpl d = (FloatQuatImpl) dest;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _buf0 = this.x * _t1 - this.z * _t2;
-        float _buf1 = this.y * _t1 + this.w * _t2;
-        d.z = this.x * _t2 + this.z * _t1;
-        d.w = this.w * _t1 - this.y * _t2;
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = this.x * _t2 - this.z * _t1;
+        float _buf1 = this.y * _t2 + this.w * _t1;
+        d.z = this.x * _t1 + this.z * _t2;
+        d.w = this.w * _t2 - this.y * _t1;
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -6948,12 +6957,12 @@ public final class FloatQuatImpl implements FloatQuat {
     public DoubleQuat rotateY(float angle, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _buf0 = this.x * _t1 - this.z * _t2;
-        float _buf1 = this.y * _t1 + this.w * _t2;
-        d.z = this.x * _t2 + this.z * _t1;
-        d.w = this.w * _t1 - this.y * _t2;
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = this.x * _t2 - this.z * _t1;
+        float _buf1 = this.y * _t2 + this.w * _t1;
+        d.z = this.x * _t1 + this.z * _t2;
+        d.w = this.w * _t2 - this.y * _t1;
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -6984,17 +6993,17 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t7;
-        float _t12 = _t4 * _t6;
-        float _t21 = _t9 * _t5 + _t10 * _t8;
-        float _t22 = _t11 * _t8 + _t12 * _t5;
-        float _t23 = _t10 * _t5 - _t9 * _t8;
-        float _t24 = _t12 * _t8 - _t11 * _t5;
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t13 = _t6 * _t7;
+        float _t21 = _t9 * _t5 + _t13 * _t8;
+        float _t22 = _t10 * _t8 + _t11 * _t5;
+        float _t23 = _t13 * _t5 - _t9 * _t8;
+        float _t24 = _t11 * _t8 - _t10 * _t5;
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
@@ -7033,17 +7042,17 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t7;
-        float _t12 = _t4 * _t6;
-        float _t21 = _t9 * _t5 + _t10 * _t8;
-        float _t22 = _t11 * _t8 + _t12 * _t5;
-        float _t23 = _t10 * _t5 - _t9 * _t8;
-        float _t24 = _t12 * _t8 - _t11 * _t5;
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t13 = _t6 * _t7;
+        float _t21 = _t9 * _t5 + _t13 * _t8;
+        float _t22 = _t10 * _t8 + _t11 * _t5;
+        float _t23 = _t13 * _t5 - _t9 * _t8;
+        float _t24 = _t11 * _t8 - _t10 * _t5;
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
@@ -7076,20 +7085,20 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t3;
-        float _t12 = _t6 * _t4;
-        float _t21 = _t9 * _t5 - _t10 * _t8;
-        float _t22 = _t10 * _t5 + _t9 * _t8;
-        float _t23 = _t11 * _t5 - _t12 * _t8;
-        float _t24 = _t12 * _t5 + _t11 * _t8;
+        float _t10 = _t4 * _t6;
+        float _t11 = _t3 * _t7;
+        float _t13 = _t6 * _t7;
+        float _t21 = _t13 * _t8 - _t9 * _t5;
+        float _t22 = _t9 * _t8 + _t13 * _t5;
+        float _t23 = _t10 * _t8 - _t11 * _t5;
+        float _t24 = _t11 * _t8 + _t10 * _t5;
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
@@ -7125,20 +7134,20 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t3;
-        float _t12 = _t6 * _t4;
-        float _t21 = _t9 * _t5 - _t10 * _t8;
-        float _t22 = _t10 * _t5 + _t9 * _t8;
-        float _t23 = _t11 * _t5 - _t12 * _t8;
-        float _t24 = _t12 * _t5 + _t11 * _t8;
+        float _t10 = _t4 * _t6;
+        float _t11 = _t3 * _t7;
+        float _t13 = _t6 * _t7;
+        float _t21 = _t13 * _t8 - _t9 * _t5;
+        float _t22 = _t9 * _t8 + _t13 * _t5;
+        float _t23 = _t10 * _t8 - _t11 * _t5;
+        float _t24 = _t11 * _t8 + _t10 * _t5;
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
@@ -7161,12 +7170,12 @@ public final class FloatQuatImpl implements FloatQuat {
     public FloatQuat rotateZ(float angle, @Mutated FloatQuat dest) {
         FloatQuatImpl d = (FloatQuatImpl) dest;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _buf0 = this.x * _t1 + this.y * _t2;
-        d.y = this.y * _t1 - this.x * _t2;
-        float _buf1 = this.z * _t1 + this.w * _t2;
-        d.w = this.w * _t1 - this.z * _t2;
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = this.x * _t2 + this.y * _t1;
+        d.y = this.y * _t2 - this.x * _t1;
+        float _buf1 = this.z * _t2 + this.w * _t1;
+        d.w = this.w * _t2 - this.z * _t1;
         d.x = _buf0;
         d.z = _buf1;
         return d;
@@ -7187,12 +7196,12 @@ public final class FloatQuatImpl implements FloatQuat {
     public DoubleQuat rotateZ(float angle, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _buf0 = this.x * _t1 + this.y * _t2;
-        d.y = this.y * _t1 - this.x * _t2;
-        float _buf1 = this.z * _t1 + this.w * _t2;
-        d.w = this.w * _t1 - this.z * _t2;
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = this.x * _t2 + this.y * _t1;
+        d.y = this.y * _t2 - this.x * _t1;
+        float _buf1 = this.z * _t2 + this.w * _t1;
+        d.w = this.w * _t2 - this.z * _t1;
         d.x = _buf0;
         d.z = _buf1;
         return d;
@@ -7220,20 +7229,20 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t6 * _t4;
-        float _t12 = _t7 * _t3;
-        float _t21 = _t9 * _t5 - _t10 * _t8;
-        float _t22 = _t11 * _t5 - _t12 * _t8;
-        float _t23 = _t11 * _t8 + _t12 * _t5;
-        float _t24 = _t10 * _t5 + _t9 * _t8;
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t13 = _t6 * _t7;
+        float _t21 = _t13 * _t8 - _t9 * _t5;
+        float _t22 = _t10 * _t8 - _t11 * _t5;
+        float _t23 = _t10 * _t5 + _t11 * _t8;
+        float _t24 = _t9 * _t8 + _t13 * _t5;
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
@@ -7269,20 +7278,20 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t6 * _t4;
-        float _t12 = _t7 * _t3;
-        float _t21 = _t9 * _t5 - _t10 * _t8;
-        float _t22 = _t11 * _t5 - _t12 * _t8;
-        float _t23 = _t11 * _t8 + _t12 * _t5;
-        float _t24 = _t10 * _t5 + _t9 * _t8;
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t13 = _t6 * _t7;
+        float _t21 = _t13 * _t8 - _t9 * _t5;
+        float _t22 = _t10 * _t8 - _t11 * _t5;
+        float _t23 = _t10 * _t5 + _t11 * _t8;
+        float _t24 = _t9 * _t8 + _t13 * _t5;
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
@@ -7318,17 +7327,17 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t4 * _t6;
-        float _t12 = _t3 * _t7;
-        float _t21 = _t9 * _t5 + _t10 * _t8;
-        float _t22 = _t10 * _t5 - _t9 * _t8;
-        float _t23 = _t11 * _t8 - _t12 * _t5;
-        float _t24 = _t12 * _t8 + _t11 * _t5;
+        float _t10 = _t4 * _t6;
+        float _t11 = _t3 * _t7;
+        float _t13 = _t6 * _t7;
+        float _t21 = _t9 * _t5 + _t13 * _t8;
+        float _t22 = _t13 * _t5 - _t9 * _t8;
+        float _t23 = _t10 * _t8 - _t11 * _t5;
+        float _t24 = _t11 * _t8 + _t10 * _t5;
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
@@ -7367,17 +7376,17 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t4 * _t6;
-        float _t12 = _t3 * _t7;
-        float _t21 = _t9 * _t5 + _t10 * _t8;
-        float _t22 = _t10 * _t5 - _t9 * _t8;
-        float _t23 = _t11 * _t8 - _t12 * _t5;
-        float _t24 = _t12 * _t8 + _t11 * _t5;
+        float _t10 = _t4 * _t6;
+        float _t11 = _t3 * _t7;
+        float _t13 = _t6 * _t7;
+        float _t21 = _t9 * _t5 + _t13 * _t8;
+        float _t22 = _t13 * _t5 - _t9 * _t8;
+        float _t23 = _t10 * _t8 - _t11 * _t5;
+        float _t24 = _t11 * _t8 + _t10 * _t5;
         float _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
         float _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
         float _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);

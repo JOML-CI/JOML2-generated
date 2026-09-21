@@ -11325,26 +11325,26 @@ public class Double3x4Impl implements Double3x4 {
         if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return makeRotationX(axisX * angle);
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return makeRotationY(axisY * angle);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return makeRotationZ(axisZ * angle);
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
-        double _t4 = axisZ * _t1;
-        double _t5 = axisY * _t1;
-        double _t8 = axisX * _t1;
-        double _t9 = _t2 * axisX * axisY;
-        double _t10 = _t2 * axisX * axisZ;
-        double _t11 = _t2 * axisY * axisZ;
-        this.m00 = _t2 * axisX * axisX + _t0;
-        this.m01 = _t9 - _t4;
-        this.m02 = _t5 + _t10;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t3 = axisZ * _t0;
+        double _t4 = axisY * _t0;
+        double _t7 = axisX * _t0;
+        double _t8 = 1.0 - _t1;
+        double _t9 = _t8 * axisX * axisY;
+        double _t10 = _t8 * axisX * axisZ;
+        double _t11 = _t8 * axisY * axisZ;
+        this.m00 = _t8 * axisX * axisX + _t1;
+        this.m01 = _t9 - _t3;
+        this.m02 = _t4 + _t10;
         this.m03 = 0.0;
-        this.m10 = _t4 + _t9;
-        this.m11 = _t2 * axisY * axisY + _t0;
-        this.m12 = _t11 - _t8;
+        this.m10 = _t3 + _t9;
+        this.m11 = _t8 * axisY * axisY + _t1;
+        this.m12 = _t11 - _t7;
         this.m13 = 0.0;
-        this.m20 = _t10 - _t5;
-        this.m21 = _t8 + _t11;
-        this.m22 = _t2 * axisZ * axisZ + _t0;
+        this.m20 = _t10 - _t4;
+        this.m21 = _t7 + _t11;
+        this.m22 = _t8 * axisZ * axisZ + _t1;
         this.m23 = 0.0;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -11480,19 +11480,19 @@ public class Double3x4Impl implements Double3x4 {
      * @return this
      */
     @Mutated public Double3x4 makeRotationX(double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         this.m00 = 1.0;
         this.m01 = 0.0;
         this.m02 = 0.0;
         this.m03 = 0.0;
         this.m10 = 0.0;
-        this.m11 = _t0;
-        this.m12 = -_t1;
+        this.m11 = _t1;
+        this.m12 = -_t0;
         this.m13 = 0.0;
         this.m20 = 0.0;
-        this.m21 = _t1;
-        this.m22 = _t0;
+        this.m21 = _t0;
+        this.m22 = _t1;
         this.m23 = 0.0;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -11510,25 +11510,25 @@ public class Double3x4Impl implements Double3x4 {
      * @return this
      */
     @Mutated public Double3x4 makeRotationXYZ(double angleX, double angleY, double angleZ) {
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
-        double _t2 = Math.sin(angleZ);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.sin(angleX);
-        double _t5 = Math.cos(angleX);
-        double _t6 = _t4 * _t3;
-        double _t7 = _t3 * _t5;
-        this.m00 = _t0 * _t1;
-        this.m01 = -(_t2 * _t0);
-        this.m02 = _t3;
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t2 * _t0;
+        double _t7 = _t0 * _t5;
+        this.m00 = _t3 * _t4;
+        this.m01 = -(_t1 * _t3);
+        this.m02 = _t0;
         this.m03 = 0.0;
-        this.m10 = _t6 * _t1 + _t2 * _t5;
-        this.m11 = _t5 * _t1 - _t6 * _t2;
-        this.m12 = -(_t4 * _t0);
+        this.m10 = _t6 * _t4 + _t1 * _t5;
+        this.m11 = _t5 * _t4 - _t6 * _t1;
+        this.m12 = -(_t2 * _t3);
         this.m13 = 0.0;
-        this.m20 = _t4 * _t2 - _t7 * _t1;
-        this.m21 = _t7 * _t2 + _t4 * _t1;
-        this.m22 = _t5 * _t0;
+        this.m20 = _t2 * _t1 - _t7 * _t4;
+        this.m21 = _t7 * _t1 + _t2 * _t4;
+        this.m22 = _t5 * _t3;
         this.m23 = 0.0;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -11546,25 +11546,25 @@ public class Double3x4Impl implements Double3x4 {
      * @return this
      */
     @Mutated public Double3x4 makeRotationXZY(double angleX, double angleY, double angleZ) {
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
-        double _t2 = Math.sin(angleZ);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.cos(angleX);
-        double _t5 = Math.sin(angleX);
-        double _t6 = _t2 * _t4;
-        double _t7 = _t5 * _t2;
-        this.m00 = _t0 * _t1;
-        this.m01 = -_t2;
-        this.m02 = _t3 * _t1;
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t2 * _t1;
+        double _t7 = _t1 * _t5;
+        this.m00 = _t3 * _t4;
+        this.m01 = -_t1;
+        this.m02 = _t0 * _t4;
         this.m03 = 0.0;
-        this.m10 = _t6 * _t0 + _t5 * _t3;
-        this.m11 = _t4 * _t1;
-        this.m12 = _t6 * _t3 - _t5 * _t0;
+        this.m10 = _t7 * _t3 + _t2 * _t0;
+        this.m11 = _t5 * _t4;
+        this.m12 = _t7 * _t0 - _t2 * _t3;
         this.m13 = 0.0;
-        this.m20 = _t7 * _t0 - _t3 * _t4;
-        this.m21 = _t5 * _t1;
-        this.m22 = _t7 * _t3 + _t4 * _t0;
+        this.m20 = _t6 * _t3 - _t0 * _t5;
+        this.m21 = _t2 * _t4;
+        this.m22 = _t6 * _t0 + _t5 * _t3;
         this.m23 = 0.0;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -11578,19 +11578,19 @@ public class Double3x4Impl implements Double3x4 {
      * @return this
      */
     @Mutated public Double3x4 makeRotationY(double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        this.m00 = _t0;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        this.m00 = _t1;
         this.m01 = 0.0;
-        this.m02 = _t1;
+        this.m02 = _t0;
         this.m03 = 0.0;
         this.m10 = 0.0;
         this.m11 = 1.0;
         this.m12 = 0.0;
         this.m13 = 0.0;
-        this.m20 = -_t1;
+        this.m20 = -_t0;
         this.m21 = 0.0;
-        this.m22 = _t0;
+        this.m22 = _t1;
         this.m23 = 0.0;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -11611,9 +11611,9 @@ public class Double3x4Impl implements Double3x4 {
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleY);
         double _t2 = Math.sin(angleZ);
-        double _t3 = Math.cos(angleY);
-        double _t4 = Math.cos(angleZ);
-        double _t5 = Math.cos(angleX);
+        double _t3 = Math.cosFromSin(_t1, angleY);
+        double _t4 = Math.cosFromSin(_t2, angleZ);
+        double _t5 = Math.cosFromSin(_t0, angleX);
         double _t6 = _t0 * _t1;
         double _t7 = _t0 * _t3;
         this.m00 = _t6 * _t2 + _t3 * _t4;
@@ -11644,25 +11644,25 @@ public class Double3x4Impl implements Double3x4 {
      * @return this
      */
     @Mutated public Double3x4 makeRotationYZX(double angleX, double angleY, double angleZ) {
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleX);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.sin(angleZ);
-        double _t5 = Math.cos(angleX);
-        double _t6 = _t4 * _t0;
-        double _t7 = _t3 * _t4;
-        this.m00 = _t0 * _t1;
-        this.m01 = _t2 * _t3 - _t6 * _t5;
-        this.m02 = _t6 * _t2 + _t3 * _t5;
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t1 * _t3;
+        this.m00 = _t3 * _t4;
+        this.m01 = _t2 * _t0 - _t7 * _t5;
+        this.m02 = _t7 * _t2 + _t0 * _t5;
         this.m03 = 0.0;
-        this.m10 = _t4;
-        this.m11 = _t5 * _t1;
-        this.m12 = -(_t2 * _t1);
+        this.m10 = _t1;
+        this.m11 = _t5 * _t4;
+        this.m12 = -(_t2 * _t4);
         this.m13 = 0.0;
-        this.m20 = -(_t3 * _t1);
-        this.m21 = _t7 * _t5 + _t2 * _t0;
-        this.m22 = _t5 * _t0 - _t7 * _t2;
+        this.m20 = -(_t0 * _t4);
+        this.m21 = _t6 * _t5 + _t2 * _t3;
+        this.m22 = _t5 * _t3 - _t6 * _t2;
         this.m23 = 0.0;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -11676,14 +11676,14 @@ public class Double3x4Impl implements Double3x4 {
      * @return this
      */
     @Mutated public Double3x4 makeRotationZ(double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        this.m00 = _t0;
-        this.m01 = -_t1;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        this.m00 = _t1;
+        this.m01 = -_t0;
         this.m02 = 0.0;
         this.m03 = 0.0;
-        this.m10 = _t1;
-        this.m11 = _t0;
+        this.m10 = _t0;
+        this.m11 = _t1;
         this.m12 = 0.0;
         this.m13 = 0.0;
         this.m20 = 0.0;
@@ -11706,25 +11706,25 @@ public class Double3x4Impl implements Double3x4 {
      * @return this
      */
     @Mutated public Double3x4 makeRotationZXY(double angleX, double angleY, double angleZ) {
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleX);
-        double _t3 = Math.sin(angleZ);
-        double _t4 = Math.sin(angleY);
-        double _t5 = Math.cos(angleX);
-        double _t6 = _t2 * _t3;
-        double _t7 = _t2 * _t1;
-        this.m00 = _t0 * _t1 - _t6 * _t4;
-        this.m01 = -(_t3 * _t5);
-        this.m02 = _t6 * _t0 + _t4 * _t1;
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t2 * _t1;
+        double _t7 = _t2 * _t4;
+        this.m00 = _t3 * _t4 - _t6 * _t0;
+        this.m01 = -(_t1 * _t5);
+        this.m02 = _t6 * _t3 + _t0 * _t4;
         this.m03 = 0.0;
-        this.m10 = _t7 * _t4 + _t3 * _t0;
-        this.m11 = _t5 * _t1;
-        this.m12 = _t4 * _t3 - _t7 * _t0;
+        this.m10 = _t7 * _t0 + _t1 * _t3;
+        this.m11 = _t5 * _t4;
+        this.m12 = _t0 * _t1 - _t7 * _t3;
         this.m13 = 0.0;
-        this.m20 = -(_t4 * _t5);
+        this.m20 = -(_t0 * _t5);
         this.m21 = _t2;
-        this.m22 = _t5 * _t0;
+        this.m22 = _t5 * _t3;
         this.m23 = 0.0;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -11742,25 +11742,25 @@ public class Double3x4Impl implements Double3x4 {
      * @return this
      */
     @Mutated public Double3x4 makeRotationZYX(double angleX, double angleY, double angleZ) {
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
-        double _t2 = Math.sin(angleY);
-        double _t3 = Math.sin(angleX);
-        double _t4 = Math.sin(angleZ);
-        double _t5 = Math.cos(angleX);
-        double _t6 = _t2 * _t1;
-        double _t7 = _t2 * _t4;
-        this.m00 = _t0 * _t1;
-        this.m01 = _t6 * _t3 - _t4 * _t5;
-        this.m02 = _t6 * _t5 + _t3 * _t4;
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t0 * _t4;
+        this.m00 = _t3 * _t4;
+        this.m01 = _t7 * _t2 - _t1 * _t5;
+        this.m02 = _t7 * _t5 + _t2 * _t1;
         this.m03 = 0.0;
-        this.m10 = _t4 * _t0;
-        this.m11 = _t7 * _t3 + _t5 * _t1;
-        this.m12 = _t7 * _t5 - _t3 * _t1;
+        this.m10 = _t1 * _t3;
+        this.m11 = _t6 * _t2 + _t5 * _t4;
+        this.m12 = _t6 * _t5 - _t2 * _t4;
         this.m13 = 0.0;
-        this.m20 = -_t2;
-        this.m21 = _t3 * _t0;
-        this.m22 = _t5 * _t0;
+        this.m20 = -_t0;
+        this.m21 = _t2 * _t3;
+        this.m22 = _t5 * _t3;
         this.m23 = 0.0;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -19172,26 +19172,26 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateAxis_identity(double angle, double axisX, double axisY, double axisZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
-        double _t4 = axisZ * _t1;
-        double _t5 = axisY * _t1;
-        double _t8 = axisX * _t1;
-        double _t9 = _t2 * axisX * axisY;
-        double _t10 = _t2 * axisX * axisZ;
-        double _t11 = _t2 * axisY * axisZ;
-        d.m00 = _t2 * axisX * axisX + _t0;
-        d.m01 = _t9 - _t4;
-        d.m02 = _t5 + _t10;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t3 = axisZ * _t0;
+        double _t4 = axisY * _t0;
+        double _t7 = axisX * _t0;
+        double _t8 = 1.0 - _t1;
+        double _t9 = _t8 * axisX * axisY;
+        double _t10 = _t8 * axisX * axisZ;
+        double _t11 = _t8 * axisY * axisZ;
+        d.m00 = _t8 * axisX * axisX + _t1;
+        d.m01 = _t9 - _t3;
+        d.m02 = _t4 + _t10;
         d.m03 = 0.0;
-        d.m10 = _t4 + _t9;
-        d.m11 = _t2 * axisY * axisY + _t0;
-        d.m12 = _t11 - _t8;
+        d.m10 = _t3 + _t9;
+        d.m11 = _t8 * axisY * axisY + _t1;
+        d.m12 = _t11 - _t7;
         d.m13 = 0.0;
-        d.m20 = _t10 - _t5;
-        d.m21 = _t8 + _t11;
-        d.m22 = _t2 * axisZ * axisZ + _t0;
+        d.m20 = _t10 - _t4;
+        d.m21 = _t7 + _t11;
+        d.m22 = _t8 * axisZ * axisZ + _t1;
         d.m23 = 0.0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -19204,26 +19204,54 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateAxis_identity_self(double angle, double axisX, double axisY, double axisZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
-        double _t4 = axisZ * _t1;
-        double _t5 = axisY * _t1;
-        double _t8 = axisX * _t1;
-        double _t9 = _t2 * axisX * axisY;
-        double _t10 = _t2 * axisX * axisZ;
-        double _t11 = _t2 * axisY * axisZ;
-        d.m00 = _t2 * axisX * axisX + _t0;
-        d.m01 = _t9 - _t4;
-        d.m02 = _t5 + _t10;
-        d.m10 = _t4 + _t9;
-        d.m11 = _t2 * axisY * axisY + _t0;
-        d.m12 = _t11 - _t8;
-        d.m20 = _t10 - _t5;
-        d.m21 = _t8 + _t11;
-        d.m22 = _t2 * axisZ * axisZ + _t0;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t3 = axisZ * _t0;
+        double _t4 = axisY * _t0;
+        double _t7 = axisX * _t0;
+        double _t8 = 1.0 - _t1;
+        double _t9 = _t8 * axisX * axisY;
+        double _t10 = _t8 * axisX * axisZ;
+        double _t11 = _t8 * axisY * axisZ;
+        d.m00 = _t8 * axisX * axisX + _t1;
+        d.m01 = _t9 - _t3;
+        d.m02 = _t4 + _t10;
+        d.m10 = _t3 + _t9;
+        d.m11 = _t8 * axisY * axisY + _t1;
+        d.m12 = _t11 - _t7;
+        d.m20 = _t10 - _t4;
+        d.m21 = _t7 + _t11;
+        d.m22 = _t8 * axisZ * axisZ + _t1;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
+    }
+
+    /** Private column 0 of {@code preRotateAxis_translation}: computes and stores it; reached only through it. */
+    private void preRotateAxis_translation_s15c4a477_c0(Double3x4Impl _dst, double _t18, double _t23, double _t25) {
+        _dst.m00 = _t18;
+        _dst.m10 = _t23;
+        _dst.m20 = _t25;
+    }
+
+    /** Private column 1 of {@code preRotateAxis_translation}: computes and stores it; reached only through it. */
+    private void preRotateAxis_translation_s15c4a477_c1(Double3x4Impl _dst, double _t21, double _t19, double _t26) {
+        _dst.m01 = _t21;
+        _dst.m11 = _t19;
+        _dst.m21 = _t26;
+    }
+
+    /** Private column 2 of {@code preRotateAxis_translation}: computes and stores it; reached only through it. */
+    private void preRotateAxis_translation_s15c4a477_c2(Double3x4Impl _dst, double _t22, double _t24, double _t20) {
+        _dst.m02 = _t22;
+        _dst.m12 = _t24;
+        _dst.m22 = _t20;
+    }
+
+    /** Private column 3 of {@code preRotateAxis_translation}: computes and stores it; reached only through it. */
+    private void preRotateAxis_translation_s15c4a477_c3(Double3x4Impl _dst, double _r0, double _t18, double _r1, double _t21, double _r2, double _t22, double _t23, double _t19, double _t24, double _t25, double _t26, double _t20) {
+        _dst.m03 = _r0 * _t18 + _r1 * _t21 + _r2 * _t22;
+        _dst.m13 = _r0 * _t23 + _r1 * _t19 + _r2 * _t24;
+        _dst.m23 = _r0 * _t25 + _r1 * _t26 + _r2 * _t20;
     }
 
 
@@ -19233,38 +19261,31 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateAxis_translation(double angle, double axisX, double axisY, double axisZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
-        double _t5 = axisZ * _t1;
-        double _t6 = axisY * _t1;
-        double _t10 = axisX * _t1;
-        double _t13 = _t2 * axisX * axisY;
-        double _t14 = _t2 * axisX * axisZ;
-        double _t16 = _t2 * axisY * axisZ;
-        double _t18 = _t2 * axisX * axisX + _t0;
-        double _t19 = _t2 * axisY * axisY + _t0;
-        double _t20 = _t2 * axisZ * axisZ + _t0;
-        double _t21 = _t13 - _t5;
-        double _t22 = _t6 + _t14;
-        double _t23 = _t5 + _t13;
-        double _t24 = _t16 - _t10;
-        double _t25 = _t14 - _t6;
-        double _t26 = _t10 + _t16;
-        d.m00 = _t18;
-        d.m01 = _t21;
-        d.m02 = _t22;
-        double _buf0 = this.m03 * _t18 + this.m13 * _t21 + this.m23 * _t22;
-        d.m10 = _t23;
-        d.m11 = _t19;
-        d.m12 = _t24;
-        double _buf1 = this.m03 * _t23 + this.m13 * _t19 + this.m23 * _t24;
-        d.m20 = _t25;
-        d.m21 = _t26;
-        d.m22 = _t20;
-        d.m23 = this.m03 * _t25 + this.m13 * _t26 + this.m23 * _t20;
-        d.m03 = _buf0;
-        d.m13 = _buf1;
+        double _r0 = this.m03;
+        double _r1 = this.m13;
+        double _r2 = this.m23;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t4 = axisZ * _t0;
+        double _t5 = axisY * _t0;
+        double _t9 = axisX * _t0;
+        double _t11 = 1.0 - _t1;
+        double _t13 = _t11 * axisX * axisY;
+        double _t14 = _t11 * axisX * axisZ;
+        double _t16 = _t11 * axisY * axisZ;
+        double _t18 = _t11 * axisX * axisX + _t1;
+        double _t19 = _t11 * axisY * axisY + _t1;
+        double _t20 = _t11 * axisZ * axisZ + _t1;
+        double _t21 = _t13 - _t4;
+        double _t22 = _t5 + _t14;
+        double _t23 = _t4 + _t13;
+        double _t24 = _t16 - _t9;
+        double _t25 = _t14 - _t5;
+        double _t26 = _t9 + _t16;
+        preRotateAxis_translation_s15c4a477_c0(d, _t18, _t23, _t25);
+        preRotateAxis_translation_s15c4a477_c1(d, _t21, _t19, _t26);
+        preRotateAxis_translation_s15c4a477_c2(d, _t22, _t24, _t20);
+        preRotateAxis_translation_s15c4a477_c3(d, _r0, _t18, _r1, _t21, _r2, _t22, _t23, _t19, _t24, _t25, _t26, _t20);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -19298,15 +19319,15 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private tail of {@code preRotateAxis_orthogonal}; reached only through it. */
-    private void preRotateAxis_orthogonal_s15c4a477_tail(Double3x4Impl _dst, double _t2, double axisY, double _t0, double axisZ, double _t13, double _t5, double _t6, double _t14, double _t16, double _t10, double _r0, double _t18, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t19 = _t2 * axisY * axisY + _t0;
-        double _t20 = _t2 * axisZ * axisZ + _t0;
-        double _t21 = _t13 - _t5;
-        double _t22 = _t6 + _t14;
-        double _t23 = _t5 + _t13;
-        double _t24 = _t16 - _t10;
-        double _t25 = _t14 - _t6;
-        double _t26 = _t10 + _t16;
+    private void preRotateAxis_orthogonal_s15c4a477_tail(Double3x4Impl _dst, double _t11, double axisY, double _t1, double axisZ, double _t13, double _t4, double _t5, double _t14, double _t16, double _t9, double _r0, double _t18, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t19 = _t11 * axisY * axisY + _t1;
+        double _t20 = _t11 * axisZ * axisZ + _t1;
+        double _t21 = _t13 - _t4;
+        double _t22 = _t5 + _t14;
+        double _t23 = _t4 + _t13;
+        double _t24 = _t16 - _t9;
+        double _t25 = _t14 - _t5;
+        double _t26 = _t9 + _t16;
         preRotateAxis_orthogonal_s15c4a477_c0(_dst, _r0, _t18, _r1, _t21, _r2, _t22, _t23, _t19, _t24, _t25, _t26, _t20);
         preRotateAxis_orthogonal_s15c4a477_c1(_dst, _r3, _t18, _r4, _t21, _r5, _t22, _t23, _t19, _t24, _t25, _t26, _t20);
         preRotateAxis_orthogonal_s15c4a477_c2(_dst, _r6, _t18, _r7, _t21, _r8, _t22, _t23, _t19, _t24, _t25, _t26, _t20);
@@ -19332,17 +19353,17 @@ public class Double3x4Impl implements Double3x4 {
         double _r9 = this.m03;
         double _r10 = this.m13;
         double _r11 = this.m23;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
-        double _t5 = axisZ * _t1;
-        double _t6 = axisY * _t1;
-        double _t10 = axisX * _t1;
-        double _t13 = _t2 * axisX * axisY;
-        double _t14 = _t2 * axisX * axisZ;
-        double _t16 = _t2 * axisY * axisZ;
-        double _t18 = _t2 * axisX * axisX + _t0;
-        preRotateAxis_orthogonal_s15c4a477_tail(d, _t2, axisY, _t0, axisZ, _t13, _t5, _t6, _t14, _t16, _t10, _r0, _t18, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t4 = axisZ * _t0;
+        double _t5 = axisY * _t0;
+        double _t9 = axisX * _t0;
+        double _t11 = 1.0 - _t1;
+        double _t13 = _t11 * axisX * axisY;
+        double _t14 = _t11 * axisX * axisZ;
+        double _t16 = _t11 * axisY * axisZ;
+        double _t18 = _t11 * axisX * axisX + _t1;
+        preRotateAxis_orthogonal_s15c4a477_tail(d, _t11, axisY, _t1, axisZ, _t13, _t4, _t5, _t14, _t16, _t9, _r0, _t18, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -19376,15 +19397,15 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private tail of {@code preRotateAxis_general}; reached only through it. */
-    private void preRotateAxis_general_s15c4a477_tail(Double3x4Impl _dst, double _t2, double axisY, double _t0, double axisZ, double _t13, double _t5, double _t6, double _t14, double _t16, double _t10, double _r0, double _t18, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t19 = _t2 * axisY * axisY + _t0;
-        double _t20 = _t2 * axisZ * axisZ + _t0;
-        double _t21 = _t13 - _t5;
-        double _t22 = _t6 + _t14;
-        double _t23 = _t5 + _t13;
-        double _t24 = _t16 - _t10;
-        double _t25 = _t14 - _t6;
-        double _t26 = _t10 + _t16;
+    private void preRotateAxis_general_s15c4a477_tail(Double3x4Impl _dst, double _t11, double axisY, double _t1, double axisZ, double _t13, double _t4, double _t5, double _t14, double _t16, double _t9, double _r0, double _t18, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t19 = _t11 * axisY * axisY + _t1;
+        double _t20 = _t11 * axisZ * axisZ + _t1;
+        double _t21 = _t13 - _t4;
+        double _t22 = _t5 + _t14;
+        double _t23 = _t4 + _t13;
+        double _t24 = _t16 - _t9;
+        double _t25 = _t14 - _t5;
+        double _t26 = _t9 + _t16;
         preRotateAxis_general_s15c4a477_c0(_dst, _r0, _t18, _r1, _t21, _r2, _t22, _t23, _t19, _t24, _t25, _t26, _t20);
         preRotateAxis_general_s15c4a477_c1(_dst, _r3, _t18, _r4, _t21, _r5, _t22, _t23, _t19, _t24, _t25, _t26, _t20);
         preRotateAxis_general_s15c4a477_c2(_dst, _r6, _t18, _r7, _t21, _r8, _t22, _t23, _t19, _t24, _t25, _t26, _t20);
@@ -19410,17 +19431,17 @@ public class Double3x4Impl implements Double3x4 {
         double _r9 = this.m03;
         double _r10 = this.m13;
         double _r11 = this.m23;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
-        double _t5 = axisZ * _t1;
-        double _t6 = axisY * _t1;
-        double _t10 = axisX * _t1;
-        double _t13 = _t2 * axisX * axisY;
-        double _t14 = _t2 * axisX * axisZ;
-        double _t16 = _t2 * axisY * axisZ;
-        double _t18 = _t2 * axisX * axisX + _t0;
-        preRotateAxis_general_s15c4a477_tail(d, _t2, axisY, _t0, axisZ, _t13, _t5, _t6, _t14, _t16, _t10, _r0, _t18, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t4 = axisZ * _t0;
+        double _t5 = axisY * _t0;
+        double _t9 = axisX * _t0;
+        double _t11 = 1.0 - _t1;
+        double _t13 = _t11 * axisX * axisY;
+        double _t14 = _t11 * axisX * axisZ;
+        double _t16 = _t11 * axisY * axisZ;
+        double _t18 = _t11 * axisX * axisX + _t1;
+        preRotateAxis_general_s15c4a477_tail(d, _t11, axisY, _t1, axisZ, _t13, _t4, _t5, _t14, _t16, _t9, _r0, _t18, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -19855,20 +19876,20 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateX_orthogonal_general(double angle, @Mutated Double3x4 dest, int _props) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         d.m00 = this.m00;
         d.m01 = this.m01;
         d.m02 = this.m02;
         d.m03 = this.m03;
-        double _buf0 = this.m10 * _t0 - this.m20 * _t1;
-        double _buf1 = this.m11 * _t0 - this.m21 * _t1;
-        double _buf2 = this.m12 * _t0 - this.m22 * _t1;
-        double _buf3 = this.m13 * _t0 - this.m23 * _t1;
-        d.m20 = this.m10 * _t1 + this.m20 * _t0;
-        d.m21 = this.m11 * _t1 + this.m21 * _t0;
-        d.m22 = this.m12 * _t1 + this.m22 * _t0;
-        d.m23 = this.m13 * _t1 + this.m23 * _t0;
+        double _buf0 = this.m10 * _t1 - this.m20 * _t0;
+        double _buf1 = this.m11 * _t1 - this.m21 * _t0;
+        double _buf2 = this.m12 * _t1 - this.m22 * _t0;
+        double _buf3 = this.m13 * _t1 - this.m23 * _t0;
+        d.m20 = this.m10 * _t0 + this.m20 * _t1;
+        d.m21 = this.m11 * _t0 + this.m21 * _t1;
+        d.m22 = this.m12 * _t0 + this.m22 * _t1;
+        d.m23 = this.m13 * _t0 + this.m23 * _t1;
         d.m10 = _buf0;
         d.m11 = _buf1;
         d.m12 = _buf2;
@@ -19884,19 +19905,19 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateX_identity(double angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         d.m00 = 1.0;
         d.m01 = 0.0;
         d.m02 = 0.0;
         d.m03 = 0.0;
         d.m10 = 0.0;
-        d.m11 = _t0;
-        d.m12 = -_t1;
+        d.m11 = _t1;
+        d.m12 = -_t0;
         d.m13 = 0.0;
         d.m20 = 0.0;
-        d.m21 = _t1;
-        d.m22 = _t0;
+        d.m21 = _t0;
+        d.m22 = _t1;
         d.m23 = 0.0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -19909,12 +19930,12 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateX_identity_self(double angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        d.m11 = _t0;
-        d.m12 = -_t1;
-        d.m21 = _t1;
-        d.m22 = _t0;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        d.m11 = _t1;
+        d.m12 = -_t0;
+        d.m21 = _t0;
+        d.m22 = _t1;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -19926,20 +19947,20 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateX_translation(double angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         d.m00 = 1.0;
         d.m01 = 0.0;
         d.m02 = 0.0;
         d.m03 = this.m03;
         d.m10 = 0.0;
-        d.m11 = _t0;
-        d.m12 = -_t1;
-        double _buf0 = this.m13 * _t0 - this.m23 * _t1;
+        d.m11 = _t1;
+        d.m12 = -_t0;
+        double _buf0 = this.m13 * _t1 - this.m23 * _t0;
         d.m20 = 0.0;
-        d.m21 = _t1;
-        d.m22 = _t0;
-        d.m23 = this.m13 * _t1 + this.m23 * _t0;
+        d.m21 = _t0;
+        d.m22 = _t1;
+        d.m23 = this.m13 * _t0 + this.m23 * _t1;
         d.m13 = _buf0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -19952,15 +19973,15 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateX_translation_self(double angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         d.m03 = this.m03;
-        d.m11 = _t0;
-        d.m12 = -_t1;
-        double _buf0 = this.m13 * _t0 - this.m23 * _t1;
-        d.m21 = _t1;
-        d.m22 = _t0;
-        d.m23 = this.m13 * _t1 + this.m23 * _t0;
+        d.m11 = _t1;
+        d.m12 = -_t0;
+        double _buf0 = this.m13 * _t1 - this.m23 * _t0;
+        d.m21 = _t0;
+        d.m22 = _t1;
+        d.m23 = this.m13 * _t0 + this.m23 * _t1;
         d.m13 = _buf0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -20012,20 +20033,20 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateY_orthogonal_general(double angle, @Mutated Double3x4 dest, int _props) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _buf0 = this.m00 * _t0 + this.m20 * _t1;
-        double _buf1 = this.m01 * _t0 + this.m21 * _t1;
-        double _buf2 = this.m02 * _t0 + this.m22 * _t1;
-        double _buf3 = this.m03 * _t0 + this.m23 * _t1;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _buf0 = this.m00 * _t1 + this.m20 * _t0;
+        double _buf1 = this.m01 * _t1 + this.m21 * _t0;
+        double _buf2 = this.m02 * _t1 + this.m22 * _t0;
+        double _buf3 = this.m03 * _t1 + this.m23 * _t0;
         d.m10 = this.m10;
         d.m11 = this.m11;
         d.m12 = this.m12;
         d.m13 = this.m13;
-        d.m20 = this.m20 * _t0 - this.m00 * _t1;
-        d.m21 = this.m21 * _t0 - this.m01 * _t1;
-        d.m22 = this.m22 * _t0 - this.m02 * _t1;
-        d.m23 = this.m23 * _t0 - this.m03 * _t1;
+        d.m20 = this.m20 * _t1 - this.m00 * _t0;
+        d.m21 = this.m21 * _t1 - this.m01 * _t0;
+        d.m22 = this.m22 * _t1 - this.m02 * _t0;
+        d.m23 = this.m23 * _t1 - this.m03 * _t0;
         d.m00 = _buf0;
         d.m01 = _buf1;
         d.m02 = _buf2;
@@ -20041,19 +20062,19 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateY_identity(double angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        d.m00 = _t0;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
         d.m01 = 0.0;
-        d.m02 = _t1;
+        d.m02 = _t0;
         d.m03 = 0.0;
         d.m10 = 0.0;
         d.m11 = 1.0;
         d.m12 = 0.0;
         d.m13 = 0.0;
-        d.m20 = -_t1;
+        d.m20 = -_t0;
         d.m21 = 0.0;
-        d.m22 = _t0;
+        d.m22 = _t1;
         d.m23 = 0.0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -20066,12 +20087,12 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateY_identity_self(double angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        d.m00 = _t0;
-        d.m02 = _t1;
-        d.m20 = -_t1;
-        d.m22 = _t0;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m02 = _t0;
+        d.m20 = -_t0;
+        d.m22 = _t1;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -20083,20 +20104,20 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateY_translation(double angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        d.m00 = _t0;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
         d.m01 = 0.0;
-        d.m02 = _t1;
-        double _buf0 = this.m03 * _t0 + this.m23 * _t1;
+        d.m02 = _t0;
+        double _buf0 = this.m03 * _t1 + this.m23 * _t0;
         d.m10 = 0.0;
         d.m11 = 1.0;
         d.m12 = 0.0;
         d.m13 = this.m13;
-        d.m20 = -_t1;
+        d.m20 = -_t0;
         d.m21 = 0.0;
-        d.m22 = _t0;
-        d.m23 = this.m23 * _t0 - this.m03 * _t1;
+        d.m22 = _t1;
+        d.m23 = this.m23 * _t1 - this.m03 * _t0;
         d.m03 = _buf0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -20109,15 +20130,15 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateY_translation_self(double angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        d.m00 = _t0;
-        d.m02 = _t1;
-        double _buf0 = this.m03 * _t0 + this.m23 * _t1;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m02 = _t0;
+        double _buf0 = this.m03 * _t1 + this.m23 * _t0;
         d.m13 = this.m13;
-        d.m20 = -_t1;
-        d.m22 = _t0;
-        d.m23 = this.m23 * _t0 - this.m03 * _t1;
+        d.m20 = -_t0;
+        d.m22 = _t1;
+        d.m23 = this.m23 * _t1 - this.m03 * _t0;
         d.m03 = _buf0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -20169,16 +20190,16 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateZ_orthogonal_general(double angle, @Mutated Double3x4 dest, int _props) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _buf0 = this.m00 * _t0 - this.m10 * _t1;
-        double _buf1 = this.m01 * _t0 - this.m11 * _t1;
-        double _buf2 = this.m02 * _t0 - this.m12 * _t1;
-        double _buf3 = this.m03 * _t0 - this.m13 * _t1;
-        d.m10 = this.m00 * _t1 + this.m10 * _t0;
-        d.m11 = this.m01 * _t1 + this.m11 * _t0;
-        d.m12 = this.m02 * _t1 + this.m12 * _t0;
-        d.m13 = this.m03 * _t1 + this.m13 * _t0;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _buf0 = this.m00 * _t1 - this.m10 * _t0;
+        double _buf1 = this.m01 * _t1 - this.m11 * _t0;
+        double _buf2 = this.m02 * _t1 - this.m12 * _t0;
+        double _buf3 = this.m03 * _t1 - this.m13 * _t0;
+        d.m10 = this.m00 * _t0 + this.m10 * _t1;
+        d.m11 = this.m01 * _t0 + this.m11 * _t1;
+        d.m12 = this.m02 * _t0 + this.m12 * _t1;
+        d.m13 = this.m03 * _t0 + this.m13 * _t1;
         d.m20 = this.m20;
         d.m21 = this.m21;
         d.m22 = this.m22;
@@ -20198,14 +20219,14 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateZ_identity(double angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        d.m00 = _t0;
-        d.m01 = -_t1;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m01 = -_t0;
         d.m02 = 0.0;
         d.m03 = 0.0;
-        d.m10 = _t1;
-        d.m11 = _t0;
+        d.m10 = _t0;
+        d.m11 = _t1;
         d.m12 = 0.0;
         d.m13 = 0.0;
         d.m20 = 0.0;
@@ -20223,12 +20244,12 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateZ_identity_self(double angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        d.m00 = _t0;
-        d.m01 = -_t1;
-        d.m10 = _t1;
-        d.m11 = _t0;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m01 = -_t0;
+        d.m10 = _t0;
+        d.m11 = _t1;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -20240,16 +20261,16 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateZ_translation(double angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        d.m00 = _t0;
-        d.m01 = -_t1;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m01 = -_t0;
         d.m02 = 0.0;
-        double _buf0 = this.m03 * _t0 - this.m13 * _t1;
-        d.m10 = _t1;
-        d.m11 = _t0;
+        double _buf0 = this.m03 * _t1 - this.m13 * _t0;
+        d.m10 = _t0;
+        d.m11 = _t1;
         d.m12 = 0.0;
-        d.m13 = this.m03 * _t1 + this.m13 * _t0;
+        d.m13 = this.m03 * _t0 + this.m13 * _t1;
         d.m20 = 0.0;
         d.m21 = 0.0;
         d.m22 = 1.0;
@@ -20266,14 +20287,14 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateZ_translation_self(double angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        d.m00 = _t0;
-        d.m01 = -_t1;
-        double _buf0 = this.m03 * _t0 - this.m13 * _t1;
-        d.m10 = _t1;
-        d.m11 = _t0;
-        d.m13 = this.m03 * _t1 + this.m13 * _t0;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m01 = -_t0;
+        double _buf0 = this.m03 * _t1 - this.m13 * _t0;
+        d.m10 = _t0;
+        d.m11 = _t1;
+        d.m13 = this.m03 * _t0 + this.m13 * _t1;
         d.m23 = this.m23;
         d.m03 = _buf0;
         d.properties = Joml.BIT_ORTHOGONAL;
@@ -21846,26 +21867,26 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateAxis_translation(double angle, double axisX, double axisY, double axisZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
-        double _t4 = axisZ * _t1;
-        double _t5 = axisY * _t1;
-        double _t8 = axisX * _t1;
-        double _t9 = _t2 * axisX * axisY;
-        double _t10 = _t2 * axisX * axisZ;
-        double _t11 = _t2 * axisY * axisZ;
-        d.m00 = _t2 * axisX * axisX + _t0;
-        d.m01 = _t9 - _t4;
-        d.m02 = _t5 + _t10;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t3 = axisZ * _t0;
+        double _t4 = axisY * _t0;
+        double _t7 = axisX * _t0;
+        double _t8 = 1.0 - _t1;
+        double _t9 = _t8 * axisX * axisY;
+        double _t10 = _t8 * axisX * axisZ;
+        double _t11 = _t8 * axisY * axisZ;
+        d.m00 = _t8 * axisX * axisX + _t1;
+        d.m01 = _t9 - _t3;
+        d.m02 = _t4 + _t10;
         d.m03 = this.m03;
-        d.m10 = _t4 + _t9;
-        d.m11 = _t2 * axisY * axisY + _t0;
-        d.m12 = _t11 - _t8;
+        d.m10 = _t3 + _t9;
+        d.m11 = _t8 * axisY * axisY + _t1;
+        d.m12 = _t11 - _t7;
         d.m13 = this.m13;
-        d.m20 = _t10 - _t5;
-        d.m21 = _t8 + _t11;
-        d.m22 = _t2 * axisZ * axisZ + _t0;
+        d.m20 = _t10 - _t4;
+        d.m21 = _t7 + _t11;
+        d.m22 = _t8 * axisZ * axisZ + _t1;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -21900,15 +21921,15 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private tail of {@code rotateAxis_orthogonal}; reached only through it. */
-    private void rotateAxis_orthogonal_s15c4a477_tail(Double3x4Impl _dst, double _t2, double axisY, double _t0, double axisZ, double _t4, double _t13, double _t14, double _t7, double _t9, double _t16, double _r0, double _t18, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t19 = _t2 * axisY * axisY + _t0;
-        double _t20 = _t2 * axisZ * axisZ + _t0;
-        double _t21 = _t4 + _t13;
-        double _t22 = _t14 - _t7;
-        double _t23 = _t13 - _t4;
-        double _t24 = _t9 + _t16;
-        double _t25 = _t7 + _t14;
-        double _t26 = _t16 - _t9;
+    private void rotateAxis_orthogonal_s15c4a477_tail(Double3x4Impl _dst, double _t11, double axisY, double _t1, double axisZ, double _t3, double _t13, double _t14, double _t6, double _t8, double _t16, double _r0, double _t18, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t19 = _t11 * axisY * axisY + _t1;
+        double _t20 = _t11 * axisZ * axisZ + _t1;
+        double _t21 = _t3 + _t13;
+        double _t22 = _t14 - _t6;
+        double _t23 = _t13 - _t3;
+        double _t24 = _t8 + _t16;
+        double _t25 = _t6 + _t14;
+        double _t26 = _t16 - _t8;
         rotateAxis_orthogonal_s15c4a477_c0(_dst, _r0, _t18, _r1, _t21, _r2, _t22, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateAxis_orthogonal_s15c4a477_c1(_dst, _r0, _t23, _r1, _t19, _r2, _t24, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateAxis_orthogonal_s15c4a477_c2(_dst, _r0, _t25, _r1, _t26, _r2, _t20, _r4, _r5, _r6, _r8, _r9, _r10);
@@ -21934,17 +21955,17 @@ public class Double3x4Impl implements Double3x4 {
         double _r9 = this.m21;
         double _r10 = this.m22;
         double _r11 = this.m23;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
-        double _t4 = axisZ * _t1;
-        double _t7 = axisY * _t1;
-        double _t9 = axisX * _t1;
-        double _t13 = _t2 * axisX * axisY;
-        double _t14 = _t2 * axisX * axisZ;
-        double _t16 = _t2 * axisY * axisZ;
-        double _t18 = _t2 * axisX * axisX + _t0;
-        rotateAxis_orthogonal_s15c4a477_tail(d, _t2, axisY, _t0, axisZ, _t4, _t13, _t14, _t7, _t9, _t16, _r0, _t18, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t3 = axisZ * _t0;
+        double _t6 = axisY * _t0;
+        double _t8 = axisX * _t0;
+        double _t11 = 1.0 - _t1;
+        double _t13 = _t11 * axisX * axisY;
+        double _t14 = _t11 * axisX * axisZ;
+        double _t16 = _t11 * axisY * axisZ;
+        double _t18 = _t11 * axisX * axisX + _t1;
+        rotateAxis_orthogonal_s15c4a477_tail(d, _t11, axisY, _t1, axisZ, _t3, _t13, _t14, _t6, _t8, _t16, _r0, _t18, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -21978,15 +21999,15 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private tail of {@code rotateAxis_general}; reached only through it. */
-    private void rotateAxis_general_s15c4a477_tail(Double3x4Impl _dst, double _t2, double axisY, double _t0, double axisZ, double _t4, double _t13, double _t14, double _t7, double _t9, double _t16, double _r0, double _t18, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t19 = _t2 * axisY * axisY + _t0;
-        double _t20 = _t2 * axisZ * axisZ + _t0;
-        double _t21 = _t4 + _t13;
-        double _t22 = _t14 - _t7;
-        double _t23 = _t13 - _t4;
-        double _t24 = _t9 + _t16;
-        double _t25 = _t7 + _t14;
-        double _t26 = _t16 - _t9;
+    private void rotateAxis_general_s15c4a477_tail(Double3x4Impl _dst, double _t11, double axisY, double _t1, double axisZ, double _t3, double _t13, double _t14, double _t6, double _t8, double _t16, double _r0, double _t18, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t19 = _t11 * axisY * axisY + _t1;
+        double _t20 = _t11 * axisZ * axisZ + _t1;
+        double _t21 = _t3 + _t13;
+        double _t22 = _t14 - _t6;
+        double _t23 = _t13 - _t3;
+        double _t24 = _t8 + _t16;
+        double _t25 = _t6 + _t14;
+        double _t26 = _t16 - _t8;
         rotateAxis_general_s15c4a477_c0(_dst, _r0, _t18, _r1, _t21, _r2, _t22, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateAxis_general_s15c4a477_c1(_dst, _r0, _t23, _r1, _t19, _r2, _t24, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateAxis_general_s15c4a477_c2(_dst, _r0, _t25, _r1, _t26, _r2, _t20, _r4, _r5, _r6, _r8, _r9, _r10);
@@ -22012,17 +22033,17 @@ public class Double3x4Impl implements Double3x4 {
         double _r9 = this.m21;
         double _r10 = this.m22;
         double _r11 = this.m23;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
-        double _t4 = axisZ * _t1;
-        double _t7 = axisY * _t1;
-        double _t9 = axisX * _t1;
-        double _t13 = _t2 * axisX * axisY;
-        double _t14 = _t2 * axisX * axisZ;
-        double _t16 = _t2 * axisY * axisZ;
-        double _t18 = _t2 * axisX * axisX + _t0;
-        rotateAxis_general_s15c4a477_tail(d, _t2, axisY, _t0, axisZ, _t4, _t13, _t14, _t7, _t9, _t16, _r0, _t18, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t3 = axisZ * _t0;
+        double _t6 = axisY * _t0;
+        double _t8 = axisX * _t0;
+        double _t11 = 1.0 - _t1;
+        double _t13 = _t11 * axisX * axisY;
+        double _t14 = _t11 * axisX * axisZ;
+        double _t16 = _t11 * axisY * axisZ;
+        double _t18 = _t11 * axisX * axisX + _t1;
+        rotateAxis_general_s15c4a477_tail(d, _t11, axisY, _t1, axisZ, _t3, _t13, _t14, _t6, _t8, _t16, _r0, _t18, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -22397,19 +22418,19 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateX_orthogonal_general(double angle, @Mutated Double3x4 dest, int _props) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         d.m00 = this.m00;
-        double _buf0 = this.m01 * _t0 + this.m02 * _t1;
-        d.m02 = this.m02 * _t0 - this.m01 * _t1;
+        double _buf0 = this.m01 * _t1 + this.m02 * _t0;
+        d.m02 = this.m02 * _t1 - this.m01 * _t0;
         d.m03 = this.m03;
         d.m10 = this.m10;
-        double _buf1 = this.m11 * _t0 + this.m12 * _t1;
-        d.m12 = this.m12 * _t0 - this.m11 * _t1;
+        double _buf1 = this.m11 * _t1 + this.m12 * _t0;
+        d.m12 = this.m12 * _t1 - this.m11 * _t0;
         d.m13 = this.m13;
         d.m20 = this.m20;
-        double _buf2 = this.m21 * _t0 + this.m22 * _t1;
-        d.m22 = this.m22 * _t0 - this.m21 * _t1;
+        double _buf2 = this.m21 * _t1 + this.m22 * _t0;
+        d.m22 = this.m22 * _t1 - this.m21 * _t0;
         d.m23 = this.m23;
         d.m01 = _buf0;
         d.m11 = _buf1;
@@ -22443,19 +22464,19 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateX_translation(double angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         d.m00 = 1.0;
         d.m01 = 0.0;
         d.m02 = 0.0;
         d.m03 = this.m03;
         d.m10 = 0.0;
-        d.m11 = _t0;
-        d.m12 = -_t1;
+        d.m11 = _t1;
+        d.m12 = -_t0;
         d.m13 = this.m13;
         d.m20 = 0.0;
-        d.m21 = _t1;
-        d.m22 = _t0;
+        d.m21 = _t0;
+        d.m22 = _t1;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -22468,14 +22489,14 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateX_translation_self(double angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         d.m03 = this.m03;
-        d.m11 = _t0;
-        d.m12 = -_t1;
+        d.m11 = _t1;
+        d.m12 = -_t0;
         d.m13 = this.m13;
-        d.m21 = _t1;
-        d.m22 = _t0;
+        d.m21 = _t0;
+        d.m22 = _t1;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -22611,24 +22632,24 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private column 0 of {@code rotateXYZ_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateXYZ_orthogonal_general_s5d70833_c0(Double3x4Impl _dst, double _r0, double _t6, double _r1, double _t20, double _r2, double _t21, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m00 = _r0 * _t6 + _r1 * _t20 + _r2 * _t21;
-        _dst.m10 = _r4 * _t6 + _r5 * _t20 + _r6 * _t21;
-        _dst.m20 = _r8 * _t6 + _r9 * _t20 + _r10 * _t21;
+    private void rotateXYZ_orthogonal_general_s5d70833_c0(Double3x4Impl _dst, double _r0, double _t14, double _r1, double _t20, double _r2, double _t21, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m00 = _r0 * _t14 + _r1 * _t20 + _r2 * _t21;
+        _dst.m10 = _r4 * _t14 + _r5 * _t20 + _r6 * _t21;
+        _dst.m20 = _r8 * _t14 + _r9 * _t20 + _r10 * _t21;
     }
 
     /** Private column 1 of {@code rotateXYZ_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateXYZ_orthogonal_general_s5d70833_c1(Double3x4Impl _dst, double _r1, double _t22, double _r0, double _t12, double _r2, double _t23, double _r5, double _r4, double _r6, double _r9, double _r8, double _r10) {
-        _dst.m01 = _r1 * _t22 - _r0 * _t12 + _r2 * _t23;
-        _dst.m11 = _r5 * _t22 - _r4 * _t12 + _r6 * _t23;
-        _dst.m21 = _r9 * _t22 - _r8 * _t12 + _r10 * _t23;
+    private void rotateXYZ_orthogonal_general_s5d70833_c1(Double3x4Impl _dst, double _r1, double _t22, double _r0, double _t10, double _r2, double _t23, double _r5, double _r4, double _r6, double _r9, double _r8, double _r10) {
+        _dst.m01 = _r1 * _t22 - _r0 * _t10 + _r2 * _t23;
+        _dst.m11 = _r5 * _t22 - _r4 * _t10 + _r6 * _t23;
+        _dst.m21 = _r9 * _t22 - _r8 * _t10 + _r10 * _t23;
     }
 
     /** Private column 2 of {@code rotateXYZ_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateXYZ_orthogonal_general_s5d70833_c2(Double3x4Impl _dst, double _r0, double _t3, double _r1, double _t14, double _r2, double _t15, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m02 = _r0 * _t3 - _r1 * _t14 + _r2 * _t15;
-        _dst.m12 = _r4 * _t3 - _r5 * _t14 + _r6 * _t15;
-        _dst.m22 = _r8 * _t3 - _r9 * _t14 + _r10 * _t15;
+    private void rotateXYZ_orthogonal_general_s5d70833_c2(Double3x4Impl _dst, double _r0, double _t0, double _r1, double _t12, double _r2, double _t16, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m02 = _r0 * _t0 - _r1 * _t12 + _r2 * _t16;
+        _dst.m12 = _r4 * _t0 - _r5 * _t12 + _r6 * _t16;
+        _dst.m22 = _r8 * _t0 - _r9 * _t12 + _r10 * _t16;
     }
 
     /** Private column 3 of {@code rotateXYZ_orthogonal_general}: computes and stores it; reached only through it. */
@@ -22639,13 +22660,13 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private tail of {@code rotateXYZ_orthogonal_general}; reached only through it. */
-    private void rotateXYZ_orthogonal_general_s5d70833_tail(Double3x4Impl _dst, double _t2, double _t4, double _t10, double _t1, double _t5, double _t7, double _r0, double _t6, double _r1, double _t20, double _r2, double _t12, double _t3, double _t14, double _t15, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t21 = _t2 * _t4 - _t10 * _t1;
-        double _t22 = _t5 * _t1 - _t7 * _t4;
-        double _t23 = _t10 * _t4 + _t2 * _t1;
-        rotateXYZ_orthogonal_general_s5d70833_c0(_dst, _r0, _t6, _r1, _t20, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateXYZ_orthogonal_general_s5d70833_c1(_dst, _r1, _t22, _r0, _t12, _r2, _t23, _r5, _r4, _r6, _r9, _r8, _r10);
-        rotateXYZ_orthogonal_general_s5d70833_c2(_dst, _r0, _t3, _r1, _t14, _r2, _t15, _r4, _r5, _r6, _r8, _r9, _r10);
+    private void rotateXYZ_orthogonal_general_s5d70833_tail(Double3x4Impl _dst, double _t2, double _t1, double _t9, double _t4, double _t5, double _t6, double _r0, double _t14, double _r1, double _t20, double _r2, double _t10, double _t0, double _t12, double _t16, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t21 = _t2 * _t1 - _t9 * _t4;
+        double _t22 = _t5 * _t4 - _t6 * _t1;
+        double _t23 = _t9 * _t1 + _t2 * _t4;
+        rotateXYZ_orthogonal_general_s5d70833_c0(_dst, _r0, _t14, _r1, _t20, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateXYZ_orthogonal_general_s5d70833_c1(_dst, _r1, _t22, _r0, _t10, _r2, _t23, _r5, _r4, _r6, _r9, _r8, _r10);
+        rotateXYZ_orthogonal_general_s5d70833_c2(_dst, _r0, _t0, _r1, _t12, _r2, _t16, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateXYZ_orthogonal_general_s5d70833_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -22668,20 +22689,20 @@ public class Double3x4Impl implements Double3x4 {
         double _r9 = this.m21;
         double _r10 = this.m22;
         double _r11 = this.m23;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleX);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.sin(angleZ);
-        double _t5 = Math.cos(angleX);
-        double _t6 = _t0 * _t1;
-        double _t7 = _t2 * _t3;
-        double _t10 = _t3 * _t5;
-        double _t12 = _t4 * _t0;
-        double _t14 = _t2 * _t0;
-        double _t15 = _t5 * _t0;
-        double _t20 = _t7 * _t1 + _t4 * _t5;
-        rotateXYZ_orthogonal_general_s5d70833_tail(d, _t2, _t4, _t10, _t1, _t5, _t7, _r0, _t6, _r1, _t20, _r2, _t12, _t3, _t14, _t15, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t2 * _t0;
+        double _t9 = _t0 * _t5;
+        double _t10 = _t1 * _t3;
+        double _t12 = _t2 * _t3;
+        double _t14 = _t3 * _t4;
+        double _t16 = _t5 * _t3;
+        double _t20 = _t6 * _t4 + _t1 * _t5;
+        rotateXYZ_orthogonal_general_s5d70833_tail(d, _t2, _t1, _t9, _t4, _t5, _t6, _r0, _t14, _r1, _t20, _r2, _t10, _t0, _t12, _t16, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = _props;
         return d;
     }
@@ -22693,25 +22714,25 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateXYZ_identity(double angleX, double angleY, double angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
-        double _t2 = Math.sin(angleZ);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.sin(angleX);
-        double _t5 = Math.cos(angleX);
-        double _t6 = _t4 * _t3;
-        double _t7 = _t3 * _t5;
-        d.m00 = _t0 * _t1;
-        d.m01 = -(_t2 * _t0);
-        d.m02 = _t3;
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t2 * _t0;
+        double _t7 = _t0 * _t5;
+        d.m00 = _t3 * _t4;
+        d.m01 = -(_t1 * _t3);
+        d.m02 = _t0;
         d.m03 = 0.0;
-        d.m10 = _t6 * _t1 + _t2 * _t5;
-        d.m11 = _t5 * _t1 - _t6 * _t2;
-        d.m12 = -(_t4 * _t0);
+        d.m10 = _t6 * _t4 + _t1 * _t5;
+        d.m11 = _t5 * _t4 - _t6 * _t1;
+        d.m12 = -(_t2 * _t3);
         d.m13 = 0.0;
-        d.m20 = _t4 * _t2 - _t7 * _t1;
-        d.m21 = _t7 * _t2 + _t4 * _t1;
-        d.m22 = _t5 * _t0;
+        d.m20 = _t2 * _t1 - _t7 * _t4;
+        d.m21 = _t7 * _t1 + _t2 * _t4;
+        d.m22 = _t5 * _t3;
         d.m23 = 0.0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -22724,23 +22745,23 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateXYZ_identity_self(double angleX, double angleY, double angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
-        double _t2 = Math.sin(angleZ);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.sin(angleX);
-        double _t5 = Math.cos(angleX);
-        double _t6 = _t4 * _t3;
-        double _t7 = _t3 * _t5;
-        d.m00 = _t0 * _t1;
-        d.m01 = -(_t2 * _t0);
-        d.m02 = _t3;
-        d.m10 = _t6 * _t1 + _t2 * _t5;
-        d.m11 = _t5 * _t1 - _t6 * _t2;
-        d.m12 = -(_t4 * _t0);
-        d.m20 = _t4 * _t2 - _t7 * _t1;
-        d.m21 = _t7 * _t2 + _t4 * _t1;
-        d.m22 = _t5 * _t0;
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t2 * _t0;
+        double _t7 = _t0 * _t5;
+        d.m00 = _t3 * _t4;
+        d.m01 = -(_t1 * _t3);
+        d.m02 = _t0;
+        d.m10 = _t6 * _t4 + _t1 * _t5;
+        d.m11 = _t5 * _t4 - _t6 * _t1;
+        d.m12 = -(_t2 * _t3);
+        d.m20 = _t2 * _t1 - _t7 * _t4;
+        d.m21 = _t7 * _t1 + _t2 * _t4;
+        d.m22 = _t5 * _t3;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -22752,25 +22773,25 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateXYZ_translation(double angleX, double angleY, double angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
-        double _t2 = Math.sin(angleZ);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.sin(angleX);
-        double _t5 = Math.cos(angleX);
-        double _t6 = _t4 * _t3;
-        double _t7 = _t3 * _t5;
-        d.m00 = _t0 * _t1;
-        d.m01 = -(_t2 * _t0);
-        d.m02 = _t3;
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t2 * _t0;
+        double _t7 = _t0 * _t5;
+        d.m00 = _t3 * _t4;
+        d.m01 = -(_t1 * _t3);
+        d.m02 = _t0;
         d.m03 = this.m03;
-        d.m10 = _t6 * _t1 + _t2 * _t5;
-        d.m11 = _t5 * _t1 - _t6 * _t2;
-        d.m12 = -(_t4 * _t0);
+        d.m10 = _t6 * _t4 + _t1 * _t5;
+        d.m11 = _t5 * _t4 - _t6 * _t1;
+        d.m12 = -(_t2 * _t3);
         d.m13 = this.m13;
-        d.m20 = _t4 * _t2 - _t7 * _t1;
-        d.m21 = _t7 * _t2 + _t4 * _t1;
-        d.m22 = _t5 * _t0;
+        d.m20 = _t2 * _t1 - _t7 * _t4;
+        d.m21 = _t7 * _t1 + _t2 * _t4;
+        d.m22 = _t5 * _t3;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -22823,24 +22844,24 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private column 0 of {@code rotateXZY_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateXZY_orthogonal_general_s5d70833_c0(Double3x4Impl _dst, double _r0, double _t6, double _r1, double _t20, double _r2, double _t21, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m00 = _r0 * _t6 + _r1 * _t20 + _r2 * _t21;
-        _dst.m10 = _r4 * _t6 + _r5 * _t20 + _r6 * _t21;
-        _dst.m20 = _r8 * _t6 + _r9 * _t20 + _r10 * _t21;
+    private void rotateXZY_orthogonal_general_s5d70833_c0(Double3x4Impl _dst, double _r0, double _t14, double _r1, double _t20, double _r2, double _t21, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m00 = _r0 * _t14 + _r1 * _t20 + _r2 * _t21;
+        _dst.m10 = _r4 * _t14 + _r5 * _t20 + _r6 * _t21;
+        _dst.m20 = _r8 * _t14 + _r9 * _t20 + _r10 * _t21;
     }
 
     /** Private column 1 of {@code rotateXZY_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateXZY_orthogonal_general_s5d70833_c1(Double3x4Impl _dst, double _r1, double _t11, double _r0, double _t2, double _r2, double _t12, double _r5, double _r4, double _r6, double _r9, double _r8, double _r10) {
-        _dst.m01 = _r1 * _t11 - _r0 * _t2 + _r2 * _t12;
-        _dst.m11 = _r5 * _t11 - _r4 * _t2 + _r6 * _t12;
-        _dst.m21 = _r9 * _t11 - _r8 * _t2 + _r10 * _t12;
+    private void rotateXZY_orthogonal_general_s5d70833_c1(Double3x4Impl _dst, double _r1, double _t15, double _r0, double _t1, double _r2, double _t10, double _r5, double _r4, double _r6, double _r9, double _r8, double _r10) {
+        _dst.m01 = _r1 * _t15 - _r0 * _t1 + _r2 * _t10;
+        _dst.m11 = _r5 * _t15 - _r4 * _t1 + _r6 * _t10;
+        _dst.m21 = _r9 * _t15 - _r8 * _t1 + _r10 * _t10;
     }
 
     /** Private column 2 of {@code rotateXZY_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateXZY_orthogonal_general_s5d70833_c2(Double3x4Impl _dst, double _r0, double _t13, double _r1, double _t22, double _r2, double _t23, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m02 = _r0 * _t13 + _r1 * _t22 + _r2 * _t23;
-        _dst.m12 = _r4 * _t13 + _r5 * _t22 + _r6 * _t23;
-        _dst.m22 = _r8 * _t13 + _r9 * _t22 + _r10 * _t23;
+    private void rotateXZY_orthogonal_general_s5d70833_c2(Double3x4Impl _dst, double _r0, double _t11, double _r1, double _t22, double _r2, double _t23, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m02 = _r0 * _t11 + _r1 * _t22 + _r2 * _t23;
+        _dst.m12 = _r4 * _t11 + _r5 * _t22 + _r6 * _t23;
+        _dst.m22 = _r8 * _t11 + _r9 * _t22 + _r10 * _t23;
     }
 
     /** Private column 3 of {@code rotateXZY_orthogonal_general}: computes and stores it; reached only through it. */
@@ -22851,13 +22872,13 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private tail of {@code rotateXZY_orthogonal_general}; reached only through it. */
-    private void rotateXZY_orthogonal_general_s5d70833_tail(Double3x4Impl _dst, double _t9, double _t0, double _t5, double _t3, double _t7, double _t4, double _r0, double _t6, double _r1, double _t20, double _r2, double _t11, double _t2, double _t12, double _t13, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t21 = _t9 * _t0 - _t5 * _t3;
-        double _t22 = _t7 * _t5 - _t4 * _t0;
-        double _t23 = _t9 * _t5 + _t3 * _t0;
-        rotateXZY_orthogonal_general_s5d70833_c0(_dst, _r0, _t6, _r1, _t20, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateXZY_orthogonal_general_s5d70833_c1(_dst, _r1, _t11, _r0, _t2, _r2, _t12, _r5, _r4, _r6, _r9, _r8, _r10);
-        rotateXZY_orthogonal_general_s5d70833_c2(_dst, _r0, _t13, _r1, _t22, _r2, _t23, _r4, _r5, _r6, _r8, _r9, _r10);
+    private void rotateXZY_orthogonal_general_s5d70833_tail(Double3x4Impl _dst, double _t7, double _t3, double _t0, double _t5, double _t8, double _t2, double _r0, double _t14, double _r1, double _t20, double _r2, double _t15, double _t1, double _t10, double _t11, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t21 = _t7 * _t3 - _t0 * _t5;
+        double _t22 = _t8 * _t0 - _t2 * _t3;
+        double _t23 = _t7 * _t0 + _t5 * _t3;
+        rotateXZY_orthogonal_general_s5d70833_c0(_dst, _r0, _t14, _r1, _t20, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateXZY_orthogonal_general_s5d70833_c1(_dst, _r1, _t15, _r0, _t1, _r2, _t10, _r5, _r4, _r6, _r9, _r8, _r10);
+        rotateXZY_orthogonal_general_s5d70833_c2(_dst, _r0, _t11, _r1, _t22, _r2, _t23, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateXZY_orthogonal_general_s5d70833_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -22880,20 +22901,20 @@ public class Double3x4Impl implements Double3x4 {
         double _r9 = this.m21;
         double _r10 = this.m22;
         double _r11 = this.m23;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
-        double _t2 = Math.sin(angleZ);
-        double _t3 = Math.cos(angleX);
-        double _t4 = Math.sin(angleX);
-        double _t5 = Math.sin(angleY);
-        double _t6 = _t0 * _t1;
-        double _t7 = _t2 * _t3;
-        double _t9 = _t4 * _t2;
-        double _t11 = _t3 * _t1;
-        double _t12 = _t4 * _t1;
-        double _t13 = _t5 * _t1;
-        double _t20 = _t7 * _t0 + _t4 * _t5;
-        rotateXZY_orthogonal_general_s5d70833_tail(d, _t9, _t0, _t5, _t3, _t7, _t4, _r0, _t6, _r1, _t20, _r2, _t11, _t2, _t12, _t13, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t7 = _t2 * _t1;
+        double _t8 = _t1 * _t5;
+        double _t10 = _t2 * _t4;
+        double _t11 = _t0 * _t4;
+        double _t14 = _t3 * _t4;
+        double _t15 = _t5 * _t4;
+        double _t20 = _t8 * _t3 + _t2 * _t0;
+        rotateXZY_orthogonal_general_s5d70833_tail(d, _t7, _t3, _t0, _t5, _t8, _t2, _r0, _t14, _r1, _t20, _r2, _t15, _t1, _t10, _t11, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = _props;
         return d;
     }
@@ -22905,25 +22926,25 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateXZY_identity(double angleX, double angleY, double angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
-        double _t2 = Math.sin(angleZ);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.cos(angleX);
-        double _t5 = Math.sin(angleX);
-        double _t6 = _t2 * _t4;
-        double _t7 = _t5 * _t2;
-        d.m00 = _t0 * _t1;
-        d.m01 = -_t2;
-        d.m02 = _t3 * _t1;
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t2 * _t1;
+        double _t7 = _t1 * _t5;
+        d.m00 = _t3 * _t4;
+        d.m01 = -_t1;
+        d.m02 = _t0 * _t4;
         d.m03 = 0.0;
-        d.m10 = _t6 * _t0 + _t5 * _t3;
-        d.m11 = _t4 * _t1;
-        d.m12 = _t6 * _t3 - _t5 * _t0;
+        d.m10 = _t7 * _t3 + _t2 * _t0;
+        d.m11 = _t5 * _t4;
+        d.m12 = _t7 * _t0 - _t2 * _t3;
         d.m13 = 0.0;
-        d.m20 = _t7 * _t0 - _t3 * _t4;
-        d.m21 = _t5 * _t1;
-        d.m22 = _t7 * _t3 + _t4 * _t0;
+        d.m20 = _t6 * _t3 - _t0 * _t5;
+        d.m21 = _t2 * _t4;
+        d.m22 = _t6 * _t0 + _t5 * _t3;
         d.m23 = 0.0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -22936,23 +22957,23 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateXZY_identity_self(double angleX, double angleY, double angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
-        double _t2 = Math.sin(angleZ);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.cos(angleX);
-        double _t5 = Math.sin(angleX);
-        double _t6 = _t2 * _t4;
-        double _t7 = _t5 * _t2;
-        d.m00 = _t0 * _t1;
-        d.m01 = -_t2;
-        d.m02 = _t3 * _t1;
-        d.m10 = _t6 * _t0 + _t5 * _t3;
-        d.m11 = _t4 * _t1;
-        d.m12 = _t6 * _t3 - _t5 * _t0;
-        d.m20 = _t7 * _t0 - _t3 * _t4;
-        d.m21 = _t5 * _t1;
-        d.m22 = _t7 * _t3 + _t4 * _t0;
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t2 * _t1;
+        double _t7 = _t1 * _t5;
+        d.m00 = _t3 * _t4;
+        d.m01 = -_t1;
+        d.m02 = _t0 * _t4;
+        d.m10 = _t7 * _t3 + _t2 * _t0;
+        d.m11 = _t5 * _t4;
+        d.m12 = _t7 * _t0 - _t2 * _t3;
+        d.m20 = _t6 * _t3 - _t0 * _t5;
+        d.m21 = _t2 * _t4;
+        d.m22 = _t6 * _t0 + _t5 * _t3;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -22964,25 +22985,25 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateXZY_translation(double angleX, double angleY, double angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
-        double _t2 = Math.sin(angleZ);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.cos(angleX);
-        double _t5 = Math.sin(angleX);
-        double _t6 = _t2 * _t4;
-        double _t7 = _t5 * _t2;
-        d.m00 = _t0 * _t1;
-        d.m01 = -_t2;
-        d.m02 = _t3 * _t1;
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t2 * _t1;
+        double _t7 = _t1 * _t5;
+        d.m00 = _t3 * _t4;
+        d.m01 = -_t1;
+        d.m02 = _t0 * _t4;
         d.m03 = this.m03;
-        d.m10 = _t6 * _t0 + _t5 * _t3;
-        d.m11 = _t4 * _t1;
-        d.m12 = _t6 * _t3 - _t5 * _t0;
+        d.m10 = _t7 * _t3 + _t2 * _t0;
+        d.m11 = _t5 * _t4;
+        d.m12 = _t7 * _t0 - _t2 * _t3;
         d.m13 = this.m13;
-        d.m20 = _t7 * _t0 - _t3 * _t4;
-        d.m21 = _t5 * _t1;
-        d.m22 = _t7 * _t3 + _t4 * _t0;
+        d.m20 = _t6 * _t3 - _t0 * _t5;
+        d.m21 = _t2 * _t4;
+        d.m22 = _t6 * _t0 + _t5 * _t3;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -23131,19 +23152,19 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateY_orthogonal_general(double angle, @Mutated Double3x4 dest, int _props) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _buf0 = this.m00 * _t0 - this.m02 * _t1;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _buf0 = this.m00 * _t1 - this.m02 * _t0;
         d.m01 = this.m01;
-        d.m02 = this.m00 * _t1 + this.m02 * _t0;
+        d.m02 = this.m00 * _t0 + this.m02 * _t1;
         d.m03 = this.m03;
-        double _buf1 = this.m10 * _t0 - this.m12 * _t1;
+        double _buf1 = this.m10 * _t1 - this.m12 * _t0;
         d.m11 = this.m11;
-        d.m12 = this.m10 * _t1 + this.m12 * _t0;
+        d.m12 = this.m10 * _t0 + this.m12 * _t1;
         d.m13 = this.m13;
-        double _buf2 = this.m20 * _t0 - this.m22 * _t1;
+        double _buf2 = this.m20 * _t1 - this.m22 * _t0;
         d.m21 = this.m21;
-        d.m22 = this.m20 * _t1 + this.m22 * _t0;
+        d.m22 = this.m20 * _t0 + this.m22 * _t1;
         d.m23 = this.m23;
         d.m00 = _buf0;
         d.m10 = _buf1;
@@ -23177,19 +23198,19 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateY_translation(double angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        d.m00 = _t0;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
         d.m01 = 0.0;
-        d.m02 = _t1;
+        d.m02 = _t0;
         d.m03 = this.m03;
         d.m10 = 0.0;
         d.m11 = 1.0;
         d.m12 = 0.0;
         d.m13 = this.m13;
-        d.m20 = -_t1;
+        d.m20 = -_t0;
         d.m21 = 0.0;
-        d.m22 = _t0;
+        d.m22 = _t1;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -23202,14 +23223,14 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateY_translation_self(double angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        d.m00 = _t0;
-        d.m02 = _t1;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m02 = _t0;
         d.m03 = this.m03;
         d.m13 = this.m13;
-        d.m20 = -_t1;
-        d.m22 = _t0;
+        d.m20 = -_t0;
+        d.m22 = _t1;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -23352,17 +23373,17 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private column 1 of {@code rotateYXZ_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateYXZ_orthogonal_general_s5d70833_c1(Double3x4Impl _dst, double _r0, double _t22, double _r1, double _t12, double _r2, double _t23, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m01 = _r0 * _t22 + _r1 * _t12 + _r2 * _t23;
-        _dst.m11 = _r4 * _t22 + _r5 * _t12 + _r6 * _t23;
-        _dst.m21 = _r8 * _t22 + _r9 * _t12 + _r10 * _t23;
+    private void rotateYXZ_orthogonal_general_s5d70833_c1(Double3x4Impl _dst, double _r0, double _t22, double _r1, double _t15, double _r2, double _t23, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m01 = _r0 * _t22 + _r1 * _t15 + _r2 * _t23;
+        _dst.m11 = _r4 * _t22 + _r5 * _t15 + _r6 * _t23;
+        _dst.m21 = _r8 * _t22 + _r9 * _t15 + _r10 * _t23;
     }
 
     /** Private column 2 of {@code rotateYXZ_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateYXZ_orthogonal_general_s5d70833_c2(Double3x4Impl _dst, double _r0, double _t14, double _r1, double _t0, double _r2, double _t15, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m02 = _r0 * _t14 - _r1 * _t0 + _r2 * _t15;
-        _dst.m12 = _r4 * _t14 - _r5 * _t0 + _r6 * _t15;
-        _dst.m22 = _r8 * _t14 - _r9 * _t0 + _r10 * _t15;
+    private void rotateYXZ_orthogonal_general_s5d70833_c2(Double3x4Impl _dst, double _r0, double _t12, double _r1, double _t0, double _r2, double _t16, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m02 = _r0 * _t12 - _r1 * _t0 + _r2 * _t16;
+        _dst.m12 = _r4 * _t12 - _r5 * _t0 + _r6 * _t16;
+        _dst.m22 = _r8 * _t12 - _r9 * _t0 + _r10 * _t16;
     }
 
     /** Private column 3 of {@code rotateYXZ_orthogonal_general}: computes and stores it; reached only through it. */
@@ -23373,13 +23394,13 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private tail of {@code rotateYXZ_orthogonal_general}; reached only through it. */
-    private void rotateYXZ_orthogonal_general_s5d70833_tail(Double3x4Impl _dst, double _t9, double _t2, double _t1, double _t4, double _t6, double _t3, double _r0, double _t20, double _r1, double _t8, double _r2, double _t12, double _t14, double _t0, double _t15, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+    private void rotateYXZ_orthogonal_general_s5d70833_tail(Double3x4Impl _dst, double _t9, double _t2, double _t1, double _t4, double _t6, double _t3, double _r0, double _t20, double _r1, double _t8, double _r2, double _t15, double _t12, double _t0, double _t16, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
         double _t21 = _t9 * _t2 - _t1 * _t4;
         double _t22 = _t6 * _t4 - _t2 * _t3;
         double _t23 = _t9 * _t4 + _t1 * _t2;
         rotateYXZ_orthogonal_general_s5d70833_c0(_dst, _r0, _t20, _r1, _t8, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateYXZ_orthogonal_general_s5d70833_c1(_dst, _r0, _t22, _r1, _t12, _r2, _t23, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateYXZ_orthogonal_general_s5d70833_c2(_dst, _r0, _t14, _r1, _t0, _r2, _t15, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYXZ_orthogonal_general_s5d70833_c1(_dst, _r0, _t22, _r1, _t15, _r2, _t23, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYXZ_orthogonal_general_s5d70833_c2(_dst, _r0, _t12, _r1, _t0, _r2, _t16, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateYXZ_orthogonal_general_s5d70833_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -23405,17 +23426,17 @@ public class Double3x4Impl implements Double3x4 {
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleY);
         double _t2 = Math.sin(angleZ);
-        double _t3 = Math.cos(angleY);
-        double _t4 = Math.cos(angleZ);
-        double _t5 = Math.cos(angleX);
+        double _t3 = Math.cosFromSin(_t1, angleY);
+        double _t4 = Math.cosFromSin(_t2, angleZ);
+        double _t5 = Math.cosFromSin(_t0, angleX);
         double _t6 = _t0 * _t1;
         double _t8 = _t2 * _t5;
         double _t9 = _t0 * _t3;
-        double _t12 = _t5 * _t4;
-        double _t14 = _t1 * _t5;
-        double _t15 = _t5 * _t3;
+        double _t12 = _t1 * _t5;
+        double _t15 = _t5 * _t4;
+        double _t16 = _t5 * _t3;
         double _t20 = _t6 * _t2 + _t3 * _t4;
-        rotateYXZ_orthogonal_general_s5d70833_tail(d, _t9, _t2, _t1, _t4, _t6, _t3, _r0, _t20, _r1, _t8, _r2, _t12, _t14, _t0, _t15, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        rotateYXZ_orthogonal_general_s5d70833_tail(d, _t9, _t2, _t1, _t4, _t6, _t3, _r0, _t20, _r1, _t8, _r2, _t15, _t12, _t0, _t16, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = _props;
         return d;
     }
@@ -23430,9 +23451,9 @@ public class Double3x4Impl implements Double3x4 {
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleY);
         double _t2 = Math.sin(angleZ);
-        double _t3 = Math.cos(angleY);
-        double _t4 = Math.cos(angleZ);
-        double _t5 = Math.cos(angleX);
+        double _t3 = Math.cosFromSin(_t1, angleY);
+        double _t4 = Math.cosFromSin(_t2, angleZ);
+        double _t5 = Math.cosFromSin(_t0, angleX);
         double _t6 = _t0 * _t1;
         double _t7 = _t0 * _t3;
         d.m00 = _t6 * _t2 + _t3 * _t4;
@@ -23461,9 +23482,9 @@ public class Double3x4Impl implements Double3x4 {
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleY);
         double _t2 = Math.sin(angleZ);
-        double _t3 = Math.cos(angleY);
-        double _t4 = Math.cos(angleZ);
-        double _t5 = Math.cos(angleX);
+        double _t3 = Math.cosFromSin(_t1, angleY);
+        double _t4 = Math.cosFromSin(_t2, angleZ);
+        double _t5 = Math.cosFromSin(_t0, angleX);
         double _t6 = _t0 * _t1;
         double _t7 = _t0 * _t3;
         d.m00 = _t6 * _t2 + _t3 * _t4;
@@ -23489,9 +23510,9 @@ public class Double3x4Impl implements Double3x4 {
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleY);
         double _t2 = Math.sin(angleZ);
-        double _t3 = Math.cos(angleY);
-        double _t4 = Math.cos(angleZ);
-        double _t5 = Math.cos(angleX);
+        double _t3 = Math.cosFromSin(_t1, angleY);
+        double _t4 = Math.cosFromSin(_t2, angleZ);
+        double _t5 = Math.cosFromSin(_t0, angleX);
         double _t6 = _t0 * _t1;
         double _t7 = _t0 * _t3;
         d.m00 = _t6 * _t2 + _t3 * _t4;
@@ -23557,24 +23578,24 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private column 0 of {@code rotateYZX_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateYZX_orthogonal_general_s5d70833_c0(Double3x4Impl _dst, double _r0, double _t6, double _r1, double _t2, double _r2, double _t7, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m00 = _r0 * _t6 + _r1 * _t2 - _r2 * _t7;
-        _dst.m10 = _r4 * _t6 + _r5 * _t2 - _r6 * _t7;
-        _dst.m20 = _r8 * _t6 + _r9 * _t2 - _r10 * _t7;
+    private void rotateYZX_orthogonal_general_s5d70833_c0(Double3x4Impl _dst, double _r0, double _t14, double _r1, double _t1, double _r2, double _t8, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m00 = _r0 * _t14 + _r1 * _t1 - _r2 * _t8;
+        _dst.m10 = _r4 * _t14 + _r5 * _t1 - _r6 * _t8;
+        _dst.m20 = _r8 * _t14 + _r9 * _t1 - _r10 * _t8;
     }
 
     /** Private column 1 of {@code rotateYZX_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateYZX_orthogonal_general_s5d70833_c1(Double3x4Impl _dst, double _r0, double _t20, double _r1, double _t10, double _r2, double _t21, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m01 = _r0 * _t20 + _r1 * _t10 + _r2 * _t21;
-        _dst.m11 = _r4 * _t20 + _r5 * _t10 + _r6 * _t21;
-        _dst.m21 = _r8 * _t20 + _r9 * _t10 + _r10 * _t21;
+    private void rotateYZX_orthogonal_general_s5d70833_c1(Double3x4Impl _dst, double _r0, double _t20, double _r1, double _t15, double _r2, double _t21, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m01 = _r0 * _t20 + _r1 * _t15 + _r2 * _t21;
+        _dst.m11 = _r4 * _t20 + _r5 * _t15 + _r6 * _t21;
+        _dst.m21 = _r8 * _t20 + _r9 * _t15 + _r10 * _t21;
     }
 
     /** Private column 2 of {@code rotateYZX_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateYZX_orthogonal_general_s5d70833_c2(Double3x4Impl _dst, double _r0, double _t22, double _r1, double _t14, double _r2, double _t23, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m02 = _r0 * _t22 - _r1 * _t14 + _r2 * _t23;
-        _dst.m12 = _r4 * _t22 - _r5 * _t14 + _r6 * _t23;
-        _dst.m22 = _r8 * _t22 - _r9 * _t14 + _r10 * _t23;
+    private void rotateYZX_orthogonal_general_s5d70833_c2(Double3x4Impl _dst, double _r0, double _t22, double _r1, double _t12, double _r2, double _t23, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m02 = _r0 * _t22 - _r1 * _t12 + _r2 * _t23;
+        _dst.m12 = _r4 * _t22 - _r5 * _t12 + _r6 * _t23;
+        _dst.m22 = _r8 * _t22 - _r9 * _t12 + _r10 * _t23;
     }
 
     /** Private column 3 of {@code rotateYZX_orthogonal_general}: computes and stores it; reached only through it. */
@@ -23585,13 +23606,13 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private tail of {@code rotateYZX_orthogonal_general}; reached only through it. */
-    private void rotateYZX_orthogonal_general_s5d70833_tail(Double3x4Impl _dst, double _t11, double _t5, double _t4, double _t0, double _t9, double _t3, double _r0, double _t6, double _r1, double _t2, double _r2, double _t7, double _t20, double _t10, double _t14, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t21 = _t11 * _t5 + _t4 * _t0;
-        double _t22 = _t9 * _t4 + _t3 * _t5;
-        double _t23 = _t5 * _t0 - _t11 * _t4;
-        rotateYZX_orthogonal_general_s5d70833_c0(_dst, _r0, _t6, _r1, _t2, _r2, _t7, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateYZX_orthogonal_general_s5d70833_c1(_dst, _r0, _t20, _r1, _t10, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateYZX_orthogonal_general_s5d70833_c2(_dst, _r0, _t22, _r1, _t14, _r2, _t23, _r4, _r5, _r6, _r8, _r9, _r10);
+    private void rotateYZX_orthogonal_general_s5d70833_tail(Double3x4Impl _dst, double _t7, double _t5, double _t2, double _t3, double _t9, double _t0, double _r0, double _t14, double _r1, double _t1, double _r2, double _t8, double _t20, double _t15, double _t12, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t21 = _t7 * _t5 + _t2 * _t3;
+        double _t22 = _t9 * _t2 + _t0 * _t5;
+        double _t23 = _t5 * _t3 - _t7 * _t2;
+        rotateYZX_orthogonal_general_s5d70833_c0(_dst, _r0, _t14, _r1, _t1, _r2, _t8, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYZX_orthogonal_general_s5d70833_c1(_dst, _r0, _t20, _r1, _t15, _r2, _t21, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateYZX_orthogonal_general_s5d70833_c2(_dst, _r0, _t22, _r1, _t12, _r2, _t23, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateYZX_orthogonal_general_s5d70833_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -23614,20 +23635,20 @@ public class Double3x4Impl implements Double3x4 {
         double _r9 = this.m21;
         double _r10 = this.m22;
         double _r11 = this.m23;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
-        double _t2 = Math.sin(angleZ);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.sin(angleX);
-        double _t5 = Math.cos(angleX);
-        double _t6 = _t0 * _t1;
-        double _t7 = _t3 * _t1;
-        double _t9 = _t2 * _t0;
-        double _t10 = _t5 * _t1;
-        double _t11 = _t3 * _t2;
-        double _t14 = _t4 * _t1;
-        double _t20 = _t4 * _t3 - _t9 * _t5;
-        rotateYZX_orthogonal_general_s5d70833_tail(d, _t11, _t5, _t4, _t0, _t9, _t3, _r0, _t6, _r1, _t2, _r2, _t7, _t20, _t10, _t14, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t7 = _t0 * _t1;
+        double _t8 = _t0 * _t4;
+        double _t9 = _t1 * _t3;
+        double _t12 = _t2 * _t4;
+        double _t14 = _t3 * _t4;
+        double _t15 = _t5 * _t4;
+        double _t20 = _t2 * _t0 - _t9 * _t5;
+        rotateYZX_orthogonal_general_s5d70833_tail(d, _t7, _t5, _t2, _t3, _t9, _t0, _r0, _t14, _r1, _t1, _r2, _t8, _t20, _t15, _t12, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = _props;
         return d;
     }
@@ -23639,25 +23660,25 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateYZX_identity(double angleX, double angleY, double angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleX);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.sin(angleZ);
-        double _t5 = Math.cos(angleX);
-        double _t6 = _t4 * _t0;
-        double _t7 = _t3 * _t4;
-        d.m00 = _t0 * _t1;
-        d.m01 = _t2 * _t3 - _t6 * _t5;
-        d.m02 = _t6 * _t2 + _t3 * _t5;
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t1 * _t3;
+        d.m00 = _t3 * _t4;
+        d.m01 = _t2 * _t0 - _t7 * _t5;
+        d.m02 = _t7 * _t2 + _t0 * _t5;
         d.m03 = 0.0;
-        d.m10 = _t4;
-        d.m11 = _t5 * _t1;
-        d.m12 = -(_t2 * _t1);
+        d.m10 = _t1;
+        d.m11 = _t5 * _t4;
+        d.m12 = -(_t2 * _t4);
         d.m13 = 0.0;
-        d.m20 = -(_t3 * _t1);
-        d.m21 = _t7 * _t5 + _t2 * _t0;
-        d.m22 = _t5 * _t0 - _t7 * _t2;
+        d.m20 = -(_t0 * _t4);
+        d.m21 = _t6 * _t5 + _t2 * _t3;
+        d.m22 = _t5 * _t3 - _t6 * _t2;
         d.m23 = 0.0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -23670,23 +23691,23 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateYZX_identity_self(double angleX, double angleY, double angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleX);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.sin(angleZ);
-        double _t5 = Math.cos(angleX);
-        double _t6 = _t4 * _t0;
-        double _t7 = _t3 * _t4;
-        d.m00 = _t0 * _t1;
-        d.m01 = _t2 * _t3 - _t6 * _t5;
-        d.m02 = _t6 * _t2 + _t3 * _t5;
-        d.m10 = _t4;
-        d.m11 = _t5 * _t1;
-        d.m12 = -(_t2 * _t1);
-        d.m20 = -(_t3 * _t1);
-        d.m21 = _t7 * _t5 + _t2 * _t0;
-        d.m22 = _t5 * _t0 - _t7 * _t2;
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t1 * _t3;
+        d.m00 = _t3 * _t4;
+        d.m01 = _t2 * _t0 - _t7 * _t5;
+        d.m02 = _t7 * _t2 + _t0 * _t5;
+        d.m10 = _t1;
+        d.m11 = _t5 * _t4;
+        d.m12 = -(_t2 * _t4);
+        d.m20 = -(_t0 * _t4);
+        d.m21 = _t6 * _t5 + _t2 * _t3;
+        d.m22 = _t5 * _t3 - _t6 * _t2;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -23698,25 +23719,25 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateYZX_translation(double angleX, double angleY, double angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleX);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.sin(angleZ);
-        double _t5 = Math.cos(angleX);
-        double _t6 = _t4 * _t0;
-        double _t7 = _t3 * _t4;
-        d.m00 = _t0 * _t1;
-        d.m01 = _t2 * _t3 - _t6 * _t5;
-        d.m02 = _t6 * _t2 + _t3 * _t5;
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t1 * _t3;
+        d.m00 = _t3 * _t4;
+        d.m01 = _t2 * _t0 - _t7 * _t5;
+        d.m02 = _t7 * _t2 + _t0 * _t5;
         d.m03 = this.m03;
-        d.m10 = _t4;
-        d.m11 = _t5 * _t1;
-        d.m12 = -(_t2 * _t1);
+        d.m10 = _t1;
+        d.m11 = _t5 * _t4;
+        d.m12 = -(_t2 * _t4);
         d.m13 = this.m13;
-        d.m20 = -(_t3 * _t1);
-        d.m21 = _t7 * _t5 + _t2 * _t0;
-        d.m22 = _t5 * _t0 - _t7 * _t2;
+        d.m20 = -(_t0 * _t4);
+        d.m21 = _t6 * _t5 + _t2 * _t3;
+        d.m22 = _t5 * _t3 - _t6 * _t2;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -23865,18 +23886,18 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateZ_orthogonal_general(double angle, @Mutated Double3x4 dest, int _props) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _buf0 = this.m00 * _t0 + this.m01 * _t1;
-        d.m01 = this.m01 * _t0 - this.m00 * _t1;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _buf0 = this.m00 * _t1 + this.m01 * _t0;
+        d.m01 = this.m01 * _t1 - this.m00 * _t0;
         d.m02 = this.m02;
         d.m03 = this.m03;
-        double _buf1 = this.m10 * _t0 + this.m11 * _t1;
-        d.m11 = this.m11 * _t0 - this.m10 * _t1;
+        double _buf1 = this.m10 * _t1 + this.m11 * _t0;
+        d.m11 = this.m11 * _t1 - this.m10 * _t0;
         d.m12 = this.m12;
         d.m13 = this.m13;
-        double _buf2 = this.m20 * _t0 + this.m21 * _t1;
-        d.m21 = this.m21 * _t0 - this.m20 * _t1;
+        double _buf2 = this.m20 * _t1 + this.m21 * _t0;
+        d.m21 = this.m21 * _t1 - this.m20 * _t0;
         d.m22 = this.m22;
         d.m23 = this.m23;
         d.m00 = _buf0;
@@ -23911,14 +23932,14 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateZ_translation(double angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        d.m00 = _t0;
-        d.m01 = -_t1;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m01 = -_t0;
         d.m02 = 0.0;
         d.m03 = this.m03;
-        d.m10 = _t1;
-        d.m11 = _t0;
+        d.m10 = _t0;
+        d.m11 = _t1;
         d.m12 = 0.0;
         d.m13 = this.m13;
         d.m20 = 0.0;
@@ -23936,13 +23957,13 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateZ_translation_self(double angle, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        d.m00 = _t0;
-        d.m01 = -_t1;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        d.m00 = _t1;
+        d.m01 = -_t0;
         d.m03 = this.m03;
-        d.m10 = _t1;
-        d.m11 = _t0;
+        d.m10 = _t0;
+        d.m11 = _t1;
         d.m13 = this.m13;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
@@ -24086,17 +24107,17 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private column 1 of {@code rotateZXY_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateZXY_orthogonal_general_s5d70833_c1(Double3x4Impl _dst, double _r1, double _t11, double _r0, double _t12, double _r2, double _t2, double _r5, double _r4, double _r6, double _r9, double _r8, double _r10) {
-        _dst.m01 = _r1 * _t11 - _r0 * _t12 + _r2 * _t2;
-        _dst.m11 = _r5 * _t11 - _r4 * _t12 + _r6 * _t2;
-        _dst.m21 = _r9 * _t11 - _r8 * _t12 + _r10 * _t2;
+    private void rotateZXY_orthogonal_general_s5d70833_c1(Double3x4Impl _dst, double _r1, double _t15, double _r0, double _t11, double _r2, double _t2, double _r5, double _r4, double _r6, double _r9, double _r8, double _r10) {
+        _dst.m01 = _r1 * _t15 - _r0 * _t11 + _r2 * _t2;
+        _dst.m11 = _r5 * _t15 - _r4 * _t11 + _r6 * _t2;
+        _dst.m21 = _r9 * _t15 - _r8 * _t11 + _r10 * _t2;
     }
 
     /** Private column 2 of {@code rotateZXY_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateZXY_orthogonal_general_s5d70833_c2(Double3x4Impl _dst, double _r0, double _t22, double _r1, double _t23, double _r2, double _t15, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m02 = _r0 * _t22 + _r1 * _t23 + _r2 * _t15;
-        _dst.m12 = _r4 * _t22 + _r5 * _t23 + _r6 * _t15;
-        _dst.m22 = _r8 * _t22 + _r9 * _t23 + _r10 * _t15;
+    private void rotateZXY_orthogonal_general_s5d70833_c2(Double3x4Impl _dst, double _r0, double _t22, double _r1, double _t23, double _r2, double _t16, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m02 = _r0 * _t22 + _r1 * _t23 + _r2 * _t16;
+        _dst.m12 = _r4 * _t22 + _r5 * _t23 + _r6 * _t16;
+        _dst.m22 = _r8 * _t22 + _r9 * _t23 + _r10 * _t16;
     }
 
     /** Private column 3 of {@code rotateZXY_orthogonal_general}: computes and stores it; reached only through it. */
@@ -24107,13 +24128,13 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private tail of {@code rotateZXY_orthogonal_general}; reached only through it. */
-    private void rotateZXY_orthogonal_general_s5d70833_tail(Double3x4Impl _dst, double _t8, double _t4, double _t3, double _t0, double _t7, double _t1, double _r0, double _t20, double _r1, double _r2, double _t10, double _t11, double _t12, double _t2, double _t15, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t21 = _t8 * _t4 + _t3 * _t0;
-        double _t22 = _t7 * _t0 + _t4 * _t1;
-        double _t23 = _t4 * _t3 - _t8 * _t0;
+    private void rotateZXY_orthogonal_general_s5d70833_tail(Double3x4Impl _dst, double _t8, double _t0, double _t1, double _t3, double _t6, double _t4, double _r0, double _t20, double _r1, double _r2, double _t10, double _t15, double _t11, double _t2, double _t16, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t21 = _t8 * _t0 + _t1 * _t3;
+        double _t22 = _t6 * _t3 + _t0 * _t4;
+        double _t23 = _t0 * _t1 - _t8 * _t3;
         rotateZXY_orthogonal_general_s5d70833_c0(_dst, _r0, _t20, _r1, _t21, _r2, _t10, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateZXY_orthogonal_general_s5d70833_c1(_dst, _r1, _t11, _r0, _t12, _r2, _t2, _r5, _r4, _r6, _r9, _r8, _r10);
-        rotateZXY_orthogonal_general_s5d70833_c2(_dst, _r0, _t22, _r1, _t23, _r2, _t15, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateZXY_orthogonal_general_s5d70833_c1(_dst, _r1, _t15, _r0, _t11, _r2, _t2, _r5, _r4, _r6, _r9, _r8, _r10);
+        rotateZXY_orthogonal_general_s5d70833_c2(_dst, _r0, _t22, _r1, _t23, _r2, _t16, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateZXY_orthogonal_general_s5d70833_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -24136,20 +24157,20 @@ public class Double3x4Impl implements Double3x4 {
         double _r9 = this.m21;
         double _r10 = this.m22;
         double _r11 = this.m23;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleX);
-        double _t3 = Math.sin(angleZ);
-        double _t4 = Math.sin(angleY);
-        double _t5 = Math.cos(angleX);
-        double _t7 = _t2 * _t3;
-        double _t8 = _t2 * _t1;
-        double _t10 = _t4 * _t5;
-        double _t11 = _t5 * _t1;
-        double _t12 = _t3 * _t5;
-        double _t15 = _t5 * _t0;
-        double _t20 = _t0 * _t1 - _t7 * _t4;
-        rotateZXY_orthogonal_general_s5d70833_tail(d, _t8, _t4, _t3, _t0, _t7, _t1, _r0, _t20, _r1, _r2, _t10, _t11, _t12, _t2, _t15, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t2 * _t1;
+        double _t8 = _t2 * _t4;
+        double _t10 = _t0 * _t5;
+        double _t11 = _t1 * _t5;
+        double _t15 = _t5 * _t4;
+        double _t16 = _t5 * _t3;
+        double _t20 = _t3 * _t4 - _t6 * _t0;
+        rotateZXY_orthogonal_general_s5d70833_tail(d, _t8, _t0, _t1, _t3, _t6, _t4, _r0, _t20, _r1, _r2, _t10, _t15, _t11, _t2, _t16, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = _props;
         return d;
     }
@@ -24161,25 +24182,25 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateZXY_identity(double angleX, double angleY, double angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleX);
-        double _t3 = Math.sin(angleZ);
-        double _t4 = Math.sin(angleY);
-        double _t5 = Math.cos(angleX);
-        double _t6 = _t2 * _t3;
-        double _t7 = _t2 * _t1;
-        d.m00 = _t0 * _t1 - _t6 * _t4;
-        d.m01 = -(_t3 * _t5);
-        d.m02 = _t6 * _t0 + _t4 * _t1;
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t2 * _t1;
+        double _t7 = _t2 * _t4;
+        d.m00 = _t3 * _t4 - _t6 * _t0;
+        d.m01 = -(_t1 * _t5);
+        d.m02 = _t6 * _t3 + _t0 * _t4;
         d.m03 = 0.0;
-        d.m10 = _t7 * _t4 + _t3 * _t0;
-        d.m11 = _t5 * _t1;
-        d.m12 = _t4 * _t3 - _t7 * _t0;
+        d.m10 = _t7 * _t0 + _t1 * _t3;
+        d.m11 = _t5 * _t4;
+        d.m12 = _t0 * _t1 - _t7 * _t3;
         d.m13 = 0.0;
-        d.m20 = -(_t4 * _t5);
+        d.m20 = -(_t0 * _t5);
         d.m21 = _t2;
-        d.m22 = _t5 * _t0;
+        d.m22 = _t5 * _t3;
         d.m23 = 0.0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -24192,23 +24213,23 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateZXY_identity_self(double angleX, double angleY, double angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleX);
-        double _t3 = Math.sin(angleZ);
-        double _t4 = Math.sin(angleY);
-        double _t5 = Math.cos(angleX);
-        double _t6 = _t2 * _t3;
-        double _t7 = _t2 * _t1;
-        d.m00 = _t0 * _t1 - _t6 * _t4;
-        d.m01 = -(_t3 * _t5);
-        d.m02 = _t6 * _t0 + _t4 * _t1;
-        d.m10 = _t7 * _t4 + _t3 * _t0;
-        d.m11 = _t5 * _t1;
-        d.m12 = _t4 * _t3 - _t7 * _t0;
-        d.m20 = -(_t4 * _t5);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t2 * _t1;
+        double _t7 = _t2 * _t4;
+        d.m00 = _t3 * _t4 - _t6 * _t0;
+        d.m01 = -(_t1 * _t5);
+        d.m02 = _t6 * _t3 + _t0 * _t4;
+        d.m10 = _t7 * _t0 + _t1 * _t3;
+        d.m11 = _t5 * _t4;
+        d.m12 = _t0 * _t1 - _t7 * _t3;
+        d.m20 = -(_t0 * _t5);
         d.m21 = _t2;
-        d.m22 = _t5 * _t0;
+        d.m22 = _t5 * _t3;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -24220,25 +24241,25 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateZXY_translation(double angleX, double angleY, double angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleX);
-        double _t3 = Math.sin(angleZ);
-        double _t4 = Math.sin(angleY);
-        double _t5 = Math.cos(angleX);
-        double _t6 = _t2 * _t3;
-        double _t7 = _t2 * _t1;
-        d.m00 = _t0 * _t1 - _t6 * _t4;
-        d.m01 = -(_t3 * _t5);
-        d.m02 = _t6 * _t0 + _t4 * _t1;
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t2 * _t1;
+        double _t7 = _t2 * _t4;
+        d.m00 = _t3 * _t4 - _t6 * _t0;
+        d.m01 = -(_t1 * _t5);
+        d.m02 = _t6 * _t3 + _t0 * _t4;
         d.m03 = this.m03;
-        d.m10 = _t7 * _t4 + _t3 * _t0;
-        d.m11 = _t5 * _t1;
-        d.m12 = _t4 * _t3 - _t7 * _t0;
+        d.m10 = _t7 * _t0 + _t1 * _t3;
+        d.m11 = _t5 * _t4;
+        d.m12 = _t0 * _t1 - _t7 * _t3;
         d.m13 = this.m13;
-        d.m20 = -(_t4 * _t5);
+        d.m20 = -(_t0 * _t5);
         d.m21 = _t2;
-        d.m22 = _t5 * _t0;
+        d.m22 = _t5 * _t3;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -24291,24 +24312,24 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private column 0 of {@code rotateZYX_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateZYX_orthogonal_general_s5d70833_c0(Double3x4Impl _dst, double _r0, double _t6, double _r1, double _t7, double _r2, double _t3, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m00 = _r0 * _t6 + _r1 * _t7 - _r2 * _t3;
-        _dst.m10 = _r4 * _t6 + _r5 * _t7 - _r6 * _t3;
-        _dst.m20 = _r8 * _t6 + _r9 * _t7 - _r10 * _t3;
+    private void rotateZYX_orthogonal_general_s5d70833_c0(Double3x4Impl _dst, double _r0, double _t14, double _r1, double _t8, double _r2, double _t0, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m00 = _r0 * _t14 + _r1 * _t8 - _r2 * _t0;
+        _dst.m10 = _r4 * _t14 + _r5 * _t8 - _r6 * _t0;
+        _dst.m20 = _r8 * _t14 + _r9 * _t8 - _r10 * _t0;
     }
 
     /** Private column 1 of {@code rotateZYX_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateZYX_orthogonal_general_s5d70833_c1(Double3x4Impl _dst, double _r0, double _t20, double _r1, double _t21, double _r2, double _t12, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m01 = _r0 * _t20 + _r1 * _t21 + _r2 * _t12;
-        _dst.m11 = _r4 * _t20 + _r5 * _t21 + _r6 * _t12;
-        _dst.m21 = _r8 * _t20 + _r9 * _t21 + _r10 * _t12;
+    private void rotateZYX_orthogonal_general_s5d70833_c1(Double3x4Impl _dst, double _r0, double _t20, double _r1, double _t21, double _r2, double _t11, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m01 = _r0 * _t20 + _r1 * _t21 + _r2 * _t11;
+        _dst.m11 = _r4 * _t20 + _r5 * _t21 + _r6 * _t11;
+        _dst.m21 = _r8 * _t20 + _r9 * _t21 + _r10 * _t11;
     }
 
     /** Private column 2 of {@code rotateZYX_orthogonal_general}: computes and stores it; reached only through it. */
-    private void rotateZYX_orthogonal_general_s5d70833_c2(Double3x4Impl _dst, double _r0, double _t22, double _r1, double _t23, double _r2, double _t15, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m02 = _r0 * _t22 + _r1 * _t23 + _r2 * _t15;
-        _dst.m12 = _r4 * _t22 + _r5 * _t23 + _r6 * _t15;
-        _dst.m22 = _r8 * _t22 + _r9 * _t23 + _r10 * _t15;
+    private void rotateZYX_orthogonal_general_s5d70833_c2(Double3x4Impl _dst, double _r0, double _t22, double _r1, double _t23, double _r2, double _t16, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m02 = _r0 * _t22 + _r1 * _t23 + _r2 * _t16;
+        _dst.m12 = _r4 * _t22 + _r5 * _t23 + _r6 * _t16;
+        _dst.m22 = _r8 * _t22 + _r9 * _t23 + _r10 * _t16;
     }
 
     /** Private column 3 of {@code rotateZYX_orthogonal_general}: computes and stores it; reached only through it. */
@@ -24319,13 +24340,13 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private tail of {@code rotateZYX_orthogonal_general}; reached only through it. */
-    private void rotateZYX_orthogonal_general_s5d70833_tail(Double3x4Impl _dst, double _t10, double _t4, double _t5, double _t1, double _t8, double _t2, double _r0, double _t6, double _r1, double _t7, double _r2, double _t3, double _t20, double _t12, double _t15, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t21 = _t10 * _t4 + _t5 * _t1;
-        double _t22 = _t8 * _t5 + _t4 * _t2;
-        double _t23 = _t10 * _t5 - _t4 * _t1;
-        rotateZYX_orthogonal_general_s5d70833_c0(_dst, _r0, _t6, _r1, _t7, _r2, _t3, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateZYX_orthogonal_general_s5d70833_c1(_dst, _r0, _t20, _r1, _t21, _r2, _t12, _r4, _r5, _r6, _r8, _r9, _r10);
-        rotateZYX_orthogonal_general_s5d70833_c2(_dst, _r0, _t22, _r1, _t23, _r2, _t15, _r4, _r5, _r6, _r8, _r9, _r10);
+    private void rotateZYX_orthogonal_general_s5d70833_tail(Double3x4Impl _dst, double _t6, double _t2, double _t5, double _t4, double _t9, double _t1, double _r0, double _t14, double _r1, double _t8, double _r2, double _t0, double _t20, double _t11, double _t16, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t21 = _t6 * _t2 + _t5 * _t4;
+        double _t22 = _t9 * _t5 + _t2 * _t1;
+        double _t23 = _t6 * _t5 - _t2 * _t4;
+        rotateZYX_orthogonal_general_s5d70833_c0(_dst, _r0, _t14, _r1, _t8, _r2, _t0, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateZYX_orthogonal_general_s5d70833_c1(_dst, _r0, _t20, _r1, _t21, _r2, _t11, _r4, _r5, _r6, _r8, _r9, _r10);
+        rotateZYX_orthogonal_general_s5d70833_c2(_dst, _r0, _t22, _r1, _t23, _r2, _t16, _r4, _r5, _r6, _r8, _r9, _r10);
         rotateZYX_orthogonal_general_s5d70833_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -24348,20 +24369,20 @@ public class Double3x4Impl implements Double3x4 {
         double _r9 = this.m21;
         double _r10 = this.m22;
         double _r11 = this.m23;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
-        double _t2 = Math.sin(angleZ);
-        double _t3 = Math.sin(angleY);
-        double _t4 = Math.sin(angleX);
-        double _t5 = Math.cos(angleX);
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
         double _t6 = _t0 * _t1;
-        double _t7 = _t2 * _t0;
-        double _t8 = _t3 * _t1;
-        double _t10 = _t3 * _t2;
-        double _t12 = _t4 * _t0;
-        double _t15 = _t5 * _t0;
-        double _t20 = _t8 * _t4 - _t2 * _t5;
-        rotateZYX_orthogonal_general_s5d70833_tail(d, _t10, _t4, _t5, _t1, _t8, _t2, _r0, _t6, _r1, _t7, _r2, _t3, _t20, _t12, _t15, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        double _t8 = _t1 * _t3;
+        double _t9 = _t0 * _t4;
+        double _t11 = _t2 * _t3;
+        double _t14 = _t3 * _t4;
+        double _t16 = _t5 * _t3;
+        double _t20 = _t9 * _t2 - _t1 * _t5;
+        rotateZYX_orthogonal_general_s5d70833_tail(d, _t6, _t2, _t5, _t4, _t9, _t1, _r0, _t14, _r1, _t8, _r2, _t0, _t20, _t11, _t16, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = _props;
         return d;
     }
@@ -24373,25 +24394,25 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateZYX_identity(double angleX, double angleY, double angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
-        double _t2 = Math.sin(angleY);
-        double _t3 = Math.sin(angleX);
-        double _t4 = Math.sin(angleZ);
-        double _t5 = Math.cos(angleX);
-        double _t6 = _t2 * _t1;
-        double _t7 = _t2 * _t4;
-        d.m00 = _t0 * _t1;
-        d.m01 = _t6 * _t3 - _t4 * _t5;
-        d.m02 = _t6 * _t5 + _t3 * _t4;
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t0 * _t4;
+        d.m00 = _t3 * _t4;
+        d.m01 = _t7 * _t2 - _t1 * _t5;
+        d.m02 = _t7 * _t5 + _t2 * _t1;
         d.m03 = 0.0;
-        d.m10 = _t4 * _t0;
-        d.m11 = _t7 * _t3 + _t5 * _t1;
-        d.m12 = _t7 * _t5 - _t3 * _t1;
+        d.m10 = _t1 * _t3;
+        d.m11 = _t6 * _t2 + _t5 * _t4;
+        d.m12 = _t6 * _t5 - _t2 * _t4;
         d.m13 = 0.0;
-        d.m20 = -_t2;
-        d.m21 = _t3 * _t0;
-        d.m22 = _t5 * _t0;
+        d.m20 = -_t0;
+        d.m21 = _t2 * _t3;
+        d.m22 = _t5 * _t3;
         d.m23 = 0.0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -24404,23 +24425,23 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateZYX_identity_self(double angleX, double angleY, double angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
-        double _t2 = Math.sin(angleY);
-        double _t3 = Math.sin(angleX);
-        double _t4 = Math.sin(angleZ);
-        double _t5 = Math.cos(angleX);
-        double _t6 = _t2 * _t1;
-        double _t7 = _t2 * _t4;
-        d.m00 = _t0 * _t1;
-        d.m01 = _t6 * _t3 - _t4 * _t5;
-        d.m02 = _t6 * _t5 + _t3 * _t4;
-        d.m10 = _t4 * _t0;
-        d.m11 = _t7 * _t3 + _t5 * _t1;
-        d.m12 = _t7 * _t5 - _t3 * _t1;
-        d.m20 = -_t2;
-        d.m21 = _t3 * _t0;
-        d.m22 = _t5 * _t0;
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t0 * _t4;
+        d.m00 = _t3 * _t4;
+        d.m01 = _t7 * _t2 - _t1 * _t5;
+        d.m02 = _t7 * _t5 + _t2 * _t1;
+        d.m10 = _t1 * _t3;
+        d.m11 = _t6 * _t2 + _t5 * _t4;
+        d.m12 = _t6 * _t5 - _t2 * _t4;
+        d.m20 = -_t0;
+        d.m21 = _t2 * _t3;
+        d.m22 = _t5 * _t3;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -24432,25 +24453,25 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateZYX_translation(double angleX, double angleY, double angleZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = Math.cos(angleY);
-        double _t1 = Math.cos(angleZ);
-        double _t2 = Math.sin(angleY);
-        double _t3 = Math.sin(angleX);
-        double _t4 = Math.sin(angleZ);
-        double _t5 = Math.cos(angleX);
-        double _t6 = _t2 * _t1;
-        double _t7 = _t2 * _t4;
-        d.m00 = _t0 * _t1;
-        d.m01 = _t6 * _t3 - _t4 * _t5;
-        d.m02 = _t6 * _t5 + _t3 * _t4;
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cosFromSin(_t0, angleY);
+        double _t4 = Math.cosFromSin(_t1, angleZ);
+        double _t5 = Math.cosFromSin(_t2, angleX);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t0 * _t4;
+        d.m00 = _t3 * _t4;
+        d.m01 = _t7 * _t2 - _t1 * _t5;
+        d.m02 = _t7 * _t5 + _t2 * _t1;
         d.m03 = this.m03;
-        d.m10 = _t4 * _t0;
-        d.m11 = _t7 * _t3 + _t5 * _t1;
-        d.m12 = _t7 * _t5 - _t3 * _t1;
+        d.m10 = _t1 * _t3;
+        d.m11 = _t6 * _t2 + _t5 * _t4;
+        d.m12 = _t6 * _t5 - _t2 * _t4;
         d.m13 = this.m13;
-        d.m20 = -_t2;
-        d.m21 = _t3 * _t0;
-        d.m22 = _t5 * _t0;
+        d.m20 = -_t0;
+        d.m21 = _t2 * _t3;
+        d.m22 = _t5 * _t3;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;

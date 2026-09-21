@@ -1376,10 +1376,10 @@ public final class Float2OpsKernelsAddress {
     public static long rotate_unsafe(long dest, long src, float angle) {
         float _selfx = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _selfy = UnsafeOpsHolder.U.getFloat(src + 4L);
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_selfx, _t0, -(_selfy * _t1)));
-        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_selfx, _t1, _selfy * _t0));
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_selfx, _t1, -(_selfy * _t0)));
+        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_selfx, _t0, _selfy * _t1));
         return dest;
     }
 

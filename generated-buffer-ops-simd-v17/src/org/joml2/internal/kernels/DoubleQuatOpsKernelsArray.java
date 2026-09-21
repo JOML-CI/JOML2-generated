@@ -489,7 +489,8 @@ public final class DoubleQuatOpsKernelsArray {
         double _t0 = Math.exp(_selfw);
         double _t3 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
         double _t4 = Math.sqrt(_t3);
-        double _t8 = Math.sin(_t4) * _t0 * (1.0 / Math.sqrt(_t3));
+        double _t6 = Math.sin(_t4);
+        double _t8 = _t6 * _t0 * (1.0 / Math.sqrt(_t3));
         if (_t3 > 0.0) {
             dest[destOffset + 0] = _selfx * _t8;
             dest[destOffset + 1] = _selfy * _t8;
@@ -499,7 +500,7 @@ public final class DoubleQuatOpsKernelsArray {
             dest[destOffset + 1] = 0.0;
             dest[destOffset + 2] = 0.0;
         }
-        dest[destOffset + 3] = Math.cos(_t4) * _t0;
+        dest[destOffset + 3] = Math.cosFromSin(_t6, _t4) * _t0;
         return dest;
     }
 
@@ -564,7 +565,8 @@ public final class DoubleQuatOpsKernelsArray {
         }
         double _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
         double _t24 = Math.sqrt(_t23);
-        double _t28 = Math.sin(_t24) * _t10 * (1.0 / Math.sqrt(_t23));
+        double _t26 = Math.sin(_t24);
+        double _t28 = _t26 * _t10 * (1.0 / Math.sqrt(_t23));
         if (_t23 > 0.0) {
             dest[destOffset + 0] = _t19 * _t28;
             dest[destOffset + 1] = _t20 * _t28;
@@ -574,7 +576,7 @@ public final class DoubleQuatOpsKernelsArray {
             dest[destOffset + 1] = 0.0;
             dest[destOffset + 2] = 0.0;
         }
-        dest[destOffset + 3] = Math.cos(_t24) * _t10;
+        dest[destOffset + 3] = Math.cosFromSin(_t26, _t24) * _t10;
         return dest;
     }
 
@@ -651,7 +653,7 @@ public final class DoubleQuatOpsKernelsArray {
         dest[destOffset + 0] = axisX * _t1;
         dest[destOffset + 1] = axisY * _t1;
         dest[destOffset + 2] = axisZ * _t1;
-        dest[destOffset + 3] = Math.cos(_t0);
+        dest[destOffset + 3] = Math.cosFromSin(_t1, _t0);
         return dest;
     }
 
@@ -664,7 +666,7 @@ public final class DoubleQuatOpsKernelsArray {
         dest[destOffset + 0] = _axisx * _t1;
         dest[destOffset + 1] = _axisy * _t1;
         dest[destOffset + 2] = _axisz * _t1;
-        dest[destOffset + 3] = Math.cos(_t0);
+        dest[destOffset + 3] = Math.cosFromSin(_t1, _t0);
         return dest;
     }
 
@@ -927,19 +929,19 @@ public final class DoubleQuatOpsKernelsArray {
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
         double _t3 = Math.sin(_t0);
-        double _t4 = Math.cos(_t1);
-        double _t5 = Math.cos(_t2);
-        double _t6 = Math.sin(_t1);
-        double _t7 = Math.cos(_t0);
-        double _t8 = Math.sin(_t2);
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sin(_t2);
+        double _t6 = Math.cosFromSin(_t4, _t1);
+        double _t7 = Math.cosFromSin(_t5, _t2);
+        double _t8 = Math.cosFromSin(_t3, _t0);
         double _t9 = _t3 * _t4;
-        double _t10 = _t6 * _t7;
-        double _t11 = _t7 * _t4;
-        double _t12 = _t3 * _t6;
-        dest[destOffset + 0] = Math.fma(_t9, _t5, _t10 * _t8);
-        dest[destOffset + 1] = Math.fma(_t10, _t5, -(_t9 * _t8));
-        dest[destOffset + 2] = Math.fma(_t11, _t8, -(_t12 * _t5));
-        dest[destOffset + 3] = Math.fma(_t12, _t8, _t11 * _t5);
+        double _t10 = _t3 * _t6;
+        double _t11 = _t4 * _t8;
+        double _t12 = _t8 * _t6;
+        dest[destOffset + 0] = Math.fma(_t10, _t7, _t11 * _t5);
+        dest[destOffset + 1] = Math.fma(_t11, _t7, -(_t10 * _t5));
+        dest[destOffset + 2] = Math.fma(_t12, _t5, -(_t9 * _t7));
+        dest[destOffset + 3] = Math.fma(_t9, _t5, _t12 * _t7);
         return dest;
     }
 

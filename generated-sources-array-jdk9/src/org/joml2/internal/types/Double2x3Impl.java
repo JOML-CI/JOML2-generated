@@ -3262,12 +3262,12 @@ public class Double2x3Impl implements Double2x3 {
      */
     @Mutated public Double2x3 makeRotation(double angle) {
         double[] dd = this.data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        dd[0] = _t0;
-        dd[1] = _t1;
-        dd[2] = -_t1;
-        dd[3] = _t0;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        dd[0] = _t1;
+        dd[1] = _t0;
+        dd[2] = -_t0;
+        dd[3] = _t1;
         dd[4] = 0.0;
         dd[5] = 0.0;
         ((Double2x3Impl) this).properties = Joml.BIT_ORTHOGONAL;
@@ -3390,14 +3390,14 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 preRotate_orthogonal_general(double angle, @Mutated Double2x3 dest, int _props) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _buf0 = Math.fma(sd[0], _t0, -(sd[1] * _t1));
-        dd[1] = Math.fma(sd[0], _t1, sd[1] * _t0);
-        double _buf1 = Math.fma(sd[2], _t0, -(sd[3] * _t1));
-        dd[3] = Math.fma(sd[2], _t1, sd[3] * _t0);
-        double _buf2 = Math.fma(sd[4], _t0, -(sd[5] * _t1));
-        dd[5] = Math.fma(sd[4], _t1, sd[5] * _t0);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _buf0 = Math.fma(sd[0], _t1, -(sd[1] * _t0));
+        dd[1] = Math.fma(sd[0], _t0, sd[1] * _t1);
+        double _buf1 = Math.fma(sd[2], _t1, -(sd[3] * _t0));
+        dd[3] = Math.fma(sd[2], _t0, sd[3] * _t1);
+        double _buf2 = Math.fma(sd[4], _t1, -(sd[5] * _t0));
+        dd[5] = Math.fma(sd[4], _t0, sd[5] * _t1);
         dd[0] = _buf0;
         dd[2] = _buf1;
         dd[4] = _buf2;
@@ -3413,12 +3413,12 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 preRotate_identity(double angle, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        dd[0] = _t0;
-        dd[1] = _t1;
-        dd[2] = -_t1;
-        dd[3] = _t0;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        dd[0] = _t1;
+        dd[1] = _t0;
+        dd[2] = -_t0;
+        dd[3] = _t1;
         dd[4] = 0.0;
         dd[5] = 0.0;
         ((Double2x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
@@ -3433,12 +3433,12 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 preRotate_identity_self(double angle, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        dd[0] = _t0;
-        dd[1] = _t1;
-        dd[2] = -_t1;
-        dd[3] = _t0;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        dd[0] = _t1;
+        dd[1] = _t0;
+        dd[2] = -_t0;
+        dd[3] = _t1;
         ((Double2x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -3451,14 +3451,14 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 preRotate_translation(double angle, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        dd[0] = _t0;
-        dd[1] = _t1;
-        dd[2] = -_t1;
-        dd[3] = _t0;
-        double _buf0 = Math.fma(sd[4], _t0, -(sd[5] * _t1));
-        dd[5] = Math.fma(sd[4], _t1, sd[5] * _t0);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        dd[0] = _t1;
+        dd[1] = _t0;
+        dd[2] = -_t0;
+        dd[3] = _t1;
+        double _buf0 = Math.fma(sd[4], _t1, -(sd[5] * _t0));
+        dd[5] = Math.fma(sd[4], _t0, sd[5] * _t1);
         dd[4] = _buf0;
         ((Double2x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -3553,16 +3553,16 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 preRotateAround_identity(double angle, double pivotX, double pivotY, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t2 = Math.cosFromSin(_t0, angle);
         double _t3 = Math.sin(0.5 * angle);
         double _t5 = (_t3 + _t3) * _t3;
-        dd[0] = _t0;
-        dd[1] = _t1;
-        dd[2] = -_t1;
-        dd[3] = _t0;
-        dd[4] = Math.fma(pivotX, _t5, pivotY * _t1);
-        dd[5] = Math.fma(pivotY, _t5, -(pivotX * _t1));
+        dd[0] = _t2;
+        dd[1] = _t0;
+        dd[2] = -_t0;
+        dd[3] = _t2;
+        dd[4] = Math.fma(pivotX, _t5, pivotY * _t0);
+        dd[5] = Math.fma(pivotY, _t5, -(pivotX * _t0));
         ((Double2x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -3575,16 +3575,16 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 preRotateAround_translation(double angle, double pivotX, double pivotY, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t2 = Math.cosFromSin(_t0, angle);
         double _t3 = Math.sin(0.5 * angle);
         double _t5 = (_t3 + _t3) * _t3;
-        dd[0] = _t0;
-        dd[1] = _t1;
-        dd[2] = -_t1;
-        dd[3] = _t0;
-        double _buf0 = Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(sd[4], _t0, -(sd[5] * _t1));
-        dd[5] = Math.fma(sd[4], _t1, sd[5] * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1));
+        dd[0] = _t2;
+        dd[1] = _t0;
+        dd[2] = -_t0;
+        dd[3] = _t2;
+        double _buf0 = Math.fma(pivotX, _t5, pivotY * _t0) + Math.fma(sd[4], _t2, -(sd[5] * _t0));
+        dd[5] = Math.fma(sd[4], _t0, sd[5] * _t2) + Math.fma(pivotY, _t5, -(pivotX * _t0));
         dd[4] = _buf0;
         ((Double2x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -3598,16 +3598,16 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 preRotateAround_orthogonal(double angle, double pivotX, double pivotY, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t2 = Math.cosFromSin(_t0, angle);
         double _t3 = Math.sin(0.5 * angle);
         double _t5 = (_t3 + _t3) * _t3;
-        double _buf0 = Math.fma(sd[0], _t0, -(sd[1] * _t1));
-        dd[1] = Math.fma(sd[0], _t1, sd[1] * _t0);
-        double _buf1 = Math.fma(sd[2], _t0, -(sd[3] * _t1));
-        dd[3] = Math.fma(sd[2], _t1, sd[3] * _t0);
-        double _buf2 = Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(sd[4], _t0, -(sd[5] * _t1));
-        dd[5] = Math.fma(sd[4], _t1, sd[5] * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1));
+        double _buf0 = Math.fma(sd[0], _t2, -(sd[1] * _t0));
+        dd[1] = Math.fma(sd[0], _t0, sd[1] * _t2);
+        double _buf1 = Math.fma(sd[2], _t2, -(sd[3] * _t0));
+        dd[3] = Math.fma(sd[2], _t0, sd[3] * _t2);
+        double _buf2 = Math.fma(pivotX, _t5, pivotY * _t0) + Math.fma(sd[4], _t2, -(sd[5] * _t0));
+        dd[5] = Math.fma(sd[4], _t0, sd[5] * _t2) + Math.fma(pivotY, _t5, -(pivotX * _t0));
         dd[0] = _buf0;
         dd[2] = _buf1;
         dd[4] = _buf2;
@@ -3623,16 +3623,16 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 preRotateAround_general(double angle, double pivotX, double pivotY, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t2 = Math.cosFromSin(_t0, angle);
         double _t3 = Math.sin(0.5 * angle);
         double _t5 = (_t3 + _t3) * _t3;
-        double _buf0 = Math.fma(sd[0], _t0, -(sd[1] * _t1));
-        dd[1] = Math.fma(sd[0], _t1, sd[1] * _t0);
-        double _buf1 = Math.fma(sd[2], _t0, -(sd[3] * _t1));
-        dd[3] = Math.fma(sd[2], _t1, sd[3] * _t0);
-        double _buf2 = Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(sd[4], _t0, -(sd[5] * _t1));
-        dd[5] = Math.fma(sd[4], _t1, sd[5] * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1));
+        double _buf0 = Math.fma(sd[0], _t2, -(sd[1] * _t0));
+        dd[1] = Math.fma(sd[0], _t0, sd[1] * _t2);
+        double _buf1 = Math.fma(sd[2], _t2, -(sd[3] * _t0));
+        dd[3] = Math.fma(sd[2], _t0, sd[3] * _t2);
+        double _buf2 = Math.fma(pivotX, _t5, pivotY * _t0) + Math.fma(sd[4], _t2, -(sd[5] * _t0));
+        dd[5] = Math.fma(sd[4], _t0, sd[5] * _t2) + Math.fma(pivotY, _t5, -(pivotX * _t0));
         dd[0] = _buf0;
         dd[2] = _buf1;
         dd[4] = _buf2;
@@ -4449,12 +4449,12 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 rotate_orthogonal_general(double angle, @Mutated Double2x3 dest, int _props) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _buf0 = Math.fma(sd[0], _t0, sd[2] * _t1);
-        double _buf1 = Math.fma(sd[1], _t0, sd[3] * _t1);
-        dd[2] = Math.fma(sd[2], _t0, -(sd[0] * _t1));
-        dd[3] = Math.fma(sd[3], _t0, -(sd[1] * _t1));
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _buf0 = Math.fma(sd[0], _t1, sd[2] * _t0);
+        double _buf1 = Math.fma(sd[1], _t1, sd[3] * _t0);
+        dd[2] = Math.fma(sd[2], _t1, -(sd[0] * _t0));
+        dd[3] = Math.fma(sd[3], _t1, -(sd[1] * _t0));
         dd[4] = sd[4];
         dd[5] = sd[5];
         dd[0] = _buf0;
@@ -4489,12 +4489,12 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 rotate_translation(double angle, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        dd[0] = _t0;
-        dd[1] = _t1;
-        dd[2] = -_t1;
-        dd[3] = _t0;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        dd[0] = _t1;
+        dd[1] = _t0;
+        dd[2] = -_t0;
+        dd[3] = _t1;
         dd[4] = sd[4];
         dd[5] = sd[5];
         ((Double2x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
@@ -4598,16 +4598,16 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 rotateAround_translation(double angle, double pivotX, double pivotY, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t2 = Math.cosFromSin(_t0, angle);
         double _t3 = Math.sin(0.5 * angle);
         double _t5 = (_t3 + _t3) * _t3;
-        dd[0] = _t0;
-        dd[1] = _t1;
-        dd[2] = -_t1;
-        dd[3] = _t0;
-        dd[4] = Math.fma(pivotX, _t5, Math.fma(pivotY, _t1, sd[4]));
-        dd[5] = Math.fma(pivotY, _t5, Math.fma(-pivotX, _t1, sd[5]));
+        dd[0] = _t2;
+        dd[1] = _t0;
+        dd[2] = -_t0;
+        dd[3] = _t2;
+        dd[4] = Math.fma(pivotX, _t5, Math.fma(pivotY, _t0, sd[4]));
+        dd[5] = Math.fma(pivotY, _t5, Math.fma(-pivotX, _t0, sd[5]));
         ((Double2x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -4620,16 +4620,16 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 rotateAround_orthogonal(double angle, double pivotX, double pivotY, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t2 = Math.cosFromSin(_t0, angle);
         double _t3 = Math.sin(0.5 * angle);
         double _t8 = (_t3 + _t3) * _t3;
-        double _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
-        double _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
-        double _buf0 = Math.fma(sd[0], _t0, sd[2] * _t1);
-        double _buf1 = Math.fma(sd[1], _t0, sd[3] * _t1);
-        double _buf2 = Math.fma(sd[2], _t0, -(sd[0] * _t1));
-        double _buf3 = Math.fma(sd[3], _t0, -(sd[1] * _t1));
+        double _t9 = Math.fma(pivotX, _t8, pivotY * _t0);
+        double _t10 = Math.fma(pivotY, _t8, -(pivotX * _t0));
+        double _buf0 = Math.fma(sd[0], _t2, sd[2] * _t0);
+        double _buf1 = Math.fma(sd[1], _t2, sd[3] * _t0);
+        double _buf2 = Math.fma(sd[2], _t2, -(sd[0] * _t0));
+        double _buf3 = Math.fma(sd[3], _t2, -(sd[1] * _t0));
         dd[4] = Math.fma(sd[0], _t9, Math.fma(sd[2], _t10, sd[4]));
         dd[5] = Math.fma(sd[1], _t9, Math.fma(sd[3], _t10, sd[5]));
         dd[0] = _buf0;
@@ -4648,16 +4648,16 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 rotateAround_general(double angle, double pivotX, double pivotY, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t2 = Math.cosFromSin(_t0, angle);
         double _t3 = Math.sin(0.5 * angle);
         double _t8 = (_t3 + _t3) * _t3;
-        double _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
-        double _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
-        double _buf0 = Math.fma(sd[0], _t0, sd[2] * _t1);
-        double _buf1 = Math.fma(sd[1], _t0, sd[3] * _t1);
-        double _buf2 = Math.fma(sd[2], _t0, -(sd[0] * _t1));
-        double _buf3 = Math.fma(sd[3], _t0, -(sd[1] * _t1));
+        double _t9 = Math.fma(pivotX, _t8, pivotY * _t0);
+        double _t10 = Math.fma(pivotY, _t8, -(pivotX * _t0));
+        double _buf0 = Math.fma(sd[0], _t2, sd[2] * _t0);
+        double _buf1 = Math.fma(sd[1], _t2, sd[3] * _t0);
+        double _buf2 = Math.fma(sd[2], _t2, -(sd[0] * _t0));
+        double _buf3 = Math.fma(sd[3], _t2, -(sd[1] * _t0));
         dd[4] = Math.fma(sd[0], _t9, Math.fma(sd[2], _t10, sd[4]));
         dd[5] = Math.fma(sd[1], _t9, Math.fma(sd[3], _t10, sd[5]));
         dd[0] = _buf0;

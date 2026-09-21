@@ -2392,10 +2392,10 @@ public final class Float2OpsKernelsTypedBuffer {
     public static java.nio.FloatBuffer rotate_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
         float _selfx = src.get(srcOffset + 0);
         float _selfy = src.get(srcOffset + 1);
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        dest.put(destOffset + 0, Math.fma(_selfx, _t0, -(_selfy * _t1)));
-        dest.put(destOffset + 1, Math.fma(_selfx, _t1, _selfy * _t0));
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        dest.put(destOffset + 0, Math.fma(_selfx, _t1, -(_selfy * _t0)));
+        dest.put(destOffset + 1, Math.fma(_selfx, _t0, _selfy * _t1));
         return dest;
     }
 

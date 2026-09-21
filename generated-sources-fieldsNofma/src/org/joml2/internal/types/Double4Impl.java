@@ -3038,13 +3038,13 @@ public final class Double4Impl implements Double4 {
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         Double4Impl d = (Double4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t5 = 1.0 - _t1;
         double _t7 = axisX * this.x + axisY * this.y + axisZ * this.z;
-        double _buf0 = this.x * _t0 + (axisY * this.z - axisZ * this.y) * _t1 + _t2 * axisX * _t7;
-        double _buf1 = this.y * _t0 + (axisZ * this.x - axisX * this.z) * _t1 + _t2 * axisY * _t7;
-        d.z = this.z * _t0 + (axisX * this.y - axisY * this.x) * _t1 + _t2 * axisZ * _t7;
+        double _buf0 = this.x * _t1 + (axisY * this.z - axisZ * this.y) * _t0 + _t5 * axisX * _t7;
+        double _buf1 = this.y * _t1 + (axisZ * this.x - axisX * this.z) * _t0 + _t5 * axisY * _t7;
+        d.z = this.z * _t1 + (axisX * this.y - axisY * this.x) * _t0 + _t5 * axisZ * _t7;
         d.w = this.w;
         d.x = _buf0;
         d.y = _buf1;
@@ -3103,11 +3103,11 @@ public final class Double4Impl implements Double4 {
      */
     public Double4 rotateX(double angle, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
         d.x = this.x;
-        double _buf0 = this.y * _t0 - this.z * _t1;
-        d.z = this.y * _t1 + this.z * _t0;
+        double _buf0 = this.y * _t1 - this.z * _t0;
+        d.z = this.y * _t0 + this.z * _t1;
         d.w = this.w;
         d.y = _buf0;
         return d;
@@ -3124,11 +3124,11 @@ public final class Double4Impl implements Double4 {
      */
     public Double4 rotateY(double angle, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _buf0 = this.x * _t0 + this.z * _t1;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _buf0 = this.x * _t1 + this.z * _t0;
         d.y = this.y;
-        d.z = this.z * _t0 - this.x * _t1;
+        d.z = this.z * _t1 - this.x * _t0;
         d.w = this.w;
         d.x = _buf0;
         return d;
@@ -3145,10 +3145,10 @@ public final class Double4Impl implements Double4 {
      */
     public Double4 rotateZ(double angle, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _buf0 = this.x * _t0 - this.y * _t1;
-        d.y = this.x * _t1 + this.y * _t0;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _buf0 = this.x * _t1 - this.y * _t0;
+        d.y = this.x * _t0 + this.y * _t1;
         d.z = this.z;
         d.w = this.w;
         d.x = _buf0;

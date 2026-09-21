@@ -7376,13 +7376,13 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
         if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return makeRotationX(axisX * angle);
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return makeRotationY(axisY * angle);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return makeRotationZ(axisZ * angle);
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _t2 = 1.0f - _t0;
-        float _t3 = axisX * axisY;
-        float _t4 = axisX * axisZ;
-        float _t5 = axisY * axisZ;
-        return new Float3x4(Math.fma(_t2, axisX * axisX, _t0), Math.fma(_t2, _t3, -(axisZ * _t1)), Math.fma(axisY, _t1, _t2 * _t4), 0.0f, Math.fma(axisZ, _t1, _t2 * _t3), Math.fma(_t2, axisY * axisY, _t0), Math.fma(_t2, _t5, -(axisX * _t1)), 0.0f, Math.fma(_t2, _t4, -(axisY * _t1)), Math.fma(axisX, _t1, _t2 * _t5), Math.fma(_t2, axisZ * axisZ, _t0), 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = axisX * axisY;
+        float _t3 = axisX * axisZ;
+        float _t4 = axisY * axisZ;
+        float _t5 = 1.0f - _t1;
+        return new Float3x4(Math.fma(_t5, axisX * axisX, _t1), Math.fma(_t5, _t2, -(axisZ * _t0)), Math.fma(axisY, _t0, _t5 * _t3), 0.0f, Math.fma(axisZ, _t0, _t5 * _t2), Math.fma(_t5, axisY * axisY, _t1), Math.fma(_t5, _t4, -(axisX * _t0)), 0.0f, Math.fma(_t5, _t3, -(axisY * _t0)), Math.fma(axisX, _t0, _t5 * _t4), Math.fma(_t5, axisZ * axisZ, _t1), 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -7483,9 +7483,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * @return the resulting matrix
      */
     public static Float3x4 makeRotationX(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, _t0, -_t1, 0.0f, 0.0f, _t1, _t0, 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, _t1, -_t0, 0.0f, 0.0f, _t0, _t1, 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -7500,15 +7500,15 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * @return the resulting matrix
      */
     public static Float3x4 makeRotationXYZ(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.sin(angleX);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t4 * _t3;
-        float _t7 = _t3 * _t5;
-        return new Float3x4(_t0 * _t1, -(_t2 * _t0), _t3, 0.0f, Math.fma(_t6, _t1, _t2 * _t5), Math.fma(_t5, _t1, -(_t6 * _t2)), -(_t4 * _t0), 0.0f, Math.fma(_t4, _t2, -(_t7 * _t1)), Math.fma(_t7, _t2, _t4 * _t1), _t5 * _t0, 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t0;
+        float _t7 = _t0 * _t5;
+        return new Float3x4(_t3 * _t4, -(_t1 * _t3), _t0, 0.0f, Math.fma(_t6, _t4, _t1 * _t5), Math.fma(_t5, _t4, -(_t6 * _t1)), -(_t2 * _t3), 0.0f, Math.fma(_t2, _t1, -(_t7 * _t4)), Math.fma(_t7, _t1, _t2 * _t4), _t5 * _t3, 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -7523,15 +7523,15 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * @return the resulting matrix
      */
     public static Float3x4 makeRotationXZY(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.cos(angleX);
-        float _t5 = (float) Math.sin(angleX);
-        float _t6 = _t2 * _t4;
-        float _t7 = _t5 * _t2;
-        return new Float3x4(_t0 * _t1, -_t2, _t3 * _t1, 0.0f, Math.fma(_t6, _t0, _t5 * _t3), _t4 * _t1, Math.fma(_t6, _t3, -(_t5 * _t0)), 0.0f, Math.fma(_t7, _t0, -(_t3 * _t4)), _t5 * _t1, Math.fma(_t7, _t3, _t4 * _t0), 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t1;
+        float _t7 = _t1 * _t5;
+        return new Float3x4(_t3 * _t4, -_t1, _t0 * _t4, 0.0f, Math.fma(_t7, _t3, _t2 * _t0), _t5 * _t4, Math.fma(_t7, _t0, -(_t2 * _t3)), 0.0f, Math.fma(_t6, _t3, -(_t0 * _t5)), _t2 * _t4, Math.fma(_t6, _t0, _t5 * _t3), 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -7542,9 +7542,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * @return the resulting matrix
      */
     public static Float3x4 makeRotationY(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(_t0, 0.0f, _t1, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, -_t1, 0.0f, _t0, 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(_t1, 0.0f, _t0, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, -_t0, 0.0f, _t1, 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -7562,9 +7562,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleY);
         float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.cos(angleY);
-        float _t4 = (float) Math.cos(angleZ);
-        float _t5 = (float) Math.cos(angleX);
+        float _t3 = (float) Math.cosFromSin(_t1, angleY);
+        float _t4 = (float) Math.cosFromSin(_t2, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t0, angleX);
         float _t6 = _t0 * _t1;
         float _t7 = _t0 * _t3;
         return new Float3x4(Math.fma(_t6, _t2, _t3 * _t4), Math.fma(_t6, _t4, -(_t2 * _t3)), _t1 * _t5, 0.0f, _t2 * _t5, _t5 * _t4, -_t0, 0.0f, Math.fma(_t7, _t2, -(_t1 * _t4)), Math.fma(_t7, _t4, _t1 * _t2), _t5 * _t3, 0.0f, Joml.BIT_ORTHOGONAL);
@@ -7582,15 +7582,15 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * @return the resulting matrix
      */
     public static Float3x4 makeRotationYZX(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.sin(angleZ);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t4 * _t0;
-        float _t7 = _t3 * _t4;
-        return new Float3x4(_t0 * _t1, Math.fma(_t2, _t3, -(_t6 * _t5)), Math.fma(_t6, _t2, _t3 * _t5), 0.0f, _t4, _t5 * _t1, -(_t2 * _t1), 0.0f, -(_t3 * _t1), Math.fma(_t7, _t5, _t2 * _t0), Math.fma(_t5, _t0, -(_t7 * _t2)), 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t0 * _t1;
+        float _t7 = _t1 * _t3;
+        return new Float3x4(_t3 * _t4, Math.fma(_t2, _t0, -(_t7 * _t5)), Math.fma(_t7, _t2, _t0 * _t5), 0.0f, _t1, _t5 * _t4, -(_t2 * _t4), 0.0f, -(_t0 * _t4), Math.fma(_t6, _t5, _t2 * _t3), Math.fma(_t5, _t3, -(_t6 * _t2)), 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -7601,9 +7601,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * @return the resulting matrix
      */
     public static Float3x4 makeRotationZ(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(_t0, -_t1, 0.0f, 0.0f, _t1, _t0, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(_t1, -_t0, 0.0f, 0.0f, _t0, _t1, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -7618,15 +7618,15 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * @return the resulting matrix
      */
     public static Float3x4 makeRotationZXY(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
-        float _t3 = (float) Math.sin(angleZ);
-        float _t4 = (float) Math.sin(angleY);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t2 * _t3;
-        float _t7 = _t2 * _t1;
-        return new Float3x4(Math.fma(_t0, _t1, -(_t6 * _t4)), -(_t3 * _t5), Math.fma(_t6, _t0, _t4 * _t1), 0.0f, Math.fma(_t7, _t4, _t3 * _t0), _t5 * _t1, Math.fma(_t4, _t3, -(_t7 * _t0)), 0.0f, -(_t4 * _t5), _t2, _t5 * _t0, 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t1;
+        float _t7 = _t2 * _t4;
+        return new Float3x4(Math.fma(_t3, _t4, -(_t6 * _t0)), -(_t1 * _t5), Math.fma(_t6, _t3, _t0 * _t4), 0.0f, Math.fma(_t7, _t0, _t1 * _t3), _t5 * _t4, Math.fma(_t0, _t1, -(_t7 * _t3)), 0.0f, -(_t0 * _t5), _t2, _t5 * _t3, 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -7641,15 +7641,15 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * @return the resulting matrix
      */
     public static Float3x4 makeRotationZYX(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleY);
-        float _t3 = (float) Math.sin(angleX);
-        float _t4 = (float) Math.sin(angleZ);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t2 * _t1;
-        float _t7 = _t2 * _t4;
-        return new Float3x4(_t0 * _t1, Math.fma(_t6, _t3, -(_t4 * _t5)), Math.fma(_t6, _t5, _t3 * _t4), 0.0f, _t4 * _t0, Math.fma(_t7, _t3, _t5 * _t1), Math.fma(_t7, _t5, -(_t3 * _t1)), 0.0f, -_t2, _t3 * _t0, _t5 * _t0, 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t0 * _t1;
+        float _t7 = _t0 * _t4;
+        return new Float3x4(_t3 * _t4, Math.fma(_t7, _t2, -(_t1 * _t5)), Math.fma(_t7, _t5, _t2 * _t1), 0.0f, _t1 * _t3, Math.fma(_t6, _t2, _t5 * _t4), Math.fma(_t6, _t5, -(_t2 * _t4)), 0.0f, -_t0, _t2 * _t3, _t5 * _t3, 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -10363,13 +10363,13 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code preRotateAxis} dispatcher.
      */
     private Float3x4 preRotateAxis_identity(float angle, float axisX, float axisY, float axisZ) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _t2 = 1.0f - _t0;
-        float _t3 = axisX * axisY;
-        float _t4 = axisX * axisZ;
-        float _t5 = axisY * axisZ;
-        return new Float3x4(Math.fma(_t2, axisX * axisX, _t0), Math.fma(_t2, _t3, -(axisZ * _t1)), Math.fma(axisY, _t1, _t2 * _t4), 0.0f, Math.fma(axisZ, _t1, _t2 * _t3), Math.fma(_t2, axisY * axisY, _t0), Math.fma(_t2, _t5, -(axisX * _t1)), 0.0f, Math.fma(_t2, _t4, -(axisY * _t1)), Math.fma(axisX, _t1, _t2 * _t5), Math.fma(_t2, axisZ * axisZ, _t0), 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = axisX * axisY;
+        float _t3 = axisX * axisZ;
+        float _t4 = axisY * axisZ;
+        float _t5 = 1.0f - _t1;
+        return new Float3x4(Math.fma(_t5, axisX * axisX, _t1), Math.fma(_t5, _t2, -(axisZ * _t0)), Math.fma(axisY, _t0, _t5 * _t3), 0.0f, Math.fma(axisZ, _t0, _t5 * _t2), Math.fma(_t5, axisY * axisY, _t1), Math.fma(_t5, _t4, -(axisX * _t0)), 0.0f, Math.fma(_t5, _t3, -(axisY * _t0)), Math.fma(axisX, _t0, _t5 * _t4), Math.fma(_t5, axisZ * axisZ, _t1), 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -10378,21 +10378,21 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code preRotateAxis} dispatcher.
      */
     private Float3x4 preRotateAxis_translation(float angle, float axisX, float axisY, float axisZ) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _t2 = 1.0f - _t0;
-        float _t4 = axisX * axisY;
-        float _t6 = axisX * axisZ;
-        float _t8 = axisY * axisZ;
-        float _t18 = Math.fma(_t2, axisX * axisX, _t0);
-        float _t19 = Math.fma(_t2, axisY * axisY, _t0);
-        float _t20 = Math.fma(_t2, axisZ * axisZ, _t0);
-        float _t21 = Math.fma(axisY, _t1, _t2 * _t6);
-        float _t22 = Math.fma(axisZ, _t1, _t2 * _t4);
-        float _t23 = Math.fma(axisX, _t1, _t2 * _t8);
-        float _t24 = Math.fma(_t2, _t4, -(axisZ * _t1));
-        float _t25 = Math.fma(_t2, _t8, -(axisX * _t1));
-        float _t26 = Math.fma(_t2, _t6, -(axisY * _t1));
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t3 = axisX * axisY;
+        float _t5 = axisX * axisZ;
+        float _t7 = axisY * axisZ;
+        float _t11 = 1.0f - _t1;
+        float _t18 = Math.fma(_t11, axisX * axisX, _t1);
+        float _t19 = Math.fma(_t11, axisY * axisY, _t1);
+        float _t20 = Math.fma(_t11, axisZ * axisZ, _t1);
+        float _t21 = Math.fma(axisY, _t0, _t11 * _t5);
+        float _t22 = Math.fma(axisZ, _t0, _t11 * _t3);
+        float _t23 = Math.fma(axisX, _t0, _t11 * _t7);
+        float _t24 = Math.fma(_t11, _t3, -(axisZ * _t0));
+        float _t25 = Math.fma(_t11, _t7, -(axisX * _t0));
+        float _t26 = Math.fma(_t11, _t5, -(axisY * _t0));
         return new Float3x4(_t18, _t24, _t21, Math.fma(this.m23, _t21, Math.fma(this.m03, _t18, this.m13 * _t24)), _t22, _t19, _t25, Math.fma(this.m23, _t25, Math.fma(this.m03, _t22, this.m13 * _t19)), _t26, _t23, _t20, Math.fma(this.m23, _t20, Math.fma(this.m03, _t26, this.m13 * _t23)), Joml.BIT_ORTHOGONAL);
     }
 
@@ -10423,20 +10423,20 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      */
     private Float3x4 preRotateAxis_orthogonal(float angle, float axisX, float axisY, float axisZ) {
         float _t0 = (float) Math.sin(angle);
-        float _t1 = (float) Math.cos(angle);
-        float _t2 = 1.0f - _t1;
-        float _t3 = axisX * axisZ;
-        float _t5 = axisX * axisY;
-        float _t7 = axisY * axisZ;
-        float _t18 = Math.fma(_t2, axisX * axisX, _t1);
-        float _t19 = Math.fma(_t2, axisY * axisY, _t1);
-        float _t20 = Math.fma(_t2, axisZ * axisZ, _t1);
-        float _t21 = Math.fma(axisY, _t0, _t2 * _t3);
-        float _t22 = Math.fma(axisZ, _t0, _t2 * _t5);
-        float _t23 = Math.fma(axisX, _t0, _t2 * _t7);
-        float _t24 = Math.fma(_t2, _t5, -(axisZ * _t0));
-        float _t25 = Math.fma(_t2, _t7, -(axisX * _t0));
-        float _t26 = Math.fma(_t2, _t3, -(axisY * _t0));
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = axisX * axisZ;
+        float _t4 = axisX * axisY;
+        float _t6 = axisY * axisZ;
+        float _t11 = 1.0f - _t1;
+        float _t18 = Math.fma(_t11, axisX * axisX, _t1);
+        float _t19 = Math.fma(_t11, axisY * axisY, _t1);
+        float _t20 = Math.fma(_t11, axisZ * axisZ, _t1);
+        float _t21 = Math.fma(axisY, _t0, _t11 * _t2);
+        float _t22 = Math.fma(axisZ, _t0, _t11 * _t4);
+        float _t23 = Math.fma(axisX, _t0, _t11 * _t6);
+        float _t24 = Math.fma(_t11, _t4, -(axisZ * _t0));
+        float _t25 = Math.fma(_t11, _t6, -(axisX * _t0));
+        float _t26 = Math.fma(_t11, _t2, -(axisY * _t0));
         return new Float3x4(preRotateAxis_orthogonal_s3b957671_c0(_t21, _t18, _t24, _t25, _t22, _t19, _t20, _t26, _t23), preRotateAxis_orthogonal_s3b957671_c1(_t21, _t18, _t24, _t25, _t22, _t19, _t20, _t26, _t23), preRotateAxis_orthogonal_s3b957671_c2(_t21, _t18, _t24, _t25, _t22, _t19, _t20, _t26, _t23), preRotateAxis_orthogonal_s3b957671_c3(_t21, _t18, _t24, _t25, _t22, _t19, _t20, _t26, _t23), Joml.BIT_ORTHOGONAL);
     }
 
@@ -10467,20 +10467,20 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      */
     private Float3x4 preRotateAxis_general(float angle, float axisX, float axisY, float axisZ) {
         float _t0 = (float) Math.sin(angle);
-        float _t1 = (float) Math.cos(angle);
-        float _t2 = 1.0f - _t1;
-        float _t3 = axisX * axisZ;
-        float _t5 = axisX * axisY;
-        float _t7 = axisY * axisZ;
-        float _t18 = Math.fma(_t2, axisX * axisX, _t1);
-        float _t19 = Math.fma(_t2, axisY * axisY, _t1);
-        float _t20 = Math.fma(_t2, axisZ * axisZ, _t1);
-        float _t21 = Math.fma(axisY, _t0, _t2 * _t3);
-        float _t22 = Math.fma(axisZ, _t0, _t2 * _t5);
-        float _t23 = Math.fma(axisX, _t0, _t2 * _t7);
-        float _t24 = Math.fma(_t2, _t5, -(axisZ * _t0));
-        float _t25 = Math.fma(_t2, _t7, -(axisX * _t0));
-        float _t26 = Math.fma(_t2, _t3, -(axisY * _t0));
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = axisX * axisZ;
+        float _t4 = axisX * axisY;
+        float _t6 = axisY * axisZ;
+        float _t11 = 1.0f - _t1;
+        float _t18 = Math.fma(_t11, axisX * axisX, _t1);
+        float _t19 = Math.fma(_t11, axisY * axisY, _t1);
+        float _t20 = Math.fma(_t11, axisZ * axisZ, _t1);
+        float _t21 = Math.fma(axisY, _t0, _t11 * _t2);
+        float _t22 = Math.fma(axisZ, _t0, _t11 * _t4);
+        float _t23 = Math.fma(axisX, _t0, _t11 * _t6);
+        float _t24 = Math.fma(_t11, _t4, -(axisZ * _t0));
+        float _t25 = Math.fma(_t11, _t6, -(axisX * _t0));
+        float _t26 = Math.fma(_t11, _t2, -(axisY * _t0));
         return new Float3x4(preRotateAxis_general_s3b957671_c0(_t21, _t18, _t24, _t25, _t22, _t19, _t20, _t26, _t23), preRotateAxis_general_s3b957671_c1(_t21, _t18, _t24, _t25, _t22, _t19, _t20, _t26, _t23), preRotateAxis_general_s3b957671_c2(_t21, _t18, _t24, _t25, _t22, _t19, _t20, _t26, _t23), preRotateAxis_general_s3b957671_c3(_t21, _t18, _t24, _t25, _t22, _t19, _t20, _t26, _t23), Joml.BIT_AFFINE);
     }
 
@@ -10701,9 +10701,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code preRotateX} dispatcher.
      */
     private Float3x4 preRotateX_identity(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, _t0, -_t1, 0.0f, 0.0f, _t1, _t0, 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, _t1, -_t0, 0.0f, 0.0f, _t0, _t1, 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -10712,9 +10712,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code preRotateX} dispatcher.
      */
     private Float3x4 preRotateX_translation(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(1.0f, 0.0f, 0.0f, this.m03, 0.0f, _t0, -_t1, Math.fma(this.m13, _t0, -(this.m23 * _t1)), 0.0f, _t1, _t0, Math.fma(this.m13, _t1, this.m23 * _t0), Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(1.0f, 0.0f, 0.0f, this.m03, 0.0f, _t1, -_t0, Math.fma(this.m13, _t1, -(this.m23 * _t0)), 0.0f, _t0, _t1, Math.fma(this.m13, _t0, this.m23 * _t1), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -10723,9 +10723,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code preRotateX} dispatcher.
      */
     private Float3x4 preRotateX_orthogonal(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(this.m00, this.m01, this.m02, this.m03, Math.fma(this.m10, _t0, -(this.m20 * _t1)), Math.fma(this.m11, _t0, -(this.m21 * _t1)), Math.fma(this.m12, _t0, -(this.m22 * _t1)), Math.fma(this.m13, _t0, -(this.m23 * _t1)), Math.fma(this.m10, _t1, this.m20 * _t0), Math.fma(this.m11, _t1, this.m21 * _t0), Math.fma(this.m12, _t1, this.m22 * _t0), Math.fma(this.m13, _t1, this.m23 * _t0), Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(this.m00, this.m01, this.m02, this.m03, Math.fma(this.m10, _t1, -(this.m20 * _t0)), Math.fma(this.m11, _t1, -(this.m21 * _t0)), Math.fma(this.m12, _t1, -(this.m22 * _t0)), Math.fma(this.m13, _t1, -(this.m23 * _t0)), Math.fma(this.m10, _t0, this.m20 * _t1), Math.fma(this.m11, _t0, this.m21 * _t1), Math.fma(this.m12, _t0, this.m22 * _t1), Math.fma(this.m13, _t0, this.m23 * _t1), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -10734,9 +10734,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code preRotateX} dispatcher.
      */
     private Float3x4 preRotateX_general(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(this.m00, this.m01, this.m02, this.m03, Math.fma(this.m10, _t0, -(this.m20 * _t1)), Math.fma(this.m11, _t0, -(this.m21 * _t1)), Math.fma(this.m12, _t0, -(this.m22 * _t1)), Math.fma(this.m13, _t0, -(this.m23 * _t1)), Math.fma(this.m10, _t1, this.m20 * _t0), Math.fma(this.m11, _t1, this.m21 * _t0), Math.fma(this.m12, _t1, this.m22 * _t0), Math.fma(this.m13, _t1, this.m23 * _t0), Joml.BIT_AFFINE);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(this.m00, this.m01, this.m02, this.m03, Math.fma(this.m10, _t1, -(this.m20 * _t0)), Math.fma(this.m11, _t1, -(this.m21 * _t0)), Math.fma(this.m12, _t1, -(this.m22 * _t0)), Math.fma(this.m13, _t1, -(this.m23 * _t0)), Math.fma(this.m10, _t0, this.m20 * _t1), Math.fma(this.m11, _t0, this.m21 * _t1), Math.fma(this.m12, _t0, this.m22 * _t1), Math.fma(this.m13, _t0, this.m23 * _t1), Joml.BIT_AFFINE);
     }
 
 
@@ -10765,9 +10765,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code preRotateY} dispatcher.
      */
     private Float3x4 preRotateY_identity(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(_t0, 0.0f, _t1, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, -_t1, 0.0f, _t0, 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(_t1, 0.0f, _t0, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, -_t0, 0.0f, _t1, 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -10776,9 +10776,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code preRotateY} dispatcher.
      */
     private Float3x4 preRotateY_translation(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(_t0, 0.0f, _t1, Math.fma(this.m03, _t0, this.m23 * _t1), 0.0f, 1.0f, 0.0f, this.m13, -_t1, 0.0f, _t0, Math.fma(this.m23, _t0, -(this.m03 * _t1)), Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(_t1, 0.0f, _t0, Math.fma(this.m03, _t1, this.m23 * _t0), 0.0f, 1.0f, 0.0f, this.m13, -_t0, 0.0f, _t1, Math.fma(this.m23, _t1, -(this.m03 * _t0)), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -10787,9 +10787,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code preRotateY} dispatcher.
      */
     private Float3x4 preRotateY_orthogonal(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(Math.fma(this.m00, _t0, this.m20 * _t1), Math.fma(this.m01, _t0, this.m21 * _t1), Math.fma(this.m02, _t0, this.m22 * _t1), Math.fma(this.m03, _t0, this.m23 * _t1), this.m10, this.m11, this.m12, this.m13, Math.fma(this.m20, _t0, -(this.m00 * _t1)), Math.fma(this.m21, _t0, -(this.m01 * _t1)), Math.fma(this.m22, _t0, -(this.m02 * _t1)), Math.fma(this.m23, _t0, -(this.m03 * _t1)), Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(Math.fma(this.m00, _t1, this.m20 * _t0), Math.fma(this.m01, _t1, this.m21 * _t0), Math.fma(this.m02, _t1, this.m22 * _t0), Math.fma(this.m03, _t1, this.m23 * _t0), this.m10, this.m11, this.m12, this.m13, Math.fma(this.m20, _t1, -(this.m00 * _t0)), Math.fma(this.m21, _t1, -(this.m01 * _t0)), Math.fma(this.m22, _t1, -(this.m02 * _t0)), Math.fma(this.m23, _t1, -(this.m03 * _t0)), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -10798,9 +10798,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code preRotateY} dispatcher.
      */
     private Float3x4 preRotateY_general(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(Math.fma(this.m00, _t0, this.m20 * _t1), Math.fma(this.m01, _t0, this.m21 * _t1), Math.fma(this.m02, _t0, this.m22 * _t1), Math.fma(this.m03, _t0, this.m23 * _t1), this.m10, this.m11, this.m12, this.m13, Math.fma(this.m20, _t0, -(this.m00 * _t1)), Math.fma(this.m21, _t0, -(this.m01 * _t1)), Math.fma(this.m22, _t0, -(this.m02 * _t1)), Math.fma(this.m23, _t0, -(this.m03 * _t1)), Joml.BIT_AFFINE);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(Math.fma(this.m00, _t1, this.m20 * _t0), Math.fma(this.m01, _t1, this.m21 * _t0), Math.fma(this.m02, _t1, this.m22 * _t0), Math.fma(this.m03, _t1, this.m23 * _t0), this.m10, this.m11, this.m12, this.m13, Math.fma(this.m20, _t1, -(this.m00 * _t0)), Math.fma(this.m21, _t1, -(this.m01 * _t0)), Math.fma(this.m22, _t1, -(this.m02 * _t0)), Math.fma(this.m23, _t1, -(this.m03 * _t0)), Joml.BIT_AFFINE);
     }
 
 
@@ -10829,9 +10829,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code preRotateZ} dispatcher.
      */
     private Float3x4 preRotateZ_identity(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(_t0, -_t1, 0.0f, 0.0f, _t1, _t0, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(_t1, -_t0, 0.0f, 0.0f, _t0, _t1, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -10840,9 +10840,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code preRotateZ} dispatcher.
      */
     private Float3x4 preRotateZ_translation(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(_t0, -_t1, 0.0f, Math.fma(this.m03, _t0, -(this.m13 * _t1)), _t1, _t0, 0.0f, Math.fma(this.m03, _t1, this.m13 * _t0), 0.0f, 0.0f, 1.0f, this.m23, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(_t1, -_t0, 0.0f, Math.fma(this.m03, _t1, -(this.m13 * _t0)), _t0, _t1, 0.0f, Math.fma(this.m03, _t0, this.m13 * _t1), 0.0f, 0.0f, 1.0f, this.m23, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -10851,9 +10851,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code preRotateZ} dispatcher.
      */
     private Float3x4 preRotateZ_orthogonal(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(Math.fma(this.m00, _t0, -(this.m10 * _t1)), Math.fma(this.m01, _t0, -(this.m11 * _t1)), Math.fma(this.m02, _t0, -(this.m12 * _t1)), Math.fma(this.m03, _t0, -(this.m13 * _t1)), Math.fma(this.m00, _t1, this.m10 * _t0), Math.fma(this.m01, _t1, this.m11 * _t0), Math.fma(this.m02, _t1, this.m12 * _t0), Math.fma(this.m03, _t1, this.m13 * _t0), this.m20, this.m21, this.m22, this.m23, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(Math.fma(this.m00, _t1, -(this.m10 * _t0)), Math.fma(this.m01, _t1, -(this.m11 * _t0)), Math.fma(this.m02, _t1, -(this.m12 * _t0)), Math.fma(this.m03, _t1, -(this.m13 * _t0)), Math.fma(this.m00, _t0, this.m10 * _t1), Math.fma(this.m01, _t0, this.m11 * _t1), Math.fma(this.m02, _t0, this.m12 * _t1), Math.fma(this.m03, _t0, this.m13 * _t1), this.m20, this.m21, this.m22, this.m23, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -10862,9 +10862,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code preRotateZ} dispatcher.
      */
     private Float3x4 preRotateZ_general(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(Math.fma(this.m00, _t0, -(this.m10 * _t1)), Math.fma(this.m01, _t0, -(this.m11 * _t1)), Math.fma(this.m02, _t0, -(this.m12 * _t1)), Math.fma(this.m03, _t0, -(this.m13 * _t1)), Math.fma(this.m00, _t1, this.m10 * _t0), Math.fma(this.m01, _t1, this.m11 * _t0), Math.fma(this.m02, _t1, this.m12 * _t0), Math.fma(this.m03, _t1, this.m13 * _t0), this.m20, this.m21, this.m22, this.m23, Joml.BIT_AFFINE);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(Math.fma(this.m00, _t1, -(this.m10 * _t0)), Math.fma(this.m01, _t1, -(this.m11 * _t0)), Math.fma(this.m02, _t1, -(this.m12 * _t0)), Math.fma(this.m03, _t1, -(this.m13 * _t0)), Math.fma(this.m00, _t0, this.m10 * _t1), Math.fma(this.m01, _t0, this.m11 * _t1), Math.fma(this.m02, _t0, this.m12 * _t1), Math.fma(this.m03, _t0, this.m13 * _t1), this.m20, this.m21, this.m22, this.m23, Joml.BIT_AFFINE);
     }
 
 
@@ -11565,13 +11565,13 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateAxis} dispatcher.
      */
     private Float3x4 rotateAxis_translation(float angle, float axisX, float axisY, float axisZ) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _t2 = 1.0f - _t0;
-        float _t3 = axisX * axisY;
-        float _t4 = axisX * axisZ;
-        float _t5 = axisY * axisZ;
-        return new Float3x4(Math.fma(_t2, axisX * axisX, _t0), Math.fma(_t2, _t3, -(axisZ * _t1)), Math.fma(axisY, _t1, _t2 * _t4), this.m03, Math.fma(axisZ, _t1, _t2 * _t3), Math.fma(_t2, axisY * axisY, _t0), Math.fma(_t2, _t5, -(axisX * _t1)), this.m13, Math.fma(_t2, _t4, -(axisY * _t1)), Math.fma(axisX, _t1, _t2 * _t5), Math.fma(_t2, axisZ * axisZ, _t0), this.m23, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = axisX * axisY;
+        float _t3 = axisX * axisZ;
+        float _t4 = axisY * axisZ;
+        float _t5 = 1.0f - _t1;
+        return new Float3x4(Math.fma(_t5, axisX * axisX, _t1), Math.fma(_t5, _t2, -(axisZ * _t0)), Math.fma(axisY, _t0, _t5 * _t3), this.m03, Math.fma(axisZ, _t0, _t5 * _t2), Math.fma(_t5, axisY * axisY, _t1), Math.fma(_t5, _t4, -(axisX * _t0)), this.m13, Math.fma(_t5, _t3, -(axisY * _t0)), Math.fma(axisX, _t0, _t5 * _t4), Math.fma(_t5, axisZ * axisZ, _t1), this.m23, Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code rotateAxis_orthogonal}; reached only through it. */
@@ -11600,21 +11600,21 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateAxis} dispatcher.
      */
     private Float3x4 rotateAxis_orthogonal(float angle, float axisX, float axisY, float axisZ) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _t2 = 1.0f - _t0;
-        float _t3 = axisX * axisZ;
-        float _t6 = axisX * axisY;
-        float _t7 = axisY * axisZ;
-        float _t18 = Math.fma(_t2, axisX * axisX, _t0);
-        float _t19 = Math.fma(_t2, axisY * axisY, _t0);
-        float _t20 = Math.fma(_t2, axisZ * axisZ, _t0);
-        float _t21 = Math.fma(axisZ, _t1, _t2 * _t6);
-        float _t22 = Math.fma(axisX, _t1, _t2 * _t7);
-        float _t23 = Math.fma(axisY, _t1, _t2 * _t3);
-        float _t24 = Math.fma(_t2, _t3, -(axisY * _t1));
-        float _t25 = Math.fma(_t2, _t6, -(axisZ * _t1));
-        float _t26 = Math.fma(_t2, _t7, -(axisX * _t1));
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = axisX * axisZ;
+        float _t5 = axisX * axisY;
+        float _t6 = axisY * axisZ;
+        float _t11 = 1.0f - _t1;
+        float _t18 = Math.fma(_t11, axisX * axisX, _t1);
+        float _t19 = Math.fma(_t11, axisY * axisY, _t1);
+        float _t20 = Math.fma(_t11, axisZ * axisZ, _t1);
+        float _t21 = Math.fma(axisZ, _t0, _t11 * _t5);
+        float _t22 = Math.fma(axisX, _t0, _t11 * _t6);
+        float _t23 = Math.fma(axisY, _t0, _t11 * _t2);
+        float _t24 = Math.fma(_t11, _t2, -(axisY * _t0));
+        float _t25 = Math.fma(_t11, _t5, -(axisZ * _t0));
+        float _t26 = Math.fma(_t11, _t6, -(axisX * _t0));
         return new Float3x4(rotateAxis_orthogonal_s3b957671_c0(_t24, _t18, _t21), rotateAxis_orthogonal_s3b957671_c1(_t22, _t25, _t19), rotateAxis_orthogonal_s3b957671_c2(_t20, _t23, _t26), rotateAxis_orthogonal_s3b957671_c3(), Joml.BIT_ORTHOGONAL);
     }
 
@@ -11644,21 +11644,21 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateAxis} dispatcher.
      */
     private Float3x4 rotateAxis_general(float angle, float axisX, float axisY, float axisZ) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _t2 = 1.0f - _t0;
-        float _t3 = axisX * axisZ;
-        float _t6 = axisX * axisY;
-        float _t7 = axisY * axisZ;
-        float _t18 = Math.fma(_t2, axisX * axisX, _t0);
-        float _t19 = Math.fma(_t2, axisY * axisY, _t0);
-        float _t20 = Math.fma(_t2, axisZ * axisZ, _t0);
-        float _t21 = Math.fma(axisZ, _t1, _t2 * _t6);
-        float _t22 = Math.fma(axisX, _t1, _t2 * _t7);
-        float _t23 = Math.fma(axisY, _t1, _t2 * _t3);
-        float _t24 = Math.fma(_t2, _t3, -(axisY * _t1));
-        float _t25 = Math.fma(_t2, _t6, -(axisZ * _t1));
-        float _t26 = Math.fma(_t2, _t7, -(axisX * _t1));
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = axisX * axisZ;
+        float _t5 = axisX * axisY;
+        float _t6 = axisY * axisZ;
+        float _t11 = 1.0f - _t1;
+        float _t18 = Math.fma(_t11, axisX * axisX, _t1);
+        float _t19 = Math.fma(_t11, axisY * axisY, _t1);
+        float _t20 = Math.fma(_t11, axisZ * axisZ, _t1);
+        float _t21 = Math.fma(axisZ, _t0, _t11 * _t5);
+        float _t22 = Math.fma(axisX, _t0, _t11 * _t6);
+        float _t23 = Math.fma(axisY, _t0, _t11 * _t2);
+        float _t24 = Math.fma(_t11, _t2, -(axisY * _t0));
+        float _t25 = Math.fma(_t11, _t5, -(axisZ * _t0));
+        float _t26 = Math.fma(_t11, _t6, -(axisX * _t0));
         return new Float3x4(rotateAxis_general_s3b957671_c0(_t24, _t18, _t21), rotateAxis_general_s3b957671_c1(_t22, _t25, _t19), rotateAxis_general_s3b957671_c2(_t20, _t23, _t26), rotateAxis_general_s3b957671_c3(), Joml.BIT_AFFINE);
     }
 
@@ -11870,9 +11870,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateX} dispatcher.
      */
     private Float3x4 rotateX_translation(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(1.0f, 0.0f, 0.0f, this.m03, 0.0f, _t0, -_t1, this.m13, 0.0f, _t1, _t0, this.m23, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(1.0f, 0.0f, 0.0f, this.m03, 0.0f, _t1, -_t0, this.m13, 0.0f, _t0, _t1, this.m23, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -11881,9 +11881,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateX} dispatcher.
      */
     private Float3x4 rotateX_orthogonal(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(this.m00, Math.fma(this.m01, _t0, this.m02 * _t1), Math.fma(this.m02, _t0, -(this.m01 * _t1)), this.m03, this.m10, Math.fma(this.m11, _t0, this.m12 * _t1), Math.fma(this.m12, _t0, -(this.m11 * _t1)), this.m13, this.m20, Math.fma(this.m21, _t0, this.m22 * _t1), Math.fma(this.m22, _t0, -(this.m21 * _t1)), this.m23, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(this.m00, Math.fma(this.m01, _t1, this.m02 * _t0), Math.fma(this.m02, _t1, -(this.m01 * _t0)), this.m03, this.m10, Math.fma(this.m11, _t1, this.m12 * _t0), Math.fma(this.m12, _t1, -(this.m11 * _t0)), this.m13, this.m20, Math.fma(this.m21, _t1, this.m22 * _t0), Math.fma(this.m22, _t1, -(this.m21 * _t0)), this.m23, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -11892,9 +11892,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateX} dispatcher.
      */
     private Float3x4 rotateX_general(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(this.m00, Math.fma(this.m01, _t0, this.m02 * _t1), Math.fma(this.m02, _t0, -(this.m01 * _t1)), this.m03, this.m10, Math.fma(this.m11, _t0, this.m12 * _t1), Math.fma(this.m12, _t0, -(this.m11 * _t1)), this.m13, this.m20, Math.fma(this.m21, _t0, this.m22 * _t1), Math.fma(this.m22, _t0, -(this.m21 * _t1)), this.m23, Joml.BIT_AFFINE);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(this.m00, Math.fma(this.m01, _t1, this.m02 * _t0), Math.fma(this.m02, _t1, -(this.m01 * _t0)), this.m03, this.m10, Math.fma(this.m11, _t1, this.m12 * _t0), Math.fma(this.m12, _t1, -(this.m11 * _t0)), this.m13, this.m20, Math.fma(this.m21, _t1, this.m22 * _t0), Math.fma(this.m22, _t1, -(this.m21 * _t0)), this.m23, Joml.BIT_AFFINE);
     }
 
 
@@ -11968,15 +11968,15 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateXYZ} dispatcher.
      */
     private Float3x4 rotateXYZ_identity(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.sin(angleX);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t4 * _t3;
-        float _t7 = _t3 * _t5;
-        return new Float3x4(_t0 * _t1, -(_t2 * _t0), _t3, 0.0f, Math.fma(_t6, _t1, _t2 * _t5), Math.fma(_t5, _t1, -(_t6 * _t2)), -(_t4 * _t0), 0.0f, Math.fma(_t4, _t2, -(_t7 * _t1)), Math.fma(_t7, _t2, _t4 * _t1), _t5 * _t0, 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t0;
+        float _t7 = _t0 * _t5;
+        return new Float3x4(_t3 * _t4, -(_t1 * _t3), _t0, 0.0f, Math.fma(_t6, _t4, _t1 * _t5), Math.fma(_t5, _t4, -(_t6 * _t1)), -(_t2 * _t3), 0.0f, Math.fma(_t2, _t1, -(_t7 * _t4)), Math.fma(_t7, _t1, _t2 * _t4), _t5 * _t3, 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -11985,30 +11985,30 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateXYZ} dispatcher.
      */
     private Float3x4 rotateXYZ_translation(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.sin(angleX);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t4 * _t3;
-        float _t7 = _t3 * _t5;
-        return new Float3x4(_t0 * _t1, -(_t2 * _t0), _t3, this.m03, Math.fma(_t6, _t1, _t2 * _t5), Math.fma(_t5, _t1, -(_t6 * _t2)), -(_t4 * _t0), this.m13, Math.fma(_t4, _t2, -(_t7 * _t1)), Math.fma(_t7, _t2, _t4 * _t1), _t5 * _t0, this.m23, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t0;
+        float _t7 = _t0 * _t5;
+        return new Float3x4(_t3 * _t4, -(_t1 * _t3), _t0, this.m03, Math.fma(_t6, _t4, _t1 * _t5), Math.fma(_t5, _t4, -(_t6 * _t1)), -(_t2 * _t3), this.m13, Math.fma(_t2, _t1, -(_t7 * _t4)), Math.fma(_t7, _t1, _t2 * _t4), _t5 * _t3, this.m23, Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code rotateXYZ_orthogonal}; reached only through it. */
-    private Float3 rotateXYZ_orthogonal_s6e793366_c0(float _t20, float _t7, float _t18) {
-        return new Float3(Math.fma(this.m02, _t20, Math.fma(this.m00, _t7, this.m01 * _t18)), Math.fma(this.m12, _t20, Math.fma(this.m10, _t7, this.m11 * _t18)), Math.fma(this.m22, _t20, Math.fma(this.m20, _t7, this.m21 * _t18)));
+    private Float3 rotateXYZ_orthogonal_s6e793366_c0(float _t20, float _t13, float _t18) {
+        return new Float3(Math.fma(this.m02, _t20, Math.fma(this.m00, _t13, this.m01 * _t18)), Math.fma(this.m12, _t20, Math.fma(this.m10, _t13, this.m11 * _t18)), Math.fma(this.m22, _t20, Math.fma(this.m20, _t13, this.m21 * _t18)));
     }
 
     /** Private per-column body of {@code rotateXYZ_orthogonal}; reached only through it. */
-    private Float3 rotateXYZ_orthogonal_s6e793366_c1(float _t19, float _t21, float _t11) {
-        return new Float3(Math.fma(this.m02, _t19, Math.fma(this.m01, _t21, -(this.m00 * _t11))), Math.fma(this.m12, _t19, Math.fma(this.m11, _t21, -(this.m10 * _t11))), Math.fma(this.m22, _t19, Math.fma(this.m21, _t21, -(this.m20 * _t11))));
+    private Float3 rotateXYZ_orthogonal_s6e793366_c1(float _t19, float _t21, float _t10) {
+        return new Float3(Math.fma(this.m02, _t19, Math.fma(this.m01, _t21, -(this.m00 * _t10))), Math.fma(this.m12, _t19, Math.fma(this.m11, _t21, -(this.m10 * _t10))), Math.fma(this.m22, _t19, Math.fma(this.m21, _t21, -(this.m20 * _t10))));
     }
 
     /** Private per-column body of {@code rotateXYZ_orthogonal}; reached only through it. */
-    private Float3 rotateXYZ_orthogonal_s6e793366_c2(float _t12, float _t2, float _t13) {
-        return new Float3(Math.fma(this.m02, _t12, Math.fma(this.m00, _t2, -(this.m01 * _t13))), Math.fma(this.m12, _t12, Math.fma(this.m10, _t2, -(this.m11 * _t13))), Math.fma(this.m22, _t12, Math.fma(this.m20, _t2, -(this.m21 * _t13))));
+    private Float3 rotateXYZ_orthogonal_s6e793366_c2(float _t15, float _t2, float _t11) {
+        return new Float3(Math.fma(this.m02, _t15, Math.fma(this.m00, _t2, -(this.m01 * _t11))), Math.fma(this.m12, _t15, Math.fma(this.m10, _t2, -(this.m11 * _t11))), Math.fma(this.m22, _t15, Math.fma(this.m20, _t2, -(this.m21 * _t11))));
     }
 
     /** Private per-column body of {@code rotateXYZ_orthogonal}; reached only through it. */
@@ -12025,35 +12025,35 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleY);
-        float _t3 = (float) Math.cos(angleX);
-        float _t4 = (float) Math.cos(angleZ);
-        float _t5 = (float) Math.cos(angleY);
-        float _t6 = _t2 * _t3;
-        float _t7 = _t5 * _t4;
-        float _t8 = _t0 * _t2;
-        float _t11 = _t1 * _t5;
-        float _t12 = _t3 * _t5;
-        float _t13 = _t0 * _t5;
-        float _t18 = Math.fma(_t8, _t4, _t1 * _t3);
-        float _t19 = Math.fma(_t6, _t1, _t0 * _t4);
-        float _t20 = Math.fma(_t0, _t1, -(_t6 * _t4));
-        float _t21 = Math.fma(_t3, _t4, -(_t8 * _t1));
-        return new Float3x4(rotateXYZ_orthogonal_s6e793366_c0(_t20, _t7, _t18), rotateXYZ_orthogonal_s6e793366_c1(_t19, _t21, _t11), rotateXYZ_orthogonal_s6e793366_c2(_t12, _t2, _t13), rotateXYZ_orthogonal_s6e793366_c3(), Joml.BIT_ORTHOGONAL);
+        float _t3 = (float) Math.cosFromSin(_t0, angleX);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleY);
+        float _t6 = _t0 * _t2;
+        float _t7 = _t2 * _t3;
+        float _t10 = _t1 * _t5;
+        float _t11 = _t0 * _t5;
+        float _t13 = _t5 * _t4;
+        float _t15 = _t3 * _t5;
+        float _t18 = Math.fma(_t6, _t4, _t1 * _t3);
+        float _t19 = Math.fma(_t7, _t1, _t0 * _t4);
+        float _t20 = Math.fma(_t0, _t1, -(_t7 * _t4));
+        float _t21 = Math.fma(_t3, _t4, -(_t6 * _t1));
+        return new Float3x4(rotateXYZ_orthogonal_s6e793366_c0(_t20, _t13, _t18), rotateXYZ_orthogonal_s6e793366_c1(_t19, _t21, _t10), rotateXYZ_orthogonal_s6e793366_c2(_t15, _t2, _t11), rotateXYZ_orthogonal_s6e793366_c3(), Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code rotateXYZ_general}; reached only through it. */
-    private Float3 rotateXYZ_general_s6e793366_c0(float _t20, float _t7, float _t18) {
-        return new Float3(Math.fma(this.m02, _t20, Math.fma(this.m00, _t7, this.m01 * _t18)), Math.fma(this.m12, _t20, Math.fma(this.m10, _t7, this.m11 * _t18)), Math.fma(this.m22, _t20, Math.fma(this.m20, _t7, this.m21 * _t18)));
+    private Float3 rotateXYZ_general_s6e793366_c0(float _t20, float _t13, float _t18) {
+        return new Float3(Math.fma(this.m02, _t20, Math.fma(this.m00, _t13, this.m01 * _t18)), Math.fma(this.m12, _t20, Math.fma(this.m10, _t13, this.m11 * _t18)), Math.fma(this.m22, _t20, Math.fma(this.m20, _t13, this.m21 * _t18)));
     }
 
     /** Private per-column body of {@code rotateXYZ_general}; reached only through it. */
-    private Float3 rotateXYZ_general_s6e793366_c1(float _t19, float _t21, float _t11) {
-        return new Float3(Math.fma(this.m02, _t19, Math.fma(this.m01, _t21, -(this.m00 * _t11))), Math.fma(this.m12, _t19, Math.fma(this.m11, _t21, -(this.m10 * _t11))), Math.fma(this.m22, _t19, Math.fma(this.m21, _t21, -(this.m20 * _t11))));
+    private Float3 rotateXYZ_general_s6e793366_c1(float _t19, float _t21, float _t10) {
+        return new Float3(Math.fma(this.m02, _t19, Math.fma(this.m01, _t21, -(this.m00 * _t10))), Math.fma(this.m12, _t19, Math.fma(this.m11, _t21, -(this.m10 * _t10))), Math.fma(this.m22, _t19, Math.fma(this.m21, _t21, -(this.m20 * _t10))));
     }
 
     /** Private per-column body of {@code rotateXYZ_general}; reached only through it. */
-    private Float3 rotateXYZ_general_s6e793366_c2(float _t12, float _t2, float _t13) {
-        return new Float3(Math.fma(this.m02, _t12, Math.fma(this.m00, _t2, -(this.m01 * _t13))), Math.fma(this.m12, _t12, Math.fma(this.m10, _t2, -(this.m11 * _t13))), Math.fma(this.m22, _t12, Math.fma(this.m20, _t2, -(this.m21 * _t13))));
+    private Float3 rotateXYZ_general_s6e793366_c2(float _t15, float _t2, float _t11) {
+        return new Float3(Math.fma(this.m02, _t15, Math.fma(this.m00, _t2, -(this.m01 * _t11))), Math.fma(this.m12, _t15, Math.fma(this.m10, _t2, -(this.m11 * _t11))), Math.fma(this.m22, _t15, Math.fma(this.m20, _t2, -(this.m21 * _t11))));
     }
 
     /** Private per-column body of {@code rotateXYZ_general}; reached only through it. */
@@ -12070,20 +12070,20 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleY);
-        float _t3 = (float) Math.cos(angleX);
-        float _t4 = (float) Math.cos(angleZ);
-        float _t5 = (float) Math.cos(angleY);
-        float _t6 = _t2 * _t3;
-        float _t7 = _t5 * _t4;
-        float _t8 = _t0 * _t2;
-        float _t11 = _t1 * _t5;
-        float _t12 = _t3 * _t5;
-        float _t13 = _t0 * _t5;
-        float _t18 = Math.fma(_t8, _t4, _t1 * _t3);
-        float _t19 = Math.fma(_t6, _t1, _t0 * _t4);
-        float _t20 = Math.fma(_t0, _t1, -(_t6 * _t4));
-        float _t21 = Math.fma(_t3, _t4, -(_t8 * _t1));
-        return new Float3x4(rotateXYZ_general_s6e793366_c0(_t20, _t7, _t18), rotateXYZ_general_s6e793366_c1(_t19, _t21, _t11), rotateXYZ_general_s6e793366_c2(_t12, _t2, _t13), rotateXYZ_general_s6e793366_c3(), Joml.BIT_AFFINE);
+        float _t3 = (float) Math.cosFromSin(_t0, angleX);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleY);
+        float _t6 = _t0 * _t2;
+        float _t7 = _t2 * _t3;
+        float _t10 = _t1 * _t5;
+        float _t11 = _t0 * _t5;
+        float _t13 = _t5 * _t4;
+        float _t15 = _t3 * _t5;
+        float _t18 = Math.fma(_t6, _t4, _t1 * _t3);
+        float _t19 = Math.fma(_t7, _t1, _t0 * _t4);
+        float _t20 = Math.fma(_t0, _t1, -(_t7 * _t4));
+        float _t21 = Math.fma(_t3, _t4, -(_t6 * _t1));
+        return new Float3x4(rotateXYZ_general_s6e793366_c0(_t20, _t13, _t18), rotateXYZ_general_s6e793366_c1(_t19, _t21, _t10), rotateXYZ_general_s6e793366_c2(_t15, _t2, _t11), rotateXYZ_general_s6e793366_c3(), Joml.BIT_AFFINE);
     }
 
 
@@ -12115,15 +12115,15 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateXZY} dispatcher.
      */
     private Float3x4 rotateXZY_identity(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.cos(angleX);
-        float _t5 = (float) Math.sin(angleX);
-        float _t6 = _t2 * _t4;
-        float _t7 = _t5 * _t2;
-        return new Float3x4(_t0 * _t1, -_t2, _t3 * _t1, 0.0f, Math.fma(_t6, _t0, _t5 * _t3), _t4 * _t1, Math.fma(_t6, _t3, -(_t5 * _t0)), 0.0f, Math.fma(_t7, _t0, -(_t3 * _t4)), _t5 * _t1, Math.fma(_t7, _t3, _t4 * _t0), 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t1;
+        float _t7 = _t1 * _t5;
+        return new Float3x4(_t3 * _t4, -_t1, _t0 * _t4, 0.0f, Math.fma(_t7, _t3, _t2 * _t0), _t5 * _t4, Math.fma(_t7, _t0, -(_t2 * _t3)), 0.0f, Math.fma(_t6, _t3, -(_t0 * _t5)), _t2 * _t4, Math.fma(_t6, _t0, _t5 * _t3), 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -12132,30 +12132,30 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateXZY} dispatcher.
      */
     private Float3x4 rotateXZY_translation(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.cos(angleX);
-        float _t5 = (float) Math.sin(angleX);
-        float _t6 = _t2 * _t4;
-        float _t7 = _t5 * _t2;
-        return new Float3x4(_t0 * _t1, -_t2, _t3 * _t1, this.m03, Math.fma(_t6, _t0, _t5 * _t3), _t4 * _t1, Math.fma(_t6, _t3, -(_t5 * _t0)), this.m13, Math.fma(_t7, _t0, -(_t3 * _t4)), _t5 * _t1, Math.fma(_t7, _t3, _t4 * _t0), this.m23, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t1;
+        float _t7 = _t1 * _t5;
+        return new Float3x4(_t3 * _t4, -_t1, _t0 * _t4, this.m03, Math.fma(_t7, _t3, _t2 * _t0), _t5 * _t4, Math.fma(_t7, _t0, -(_t2 * _t3)), this.m13, Math.fma(_t6, _t3, -(_t0 * _t5)), _t2 * _t4, Math.fma(_t6, _t0, _t5 * _t3), this.m23, Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code rotateXZY_orthogonal}; reached only through it. */
-    private Float3 rotateXZY_orthogonal_s6e793366_c0(float _t20, float _t8, float _t18) {
-        return new Float3(Math.fma(this.m02, _t20, Math.fma(this.m00, _t8, this.m01 * _t18)), Math.fma(this.m12, _t20, Math.fma(this.m10, _t8, this.m11 * _t18)), Math.fma(this.m22, _t20, Math.fma(this.m20, _t8, this.m21 * _t18)));
+    private Float3 rotateXZY_orthogonal_s6e793366_c0(float _t20, float _t15, float _t18) {
+        return new Float3(Math.fma(this.m02, _t20, Math.fma(this.m00, _t15, this.m01 * _t18)), Math.fma(this.m12, _t20, Math.fma(this.m10, _t15, this.m11 * _t18)), Math.fma(this.m22, _t20, Math.fma(this.m20, _t15, this.m21 * _t18)));
     }
 
     /** Private per-column body of {@code rotateXZY_orthogonal}; reached only through it. */
-    private Float3 rotateXZY_orthogonal_s6e793366_c1(float _t11, float _t12, float _t1) {
-        return new Float3(Math.fma(this.m02, _t11, Math.fma(this.m01, _t12, -(this.m00 * _t1))), Math.fma(this.m12, _t11, Math.fma(this.m11, _t12, -(this.m10 * _t1))), Math.fma(this.m22, _t11, Math.fma(this.m21, _t12, -(this.m20 * _t1))));
+    private Float3 rotateXZY_orthogonal_s6e793366_c1(float _t10, float _t16, float _t1) {
+        return new Float3(Math.fma(this.m02, _t10, Math.fma(this.m01, _t16, -(this.m00 * _t1))), Math.fma(this.m12, _t10, Math.fma(this.m11, _t16, -(this.m10 * _t1))), Math.fma(this.m22, _t10, Math.fma(this.m21, _t16, -(this.m20 * _t1))));
     }
 
     /** Private per-column body of {@code rotateXZY_orthogonal}; reached only through it. */
-    private Float3 rotateXZY_orthogonal_s6e793366_c2(float _t19, float _t14, float _t21) {
-        return new Float3(Math.fma(this.m02, _t19, Math.fma(this.m00, _t14, this.m01 * _t21)), Math.fma(this.m12, _t19, Math.fma(this.m10, _t14, this.m11 * _t21)), Math.fma(this.m22, _t19, Math.fma(this.m20, _t14, this.m21 * _t21)));
+    private Float3 rotateXZY_orthogonal_s6e793366_c2(float _t19, float _t11, float _t21) {
+        return new Float3(Math.fma(this.m02, _t19, Math.fma(this.m00, _t11, this.m01 * _t21)), Math.fma(this.m12, _t19, Math.fma(this.m10, _t11, this.m11 * _t21)), Math.fma(this.m22, _t19, Math.fma(this.m20, _t11, this.m21 * _t21)));
     }
 
     /** Private per-column body of {@code rotateXZY_orthogonal}; reached only through it. */
@@ -12171,36 +12171,36 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
     private Float3x4 rotateXZY_orthogonal(float angleX, float angleY, float angleZ) {
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.cos(angleY);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.cos(angleX);
-        float _t5 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleY);
+        float _t3 = (float) Math.cosFromSin(_t2, angleY);
+        float _t4 = (float) Math.cosFromSin(_t0, angleX);
+        float _t5 = (float) Math.cosFromSin(_t1, angleZ);
         float _t6 = _t0 * _t1;
-        float _t8 = _t2 * _t5;
         float _t9 = _t1 * _t4;
-        float _t11 = _t0 * _t5;
-        float _t12 = _t4 * _t5;
-        float _t14 = _t3 * _t5;
-        float _t18 = Math.fma(_t9, _t2, _t0 * _t3);
-        float _t19 = Math.fma(_t6, _t3, _t4 * _t2);
-        float _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
-        float _t21 = Math.fma(_t9, _t3, -(_t0 * _t2));
-        return new Float3x4(rotateXZY_orthogonal_s6e793366_c0(_t20, _t8, _t18), rotateXZY_orthogonal_s6e793366_c1(_t11, _t12, _t1), rotateXZY_orthogonal_s6e793366_c2(_t19, _t14, _t21), rotateXZY_orthogonal_s6e793366_c3(), Joml.BIT_ORTHOGONAL);
+        float _t10 = _t0 * _t5;
+        float _t11 = _t2 * _t5;
+        float _t15 = _t3 * _t5;
+        float _t16 = _t4 * _t5;
+        float _t18 = Math.fma(_t9, _t3, _t0 * _t2);
+        float _t19 = Math.fma(_t6, _t2, _t4 * _t3);
+        float _t20 = Math.fma(_t6, _t3, -(_t2 * _t4));
+        float _t21 = Math.fma(_t9, _t2, -(_t0 * _t3));
+        return new Float3x4(rotateXZY_orthogonal_s6e793366_c0(_t20, _t15, _t18), rotateXZY_orthogonal_s6e793366_c1(_t10, _t16, _t1), rotateXZY_orthogonal_s6e793366_c2(_t19, _t11, _t21), rotateXZY_orthogonal_s6e793366_c3(), Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code rotateXZY_general}; reached only through it. */
-    private Float3 rotateXZY_general_s6e793366_c0(float _t20, float _t8, float _t18) {
-        return new Float3(Math.fma(this.m02, _t20, Math.fma(this.m00, _t8, this.m01 * _t18)), Math.fma(this.m12, _t20, Math.fma(this.m10, _t8, this.m11 * _t18)), Math.fma(this.m22, _t20, Math.fma(this.m20, _t8, this.m21 * _t18)));
+    private Float3 rotateXZY_general_s6e793366_c0(float _t20, float _t15, float _t18) {
+        return new Float3(Math.fma(this.m02, _t20, Math.fma(this.m00, _t15, this.m01 * _t18)), Math.fma(this.m12, _t20, Math.fma(this.m10, _t15, this.m11 * _t18)), Math.fma(this.m22, _t20, Math.fma(this.m20, _t15, this.m21 * _t18)));
     }
 
     /** Private per-column body of {@code rotateXZY_general}; reached only through it. */
-    private Float3 rotateXZY_general_s6e793366_c1(float _t11, float _t12, float _t1) {
-        return new Float3(Math.fma(this.m02, _t11, Math.fma(this.m01, _t12, -(this.m00 * _t1))), Math.fma(this.m12, _t11, Math.fma(this.m11, _t12, -(this.m10 * _t1))), Math.fma(this.m22, _t11, Math.fma(this.m21, _t12, -(this.m20 * _t1))));
+    private Float3 rotateXZY_general_s6e793366_c1(float _t10, float _t16, float _t1) {
+        return new Float3(Math.fma(this.m02, _t10, Math.fma(this.m01, _t16, -(this.m00 * _t1))), Math.fma(this.m12, _t10, Math.fma(this.m11, _t16, -(this.m10 * _t1))), Math.fma(this.m22, _t10, Math.fma(this.m21, _t16, -(this.m20 * _t1))));
     }
 
     /** Private per-column body of {@code rotateXZY_general}; reached only through it. */
-    private Float3 rotateXZY_general_s6e793366_c2(float _t19, float _t14, float _t21) {
-        return new Float3(Math.fma(this.m02, _t19, Math.fma(this.m00, _t14, this.m01 * _t21)), Math.fma(this.m12, _t19, Math.fma(this.m10, _t14, this.m11 * _t21)), Math.fma(this.m22, _t19, Math.fma(this.m20, _t14, this.m21 * _t21)));
+    private Float3 rotateXZY_general_s6e793366_c2(float _t19, float _t11, float _t21) {
+        return new Float3(Math.fma(this.m02, _t19, Math.fma(this.m00, _t11, this.m01 * _t21)), Math.fma(this.m12, _t19, Math.fma(this.m10, _t11, this.m11 * _t21)), Math.fma(this.m22, _t19, Math.fma(this.m20, _t11, this.m21 * _t21)));
     }
 
     /** Private per-column body of {@code rotateXZY_general}; reached only through it. */
@@ -12216,21 +12216,21 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
     private Float3x4 rotateXZY_general(float angleX, float angleY, float angleZ) {
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.cos(angleY);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.cos(angleX);
-        float _t5 = (float) Math.cos(angleZ);
+        float _t2 = (float) Math.sin(angleY);
+        float _t3 = (float) Math.cosFromSin(_t2, angleY);
+        float _t4 = (float) Math.cosFromSin(_t0, angleX);
+        float _t5 = (float) Math.cosFromSin(_t1, angleZ);
         float _t6 = _t0 * _t1;
-        float _t8 = _t2 * _t5;
         float _t9 = _t1 * _t4;
-        float _t11 = _t0 * _t5;
-        float _t12 = _t4 * _t5;
-        float _t14 = _t3 * _t5;
-        float _t18 = Math.fma(_t9, _t2, _t0 * _t3);
-        float _t19 = Math.fma(_t6, _t3, _t4 * _t2);
-        float _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
-        float _t21 = Math.fma(_t9, _t3, -(_t0 * _t2));
-        return new Float3x4(rotateXZY_general_s6e793366_c0(_t20, _t8, _t18), rotateXZY_general_s6e793366_c1(_t11, _t12, _t1), rotateXZY_general_s6e793366_c2(_t19, _t14, _t21), rotateXZY_general_s6e793366_c3(), Joml.BIT_AFFINE);
+        float _t10 = _t0 * _t5;
+        float _t11 = _t2 * _t5;
+        float _t15 = _t3 * _t5;
+        float _t16 = _t4 * _t5;
+        float _t18 = Math.fma(_t9, _t3, _t0 * _t2);
+        float _t19 = Math.fma(_t6, _t2, _t4 * _t3);
+        float _t20 = Math.fma(_t6, _t3, -(_t2 * _t4));
+        float _t21 = Math.fma(_t9, _t2, -(_t0 * _t3));
+        return new Float3x4(rotateXZY_general_s6e793366_c0(_t20, _t15, _t18), rotateXZY_general_s6e793366_c1(_t10, _t16, _t1), rotateXZY_general_s6e793366_c2(_t19, _t11, _t21), rotateXZY_general_s6e793366_c3(), Joml.BIT_AFFINE);
     }
 
 
@@ -12316,9 +12316,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateY} dispatcher.
      */
     private Float3x4 rotateY_translation(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(_t0, 0.0f, _t1, this.m03, 0.0f, 1.0f, 0.0f, this.m13, -_t1, 0.0f, _t0, this.m23, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(_t1, 0.0f, _t0, this.m03, 0.0f, 1.0f, 0.0f, this.m13, -_t0, 0.0f, _t1, this.m23, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -12327,9 +12327,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateY} dispatcher.
      */
     private Float3x4 rotateY_orthogonal(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(Math.fma(this.m00, _t0, -(this.m02 * _t1)), this.m01, Math.fma(this.m00, _t1, this.m02 * _t0), this.m03, Math.fma(this.m10, _t0, -(this.m12 * _t1)), this.m11, Math.fma(this.m10, _t1, this.m12 * _t0), this.m13, Math.fma(this.m20, _t0, -(this.m22 * _t1)), this.m21, Math.fma(this.m20, _t1, this.m22 * _t0), this.m23, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(Math.fma(this.m00, _t1, -(this.m02 * _t0)), this.m01, Math.fma(this.m00, _t0, this.m02 * _t1), this.m03, Math.fma(this.m10, _t1, -(this.m12 * _t0)), this.m11, Math.fma(this.m10, _t0, this.m12 * _t1), this.m13, Math.fma(this.m20, _t1, -(this.m22 * _t0)), this.m21, Math.fma(this.m20, _t0, this.m22 * _t1), this.m23, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -12338,9 +12338,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateY} dispatcher.
      */
     private Float3x4 rotateY_general(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(Math.fma(this.m00, _t0, -(this.m02 * _t1)), this.m01, Math.fma(this.m00, _t1, this.m02 * _t0), this.m03, Math.fma(this.m10, _t0, -(this.m12 * _t1)), this.m11, Math.fma(this.m10, _t1, this.m12 * _t0), this.m13, Math.fma(this.m20, _t0, -(this.m22 * _t1)), this.m21, Math.fma(this.m20, _t1, this.m22 * _t0), this.m23, Joml.BIT_AFFINE);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(Math.fma(this.m00, _t1, -(this.m02 * _t0)), this.m01, Math.fma(this.m00, _t0, this.m02 * _t1), this.m03, Math.fma(this.m10, _t1, -(this.m12 * _t0)), this.m11, Math.fma(this.m10, _t0, this.m12 * _t1), this.m13, Math.fma(this.m20, _t1, -(this.m22 * _t0)), this.m21, Math.fma(this.m20, _t0, this.m22 * _t1), this.m23, Joml.BIT_AFFINE);
     }
 
 
@@ -12417,9 +12417,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleY);
         float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.cos(angleY);
-        float _t4 = (float) Math.cos(angleZ);
-        float _t5 = (float) Math.cos(angleX);
+        float _t3 = (float) Math.cosFromSin(_t1, angleY);
+        float _t4 = (float) Math.cosFromSin(_t2, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t0, angleX);
         float _t6 = _t0 * _t1;
         float _t7 = _t0 * _t3;
         return new Float3x4(Math.fma(_t6, _t2, _t3 * _t4), Math.fma(_t6, _t4, -(_t2 * _t3)), _t1 * _t5, 0.0f, _t2 * _t5, _t5 * _t4, -_t0, 0.0f, Math.fma(_t7, _t2, -(_t1 * _t4)), Math.fma(_t7, _t4, _t1 * _t2), _t5 * _t3, 0.0f, Joml.BIT_ORTHOGONAL);
@@ -12434,9 +12434,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleY);
         float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.cos(angleY);
-        float _t4 = (float) Math.cos(angleZ);
-        float _t5 = (float) Math.cos(angleX);
+        float _t3 = (float) Math.cosFromSin(_t1, angleY);
+        float _t4 = (float) Math.cosFromSin(_t2, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t0, angleX);
         float _t6 = _t0 * _t1;
         float _t7 = _t0 * _t3;
         return new Float3x4(Math.fma(_t6, _t2, _t3 * _t4), Math.fma(_t6, _t4, -(_t2 * _t3)), _t1 * _t5, this.m03, _t2 * _t5, _t5 * _t4, -_t0, this.m13, Math.fma(_t7, _t2, -(_t1 * _t4)), Math.fma(_t7, _t4, _t1 * _t2), _t5 * _t3, this.m23, Joml.BIT_ORTHOGONAL);
@@ -12448,13 +12448,13 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
     }
 
     /** Private per-column body of {@code rotateYXZ_orthogonal}; reached only through it. */
-    private Float3 rotateYXZ_orthogonal_s6e793366_c1(float _t19, float _t21, float _t13) {
-        return new Float3(Math.fma(this.m02, _t19, Math.fma(this.m00, _t21, this.m01 * _t13)), Math.fma(this.m12, _t19, Math.fma(this.m10, _t21, this.m11 * _t13)), Math.fma(this.m22, _t19, Math.fma(this.m20, _t21, this.m21 * _t13)));
+    private Float3 rotateYXZ_orthogonal_s6e793366_c1(float _t19, float _t21, float _t16) {
+        return new Float3(Math.fma(this.m02, _t19, Math.fma(this.m00, _t21, this.m01 * _t16)), Math.fma(this.m12, _t19, Math.fma(this.m10, _t21, this.m11 * _t16)), Math.fma(this.m22, _t19, Math.fma(this.m20, _t21, this.m21 * _t16)));
     }
 
     /** Private per-column body of {@code rotateYXZ_orthogonal}; reached only through it. */
-    private Float3 rotateYXZ_orthogonal_s6e793366_c2(float _t14, float _t15, float _t0) {
-        return new Float3(Math.fma(this.m02, _t14, Math.fma(this.m00, _t15, -(this.m01 * _t0))), Math.fma(this.m12, _t14, Math.fma(this.m10, _t15, -(this.m11 * _t0))), Math.fma(this.m22, _t14, Math.fma(this.m20, _t15, -(this.m21 * _t0))));
+    private Float3 rotateYXZ_orthogonal_s6e793366_c2(float _t17, float _t12, float _t0) {
+        return new Float3(Math.fma(this.m02, _t17, Math.fma(this.m00, _t12, -(this.m01 * _t0))), Math.fma(this.m12, _t17, Math.fma(this.m10, _t12, -(this.m11 * _t0))), Math.fma(this.m22, _t17, Math.fma(this.m20, _t12, -(this.m21 * _t0))));
     }
 
     /** Private per-column body of {@code rotateYXZ_orthogonal}; reached only through it. */
@@ -12469,22 +12469,22 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      */
     private Float3x4 rotateYXZ_orthogonal(float angleX, float angleY, float angleZ) {
         float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.sin(angleY);
         float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.cos(angleZ);
-        float _t5 = (float) Math.cos(angleX);
+        float _t3 = (float) Math.cosFromSin(_t1, angleY);
+        float _t4 = (float) Math.cosFromSin(_t2, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t0, angleX);
         float _t6 = _t0 * _t1;
         float _t8 = _t0 * _t3;
         float _t10 = _t2 * _t5;
-        float _t13 = _t5 * _t4;
-        float _t14 = _t5 * _t1;
-        float _t15 = _t3 * _t5;
-        float _t18 = Math.fma(_t8, _t2, _t1 * _t4);
-        float _t19 = Math.fma(_t6, _t4, _t3 * _t2);
-        float _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
-        float _t21 = Math.fma(_t8, _t4, -(_t2 * _t1));
-        return new Float3x4(rotateYXZ_orthogonal_s6e793366_c0(_t20, _t18, _t10), rotateYXZ_orthogonal_s6e793366_c1(_t19, _t21, _t13), rotateYXZ_orthogonal_s6e793366_c2(_t14, _t15, _t0), rotateYXZ_orthogonal_s6e793366_c3(), Joml.BIT_ORTHOGONAL);
+        float _t12 = _t1 * _t5;
+        float _t16 = _t5 * _t4;
+        float _t17 = _t5 * _t3;
+        float _t18 = Math.fma(_t6, _t2, _t3 * _t4);
+        float _t19 = Math.fma(_t8, _t4, _t1 * _t2);
+        float _t20 = Math.fma(_t8, _t2, -(_t1 * _t4));
+        float _t21 = Math.fma(_t6, _t4, -(_t2 * _t3));
+        return new Float3x4(rotateYXZ_orthogonal_s6e793366_c0(_t20, _t18, _t10), rotateYXZ_orthogonal_s6e793366_c1(_t19, _t21, _t16), rotateYXZ_orthogonal_s6e793366_c2(_t17, _t12, _t0), rotateYXZ_orthogonal_s6e793366_c3(), Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code rotateYXZ_general}; reached only through it. */
@@ -12493,13 +12493,13 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
     }
 
     /** Private per-column body of {@code rotateYXZ_general}; reached only through it. */
-    private Float3 rotateYXZ_general_s6e793366_c1(float _t19, float _t21, float _t13) {
-        return new Float3(Math.fma(this.m02, _t19, Math.fma(this.m00, _t21, this.m01 * _t13)), Math.fma(this.m12, _t19, Math.fma(this.m10, _t21, this.m11 * _t13)), Math.fma(this.m22, _t19, Math.fma(this.m20, _t21, this.m21 * _t13)));
+    private Float3 rotateYXZ_general_s6e793366_c1(float _t19, float _t21, float _t16) {
+        return new Float3(Math.fma(this.m02, _t19, Math.fma(this.m00, _t21, this.m01 * _t16)), Math.fma(this.m12, _t19, Math.fma(this.m10, _t21, this.m11 * _t16)), Math.fma(this.m22, _t19, Math.fma(this.m20, _t21, this.m21 * _t16)));
     }
 
     /** Private per-column body of {@code rotateYXZ_general}; reached only through it. */
-    private Float3 rotateYXZ_general_s6e793366_c2(float _t14, float _t15, float _t0) {
-        return new Float3(Math.fma(this.m02, _t14, Math.fma(this.m00, _t15, -(this.m01 * _t0))), Math.fma(this.m12, _t14, Math.fma(this.m10, _t15, -(this.m11 * _t0))), Math.fma(this.m22, _t14, Math.fma(this.m20, _t15, -(this.m21 * _t0))));
+    private Float3 rotateYXZ_general_s6e793366_c2(float _t17, float _t12, float _t0) {
+        return new Float3(Math.fma(this.m02, _t17, Math.fma(this.m00, _t12, -(this.m01 * _t0))), Math.fma(this.m12, _t17, Math.fma(this.m10, _t12, -(this.m11 * _t0))), Math.fma(this.m22, _t17, Math.fma(this.m20, _t12, -(this.m21 * _t0))));
     }
 
     /** Private per-column body of {@code rotateYXZ_general}; reached only through it. */
@@ -12514,22 +12514,22 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      */
     private Float3x4 rotateYXZ_general(float angleX, float angleY, float angleZ) {
         float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.cos(angleY);
+        float _t1 = (float) Math.sin(angleY);
         float _t2 = (float) Math.sin(angleZ);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.cos(angleZ);
-        float _t5 = (float) Math.cos(angleX);
+        float _t3 = (float) Math.cosFromSin(_t1, angleY);
+        float _t4 = (float) Math.cosFromSin(_t2, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t0, angleX);
         float _t6 = _t0 * _t1;
         float _t8 = _t0 * _t3;
         float _t10 = _t2 * _t5;
-        float _t13 = _t5 * _t4;
-        float _t14 = _t5 * _t1;
-        float _t15 = _t3 * _t5;
-        float _t18 = Math.fma(_t8, _t2, _t1 * _t4);
-        float _t19 = Math.fma(_t6, _t4, _t3 * _t2);
-        float _t20 = Math.fma(_t6, _t2, -(_t3 * _t4));
-        float _t21 = Math.fma(_t8, _t4, -(_t2 * _t1));
-        return new Float3x4(rotateYXZ_general_s6e793366_c0(_t20, _t18, _t10), rotateYXZ_general_s6e793366_c1(_t19, _t21, _t13), rotateYXZ_general_s6e793366_c2(_t14, _t15, _t0), rotateYXZ_general_s6e793366_c3(), Joml.BIT_AFFINE);
+        float _t12 = _t1 * _t5;
+        float _t16 = _t5 * _t4;
+        float _t17 = _t5 * _t3;
+        float _t18 = Math.fma(_t6, _t2, _t3 * _t4);
+        float _t19 = Math.fma(_t8, _t4, _t1 * _t2);
+        float _t20 = Math.fma(_t8, _t2, -(_t1 * _t4));
+        float _t21 = Math.fma(_t6, _t4, -(_t2 * _t3));
+        return new Float3x4(rotateYXZ_general_s6e793366_c0(_t20, _t18, _t10), rotateYXZ_general_s6e793366_c1(_t19, _t21, _t16), rotateYXZ_general_s6e793366_c2(_t17, _t12, _t0), rotateYXZ_general_s6e793366_c3(), Joml.BIT_AFFINE);
     }
 
 
@@ -12561,15 +12561,15 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateYZX} dispatcher.
      */
     private Float3x4 rotateYZX_identity(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.sin(angleZ);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t4 * _t0;
-        float _t7 = _t3 * _t4;
-        return new Float3x4(_t0 * _t1, Math.fma(_t2, _t3, -(_t6 * _t5)), Math.fma(_t6, _t2, _t3 * _t5), 0.0f, _t4, _t5 * _t1, -(_t2 * _t1), 0.0f, -(_t3 * _t1), Math.fma(_t7, _t5, _t2 * _t0), Math.fma(_t5, _t0, -(_t7 * _t2)), 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t0 * _t1;
+        float _t7 = _t1 * _t3;
+        return new Float3x4(_t3 * _t4, Math.fma(_t2, _t0, -(_t7 * _t5)), Math.fma(_t7, _t2, _t0 * _t5), 0.0f, _t1, _t5 * _t4, -(_t2 * _t4), 0.0f, -(_t0 * _t4), Math.fma(_t6, _t5, _t2 * _t3), Math.fma(_t5, _t3, -(_t6 * _t2)), 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -12578,30 +12578,30 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateYZX} dispatcher.
      */
     private Float3x4 rotateYZX_translation(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
-        float _t3 = (float) Math.sin(angleY);
-        float _t4 = (float) Math.sin(angleZ);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t4 * _t0;
-        float _t7 = _t3 * _t4;
-        return new Float3x4(_t0 * _t1, Math.fma(_t2, _t3, -(_t6 * _t5)), Math.fma(_t6, _t2, _t3 * _t5), this.m03, _t4, _t5 * _t1, -(_t2 * _t1), this.m13, -(_t3 * _t1), Math.fma(_t7, _t5, _t2 * _t0), Math.fma(_t5, _t0, -(_t7 * _t2)), this.m23, Joml.BIT_ORTHOGONAL);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t0 * _t1;
+        float _t7 = _t1 * _t3;
+        return new Float3x4(_t3 * _t4, Math.fma(_t2, _t0, -(_t7 * _t5)), Math.fma(_t7, _t2, _t0 * _t5), this.m03, _t1, _t5 * _t4, -(_t2 * _t4), this.m13, -(_t0 * _t4), Math.fma(_t6, _t5, _t2 * _t3), Math.fma(_t5, _t3, -(_t6 * _t2)), this.m23, Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code rotateYZX_orthogonal}; reached only through it. */
-    private Float3 rotateYZX_orthogonal_s6e793366_c0(float _t6, float _t7, float _t3) {
-        return new Float3(Math.fma(-this.m02, _t6, Math.fma(this.m00, _t7, this.m01 * _t3)), Math.fma(-this.m12, _t6, Math.fma(this.m10, _t7, this.m11 * _t3)), Math.fma(-this.m22, _t6, Math.fma(this.m20, _t7, this.m21 * _t3)));
+    private Float3 rotateYZX_orthogonal_s6e793366_c0(float _t7, float _t13, float _t1) {
+        return new Float3(Math.fma(-this.m02, _t7, Math.fma(this.m00, _t13, this.m01 * _t1)), Math.fma(-this.m12, _t7, Math.fma(this.m10, _t13, this.m11 * _t1)), Math.fma(-this.m22, _t7, Math.fma(this.m20, _t13, this.m21 * _t1)));
     }
 
     /** Private per-column body of {@code rotateYZX_orthogonal}; reached only through it. */
-    private Float3 rotateYZX_orthogonal_s6e793366_c1(float _t18, float _t20, float _t11) {
-        return new Float3(Math.fma(this.m02, _t18, Math.fma(this.m00, _t20, this.m01 * _t11)), Math.fma(this.m12, _t18, Math.fma(this.m10, _t20, this.m11 * _t11)), Math.fma(this.m22, _t18, Math.fma(this.m20, _t20, this.m21 * _t11)));
+    private Float3 rotateYZX_orthogonal_s6e793366_c1(float _t18, float _t20, float _t14) {
+        return new Float3(Math.fma(this.m02, _t18, Math.fma(this.m00, _t20, this.m01 * _t14)), Math.fma(this.m12, _t18, Math.fma(this.m10, _t20, this.m11 * _t14)), Math.fma(this.m22, _t18, Math.fma(this.m20, _t20, this.m21 * _t14)));
     }
 
     /** Private per-column body of {@code rotateYZX_orthogonal}; reached only through it. */
-    private Float3 rotateYZX_orthogonal_s6e793366_c2(float _t21, float _t19, float _t13) {
-        return new Float3(Math.fma(this.m02, _t21, Math.fma(this.m00, _t19, -(this.m01 * _t13))), Math.fma(this.m12, _t21, Math.fma(this.m10, _t19, -(this.m11 * _t13))), Math.fma(this.m22, _t21, Math.fma(this.m20, _t19, -(this.m21 * _t13))));
+    private Float3 rotateYZX_orthogonal_s6e793366_c2(float _t21, float _t19, float _t11) {
+        return new Float3(Math.fma(this.m02, _t21, Math.fma(this.m00, _t19, -(this.m01 * _t11))), Math.fma(this.m12, _t21, Math.fma(this.m10, _t19, -(this.m11 * _t11))), Math.fma(this.m22, _t21, Math.fma(this.m20, _t19, -(this.m21 * _t11))));
     }
 
     /** Private per-column body of {@code rotateYZX_orthogonal}; reached only through it. */
@@ -12616,37 +12616,37 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      */
     private Float3x4 rotateYZX_orthogonal(float angleX, float angleY, float angleZ) {
         float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.cos(angleY);
-        float _t3 = (float) Math.sin(angleZ);
-        float _t4 = (float) Math.cos(angleX);
-        float _t5 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t4 = (float) Math.cosFromSin(_t0, angleY);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
         float _t6 = _t0 * _t1;
-        float _t7 = _t2 * _t1;
-        float _t8 = _t0 * _t3;
-        float _t10 = _t3 * _t2;
-        float _t11 = _t4 * _t1;
-        float _t13 = _t5 * _t1;
-        float _t18 = Math.fma(_t8, _t4, _t5 * _t2);
-        float _t19 = Math.fma(_t10, _t5, _t0 * _t4);
-        float _t20 = Math.fma(_t5, _t0, -(_t10 * _t4));
-        float _t21 = Math.fma(_t4, _t2, -(_t8 * _t5));
-        return new Float3x4(rotateYZX_orthogonal_s6e793366_c0(_t6, _t7, _t3), rotateYZX_orthogonal_s6e793366_c1(_t18, _t20, _t11), rotateYZX_orthogonal_s6e793366_c2(_t21, _t19, _t13), rotateYZX_orthogonal_s6e793366_c3(), Joml.BIT_ORTHOGONAL);
+        float _t7 = _t0 * _t3;
+        float _t9 = _t1 * _t4;
+        float _t11 = _t2 * _t3;
+        float _t13 = _t4 * _t3;
+        float _t14 = _t5 * _t3;
+        float _t18 = Math.fma(_t6, _t5, _t2 * _t4);
+        float _t19 = Math.fma(_t9, _t2, _t0 * _t5);
+        float _t20 = Math.fma(_t2, _t0, -(_t9 * _t5));
+        float _t21 = Math.fma(_t5, _t4, -(_t6 * _t2));
+        return new Float3x4(rotateYZX_orthogonal_s6e793366_c0(_t7, _t13, _t1), rotateYZX_orthogonal_s6e793366_c1(_t18, _t20, _t14), rotateYZX_orthogonal_s6e793366_c2(_t21, _t19, _t11), rotateYZX_orthogonal_s6e793366_c3(), Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code rotateYZX_general}; reached only through it. */
-    private Float3 rotateYZX_general_s6e793366_c0(float _t6, float _t7, float _t3) {
-        return new Float3(Math.fma(-this.m02, _t6, Math.fma(this.m00, _t7, this.m01 * _t3)), Math.fma(-this.m12, _t6, Math.fma(this.m10, _t7, this.m11 * _t3)), Math.fma(-this.m22, _t6, Math.fma(this.m20, _t7, this.m21 * _t3)));
+    private Float3 rotateYZX_general_s6e793366_c0(float _t7, float _t13, float _t1) {
+        return new Float3(Math.fma(-this.m02, _t7, Math.fma(this.m00, _t13, this.m01 * _t1)), Math.fma(-this.m12, _t7, Math.fma(this.m10, _t13, this.m11 * _t1)), Math.fma(-this.m22, _t7, Math.fma(this.m20, _t13, this.m21 * _t1)));
     }
 
     /** Private per-column body of {@code rotateYZX_general}; reached only through it. */
-    private Float3 rotateYZX_general_s6e793366_c1(float _t18, float _t20, float _t11) {
-        return new Float3(Math.fma(this.m02, _t18, Math.fma(this.m00, _t20, this.m01 * _t11)), Math.fma(this.m12, _t18, Math.fma(this.m10, _t20, this.m11 * _t11)), Math.fma(this.m22, _t18, Math.fma(this.m20, _t20, this.m21 * _t11)));
+    private Float3 rotateYZX_general_s6e793366_c1(float _t18, float _t20, float _t14) {
+        return new Float3(Math.fma(this.m02, _t18, Math.fma(this.m00, _t20, this.m01 * _t14)), Math.fma(this.m12, _t18, Math.fma(this.m10, _t20, this.m11 * _t14)), Math.fma(this.m22, _t18, Math.fma(this.m20, _t20, this.m21 * _t14)));
     }
 
     /** Private per-column body of {@code rotateYZX_general}; reached only through it. */
-    private Float3 rotateYZX_general_s6e793366_c2(float _t21, float _t19, float _t13) {
-        return new Float3(Math.fma(this.m02, _t21, Math.fma(this.m00, _t19, -(this.m01 * _t13))), Math.fma(this.m12, _t21, Math.fma(this.m10, _t19, -(this.m11 * _t13))), Math.fma(this.m22, _t21, Math.fma(this.m20, _t19, -(this.m21 * _t13))));
+    private Float3 rotateYZX_general_s6e793366_c2(float _t21, float _t19, float _t11) {
+        return new Float3(Math.fma(this.m02, _t21, Math.fma(this.m00, _t19, -(this.m01 * _t11))), Math.fma(this.m12, _t21, Math.fma(this.m10, _t19, -(this.m11 * _t11))), Math.fma(this.m22, _t21, Math.fma(this.m20, _t19, -(this.m21 * _t11))));
     }
 
     /** Private per-column body of {@code rotateYZX_general}; reached only through it. */
@@ -12661,22 +12661,22 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      */
     private Float3x4 rotateYZX_general(float angleX, float angleY, float angleZ) {
         float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.cos(angleY);
-        float _t3 = (float) Math.sin(angleZ);
-        float _t4 = (float) Math.cos(angleX);
-        float _t5 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t4 = (float) Math.cosFromSin(_t0, angleY);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
         float _t6 = _t0 * _t1;
-        float _t7 = _t2 * _t1;
-        float _t8 = _t0 * _t3;
-        float _t10 = _t3 * _t2;
-        float _t11 = _t4 * _t1;
-        float _t13 = _t5 * _t1;
-        float _t18 = Math.fma(_t8, _t4, _t5 * _t2);
-        float _t19 = Math.fma(_t10, _t5, _t0 * _t4);
-        float _t20 = Math.fma(_t5, _t0, -(_t10 * _t4));
-        float _t21 = Math.fma(_t4, _t2, -(_t8 * _t5));
-        return new Float3x4(rotateYZX_general_s6e793366_c0(_t6, _t7, _t3), rotateYZX_general_s6e793366_c1(_t18, _t20, _t11), rotateYZX_general_s6e793366_c2(_t21, _t19, _t13), rotateYZX_general_s6e793366_c3(), Joml.BIT_AFFINE);
+        float _t7 = _t0 * _t3;
+        float _t9 = _t1 * _t4;
+        float _t11 = _t2 * _t3;
+        float _t13 = _t4 * _t3;
+        float _t14 = _t5 * _t3;
+        float _t18 = Math.fma(_t6, _t5, _t2 * _t4);
+        float _t19 = Math.fma(_t9, _t2, _t0 * _t5);
+        float _t20 = Math.fma(_t2, _t0, -(_t9 * _t5));
+        float _t21 = Math.fma(_t5, _t4, -(_t6 * _t2));
+        return new Float3x4(rotateYZX_general_s6e793366_c0(_t7, _t13, _t1), rotateYZX_general_s6e793366_c1(_t18, _t20, _t14), rotateYZX_general_s6e793366_c2(_t21, _t19, _t11), rotateYZX_general_s6e793366_c3(), Joml.BIT_AFFINE);
     }
 
 
@@ -12762,9 +12762,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateZ} dispatcher.
      */
     private Float3x4 rotateZ_translation(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(_t0, -_t1, 0.0f, this.m03, _t1, _t0, 0.0f, this.m13, 0.0f, 0.0f, 1.0f, this.m23, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(_t1, -_t0, 0.0f, this.m03, _t0, _t1, 0.0f, this.m13, 0.0f, 0.0f, 1.0f, this.m23, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -12773,9 +12773,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateZ} dispatcher.
      */
     private Float3x4 rotateZ_orthogonal(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), this.m02, this.m03, Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), this.m12, this.m13, Math.fma(this.m20, _t0, this.m21 * _t1), Math.fma(this.m21, _t0, -(this.m20 * _t1)), this.m22, this.m23, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(Math.fma(this.m00, _t1, this.m01 * _t0), Math.fma(this.m01, _t1, -(this.m00 * _t0)), this.m02, this.m03, Math.fma(this.m10, _t1, this.m11 * _t0), Math.fma(this.m11, _t1, -(this.m10 * _t0)), this.m12, this.m13, Math.fma(this.m20, _t1, this.m21 * _t0), Math.fma(this.m21, _t1, -(this.m20 * _t0)), this.m22, this.m23, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -12784,9 +12784,9 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateZ} dispatcher.
      */
     private Float3x4 rotateZ_general(float angle) {
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        return new Float3x4(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), this.m02, this.m03, Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), this.m12, this.m13, Math.fma(this.m20, _t0, this.m21 * _t1), Math.fma(this.m21, _t0, -(this.m20 * _t1)), this.m22, this.m23, Joml.BIT_AFFINE);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        return new Float3x4(Math.fma(this.m00, _t1, this.m01 * _t0), Math.fma(this.m01, _t1, -(this.m00 * _t0)), this.m02, this.m03, Math.fma(this.m10, _t1, this.m11 * _t0), Math.fma(this.m11, _t1, -(this.m10 * _t0)), this.m12, this.m13, Math.fma(this.m20, _t1, this.m21 * _t0), Math.fma(this.m21, _t1, -(this.m20 * _t0)), this.m22, this.m23, Joml.BIT_AFFINE);
     }
 
 
@@ -12860,15 +12860,15 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateZXY} dispatcher.
      */
     private Float3x4 rotateZXY_identity(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
-        float _t3 = (float) Math.sin(angleZ);
-        float _t4 = (float) Math.sin(angleY);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t2 * _t3;
-        float _t7 = _t2 * _t1;
-        return new Float3x4(Math.fma(_t0, _t1, -(_t6 * _t4)), -(_t3 * _t5), Math.fma(_t6, _t0, _t4 * _t1), 0.0f, Math.fma(_t7, _t4, _t3 * _t0), _t5 * _t1, Math.fma(_t4, _t3, -(_t7 * _t0)), 0.0f, -(_t4 * _t5), _t2, _t5 * _t0, 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t1;
+        float _t7 = _t2 * _t4;
+        return new Float3x4(Math.fma(_t3, _t4, -(_t6 * _t0)), -(_t1 * _t5), Math.fma(_t6, _t3, _t0 * _t4), 0.0f, Math.fma(_t7, _t0, _t1 * _t3), _t5 * _t4, Math.fma(_t0, _t1, -(_t7 * _t3)), 0.0f, -(_t0 * _t5), _t2, _t5 * _t3, 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -12877,30 +12877,30 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateZXY} dispatcher.
      */
     private Float3x4 rotateZXY_translation(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
-        float _t3 = (float) Math.sin(angleZ);
-        float _t4 = (float) Math.sin(angleY);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t2 * _t3;
-        float _t7 = _t2 * _t1;
-        return new Float3x4(Math.fma(_t0, _t1, -(_t6 * _t4)), -(_t3 * _t5), Math.fma(_t6, _t0, _t4 * _t1), this.m03, Math.fma(_t7, _t4, _t3 * _t0), _t5 * _t1, Math.fma(_t4, _t3, -(_t7 * _t0)), this.m13, -(_t4 * _t5), _t2, _t5 * _t0, this.m23, Joml.BIT_ORTHOGONAL);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t2 * _t1;
+        float _t7 = _t2 * _t4;
+        return new Float3x4(Math.fma(_t3, _t4, -(_t6 * _t0)), -(_t1 * _t5), Math.fma(_t6, _t3, _t0 * _t4), this.m03, Math.fma(_t7, _t0, _t1 * _t3), _t5 * _t4, Math.fma(_t0, _t1, -(_t7 * _t3)), this.m13, -(_t0 * _t5), _t2, _t5 * _t3, this.m23, Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code rotateZXY_orthogonal}; reached only through it. */
-    private Float3 rotateZXY_orthogonal_s6e793366_c0(float _t6, float _t20, float _t18) {
-        return new Float3(Math.fma(-this.m02, _t6, Math.fma(this.m00, _t20, this.m01 * _t18)), Math.fma(-this.m12, _t6, Math.fma(this.m10, _t20, this.m11 * _t18)), Math.fma(-this.m22, _t6, Math.fma(this.m20, _t20, this.m21 * _t18)));
+    private Float3 rotateZXY_orthogonal_s6e793366_c0(float _t7, float _t20, float _t18) {
+        return new Float3(Math.fma(-this.m02, _t7, Math.fma(this.m00, _t20, this.m01 * _t18)), Math.fma(-this.m12, _t7, Math.fma(this.m10, _t20, this.m11 * _t18)), Math.fma(-this.m22, _t7, Math.fma(this.m20, _t20, this.m21 * _t18)));
     }
 
     /** Private per-column body of {@code rotateZXY_orthogonal}; reached only through it. */
-    private Float3 rotateZXY_orthogonal_s6e793366_c1(float _t4, float _t10, float _t11) {
-        return new Float3(Math.fma(this.m02, _t4, Math.fma(this.m01, _t10, -(this.m00 * _t11))), Math.fma(this.m12, _t4, Math.fma(this.m11, _t10, -(this.m10 * _t11))), Math.fma(this.m22, _t4, Math.fma(this.m21, _t10, -(this.m20 * _t11))));
+    private Float3 rotateZXY_orthogonal_s6e793366_c1(float _t1, float _t14, float _t10) {
+        return new Float3(Math.fma(this.m02, _t1, Math.fma(this.m01, _t14, -(this.m00 * _t10))), Math.fma(this.m12, _t1, Math.fma(this.m11, _t14, -(this.m10 * _t10))), Math.fma(this.m22, _t1, Math.fma(this.m21, _t14, -(this.m20 * _t10))));
     }
 
     /** Private per-column body of {@code rotateZXY_orthogonal}; reached only through it. */
-    private Float3 rotateZXY_orthogonal_s6e793366_c2(float _t12, float _t19, float _t21) {
-        return new Float3(Math.fma(this.m02, _t12, Math.fma(this.m00, _t19, this.m01 * _t21)), Math.fma(this.m12, _t12, Math.fma(this.m10, _t19, this.m11 * _t21)), Math.fma(this.m22, _t12, Math.fma(this.m20, _t19, this.m21 * _t21)));
+    private Float3 rotateZXY_orthogonal_s6e793366_c2(float _t15, float _t19, float _t21) {
+        return new Float3(Math.fma(this.m02, _t15, Math.fma(this.m00, _t19, this.m01 * _t21)), Math.fma(this.m12, _t15, Math.fma(this.m10, _t19, this.m11 * _t21)), Math.fma(this.m22, _t15, Math.fma(this.m20, _t19, this.m21 * _t21)));
     }
 
     /** Private per-column body of {@code rotateZXY_orthogonal}; reached only through it. */
@@ -12915,37 +12915,37 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      */
     private Float3x4 rotateZXY_orthogonal(float angleX, float angleY, float angleZ) {
         float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.cos(angleX);
-        float _t2 = (float) Math.cos(angleY);
-        float _t3 = (float) Math.cos(angleZ);
-        float _t4 = (float) Math.sin(angleX);
-        float _t5 = (float) Math.sin(angleZ);
-        float _t6 = _t0 * _t1;
-        float _t7 = _t4 * _t5;
-        float _t8 = _t4 * _t3;
-        float _t10 = _t1 * _t3;
-        float _t11 = _t5 * _t1;
-        float _t12 = _t1 * _t2;
-        float _t18 = Math.fma(_t8, _t0, _t5 * _t2);
-        float _t19 = Math.fma(_t7, _t2, _t0 * _t3);
-        float _t20 = Math.fma(_t2, _t3, -(_t7 * _t0));
-        float _t21 = Math.fma(_t0, _t5, -(_t8 * _t2));
-        return new Float3x4(rotateZXY_orthogonal_s6e793366_c0(_t6, _t20, _t18), rotateZXY_orthogonal_s6e793366_c1(_t4, _t10, _t11), rotateZXY_orthogonal_s6e793366_c2(_t12, _t19, _t21), rotateZXY_orthogonal_s6e793366_c3(), Joml.BIT_ORTHOGONAL);
+        float _t1 = (float) Math.sin(angleX);
+        float _t2 = (float) Math.sin(angleZ);
+        float _t3 = (float) Math.cosFromSin(_t1, angleX);
+        float _t4 = (float) Math.cosFromSin(_t0, angleY);
+        float _t5 = (float) Math.cosFromSin(_t2, angleZ);
+        float _t6 = _t1 * _t2;
+        float _t7 = _t0 * _t3;
+        float _t8 = _t1 * _t5;
+        float _t10 = _t2 * _t3;
+        float _t14 = _t3 * _t5;
+        float _t15 = _t3 * _t4;
+        float _t18 = Math.fma(_t8, _t0, _t2 * _t4);
+        float _t19 = Math.fma(_t6, _t4, _t0 * _t5);
+        float _t20 = Math.fma(_t4, _t5, -(_t6 * _t0));
+        float _t21 = Math.fma(_t0, _t2, -(_t8 * _t4));
+        return new Float3x4(rotateZXY_orthogonal_s6e793366_c0(_t7, _t20, _t18), rotateZXY_orthogonal_s6e793366_c1(_t1, _t14, _t10), rotateZXY_orthogonal_s6e793366_c2(_t15, _t19, _t21), rotateZXY_orthogonal_s6e793366_c3(), Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code rotateZXY_general}; reached only through it. */
-    private Float3 rotateZXY_general_s6e793366_c0(float _t6, float _t20, float _t18) {
-        return new Float3(Math.fma(-this.m02, _t6, Math.fma(this.m00, _t20, this.m01 * _t18)), Math.fma(-this.m12, _t6, Math.fma(this.m10, _t20, this.m11 * _t18)), Math.fma(-this.m22, _t6, Math.fma(this.m20, _t20, this.m21 * _t18)));
+    private Float3 rotateZXY_general_s6e793366_c0(float _t7, float _t20, float _t18) {
+        return new Float3(Math.fma(-this.m02, _t7, Math.fma(this.m00, _t20, this.m01 * _t18)), Math.fma(-this.m12, _t7, Math.fma(this.m10, _t20, this.m11 * _t18)), Math.fma(-this.m22, _t7, Math.fma(this.m20, _t20, this.m21 * _t18)));
     }
 
     /** Private per-column body of {@code rotateZXY_general}; reached only through it. */
-    private Float3 rotateZXY_general_s6e793366_c1(float _t4, float _t10, float _t11) {
-        return new Float3(Math.fma(this.m02, _t4, Math.fma(this.m01, _t10, -(this.m00 * _t11))), Math.fma(this.m12, _t4, Math.fma(this.m11, _t10, -(this.m10 * _t11))), Math.fma(this.m22, _t4, Math.fma(this.m21, _t10, -(this.m20 * _t11))));
+    private Float3 rotateZXY_general_s6e793366_c1(float _t1, float _t14, float _t10) {
+        return new Float3(Math.fma(this.m02, _t1, Math.fma(this.m01, _t14, -(this.m00 * _t10))), Math.fma(this.m12, _t1, Math.fma(this.m11, _t14, -(this.m10 * _t10))), Math.fma(this.m22, _t1, Math.fma(this.m21, _t14, -(this.m20 * _t10))));
     }
 
     /** Private per-column body of {@code rotateZXY_general}; reached only through it. */
-    private Float3 rotateZXY_general_s6e793366_c2(float _t12, float _t19, float _t21) {
-        return new Float3(Math.fma(this.m02, _t12, Math.fma(this.m00, _t19, this.m01 * _t21)), Math.fma(this.m12, _t12, Math.fma(this.m10, _t19, this.m11 * _t21)), Math.fma(this.m22, _t12, Math.fma(this.m20, _t19, this.m21 * _t21)));
+    private Float3 rotateZXY_general_s6e793366_c2(float _t15, float _t19, float _t21) {
+        return new Float3(Math.fma(this.m02, _t15, Math.fma(this.m00, _t19, this.m01 * _t21)), Math.fma(this.m12, _t15, Math.fma(this.m10, _t19, this.m11 * _t21)), Math.fma(this.m22, _t15, Math.fma(this.m20, _t19, this.m21 * _t21)));
     }
 
     /** Private per-column body of {@code rotateZXY_general}; reached only through it. */
@@ -12960,22 +12960,22 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      */
     private Float3x4 rotateZXY_general(float angleX, float angleY, float angleZ) {
         float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.cos(angleX);
-        float _t2 = (float) Math.cos(angleY);
-        float _t3 = (float) Math.cos(angleZ);
-        float _t4 = (float) Math.sin(angleX);
-        float _t5 = (float) Math.sin(angleZ);
-        float _t6 = _t0 * _t1;
-        float _t7 = _t4 * _t5;
-        float _t8 = _t4 * _t3;
-        float _t10 = _t1 * _t3;
-        float _t11 = _t5 * _t1;
-        float _t12 = _t1 * _t2;
-        float _t18 = Math.fma(_t8, _t0, _t5 * _t2);
-        float _t19 = Math.fma(_t7, _t2, _t0 * _t3);
-        float _t20 = Math.fma(_t2, _t3, -(_t7 * _t0));
-        float _t21 = Math.fma(_t0, _t5, -(_t8 * _t2));
-        return new Float3x4(rotateZXY_general_s6e793366_c0(_t6, _t20, _t18), rotateZXY_general_s6e793366_c1(_t4, _t10, _t11), rotateZXY_general_s6e793366_c2(_t12, _t19, _t21), rotateZXY_general_s6e793366_c3(), Joml.BIT_AFFINE);
+        float _t1 = (float) Math.sin(angleX);
+        float _t2 = (float) Math.sin(angleZ);
+        float _t3 = (float) Math.cosFromSin(_t1, angleX);
+        float _t4 = (float) Math.cosFromSin(_t0, angleY);
+        float _t5 = (float) Math.cosFromSin(_t2, angleZ);
+        float _t6 = _t1 * _t2;
+        float _t7 = _t0 * _t3;
+        float _t8 = _t1 * _t5;
+        float _t10 = _t2 * _t3;
+        float _t14 = _t3 * _t5;
+        float _t15 = _t3 * _t4;
+        float _t18 = Math.fma(_t8, _t0, _t2 * _t4);
+        float _t19 = Math.fma(_t6, _t4, _t0 * _t5);
+        float _t20 = Math.fma(_t4, _t5, -(_t6 * _t0));
+        float _t21 = Math.fma(_t0, _t2, -(_t8 * _t4));
+        return new Float3x4(rotateZXY_general_s6e793366_c0(_t7, _t20, _t18), rotateZXY_general_s6e793366_c1(_t1, _t14, _t10), rotateZXY_general_s6e793366_c2(_t15, _t19, _t21), rotateZXY_general_s6e793366_c3(), Joml.BIT_AFFINE);
     }
 
 
@@ -13007,15 +13007,15 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateZYX} dispatcher.
      */
     private Float3x4 rotateZYX_identity(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleY);
-        float _t3 = (float) Math.sin(angleX);
-        float _t4 = (float) Math.sin(angleZ);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t2 * _t1;
-        float _t7 = _t2 * _t4;
-        return new Float3x4(_t0 * _t1, Math.fma(_t6, _t3, -(_t4 * _t5)), Math.fma(_t6, _t5, _t3 * _t4), 0.0f, _t4 * _t0, Math.fma(_t7, _t3, _t5 * _t1), Math.fma(_t7, _t5, -(_t3 * _t1)), 0.0f, -_t2, _t3 * _t0, _t5 * _t0, 0.0f, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t0 * _t1;
+        float _t7 = _t0 * _t4;
+        return new Float3x4(_t3 * _t4, Math.fma(_t7, _t2, -(_t1 * _t5)), Math.fma(_t7, _t5, _t2 * _t1), 0.0f, _t1 * _t3, Math.fma(_t6, _t2, _t5 * _t4), Math.fma(_t6, _t5, -(_t2 * _t4)), 0.0f, -_t0, _t2 * _t3, _t5 * _t3, 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -13024,30 +13024,30 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * through the public {@code rotateZYX} dispatcher.
      */
     private Float3x4 rotateZYX_translation(float angleX, float angleY, float angleZ) {
-        float _t0 = (float) Math.cos(angleY);
-        float _t1 = (float) Math.cos(angleZ);
-        float _t2 = (float) Math.sin(angleY);
-        float _t3 = (float) Math.sin(angleX);
-        float _t4 = (float) Math.sin(angleZ);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t2 * _t1;
-        float _t7 = _t2 * _t4;
-        return new Float3x4(_t0 * _t1, Math.fma(_t6, _t3, -(_t4 * _t5)), Math.fma(_t6, _t5, _t3 * _t4), this.m03, _t4 * _t0, Math.fma(_t7, _t3, _t5 * _t1), Math.fma(_t7, _t5, -(_t3 * _t1)), this.m13, -_t2, _t3 * _t0, _t5 * _t0, this.m23, Joml.BIT_ORTHOGONAL);
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t0 * _t1;
+        float _t7 = _t0 * _t4;
+        return new Float3x4(_t3 * _t4, Math.fma(_t7, _t2, -(_t1 * _t5)), Math.fma(_t7, _t5, _t2 * _t1), this.m03, _t1 * _t3, Math.fma(_t6, _t2, _t5 * _t4), Math.fma(_t6, _t5, -(_t2 * _t4)), this.m13, -_t0, _t2 * _t3, _t5 * _t3, this.m23, Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code rotateZYX_orthogonal}; reached only through it. */
-    private Float3 rotateZYX_orthogonal_s6e793366_c0(float _t0, float _t6, float _t7) {
-        return new Float3(Math.fma(-this.m02, _t0, Math.fma(this.m00, _t6, this.m01 * _t7)), Math.fma(-this.m12, _t0, Math.fma(this.m10, _t6, this.m11 * _t7)), Math.fma(-this.m22, _t0, Math.fma(this.m20, _t6, this.m21 * _t7)));
+    private Float3 rotateZYX_orthogonal_s6e793366_c0(float _t0, float _t15, float _t8) {
+        return new Float3(Math.fma(-this.m02, _t0, Math.fma(this.m00, _t15, this.m01 * _t8)), Math.fma(-this.m12, _t0, Math.fma(this.m10, _t15, this.m11 * _t8)), Math.fma(-this.m22, _t0, Math.fma(this.m20, _t15, this.m21 * _t8)));
     }
 
     /** Private per-column body of {@code rotateZYX_orthogonal}; reached only through it. */
-    private Float3 rotateZYX_orthogonal_s6e793366_c1(float _t8, float _t20, float _t18) {
-        return new Float3(Math.fma(this.m02, _t8, Math.fma(this.m00, _t20, this.m01 * _t18)), Math.fma(this.m12, _t8, Math.fma(this.m10, _t20, this.m11 * _t18)), Math.fma(this.m22, _t8, Math.fma(this.m20, _t20, this.m21 * _t18)));
+    private Float3 rotateZYX_orthogonal_s6e793366_c1(float _t9, float _t20, float _t18) {
+        return new Float3(Math.fma(this.m02, _t9, Math.fma(this.m00, _t20, this.m01 * _t18)), Math.fma(this.m12, _t9, Math.fma(this.m10, _t20, this.m11 * _t18)), Math.fma(this.m22, _t9, Math.fma(this.m20, _t20, this.m21 * _t18)));
     }
 
     /** Private per-column body of {@code rotateZYX_orthogonal}; reached only through it. */
-    private Float3 rotateZYX_orthogonal_s6e793366_c2(float _t13, float _t19, float _t21) {
-        return new Float3(Math.fma(this.m02, _t13, Math.fma(this.m00, _t19, this.m01 * _t21)), Math.fma(this.m12, _t13, Math.fma(this.m10, _t19, this.m11 * _t21)), Math.fma(this.m22, _t13, Math.fma(this.m20, _t19, this.m21 * _t21)));
+    private Float3 rotateZYX_orthogonal_s6e793366_c2(float _t17, float _t19, float _t21) {
+        return new Float3(Math.fma(this.m02, _t17, Math.fma(this.m00, _t19, this.m01 * _t21)), Math.fma(this.m12, _t17, Math.fma(this.m10, _t19, this.m11 * _t21)), Math.fma(this.m22, _t17, Math.fma(this.m20, _t19, this.m21 * _t21)));
     }
 
     /** Private per-column body of {@code rotateZYX_orthogonal}; reached only through it. */
@@ -13062,37 +13062,37 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      */
     private Float3x4 rotateZYX_orthogonal(float angleX, float angleY, float angleZ) {
         float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.cos(angleY);
-        float _t2 = (float) Math.cos(angleZ);
-        float _t3 = (float) Math.sin(angleZ);
-        float _t4 = (float) Math.sin(angleX);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t1 * _t2;
-        float _t7 = _t3 * _t1;
-        float _t8 = _t4 * _t1;
-        float _t9 = _t0 * _t2;
-        float _t11 = _t0 * _t3;
-        float _t13 = _t5 * _t1;
-        float _t18 = Math.fma(_t11, _t4, _t5 * _t2);
-        float _t19 = Math.fma(_t9, _t5, _t4 * _t3);
-        float _t20 = Math.fma(_t9, _t4, -(_t3 * _t5));
-        float _t21 = Math.fma(_t11, _t5, -(_t4 * _t2));
-        return new Float3x4(rotateZYX_orthogonal_s6e793366_c0(_t0, _t6, _t7), rotateZYX_orthogonal_s6e793366_c1(_t8, _t20, _t18), rotateZYX_orthogonal_s6e793366_c2(_t13, _t19, _t21), rotateZYX_orthogonal_s6e793366_c3(), Joml.BIT_ORTHOGONAL);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t0 * _t1;
+        float _t8 = _t1 * _t3;
+        float _t9 = _t2 * _t3;
+        float _t10 = _t0 * _t4;
+        float _t15 = _t3 * _t4;
+        float _t17 = _t5 * _t3;
+        float _t18 = Math.fma(_t6, _t2, _t5 * _t4);
+        float _t19 = Math.fma(_t10, _t5, _t2 * _t1);
+        float _t20 = Math.fma(_t10, _t2, -(_t1 * _t5));
+        float _t21 = Math.fma(_t6, _t5, -(_t2 * _t4));
+        return new Float3x4(rotateZYX_orthogonal_s6e793366_c0(_t0, _t15, _t8), rotateZYX_orthogonal_s6e793366_c1(_t9, _t20, _t18), rotateZYX_orthogonal_s6e793366_c2(_t17, _t19, _t21), rotateZYX_orthogonal_s6e793366_c3(), Joml.BIT_ORTHOGONAL);
     }
 
     /** Private per-column body of {@code rotateZYX_general}; reached only through it. */
-    private Float3 rotateZYX_general_s6e793366_c0(float _t0, float _t6, float _t7) {
-        return new Float3(Math.fma(-this.m02, _t0, Math.fma(this.m00, _t6, this.m01 * _t7)), Math.fma(-this.m12, _t0, Math.fma(this.m10, _t6, this.m11 * _t7)), Math.fma(-this.m22, _t0, Math.fma(this.m20, _t6, this.m21 * _t7)));
+    private Float3 rotateZYX_general_s6e793366_c0(float _t0, float _t15, float _t8) {
+        return new Float3(Math.fma(-this.m02, _t0, Math.fma(this.m00, _t15, this.m01 * _t8)), Math.fma(-this.m12, _t0, Math.fma(this.m10, _t15, this.m11 * _t8)), Math.fma(-this.m22, _t0, Math.fma(this.m20, _t15, this.m21 * _t8)));
     }
 
     /** Private per-column body of {@code rotateZYX_general}; reached only through it. */
-    private Float3 rotateZYX_general_s6e793366_c1(float _t8, float _t20, float _t18) {
-        return new Float3(Math.fma(this.m02, _t8, Math.fma(this.m00, _t20, this.m01 * _t18)), Math.fma(this.m12, _t8, Math.fma(this.m10, _t20, this.m11 * _t18)), Math.fma(this.m22, _t8, Math.fma(this.m20, _t20, this.m21 * _t18)));
+    private Float3 rotateZYX_general_s6e793366_c1(float _t9, float _t20, float _t18) {
+        return new Float3(Math.fma(this.m02, _t9, Math.fma(this.m00, _t20, this.m01 * _t18)), Math.fma(this.m12, _t9, Math.fma(this.m10, _t20, this.m11 * _t18)), Math.fma(this.m22, _t9, Math.fma(this.m20, _t20, this.m21 * _t18)));
     }
 
     /** Private per-column body of {@code rotateZYX_general}; reached only through it. */
-    private Float3 rotateZYX_general_s6e793366_c2(float _t13, float _t19, float _t21) {
-        return new Float3(Math.fma(this.m02, _t13, Math.fma(this.m00, _t19, this.m01 * _t21)), Math.fma(this.m12, _t13, Math.fma(this.m10, _t19, this.m11 * _t21)), Math.fma(this.m22, _t13, Math.fma(this.m20, _t19, this.m21 * _t21)));
+    private Float3 rotateZYX_general_s6e793366_c2(float _t17, float _t19, float _t21) {
+        return new Float3(Math.fma(this.m02, _t17, Math.fma(this.m00, _t19, this.m01 * _t21)), Math.fma(this.m12, _t17, Math.fma(this.m10, _t19, this.m11 * _t21)), Math.fma(this.m22, _t17, Math.fma(this.m20, _t19, this.m21 * _t21)));
     }
 
     /** Private per-column body of {@code rotateZYX_general}; reached only through it. */
@@ -13107,22 +13107,22 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      */
     private Float3x4 rotateZYX_general(float angleX, float angleY, float angleZ) {
         float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.cos(angleY);
-        float _t2 = (float) Math.cos(angleZ);
-        float _t3 = (float) Math.sin(angleZ);
-        float _t4 = (float) Math.sin(angleX);
-        float _t5 = (float) Math.cos(angleX);
-        float _t6 = _t1 * _t2;
-        float _t7 = _t3 * _t1;
-        float _t8 = _t4 * _t1;
-        float _t9 = _t0 * _t2;
-        float _t11 = _t0 * _t3;
-        float _t13 = _t5 * _t1;
-        float _t18 = Math.fma(_t11, _t4, _t5 * _t2);
-        float _t19 = Math.fma(_t9, _t5, _t4 * _t3);
-        float _t20 = Math.fma(_t9, _t4, -(_t3 * _t5));
-        float _t21 = Math.fma(_t11, _t5, -(_t4 * _t2));
-        return new Float3x4(rotateZYX_general_s6e793366_c0(_t0, _t6, _t7), rotateZYX_general_s6e793366_c1(_t8, _t20, _t18), rotateZYX_general_s6e793366_c2(_t13, _t19, _t21), rotateZYX_general_s6e793366_c3(), Joml.BIT_AFFINE);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
+        float _t3 = (float) Math.cosFromSin(_t0, angleY);
+        float _t4 = (float) Math.cosFromSin(_t1, angleZ);
+        float _t5 = (float) Math.cosFromSin(_t2, angleX);
+        float _t6 = _t0 * _t1;
+        float _t8 = _t1 * _t3;
+        float _t9 = _t2 * _t3;
+        float _t10 = _t0 * _t4;
+        float _t15 = _t3 * _t4;
+        float _t17 = _t5 * _t3;
+        float _t18 = Math.fma(_t6, _t2, _t5 * _t4);
+        float _t19 = Math.fma(_t10, _t5, _t2 * _t1);
+        float _t20 = Math.fma(_t10, _t2, -(_t1 * _t5));
+        float _t21 = Math.fma(_t6, _t5, -(_t2 * _t4));
+        return new Float3x4(rotateZYX_general_s6e793366_c0(_t0, _t15, _t8), rotateZYX_general_s6e793366_c1(_t9, _t20, _t18), rotateZYX_general_s6e793366_c2(_t17, _t19, _t21), rotateZYX_general_s6e793366_c3(), Joml.BIT_AFFINE);
     }
 
 

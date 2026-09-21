@@ -2560,11 +2560,11 @@ public value record Double4(double x, double y, double z, double w) {
         if (axisY == 0 && axisZ == 0 && Math.abs(axisX) == 1) return rotateX(axisX * angle);
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle);
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        double _t2 = 1.0 - _t0;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t3 = 1.0 - _t1;
         double _t5 = Math.fma(axisZ, this.z, Math.fma(axisX, this.x, axisY * this.y));
-        return new Double4(Math.fma(_t2, axisX * _t5, Math.fma(this.x, _t0, Math.fma(axisY, this.z, -(axisZ * this.y)) * _t1)), Math.fma(_t2, axisY * _t5, Math.fma(this.y, _t0, Math.fma(axisZ, this.x, -(axisX * this.z)) * _t1)), Math.fma(_t2, axisZ * _t5, Math.fma(this.z, _t0, Math.fma(axisX, this.y, -(axisY * this.x)) * _t1)), this.w);
+        return new Double4(Math.fma(_t3, axisX * _t5, Math.fma(this.x, _t1, Math.fma(axisY, this.z, -(axisZ * this.y)) * _t0)), Math.fma(_t3, axisY * _t5, Math.fma(this.y, _t1, Math.fma(axisZ, this.x, -(axisX * this.z)) * _t0)), Math.fma(_t3, axisZ * _t5, Math.fma(this.z, _t1, Math.fma(axisX, this.y, -(axisY * this.x)) * _t0)), this.w);
     }
 
 
@@ -2610,9 +2610,9 @@ public value record Double4(double x, double y, double z, double w) {
      * @return the resulting vector
      */
     public Double4 rotateX(double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        return new Double4(this.x, Math.fma(this.y, _t0, -(this.z * _t1)), Math.fma(this.y, _t1, this.z * _t0), this.w);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        return new Double4(this.x, Math.fma(this.y, _t1, -(this.z * _t0)), Math.fma(this.y, _t0, this.z * _t1), this.w);
     }
 
 
@@ -2624,9 +2624,9 @@ public value record Double4(double x, double y, double z, double w) {
      * @return the resulting vector
      */
     public Double4 rotateY(double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        return new Double4(Math.fma(this.x, _t0, this.z * _t1), this.y, Math.fma(this.z, _t0, -(this.x * _t1)), this.w);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        return new Double4(Math.fma(this.x, _t1, this.z * _t0), this.y, Math.fma(this.z, _t1, -(this.x * _t0)), this.w);
     }
 
 
@@ -2638,9 +2638,9 @@ public value record Double4(double x, double y, double z, double w) {
      * @return the resulting vector
      */
     public Double4 rotateZ(double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        return new Double4(Math.fma(this.x, _t0, -(this.y * _t1)), Math.fma(this.x, _t1, this.y * _t0), this.z, this.w);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        return new Double4(Math.fma(this.x, _t1, -(this.y * _t0)), Math.fma(this.x, _t0, this.y * _t1), this.z, this.w);
     }
 
     /**

@@ -1375,10 +1375,10 @@ public final class Double2OpsKernelsAddress {
     public static long rotate_unsafe(long dest, long src, double angle) {
         double _selfx = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _selfy = UnsafeOpsHolder.U.getDouble(src + 8L);
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_selfx, _t0, -(_selfy * _t1)));
-        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_selfx, _t1, _selfy * _t0));
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_selfx, _t1, -(_selfy * _t0)));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_selfx, _t0, _selfy * _t1));
         return dest;
     }
 

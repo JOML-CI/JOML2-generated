@@ -3490,10 +3490,10 @@ public final class Double2OpsKernelsTypedBuffer {
         }
         double _selfx = src.get(srcOffset + 0);
         double _selfy = src.get(srcOffset + 1);
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        dest.put(destOffset + 0, Math.fma(_selfx, _t0, -(_selfy * _t1)));
-        dest.put(destOffset + 1, Math.fma(_selfx, _t1, _selfy * _t0));
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        dest.put(destOffset + 0, Math.fma(_selfx, _t1, -(_selfy * _t0)));
+        dest.put(destOffset + 1, Math.fma(_selfx, _t0, _selfy * _t1));
         return dest;
     }
 

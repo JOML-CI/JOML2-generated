@@ -5895,10 +5895,10 @@ public final class Float2Ops {
     public static float[] rotate(float[] dest, int destOffset, float[] src, int srcOffset, float angle) {
         float _selfx = src[srcOffset + 0];
         float _selfy = src[srcOffset + 1];
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        dest[destOffset + 0] = Math.fma(_selfx, _t0, -(_selfy * _t1));
-        dest[destOffset + 1] = Math.fma(_selfx, _t1, _selfy * _t0);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        dest[destOffset + 0] = Math.fma(_selfx, _t1, -(_selfy * _t0));
+        dest[destOffset + 1] = Math.fma(_selfx, _t0, _selfy * _t1);
         return dest;
     }
 

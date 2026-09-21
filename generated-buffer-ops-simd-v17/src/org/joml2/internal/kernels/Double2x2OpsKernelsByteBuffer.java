@@ -519,12 +519,12 @@ public final class Double2x2OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer makeRotation_api(java.nio.ByteBuffer dest, int destOffset, double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        dest.putDouble(destOffset + 0, _t0);
-        dest.putDouble(destOffset + 8, _t1);
-        dest.putDouble(destOffset + 16, -_t1);
-        dest.putDouble(destOffset + 24, _t0);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        dest.putDouble(destOffset + 0, _t1);
+        dest.putDouble(destOffset + 8, _t0);
+        dest.putDouble(destOffset + 16, -_t0);
+        dest.putDouble(destOffset + 24, _t1);
         return dest;
     }
 
@@ -585,12 +585,12 @@ public final class Double2x2OpsKernelsByteBuffer {
         double _self10 = src.getDouble(srcOffset + 8);
         double _self01 = src.getDouble(srcOffset + 16);
         double _self11 = src.getDouble(srcOffset + 24);
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        dest.putDouble(destOffset + 0, Math.fma(_self00, _t0, -(_self10 * _t1)));
-        dest.putDouble(destOffset + 8, Math.fma(_self00, _t1, _self10 * _t0));
-        dest.putDouble(destOffset + 16, Math.fma(_self01, _t0, -(_self11 * _t1)));
-        dest.putDouble(destOffset + 24, Math.fma(_self01, _t1, _self11 * _t0));
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        dest.putDouble(destOffset + 0, Math.fma(_self00, _t1, -(_self10 * _t0)));
+        dest.putDouble(destOffset + 8, Math.fma(_self00, _t0, _self10 * _t1));
+        dest.putDouble(destOffset + 16, Math.fma(_self01, _t1, -(_self11 * _t0)));
+        dest.putDouble(destOffset + 24, Math.fma(_self01, _t0, _self11 * _t1));
         return dest;
     }
 
@@ -666,12 +666,12 @@ public final class Double2x2OpsKernelsByteBuffer {
         double _self10 = src.getDouble(srcOffset + 8);
         double _self01 = src.getDouble(srcOffset + 16);
         double _self11 = src.getDouble(srcOffset + 24);
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        dest.putDouble(destOffset + 0, Math.fma(_self00, _t0, _self01 * _t1));
-        dest.putDouble(destOffset + 8, Math.fma(_self10, _t0, _self11 * _t1));
-        dest.putDouble(destOffset + 16, Math.fma(_self01, _t0, -(_self00 * _t1)));
-        dest.putDouble(destOffset + 24, Math.fma(_self11, _t0, -(_self10 * _t1)));
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        dest.putDouble(destOffset + 0, Math.fma(_self00, _t1, _self01 * _t0));
+        dest.putDouble(destOffset + 8, Math.fma(_self10, _t1, _self11 * _t0));
+        dest.putDouble(destOffset + 16, Math.fma(_self01, _t1, -(_self00 * _t0)));
+        dest.putDouble(destOffset + 24, Math.fma(_self11, _t1, -(_self10 * _t0)));
         return dest;
     }
 

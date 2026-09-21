@@ -3271,8 +3271,9 @@ public final class FloatQuatOps {
         float _t3 = angularVelY * _t0;
         float _t6 = Math.fma(_t1, _t1, Math.fma(_t2, _t2, _t3 * _t3));
         float _t7 = (float) Math.sqrt(_t6);
-        float _t9 = (float) Math.cos(_t7);
-        float _t11 = (float) Math.sin(_t7) * (1.0f / (float) Math.sqrt(_t6));
+        float _t9 = (float) Math.sin(_t7);
+        float _t10 = (float) Math.cosFromSin(_t9, _t7);
+        float _t11 = _t9 * (1.0f / (float) Math.sqrt(_t6));
         float _t15, _t16, _t17;
         if (_t6 > 0.0f) {
             _t15 = _t2 * _t11;
@@ -3283,10 +3284,10 @@ public final class FloatQuatOps {
             _t16 = 0.0f;
             _t17 = 0.0f;
         }
-        dest[destOffset + 0] = Math.fma(_selfx, _t9, _selfw * _t15) + Math.fma(_selfz, _t16, -(_selfy * _t17));
-        dest[destOffset + 1] = Math.fma(_selfx, _t17, _selfw * _t16) + Math.fma(_selfy, _t9, -(_selfz * _t15));
-        dest[destOffset + 2] = Math.fma(_selfy, _t15, _selfz * _t9) + Math.fma(_selfw, _t17, -(_selfx * _t16));
-        dest[destOffset + 3] = Math.fma(_selfw, _t9, -(_selfx * _t15)) - Math.fma(_selfy, _t16, _selfz * _t17);
+        dest[destOffset + 0] = Math.fma(_selfx, _t10, _selfw * _t15) + Math.fma(_selfz, _t16, -(_selfy * _t17));
+        dest[destOffset + 1] = Math.fma(_selfx, _t17, _selfw * _t16) + Math.fma(_selfy, _t10, -(_selfz * _t15));
+        dest[destOffset + 2] = Math.fma(_selfy, _t15, _selfz * _t10) + Math.fma(_selfw, _t17, -(_selfx * _t16));
+        dest[destOffset + 3] = Math.fma(_selfw, _t10, -(_selfx * _t15)) - Math.fma(_selfy, _t16, _selfz * _t17);
         return dest;
     }
 
@@ -3337,8 +3338,9 @@ public final class FloatQuatOps {
         float _t3 = _angularVely * _t0;
         float _t6 = Math.fma(_t1, _t1, Math.fma(_t2, _t2, _t3 * _t3));
         float _t7 = (float) Math.sqrt(_t6);
-        float _t9 = (float) Math.cos(_t7);
-        float _t11 = (float) Math.sin(_t7) * (1.0f / (float) Math.sqrt(_t6));
+        float _t9 = (float) Math.sin(_t7);
+        float _t10 = (float) Math.cosFromSin(_t9, _t7);
+        float _t11 = _t9 * (1.0f / (float) Math.sqrt(_t6));
         float _t15, _t16, _t17;
         if (_t6 > 0.0f) {
             _t15 = _t2 * _t11;
@@ -3349,10 +3351,10 @@ public final class FloatQuatOps {
             _t16 = 0.0f;
             _t17 = 0.0f;
         }
-        dest[destOffset + 0] = Math.fma(_selfx, _t9, _selfw * _t15) + Math.fma(_selfz, _t16, -(_selfy * _t17));
-        dest[destOffset + 1] = Math.fma(_selfx, _t17, _selfw * _t16) + Math.fma(_selfy, _t9, -(_selfz * _t15));
-        dest[destOffset + 2] = Math.fma(_selfy, _t15, _selfz * _t9) + Math.fma(_selfw, _t17, -(_selfx * _t16));
-        dest[destOffset + 3] = Math.fma(_selfw, _t9, -(_selfx * _t15)) - Math.fma(_selfy, _t16, _selfz * _t17);
+        dest[destOffset + 0] = Math.fma(_selfx, _t10, _selfw * _t15) + Math.fma(_selfz, _t16, -(_selfy * _t17));
+        dest[destOffset + 1] = Math.fma(_selfx, _t17, _selfw * _t16) + Math.fma(_selfy, _t10, -(_selfz * _t15));
+        dest[destOffset + 2] = Math.fma(_selfy, _t15, _selfz * _t10) + Math.fma(_selfw, _t17, -(_selfx * _t16));
+        dest[destOffset + 3] = Math.fma(_selfw, _t10, -(_selfx * _t15)) - Math.fma(_selfy, _t16, _selfz * _t17);
         return dest;
     }
 
@@ -5468,10 +5470,11 @@ public final class FloatQuatOps {
      */
     public static float[] makeRotationX(float[] dest, int destOffset, float angle) {
         float _t0 = 0.5f * angle;
-        dest[destOffset + 0] = (float) Math.sin(_t0);
+        float _t1 = (float) Math.sin(_t0);
+        dest[destOffset + 0] = _t1;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
-        dest[destOffset + 3] = (float) Math.cos(_t0);
+        dest[destOffset + 3] = (float) Math.cosFromSin(_t1, _t0);
         return dest;
     }
 
@@ -5511,19 +5514,19 @@ public final class FloatQuatOps {
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t6;
-        float _t12 = _t7 * _t4;
-        dest[destOffset + 0] = Math.fma(_t9, _t5, _t10 * _t8);
-        dest[destOffset + 1] = Math.fma(_t10, _t5, -(_t9 * _t8));
-        dest[destOffset + 2] = Math.fma(_t11, _t5, _t12 * _t8);
-        dest[destOffset + 3] = Math.fma(_t12, _t5, -(_t11 * _t8));
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        dest[destOffset + 0] = Math.fma(_t10, _t7, _t11 * _t5);
+        dest[destOffset + 1] = Math.fma(_t11, _t7, -(_t10 * _t5));
+        dest[destOffset + 2] = Math.fma(_t9, _t7, _t12 * _t5);
+        dest[destOffset + 3] = Math.fma(_t12, _t7, -(_t9 * _t5));
         return dest;
     }
 
@@ -5563,19 +5566,19 @@ public final class FloatQuatOps {
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t4;
-        float _t12 = _t3 * _t6;
-        dest[destOffset + 0] = Math.fma(_t9, _t5, -(_t10 * _t8));
-        dest[destOffset + 1] = Math.fma(_t11, _t8, -(_t12 * _t5));
-        dest[destOffset + 2] = Math.fma(_t9, _t8, _t10 * _t5);
-        dest[destOffset + 3] = Math.fma(_t12, _t8, _t11 * _t5);
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        dest[destOffset + 0] = Math.fma(_t10, _t7, -(_t11 * _t5));
+        dest[destOffset + 1] = Math.fma(_t12, _t5, -(_t9 * _t7));
+        dest[destOffset + 2] = Math.fma(_t10, _t5, _t11 * _t7);
+        dest[destOffset + 3] = Math.fma(_t9, _t5, _t12 * _t7);
         return dest;
     }
 
@@ -5608,10 +5611,11 @@ public final class FloatQuatOps {
      */
     public static float[] makeRotationY(float[] dest, int destOffset, float angle) {
         float _t0 = 0.5f * angle;
+        float _t1 = (float) Math.sin(_t0);
         dest[destOffset + 0] = 0.0f;
-        dest[destOffset + 1] = (float) Math.sin(_t0);
+        dest[destOffset + 1] = _t1;
         dest[destOffset + 2] = 0.0f;
-        dest[destOffset + 3] = (float) Math.cos(_t0);
+        dest[destOffset + 3] = (float) Math.cosFromSin(_t1, _t0);
         return dest;
     }
 
@@ -5688,18 +5692,18 @@ public final class FloatQuatOps {
         float _t2 = 0.5f * angleX;
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t5, _t2);
+        float _t7 = (float) Math.cosFromSin(_t3, _t0);
+        float _t8 = (float) Math.cosFromSin(_t4, _t1);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t7;
-        float _t12 = _t4 * _t6;
-        dest[destOffset + 0] = Math.fma(_t9, _t5, _t10 * _t8);
-        dest[destOffset + 1] = Math.fma(_t11, _t5, _t12 * _t8);
-        dest[destOffset + 2] = Math.fma(_t12, _t5, -(_t11 * _t8));
-        dest[destOffset + 3] = Math.fma(_t10, _t5, -(_t9 * _t8));
+        float _t10 = _t3 * _t8;
+        float _t11 = _t4 * _t7;
+        float _t12 = _t7 * _t8;
+        dest[destOffset + 0] = Math.fma(_t9, _t6, _t12 * _t5);
+        dest[destOffset + 1] = Math.fma(_t10, _t6, _t11 * _t5);
+        dest[destOffset + 2] = Math.fma(_t11, _t6, -(_t10 * _t5));
+        dest[destOffset + 3] = Math.fma(_t12, _t6, -(_t9 * _t5));
         return dest;
     }
 
@@ -5732,10 +5736,11 @@ public final class FloatQuatOps {
      */
     public static float[] makeRotationZ(float[] dest, int destOffset, float angle) {
         float _t0 = 0.5f * angle;
+        float _t1 = (float) Math.sin(_t0);
         dest[destOffset + 0] = 0.0f;
         dest[destOffset + 1] = 0.0f;
-        dest[destOffset + 2] = (float) Math.sin(_t0);
-        dest[destOffset + 3] = (float) Math.cos(_t0);
+        dest[destOffset + 2] = _t1;
+        dest[destOffset + 3] = (float) Math.cosFromSin(_t1, _t0);
         return dest;
     }
 
@@ -5775,19 +5780,19 @@ public final class FloatQuatOps {
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t6;
-        float _t12 = _t7 * _t4;
-        dest[destOffset + 0] = Math.fma(_t9, _t5, -(_t10 * _t8));
-        dest[destOffset + 1] = Math.fma(_t11, _t5, _t12 * _t8);
-        dest[destOffset + 2] = Math.fma(_t9, _t8, _t10 * _t5);
-        dest[destOffset + 3] = Math.fma(_t12, _t5, -(_t11 * _t8));
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        dest[destOffset + 0] = Math.fma(_t10, _t7, -(_t11 * _t5));
+        dest[destOffset + 1] = Math.fma(_t9, _t7, _t12 * _t5);
+        dest[destOffset + 2] = Math.fma(_t10, _t5, _t11 * _t7);
+        dest[destOffset + 3] = Math.fma(_t12, _t7, -(_t9 * _t5));
         return dest;
     }
 
@@ -5826,20 +5831,20 @@ public final class FloatQuatOps {
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t6 * _t4;
-        float _t12 = _t7 * _t3;
-        dest[destOffset + 0] = Math.fma(_t9, _t5, -(_t10 * _t8));
-        dest[destOffset + 1] = Math.fma(_t11, _t8, _t12 * _t5);
-        dest[destOffset + 2] = Math.fma(_t12, _t8, -(_t11 * _t5));
-        dest[destOffset + 3] = Math.fma(_t10, _t5, _t9 * _t8);
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t12 = _t6 * _t7;
+        dest[destOffset + 0] = Math.fma(_t12, _t5, -(_t9 * _t8));
+        dest[destOffset + 1] = Math.fma(_t10, _t8, _t11 * _t5);
+        dest[destOffset + 2] = Math.fma(_t11, _t8, -(_t10 * _t5));
+        dest[destOffset + 3] = Math.fma(_t9, _t5, _t12 * _t8);
         return dest;
     }
 
@@ -5883,12 +5888,12 @@ public final class FloatQuatOps {
         float _selfz = src[srcOffset + 2];
         float _selfw = src[srcOffset + 3];
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        dest[destOffset + 0] = Math.fma(_selfx, _t1, _selfw * _t2);
-        dest[destOffset + 1] = Math.fma(_selfy, _t1, -(_selfz * _t2));
-        dest[destOffset + 2] = Math.fma(_selfy, _t2, _selfz * _t1);
-        dest[destOffset + 3] = Math.fma(_selfw, _t1, -(_selfx * _t2));
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        dest[destOffset + 0] = Math.fma(_selfx, _t2, _selfw * _t1);
+        dest[destOffset + 1] = Math.fma(_selfy, _t2, -(_selfz * _t1));
+        dest[destOffset + 2] = Math.fma(_selfy, _t1, _selfz * _t2);
+        dest[destOffset + 3] = Math.fma(_selfw, _t2, -(_selfx * _t1));
         return dest;
     }
 
@@ -5932,12 +5937,12 @@ public final class FloatQuatOps {
         float _selfz = src[srcOffset + 2];
         float _selfw = src[srcOffset + 3];
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        dest[destOffset + 0] = Math.fma(_selfx, _t1, _selfz * _t2);
-        dest[destOffset + 1] = Math.fma(_selfy, _t1, _selfw * _t2);
-        dest[destOffset + 2] = Math.fma(_selfz, _t1, -(_selfx * _t2));
-        dest[destOffset + 3] = Math.fma(_selfw, _t1, -(_selfy * _t2));
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        dest[destOffset + 0] = Math.fma(_selfx, _t2, _selfz * _t1);
+        dest[destOffset + 1] = Math.fma(_selfy, _t2, _selfw * _t1);
+        dest[destOffset + 2] = Math.fma(_selfz, _t2, -(_selfx * _t1));
+        dest[destOffset + 3] = Math.fma(_selfw, _t2, -(_selfy * _t1));
         return dest;
     }
 
@@ -5981,12 +5986,12 @@ public final class FloatQuatOps {
         float _selfz = src[srcOffset + 2];
         float _selfw = src[srcOffset + 3];
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        dest[destOffset + 0] = Math.fma(_selfx, _t1, -(_selfy * _t2));
-        dest[destOffset + 1] = Math.fma(_selfx, _t2, _selfy * _t1);
-        dest[destOffset + 2] = Math.fma(_selfz, _t1, _selfw * _t2);
-        dest[destOffset + 3] = Math.fma(_selfw, _t1, -(_selfz * _t2));
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        dest[destOffset + 0] = Math.fma(_selfx, _t2, -(_selfy * _t1));
+        dest[destOffset + 1] = Math.fma(_selfx, _t1, _selfy * _t2);
+        dest[destOffset + 2] = Math.fma(_selfz, _t2, _selfw * _t1);
+        dest[destOffset + 3] = Math.fma(_selfw, _t2, -(_selfz * _t1));
         return dest;
     }
 
@@ -6036,15 +6041,15 @@ public final class FloatQuatOps {
         float _selfz = src[srcOffset + 2];
         float _selfw = src[srcOffset + 3];
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _t3 = axisX * _t2;
-        float _t4 = axisZ * _t2;
-        float _t5 = axisY * _t2;
-        dest[destOffset + 0] = Math.fma(_selfx, _t1, _selfw * _t3) + Math.fma(_selfy, _t4, -(_selfz * _t5));
-        dest[destOffset + 1] = Math.fma(_selfy, _t1, _selfz * _t3) + Math.fma(_selfw, _t5, -(_selfx * _t4));
-        dest[destOffset + 2] = Math.fma(_selfx, _t5, _selfw * _t4) + Math.fma(_selfz, _t1, -(_selfy * _t3));
-        dest[destOffset + 3] = Math.fma(_selfw, _t1, -(_selfx * _t3)) - Math.fma(_selfy, _t5, _selfz * _t4);
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = axisX * _t1;
+        float _t3 = axisZ * _t1;
+        float _t4 = axisY * _t1;
+        float _t5 = (float) Math.cosFromSin(_t1, _t0);
+        dest[destOffset + 0] = Math.fma(_selfx, _t5, _selfw * _t2) + Math.fma(_selfy, _t3, -(_selfz * _t4));
+        dest[destOffset + 1] = Math.fma(_selfy, _t5, _selfz * _t2) + Math.fma(_selfw, _t4, -(_selfx * _t3));
+        dest[destOffset + 2] = Math.fma(_selfx, _t4, _selfw * _t3) + Math.fma(_selfz, _t5, -(_selfy * _t2));
+        dest[destOffset + 3] = Math.fma(_selfw, _t5, -(_selfx * _t2)) - Math.fma(_selfy, _t4, _selfz * _t3);
         return dest;
     }
 
@@ -6093,15 +6098,15 @@ public final class FloatQuatOps {
         float _axisy = axis[axisOffset + 1];
         float _axisz = axis[axisOffset + 2];
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _t3 = _axisx * _t2;
-        float _t4 = _axisz * _t2;
-        float _t5 = _axisy * _t2;
-        dest[destOffset + 0] = Math.fma(_selfx, _t1, _selfw * _t3) + Math.fma(_selfy, _t4, -(_selfz * _t5));
-        dest[destOffset + 1] = Math.fma(_selfy, _t1, _selfz * _t3) + Math.fma(_selfw, _t5, -(_selfx * _t4));
-        dest[destOffset + 2] = Math.fma(_selfx, _t5, _selfw * _t4) + Math.fma(_selfz, _t1, -(_selfy * _t3));
-        dest[destOffset + 3] = Math.fma(_selfw, _t1, -(_selfx * _t3)) - Math.fma(_selfy, _t5, _selfz * _t4);
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = _axisx * _t1;
+        float _t3 = _axisz * _t1;
+        float _t4 = _axisy * _t1;
+        float _t5 = (float) Math.cosFromSin(_t1, _t0);
+        dest[destOffset + 0] = Math.fma(_selfx, _t5, _selfw * _t2) + Math.fma(_selfy, _t3, -(_selfz * _t4));
+        dest[destOffset + 1] = Math.fma(_selfy, _t5, _selfz * _t2) + Math.fma(_selfw, _t4, -(_selfx * _t3));
+        dest[destOffset + 2] = Math.fma(_selfx, _t4, _selfw * _t3) + Math.fma(_selfz, _t5, -(_selfy * _t2));
+        dest[destOffset + 3] = Math.fma(_selfw, _t5, -(_selfx * _t2)) - Math.fma(_selfy, _t4, _selfz * _t3);
         return dest;
     }
 
@@ -6341,12 +6346,12 @@ public final class FloatQuatOps {
         float _selfz = src[srcOffset + 2];
         float _selfw = src[srcOffset + 3];
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        dest[destOffset + 0] = Math.fma(_selfx, _t1, _selfw * _t2);
-        dest[destOffset + 1] = Math.fma(_selfy, _t1, _selfz * _t2);
-        dest[destOffset + 2] = Math.fma(_selfz, _t1, -(_selfy * _t2));
-        dest[destOffset + 3] = Math.fma(_selfw, _t1, -(_selfx * _t2));
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        dest[destOffset + 0] = Math.fma(_selfx, _t2, _selfw * _t1);
+        dest[destOffset + 1] = Math.fma(_selfy, _t2, _selfz * _t1);
+        dest[destOffset + 2] = Math.fma(_selfz, _t2, -(_selfy * _t1));
+        dest[destOffset + 3] = Math.fma(_selfw, _t2, -(_selfx * _t1));
         return dest;
     }
 
@@ -6396,20 +6401,20 @@ public final class FloatQuatOps {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t6 * _t4;
-        float _t12 = _t7 * _t3;
-        float _t19 = Math.fma(_t11, _t5, _t12 * _t8);
-        float _t20 = Math.fma(_t10, _t5, _t9 * _t8);
-        float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        float _t22 = Math.fma(_t12, _t5, -(_t11 * _t8));
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t14 = _t6 * _t7;
+        float _t19 = Math.fma(_t10, _t8, _t11 * _t5);
+        float _t20 = Math.fma(_t9, _t8, _t14 * _t5);
+        float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
         dest[destOffset + 0] = Math.fma(_selfx, _t21, _selfw * _t19) + Math.fma(_selfy, _t20, -(_selfz * _t22));
         dest[destOffset + 1] = Math.fma(_selfy, _t21, _selfz * _t19) + Math.fma(_selfw, _t22, -(_selfx * _t20));
         dest[destOffset + 2] = Math.fma(_selfx, _t22, _selfw * _t20) + Math.fma(_selfz, _t21, -(_selfy * _t19));
@@ -6466,17 +6471,17 @@ public final class FloatQuatOps {
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t7;
-        float _t12 = _t4 * _t6;
-        float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        float _t20 = Math.fma(_t11, _t5, _t12 * _t8);
-        float _t21 = Math.fma(_t11, _t8, -(_t12 * _t5));
-        float _t22 = Math.fma(_t10, _t5, -(_t9 * _t8));
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t12 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        float _t20 = Math.fma(_t10, _t5, _t11 * _t8);
+        float _t21 = Math.fma(_t10, _t8, -(_t11 * _t5));
+        float _t22 = Math.fma(_t12, _t5, -(_t9 * _t8));
         dest[destOffset + 0] = Math.fma(_selfx, _t19, _selfw * _t21) + Math.fma(_selfy, _t20, -(_selfz * _t22));
         dest[destOffset + 1] = Math.fma(_selfy, _t19, _selfz * _t21) + Math.fma(_selfw, _t22, -(_selfx * _t20));
         dest[destOffset + 2] = Math.fma(_selfx, _t22, _selfw * _t20) + Math.fma(_selfz, _t19, -(_selfy * _t21));
@@ -6520,12 +6525,12 @@ public final class FloatQuatOps {
         float _selfz = src[srcOffset + 2];
         float _selfw = src[srcOffset + 3];
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        dest[destOffset + 0] = Math.fma(_selfx, _t1, -(_selfz * _t2));
-        dest[destOffset + 1] = Math.fma(_selfy, _t1, _selfw * _t2);
-        dest[destOffset + 2] = Math.fma(_selfx, _t2, _selfz * _t1);
-        dest[destOffset + 3] = Math.fma(_selfw, _t1, -(_selfy * _t2));
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        dest[destOffset + 0] = Math.fma(_selfx, _t2, -(_selfz * _t1));
+        dest[destOffset + 1] = Math.fma(_selfy, _t2, _selfw * _t1);
+        dest[destOffset + 2] = Math.fma(_selfx, _t1, _selfz * _t2);
+        dest[destOffset + 3] = Math.fma(_selfw, _t2, -(_selfy * _t1));
         return dest;
     }
 
@@ -6578,17 +6583,17 @@ public final class FloatQuatOps {
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t7;
-        float _t12 = _t4 * _t6;
-        float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        float _t20 = Math.fma(_t11, _t8, _t12 * _t5);
-        float _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        float _t22 = Math.fma(_t12, _t8, -(_t11 * _t5));
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t12 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        float _t20 = Math.fma(_t10, _t8, _t11 * _t5);
+        float _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
+        float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
         dest[destOffset + 0] = Math.fma(_selfx, _t19, _selfw * _t20) + Math.fma(_selfy, _t21, -(_selfz * _t22));
         dest[destOffset + 1] = Math.fma(_selfy, _t19, _selfz * _t20) + Math.fma(_selfw, _t22, -(_selfx * _t21));
         dest[destOffset + 2] = Math.fma(_selfx, _t22, _selfw * _t21) + Math.fma(_selfz, _t19, -(_selfy * _t20));
@@ -6642,20 +6647,20 @@ public final class FloatQuatOps {
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t3;
-        float _t12 = _t6 * _t4;
-        float _t19 = Math.fma(_t10, _t5, _t9 * _t8);
-        float _t20 = Math.fma(_t12, _t5, _t11 * _t8);
-        float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+        float _t10 = _t4 * _t6;
+        float _t11 = _t3 * _t7;
+        float _t14 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t8, _t14 * _t5);
+        float _t20 = Math.fma(_t11, _t8, _t10 * _t5);
+        float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         dest[destOffset + 0] = Math.fma(_selfx, _t21, _selfw * _t19) + Math.fma(_selfy, _t22, -(_selfz * _t20));
         dest[destOffset + 1] = Math.fma(_selfy, _t21, _selfz * _t19) + Math.fma(_selfw, _t20, -(_selfx * _t22));
         dest[destOffset + 2] = Math.fma(_selfx, _t20, _selfw * _t22) + Math.fma(_selfz, _t21, -(_selfy * _t19));
@@ -6699,12 +6704,12 @@ public final class FloatQuatOps {
         float _selfz = src[srcOffset + 2];
         float _selfw = src[srcOffset + 3];
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        dest[destOffset + 0] = Math.fma(_selfx, _t1, _selfy * _t2);
-        dest[destOffset + 1] = Math.fma(_selfy, _t1, -(_selfx * _t2));
-        dest[destOffset + 2] = Math.fma(_selfz, _t1, _selfw * _t2);
-        dest[destOffset + 3] = Math.fma(_selfw, _t1, -(_selfz * _t2));
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        dest[destOffset + 0] = Math.fma(_selfx, _t2, _selfy * _t1);
+        dest[destOffset + 1] = Math.fma(_selfy, _t2, -(_selfx * _t1));
+        dest[destOffset + 2] = Math.fma(_selfz, _t2, _selfw * _t1);
+        dest[destOffset + 3] = Math.fma(_selfw, _t2, -(_selfz * _t1));
         return dest;
     }
 
@@ -6754,20 +6759,20 @@ public final class FloatQuatOps {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t6 * _t4;
-        float _t12 = _t7 * _t3;
-        float _t19 = Math.fma(_t11, _t8, _t12 * _t5);
-        float _t20 = Math.fma(_t10, _t5, _t9 * _t8);
-        float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t14 = _t6 * _t7;
+        float _t19 = Math.fma(_t10, _t5, _t11 * _t8);
+        float _t20 = Math.fma(_t9, _t8, _t14 * _t5);
+        float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         dest[destOffset + 0] = Math.fma(_selfx, _t21, _selfw * _t22) + Math.fma(_selfy, _t19, -(_selfz * _t20));
         dest[destOffset + 1] = Math.fma(_selfy, _t21, _selfz * _t22) + Math.fma(_selfw, _t20, -(_selfx * _t19));
         dest[destOffset + 2] = Math.fma(_selfx, _t20, _selfw * _t19) + Math.fma(_selfz, _t21, -(_selfy * _t22));
@@ -6824,17 +6829,17 @@ public final class FloatQuatOps {
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t4 * _t6;
-        float _t12 = _t3 * _t7;
-        float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        float _t20 = Math.fma(_t12, _t8, _t11 * _t5);
-        float _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        float _t22 = Math.fma(_t11, _t8, -(_t12 * _t5));
+        float _t10 = _t4 * _t6;
+        float _t11 = _t3 * _t7;
+        float _t12 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        float _t20 = Math.fma(_t11, _t8, _t10 * _t5);
+        float _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         dest[destOffset + 0] = Math.fma(_selfx, _t19, _selfw * _t21) + Math.fma(_selfy, _t22, -(_selfz * _t20));
         dest[destOffset + 1] = Math.fma(_selfy, _t19, _selfz * _t21) + Math.fma(_selfw, _t20, -(_selfx * _t22));
         dest[destOffset + 2] = Math.fma(_selfx, _t20, _selfw * _t22) + Math.fma(_selfz, _t19, -(_selfy * _t21));

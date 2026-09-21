@@ -6728,10 +6728,10 @@ public final class Double2Ops {
     public static double[] rotate(double[] dest, int destOffset, double[] src, int srcOffset, double angle) {
         double _selfx = src[srcOffset + 0];
         double _selfy = src[srcOffset + 1];
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        dest[destOffset + 0] = Math.fma(_selfx, _t0, -(_selfy * _t1));
-        dest[destOffset + 1] = Math.fma(_selfx, _t1, _selfy * _t0);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        dest[destOffset + 0] = Math.fma(_selfx, _t1, -(_selfy * _t0));
+        dest[destOffset + 1] = Math.fma(_selfx, _t0, _selfy * _t1);
         return dest;
     }
 

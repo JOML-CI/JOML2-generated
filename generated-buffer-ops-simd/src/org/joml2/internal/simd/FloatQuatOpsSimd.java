@@ -1267,7 +1267,8 @@ public final class FloatQuatOpsSimd {
         float _t0 = (float) Math.exp(src[srcOffset + 3]);
         float _t3 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
         float _t4 = (float) Math.sqrt(_t3);
-        var _c0 = (_t3  >  0.0f ? FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).withLane(3, (float) Math.cos(_t4)).mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t4) * _t0 * (1.0f / (float) Math.sqrt(_t3))).withLane(3, _t0)) : FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.cos(_t4) * _t0));
+        float _t6 = (float) Math.sin(_t4);
+        var _c0 = (_t3  >  0.0f ? FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).withLane(3, (float) Math.cosFromSin(_t6, _t4)).mul(FloatVector.broadcast(SIMD_SPECIES, _t6 * _t0 * (1.0f / (float) Math.sqrt(_t3))).withLane(3, _t0)) : FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.cosFromSin(_t6, _t4) * _t0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -1285,7 +1286,8 @@ public final class FloatQuatOpsSimd {
         float _t0 = (float) Math.exp(UnsafeOpsHolder.U.getFloat(_srcBase + 12L));
         float _t3 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
         float _t4 = (float) Math.sqrt(_t3);
-        var _c0 = (_t3  >  0.0f ? FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).withLane(3, (float) Math.cos(_t4)).mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t4) * _t0 * (1.0f / (float) Math.sqrt(_t3))).withLane(3, _t0)) : FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.cos(_t4) * _t0));
+        float _t6 = (float) Math.sin(_t4);
+        var _c0 = (_t3  >  0.0f ? FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).withLane(3, (float) Math.cosFromSin(_t6, _t4)).mul(FloatVector.broadcast(SIMD_SPECIES, _t6 * _t0 * (1.0f / (float) Math.sqrt(_t3))).withLane(3, _t0)) : FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.cosFromSin(_t6, _t4) * _t0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1297,7 +1299,8 @@ public final class FloatQuatOpsSimd {
         float _t0 = (float) Math.exp(src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L));
         float _t3 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
         float _t4 = (float) Math.sqrt(_t3);
-        var _c0 = (_t3  >  0.0f ? FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).withLane(3, (float) Math.cos(_t4)).mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t4) * _t0 * (1.0f / (float) Math.sqrt(_t3))).withLane(3, _t0)) : FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.cos(_t4) * _t0));
+        float _t6 = (float) Math.sin(_t4);
+        var _c0 = (_t3  >  0.0f ? FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).withLane(3, (float) Math.cosFromSin(_t6, _t4)).mul(FloatVector.broadcast(SIMD_SPECIES, _t6 * _t0 * (1.0f / (float) Math.sqrt(_t3))).withLane(3, _t0)) : FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.cosFromSin(_t6, _t4) * _t0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1370,7 +1373,8 @@ public final class FloatQuatOpsSimd {
         float _t20 = t * (_t2 > 0.0f ? _selfy * _t11 : 0.0f);
         float _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
         float _t24 = (float) Math.sqrt(_t23);
-        var _c0 = (_t23  >  0.0f ? FloatVector.zero(SIMD_SPECIES).withLane(0, _t19).withLane(1, _t20).withLane(2, _t18).withLane(3, (float) Math.cos(_t24)).mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t24) * _t10 * (1.0f / (float) Math.sqrt(_t23))).withLane(3, _t10)) : FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.cos(_t24) * _t10));
+        float _t26 = (float) Math.sin(_t24);
+        var _c0 = (_t23  >  0.0f ? FloatVector.zero(SIMD_SPECIES).withLane(0, _t19).withLane(1, _t20).withLane(2, _t18).withLane(3, (float) Math.cosFromSin(_t26, _t24)).mul(FloatVector.broadcast(SIMD_SPECIES, _t26 * _t10 * (1.0f / (float) Math.sqrt(_t23))).withLane(3, _t10)) : FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.cosFromSin(_t26, _t24) * _t10));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -1394,7 +1398,8 @@ public final class FloatQuatOpsSimd {
         float _t20 = t * (_t2 > 0.0f ? _selfy * _t11 : 0.0f);
         float _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
         float _t24 = (float) Math.sqrt(_t23);
-        var _c0 = (_t23  >  0.0f ? FloatVector.zero(SIMD_SPECIES).withLane(0, _t19).withLane(1, _t20).withLane(2, _t18).withLane(3, (float) Math.cos(_t24)).mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t24) * _t10 * (1.0f / (float) Math.sqrt(_t23))).withLane(3, _t10)) : FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.cos(_t24) * _t10));
+        float _t26 = (float) Math.sin(_t24);
+        var _c0 = (_t23  >  0.0f ? FloatVector.zero(SIMD_SPECIES).withLane(0, _t19).withLane(1, _t20).withLane(2, _t18).withLane(3, (float) Math.cosFromSin(_t26, _t24)).mul(FloatVector.broadcast(SIMD_SPECIES, _t26 * _t10 * (1.0f / (float) Math.sqrt(_t23))).withLane(3, _t10)) : FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.cosFromSin(_t26, _t24) * _t10));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1412,7 +1417,8 @@ public final class FloatQuatOpsSimd {
         float _t20 = t * (_t2 > 0.0f ? _selfy * _t11 : 0.0f);
         float _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
         float _t24 = (float) Math.sqrt(_t23);
-        var _c0 = (_t23  >  0.0f ? FloatVector.zero(SIMD_SPECIES).withLane(0, _t19).withLane(1, _t20).withLane(2, _t18).withLane(3, (float) Math.cos(_t24)).mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t24) * _t10 * (1.0f / (float) Math.sqrt(_t23))).withLane(3, _t10)) : FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.cos(_t24) * _t10));
+        float _t26 = (float) Math.sin(_t24);
+        var _c0 = (_t23  >  0.0f ? FloatVector.zero(SIMD_SPECIES).withLane(0, _t19).withLane(1, _t20).withLane(2, _t18).withLane(3, (float) Math.cosFromSin(_t26, _t24)).mul(FloatVector.broadcast(SIMD_SPECIES, _t26 * _t10 * (1.0f / (float) Math.sqrt(_t23))).withLane(3, _t10)) : FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.cosFromSin(_t26, _t24) * _t10));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1562,14 +1568,16 @@ public final class FloatQuatOpsSimd {
 
     public static float[] makeRotationAxis_fma(float[] dest, int destOffset, float angle, float axisX, float axisY, float axisZ) {
         float _t0 = 0.5f * angle;
-        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cos(_t0)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t0))));
+        float _t1 = (float) Math.sin(_t0);
+        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cosFromSin(_t1, _t0)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(FloatVector.broadcast(SIMD_SPECIES, _t1)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
 
     public static float[] makeRotationAxis_mulAdd(float[] dest, int destOffset, float angle, float axisX, float axisY, float axisZ) {
         float _t0 = 0.5f * angle;
-        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cos(_t0)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t0))));
+        float _t1 = (float) Math.sin(_t0);
+        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cosFromSin(_t1, _t0)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(FloatVector.broadcast(SIMD_SPECIES, _t1)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -1581,14 +1589,16 @@ public final class FloatQuatOpsSimd {
 
     public static java.lang.foreign.MemorySegment makeRotationAxis_fma(java.lang.foreign.MemorySegment dest, long destOffset, float angle, float axisX, float axisY, float axisZ) {
         float _t0 = 0.5f * angle;
-        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cos(_t0)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t0))));
+        float _t1 = (float) Math.sin(_t0);
+        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cosFromSin(_t1, _t0)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(FloatVector.broadcast(SIMD_SPECIES, _t1)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
 
     public static java.lang.foreign.MemorySegment makeRotationAxis_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, float angle, float axisX, float axisY, float axisZ) {
         float _t0 = 0.5f * angle;
-        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cos(_t0)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t0))));
+        float _t1 = (float) Math.sin(_t0);
+        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cosFromSin(_t1, _t0)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(FloatVector.broadcast(SIMD_SPECIES, _t1)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1600,14 +1610,16 @@ public final class FloatQuatOpsSimd {
 
     public static float[] makeRotationAxis_fma(float[] dest, int destOffset, float[] axis, int axisOffset, float angle) {
         float _t0 = 0.5f * angle;
-        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cos(_t0)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, axis[axisOffset + 0]).withLane(1, axis[axisOffset + 1]).withLane(2, axis[axisOffset + 2]).mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t0))));
+        float _t1 = (float) Math.sin(_t0);
+        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cosFromSin(_t1, _t0)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, axis[axisOffset + 0]).withLane(1, axis[axisOffset + 1]).withLane(2, axis[axisOffset + 2]).mul(FloatVector.broadcast(SIMD_SPECIES, _t1)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
 
     public static float[] makeRotationAxis_mulAdd(float[] dest, int destOffset, float[] axis, int axisOffset, float angle) {
         float _t0 = 0.5f * angle;
-        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cos(_t0)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, axis[axisOffset + 0]).withLane(1, axis[axisOffset + 1]).withLane(2, axis[axisOffset + 2]).mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t0))));
+        float _t1 = (float) Math.sin(_t0);
+        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cosFromSin(_t1, _t0)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, axis[axisOffset + 0]).withLane(1, axis[axisOffset + 1]).withLane(2, axis[axisOffset + 2]).mul(FloatVector.broadcast(SIMD_SPECIES, _t1)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -1625,14 +1637,16 @@ public final class FloatQuatOpsSimd {
     public static java.lang.foreign.MemorySegment makeRotationAxis_fma_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment axis, long axisOffset, float angle) {
         long _axisBase = axis.address() + axisOffset;
         float _t0 = 0.5f * angle;
-        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cos(_t0)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, UnsafeOpsHolder.U.getFloat(_axisBase + 0L)).withLane(1, UnsafeOpsHolder.U.getFloat(_axisBase + 4L)).withLane(2, UnsafeOpsHolder.U.getFloat(_axisBase + 8L)).mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t0))));
+        float _t1 = (float) Math.sin(_t0);
+        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cosFromSin(_t1, _t0)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, UnsafeOpsHolder.U.getFloat(_axisBase + 0L)).withLane(1, UnsafeOpsHolder.U.getFloat(_axisBase + 4L)).withLane(2, UnsafeOpsHolder.U.getFloat(_axisBase + 8L)).mul(FloatVector.broadcast(SIMD_SPECIES, _t1)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
 
     public static java.lang.foreign.MemorySegment makeRotationAxis_fma_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment axis, long axisOffset, float angle) {
         float _t0 = 0.5f * angle;
-        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cos(_t0)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 0L)).withLane(1, axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 4L)).withLane(2, axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 8L)).mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t0))));
+        float _t1 = (float) Math.sin(_t0);
+        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cosFromSin(_t1, _t0)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 0L)).withLane(1, axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 4L)).withLane(2, axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 8L)).mul(FloatVector.broadcast(SIMD_SPECIES, _t1)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1645,14 +1659,16 @@ public final class FloatQuatOpsSimd {
     public static java.lang.foreign.MemorySegment makeRotationAxis_mulAdd_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment axis, long axisOffset, float angle) {
         long _axisBase = axis.address() + axisOffset;
         float _t0 = 0.5f * angle;
-        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cos(_t0)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, UnsafeOpsHolder.U.getFloat(_axisBase + 0L)).withLane(1, UnsafeOpsHolder.U.getFloat(_axisBase + 4L)).withLane(2, UnsafeOpsHolder.U.getFloat(_axisBase + 8L)).mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t0))));
+        float _t1 = (float) Math.sin(_t0);
+        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cosFromSin(_t1, _t0)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, UnsafeOpsHolder.U.getFloat(_axisBase + 0L)).withLane(1, UnsafeOpsHolder.U.getFloat(_axisBase + 4L)).withLane(2, UnsafeOpsHolder.U.getFloat(_axisBase + 8L)).mul(FloatVector.broadcast(SIMD_SPECIES, _t1)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
 
     public static java.lang.foreign.MemorySegment makeRotationAxis_mulAdd_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment axis, long axisOffset, float angle) {
         float _t0 = 0.5f * angle;
-        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cos(_t0)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 0L)).withLane(1, axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 4L)).withLane(2, axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 8L)).mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t0))));
+        float _t1 = (float) Math.sin(_t0);
+        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cosFromSin(_t1, _t0)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 0L)).withLane(1, axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 4L)).withLane(2, axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 8L)).mul(FloatVector.broadcast(SIMD_SPECIES, _t1)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -2367,16 +2383,16 @@ public final class FloatQuatOpsSimd {
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t4;
-        float _t12 = _t3 * _t6;
-        var _c0 = FloatVector.zero(SIMD_SPECIES).withLane(0, _t9).withLane(1, _t10).withLane(3, _t11).fma(FloatVector.broadcast(SIMD_SPECIES, _t5), FloatVector.broadcast(SIMD_SPECIES, _t10).withLane(3, _t12).mul(FloatVector.broadcast(SIMD_SPECIES, _t8)).withLane(1, -(_t9 * _t8))).withLane(2, _t11 * _t8 - _t12 * _t5);
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        var _c0 = FloatVector.zero(SIMD_SPECIES).withLane(0, _t11).withLane(2, _t12).withLane(3, _t9).fma(FloatVector.broadcast(SIMD_SPECIES, _t5), FloatVector.broadcast(SIMD_SPECIES, _t10).withLane(3, _t12).mul(FloatVector.broadcast(SIMD_SPECIES, _t7)).withLane(2, -(_t9 * _t7))).withLane(1, _t11 * _t7 - _t10 * _t5);
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -2386,16 +2402,16 @@ public final class FloatQuatOpsSimd {
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t4;
-        float _t12 = _t3 * _t6;
-        var _c0 = FloatVector.zero(SIMD_SPECIES).withLane(0, _t9).withLane(1, _t10).withLane(3, _t11).mul(FloatVector.broadcast(SIMD_SPECIES, _t5)).add(FloatVector.broadcast(SIMD_SPECIES, _t10).withLane(3, _t12).mul(FloatVector.broadcast(SIMD_SPECIES, _t8)).withLane(1, -(_t9 * _t8))).withLane(2, _t11 * _t8 - _t12 * _t5);
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        var _c0 = FloatVector.zero(SIMD_SPECIES).withLane(0, _t11).withLane(2, _t12).withLane(3, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, _t5)).add(FloatVector.broadcast(SIMD_SPECIES, _t10).withLane(3, _t12).mul(FloatVector.broadcast(SIMD_SPECIES, _t7)).withLane(2, -(_t9 * _t7))).withLane(1, _t11 * _t7 - _t10 * _t5);
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -2410,16 +2426,16 @@ public final class FloatQuatOpsSimd {
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t4;
-        float _t12 = _t3 * _t6;
-        var _c0 = FloatVector.zero(SIMD_SPECIES).withLane(0, _t9).withLane(1, _t10).withLane(3, _t11).fma(FloatVector.broadcast(SIMD_SPECIES, _t5), FloatVector.broadcast(SIMD_SPECIES, _t10).withLane(3, _t12).mul(FloatVector.broadcast(SIMD_SPECIES, _t8)).withLane(1, -(_t9 * _t8))).withLane(2, _t11 * _t8 - _t12 * _t5);
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        var _c0 = FloatVector.zero(SIMD_SPECIES).withLane(0, _t11).withLane(2, _t12).withLane(3, _t9).fma(FloatVector.broadcast(SIMD_SPECIES, _t5), FloatVector.broadcast(SIMD_SPECIES, _t10).withLane(3, _t12).mul(FloatVector.broadcast(SIMD_SPECIES, _t7)).withLane(2, -(_t9 * _t7))).withLane(1, _t11 * _t7 - _t10 * _t5);
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -2429,16 +2445,16 @@ public final class FloatQuatOpsSimd {
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t4;
-        float _t12 = _t3 * _t6;
-        var _c0 = FloatVector.zero(SIMD_SPECIES).withLane(0, _t9).withLane(1, _t10).withLane(3, _t11).mul(FloatVector.broadcast(SIMD_SPECIES, _t5)).add(FloatVector.broadcast(SIMD_SPECIES, _t10).withLane(3, _t12).mul(FloatVector.broadcast(SIMD_SPECIES, _t8)).withLane(1, -(_t9 * _t8))).withLane(2, _t11 * _t8 - _t12 * _t5);
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        var _c0 = FloatVector.zero(SIMD_SPECIES).withLane(0, _t11).withLane(2, _t12).withLane(3, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, _t5)).add(FloatVector.broadcast(SIMD_SPECIES, _t10).withLane(3, _t12).mul(FloatVector.broadcast(SIMD_SPECIES, _t7)).withLane(2, -(_t9 * _t7))).withLane(1, _t11 * _t7 - _t10 * _t5);
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }

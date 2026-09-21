@@ -137,7 +137,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
     public static FloatRigid makeFromAxisAngle(float axisX, float axisY, float axisZ, float angle, float translationX, float translationY, float translationZ) {
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
-        return new FloatRigid(translationX, translationY, translationZ, axisX * _t1, axisY * _t1, axisZ * _t1, (float) Math.cos(_t0));
+        return new FloatRigid(translationX, translationY, translationZ, axisX * _t1, axisY * _t1, axisZ * _t1, (float) Math.cosFromSin(_t1, _t0));
     }
 
 
@@ -1387,7 +1387,7 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return makeRotationZ(axisZ * angle);
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
-        return new FloatRigid(0.0f, 0.0f, 0.0f, axisX * _t1, axisY * _t1, axisZ * _t1, (float) Math.cos(_t0));
+        return new FloatRigid(0.0f, 0.0f, 0.0f, axisX * _t1, axisY * _t1, axisZ * _t1, (float) Math.cosFromSin(_t1, _t0));
     }
 
 
@@ -1399,7 +1399,8 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      */
     public static FloatRigid makeRotationX(float angle) {
         float _t0 = 0.5f * angle;
-        return new FloatRigid(0.0f, 0.0f, 0.0f, (float) Math.sin(_t0), 0.0f, 0.0f, (float) Math.cos(_t0));
+        float _t1 = (float) Math.sin(_t0);
+        return new FloatRigid(0.0f, 0.0f, 0.0f, _t1, 0.0f, 0.0f, (float) Math.cosFromSin(_t1, _t0));
     }
 
 
@@ -1418,16 +1419,16 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t6;
-        float _t12 = _t7 * _t4;
-        return new FloatRigid(0.0f, 0.0f, 0.0f, Math.fma(_t9, _t5, _t10 * _t8), Math.fma(_t10, _t5, -(_t9 * _t8)), Math.fma(_t11, _t5, _t12 * _t8), Math.fma(_t12, _t5, -(_t11 * _t8)));
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        return new FloatRigid(0.0f, 0.0f, 0.0f, Math.fma(_t10, _t7, _t11 * _t5), Math.fma(_t11, _t7, -(_t10 * _t5)), Math.fma(_t9, _t7, _t12 * _t5), Math.fma(_t12, _t7, -(_t9 * _t5)));
     }
 
 
@@ -1446,16 +1447,16 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t4;
-        float _t12 = _t3 * _t6;
-        return new FloatRigid(0.0f, 0.0f, 0.0f, Math.fma(_t9, _t5, -(_t10 * _t8)), Math.fma(_t11, _t8, -(_t12 * _t5)), Math.fma(_t9, _t8, _t10 * _t5), Math.fma(_t12, _t8, _t11 * _t5));
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        return new FloatRigid(0.0f, 0.0f, 0.0f, Math.fma(_t10, _t7, -(_t11 * _t5)), Math.fma(_t12, _t5, -(_t9 * _t7)), Math.fma(_t10, _t5, _t11 * _t7), Math.fma(_t9, _t5, _t12 * _t7));
     }
 
 
@@ -1467,7 +1468,8 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      */
     public static FloatRigid makeRotationY(float angle) {
         float _t0 = 0.5f * angle;
-        return new FloatRigid(0.0f, 0.0f, 0.0f, 0.0f, (float) Math.sin(_t0), 0.0f, (float) Math.cos(_t0));
+        float _t1 = (float) Math.sin(_t0);
+        return new FloatRigid(0.0f, 0.0f, 0.0f, 0.0f, _t1, 0.0f, (float) Math.cosFromSin(_t1, _t0));
     }
 
 
@@ -1486,16 +1488,16 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t4;
-        float _t12 = _t3 * _t6;
-        return new FloatRigid(0.0f, 0.0f, 0.0f, Math.fma(_t9, _t5, _t10 * _t8), Math.fma(_t10, _t5, -(_t9 * _t8)), Math.fma(_t11, _t8, -(_t12 * _t5)), Math.fma(_t12, _t8, _t11 * _t5));
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        return new FloatRigid(0.0f, 0.0f, 0.0f, Math.fma(_t10, _t7, _t11 * _t5), Math.fma(_t11, _t7, -(_t10 * _t5)), Math.fma(_t12, _t5, -(_t9 * _t7)), Math.fma(_t9, _t5, _t12 * _t7));
     }
 
 
@@ -1515,15 +1517,15 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
         float _t2 = 0.5f * angleX;
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t5, _t2);
+        float _t7 = (float) Math.cosFromSin(_t3, _t0);
+        float _t8 = (float) Math.cosFromSin(_t4, _t1);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t7;
-        float _t12 = _t4 * _t6;
-        return new FloatRigid(0.0f, 0.0f, 0.0f, Math.fma(_t9, _t5, _t10 * _t8), Math.fma(_t11, _t5, _t12 * _t8), Math.fma(_t12, _t5, -(_t11 * _t8)), Math.fma(_t10, _t5, -(_t9 * _t8)));
+        float _t10 = _t3 * _t8;
+        float _t11 = _t4 * _t7;
+        float _t12 = _t7 * _t8;
+        return new FloatRigid(0.0f, 0.0f, 0.0f, Math.fma(_t9, _t6, _t12 * _t5), Math.fma(_t10, _t6, _t11 * _t5), Math.fma(_t11, _t6, -(_t10 * _t5)), Math.fma(_t12, _t6, -(_t9 * _t5)));
     }
 
 
@@ -1535,7 +1537,8 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      */
     public static FloatRigid makeRotationZ(float angle) {
         float _t0 = 0.5f * angle;
-        return new FloatRigid(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, (float) Math.sin(_t0), (float) Math.cos(_t0));
+        float _t1 = (float) Math.sin(_t0);
+        return new FloatRigid(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, _t1, (float) Math.cosFromSin(_t1, _t0));
     }
 
 
@@ -1554,16 +1557,16 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t6;
-        float _t12 = _t7 * _t4;
-        return new FloatRigid(0.0f, 0.0f, 0.0f, Math.fma(_t9, _t5, -(_t10 * _t8)), Math.fma(_t11, _t5, _t12 * _t8), Math.fma(_t9, _t8, _t10 * _t5), Math.fma(_t12, _t5, -(_t11 * _t8)));
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        return new FloatRigid(0.0f, 0.0f, 0.0f, Math.fma(_t10, _t7, -(_t11 * _t5)), Math.fma(_t9, _t7, _t12 * _t5), Math.fma(_t10, _t5, _t11 * _t7), Math.fma(_t12, _t7, -(_t9 * _t5)));
     }
 
 
@@ -1581,17 +1584,17 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t6 * _t4;
-        float _t12 = _t7 * _t3;
-        return new FloatRigid(0.0f, 0.0f, 0.0f, Math.fma(_t9, _t5, -(_t10 * _t8)), Math.fma(_t11, _t8, _t12 * _t5), Math.fma(_t12, _t8, -(_t11 * _t5)), Math.fma(_t10, _t5, _t9 * _t8));
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t12 = _t6 * _t7;
+        return new FloatRigid(0.0f, 0.0f, 0.0f, Math.fma(_t12, _t5, -(_t9 * _t8)), Math.fma(_t10, _t8, _t11 * _t5), Math.fma(_t11, _t8, -(_t10 * _t5)), Math.fma(_t9, _t5, _t12 * _t8));
     }
 
 
@@ -1678,12 +1681,12 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle);
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _t3 = axisX * _t2;
-        float _t4 = axisZ * _t2;
-        float _t5 = axisY * _t2;
-        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t1, this.rW * _t3) + Math.fma(this.rY, _t4, -(this.rZ * _t5)), Math.fma(this.rY, _t1, this.rZ * _t3) + Math.fma(this.rW, _t5, -(this.rX * _t4)), Math.fma(this.rX, _t5, this.rW * _t4) + Math.fma(this.rZ, _t1, -(this.rY * _t3)), Math.fma(this.rW, _t1, -(this.rX * _t3)) - Math.fma(this.rY, _t5, this.rZ * _t4));
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = axisX * _t1;
+        float _t3 = axisZ * _t1;
+        float _t4 = axisY * _t1;
+        float _t5 = (float) Math.cosFromSin(_t1, _t0);
+        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t5, this.rW * _t2) + Math.fma(this.rY, _t3, -(this.rZ * _t4)), Math.fma(this.rY, _t5, this.rZ * _t2) + Math.fma(this.rW, _t4, -(this.rX * _t3)), Math.fma(this.rX, _t4, this.rW * _t3) + Math.fma(this.rZ, _t5, -(this.rY * _t2)), Math.fma(this.rW, _t5, -(this.rX * _t2)) - Math.fma(this.rY, _t4, this.rZ * _t3));
     }
 
 
@@ -1700,14 +1703,14 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      */
     public FloatRigid rotateX(float angle) {
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t1, this.rW * _t2), Math.fma(this.rY, _t1, this.rZ * _t2), Math.fma(this.rZ, _t1, -(this.rY * _t2)), Math.fma(this.rW, _t1, -(this.rX * _t2)));
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t2, this.rW * _t1), Math.fma(this.rY, _t2, this.rZ * _t1), Math.fma(this.rZ, _t2, -(this.rY * _t1)), Math.fma(this.rW, _t2, -(this.rX * _t1)));
     }
 
     /** Private tail of {@code rotateXYZ}; reached only through it. */
-    private FloatRigid rotateXYZ_s6e793366_tail(float _t12, float _t5, float _t11, float _t8, float _t21, float _t19, float _t20) {
-        float _t22 = Math.fma(_t12, _t5, -(_t11 * _t8));
+    private FloatRigid rotateXYZ_s6e793366_tail(float _t11, float _t8, float _t10, float _t5, float _t21, float _t19, float _t20) {
+        float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
         return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t22, -(this.rX * _t20)), Math.fma(this.rX, _t22, this.rW * _t20) + Math.fma(this.rZ, _t21, -(this.rY * _t19)), Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t22, this.rZ * _t20));
     }
 
@@ -1731,25 +1734,25 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t6 * _t4;
-        float _t12 = _t7 * _t3;
-        float _t19 = Math.fma(_t11, _t5, _t12 * _t8);
-        float _t20 = Math.fma(_t10, _t5, _t9 * _t8);
-        float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        return rotateXYZ_s6e793366_tail(_t12, _t5, _t11, _t8, _t21, _t19, _t20);
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t14 = _t6 * _t7;
+        float _t19 = Math.fma(_t10, _t8, _t11 * _t5);
+        float _t20 = Math.fma(_t9, _t8, _t14 * _t5);
+        float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        return rotateXYZ_s6e793366_tail(_t11, _t8, _t10, _t5, _t21, _t19, _t20);
     }
 
     /** Private tail of {@code rotateXZY}; reached only through it. */
-    private FloatRigid rotateXZY_s6e793366_tail(float _t10, float _t5, float _t9, float _t8, float _t19, float _t21, float _t20) {
-        float _t22 = Math.fma(_t10, _t5, -(_t9 * _t8));
+    private FloatRigid rotateXZY_s6e793366_tail(float _t12, float _t5, float _t9, float _t8, float _t19, float _t21, float _t20) {
+        float _t22 = Math.fma(_t12, _t5, -(_t9 * _t8));
         return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t22, -(this.rX * _t20)), Math.fma(this.rX, _t22, this.rW * _t20) + Math.fma(this.rZ, _t19, -(this.rY * _t21)), Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t22, this.rZ * _t20));
     }
 
@@ -1776,17 +1779,17 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t7;
-        float _t12 = _t4 * _t6;
-        float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        float _t20 = Math.fma(_t11, _t5, _t12 * _t8);
-        float _t21 = Math.fma(_t11, _t8, -(_t12 * _t5));
-        return rotateXZY_s6e793366_tail(_t10, _t5, _t9, _t8, _t19, _t21, _t20);
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t12 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        float _t20 = Math.fma(_t10, _t5, _t11 * _t8);
+        float _t21 = Math.fma(_t10, _t8, -(_t11 * _t5));
+        return rotateXZY_s6e793366_tail(_t12, _t5, _t9, _t8, _t19, _t21, _t20);
     }
 
 
@@ -1803,14 +1806,14 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      */
     public FloatRigid rotateY(float angle) {
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t1, -(this.rZ * _t2)), Math.fma(this.rY, _t1, this.rW * _t2), Math.fma(this.rX, _t2, this.rZ * _t1), Math.fma(this.rW, _t1, -(this.rY * _t2)));
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t2, -(this.rZ * _t1)), Math.fma(this.rY, _t2, this.rW * _t1), Math.fma(this.rX, _t1, this.rZ * _t2), Math.fma(this.rW, _t2, -(this.rY * _t1)));
     }
 
     /** Private tail of {@code rotateYXZ}; reached only through it. */
-    private FloatRigid rotateYXZ_s6e793366_tail(float _t12, float _t8, float _t11, float _t5, float _t19, float _t20, float _t21) {
-        float _t22 = Math.fma(_t12, _t8, -(_t11 * _t5));
+    private FloatRigid rotateYXZ_s6e793366_tail(float _t11, float _t8, float _t10, float _t5, float _t19, float _t20, float _t21) {
+        float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
         return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t20) + Math.fma(this.rY, _t21, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rZ * _t20) + Math.fma(this.rW, _t22, -(this.rX * _t21)), Math.fma(this.rX, _t22, this.rW * _t21) + Math.fma(this.rZ, _t19, -(this.rY * _t20)), Math.fma(this.rW, _t19, -(this.rX * _t20)) - Math.fma(this.rY, _t22, this.rZ * _t21));
     }
 
@@ -1837,22 +1840,22 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t7;
-        float _t12 = _t4 * _t6;
-        float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        float _t20 = Math.fma(_t11, _t8, _t12 * _t5);
-        float _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        return rotateYXZ_s6e793366_tail(_t12, _t8, _t11, _t5, _t19, _t20, _t21);
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t12 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        float _t20 = Math.fma(_t10, _t8, _t11 * _t5);
+        float _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
+        return rotateYXZ_s6e793366_tail(_t11, _t8, _t10, _t5, _t19, _t20, _t21);
     }
 
     /** Private tail of {@code rotateYZX}; reached only through it. */
-    private FloatRigid rotateYZX_s6e793366_tail(float _t11, float _t5, float _t12, float _t8, float _t21, float _t19, float _t20) {
-        float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+    private FloatRigid rotateYZX_s6e793366_tail(float _t10, float _t8, float _t11, float _t5, float _t21, float _t19, float _t20) {
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t20, -(this.rX * _t22)), Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t21, -(this.rY * _t19)), Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t20, this.rZ * _t22));
     }
 
@@ -1876,20 +1879,20 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t3;
-        float _t12 = _t6 * _t4;
-        float _t19 = Math.fma(_t10, _t5, _t9 * _t8);
-        float _t20 = Math.fma(_t12, _t5, _t11 * _t8);
-        float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        return rotateYZX_s6e793366_tail(_t11, _t5, _t12, _t8, _t21, _t19, _t20);
+        float _t10 = _t4 * _t6;
+        float _t11 = _t3 * _t7;
+        float _t14 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t8, _t14 * _t5);
+        float _t20 = Math.fma(_t11, _t8, _t10 * _t5);
+        float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        return rotateYZX_s6e793366_tail(_t10, _t8, _t11, _t5, _t21, _t19, _t20);
     }
 
 
@@ -1906,14 +1909,14 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
      */
     public FloatRigid rotateZ(float angle) {
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t1, this.rY * _t2), Math.fma(this.rY, _t1, -(this.rX * _t2)), Math.fma(this.rZ, _t1, this.rW * _t2), Math.fma(this.rW, _t1, -(this.rZ * _t2)));
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t2, this.rY * _t1), Math.fma(this.rY, _t2, -(this.rX * _t1)), Math.fma(this.rZ, _t2, this.rW * _t1), Math.fma(this.rW, _t2, -(this.rZ * _t1)));
     }
 
     /** Private tail of {@code rotateZXY}; reached only through it. */
-    private FloatRigid rotateZXY_s6e793366_tail(float _t11, float _t5, float _t12, float _t8, float _t21, float _t19, float _t20) {
-        float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+    private FloatRigid rotateZXY_s6e793366_tail(float _t10, float _t8, float _t11, float _t5, float _t21, float _t19, float _t20) {
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t22) + Math.fma(this.rY, _t19, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rZ * _t22) + Math.fma(this.rW, _t20, -(this.rX * _t19)), Math.fma(this.rX, _t20, this.rW * _t19) + Math.fma(this.rZ, _t21, -(this.rY * _t22)), Math.fma(this.rW, _t21, -(this.rX * _t22)) - Math.fma(this.rY, _t20, this.rZ * _t19));
     }
 
@@ -1937,25 +1940,25 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t6 * _t4;
-        float _t12 = _t7 * _t3;
-        float _t19 = Math.fma(_t11, _t8, _t12 * _t5);
-        float _t20 = Math.fma(_t10, _t5, _t9 * _t8);
-        float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        return rotateZXY_s6e793366_tail(_t11, _t5, _t12, _t8, _t21, _t19, _t20);
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t14 = _t6 * _t7;
+        float _t19 = Math.fma(_t10, _t5, _t11 * _t8);
+        float _t20 = Math.fma(_t9, _t8, _t14 * _t5);
+        float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        return rotateZXY_s6e793366_tail(_t10, _t8, _t11, _t5, _t21, _t19, _t20);
     }
 
     /** Private tail of {@code rotateZYX}; reached only through it. */
-    private FloatRigid rotateZYX_s6e793366_tail(float _t11, float _t8, float _t12, float _t5, float _t19, float _t21, float _t20) {
-        float _t22 = Math.fma(_t11, _t8, -(_t12 * _t5));
+    private FloatRigid rotateZYX_s6e793366_tail(float _t10, float _t8, float _t11, float _t5, float _t19, float _t21, float _t20) {
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         return new FloatRigid(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t20, -(this.rX * _t22)), Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t19, -(this.rY * _t21)), Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t20, this.rZ * _t22));
     }
 
@@ -1982,17 +1985,17 @@ public record FloatRigid(float tX, float tY, float tZ, float rX, float rY, float
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t4 * _t6;
-        float _t12 = _t3 * _t7;
-        float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        float _t20 = Math.fma(_t12, _t8, _t11 * _t5);
-        float _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        return rotateZYX_s6e793366_tail(_t11, _t8, _t12, _t5, _t19, _t21, _t20);
+        float _t10 = _t4 * _t6;
+        float _t11 = _t3 * _t7;
+        float _t12 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        float _t20 = Math.fma(_t11, _t8, _t10 * _t5);
+        float _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
+        return rotateZYX_s6e793366_tail(_t10, _t8, _t11, _t5, _t19, _t21, _t20);
     }
 
 

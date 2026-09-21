@@ -637,12 +637,12 @@ public final class Double2x3OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer makeRotation_api(java.nio.ByteBuffer dest, int destOffset, double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        dest.putDouble(destOffset + 0, _t0);
-        dest.putDouble(destOffset + 8, _t1);
-        dest.putDouble(destOffset + 16, -_t1);
-        dest.putDouble(destOffset + 24, _t0);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        dest.putDouble(destOffset + 0, _t1);
+        dest.putDouble(destOffset + 8, _t0);
+        dest.putDouble(destOffset + 16, -_t0);
+        dest.putDouble(destOffset + 24, _t1);
         dest.putDouble(destOffset + 32, 0.0);
         dest.putDouble(destOffset + 40, 0.0);
         return dest;
@@ -768,14 +768,14 @@ public final class Double2x3OpsKernelsByteBuffer {
         double _self11 = src.getDouble(srcOffset + 24);
         double _self02 = src.getDouble(srcOffset + 32);
         double _self12 = src.getDouble(srcOffset + 40);
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        dest.putDouble(destOffset + 0, Math.fma(_self00, _t0, -(_self10 * _t1)));
-        dest.putDouble(destOffset + 8, Math.fma(_self00, _t1, _self10 * _t0));
-        dest.putDouble(destOffset + 16, Math.fma(_self01, _t0, -(_self11 * _t1)));
-        dest.putDouble(destOffset + 24, Math.fma(_self01, _t1, _self11 * _t0));
-        dest.putDouble(destOffset + 32, Math.fma(_self02, _t0, -(_self12 * _t1)));
-        dest.putDouble(destOffset + 40, Math.fma(_self02, _t1, _self12 * _t0));
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        dest.putDouble(destOffset + 0, Math.fma(_self00, _t1, -(_self10 * _t0)));
+        dest.putDouble(destOffset + 8, Math.fma(_self00, _t0, _self10 * _t1));
+        dest.putDouble(destOffset + 16, Math.fma(_self01, _t1, -(_self11 * _t0)));
+        dest.putDouble(destOffset + 24, Math.fma(_self01, _t0, _self11 * _t1));
+        dest.putDouble(destOffset + 32, Math.fma(_self02, _t1, -(_self12 * _t0)));
+        dest.putDouble(destOffset + 40, Math.fma(_self02, _t0, _self12 * _t1));
         return dest;
     }
 
@@ -793,16 +793,16 @@ public final class Double2x3OpsKernelsByteBuffer {
         double _self11 = src.getDouble(srcOffset + 24);
         double _self02 = src.getDouble(srcOffset + 32);
         double _self12 = src.getDouble(srcOffset + 40);
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t2 = Math.cosFromSin(_t0, angle);
         double _t3 = Math.sin(0.5 * angle);
         double _t5 = (_t3 + _t3) * _t3;
-        dest.putDouble(destOffset + 0, Math.fma(_self00, _t0, -(_self10 * _t1)));
-        dest.putDouble(destOffset + 8, Math.fma(_self00, _t1, _self10 * _t0));
-        dest.putDouble(destOffset + 16, Math.fma(_self01, _t0, -(_self11 * _t1)));
-        dest.putDouble(destOffset + 24, Math.fma(_self01, _t1, _self11 * _t0));
-        dest.putDouble(destOffset + 32, Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(_self02, _t0, -(_self12 * _t1)));
-        dest.putDouble(destOffset + 40, Math.fma(_self02, _t1, _self12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1)));
+        dest.putDouble(destOffset + 0, Math.fma(_self00, _t2, -(_self10 * _t0)));
+        dest.putDouble(destOffset + 8, Math.fma(_self00, _t0, _self10 * _t2));
+        dest.putDouble(destOffset + 16, Math.fma(_self01, _t2, -(_self11 * _t0)));
+        dest.putDouble(destOffset + 24, Math.fma(_self01, _t0, _self11 * _t2));
+        dest.putDouble(destOffset + 32, Math.fma(pivotX, _t5, pivotY * _t0) + Math.fma(_self02, _t2, -(_self12 * _t0)));
+        dest.putDouble(destOffset + 40, Math.fma(_self02, _t0, _self12 * _t2) + Math.fma(pivotY, _t5, -(pivotX * _t0)));
         return dest;
     }
 
@@ -823,16 +823,16 @@ public final class Double2x3OpsKernelsByteBuffer {
         double _self12 = src.getDouble(srcOffset + 40);
         double _pivotx = pivot.getDouble(pivotOffset + 0);
         double _pivoty = pivot.getDouble(pivotOffset + 8);
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t2 = Math.cosFromSin(_t0, angle);
         double _t3 = Math.sin(0.5 * angle);
         double _t5 = (_t3 + _t3) * _t3;
-        dest.putDouble(destOffset + 0, Math.fma(_self00, _t0, -(_self10 * _t1)));
-        dest.putDouble(destOffset + 8, Math.fma(_self00, _t1, _self10 * _t0));
-        dest.putDouble(destOffset + 16, Math.fma(_self01, _t0, -(_self11 * _t1)));
-        dest.putDouble(destOffset + 24, Math.fma(_self01, _t1, _self11 * _t0));
-        dest.putDouble(destOffset + 32, Math.fma(_pivotx, _t5, _pivoty * _t1) + Math.fma(_self02, _t0, -(_self12 * _t1)));
-        dest.putDouble(destOffset + 40, Math.fma(_self02, _t1, _self12 * _t0) + Math.fma(_pivoty, _t5, -(_pivotx * _t1)));
+        dest.putDouble(destOffset + 0, Math.fma(_self00, _t2, -(_self10 * _t0)));
+        dest.putDouble(destOffset + 8, Math.fma(_self00, _t0, _self10 * _t2));
+        dest.putDouble(destOffset + 16, Math.fma(_self01, _t2, -(_self11 * _t0)));
+        dest.putDouble(destOffset + 24, Math.fma(_self01, _t0, _self11 * _t2));
+        dest.putDouble(destOffset + 32, Math.fma(_pivotx, _t5, _pivoty * _t0) + Math.fma(_self02, _t2, -(_self12 * _t0)));
+        dest.putDouble(destOffset + 40, Math.fma(_self02, _t0, _self12 * _t2) + Math.fma(_pivoty, _t5, -(_pivotx * _t0)));
         return dest;
     }
 
@@ -1057,12 +1057,12 @@ public final class Double2x3OpsKernelsByteBuffer {
         double _self11 = src.getDouble(srcOffset + 24);
         double _self02 = src.getDouble(srcOffset + 32);
         double _self12 = src.getDouble(srcOffset + 40);
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        dest.putDouble(destOffset + 0, Math.fma(_self00, _t0, _self01 * _t1));
-        dest.putDouble(destOffset + 8, Math.fma(_self10, _t0, _self11 * _t1));
-        dest.putDouble(destOffset + 16, Math.fma(_self01, _t0, -(_self00 * _t1)));
-        dest.putDouble(destOffset + 24, Math.fma(_self11, _t0, -(_self10 * _t1)));
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        dest.putDouble(destOffset + 0, Math.fma(_self00, _t1, _self01 * _t0));
+        dest.putDouble(destOffset + 8, Math.fma(_self10, _t1, _self11 * _t0));
+        dest.putDouble(destOffset + 16, Math.fma(_self01, _t1, -(_self00 * _t0)));
+        dest.putDouble(destOffset + 24, Math.fma(_self11, _t1, -(_self10 * _t0)));
         dest.putDouble(destOffset + 32, _self02);
         dest.putDouble(destOffset + 40, _self12);
         return dest;
@@ -1082,16 +1082,16 @@ public final class Double2x3OpsKernelsByteBuffer {
         double _self11 = src.getDouble(srcOffset + 24);
         double _self02 = src.getDouble(srcOffset + 32);
         double _self12 = src.getDouble(srcOffset + 40);
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t2 = Math.cosFromSin(_t0, angle);
         double _t3 = Math.sin(0.5 * angle);
         double _t8 = (_t3 + _t3) * _t3;
-        double _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
-        double _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
-        dest.putDouble(destOffset + 0, Math.fma(_self00, _t0, _self01 * _t1));
-        dest.putDouble(destOffset + 8, Math.fma(_self10, _t0, _self11 * _t1));
-        dest.putDouble(destOffset + 16, Math.fma(_self01, _t0, -(_self00 * _t1)));
-        dest.putDouble(destOffset + 24, Math.fma(_self11, _t0, -(_self10 * _t1)));
+        double _t9 = Math.fma(pivotX, _t8, pivotY * _t0);
+        double _t10 = Math.fma(pivotY, _t8, -(pivotX * _t0));
+        dest.putDouble(destOffset + 0, Math.fma(_self00, _t2, _self01 * _t0));
+        dest.putDouble(destOffset + 8, Math.fma(_self10, _t2, _self11 * _t0));
+        dest.putDouble(destOffset + 16, Math.fma(_self01, _t2, -(_self00 * _t0)));
+        dest.putDouble(destOffset + 24, Math.fma(_self11, _t2, -(_self10 * _t0)));
         dest.putDouble(destOffset + 32, Math.fma(_self00, _t9, Math.fma(_self01, _t10, _self02)));
         dest.putDouble(destOffset + 40, Math.fma(_self10, _t9, Math.fma(_self11, _t10, _self12)));
         return dest;
@@ -1114,16 +1114,16 @@ public final class Double2x3OpsKernelsByteBuffer {
         double _self12 = src.getDouble(srcOffset + 40);
         double _pivotx = pivot.getDouble(pivotOffset + 0);
         double _pivoty = pivot.getDouble(pivotOffset + 8);
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
+        double _t0 = Math.sin(angle);
+        double _t2 = Math.cosFromSin(_t0, angle);
         double _t3 = Math.sin(0.5 * angle);
         double _t8 = (_t3 + _t3) * _t3;
-        double _t9 = Math.fma(_pivotx, _t8, _pivoty * _t1);
-        double _t10 = Math.fma(_pivoty, _t8, -(_pivotx * _t1));
-        dest.putDouble(destOffset + 0, Math.fma(_self00, _t0, _self01 * _t1));
-        dest.putDouble(destOffset + 8, Math.fma(_self10, _t0, _self11 * _t1));
-        dest.putDouble(destOffset + 16, Math.fma(_self01, _t0, -(_self00 * _t1)));
-        dest.putDouble(destOffset + 24, Math.fma(_self11, _t0, -(_self10 * _t1)));
+        double _t9 = Math.fma(_pivotx, _t8, _pivoty * _t0);
+        double _t10 = Math.fma(_pivoty, _t8, -(_pivotx * _t0));
+        dest.putDouble(destOffset + 0, Math.fma(_self00, _t2, _self01 * _t0));
+        dest.putDouble(destOffset + 8, Math.fma(_self10, _t2, _self11 * _t0));
+        dest.putDouble(destOffset + 16, Math.fma(_self01, _t2, -(_self00 * _t0)));
+        dest.putDouble(destOffset + 24, Math.fma(_self11, _t2, -(_self10 * _t0)));
         dest.putDouble(destOffset + 32, Math.fma(_self00, _t9, Math.fma(_self01, _t10, _self02)));
         dest.putDouble(destOffset + 40, Math.fma(_self10, _t9, Math.fma(_self11, _t10, _self12)));
         return dest;

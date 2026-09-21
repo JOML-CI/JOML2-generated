@@ -2059,9 +2059,9 @@ public value record Double2x2(double m00, double m01, double m10, double m11, in
      * @return the resulting matrix
      */
     public static Double2x2 makeRotation(double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        return new Double2x2(_t0, -_t1, _t1, _t0, 0);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        return new Double2x2(_t1, -_t0, _t0, _t1, 0);
     }
 
 
@@ -2100,50 +2100,6 @@ public value record Double2x2(double m00, double m01, double m10, double m11, in
 
 
     /**
-     * Private body of {@code preRotate}, specialized by runtime matrix properties; reached only
-     * through the public {@code preRotate} dispatcher.
-     */
-    private Double2x2 preRotate_identity(double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        return new Double2x2(_t0, -_t1, _t1, _t0, 0);
-    }
-
-
-    /**
-     * Private body of {@code preRotate}, specialized by runtime matrix properties; reached only
-     * through the public {@code preRotate} dispatcher.
-     */
-    private Double2x2 preRotate_translation(double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        return new Double2x2(_t0, Math.fma(this.m01, _t0, -_t1), _t1, Math.fma(this.m01, _t1, _t0), 0);
-    }
-
-
-    /**
-     * Private body of {@code preRotate}, specialized by runtime matrix properties; reached only
-     * through the public {@code preRotate} dispatcher.
-     */
-    private Double2x2 preRotate_affine(double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        return new Double2x2(this.m00 * _t0, Math.fma(this.m01, _t0, -_t1), this.m00 * _t1, Math.fma(this.m01, _t1, _t0), 0);
-    }
-
-
-    /**
-     * Private body of {@code preRotate}, specialized by runtime matrix properties; reached only
-     * through the public {@code preRotate} dispatcher.
-     */
-    private Double2x2 preRotate_general(double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        return new Double2x2(Math.fma(this.m00, _t0, -(this.m10 * _t1)), Math.fma(this.m01, _t0, -(this.m11 * _t1)), Math.fma(this.m00, _t1, this.m10 * _t0), Math.fma(this.m01, _t1, this.m11 * _t0), 0);
-    }
-
-
-    /**
      * Pre-multiply a rotation by {@code angle} onto this matrix, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
@@ -2154,11 +2110,9 @@ public value record Double2x2(double m00, double m01, double m10, double m11, in
      * @return the resulting matrix
      */
     public Double2x2 preRotate(double angle) {
-        int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preRotate_identity(angle);
-        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return preRotate_translation(angle);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preRotate_affine(angle);
-        return preRotate_general(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        return new Double2x2(Math.fma(this.m00, _t1, -(this.m10 * _t0)), Math.fma(this.m01, _t1, -(this.m11 * _t0)), Math.fma(this.m00, _t0, this.m10 * _t1), Math.fma(this.m01, _t0, this.m11 * _t1), 0);
     }
 
 
@@ -2290,48 +2244,6 @@ public value record Double2x2(double m00, double m01, double m10, double m11, in
 
 
     /**
-     * Private body of {@code rotate}, specialized by runtime matrix properties; reached only
-     * through the public {@code rotate} dispatcher.
-     */
-    private Double2x2 rotate_identity(double angle) {
-        return preRotate_identity(angle);
-    }
-
-
-    /**
-     * Private body of {@code rotate}, specialized by runtime matrix properties; reached only
-     * through the public {@code rotate} dispatcher.
-     */
-    private Double2x2 rotate_translation(double angle) {
-        double _t0 = Math.sin(angle);
-        double _t1 = Math.cos(angle);
-        return new Double2x2(Math.fma(this.m01, _t0, _t1), Math.fma(this.m01, _t1, -_t0), _t0, _t1, 0);
-    }
-
-
-    /**
-     * Private body of {@code rotate}, specialized by runtime matrix properties; reached only
-     * through the public {@code rotate} dispatcher.
-     */
-    private Double2x2 rotate_affine(double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        return new Double2x2(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), _t1, _t0, 0);
-    }
-
-
-    /**
-     * Private body of {@code rotate}, specialized by runtime matrix properties; reached only
-     * through the public {@code rotate} dispatcher.
-     */
-    private Double2x2 rotate_general(double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        return new Double2x2(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), 0);
-    }
-
-
-    /**
      * Apply a rotation by {@code angle} to this matrix, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
@@ -2342,11 +2254,9 @@ public value record Double2x2(double m00, double m01, double m10, double m11, in
      * @return the resulting matrix
      */
     public Double2x2 rotate(double angle) {
-        int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotate_identity(angle);
-        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return rotate_translation(angle);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotate_affine(angle);
-        return rotate_general(angle);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        return new Double2x2(Math.fma(this.m00, _t1, this.m01 * _t0), Math.fma(this.m01, _t1, -(this.m00 * _t0)), Math.fma(this.m10, _t1, this.m11 * _t0), Math.fma(this.m11, _t1, -(this.m10 * _t0)), 0);
     }
 
 

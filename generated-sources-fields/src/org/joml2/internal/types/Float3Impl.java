@@ -6126,13 +6126,13 @@ public final class Float3Impl implements Float3 {
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         Float3Impl d = (Float3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _t2 = 1.0f - _t0;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t3 = 1.0f - _t1;
         float _t5 = Math.fma(axisZ, this.z, Math.fma(axisX, this.x, axisY * this.y));
-        float _buf0 = Math.fma(_t2, axisX * _t5, Math.fma(this.x, _t0, Math.fma(axisY, this.z, -(axisZ * this.y)) * _t1));
-        float _buf1 = Math.fma(_t2, axisY * _t5, Math.fma(this.y, _t0, Math.fma(axisZ, this.x, -(axisX * this.z)) * _t1));
-        d.z = Math.fma(_t2, axisZ * _t5, Math.fma(this.z, _t0, Math.fma(axisX, this.y, -(axisY * this.x)) * _t1));
+        float _buf0 = Math.fma(_t3, axisX * _t5, Math.fma(this.x, _t1, Math.fma(axisY, this.z, -(axisZ * this.y)) * _t0));
+        float _buf1 = Math.fma(_t3, axisY * _t5, Math.fma(this.y, _t1, Math.fma(axisZ, this.x, -(axisX * this.z)) * _t0));
+        d.z = Math.fma(_t3, axisZ * _t5, Math.fma(this.z, _t1, Math.fma(axisX, this.y, -(axisY * this.x)) * _t0));
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -6161,13 +6161,13 @@ public final class Float3Impl implements Float3 {
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         Double3Impl d = (Double3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _t2 = 1.0f - _t0;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t3 = 1.0f - _t1;
         float _t5 = Math.fma(axisZ, this.z, Math.fma(axisX, this.x, axisY * this.y));
-        float _buf0 = Math.fma(_t2, axisX * _t5, Math.fma(this.x, _t0, Math.fma(axisY, this.z, -(axisZ * this.y)) * _t1));
-        float _buf1 = Math.fma(_t2, axisY * _t5, Math.fma(this.y, _t0, Math.fma(axisZ, this.x, -(axisX * this.z)) * _t1));
-        d.z = Math.fma(_t2, axisZ * _t5, Math.fma(this.z, _t0, Math.fma(axisX, this.y, -(axisY * this.x)) * _t1));
+        float _buf0 = Math.fma(_t3, axisX * _t5, Math.fma(this.x, _t1, Math.fma(axisY, this.z, -(axisZ * this.y)) * _t0));
+        float _buf1 = Math.fma(_t3, axisY * _t5, Math.fma(this.y, _t1, Math.fma(axisZ, this.x, -(axisX * this.z)) * _t0));
+        d.z = Math.fma(_t3, axisZ * _t5, Math.fma(this.z, _t1, Math.fma(axisX, this.y, -(axisY * this.x)) * _t0));
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -6266,11 +6266,11 @@ public final class Float3Impl implements Float3 {
      */
     public Float3 rotateX(float angle, @Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
         d.x = this.x;
-        float _buf0 = Math.fma(this.y, _t0, -(this.z * _t1));
-        d.z = Math.fma(this.y, _t1, this.z * _t0);
+        float _buf0 = Math.fma(this.y, _t1, -(this.z * _t0));
+        d.z = Math.fma(this.y, _t0, this.z * _t1);
         d.y = _buf0;
         return d;
     }
@@ -6289,11 +6289,11 @@ public final class Float3Impl implements Float3 {
      */
     public Double3 rotateX(float angle, @Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
         d.x = this.x;
-        float _buf0 = Math.fma(this.y, _t0, -(this.z * _t1));
-        d.z = Math.fma(this.y, _t1, this.z * _t0);
+        float _buf0 = Math.fma(this.y, _t1, -(this.z * _t0));
+        d.z = Math.fma(this.y, _t0, this.z * _t1);
         d.y = _buf0;
         return d;
     }
@@ -6309,11 +6309,11 @@ public final class Float3Impl implements Float3 {
      */
     public Float3 rotateY(float angle, @Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = Math.fma(this.x, _t0, this.z * _t1);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = Math.fma(this.x, _t1, this.z * _t0);
         d.y = this.y;
-        d.z = Math.fma(this.z, _t0, -(this.x * _t1));
+        d.z = Math.fma(this.z, _t1, -(this.x * _t0));
         d.x = _buf0;
         return d;
     }
@@ -6332,11 +6332,11 @@ public final class Float3Impl implements Float3 {
      */
     public Double3 rotateY(float angle, @Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = Math.fma(this.x, _t0, this.z * _t1);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = Math.fma(this.x, _t1, this.z * _t0);
         d.y = this.y;
-        d.z = Math.fma(this.z, _t0, -(this.x * _t1));
+        d.z = Math.fma(this.z, _t1, -(this.x * _t0));
         d.x = _buf0;
         return d;
     }
@@ -6352,10 +6352,10 @@ public final class Float3Impl implements Float3 {
      */
     public Float3 rotateZ(float angle, @Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = Math.fma(this.x, _t0, -(this.y * _t1));
-        d.y = Math.fma(this.x, _t1, this.y * _t0);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = Math.fma(this.x, _t1, -(this.y * _t0));
+        d.y = Math.fma(this.x, _t0, this.y * _t1);
         d.z = this.z;
         d.x = _buf0;
         return d;
@@ -6375,10 +6375,10 @@ public final class Float3Impl implements Float3 {
      */
     public Double3 rotateZ(float angle, @Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t0 = (float) Math.cos(angle);
-        float _t1 = (float) Math.sin(angle);
-        float _buf0 = Math.fma(this.x, _t0, -(this.y * _t1));
-        d.y = Math.fma(this.x, _t1, this.y * _t0);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _buf0 = Math.fma(this.x, _t1, -(this.y * _t0));
+        d.y = Math.fma(this.x, _t0, this.y * _t1);
         d.z = this.z;
         d.x = _buf0;
         return d;

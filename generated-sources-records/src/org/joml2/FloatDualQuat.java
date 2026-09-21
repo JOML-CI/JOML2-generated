@@ -415,11 +415,11 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
         float _t0 = 0.5f * angle;
         float _t1 = -translationZ;
         float _t2 = (float) Math.sin(_t0);
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = axisX * _t2;
-        float _t5 = axisY * _t2;
-        float _t6 = axisZ * _t2;
-        return new FloatDualQuat(_t4, _t5, _t6, _t3, 0.5f * Math.fma(_t1, _t5, Math.fma(translationX, _t3, translationY * _t6)), 0.5f * Math.fma(translationZ, _t4, Math.fma(translationY, _t3, -(translationX * _t6))), 0.5f * Math.fma(translationZ, _t3, Math.fma(translationX, _t5, -(translationY * _t4))), 0.5f * Math.fma(_t1, _t6, Math.fma(-translationY, _t5, -(translationX * _t4))));
+        float _t3 = axisX * _t2;
+        float _t4 = axisY * _t2;
+        float _t5 = axisZ * _t2;
+        float _t6 = (float) Math.cosFromSin(_t2, _t0);
+        return new FloatDualQuat(_t3, _t4, _t5, _t6, 0.5f * Math.fma(_t1, _t4, Math.fma(translationX, _t6, translationY * _t5)), 0.5f * Math.fma(translationZ, _t3, Math.fma(translationY, _t6, -(translationX * _t5))), 0.5f * Math.fma(translationZ, _t6, Math.fma(translationX, _t4, -(translationY * _t3))), 0.5f * Math.fma(_t1, _t5, Math.fma(-translationY, _t4, -(translationX * _t3))));
     }
 
 
@@ -815,59 +815,64 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
         float _t127 = _t124 * _t106;
         float _t128 = _t124 * _t107;
         float _t129 = t * (float) Math.atan2((float) Math.sqrt(_t122), _t105);
-        float _t130 = (float) Math.cos(_t129);
-        float _t131 = (float) Math.sin(_t129);
-        float _t132 = _t124 * _t112;
-        return sclerp_s554612b4_tail4(t, _t132, _t105, _t122, _t130, _t108, _t126, _t131, _t106, _t127, _t107, _t128, _t112, _t114, _t124, _t115, _t116, _t0, _t2);
+        float _t130 = (float) Math.sin(_t129);
+        float _t131 = _t124 * _t112;
+        return sclerp_s554612b4_tail4(t, _t131, _t105, _t130, _t129, _t122, _t108, _t126, _t106, _t127, _t107, _t128, _t112, _t114, _t124, _t115, _t116, _t0, _t2);
     }
 
     /** Private tail of {@code sclerp}; reached only through it. */
-    private FloatDualQuat sclerp_s554612b4_tail4(float t, float _t132, float _t105, float _t122, float _t130, float _t108, float _t126, float _t131, float _t106, float _t127, float _t107, float _t128, float _t112, float _t114, float _t124, float _t115, float _t116, float _t0, float _t2) {
-        float _t133 = t * _t132;
-        float _t134 = _t132 * _t105;
-        float _t135 = _t122 < 1.0E-12f ? 1.0f : _t130;
-        float _t140 = _t133 * _t130;
-        return sclerp_s554612b4_tail5(_t122, t, _t108, _t126, _t131, _t106, _t127, _t107, _t128, _t112, _t133, _t114, _t134, _t124, _t140, _t115, _t116, _t135, _t0, _t2);
-    }
-
-    /** Private tail of {@code sclerp}; reached only through it. */
-    private FloatDualQuat sclerp_s554612b4_tail5(float _t122, float t, float _t108, float _t126, float _t131, float _t106, float _t127, float _t107, float _t128, float _t112, float _t133, float _t114, float _t134, float _t124, float _t140, float _t115, float _t116, float _t135, float _t0, float _t2) {
-        float _t144, _t145, _t146, _t153, _t160, _t161, _t162;
+    private FloatDualQuat sclerp_s554612b4_tail4(float t, float _t131, float _t105, float _t130, float _t129, float _t122, float _t108, float _t126, float _t106, float _t127, float _t107, float _t128, float _t112, float _t114, float _t124, float _t115, float _t116, float _t0, float _t2) {
+        float _t132 = t * _t131;
+        float _t133 = _t131 * _t105;
+        float _t137 = (float) Math.cosFromSin(_t130, _t129);
+        float _t142, _t143, _t144, _t145;
         if (_t122 < 1.0E-12f) {
-            _t144 = t * _t108;
-            _t145 = t * _t106;
-            _t146 = t * _t107;
-            _t153 = t * t * _t112;
+            _t142 = 1.0f;
+            _t143 = t * _t108;
+            _t144 = t * _t106;
+            _t145 = t * _t107;
+        } else {
+            _t142 = _t137;
+            _t143 = _t126 * _t130;
+            _t144 = _t127 * _t130;
+            _t145 = _t128 * _t130;
+        }
+        float _t146 = _t132 * _t137;
+        return sclerp_s554612b4_tail5(_t122, t, _t112, _t132, _t130, _t114, _t133, _t126, _t124, _t146, _t115, _t127, _t116, _t128, _t142, _t143, _t144, _t145, _t0, _t2);
+    }
+
+    /** Private tail of {@code sclerp}; reached only through it. */
+    private FloatDualQuat sclerp_s554612b4_tail5(float _t122, float t, float _t112, float _t132, float _t130, float _t114, float _t133, float _t126, float _t124, float _t146, float _t115, float _t127, float _t116, float _t128, float _t142, float _t143, float _t144, float _t145, float _t0, float _t2) {
+        float _t147, _t160, _t161, _t162;
+        if (_t122 < 1.0E-12f) {
+            _t147 = t * t * _t112;
             _t160 = t * _t114;
             _t161 = t * _t115;
             _t162 = t * _t116;
         } else {
-            _t144 = _t126 * _t131;
-            _t145 = _t127 * _t131;
-            _t146 = _t128 * _t131;
-            _t153 = _t133 * _t131;
-            _t160 = Math.fma(Math.fma(_t134, _t126, _t114) * _t124, _t131, -(_t140 * _t126));
-            _t161 = Math.fma(Math.fma(_t134, _t127, _t115) * _t124, _t131, -(_t140 * _t127));
-            _t162 = Math.fma(Math.fma(_t134, _t128, _t116) * _t124, _t131, -(_t140 * _t128));
+            _t147 = _t132 * _t130;
+            _t160 = Math.fma(Math.fma(_t133, _t126, _t114) * _t124, _t130, -(_t146 * _t126));
+            _t161 = Math.fma(Math.fma(_t133, _t127, _t115) * _t124, _t130, -(_t146 * _t127));
+            _t162 = Math.fma(Math.fma(_t133, _t128, _t116) * _t124, _t130, -(_t146 * _t128));
         }
-        return sclerp_s554612b4_tail6(_t135, _t144, _t145, _t146, _t153, _t160, _t161, _t162, _t0, _t2);
+        float _sfx0 = Math.fma(this.rX, _t142, this.rW * _t143) + Math.fma(this.rY, _t144, -(this.rZ * _t145));
+        float _sfx1 = Math.fma(this.rY, _t142, this.rZ * _t143) + Math.fma(this.rW, _t145, -(this.rX * _t144));
+        return sclerp_s554612b4_tail6(_t145, _t144, _t142, _t143, _t147, _t160, _t161, _t162, _t0, _t2, _sfx0, _sfx1);
     }
 
     /** Private tail of {@code sclerp}; reached only through it. */
-    private FloatDualQuat sclerp_s554612b4_tail6(float _t135, float _t144, float _t145, float _t146, float _t153, float _t160, float _t161, float _t162, float _t0, float _t2) {
-        float _sfx0 = Math.fma(this.rX, _t135, this.rW * _t144) + Math.fma(this.rY, _t145, -(this.rZ * _t146));
-        float _sfx1 = Math.fma(this.rY, _t135, this.rZ * _t144) + Math.fma(this.rW, _t146, -(this.rX * _t145));
-        float _sfx2 = Math.fma(this.rX, _t146, this.rW * _t145) + Math.fma(this.rZ, _t135, -(this.rY * _t144));
-        float _sfx3 = Math.fma(this.rW, _t135, -(this.rX * _t144)) - Math.fma(this.rY, _t146, this.rZ * _t145);
-        float _sfx4 = Math.fma(this.rX, _t153, this.rW * _t160) + Math.fma(this.rY, _t161, -(this.rZ * _t162)) + (Math.fma(this.dX, _t135, this.dW * _t144) + Math.fma(this.dY, _t145, -(this.dZ * _t146)));
-        return sclerp_s554612b4_tail7(_t153, _t160, _t162, _t161, _t135, _t144, _t146, _t145, _t0, _t2, _sfx0, _sfx1, _sfx2, _sfx3, _sfx4);
+    private FloatDualQuat sclerp_s554612b4_tail6(float _t145, float _t144, float _t142, float _t143, float _t147, float _t160, float _t161, float _t162, float _t0, float _t2, float _sfx0, float _sfx1) {
+        float _sfx2 = Math.fma(this.rX, _t145, this.rW * _t144) + Math.fma(this.rZ, _t142, -(this.rY * _t143));
+        float _sfx3 = Math.fma(this.rW, _t142, -(this.rX * _t143)) - Math.fma(this.rY, _t145, this.rZ * _t144);
+        float _sfx4 = Math.fma(this.rX, _t147, this.rW * _t160) + Math.fma(this.rY, _t161, -(this.rZ * _t162)) + (Math.fma(this.dX, _t142, this.dW * _t143) + Math.fma(this.dY, _t144, -(this.dZ * _t145)));
+        return sclerp_s554612b4_tail7(_t147, _t160, _t162, _t161, _t142, _t143, _t145, _t144, _t0, _t2, _sfx0, _sfx1, _sfx2, _sfx3, _sfx4);
     }
 
     /** Private tail of {@code sclerp}; reached only through it. */
-    private FloatDualQuat sclerp_s554612b4_tail7(float _t153, float _t160, float _t162, float _t161, float _t135, float _t144, float _t146, float _t145, float _t0, float _t2, float _sfx0, float _sfx1, float _sfx2, float _sfx3, float _sfx4) {
-        float _sfx5 = Math.fma(this.rY, _t153, this.rZ * _t160) + Math.fma(this.rW, _t162, -(this.rX * _t161)) + (Math.fma(this.dY, _t135, this.dZ * _t144) + Math.fma(this.dW, _t146, -(this.dX * _t145)));
-        float _sfx6 = Math.fma(this.rX, _t162, this.rW * _t161) + Math.fma(this.rZ, _t153, -(this.rY * _t160)) + (Math.fma(this.dX, _t146, this.dW * _t145) + Math.fma(this.dZ, _t135, -(this.dY * _t144)));
-        float _sfx7 = Math.fma(this.rW, _t153, -(this.rX * _t160)) + Math.fma(_t0, _t161, -(this.rY * _t162)) + (Math.fma(this.dW, _t135, -(this.dX * _t144)) + Math.fma(_t2, _t145, -(this.dY * _t146)));
+    private FloatDualQuat sclerp_s554612b4_tail7(float _t147, float _t160, float _t162, float _t161, float _t142, float _t143, float _t145, float _t144, float _t0, float _t2, float _sfx0, float _sfx1, float _sfx2, float _sfx3, float _sfx4) {
+        float _sfx5 = Math.fma(this.rY, _t147, this.rZ * _t160) + Math.fma(this.rW, _t162, -(this.rX * _t161)) + (Math.fma(this.dY, _t142, this.dZ * _t143) + Math.fma(this.dW, _t145, -(this.dX * _t144)));
+        float _sfx6 = Math.fma(this.rX, _t162, this.rW * _t161) + Math.fma(this.rZ, _t147, -(this.rY * _t160)) + (Math.fma(this.dX, _t145, this.dW * _t144) + Math.fma(this.dZ, _t142, -(this.dY * _t143)));
+        float _sfx7 = Math.fma(this.rW, _t147, -(this.rX * _t160)) + Math.fma(_t0, _t161, -(this.rY * _t162)) + (Math.fma(this.dW, _t142, -(this.dX * _t143)) + Math.fma(_t2, _t144, -(this.dY * _t145)));
         return new FloatDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
     }
 
@@ -1216,12 +1221,12 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
     }
 
     /** Private tail of {@code exp}; reached only through it. */
-    private FloatDualQuat exp_s0_tail(float _t13, float _t9, float _t4, float _t10, float _t8, float _t11, float _t12, float _t6, float _t5) {
-        float _t14 = _t13 * _t9;
+    private FloatDualQuat exp_s0_tail(float _t12, float _t13, float _t4, float _t9, float _t8, float _t10, float _t11, float _t6, float _t5) {
+        float _t14 = _t12 * _t13;
         if (_t4 < 1.0E-12f) {
             return new FloatDualQuat(this.rX, this.rY, this.rZ, 1.0f, this.dX, this.dY, this.dZ, -_t5);
         } else {
-            return new FloatDualQuat(_t10 * _t8, _t11 * _t8, _t12 * _t8, _t9, Math.fma(_t10, _t14, Math.fma(-_t10, _t13, this.dX) * _t6 * _t8), Math.fma(_t11, _t14, Math.fma(-_t11, _t13, this.dY) * _t6 * _t8), Math.fma(_t12, _t14, Math.fma(-_t12, _t13, this.dZ) * _t6 * _t8), -(_t13 * _t8));
+            return new FloatDualQuat(_t9 * _t8, _t10 * _t8, _t11 * _t8, _t13, Math.fma(_t9, _t14, Math.fma(-_t9, _t12, this.dX) * _t6 * _t8), Math.fma(_t10, _t14, Math.fma(-_t10, _t12, this.dY) * _t6 * _t8), Math.fma(_t11, _t14, Math.fma(-_t11, _t12, this.dZ) * _t6 * _t8), -(_t12 * _t8));
         }
     }
 
@@ -1237,12 +1242,12 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
         float _t6 = (1.0f / (float) Math.sqrt(_t4));
         float _t7 = (float) Math.sqrt(_t4);
         float _t8 = (float) Math.sin(_t7);
-        float _t9 = (float) Math.cos(_t7);
-        float _t10 = this.rX * _t6;
-        float _t11 = this.rY * _t6;
-        float _t12 = this.rZ * _t6;
-        float _t13 = _t5 * _t6;
-        return exp_s0_tail(_t13, _t9, _t4, _t10, _t8, _t11, _t12, _t6, _t5);
+        float _t9 = this.rX * _t6;
+        float _t10 = this.rY * _t6;
+        float _t11 = this.rZ * _t6;
+        float _t12 = _t5 * _t6;
+        float _t13 = (float) Math.cosFromSin(_t8, _t7);
+        return exp_s0_tail(_t12, _t13, _t4, _t9, _t8, _t10, _t11, _t6, _t5);
     }
 
 
@@ -1816,14 +1821,14 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
         float _t26 = t * (float) Math.atan2((float) Math.sqrt(_t18), _t11);
         float _t27 = t * _t25;
         float _t28 = (float) Math.sin(_t26);
-        float _t29 = (float) Math.cos(_t26);
-        float _t30 = _t25 * _t11;
-        float _t31 = _t27 * _t29;
-        return pow_s5250ffb0_tail2(_t18, t, _t9, _t21, _t28, _t10, _t23, _t8, _t24, _t29, _t12, _t30, _t19, _t31, _t14, _t15, _t13, _t27);
+        float _t29 = _t25 * _t11;
+        float _t30 = (float) Math.cosFromSin(_t28, _t26);
+        float _t31 = _t27 * _t30;
+        return pow_s5250ffb0_tail2(_t18, t, _t9, _t21, _t28, _t10, _t23, _t8, _t24, _t30, _t12, _t29, _t19, _t31, _t14, _t15, _t13, _t27);
     }
 
     /** Private tail of {@code pow}; reached only through it. */
-    private FloatDualQuat pow_s5250ffb0_tail2(float _t18, float t, float _t9, float _t21, float _t28, float _t10, float _t23, float _t8, float _t24, float _t29, float _t12, float _t30, float _t19, float _t31, float _t14, float _t15, float _t13, float _t27) {
+    private FloatDualQuat pow_s5250ffb0_tail2(float _t18, float t, float _t9, float _t21, float _t28, float _t10, float _t23, float _t8, float _t24, float _t30, float _t12, float _t29, float _t19, float _t31, float _t14, float _t15, float _t13, float _t27) {
         float _sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7;
         if (_t18 < 1.0E-12f) {
             _sfx0 = t * _t9;
@@ -1838,10 +1843,10 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
             _sfx0 = _t21 * _t28;
             _sfx1 = _t23 * _t28;
             _sfx2 = _t24 * _t28;
-            _sfx3 = _t29;
-            _sfx4 = Math.fma(Math.fma(_t30, _t21, _t12) * _t19, _t28, -(_t31 * _t21));
-            _sfx5 = Math.fma(Math.fma(_t30, _t23, _t14) * _t19, _t28, -(_t31 * _t23));
-            _sfx6 = Math.fma(Math.fma(_t30, _t24, _t15) * _t19, _t28, -(_t31 * _t24));
+            _sfx3 = _t30;
+            _sfx4 = Math.fma(Math.fma(_t29, _t21, _t12) * _t19, _t28, -(_t31 * _t21));
+            _sfx5 = Math.fma(Math.fma(_t29, _t23, _t14) * _t19, _t28, -(_t31 * _t23));
+            _sfx6 = Math.fma(Math.fma(_t29, _t24, _t15) * _t19, _t28, -(_t31 * _t24));
             _sfx7 = _t27 * _t28;
         }
         return new FloatDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
@@ -2225,7 +2230,7 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return makeRotationZ(axisZ * angle);
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
-        return new FloatDualQuat(axisX * _t1, axisY * _t1, axisZ * _t1, (float) Math.cos(_t0), 0.0f, 0.0f, 0.0f, 0.0f);
+        return new FloatDualQuat(axisX * _t1, axisY * _t1, axisZ * _t1, (float) Math.cosFromSin(_t1, _t0), 0.0f, 0.0f, 0.0f, 0.0f);
     }
 
 
@@ -2370,7 +2375,8 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      */
     public static FloatDualQuat makeRotationX(float angle) {
         float _t0 = 0.5f * angle;
-        return new FloatDualQuat((float) Math.sin(_t0), 0.0f, 0.0f, (float) Math.cos(_t0), 0.0f, 0.0f, 0.0f, 0.0f);
+        float _t1 = (float) Math.sin(_t0);
+        return new FloatDualQuat(_t1, 0.0f, 0.0f, (float) Math.cosFromSin(_t1, _t0), 0.0f, 0.0f, 0.0f, 0.0f);
     }
 
 
@@ -2389,16 +2395,16 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t6;
-        float _t12 = _t7 * _t4;
-        return new FloatDualQuat(Math.fma(_t9, _t5, _t10 * _t8), Math.fma(_t10, _t5, -(_t9 * _t8)), Math.fma(_t11, _t5, _t12 * _t8), Math.fma(_t12, _t5, -(_t11 * _t8)), 0.0f, 0.0f, 0.0f, 0.0f);
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        return new FloatDualQuat(Math.fma(_t10, _t7, _t11 * _t5), Math.fma(_t11, _t7, -(_t10 * _t5)), Math.fma(_t9, _t7, _t12 * _t5), Math.fma(_t12, _t7, -(_t9 * _t5)), 0.0f, 0.0f, 0.0f, 0.0f);
     }
 
 
@@ -2417,16 +2423,16 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t4;
-        float _t12 = _t3 * _t6;
-        return new FloatDualQuat(Math.fma(_t9, _t5, -(_t10 * _t8)), Math.fma(_t11, _t8, -(_t12 * _t5)), Math.fma(_t9, _t8, _t10 * _t5), Math.fma(_t12, _t8, _t11 * _t5), 0.0f, 0.0f, 0.0f, 0.0f);
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        return new FloatDualQuat(Math.fma(_t10, _t7, -(_t11 * _t5)), Math.fma(_t12, _t5, -(_t9 * _t7)), Math.fma(_t10, _t5, _t11 * _t7), Math.fma(_t9, _t5, _t12 * _t7), 0.0f, 0.0f, 0.0f, 0.0f);
     }
 
 
@@ -2438,7 +2444,8 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      */
     public static FloatDualQuat makeRotationY(float angle) {
         float _t0 = 0.5f * angle;
-        return new FloatDualQuat(0.0f, (float) Math.sin(_t0), 0.0f, (float) Math.cos(_t0), 0.0f, 0.0f, 0.0f, 0.0f);
+        float _t1 = (float) Math.sin(_t0);
+        return new FloatDualQuat(0.0f, _t1, 0.0f, (float) Math.cosFromSin(_t1, _t0), 0.0f, 0.0f, 0.0f, 0.0f);
     }
 
 
@@ -2457,16 +2464,16 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t4;
-        float _t12 = _t3 * _t6;
-        return new FloatDualQuat(Math.fma(_t9, _t5, _t10 * _t8), Math.fma(_t10, _t5, -(_t9 * _t8)), Math.fma(_t11, _t8, -(_t12 * _t5)), Math.fma(_t12, _t8, _t11 * _t5), 0.0f, 0.0f, 0.0f, 0.0f);
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        return new FloatDualQuat(Math.fma(_t10, _t7, _t11 * _t5), Math.fma(_t11, _t7, -(_t10 * _t5)), Math.fma(_t12, _t5, -(_t9 * _t7)), Math.fma(_t9, _t5, _t12 * _t7), 0.0f, 0.0f, 0.0f, 0.0f);
     }
 
 
@@ -2486,15 +2493,15 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
         float _t2 = 0.5f * angleX;
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t5, _t2);
+        float _t7 = (float) Math.cosFromSin(_t3, _t0);
+        float _t8 = (float) Math.cosFromSin(_t4, _t1);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t7;
-        float _t12 = _t4 * _t6;
-        return new FloatDualQuat(Math.fma(_t9, _t5, _t10 * _t8), Math.fma(_t11, _t5, _t12 * _t8), Math.fma(_t12, _t5, -(_t11 * _t8)), Math.fma(_t10, _t5, -(_t9 * _t8)), 0.0f, 0.0f, 0.0f, 0.0f);
+        float _t10 = _t3 * _t8;
+        float _t11 = _t4 * _t7;
+        float _t12 = _t7 * _t8;
+        return new FloatDualQuat(Math.fma(_t9, _t6, _t12 * _t5), Math.fma(_t10, _t6, _t11 * _t5), Math.fma(_t11, _t6, -(_t10 * _t5)), Math.fma(_t12, _t6, -(_t9 * _t5)), 0.0f, 0.0f, 0.0f, 0.0f);
     }
 
 
@@ -2506,7 +2513,8 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      */
     public static FloatDualQuat makeRotationZ(float angle) {
         float _t0 = 0.5f * angle;
-        return new FloatDualQuat(0.0f, 0.0f, (float) Math.sin(_t0), (float) Math.cos(_t0), 0.0f, 0.0f, 0.0f, 0.0f);
+        float _t1 = (float) Math.sin(_t0);
+        return new FloatDualQuat(0.0f, 0.0f, _t1, (float) Math.cosFromSin(_t1, _t0), 0.0f, 0.0f, 0.0f, 0.0f);
     }
 
 
@@ -2525,16 +2533,16 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t6;
-        float _t12 = _t7 * _t4;
-        return new FloatDualQuat(Math.fma(_t9, _t5, -(_t10 * _t8)), Math.fma(_t11, _t5, _t12 * _t8), Math.fma(_t9, _t8, _t10 * _t5), Math.fma(_t12, _t5, -(_t11 * _t8)), 0.0f, 0.0f, 0.0f, 0.0f);
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        return new FloatDualQuat(Math.fma(_t10, _t7, -(_t11 * _t5)), Math.fma(_t9, _t7, _t12 * _t5), Math.fma(_t10, _t5, _t11 * _t7), Math.fma(_t12, _t7, -(_t9 * _t5)), 0.0f, 0.0f, 0.0f, 0.0f);
     }
 
 
@@ -2552,17 +2560,17 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t6 * _t4;
-        float _t12 = _t7 * _t3;
-        return new FloatDualQuat(Math.fma(_t9, _t5, -(_t10 * _t8)), Math.fma(_t11, _t8, _t12 * _t5), Math.fma(_t12, _t8, -(_t11 * _t5)), Math.fma(_t10, _t5, _t9 * _t8), 0.0f, 0.0f, 0.0f, 0.0f);
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t12 = _t6 * _t7;
+        return new FloatDualQuat(Math.fma(_t12, _t5, -(_t9 * _t8)), Math.fma(_t10, _t8, _t11 * _t5), Math.fma(_t11, _t8, -(_t10 * _t5)), Math.fma(_t9, _t5, _t12 * _t8), 0.0f, 0.0f, 0.0f, 0.0f);
     }
 
 
@@ -2640,11 +2648,11 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
     }
 
     /** Private tail of {@code rotateAxis}; reached only through it. */
-    private FloatDualQuat rotateAxis_s3b957671_tail(float _t1, float _t3, float _t4, float _t5, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
-        float _sfx4 = Math.fma(this.dX, _t1, this.dW * _t3) + Math.fma(this.dY, _t4, -(this.dZ * _t5));
-        float _sfx5 = Math.fma(this.dY, _t1, this.dZ * _t3) + Math.fma(this.dW, _t5, -(this.dX * _t4));
-        float _sfx6 = Math.fma(this.dX, _t5, this.dW * _t4) + Math.fma(this.dZ, _t1, -(this.dY * _t3));
-        float _sfx7 = Math.fma(this.dW, _t1, -(this.dX * _t3)) - Math.fma(this.dY, _t5, this.dZ * _t4);
+    private FloatDualQuat rotateAxis_s3b957671_tail(float _t5, float _t2, float _t3, float _t4, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
+        float _sfx4 = Math.fma(this.dX, _t5, this.dW * _t2) + Math.fma(this.dY, _t3, -(this.dZ * _t4));
+        float _sfx5 = Math.fma(this.dY, _t5, this.dZ * _t2) + Math.fma(this.dW, _t4, -(this.dX * _t3));
+        float _sfx6 = Math.fma(this.dX, _t4, this.dW * _t3) + Math.fma(this.dZ, _t5, -(this.dY * _t2));
+        float _sfx7 = Math.fma(this.dW, _t5, -(this.dX * _t2)) - Math.fma(this.dY, _t4, this.dZ * _t3);
         return new FloatDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
     }
 
@@ -2671,16 +2679,16 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle);
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _t3 = axisX * _t2;
-        float _t4 = axisZ * _t2;
-        float _t5 = axisY * _t2;
-        float _sfx0 = Math.fma(this.rX, _t1, this.rW * _t3) + Math.fma(this.rY, _t4, -(this.rZ * _t5));
-        float _sfx1 = Math.fma(this.rY, _t1, this.rZ * _t3) + Math.fma(this.rW, _t5, -(this.rX * _t4));
-        float _sfx2 = Math.fma(this.rX, _t5, this.rW * _t4) + Math.fma(this.rZ, _t1, -(this.rY * _t3));
-        float _sfx3 = Math.fma(this.rW, _t1, -(this.rX * _t3)) - Math.fma(this.rY, _t5, this.rZ * _t4);
-        return rotateAxis_s3b957671_tail(_t1, _t3, _t4, _t5, _sfx0, _sfx1, _sfx2, _sfx3);
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = axisX * _t1;
+        float _t3 = axisZ * _t1;
+        float _t4 = axisY * _t1;
+        float _t5 = (float) Math.cosFromSin(_t1, _t0);
+        float _sfx0 = Math.fma(this.rX, _t5, this.rW * _t2) + Math.fma(this.rY, _t3, -(this.rZ * _t4));
+        float _sfx1 = Math.fma(this.rY, _t5, this.rZ * _t2) + Math.fma(this.rW, _t4, -(this.rX * _t3));
+        float _sfx2 = Math.fma(this.rX, _t4, this.rW * _t3) + Math.fma(this.rZ, _t5, -(this.rY * _t2));
+        float _sfx3 = Math.fma(this.rW, _t5, -(this.rX * _t2)) - Math.fma(this.rY, _t4, this.rZ * _t3);
+        return rotateAxis_s3b957671_tail(_t5, _t2, _t3, _t4, _sfx0, _sfx1, _sfx2, _sfx3);
     }
 
 
@@ -2697,9 +2705,9 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      */
     public FloatDualQuat rotateX(float angle) {
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        return new FloatDualQuat(Math.fma(this.rX, _t1, this.rW * _t2), Math.fma(this.rY, _t1, this.rZ * _t2), Math.fma(this.rZ, _t1, -(this.rY * _t2)), Math.fma(this.rW, _t1, -(this.rX * _t2)), Math.fma(this.dX, _t1, this.dW * _t2), Math.fma(this.dY, _t1, this.dZ * _t2), Math.fma(this.dZ, _t1, -(this.dY * _t2)), Math.fma(this.dW, _t1, -(this.dX * _t2)));
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        return new FloatDualQuat(Math.fma(this.rX, _t2, this.rW * _t1), Math.fma(this.rY, _t2, this.rZ * _t1), Math.fma(this.rZ, _t2, -(this.rY * _t1)), Math.fma(this.rW, _t2, -(this.rX * _t1)), Math.fma(this.dX, _t2, this.dW * _t1), Math.fma(this.dY, _t2, this.dZ * _t1), Math.fma(this.dZ, _t2, -(this.dY * _t1)), Math.fma(this.dW, _t2, -(this.dX * _t1)));
     }
 
     /** Private tail of {@code rotateXYZ}; reached only through it. */
@@ -2733,20 +2741,20 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t6 * _t4;
-        float _t12 = _t7 * _t3;
-        float _t19 = Math.fma(_t11, _t5, _t12 * _t8);
-        float _t20 = Math.fma(_t10, _t5, _t9 * _t8);
-        float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        float _t22 = Math.fma(_t12, _t5, -(_t11 * _t8));
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t14 = _t6 * _t7;
+        float _t19 = Math.fma(_t10, _t8, _t11 * _t5);
+        float _t20 = Math.fma(_t9, _t8, _t14 * _t5);
+        float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
         float _sfx0 = Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t20, -(this.rZ * _t22));
         float _sfx1 = Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t22, -(this.rX * _t20));
         return rotateXYZ_s6e793366_tail(_t22, _t20, _t21, _t19, _sfx0, _sfx1);
@@ -2786,17 +2794,17 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t7;
-        float _t12 = _t4 * _t6;
-        float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        float _t20 = Math.fma(_t11, _t5, _t12 * _t8);
-        float _t21 = Math.fma(_t11, _t8, -(_t12 * _t5));
-        float _t22 = Math.fma(_t10, _t5, -(_t9 * _t8));
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t12 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        float _t20 = Math.fma(_t10, _t5, _t11 * _t8);
+        float _t21 = Math.fma(_t10, _t8, -(_t11 * _t5));
+        float _t22 = Math.fma(_t12, _t5, -(_t9 * _t8));
         float _sfx0 = Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t20, -(this.rZ * _t22));
         float _sfx1 = Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t22, -(this.rX * _t20));
         return rotateXZY_s6e793366_tail(_t22, _t20, _t19, _t21, _sfx0, _sfx1);
@@ -2816,9 +2824,9 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      */
     public FloatDualQuat rotateY(float angle) {
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        return new FloatDualQuat(Math.fma(this.rX, _t1, -(this.rZ * _t2)), Math.fma(this.rY, _t1, this.rW * _t2), Math.fma(this.rX, _t2, this.rZ * _t1), Math.fma(this.rW, _t1, -(this.rY * _t2)), Math.fma(this.dX, _t1, -(this.dZ * _t2)), Math.fma(this.dY, _t1, this.dW * _t2), Math.fma(this.dX, _t2, this.dZ * _t1), Math.fma(this.dW, _t1, -(this.dY * _t2)));
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        return new FloatDualQuat(Math.fma(this.rX, _t2, -(this.rZ * _t1)), Math.fma(this.rY, _t2, this.rW * _t1), Math.fma(this.rX, _t1, this.rZ * _t2), Math.fma(this.rW, _t2, -(this.rY * _t1)), Math.fma(this.dX, _t2, -(this.dZ * _t1)), Math.fma(this.dY, _t2, this.dW * _t1), Math.fma(this.dX, _t1, this.dZ * _t2), Math.fma(this.dW, _t2, -(this.dY * _t1)));
     }
 
     /** Private tail of {@code rotateYXZ}; reached only through it. */
@@ -2855,17 +2863,17 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t7;
-        float _t12 = _t4 * _t6;
-        float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        float _t20 = Math.fma(_t11, _t8, _t12 * _t5);
-        float _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        float _t22 = Math.fma(_t12, _t8, -(_t11 * _t5));
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t12 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        float _t20 = Math.fma(_t10, _t8, _t11 * _t5);
+        float _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
+        float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
         float _sfx0 = Math.fma(this.rX, _t19, this.rW * _t20) + Math.fma(this.rY, _t21, -(this.rZ * _t22));
         float _sfx1 = Math.fma(this.rY, _t19, this.rZ * _t20) + Math.fma(this.rW, _t22, -(this.rX * _t21));
         return rotateYXZ_s6e793366_tail(_t22, _t21, _t19, _t20, _sfx0, _sfx1);
@@ -2902,20 +2910,20 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t3;
-        float _t12 = _t6 * _t4;
-        float _t19 = Math.fma(_t10, _t5, _t9 * _t8);
-        float _t20 = Math.fma(_t12, _t5, _t11 * _t8);
-        float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+        float _t10 = _t4 * _t6;
+        float _t11 = _t3 * _t7;
+        float _t14 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t8, _t14 * _t5);
+        float _t20 = Math.fma(_t11, _t8, _t10 * _t5);
+        float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         float _sfx0 = Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t22, -(this.rZ * _t20));
         float _sfx1 = Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t20, -(this.rX * _t22));
         return rotateYZX_s6e793366_tail(_t20, _t22, _t21, _t19, _sfx0, _sfx1);
@@ -2935,9 +2943,9 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
      */
     public FloatDualQuat rotateZ(float angle) {
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        return new FloatDualQuat(Math.fma(this.rX, _t1, this.rY * _t2), Math.fma(this.rY, _t1, -(this.rX * _t2)), Math.fma(this.rZ, _t1, this.rW * _t2), Math.fma(this.rW, _t1, -(this.rZ * _t2)), Math.fma(this.dX, _t1, this.dY * _t2), Math.fma(this.dY, _t1, -(this.dX * _t2)), Math.fma(this.dZ, _t1, this.dW * _t2), Math.fma(this.dW, _t1, -(this.dZ * _t2)));
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        return new FloatDualQuat(Math.fma(this.rX, _t2, this.rY * _t1), Math.fma(this.rY, _t2, -(this.rX * _t1)), Math.fma(this.rZ, _t2, this.rW * _t1), Math.fma(this.rW, _t2, -(this.rZ * _t1)), Math.fma(this.dX, _t2, this.dY * _t1), Math.fma(this.dY, _t2, -(this.dX * _t1)), Math.fma(this.dZ, _t2, this.dW * _t1), Math.fma(this.dW, _t2, -(this.dZ * _t1)));
     }
 
     /** Private tail of {@code rotateZXY}; reached only through it. */
@@ -2971,20 +2979,20 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t6 * _t4;
-        float _t12 = _t7 * _t3;
-        float _t19 = Math.fma(_t11, _t8, _t12 * _t5);
-        float _t20 = Math.fma(_t10, _t5, _t9 * _t8);
-        float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t14 = _t6 * _t7;
+        float _t19 = Math.fma(_t10, _t5, _t11 * _t8);
+        float _t20 = Math.fma(_t9, _t8, _t14 * _t5);
+        float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         float _sfx0 = Math.fma(this.rX, _t21, this.rW * _t22) + Math.fma(this.rY, _t19, -(this.rZ * _t20));
         float _sfx1 = Math.fma(this.rY, _t21, this.rZ * _t22) + Math.fma(this.rW, _t20, -(this.rX * _t19));
         return rotateZXY_s6e793366_tail(_t20, _t19, _t21, _t22, _sfx0, _sfx1);
@@ -3024,17 +3032,17 @@ public record FloatDualQuat(float rX, float rY, float rZ, float rW, float dX, fl
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t4 * _t6;
-        float _t12 = _t3 * _t7;
-        float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        float _t20 = Math.fma(_t12, _t8, _t11 * _t5);
-        float _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        float _t22 = Math.fma(_t11, _t8, -(_t12 * _t5));
+        float _t10 = _t4 * _t6;
+        float _t11 = _t3 * _t7;
+        float _t12 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        float _t20 = Math.fma(_t11, _t8, _t10 * _t5);
+        float _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         float _sfx0 = Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t22, -(this.rZ * _t20));
         float _sfx1 = Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t20, -(this.rX * _t22));
         return rotateZYX_s6e793366_tail(_t20, _t22, _t19, _t21, _sfx0, _sfx1);

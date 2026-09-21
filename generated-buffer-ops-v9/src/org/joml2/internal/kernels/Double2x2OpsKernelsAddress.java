@@ -340,12 +340,12 @@ public final class Double2x2OpsKernelsAddress {
     }
 
     public static long makeRotation_unsafe(long dest, double angle) {
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        UnsafeOpsHolder.U.putDouble(dest + 0L, _t0);
-        UnsafeOpsHolder.U.putDouble(dest + 8L, _t1);
-        UnsafeOpsHolder.U.putDouble(dest + 16L, -_t1);
-        UnsafeOpsHolder.U.putDouble(dest + 24L, _t0);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        UnsafeOpsHolder.U.putDouble(dest + 0L, _t1);
+        UnsafeOpsHolder.U.putDouble(dest + 8L, _t0);
+        UnsafeOpsHolder.U.putDouble(dest + 16L, -_t0);
+        UnsafeOpsHolder.U.putDouble(dest + 24L, _t1);
         return dest;
     }
 
@@ -380,12 +380,12 @@ public final class Double2x2OpsKernelsAddress {
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self01 = UnsafeOpsHolder.U.getDouble(src + 16L);
         double _self11 = UnsafeOpsHolder.U.getDouble(src + 24L);
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self00, _t0, -(_self10 * _t1)));
-        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self00, _t1, _self10 * _t0));
-        UnsafeOpsHolder.U.putDouble(dest + 16L, Math.fma(_self01, _t0, -(_self11 * _t1)));
-        UnsafeOpsHolder.U.putDouble(dest + 24L, Math.fma(_self01, _t1, _self11 * _t0));
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self00, _t1, -(_self10 * _t0)));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self00, _t0, _self10 * _t1));
+        UnsafeOpsHolder.U.putDouble(dest + 16L, Math.fma(_self01, _t1, -(_self11 * _t0)));
+        UnsafeOpsHolder.U.putDouble(dest + 24L, Math.fma(_self01, _t0, _self11 * _t1));
         return dest;
     }
 
@@ -432,12 +432,12 @@ public final class Double2x2OpsKernelsAddress {
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self01 = UnsafeOpsHolder.U.getDouble(src + 16L);
         double _self11 = UnsafeOpsHolder.U.getDouble(src + 24L);
-        double _t0 = Math.cos(angle);
-        double _t1 = Math.sin(angle);
-        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self00, _t0, _self01 * _t1));
-        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self10, _t0, _self11 * _t1));
-        UnsafeOpsHolder.U.putDouble(dest + 16L, Math.fma(_self01, _t0, -(_self00 * _t1)));
-        UnsafeOpsHolder.U.putDouble(dest + 24L, Math.fma(_self11, _t0, -(_self10 * _t1)));
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self00, _t1, _self01 * _t0));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self10, _t1, _self11 * _t0));
+        UnsafeOpsHolder.U.putDouble(dest + 16L, Math.fma(_self01, _t1, -(_self00 * _t0)));
+        UnsafeOpsHolder.U.putDouble(dest + 24L, Math.fma(_self11, _t1, -(_self10 * _t0)));
         return dest;
     }
 

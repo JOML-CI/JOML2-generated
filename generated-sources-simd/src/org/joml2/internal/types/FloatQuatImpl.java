@@ -3254,7 +3254,8 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t0 = (float) Math.exp(sd[3]);
         float _t3 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
         float _t4 = (float) Math.sqrt(_t3);
-        var _col0 = (_t3 > 0.0f ? FloatVector.fromArray(COL_SPECIES, sd, 0).withLane(3, (float) Math.cos(_t4)).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sin(_t4) * _t0 * (1.0f / (float) Math.sqrt(_t3))).withLane(3, _t0)) : FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.cos(_t4) * _t0));
+        float _t6 = (float) Math.sin(_t4);
+        var _col0 = (_t3 > 0.0f ? FloatVector.fromArray(COL_SPECIES, sd, 0).withLane(3, (float) Math.cosFromSin(_t6, _t4)).mul(FloatVector.broadcast(COL_SPECIES, _t6 * _t0 * (1.0f / (float) Math.sqrt(_t3))).withLane(3, _t0)) : FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.cosFromSin(_t6, _t4) * _t0));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -3275,7 +3276,8 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t0 = (float) Math.exp(sd[3]);
         float _t3 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
         float _t4 = (float) Math.sqrt(_t3);
-        float _t8 = (float) Math.sin(_t4) * _t0 * (1.0f / (float) Math.sqrt(_t3));
+        float _t6 = (float) Math.sin(_t4);
+        float _t8 = _t6 * _t0 * (1.0f / (float) Math.sqrt(_t3));
         if (_t3 > 0.0f) {
             dd[0] = sd[0] * _t8;
             dd[1] = sd[1] * _t8;
@@ -3285,7 +3287,7 @@ public final class FloatQuatImpl implements FloatQuat {
             dd[1] = 0.0f;
             dd[2] = 0.0f;
         }
-        dd[3] = (float) Math.cos(_t4) * _t0;
+        dd[3] = (float) Math.cosFromSin(_t6, _t4) * _t0;
         return dest;
     }
 
@@ -3763,8 +3765,9 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = angularVelData[1] * _t0;
         float _t6 = Math.fma(_t1, _t1, Math.fma(_t2, _t2, _t3 * _t3));
         float _t7 = (float) Math.sqrt(_t6);
-        float _t9 = (float) Math.cos(_t7);
-        float _t11 = (float) Math.sin(_t7) * (1.0f / (float) Math.sqrt(_t6));
+        float _t9 = (float) Math.sin(_t7);
+        float _t10 = (float) Math.cosFromSin(_t9, _t7);
+        float _t11 = _t9 * (1.0f / (float) Math.sqrt(_t6));
         float _t15, _t16, _t17;
         if (_t6 > 0.0f) {
             _t15 = _t2 * _t11;
@@ -3775,10 +3778,10 @@ public final class FloatQuatImpl implements FloatQuat {
             _t16 = 0.0f;
             _t17 = 0.0f;
         }
-        float _buf0 = Math.fma(sd[0], _t9, sd[3] * _t15) + Math.fma(sd[2], _t16, -(sd[1] * _t17));
-        float _buf1 = Math.fma(sd[0], _t17, sd[3] * _t16) + Math.fma(sd[1], _t9, -(sd[2] * _t15));
-        float _buf2 = Math.fma(sd[1], _t15, sd[2] * _t9) + Math.fma(sd[3], _t17, -(sd[0] * _t16));
-        dd[3] = Math.fma(sd[3], _t9, -(sd[0] * _t15)) - Math.fma(sd[1], _t16, sd[2] * _t17);
+        float _buf0 = Math.fma(sd[0], _t10, sd[3] * _t15) + Math.fma(sd[2], _t16, -(sd[1] * _t17));
+        float _buf1 = Math.fma(sd[0], _t17, sd[3] * _t16) + Math.fma(sd[1], _t10, -(sd[2] * _t15));
+        float _buf2 = Math.fma(sd[1], _t15, sd[2] * _t10) + Math.fma(sd[3], _t17, -(sd[0] * _t16));
+        dd[3] = Math.fma(sd[3], _t10, -(sd[0] * _t15)) - Math.fma(sd[1], _t16, sd[2] * _t17);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -3826,8 +3829,9 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = angularVelY * _t0;
         float _t6 = Math.fma(_t1, _t1, Math.fma(_t2, _t2, _t3 * _t3));
         float _t7 = (float) Math.sqrt(_t6);
-        float _t9 = (float) Math.cos(_t7);
-        float _t11 = (float) Math.sin(_t7) * (1.0f / (float) Math.sqrt(_t6));
+        float _t9 = (float) Math.sin(_t7);
+        float _t10 = (float) Math.cosFromSin(_t9, _t7);
+        float _t11 = _t9 * (1.0f / (float) Math.sqrt(_t6));
         float _t15, _t16, _t17;
         if (_t6 > 0.0f) {
             _t15 = _t2 * _t11;
@@ -3838,10 +3842,10 @@ public final class FloatQuatImpl implements FloatQuat {
             _t16 = 0.0f;
             _t17 = 0.0f;
         }
-        float _buf0 = Math.fma(sd[0], _t9, sd[3] * _t15) + Math.fma(sd[2], _t16, -(sd[1] * _t17));
-        float _buf1 = Math.fma(sd[0], _t17, sd[3] * _t16) + Math.fma(sd[1], _t9, -(sd[2] * _t15));
-        float _buf2 = Math.fma(sd[1], _t15, sd[2] * _t9) + Math.fma(sd[3], _t17, -(sd[0] * _t16));
-        dd[3] = Math.fma(sd[3], _t9, -(sd[0] * _t15)) - Math.fma(sd[1], _t16, sd[2] * _t17);
+        float _buf0 = Math.fma(sd[0], _t10, sd[3] * _t15) + Math.fma(sd[2], _t16, -(sd[1] * _t17));
+        float _buf1 = Math.fma(sd[0], _t17, sd[3] * _t16) + Math.fma(sd[1], _t10, -(sd[2] * _t15));
+        float _buf2 = Math.fma(sd[1], _t15, sd[2] * _t10) + Math.fma(sd[3], _t17, -(sd[0] * _t16));
+        dd[3] = Math.fma(sd[3], _t10, -(sd[0] * _t15)) - Math.fma(sd[1], _t16, sd[2] * _t17);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -3875,8 +3879,9 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = angularVelY * _t0;
         float _t6 = Math.fma(_t1, _t1, Math.fma(_t2, _t2, _t3 * _t3));
         float _t7 = (float) Math.sqrt(_t6);
-        float _t9 = (float) Math.cos(_t7);
-        float _t11 = (float) Math.sin(_t7) * (1.0f / (float) Math.sqrt(_t6));
+        float _t9 = (float) Math.sin(_t7);
+        float _t10 = (float) Math.cosFromSin(_t9, _t7);
+        float _t11 = _t9 * (1.0f / (float) Math.sqrt(_t6));
         float _t15, _t16, _t17;
         if (_t6 > 0.0f) {
             _t15 = _t2 * _t11;
@@ -3887,10 +3892,10 @@ public final class FloatQuatImpl implements FloatQuat {
             _t16 = 0.0f;
             _t17 = 0.0f;
         }
-        float _buf0 = Math.fma(sd[0], _t9, sd[3] * _t15) + Math.fma(sd[2], _t16, -(sd[1] * _t17));
-        float _buf1 = Math.fma(sd[0], _t17, sd[3] * _t16) + Math.fma(sd[1], _t9, -(sd[2] * _t15));
-        float _buf2 = Math.fma(sd[1], _t15, sd[2] * _t9) + Math.fma(sd[3], _t17, -(sd[0] * _t16));
-        dd[3] = Math.fma(sd[3], _t9, -(sd[0] * _t15)) - Math.fma(sd[1], _t16, sd[2] * _t17);
+        float _buf0 = Math.fma(sd[0], _t10, sd[3] * _t15) + Math.fma(sd[2], _t16, -(sd[1] * _t17));
+        float _buf1 = Math.fma(sd[0], _t17, sd[3] * _t16) + Math.fma(sd[1], _t10, -(sd[2] * _t15));
+        float _buf2 = Math.fma(sd[1], _t15, sd[2] * _t10) + Math.fma(sd[3], _t17, -(sd[0] * _t16));
+        dd[3] = Math.fma(sd[3], _t10, -(sd[0] * _t15)) - Math.fma(sd[1], _t16, sd[2] * _t17);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -5442,7 +5447,8 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t20 = t * (_t2 > 0.0f ? sd[1] * _t11 : 0.0f);
         float _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
         float _t24 = (float) Math.sqrt(_t23);
-        var _col0 = (_t23 > 0.0f ? FloatVector.zero(COL_SPECIES).withLane(0, _t19).withLane(1, _t20).withLane(2, _t18).withLane(3, (float) Math.cos(_t24)).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sin(_t24) * _t10 * (1.0f / (float) Math.sqrt(_t23))).withLane(3, _t10)) : FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.cos(_t24) * _t10));
+        float _t26 = (float) Math.sin(_t24);
+        var _col0 = (_t23 > 0.0f ? FloatVector.zero(COL_SPECIES).withLane(0, _t19).withLane(1, _t20).withLane(2, _t18).withLane(3, (float) Math.cosFromSin(_t26, _t24)).mul(FloatVector.broadcast(COL_SPECIES, _t26 * _t10 * (1.0f / (float) Math.sqrt(_t23))).withLane(3, _t10)) : FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.cosFromSin(_t26, _t24) * _t10));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -5480,7 +5486,8 @@ public final class FloatQuatImpl implements FloatQuat {
         }
         float _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
         float _t24 = (float) Math.sqrt(_t23);
-        float _t28 = (float) Math.sin(_t24) * _t10 * (1.0f / (float) Math.sqrt(_t23));
+        float _t26 = (float) Math.sin(_t24);
+        float _t28 = _t26 * _t10 * (1.0f / (float) Math.sqrt(_t23));
         if (_t23 > 0.0f) {
             dd[0] = _t19 * _t28;
             dd[1] = _t20 * _t28;
@@ -5490,7 +5497,7 @@ public final class FloatQuatImpl implements FloatQuat {
             dd[1] = 0.0f;
             dd[2] = 0.0f;
         }
-        dd[3] = (float) Math.cos(_t24) * _t10;
+        dd[3] = (float) Math.cosFromSin(_t26, _t24) * _t10;
         return dest;
     }
 
@@ -6182,7 +6189,8 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dd = this.data;
         float[] axisData = ((Float3Impl) axis).data;
         float _t0 = 0.5f * angle;
-        var _col0 = FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)).fma(VEC_1, FloatVector.zero(COL_SPECIES).withLane(0, axisData[0]).withLane(1, axisData[1]).withLane(2, axisData[2]).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sin(_t0))));
+        float _t1 = (float) Math.sin(_t0);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, (float) Math.cosFromSin(_t1, _t0)).fma(VEC_1, FloatVector.zero(COL_SPECIES).withLane(0, axisData[0]).withLane(1, axisData[1]).withLane(2, axisData[2]).mul(FloatVector.broadcast(COL_SPECIES, _t1)));
         _col0.intoArray(dd, 0);
         return this;
     }
@@ -6191,7 +6199,8 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dd = this.data;
         float[] axisData = ((Float3Impl) axis).data;
         float _t0 = 0.5f * angle;
-        var _col0 = FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)).mul(VEC_1).add(FloatVector.zero(COL_SPECIES).withLane(0, axisData[0]).withLane(1, axisData[1]).withLane(2, axisData[2]).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sin(_t0))));
+        float _t1 = (float) Math.sin(_t0);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, (float) Math.cosFromSin(_t1, _t0)).mul(VEC_1).add(FloatVector.zero(COL_SPECIES).withLane(0, axisData[0]).withLane(1, axisData[1]).withLane(2, axisData[2]).mul(FloatVector.broadcast(COL_SPECIES, _t1)));
         _col0.intoArray(dd, 0);
         return this;
     }
@@ -6221,7 +6230,8 @@ public final class FloatQuatImpl implements FloatQuat {
     private FloatQuat makeRotationAxis_fma(float angle, float axisX, float axisY, float axisZ) {
         float[] dd = this.data;
         float _t0 = 0.5f * angle;
-        var _col0 = FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)).fma(VEC_1, FloatVector.zero(COL_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sin(_t0))));
+        float _t1 = (float) Math.sin(_t0);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, (float) Math.cosFromSin(_t1, _t0)).fma(VEC_1, FloatVector.zero(COL_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(FloatVector.broadcast(COL_SPECIES, _t1)));
         _col0.intoArray(dd, 0);
         return this;
     }
@@ -6229,7 +6239,8 @@ public final class FloatQuatImpl implements FloatQuat {
     private FloatQuat makeRotationAxis_mulAdd(float angle, float axisX, float axisY, float axisZ) {
         float[] dd = this.data;
         float _t0 = 0.5f * angle;
-        var _col0 = FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)).mul(VEC_1).add(FloatVector.zero(COL_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sin(_t0))));
+        float _t1 = (float) Math.sin(_t0);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, (float) Math.cosFromSin(_t1, _t0)).mul(VEC_1).add(FloatVector.zero(COL_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(FloatVector.broadcast(COL_SPECIES, _t1)));
         _col0.intoArray(dd, 0);
         return this;
     }
@@ -6560,10 +6571,11 @@ public final class FloatQuatImpl implements FloatQuat {
     @Mutated public FloatQuat makeRotationX(float angle) {
         float[] dd = this.data;
         float _t0 = 0.5f * angle;
-        dd[0] = (float) Math.sin(_t0);
+        float _t1 = (float) Math.sin(_t0);
+        dd[0] = _t1;
         dd[1] = 0.0f;
         dd[2] = 0.0f;
-        dd[3] = (float) Math.cos(_t0);
+        dd[3] = (float) Math.cosFromSin(_t1, _t0);
         return this;
     }
 
@@ -6584,19 +6596,19 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t6;
-        float _t12 = _t7 * _t4;
-        dd[0] = Math.fma(_t9, _t5, _t10 * _t8);
-        dd[1] = Math.fma(_t10, _t5, -(_t9 * _t8));
-        dd[2] = Math.fma(_t11, _t5, _t12 * _t8);
-        dd[3] = Math.fma(_t12, _t5, -(_t11 * _t8));
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        dd[0] = Math.fma(_t10, _t7, _t11 * _t5);
+        dd[1] = Math.fma(_t11, _t7, -(_t10 * _t5));
+        dd[2] = Math.fma(_t9, _t7, _t12 * _t5);
+        dd[3] = Math.fma(_t12, _t7, -(_t9 * _t5));
         return this;
     }
 
@@ -6617,19 +6629,19 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t4;
-        float _t12 = _t3 * _t6;
-        dd[0] = Math.fma(_t9, _t5, -(_t10 * _t8));
-        dd[1] = Math.fma(_t11, _t8, -(_t12 * _t5));
-        dd[2] = Math.fma(_t9, _t8, _t10 * _t5);
-        dd[3] = Math.fma(_t12, _t8, _t11 * _t5);
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        dd[0] = Math.fma(_t10, _t7, -(_t11 * _t5));
+        dd[1] = Math.fma(_t12, _t5, -(_t9 * _t7));
+        dd[2] = Math.fma(_t10, _t5, _t11 * _t7);
+        dd[3] = Math.fma(_t9, _t5, _t12 * _t7);
         return this;
     }
 
@@ -6643,10 +6655,11 @@ public final class FloatQuatImpl implements FloatQuat {
     @Mutated public FloatQuat makeRotationY(float angle) {
         float[] dd = this.data;
         float _t0 = 0.5f * angle;
+        float _t1 = (float) Math.sin(_t0);
         dd[0] = 0.0f;
-        dd[1] = (float) Math.sin(_t0);
+        dd[1] = _t1;
         dd[2] = 0.0f;
-        dd[3] = (float) Math.cos(_t0);
+        dd[3] = (float) Math.cosFromSin(_t1, _t0);
         return this;
     }
 
@@ -6672,16 +6685,16 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t4;
-        float _t12 = _t3 * _t6;
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t9).withLane(1, _t10).withLane(3, _t11).fma(FloatVector.broadcast(COL_SPECIES, _t5), FloatVector.broadcast(COL_SPECIES, _t10).withLane(3, _t12).mul(FloatVector.broadcast(COL_SPECIES, _t8)).withLane(1, -(_t9 * _t8))).withLane(2, _t11 * _t8 - _t12 * _t5);
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t11).withLane(2, _t12).withLane(3, _t9).fma(FloatVector.broadcast(COL_SPECIES, _t5), FloatVector.broadcast(COL_SPECIES, _t10).withLane(3, _t12).mul(FloatVector.broadcast(COL_SPECIES, _t7)).withLane(2, -(_t9 * _t7))).withLane(1, _t11 * _t7 - _t10 * _t5);
         _col0.intoArray(dd, 0);
         return this;
     }
@@ -6692,16 +6705,16 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t4;
-        float _t12 = _t3 * _t6;
-        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t9).withLane(1, _t10).withLane(3, _t11).mul(FloatVector.broadcast(COL_SPECIES, _t5)).add(FloatVector.broadcast(COL_SPECIES, _t10).withLane(3, _t12).mul(FloatVector.broadcast(COL_SPECIES, _t8)).withLane(1, -(_t9 * _t8))).withLane(2, _t11 * _t8 - _t12 * _t5);
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t11).withLane(2, _t12).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, _t5)).add(FloatVector.broadcast(COL_SPECIES, _t10).withLane(3, _t12).mul(FloatVector.broadcast(COL_SPECIES, _t7)).withLane(2, -(_t9 * _t7))).withLane(1, _t11 * _t7 - _t10 * _t5);
         _col0.intoArray(dd, 0);
         return this;
     }
@@ -6724,18 +6737,18 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t2 = 0.5f * angleX;
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t5, _t2);
+        float _t7 = (float) Math.cosFromSin(_t3, _t0);
+        float _t8 = (float) Math.cosFromSin(_t4, _t1);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t7;
-        float _t12 = _t4 * _t6;
-        dd[0] = Math.fma(_t9, _t5, _t10 * _t8);
-        dd[1] = Math.fma(_t11, _t5, _t12 * _t8);
-        dd[2] = Math.fma(_t12, _t5, -(_t11 * _t8));
-        dd[3] = Math.fma(_t10, _t5, -(_t9 * _t8));
+        float _t10 = _t3 * _t8;
+        float _t11 = _t4 * _t7;
+        float _t12 = _t7 * _t8;
+        dd[0] = Math.fma(_t9, _t6, _t12 * _t5);
+        dd[1] = Math.fma(_t10, _t6, _t11 * _t5);
+        dd[2] = Math.fma(_t11, _t6, -(_t10 * _t5));
+        dd[3] = Math.fma(_t12, _t6, -(_t9 * _t5));
         return this;
     }
 
@@ -6749,10 +6762,11 @@ public final class FloatQuatImpl implements FloatQuat {
     @Mutated public FloatQuat makeRotationZ(float angle) {
         float[] dd = this.data;
         float _t0 = 0.5f * angle;
+        float _t1 = (float) Math.sin(_t0);
         dd[0] = 0.0f;
         dd[1] = 0.0f;
-        dd[2] = (float) Math.sin(_t0);
-        dd[3] = (float) Math.cos(_t0);
+        dd[2] = _t1;
+        dd[3] = (float) Math.cosFromSin(_t1, _t0);
         return this;
     }
 
@@ -6773,19 +6787,19 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
         float _t3 = (float) Math.sin(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t1);
-        float _t7 = (float) Math.cos(_t0);
-        float _t8 = (float) Math.sin(_t2);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t4, _t1);
+        float _t7 = (float) Math.cosFromSin(_t5, _t2);
+        float _t8 = (float) Math.cosFromSin(_t3, _t0);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t6;
-        float _t12 = _t7 * _t4;
-        dd[0] = Math.fma(_t9, _t5, -(_t10 * _t8));
-        dd[1] = Math.fma(_t11, _t5, _t12 * _t8);
-        dd[2] = Math.fma(_t9, _t8, _t10 * _t5);
-        dd[3] = Math.fma(_t12, _t5, -(_t11 * _t8));
+        float _t10 = _t3 * _t6;
+        float _t11 = _t4 * _t8;
+        float _t12 = _t8 * _t6;
+        dd[0] = Math.fma(_t10, _t7, -(_t11 * _t5));
+        dd[1] = Math.fma(_t9, _t7, _t12 * _t5);
+        dd[2] = Math.fma(_t10, _t5, _t11 * _t7);
+        dd[3] = Math.fma(_t12, _t7, -(_t9 * _t5));
         return this;
     }
 
@@ -6805,20 +6819,20 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t6 * _t4;
-        float _t12 = _t7 * _t3;
-        dd[0] = Math.fma(_t9, _t5, -(_t10 * _t8));
-        dd[1] = Math.fma(_t11, _t8, _t12 * _t5);
-        dd[2] = Math.fma(_t12, _t8, -(_t11 * _t5));
-        dd[3] = Math.fma(_t10, _t5, _t9 * _t8);
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t12 = _t6 * _t7;
+        dd[0] = Math.fma(_t12, _t5, -(_t9 * _t8));
+        dd[1] = Math.fma(_t10, _t8, _t11 * _t5);
+        dd[2] = Math.fma(_t11, _t8, -(_t10 * _t5));
+        dd[3] = Math.fma(_t9, _t5, _t12 * _t8);
         return this;
     }
 
@@ -6836,27 +6850,17 @@ public final class FloatQuatImpl implements FloatQuat {
      * @return dest
      */
     public FloatQuat preRotateX(float angle, @Mutated FloatQuat dest) {
-        if (SimdMath.USE_FMA) return preRotateX_fma(angle, dest);
-        return preRotateX_mulAdd(angle, dest);
-    }
-
-    private FloatQuat preRotateX_fma(float angle, @Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
-        float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).fma(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)), FloatVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(2, sd[1]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(1, sd[2]).withLane(3, sd[0]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
-        _col0.intoArray(dd, 0);
-        return dest;
-    }
-
-    private FloatQuat preRotateX_mulAdd(float angle, @Mutated FloatQuat dest) {
-        float[] sd = this.data;
-        float[] dd = ((FloatQuatImpl) dest).data;
-        float _t0 = 0.5f * angle;
-        float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0))).add(FloatVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(2, sd[1]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(1, sd[2]).withLane(3, sd[0]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
-        _col0.intoArray(dd, 0);
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = Math.fma(sd[0], _t2, sd[3] * _t1);
+        float _buf1 = Math.fma(sd[1], _t2, -(sd[2] * _t1));
+        dd[2] = Math.fma(sd[1], _t1, sd[2] * _t2);
+        dd[3] = Math.fma(sd[3], _t2, -(sd[0] * _t1));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -6880,12 +6884,12 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _buf0 = Math.fma(sd[0], _t1, sd[3] * _t2);
-        float _buf1 = Math.fma(sd[1], _t1, -(sd[2] * _t2));
-        dd[2] = Math.fma(sd[1], _t2, sd[2] * _t1);
-        dd[3] = Math.fma(sd[3], _t1, -(sd[0] * _t2));
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = Math.fma(sd[0], _t2, sd[3] * _t1);
+        float _buf1 = Math.fma(sd[1], _t2, -(sd[2] * _t1));
+        dd[2] = Math.fma(sd[1], _t1, sd[2] * _t2);
+        dd[3] = Math.fma(sd[3], _t2, -(sd[0] * _t1));
         dd[0] = _buf0;
         dd[1] = _buf1;
         return dest;
@@ -6905,27 +6909,17 @@ public final class FloatQuatImpl implements FloatQuat {
      * @return dest
      */
     public FloatQuat preRotateY(float angle, @Mutated FloatQuat dest) {
-        if (SimdMath.USE_FMA) return preRotateY_fma(angle, dest);
-        return preRotateY_mulAdd(angle, dest);
-    }
-
-    private FloatQuat preRotateY_fma(float angle, @Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
-        float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).fma(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)), FloatVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(1, sd[3]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(2, sd[0]).withLane(3, sd[1]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
-        _col0.intoArray(dd, 0);
-        return dest;
-    }
-
-    private FloatQuat preRotateY_mulAdd(float angle, @Mutated FloatQuat dest) {
-        float[] sd = this.data;
-        float[] dd = ((FloatQuatImpl) dest).data;
-        float _t0 = 0.5f * angle;
-        float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0))).add(FloatVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(1, sd[3]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(2, sd[0]).withLane(3, sd[1]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
-        _col0.intoArray(dd, 0);
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = Math.fma(sd[0], _t2, sd[2] * _t1);
+        float _buf1 = Math.fma(sd[1], _t2, sd[3] * _t1);
+        dd[2] = Math.fma(sd[2], _t2, -(sd[0] * _t1));
+        dd[3] = Math.fma(sd[3], _t2, -(sd[1] * _t1));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -6949,12 +6943,12 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _buf0 = Math.fma(sd[0], _t1, sd[2] * _t2);
-        float _buf1 = Math.fma(sd[1], _t1, sd[3] * _t2);
-        dd[2] = Math.fma(sd[2], _t1, -(sd[0] * _t2));
-        dd[3] = Math.fma(sd[3], _t1, -(sd[1] * _t2));
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = Math.fma(sd[0], _t2, sd[2] * _t1);
+        float _buf1 = Math.fma(sd[1], _t2, sd[3] * _t1);
+        dd[2] = Math.fma(sd[2], _t2, -(sd[0] * _t1));
+        dd[3] = Math.fma(sd[3], _t2, -(sd[1] * _t1));
         dd[0] = _buf0;
         dd[1] = _buf1;
         return dest;
@@ -6974,27 +6968,17 @@ public final class FloatQuatImpl implements FloatQuat {
      * @return dest
      */
     public FloatQuat preRotateZ(float angle, @Mutated FloatQuat dest) {
-        if (SimdMath.USE_FMA) return preRotateZ_fma(angle, dest);
-        return preRotateZ_mulAdd(angle, dest);
-    }
-
-    private FloatQuat preRotateZ_fma(float angle, @Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
-        float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).fma(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)), FloatVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[3]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(3, sd[2]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_5));
-        _col0.intoArray(dd, 0);
-        return dest;
-    }
-
-    private FloatQuat preRotateZ_mulAdd(float angle, @Mutated FloatQuat dest) {
-        float[] sd = this.data;
-        float[] dd = ((FloatQuatImpl) dest).data;
-        float _t0 = 0.5f * angle;
-        float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0))).add(FloatVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(2, sd[3]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(3, sd[2]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_5));
-        _col0.intoArray(dd, 0);
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = Math.fma(sd[0], _t2, -(sd[1] * _t1));
+        dd[1] = Math.fma(sd[0], _t1, sd[1] * _t2);
+        float _buf1 = Math.fma(sd[2], _t2, sd[3] * _t1);
+        dd[3] = Math.fma(sd[3], _t2, -(sd[2] * _t1));
+        dd[0] = _buf0;
+        dd[2] = _buf1;
         return dest;
     }
 
@@ -7018,12 +7002,12 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _buf0 = Math.fma(sd[0], _t1, -(sd[1] * _t2));
-        dd[1] = Math.fma(sd[0], _t2, sd[1] * _t1);
-        float _buf1 = Math.fma(sd[2], _t1, sd[3] * _t2);
-        dd[3] = Math.fma(sd[3], _t1, -(sd[2] * _t2));
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = Math.fma(sd[0], _t2, -(sd[1] * _t1));
+        dd[1] = Math.fma(sd[0], _t1, sd[1] * _t2);
+        float _buf1 = Math.fma(sd[2], _t2, sd[3] * _t1);
+        dd[3] = Math.fma(sd[3], _t2, -(sd[2] * _t1));
         dd[0] = _buf0;
         dd[2] = _buf1;
         return dest;
@@ -7051,15 +7035,15 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] axisData = ((Float3Impl) axis).data;
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _t3 = axisData[0] * _t2;
-        float _t4 = axisData[2] * _t2;
-        float _t5 = axisData[1] * _t2;
-        float _buf0 = Math.fma(sd[0], _t1, sd[3] * _t3) + Math.fma(sd[1], _t4, -(sd[2] * _t5));
-        float _buf1 = Math.fma(sd[1], _t1, sd[2] * _t3) + Math.fma(sd[3], _t5, -(sd[0] * _t4));
-        float _buf2 = Math.fma(sd[0], _t5, sd[3] * _t4) + Math.fma(sd[2], _t1, -(sd[1] * _t3));
-        dd[3] = Math.fma(sd[3], _t1, -(sd[0] * _t3)) - Math.fma(sd[1], _t5, sd[2] * _t4);
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = axisData[0] * _t1;
+        float _t3 = axisData[2] * _t1;
+        float _t4 = axisData[1] * _t1;
+        float _t5 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = Math.fma(sd[0], _t5, sd[3] * _t2) + Math.fma(sd[1], _t3, -(sd[2] * _t4));
+        float _buf1 = Math.fma(sd[1], _t5, sd[2] * _t2) + Math.fma(sd[3], _t4, -(sd[0] * _t3));
+        float _buf2 = Math.fma(sd[0], _t4, sd[3] * _t3) + Math.fma(sd[2], _t5, -(sd[1] * _t2));
+        dd[3] = Math.fma(sd[3], _t5, -(sd[0] * _t2)) - Math.fma(sd[1], _t4, sd[2] * _t3);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -7113,15 +7097,15 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _t3 = axisX * _t2;
-        float _t4 = axisZ * _t2;
-        float _t5 = axisY * _t2;
-        float _buf0 = Math.fma(sd[0], _t1, sd[3] * _t3) + Math.fma(sd[1], _t4, -(sd[2] * _t5));
-        float _buf1 = Math.fma(sd[1], _t1, sd[2] * _t3) + Math.fma(sd[3], _t5, -(sd[0] * _t4));
-        float _buf2 = Math.fma(sd[0], _t5, sd[3] * _t4) + Math.fma(sd[2], _t1, -(sd[1] * _t3));
-        dd[3] = Math.fma(sd[3], _t1, -(sd[0] * _t3)) - Math.fma(sd[1], _t5, sd[2] * _t4);
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = axisX * _t1;
+        float _t3 = axisZ * _t1;
+        float _t4 = axisY * _t1;
+        float _t5 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = Math.fma(sd[0], _t5, sd[3] * _t2) + Math.fma(sd[1], _t3, -(sd[2] * _t4));
+        float _buf1 = Math.fma(sd[1], _t5, sd[2] * _t2) + Math.fma(sd[3], _t4, -(sd[0] * _t3));
+        float _buf2 = Math.fma(sd[0], _t4, sd[3] * _t3) + Math.fma(sd[2], _t5, -(sd[1] * _t2));
+        dd[3] = Math.fma(sd[3], _t5, -(sd[0] * _t2)) - Math.fma(sd[1], _t4, sd[2] * _t3);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -7157,15 +7141,15 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _t3 = axisX * _t2;
-        float _t4 = axisZ * _t2;
-        float _t5 = axisY * _t2;
-        float _buf0 = Math.fma(sd[0], _t1, sd[3] * _t3) + Math.fma(sd[1], _t4, -(sd[2] * _t5));
-        float _buf1 = Math.fma(sd[1], _t1, sd[2] * _t3) + Math.fma(sd[3], _t5, -(sd[0] * _t4));
-        float _buf2 = Math.fma(sd[0], _t5, sd[3] * _t4) + Math.fma(sd[2], _t1, -(sd[1] * _t3));
-        dd[3] = Math.fma(sd[3], _t1, -(sd[0] * _t3)) - Math.fma(sd[1], _t5, sd[2] * _t4);
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = axisX * _t1;
+        float _t3 = axisZ * _t1;
+        float _t4 = axisY * _t1;
+        float _t5 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = Math.fma(sd[0], _t5, sd[3] * _t2) + Math.fma(sd[1], _t3, -(sd[2] * _t4));
+        float _buf1 = Math.fma(sd[1], _t5, sd[2] * _t2) + Math.fma(sd[3], _t4, -(sd[0] * _t3));
+        float _buf2 = Math.fma(sd[0], _t4, sd[3] * _t3) + Math.fma(sd[2], _t5, -(sd[1] * _t2));
+        dd[3] = Math.fma(sd[3], _t5, -(sd[0] * _t2)) - Math.fma(sd[1], _t4, sd[2] * _t3);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -7446,27 +7430,17 @@ public final class FloatQuatImpl implements FloatQuat {
      * @return dest
      */
     public FloatQuat rotateX(float angle, @Mutated FloatQuat dest) {
-        if (SimdMath.USE_FMA) return rotateX_fma(angle, dest);
-        return rotateX_mulAdd(angle, dest);
-    }
-
-    private FloatQuat rotateX_fma(float angle, @Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
-        float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).fma(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)), FloatVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(1, sd[2]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(2, sd[1]).withLane(3, sd[0]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
-        _col0.intoArray(dd, 0);
-        return dest;
-    }
-
-    private FloatQuat rotateX_mulAdd(float angle, @Mutated FloatQuat dest) {
-        float[] sd = this.data;
-        float[] dd = ((FloatQuatImpl) dest).data;
-        float _t0 = 0.5f * angle;
-        float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0))).add(FloatVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(1, sd[2]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(2, sd[1]).withLane(3, sd[0]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_4));
-        _col0.intoArray(dd, 0);
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = Math.fma(sd[0], _t2, sd[3] * _t1);
+        float _buf1 = Math.fma(sd[1], _t2, sd[2] * _t1);
+        dd[2] = Math.fma(sd[2], _t2, -(sd[1] * _t1));
+        dd[3] = Math.fma(sd[3], _t2, -(sd[0] * _t1));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -7486,12 +7460,12 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _buf0 = Math.fma(sd[0], _t1, sd[3] * _t2);
-        float _buf1 = Math.fma(sd[1], _t1, sd[2] * _t2);
-        dd[2] = Math.fma(sd[2], _t1, -(sd[1] * _t2));
-        dd[3] = Math.fma(sd[3], _t1, -(sd[0] * _t2));
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = Math.fma(sd[0], _t2, sd[3] * _t1);
+        float _buf1 = Math.fma(sd[1], _t2, sd[2] * _t1);
+        dd[2] = Math.fma(sd[2], _t2, -(sd[1] * _t1));
+        dd[3] = Math.fma(sd[3], _t2, -(sd[0] * _t1));
         dd[0] = _buf0;
         dd[1] = _buf1;
         return dest;
@@ -7520,20 +7494,20 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t6 * _t4;
-        float _t12 = _t7 * _t3;
-        float _t19 = Math.fma(_t11, _t5, _t12 * _t8);
-        float _t20 = Math.fma(_t10, _t5, _t9 * _t8);
-        float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        float _t22 = Math.fma(_t12, _t5, -(_t11 * _t8));
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t14 = _t6 * _t7;
+        float _t19 = Math.fma(_t10, _t8, _t11 * _t5);
+        float _t20 = Math.fma(_t9, _t8, _t14 * _t5);
+        float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
         float _buf0 = Math.fma(sd[0], _t21, sd[3] * _t19) + Math.fma(sd[1], _t20, -(sd[2] * _t22));
         float _buf1 = Math.fma(sd[1], _t21, sd[2] * _t19) + Math.fma(sd[3], _t22, -(sd[0] * _t20));
         float _buf2 = Math.fma(sd[0], _t22, sd[3] * _t20) + Math.fma(sd[2], _t21, -(sd[1] * _t19));
@@ -7570,20 +7544,20 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t6 * _t4;
-        float _t12 = _t7 * _t3;
-        float _t19 = Math.fma(_t11, _t5, _t12 * _t8);
-        float _t20 = Math.fma(_t10, _t5, _t9 * _t8);
-        float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        float _t22 = Math.fma(_t12, _t5, -(_t11 * _t8));
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t14 = _t6 * _t7;
+        float _t19 = Math.fma(_t10, _t8, _t11 * _t5);
+        float _t20 = Math.fma(_t9, _t8, _t14 * _t5);
+        float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
         float _buf0 = Math.fma(sd[0], _t21, sd[3] * _t19) + Math.fma(sd[1], _t20, -(sd[2] * _t22));
         float _buf1 = Math.fma(sd[1], _t21, sd[2] * _t19) + Math.fma(sd[3], _t22, -(sd[0] * _t20));
         float _buf2 = Math.fma(sd[0], _t22, sd[3] * _t20) + Math.fma(sd[2], _t21, -(sd[1] * _t19));
@@ -7620,17 +7594,17 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t7;
-        float _t12 = _t4 * _t6;
-        float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        float _t20 = Math.fma(_t11, _t5, _t12 * _t8);
-        float _t21 = Math.fma(_t11, _t8, -(_t12 * _t5));
-        float _t22 = Math.fma(_t10, _t5, -(_t9 * _t8));
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t12 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        float _t20 = Math.fma(_t10, _t5, _t11 * _t8);
+        float _t21 = Math.fma(_t10, _t8, -(_t11 * _t5));
+        float _t22 = Math.fma(_t12, _t5, -(_t9 * _t8));
         float _buf0 = Math.fma(sd[0], _t19, sd[3] * _t21) + Math.fma(sd[1], _t20, -(sd[2] * _t22));
         float _buf1 = Math.fma(sd[1], _t19, sd[2] * _t21) + Math.fma(sd[3], _t22, -(sd[0] * _t20));
         float _buf2 = Math.fma(sd[0], _t22, sd[3] * _t20) + Math.fma(sd[2], _t19, -(sd[1] * _t21));
@@ -7670,17 +7644,17 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t7;
-        float _t12 = _t4 * _t6;
-        float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        float _t20 = Math.fma(_t11, _t5, _t12 * _t8);
-        float _t21 = Math.fma(_t11, _t8, -(_t12 * _t5));
-        float _t22 = Math.fma(_t10, _t5, -(_t9 * _t8));
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t12 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        float _t20 = Math.fma(_t10, _t5, _t11 * _t8);
+        float _t21 = Math.fma(_t10, _t8, -(_t11 * _t5));
+        float _t22 = Math.fma(_t12, _t5, -(_t9 * _t8));
         float _buf0 = Math.fma(sd[0], _t19, sd[3] * _t21) + Math.fma(sd[1], _t20, -(sd[2] * _t22));
         float _buf1 = Math.fma(sd[1], _t19, sd[2] * _t21) + Math.fma(sd[3], _t22, -(sd[0] * _t20));
         float _buf2 = Math.fma(sd[0], _t22, sd[3] * _t20) + Math.fma(sd[2], _t19, -(sd[1] * _t21));
@@ -7701,27 +7675,17 @@ public final class FloatQuatImpl implements FloatQuat {
      * @return dest
      */
     public FloatQuat rotateY(float angle, @Mutated FloatQuat dest) {
-        if (SimdMath.USE_FMA) return rotateY_fma(angle, dest);
-        return rotateY_mulAdd(angle, dest);
-    }
-
-    private FloatQuat rotateY_fma(float angle, @Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
-        float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).fma(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)), FloatVector.zero(COL_SPECIES).withLane(1, sd[3]).withLane(2, sd[0]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(3, sd[1]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_5));
-        _col0.intoArray(dd, 0);
-        return dest;
-    }
-
-    private FloatQuat rotateY_mulAdd(float angle, @Mutated FloatQuat dest) {
-        float[] sd = this.data;
-        float[] dd = ((FloatQuatImpl) dest).data;
-        float _t0 = 0.5f * angle;
-        float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0))).add(FloatVector.zero(COL_SPECIES).withLane(1, sd[3]).withLane(2, sd[0]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(0, sd[2]).withLane(3, sd[1]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_5));
-        _col0.intoArray(dd, 0);
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = Math.fma(sd[0], _t2, -(sd[2] * _t1));
+        float _buf1 = Math.fma(sd[1], _t2, sd[3] * _t1);
+        dd[2] = Math.fma(sd[0], _t1, sd[2] * _t2);
+        dd[3] = Math.fma(sd[3], _t2, -(sd[1] * _t1));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -7741,12 +7705,12 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _buf0 = Math.fma(sd[0], _t1, -(sd[2] * _t2));
-        float _buf1 = Math.fma(sd[1], _t1, sd[3] * _t2);
-        dd[2] = Math.fma(sd[0], _t2, sd[2] * _t1);
-        dd[3] = Math.fma(sd[3], _t1, -(sd[1] * _t2));
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = Math.fma(sd[0], _t2, -(sd[2] * _t1));
+        float _buf1 = Math.fma(sd[1], _t2, sd[3] * _t1);
+        dd[2] = Math.fma(sd[0], _t1, sd[2] * _t2);
+        dd[3] = Math.fma(sd[3], _t2, -(sd[1] * _t1));
         dd[0] = _buf0;
         dd[1] = _buf1;
         return dest;
@@ -7778,17 +7742,17 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t7;
-        float _t12 = _t4 * _t6;
-        float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        float _t20 = Math.fma(_t11, _t8, _t12 * _t5);
-        float _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        float _t22 = Math.fma(_t12, _t8, -(_t11 * _t5));
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t12 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        float _t20 = Math.fma(_t10, _t8, _t11 * _t5);
+        float _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
+        float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
         float _buf0 = Math.fma(sd[0], _t19, sd[3] * _t20) + Math.fma(sd[1], _t21, -(sd[2] * _t22));
         float _buf1 = Math.fma(sd[1], _t19, sd[2] * _t20) + Math.fma(sd[3], _t22, -(sd[0] * _t21));
         float _buf2 = Math.fma(sd[0], _t22, sd[3] * _t21) + Math.fma(sd[2], _t19, -(sd[1] * _t20));
@@ -7828,17 +7792,17 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t3 * _t7;
-        float _t12 = _t4 * _t6;
-        float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        float _t20 = Math.fma(_t11, _t8, _t12 * _t5);
-        float _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        float _t22 = Math.fma(_t12, _t8, -(_t11 * _t5));
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t12 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        float _t20 = Math.fma(_t10, _t8, _t11 * _t5);
+        float _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
+        float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
         float _buf0 = Math.fma(sd[0], _t19, sd[3] * _t20) + Math.fma(sd[1], _t21, -(sd[2] * _t22));
         float _buf1 = Math.fma(sd[1], _t19, sd[2] * _t20) + Math.fma(sd[3], _t22, -(sd[0] * _t21));
         float _buf2 = Math.fma(sd[0], _t22, sd[3] * _t21) + Math.fma(sd[2], _t19, -(sd[1] * _t20));
@@ -7872,20 +7836,20 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t3;
-        float _t12 = _t6 * _t4;
-        float _t19 = Math.fma(_t10, _t5, _t9 * _t8);
-        float _t20 = Math.fma(_t12, _t5, _t11 * _t8);
-        float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+        float _t10 = _t4 * _t6;
+        float _t11 = _t3 * _t7;
+        float _t14 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t8, _t14 * _t5);
+        float _t20 = Math.fma(_t11, _t8, _t10 * _t5);
+        float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         float _buf0 = Math.fma(sd[0], _t21, sd[3] * _t19) + Math.fma(sd[1], _t22, -(sd[2] * _t20));
         float _buf1 = Math.fma(sd[1], _t21, sd[2] * _t19) + Math.fma(sd[3], _t20, -(sd[0] * _t22));
         float _buf2 = Math.fma(sd[0], _t20, sd[3] * _t22) + Math.fma(sd[2], _t21, -(sd[1] * _t19));
@@ -7922,20 +7886,20 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t7 * _t3;
-        float _t12 = _t6 * _t4;
-        float _t19 = Math.fma(_t10, _t5, _t9 * _t8);
-        float _t20 = Math.fma(_t12, _t5, _t11 * _t8);
-        float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+        float _t10 = _t4 * _t6;
+        float _t11 = _t3 * _t7;
+        float _t14 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t8, _t14 * _t5);
+        float _t20 = Math.fma(_t11, _t8, _t10 * _t5);
+        float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         float _buf0 = Math.fma(sd[0], _t21, sd[3] * _t19) + Math.fma(sd[1], _t22, -(sd[2] * _t20));
         float _buf1 = Math.fma(sd[1], _t21, sd[2] * _t19) + Math.fma(sd[3], _t20, -(sd[0] * _t22));
         float _buf2 = Math.fma(sd[0], _t20, sd[3] * _t22) + Math.fma(sd[2], _t21, -(sd[1] * _t19));
@@ -7956,27 +7920,17 @@ public final class FloatQuatImpl implements FloatQuat {
      * @return dest
      */
     public FloatQuat rotateZ(float angle, @Mutated FloatQuat dest) {
-        if (SimdMath.USE_FMA) return rotateZ_fma(angle, dest);
-        return rotateZ_mulAdd(angle, dest);
-    }
-
-    private FloatQuat rotateZ_fma(float angle, @Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
-        float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).fma(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0)), FloatVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(2, sd[3]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(3, sd[2]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
-        _col0.intoArray(dd, 0);
-        return dest;
-    }
-
-    private FloatQuat rotateZ_mulAdd(float angle, @Mutated FloatQuat dest) {
-        float[] sd = this.data;
-        float[] dd = ((FloatQuatImpl) dest).data;
-        float _t0 = 0.5f * angle;
-        float _t2 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.cos(_t0))).add(FloatVector.zero(COL_SPECIES).withLane(0, sd[1]).withLane(2, sd[3]).mul(FloatVector.broadcast(COL_SPECIES, _t2)).blend(FloatVector.zero(COL_SPECIES).withLane(1, sd[0]).withLane(3, sd[2]).mul(FloatVector.broadcast(COL_SPECIES, -_t2)), MASK_3));
-        _col0.intoArray(dd, 0);
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = Math.fma(sd[0], _t2, sd[1] * _t1);
+        dd[1] = Math.fma(sd[1], _t2, -(sd[0] * _t1));
+        float _buf1 = Math.fma(sd[2], _t2, sd[3] * _t1);
+        dd[3] = Math.fma(sd[3], _t2, -(sd[2] * _t1));
+        dd[0] = _buf0;
+        dd[2] = _buf1;
         return dest;
     }
 
@@ -7996,12 +7950,12 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         float _t0 = 0.5f * angle;
-        float _t1 = (float) Math.cos(_t0);
-        float _t2 = (float) Math.sin(_t0);
-        float _buf0 = Math.fma(sd[0], _t1, sd[1] * _t2);
-        dd[1] = Math.fma(sd[1], _t1, -(sd[0] * _t2));
-        float _buf1 = Math.fma(sd[2], _t1, sd[3] * _t2);
-        dd[3] = Math.fma(sd[3], _t1, -(sd[2] * _t2));
+        float _t1 = (float) Math.sin(_t0);
+        float _t2 = (float) Math.cosFromSin(_t1, _t0);
+        float _buf0 = Math.fma(sd[0], _t2, sd[1] * _t1);
+        dd[1] = Math.fma(sd[1], _t2, -(sd[0] * _t1));
+        float _buf1 = Math.fma(sd[2], _t2, sd[3] * _t1);
+        dd[3] = Math.fma(sd[3], _t2, -(sd[2] * _t1));
         dd[0] = _buf0;
         dd[2] = _buf1;
         return dest;
@@ -8030,20 +7984,20 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t6 * _t4;
-        float _t12 = _t7 * _t3;
-        float _t19 = Math.fma(_t11, _t8, _t12 * _t5);
-        float _t20 = Math.fma(_t10, _t5, _t9 * _t8);
-        float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t14 = _t6 * _t7;
+        float _t19 = Math.fma(_t10, _t5, _t11 * _t8);
+        float _t20 = Math.fma(_t9, _t8, _t14 * _t5);
+        float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         float _buf0 = Math.fma(sd[0], _t21, sd[3] * _t22) + Math.fma(sd[1], _t19, -(sd[2] * _t20));
         float _buf1 = Math.fma(sd[1], _t21, sd[2] * _t22) + Math.fma(sd[3], _t20, -(sd[0] * _t19));
         float _buf2 = Math.fma(sd[0], _t20, sd[3] * _t19) + Math.fma(sd[2], _t21, -(sd[1] * _t22));
@@ -8080,20 +8034,20 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
-        float _t3 = (float) Math.cos(_t0);
-        float _t4 = (float) Math.cos(_t1);
-        float _t5 = (float) Math.cos(_t2);
-        float _t6 = (float) Math.sin(_t0);
-        float _t7 = (float) Math.sin(_t1);
-        float _t8 = (float) Math.sin(_t2);
+        float _t3 = (float) Math.sin(_t0);
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sin(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t6 * _t4;
-        float _t12 = _t7 * _t3;
-        float _t19 = Math.fma(_t11, _t8, _t12 * _t5);
-        float _t20 = Math.fma(_t10, _t5, _t9 * _t8);
-        float _t21 = Math.fma(_t9, _t5, -(_t10 * _t8));
-        float _t22 = Math.fma(_t11, _t5, -(_t12 * _t8));
+        float _t10 = _t3 * _t7;
+        float _t11 = _t4 * _t6;
+        float _t14 = _t6 * _t7;
+        float _t19 = Math.fma(_t10, _t5, _t11 * _t8);
+        float _t20 = Math.fma(_t9, _t8, _t14 * _t5);
+        float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         float _buf0 = Math.fma(sd[0], _t21, sd[3] * _t22) + Math.fma(sd[1], _t19, -(sd[2] * _t20));
         float _buf1 = Math.fma(sd[1], _t21, sd[2] * _t22) + Math.fma(sd[3], _t20, -(sd[0] * _t19));
         float _buf2 = Math.fma(sd[0], _t20, sd[3] * _t19) + Math.fma(sd[2], _t21, -(sd[1] * _t22));
@@ -8130,17 +8084,17 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t4 * _t6;
-        float _t12 = _t3 * _t7;
-        float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        float _t20 = Math.fma(_t12, _t8, _t11 * _t5);
-        float _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        float _t22 = Math.fma(_t11, _t8, -(_t12 * _t5));
+        float _t10 = _t4 * _t6;
+        float _t11 = _t3 * _t7;
+        float _t12 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        float _t20 = Math.fma(_t11, _t8, _t10 * _t5);
+        float _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         float _buf0 = Math.fma(sd[0], _t19, sd[3] * _t21) + Math.fma(sd[1], _t22, -(sd[2] * _t20));
         float _buf1 = Math.fma(sd[1], _t19, sd[2] * _t21) + Math.fma(sd[3], _t20, -(sd[0] * _t22));
         float _buf2 = Math.fma(sd[0], _t20, sd[3] * _t22) + Math.fma(sd[2], _t19, -(sd[1] * _t21));
@@ -8180,17 +8134,17 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
-        float _t6 = (float) Math.cos(_t0);
-        float _t7 = (float) Math.cos(_t1);
-        float _t8 = (float) Math.cos(_t2);
+        float _t6 = (float) Math.cosFromSin(_t3, _t0);
+        float _t7 = (float) Math.cosFromSin(_t4, _t1);
+        float _t8 = (float) Math.cosFromSin(_t5, _t2);
         float _t9 = _t3 * _t4;
-        float _t10 = _t6 * _t7;
-        float _t11 = _t4 * _t6;
-        float _t12 = _t3 * _t7;
-        float _t19 = Math.fma(_t9, _t5, _t10 * _t8);
-        float _t20 = Math.fma(_t12, _t8, _t11 * _t5);
-        float _t21 = Math.fma(_t10, _t5, -(_t9 * _t8));
-        float _t22 = Math.fma(_t11, _t8, -(_t12 * _t5));
+        float _t10 = _t4 * _t6;
+        float _t11 = _t3 * _t7;
+        float _t12 = _t6 * _t7;
+        float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
+        float _t20 = Math.fma(_t11, _t8, _t10 * _t5);
+        float _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         float _buf0 = Math.fma(sd[0], _t19, sd[3] * _t21) + Math.fma(sd[1], _t22, -(sd[2] * _t20));
         float _buf1 = Math.fma(sd[1], _t19, sd[2] * _t21) + Math.fma(sd[3], _t20, -(sd[0] * _t22));
         float _buf2 = Math.fma(sd[0], _t20, sd[3] * _t22) + Math.fma(sd[2], _t19, -(sd[1] * _t21));
@@ -8511,9 +8465,6 @@ public final class FloatQuatImpl implements FloatQuat {
 
     private static final VectorSpecies<Float> COL_SPECIES = FloatVector.SPECIES_128;
     private static final VectorMask<Float> MASK_0 = VectorMask.fromValues(COL_SPECIES, true, true, true, false);
-    private static final VectorMask<Float> MASK_3 = VectorMask.fromValues(COL_SPECIES, false, true, false, true);
-    private static final VectorMask<Float> MASK_4 = VectorMask.fromValues(COL_SPECIES, false, false, true, true);
-    private static final VectorMask<Float> MASK_5 = VectorMask.fromValues(COL_SPECIES, true, false, false, true);
     private static final FloatVector VEC_1 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 1.0f}, 0);
     private static final FloatVector VEC_2 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 0.0f}, 0);
 
