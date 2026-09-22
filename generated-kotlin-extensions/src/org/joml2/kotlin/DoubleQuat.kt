@@ -31,19 +31,19 @@ inline fun DoubleQuat.rotateX(angle: Angle): DoubleQuat = rotateX(angle.radians)
 /** [DoubleQuat.rotateXYZ] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun DoubleQuat.rotateXYZ(angleX: Angle, angleY: Angle, angleZ: Angle): DoubleQuat = rotateXYZ(angleX.radians, angleY.radians, angleZ.radians)
 /** [DoubleQuat.rotateXZY] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun DoubleQuat.rotateXZY(angleX: Angle, angleY: Angle, angleZ: Angle): DoubleQuat = rotateXZY(angleX.radians, angleY.radians, angleZ.radians)
+inline fun DoubleQuat.rotateXZY(angleX: Angle, angleZ: Angle, angleY: Angle): DoubleQuat = rotateXZY(angleX.radians, angleZ.radians, angleY.radians)
 /** [DoubleQuat.rotateY] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun DoubleQuat.rotateY(angle: Angle): DoubleQuat = rotateY(angle.radians)
 /** [DoubleQuat.rotateYXZ] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun DoubleQuat.rotateYXZ(angleX: Angle, angleY: Angle, angleZ: Angle): DoubleQuat = rotateYXZ(angleX.radians, angleY.radians, angleZ.radians)
+inline fun DoubleQuat.rotateYXZ(angleY: Angle, angleX: Angle, angleZ: Angle): DoubleQuat = rotateYXZ(angleY.radians, angleX.radians, angleZ.radians)
 /** [DoubleQuat.rotateYZX] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun DoubleQuat.rotateYZX(angleX: Angle, angleY: Angle, angleZ: Angle): DoubleQuat = rotateYZX(angleX.radians, angleY.radians, angleZ.radians)
+inline fun DoubleQuat.rotateYZX(angleY: Angle, angleZ: Angle, angleX: Angle): DoubleQuat = rotateYZX(angleY.radians, angleZ.radians, angleX.radians)
 /** [DoubleQuat.rotateZ] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun DoubleQuat.rotateZ(angle: Angle): DoubleQuat = rotateZ(angle.radians)
 /** [DoubleQuat.rotateZXY] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun DoubleQuat.rotateZXY(angleX: Angle, angleY: Angle, angleZ: Angle): DoubleQuat = rotateZXY(angleX.radians, angleY.radians, angleZ.radians)
+inline fun DoubleQuat.rotateZXY(angleZ: Angle, angleX: Angle, angleY: Angle): DoubleQuat = rotateZXY(angleZ.radians, angleX.radians, angleY.radians)
 /** [DoubleQuat.rotateZYX] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun DoubleQuat.rotateZYX(angleX: Angle, angleY: Angle, angleZ: Angle): DoubleQuat = rotateZYX(angleX.radians, angleY.radians, angleZ.radians)
+inline fun DoubleQuat.rotateZYX(angleZ: Angle, angleY: Angle, angleX: Angle): DoubleQuat = rotateZYX(angleZ.radians, angleY.radians, angleX.radians)
 /** [DoubleQuat.transform] as the `*` operator. */
 inline operator fun DoubleQuat.times(v: Double3): Double3 = transform(v)
 /** Component 1 of this DoubleQuat (`x()`), for destructuring declarations. */
@@ -80,17 +80,17 @@ object DoubleQuatFactory {
     /** [DoubleQuat.makeRotationXYZ] taking a type-safe [Angle] in place of the angle in radians. */
     inline fun makeRotationXYZ(angleX: Angle, angleY: Angle, angleZ: Angle): DoubleQuat = DoubleQuat.makeRotationXYZ(angleX.radians, angleY.radians, angleZ.radians)
     /** [DoubleQuat.makeRotationXZY] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationXZY(angleX: Angle, angleY: Angle, angleZ: Angle): DoubleQuat = DoubleQuat.makeRotationXZY(angleX.radians, angleY.radians, angleZ.radians)
+    inline fun makeRotationXZY(angleX: Angle, angleZ: Angle, angleY: Angle): DoubleQuat = DoubleQuat.makeRotationXZY(angleX.radians, angleZ.radians, angleY.radians)
     /** [DoubleQuat.makeRotationY] taking a type-safe [Angle] in place of the angle in radians. */
     inline fun makeRotationY(angle: Angle): DoubleQuat = DoubleQuat.makeRotationY(angle.radians)
     /** [DoubleQuat.makeRotationYXZ] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationYXZ(angleX: Angle, angleY: Angle, angleZ: Angle): DoubleQuat = DoubleQuat.makeRotationYXZ(angleX.radians, angleY.radians, angleZ.radians)
+    inline fun makeRotationYXZ(angleY: Angle, angleX: Angle, angleZ: Angle): DoubleQuat = DoubleQuat.makeRotationYXZ(angleY.radians, angleX.radians, angleZ.radians)
     /** [DoubleQuat.makeRotationYZX] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationYZX(angleX: Angle, angleY: Angle, angleZ: Angle): DoubleQuat = DoubleQuat.makeRotationYZX(angleX.radians, angleY.radians, angleZ.radians)
+    inline fun makeRotationYZX(angleY: Angle, angleZ: Angle, angleX: Angle): DoubleQuat = DoubleQuat.makeRotationYZX(angleY.radians, angleZ.radians, angleX.radians)
     /** [DoubleQuat.makeRotationZ] taking a type-safe [Angle] in place of the angle in radians. */
     inline fun makeRotationZ(angle: Angle): DoubleQuat = DoubleQuat.makeRotationZ(angle.radians)
     /** [DoubleQuat.makeRotationZXY] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationZXY(angleX: Angle, angleY: Angle, angleZ: Angle): DoubleQuat = DoubleQuat.makeRotationZXY(angleX.radians, angleY.radians, angleZ.radians)
+    inline fun makeRotationZXY(angleZ: Angle, angleX: Angle, angleY: Angle): DoubleQuat = DoubleQuat.makeRotationZXY(angleZ.radians, angleX.radians, angleY.radians)
     /** [DoubleQuat.makeRotationZYX] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationZYX(angleX: Angle, angleY: Angle, angleZ: Angle): DoubleQuat = DoubleQuat.makeRotationZYX(angleX.radians, angleY.radians, angleZ.radians)
+    inline fun makeRotationZYX(angleZ: Angle, angleY: Angle, angleX: Angle): DoubleQuat = DoubleQuat.makeRotationZYX(angleZ.radians, angleY.radians, angleX.radians)
 }

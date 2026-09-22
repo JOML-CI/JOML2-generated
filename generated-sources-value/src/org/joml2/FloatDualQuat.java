@@ -2416,11 +2416,11 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return the resulting dual quaternion
      */
-    public static FloatDualQuat makeRotationXZY(float angleX, float angleY, float angleZ) {
+    public static FloatDualQuat makeRotationXZY(float angleX, float angleZ, float angleY) {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -2456,12 +2456,12 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
      * about the Z axis first, then X, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return the resulting dual quaternion
      */
-    public static FloatDualQuat makeRotationYXZ(float angleX, float angleY, float angleZ) {
+    public static FloatDualQuat makeRotationYXZ(float angleY, float angleX, float angleZ) {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
@@ -2484,12 +2484,12 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
      * about the X axis first, then Z, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return the resulting dual quaternion
      */
-    public static FloatDualQuat makeRotationYZX(float angleX, float angleY, float angleZ) {
+    public static FloatDualQuat makeRotationYZX(float angleY, float angleZ, float angleX) {
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -2525,12 +2525,12 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
      * about the Y axis first, then X, then Z).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return the resulting dual quaternion
      */
-    public static FloatDualQuat makeRotationZXY(float angleX, float angleY, float angleZ) {
+    public static FloatDualQuat makeRotationZXY(float angleZ, float angleX, float angleY) {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -2553,12 +2553,12 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
      * about the X axis first, then Y, then Z).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return the resulting dual quaternion
      */
-    public static FloatDualQuat makeRotationZYX(float angleX, float angleY, float angleZ) {
+    public static FloatDualQuat makeRotationZYX(float angleZ, float angleY, float angleX) {
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -2763,7 +2763,7 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
     }
 
     /** Private tail of {@code rotateXZY}; reached only through it. */
-    private FloatDualQuat rotateXZY_s6e793366_tail(float _t22, float _t20, float _t19, float _t21, float _sfx0, float _sfx1) {
+    private FloatDualQuat rotateXZY_s48549da6_tail(float _t22, float _t20, float _t19, float _t21, float _sfx0, float _sfx1) {
         float _sfx2 = Math.fma(this.rX, _t22, this.rW * _t20) + Math.fma(this.rZ, _t19, -(this.rY * _t21));
         float _sfx3 = Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t22, this.rZ * _t20);
         float _sfx4 = Math.fma(this.dX, _t19, this.dW * _t21) + Math.fma(this.dY, _t20, -(this.dZ * _t22));
@@ -2785,11 +2785,11 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return the resulting dual quaternion
      */
-    public FloatDualQuat rotateXZY(float angleX, float angleY, float angleZ) {
+    public FloatDualQuat rotateXZY(float angleX, float angleZ, float angleY) {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -2809,7 +2809,7 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t22 = Math.fma(_t12, _t5, -(_t9 * _t8));
         float _sfx0 = Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t20, -(this.rZ * _t22));
         float _sfx1 = Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t22, -(this.rX * _t20));
-        return rotateXZY_s6e793366_tail(_t22, _t20, _t19, _t21, _sfx0, _sfx1);
+        return rotateXZY_s48549da6_tail(_t22, _t20, _t19, _t21, _sfx0, _sfx1);
     }
 
 
@@ -2832,7 +2832,7 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
     }
 
     /** Private tail of {@code rotateYXZ}; reached only through it. */
-    private FloatDualQuat rotateYXZ_s6e793366_tail(float _t22, float _t21, float _t19, float _t20, float _sfx0, float _sfx1) {
+    private FloatDualQuat rotateYXZ_s3dedada6_tail(float _t22, float _t21, float _t19, float _t20, float _sfx0, float _sfx1) {
         float _sfx2 = Math.fma(this.rX, _t22, this.rW * _t21) + Math.fma(this.rZ, _t19, -(this.rY * _t20));
         float _sfx3 = Math.fma(this.rW, _t19, -(this.rX * _t20)) - Math.fma(this.rY, _t22, this.rZ * _t21);
         float _sfx4 = Math.fma(this.dX, _t19, this.dW * _t20) + Math.fma(this.dY, _t21, -(this.dZ * _t22));
@@ -2853,12 +2853,12 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return the resulting dual quaternion
      */
-    public FloatDualQuat rotateYXZ(float angleX, float angleY, float angleZ) {
+    public FloatDualQuat rotateYXZ(float angleY, float angleX, float angleZ) {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
@@ -2878,11 +2878,11 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
         float _sfx0 = Math.fma(this.rX, _t19, this.rW * _t20) + Math.fma(this.rY, _t21, -(this.rZ * _t22));
         float _sfx1 = Math.fma(this.rY, _t19, this.rZ * _t20) + Math.fma(this.rW, _t22, -(this.rX * _t21));
-        return rotateYXZ_s6e793366_tail(_t22, _t21, _t19, _t20, _sfx0, _sfx1);
+        return rotateYXZ_s3dedada6_tail(_t22, _t21, _t19, _t20, _sfx0, _sfx1);
     }
 
     /** Private tail of {@code rotateYZX}; reached only through it. */
-    private FloatDualQuat rotateYZX_s6e793366_tail(float _t20, float _t22, float _t21, float _t19, float _sfx0, float _sfx1) {
+    private FloatDualQuat rotateYZX_s71a48226_tail(float _t20, float _t22, float _t21, float _t19, float _sfx0, float _sfx1) {
         float _sfx2 = Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t21, -(this.rY * _t19));
         float _sfx3 = Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t20, this.rZ * _t22);
         float _sfx4 = Math.fma(this.dX, _t21, this.dW * _t19) + Math.fma(this.dY, _t22, -(this.dZ * _t20));
@@ -2903,12 +2903,12 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return the resulting dual quaternion
      */
-    public FloatDualQuat rotateYZX(float angleX, float angleY, float angleZ) {
+    public FloatDualQuat rotateYZX(float angleY, float angleZ, float angleX) {
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -2928,7 +2928,7 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         float _sfx0 = Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t22, -(this.rZ * _t20));
         float _sfx1 = Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t20, -(this.rX * _t22));
-        return rotateYZX_s6e793366_tail(_t20, _t22, _t21, _t19, _sfx0, _sfx1);
+        return rotateYZX_s71a48226_tail(_t20, _t22, _t21, _t19, _sfx0, _sfx1);
     }
 
 
@@ -2951,7 +2951,7 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
     }
 
     /** Private tail of {@code rotateZXY}; reached only through it. */
-    private FloatDualQuat rotateZXY_s6e793366_tail(float _t20, float _t19, float _t21, float _t22, float _sfx0, float _sfx1) {
+    private FloatDualQuat rotateZXY_s673d9226_tail(float _t20, float _t19, float _t21, float _t22, float _sfx0, float _sfx1) {
         float _sfx2 = Math.fma(this.rX, _t20, this.rW * _t19) + Math.fma(this.rZ, _t21, -(this.rY * _t22));
         float _sfx3 = Math.fma(this.rW, _t21, -(this.rX * _t22)) - Math.fma(this.rY, _t20, this.rZ * _t19);
         float _sfx4 = Math.fma(this.dX, _t21, this.dW * _t22) + Math.fma(this.dY, _t19, -(this.dZ * _t20));
@@ -2972,12 +2972,12 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return the resulting dual quaternion
      */
-    public FloatDualQuat rotateZXY(float angleX, float angleY, float angleZ) {
+    public FloatDualQuat rotateZXY(float angleZ, float angleX, float angleY) {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -2997,11 +2997,11 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         float _sfx0 = Math.fma(this.rX, _t21, this.rW * _t22) + Math.fma(this.rY, _t19, -(this.rZ * _t20));
         float _sfx1 = Math.fma(this.rY, _t21, this.rZ * _t22) + Math.fma(this.rW, _t20, -(this.rX * _t19));
-        return rotateZXY_s6e793366_tail(_t20, _t19, _t21, _t22, _sfx0, _sfx1);
+        return rotateZXY_s673d9226_tail(_t20, _t19, _t21, _t22, _sfx0, _sfx1);
     }
 
     /** Private tail of {@code rotateZYX}; reached only through it. */
-    private FloatDualQuat rotateZYX_s6e793366_tail(float _t20, float _t22, float _t19, float _t21, float _sfx0, float _sfx1) {
+    private FloatDualQuat rotateZYX_s4118fc66_tail(float _t20, float _t22, float _t19, float _t21, float _sfx0, float _sfx1) {
         float _sfx2 = Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t19, -(this.rY * _t21));
         float _sfx3 = Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t20, this.rZ * _t22);
         float _sfx4 = Math.fma(this.dX, _t19, this.dW * _t21) + Math.fma(this.dY, _t22, -(this.dZ * _t20));
@@ -3022,12 +3022,12 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return the resulting dual quaternion
      */
-    public FloatDualQuat rotateZYX(float angleX, float angleY, float angleZ) {
+    public FloatDualQuat rotateZYX(float angleZ, float angleY, float angleX) {
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -3047,7 +3047,7 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         float _sfx0 = Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t22, -(this.rZ * _t20));
         float _sfx1 = Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t20, -(this.rX * _t22));
-        return rotateZYX_s6e793366_tail(_t20, _t22, _t19, _t21, _sfx0, _sfx1);
+        return rotateZYX_s4118fc66_tail(_t20, _t22, _t19, _t21, _sfx0, _sfx1);
     }
 
 

@@ -2651,7 +2651,7 @@ public final class DoubleQuatOpsKernelsAddress {
         return dest;
     }
 
-    public static long makeRotationXZY_unsafe(long dest, double angleX, double angleY, double angleZ) {
+    public static long makeRotationXZY_unsafe(long dest, double angleX, double angleZ, double angleY) {
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
@@ -2682,7 +2682,7 @@ public final class DoubleQuatOpsKernelsAddress {
         return dest;
     }
 
-    public static long makeRotationYXZ_unsafe(long dest, double angleX, double angleY, double angleZ) {
+    public static long makeRotationYXZ_unsafe(long dest, double angleY, double angleX, double angleZ) {
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
@@ -2703,7 +2703,7 @@ public final class DoubleQuatOpsKernelsAddress {
         return dest;
     }
 
-    public static long makeRotationYZX_unsafe(long dest, double angleX, double angleY, double angleZ) {
+    public static long makeRotationYZX_unsafe(long dest, double angleY, double angleZ, double angleX) {
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
@@ -2734,7 +2734,7 @@ public final class DoubleQuatOpsKernelsAddress {
         return dest;
     }
 
-    public static long makeRotationZXY_unsafe(long dest, double angleX, double angleY, double angleZ) {
+    public static long makeRotationZXY_unsafe(long dest, double angleZ, double angleX, double angleY) {
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
@@ -2755,7 +2755,7 @@ public final class DoubleQuatOpsKernelsAddress {
         return dest;
     }
 
-    public static long makeRotationZYX_unsafe(long dest, double angleX, double angleY, double angleZ) {
+    public static long makeRotationZYX_unsafe(long dest, double angleZ, double angleY, double angleX) {
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
@@ -3016,7 +3016,7 @@ public final class DoubleQuatOpsKernelsAddress {
         return dest;
     }
 
-    public static long rotateXZY_unsafe(long dest, long src, double angleX, double angleY, double angleZ) {
+    public static long rotateXZY_unsafe(long dest, long src, double angleX, double angleZ, double angleY) {
         double _selfx = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _selfy = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _selfz = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -3060,7 +3060,7 @@ public final class DoubleQuatOpsKernelsAddress {
         return dest;
     }
 
-    public static long rotateYXZ_unsafe(long dest, long src, double angleX, double angleY, double angleZ) {
+    public static long rotateYXZ_unsafe(long dest, long src, double angleY, double angleX, double angleZ) {
         double _selfx = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _selfy = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _selfz = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -3089,7 +3089,7 @@ public final class DoubleQuatOpsKernelsAddress {
         return dest;
     }
 
-    public static long rotateYZX_unsafe(long dest, long src, double angleX, double angleY, double angleZ) {
+    public static long rotateYZX_unsafe(long dest, long src, double angleY, double angleZ, double angleX) {
         double _selfx = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _selfy = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _selfz = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -3133,7 +3133,7 @@ public final class DoubleQuatOpsKernelsAddress {
         return dest;
     }
 
-    public static long rotateZXY_unsafe(long dest, long src, double angleX, double angleY, double angleZ) {
+    public static long rotateZXY_unsafe(long dest, long src, double angleZ, double angleX, double angleY) {
         double _selfx = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _selfy = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _selfz = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -3162,7 +3162,7 @@ public final class DoubleQuatOpsKernelsAddress {
         return dest;
     }
 
-    public static long rotateZYX_unsafe(long dest, long src, double angleX, double angleY, double angleZ) {
+    public static long rotateZYX_unsafe(long dest, long src, double angleZ, double angleY, double angleX) {
         double _selfx = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _selfy = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _selfz = UnsafeOpsHolder.U.getDouble(src + 16L);

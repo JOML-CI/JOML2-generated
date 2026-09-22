@@ -6082,11 +6082,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * a vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return this
      */
-    @Mutated public FloatQuat makeRotationXZY(float angleX, float angleY, float angleZ) {
+    @Mutated public FloatQuat makeRotationXZY(float angleX, float angleZ, float angleY) {
         float[] dd = this.data;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
@@ -6132,12 +6132,12 @@ public final class FloatQuatImpl implements FloatQuat {
      * radians about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so
      * a vector is rotated about the Z axis first, then X, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated public FloatQuat makeRotationYXZ(float angleX, float angleY, float angleZ) {
+    @Mutated public FloatQuat makeRotationYXZ(float angleY, float angleX, float angleZ) {
         float[] dd = this.data;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
@@ -6165,12 +6165,12 @@ public final class FloatQuatImpl implements FloatQuat {
      * radians about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so
      * a vector is rotated about the X axis first, then Z, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated public FloatQuat makeRotationYZX(float angleX, float angleY, float angleZ) {
+    @Mutated public FloatQuat makeRotationYZX(float angleY, float angleZ, float angleX) {
         float[] dd = this.data;
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
@@ -6216,12 +6216,12 @@ public final class FloatQuatImpl implements FloatQuat {
      * radians about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so
      * a vector is rotated about the Y axis first, then X, then Z).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated public FloatQuat makeRotationZXY(float angleX, float angleY, float angleZ) {
+    @Mutated public FloatQuat makeRotationZXY(float angleZ, float angleX, float angleY) {
         float[] dd = this.data;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
@@ -6249,12 +6249,12 @@ public final class FloatQuatImpl implements FloatQuat {
      * radians about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so
      * a vector is rotated about the X axis first, then Y, then Z).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated public FloatQuat makeRotationZYX(float angleX, float angleY, float angleZ) {
+    @Mutated public FloatQuat makeRotationZYX(float angleZ, float angleY, float angleX) {
         float[] dd = this.data;
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
@@ -6949,12 +6949,12 @@ public final class FloatQuatImpl implements FloatQuat {
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    public FloatQuat rotateXZY(float angleX, float angleY, float angleZ, @Mutated FloatQuat dest) {
+    public FloatQuat rotateXZY(float angleX, float angleZ, float angleY, @Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angleX;
@@ -6999,12 +6999,12 @@ public final class FloatQuatImpl implements FloatQuat {
      * {@code double} only when stored.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleQuat rotateXZY(float angleX, float angleY, float angleZ, @Mutated DoubleQuat dest) {
+    public DoubleQuat rotateXZY(float angleX, float angleZ, float angleY, @Mutated DoubleQuat dest) {
         float[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         float _t0 = 0.5f * angleX;
@@ -7096,13 +7096,13 @@ public final class FloatQuatImpl implements FloatQuat {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public FloatQuat rotateYXZ(float angleX, float angleY, float angleZ, @Mutated FloatQuat dest) {
+    public FloatQuat rotateYXZ(float angleY, float angleX, float angleZ, @Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angleX;
@@ -7146,13 +7146,13 @@ public final class FloatQuatImpl implements FloatQuat {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleQuat rotateYXZ(float angleX, float angleY, float angleZ, @Mutated DoubleQuat dest) {
+    public DoubleQuat rotateYXZ(float angleY, float angleX, float angleZ, @Mutated DoubleQuat dest) {
         float[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         float _t0 = 0.5f * angleX;
@@ -7193,13 +7193,13 @@ public final class FloatQuatImpl implements FloatQuat {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public FloatQuat rotateYZX(float angleX, float angleY, float angleZ, @Mutated FloatQuat dest) {
+    public FloatQuat rotateYZX(float angleY, float angleZ, float angleX, @Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angleY;
@@ -7243,13 +7243,13 @@ public final class FloatQuatImpl implements FloatQuat {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleQuat rotateYZX(float angleX, float angleY, float angleZ, @Mutated DoubleQuat dest) {
+    public DoubleQuat rotateYZX(float angleY, float angleZ, float angleX, @Mutated DoubleQuat dest) {
         float[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         float _t0 = 0.5f * angleY;
@@ -7341,13 +7341,13 @@ public final class FloatQuatImpl implements FloatQuat {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public FloatQuat rotateZXY(float angleX, float angleY, float angleZ, @Mutated FloatQuat dest) {
+    public FloatQuat rotateZXY(float angleZ, float angleX, float angleY, @Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angleX;
@@ -7391,13 +7391,13 @@ public final class FloatQuatImpl implements FloatQuat {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleQuat rotateZXY(float angleX, float angleY, float angleZ, @Mutated DoubleQuat dest) {
+    public DoubleQuat rotateZXY(float angleZ, float angleX, float angleY, @Mutated DoubleQuat dest) {
         float[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         float _t0 = 0.5f * angleX;
@@ -7438,13 +7438,13 @@ public final class FloatQuatImpl implements FloatQuat {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public FloatQuat rotateZYX(float angleX, float angleY, float angleZ, @Mutated FloatQuat dest) {
+    public FloatQuat rotateZYX(float angleZ, float angleY, float angleX, @Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 0.5f * angleY;
@@ -7488,13 +7488,13 @@ public final class FloatQuatImpl implements FloatQuat {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleQuat rotateZYX(float angleX, float angleY, float angleZ, @Mutated DoubleQuat dest) {
+    public DoubleQuat rotateZYX(float angleZ, float angleY, float angleX, @Mutated DoubleQuat dest) {
         float[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         float _t0 = 0.5f * angleY;

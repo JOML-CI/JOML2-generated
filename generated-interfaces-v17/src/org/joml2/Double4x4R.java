@@ -4231,12 +4231,12 @@ public interface Double4x4R {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    Double4x4 rotateXZY(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest);
+    Double4x4 rotateXZY(double angleX, double angleZ, double angleY, @Mutated Double4x4 dest);
 
     /**
      * Apply a rotation of -180 degrees about the X axis to this matrix and store the result in
@@ -4339,13 +4339,13 @@ public interface Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    Double4x4 rotateYXZ(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest);
+    Double4x4 rotateYXZ(double angleY, double angleX, double angleZ, @Mutated Double4x4 dest);
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
@@ -4356,13 +4356,13 @@ public interface Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    Double4x4 rotateYZX(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest);
+    Double4x4 rotateYZX(double angleY, double angleZ, double angleX, @Mutated Double4x4 dest);
 
     /**
      * Apply a rotation of -180 degrees about the Y axis to this matrix and store the result in
@@ -4465,13 +4465,13 @@ public interface Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    Double4x4 rotateZXY(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest);
+    Double4x4 rotateZXY(double angleZ, double angleX, double angleY, @Mutated Double4x4 dest);
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
@@ -4482,13 +4482,13 @@ public interface Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    Double4x4 rotateZYX(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest);
+    Double4x4 rotateZYX(double angleZ, double angleY, double angleX, @Mutated Double4x4 dest);
 
     /**
      * Apply a rotation of -180 degrees about the Z axis to this matrix and store the result in

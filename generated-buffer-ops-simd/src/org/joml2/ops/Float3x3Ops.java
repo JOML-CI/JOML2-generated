@@ -4286,11 +4286,11 @@ public final class Float3x3Ops {
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return {@code dest}
      */
-    public static float[] makeRotationXZY(float[] dest, int destOffset, float angleX, float angleY, float angleZ) {
+    public static float[] makeRotationXZY(float[] dest, int destOffset, float angleX, float angleZ, float angleY) {
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
@@ -4312,27 +4312,27 @@ public final class Float3x3Ops {
     }
 
     /** {@link #makeRotationXZY(float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer makeRotationXZY(java.nio.FloatBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.makeRotationXZY_unsafe(dest, destOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsTypedBuffer.makeRotationXZY_api(dest, destOffset, angleX, angleY, angleZ);
+    public static java.nio.FloatBuffer makeRotationXZY(java.nio.FloatBuffer dest, int destOffset, float angleX, float angleZ, float angleY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.makeRotationXZY_unsafe(dest, destOffset, angleX, angleZ, angleY);
+        return Float3x3OpsKernelsTypedBuffer.makeRotationXZY_api(dest, destOffset, angleX, angleZ, angleY);
     }
 
     /** {@link #makeRotationXZY(float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.nio.ByteBuffer makeRotationXZY(java.nio.ByteBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.makeRotationXZY_unsafe(dest, destOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsByteBuffer.makeRotationXZY_api(dest, destOffset, angleX, angleY, angleZ);
+    public static java.nio.ByteBuffer makeRotationXZY(java.nio.ByteBuffer dest, int destOffset, float angleX, float angleZ, float angleY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.makeRotationXZY_unsafe(dest, destOffset, angleX, angleZ, angleY);
+        return Float3x3OpsKernelsByteBuffer.makeRotationXZY_api(dest, destOffset, angleX, angleZ, angleY);
     }
 
     /** {@link #makeRotationXZY(float[], int, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.lang.foreign.MemorySegment makeRotationXZY(java.lang.foreign.MemorySegment dest, long destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Float3x3OpsKernelsSegment.makeRotationXZY_unsafe(dest, destOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsSegment.makeRotationXZY_api(dest, destOffset, angleX, angleY, angleZ);
+    public static java.lang.foreign.MemorySegment makeRotationXZY(java.lang.foreign.MemorySegment dest, long destOffset, float angleX, float angleZ, float angleY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Float3x3OpsKernelsSegment.makeRotationXZY_unsafe(dest, destOffset, angleX, angleZ, angleY);
+        return Float3x3OpsKernelsSegment.makeRotationXZY_api(dest, destOffset, angleX, angleZ, angleY);
     }
 
     /** {@link #makeRotationXZY(float[], int, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long makeRotationXZY(long dest, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.makeRotationXZY_unsafe(dest, angleX, angleY, angleZ);
-        makeRotationXZY(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, angleX, angleY, angleZ);
+    public static long makeRotationXZY(long dest, float angleX, float angleZ, float angleY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.makeRotationXZY_unsafe(dest, angleX, angleZ, angleY);
+        makeRotationXZY(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, angleX, angleZ, angleY);
         return dest;
     }
 
@@ -4391,12 +4391,12 @@ public final class Float3x3Ops {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return {@code dest}
      */
-    public static float[] makeRotationYXZ(float[] dest, int destOffset, float angleX, float angleY, float angleZ) {
+    public static float[] makeRotationYXZ(float[] dest, int destOffset, float angleY, float angleX, float angleZ) {
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleY);
         float _t2 = (float) Math.sin(angleZ);
@@ -4418,27 +4418,27 @@ public final class Float3x3Ops {
     }
 
     /** {@link #makeRotationYXZ(float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer makeRotationYXZ(java.nio.FloatBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.makeRotationYXZ_unsafe(dest, destOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsTypedBuffer.makeRotationYXZ_api(dest, destOffset, angleX, angleY, angleZ);
+    public static java.nio.FloatBuffer makeRotationYXZ(java.nio.FloatBuffer dest, int destOffset, float angleY, float angleX, float angleZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.makeRotationYXZ_unsafe(dest, destOffset, angleY, angleX, angleZ);
+        return Float3x3OpsKernelsTypedBuffer.makeRotationYXZ_api(dest, destOffset, angleY, angleX, angleZ);
     }
 
     /** {@link #makeRotationYXZ(float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.nio.ByteBuffer makeRotationYXZ(java.nio.ByteBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.makeRotationYXZ_unsafe(dest, destOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsByteBuffer.makeRotationYXZ_api(dest, destOffset, angleX, angleY, angleZ);
+    public static java.nio.ByteBuffer makeRotationYXZ(java.nio.ByteBuffer dest, int destOffset, float angleY, float angleX, float angleZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.makeRotationYXZ_unsafe(dest, destOffset, angleY, angleX, angleZ);
+        return Float3x3OpsKernelsByteBuffer.makeRotationYXZ_api(dest, destOffset, angleY, angleX, angleZ);
     }
 
     /** {@link #makeRotationYXZ(float[], int, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.lang.foreign.MemorySegment makeRotationYXZ(java.lang.foreign.MemorySegment dest, long destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Float3x3OpsKernelsSegment.makeRotationYXZ_unsafe(dest, destOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsSegment.makeRotationYXZ_api(dest, destOffset, angleX, angleY, angleZ);
+    public static java.lang.foreign.MemorySegment makeRotationYXZ(java.lang.foreign.MemorySegment dest, long destOffset, float angleY, float angleX, float angleZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Float3x3OpsKernelsSegment.makeRotationYXZ_unsafe(dest, destOffset, angleY, angleX, angleZ);
+        return Float3x3OpsKernelsSegment.makeRotationYXZ_api(dest, destOffset, angleY, angleX, angleZ);
     }
 
     /** {@link #makeRotationYXZ(float[], int, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long makeRotationYXZ(long dest, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.makeRotationYXZ_unsafe(dest, angleX, angleY, angleZ);
-        makeRotationYXZ(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, angleX, angleY, angleZ);
+    public static long makeRotationYXZ(long dest, float angleY, float angleX, float angleZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.makeRotationYXZ_unsafe(dest, angleY, angleX, angleZ);
+        makeRotationYXZ(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, angleY, angleX, angleZ);
         return dest;
     }
 
@@ -4449,12 +4449,12 @@ public final class Float3x3Ops {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return {@code dest}
      */
-    public static float[] makeRotationYZX(float[] dest, int destOffset, float angleX, float angleY, float angleZ) {
+    public static float[] makeRotationYZX(float[] dest, int destOffset, float angleY, float angleZ, float angleX) {
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
@@ -4476,27 +4476,27 @@ public final class Float3x3Ops {
     }
 
     /** {@link #makeRotationYZX(float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer makeRotationYZX(java.nio.FloatBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.makeRotationYZX_unsafe(dest, destOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsTypedBuffer.makeRotationYZX_api(dest, destOffset, angleX, angleY, angleZ);
+    public static java.nio.FloatBuffer makeRotationYZX(java.nio.FloatBuffer dest, int destOffset, float angleY, float angleZ, float angleX) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.makeRotationYZX_unsafe(dest, destOffset, angleY, angleZ, angleX);
+        return Float3x3OpsKernelsTypedBuffer.makeRotationYZX_api(dest, destOffset, angleY, angleZ, angleX);
     }
 
     /** {@link #makeRotationYZX(float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.nio.ByteBuffer makeRotationYZX(java.nio.ByteBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.makeRotationYZX_unsafe(dest, destOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsByteBuffer.makeRotationYZX_api(dest, destOffset, angleX, angleY, angleZ);
+    public static java.nio.ByteBuffer makeRotationYZX(java.nio.ByteBuffer dest, int destOffset, float angleY, float angleZ, float angleX) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.makeRotationYZX_unsafe(dest, destOffset, angleY, angleZ, angleX);
+        return Float3x3OpsKernelsByteBuffer.makeRotationYZX_api(dest, destOffset, angleY, angleZ, angleX);
     }
 
     /** {@link #makeRotationYZX(float[], int, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.lang.foreign.MemorySegment makeRotationYZX(java.lang.foreign.MemorySegment dest, long destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Float3x3OpsKernelsSegment.makeRotationYZX_unsafe(dest, destOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsSegment.makeRotationYZX_api(dest, destOffset, angleX, angleY, angleZ);
+    public static java.lang.foreign.MemorySegment makeRotationYZX(java.lang.foreign.MemorySegment dest, long destOffset, float angleY, float angleZ, float angleX) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Float3x3OpsKernelsSegment.makeRotationYZX_unsafe(dest, destOffset, angleY, angleZ, angleX);
+        return Float3x3OpsKernelsSegment.makeRotationYZX_api(dest, destOffset, angleY, angleZ, angleX);
     }
 
     /** {@link #makeRotationYZX(float[], int, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long makeRotationYZX(long dest, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.makeRotationYZX_unsafe(dest, angleX, angleY, angleZ);
-        makeRotationYZX(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, angleX, angleY, angleZ);
+    public static long makeRotationYZX(long dest, float angleY, float angleZ, float angleX) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.makeRotationYZX_unsafe(dest, angleY, angleZ, angleX);
+        makeRotationYZX(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, angleY, angleZ, angleX);
         return dest;
     }
 
@@ -4539,12 +4539,12 @@ public final class Float3x3Ops {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return {@code dest}
      */
-    public static float[] makeRotationZXY(float[] dest, int destOffset, float angleX, float angleY, float angleZ) {
+    public static float[] makeRotationZXY(float[] dest, int destOffset, float angleZ, float angleX, float angleY) {
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
@@ -4566,27 +4566,27 @@ public final class Float3x3Ops {
     }
 
     /** {@link #makeRotationZXY(float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer makeRotationZXY(java.nio.FloatBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.makeRotationZXY_unsafe(dest, destOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsTypedBuffer.makeRotationZXY_api(dest, destOffset, angleX, angleY, angleZ);
+    public static java.nio.FloatBuffer makeRotationZXY(java.nio.FloatBuffer dest, int destOffset, float angleZ, float angleX, float angleY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.makeRotationZXY_unsafe(dest, destOffset, angleZ, angleX, angleY);
+        return Float3x3OpsKernelsTypedBuffer.makeRotationZXY_api(dest, destOffset, angleZ, angleX, angleY);
     }
 
     /** {@link #makeRotationZXY(float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.nio.ByteBuffer makeRotationZXY(java.nio.ByteBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.makeRotationZXY_unsafe(dest, destOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsByteBuffer.makeRotationZXY_api(dest, destOffset, angleX, angleY, angleZ);
+    public static java.nio.ByteBuffer makeRotationZXY(java.nio.ByteBuffer dest, int destOffset, float angleZ, float angleX, float angleY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.makeRotationZXY_unsafe(dest, destOffset, angleZ, angleX, angleY);
+        return Float3x3OpsKernelsByteBuffer.makeRotationZXY_api(dest, destOffset, angleZ, angleX, angleY);
     }
 
     /** {@link #makeRotationZXY(float[], int, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.lang.foreign.MemorySegment makeRotationZXY(java.lang.foreign.MemorySegment dest, long destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Float3x3OpsKernelsSegment.makeRotationZXY_unsafe(dest, destOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsSegment.makeRotationZXY_api(dest, destOffset, angleX, angleY, angleZ);
+    public static java.lang.foreign.MemorySegment makeRotationZXY(java.lang.foreign.MemorySegment dest, long destOffset, float angleZ, float angleX, float angleY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Float3x3OpsKernelsSegment.makeRotationZXY_unsafe(dest, destOffset, angleZ, angleX, angleY);
+        return Float3x3OpsKernelsSegment.makeRotationZXY_api(dest, destOffset, angleZ, angleX, angleY);
     }
 
     /** {@link #makeRotationZXY(float[], int, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long makeRotationZXY(long dest, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.makeRotationZXY_unsafe(dest, angleX, angleY, angleZ);
-        makeRotationZXY(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, angleX, angleY, angleZ);
+    public static long makeRotationZXY(long dest, float angleZ, float angleX, float angleY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.makeRotationZXY_unsafe(dest, angleZ, angleX, angleY);
+        makeRotationZXY(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, angleZ, angleX, angleY);
         return dest;
     }
 
@@ -4597,12 +4597,12 @@ public final class Float3x3Ops {
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return {@code dest}
      */
-    public static float[] makeRotationZYX(float[] dest, int destOffset, float angleX, float angleY, float angleZ) {
+    public static float[] makeRotationZYX(float[] dest, int destOffset, float angleZ, float angleY, float angleX) {
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
@@ -4624,27 +4624,27 @@ public final class Float3x3Ops {
     }
 
     /** {@link #makeRotationZYX(float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer makeRotationZYX(java.nio.FloatBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.makeRotationZYX_unsafe(dest, destOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsTypedBuffer.makeRotationZYX_api(dest, destOffset, angleX, angleY, angleZ);
+    public static java.nio.FloatBuffer makeRotationZYX(java.nio.FloatBuffer dest, int destOffset, float angleZ, float angleY, float angleX) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.makeRotationZYX_unsafe(dest, destOffset, angleZ, angleY, angleX);
+        return Float3x3OpsKernelsTypedBuffer.makeRotationZYX_api(dest, destOffset, angleZ, angleY, angleX);
     }
 
     /** {@link #makeRotationZYX(float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.nio.ByteBuffer makeRotationZYX(java.nio.ByteBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.makeRotationZYX_unsafe(dest, destOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsByteBuffer.makeRotationZYX_api(dest, destOffset, angleX, angleY, angleZ);
+    public static java.nio.ByteBuffer makeRotationZYX(java.nio.ByteBuffer dest, int destOffset, float angleZ, float angleY, float angleX) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.makeRotationZYX_unsafe(dest, destOffset, angleZ, angleY, angleX);
+        return Float3x3OpsKernelsByteBuffer.makeRotationZYX_api(dest, destOffset, angleZ, angleY, angleX);
     }
 
     /** {@link #makeRotationZYX(float[], int, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.lang.foreign.MemorySegment makeRotationZYX(java.lang.foreign.MemorySegment dest, long destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Float3x3OpsKernelsSegment.makeRotationZYX_unsafe(dest, destOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsSegment.makeRotationZYX_api(dest, destOffset, angleX, angleY, angleZ);
+    public static java.lang.foreign.MemorySegment makeRotationZYX(java.lang.foreign.MemorySegment dest, long destOffset, float angleZ, float angleY, float angleX) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Float3x3OpsKernelsSegment.makeRotationZYX_unsafe(dest, destOffset, angleZ, angleY, angleX);
+        return Float3x3OpsKernelsSegment.makeRotationZYX_api(dest, destOffset, angleZ, angleY, angleX);
     }
 
     /** {@link #makeRotationZYX(float[], int, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long makeRotationZYX(long dest, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.makeRotationZYX_unsafe(dest, angleX, angleY, angleZ);
-        makeRotationZYX(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, angleX, angleY, angleZ);
+    public static long makeRotationZYX(long dest, float angleZ, float angleY, float angleX) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.makeRotationZYX_unsafe(dest, angleZ, angleY, angleX);
+        makeRotationZYX(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, angleZ, angleY, angleX);
         return dest;
     }
 
@@ -6753,11 +6753,11 @@ public final class Float3x3Ops {
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return {@code dest}
      */
-    public static float[] rotateXZY(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateXZY(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleZ, float angleY) {
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -6796,27 +6796,27 @@ public final class Float3x3Ops {
     }
 
     /** {@link #rotateXZY(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer rotateXZY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.rotateXZY_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsTypedBuffer.rotateXZY_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static java.nio.FloatBuffer rotateXZY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleX, float angleZ, float angleY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.rotateXZY_unsafe(dest, destOffset, src, srcOffset, angleX, angleZ, angleY);
+        return Float3x3OpsKernelsTypedBuffer.rotateXZY_api(dest, destOffset, src, srcOffset, angleX, angleZ, angleY);
     }
 
     /** {@link #rotateXZY(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.nio.ByteBuffer rotateXZY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.rotateXZY_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsByteBuffer.rotateXZY_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static java.nio.ByteBuffer rotateXZY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angleX, float angleZ, float angleY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.rotateXZY_unsafe(dest, destOffset, src, srcOffset, angleX, angleZ, angleY);
+        return Float3x3OpsKernelsByteBuffer.rotateXZY_api(dest, destOffset, src, srcOffset, angleX, angleZ, angleY);
     }
 
     /** {@link #rotateXZY(float[], int, float[], int, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.lang.foreign.MemorySegment rotateXZY(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3x3OpsKernelsSegment.rotateXZY_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsSegment.rotateXZY_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static java.lang.foreign.MemorySegment rotateXZY(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleX, float angleZ, float angleY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3x3OpsKernelsSegment.rotateXZY_unsafe(dest, destOffset, src, srcOffset, angleX, angleZ, angleY);
+        return Float3x3OpsKernelsSegment.rotateXZY_api(dest, destOffset, src, srcOffset, angleX, angleZ, angleY);
     }
 
     /** {@link #rotateXZY(float[], int, float[], int, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long rotateXZY(long dest, long src, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.rotateXZY_unsafe(dest, src, angleX, angleY, angleZ);
-        rotateXZY(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 36L), 0L, angleX, angleY, angleZ);
+    public static long rotateXZY(long dest, long src, float angleX, float angleZ, float angleY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.rotateXZY_unsafe(dest, src, angleX, angleZ, angleY);
+        rotateXZY(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 36L), 0L, angleX, angleZ, angleY);
         return dest;
     }
 
@@ -7194,12 +7194,12 @@ public final class Float3x3Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return {@code dest}
      */
-    public static float[] rotateYXZ(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateYXZ(float[] dest, int destOffset, float[] src, int srcOffset, float angleY, float angleX, float angleZ) {
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -7238,27 +7238,27 @@ public final class Float3x3Ops {
     }
 
     /** {@link #rotateYXZ(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer rotateYXZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.rotateYXZ_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsTypedBuffer.rotateYXZ_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static java.nio.FloatBuffer rotateYXZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleY, float angleX, float angleZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.rotateYXZ_unsafe(dest, destOffset, src, srcOffset, angleY, angleX, angleZ);
+        return Float3x3OpsKernelsTypedBuffer.rotateYXZ_api(dest, destOffset, src, srcOffset, angleY, angleX, angleZ);
     }
 
     /** {@link #rotateYXZ(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.nio.ByteBuffer rotateYXZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.rotateYXZ_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsByteBuffer.rotateYXZ_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static java.nio.ByteBuffer rotateYXZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angleY, float angleX, float angleZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.rotateYXZ_unsafe(dest, destOffset, src, srcOffset, angleY, angleX, angleZ);
+        return Float3x3OpsKernelsByteBuffer.rotateYXZ_api(dest, destOffset, src, srcOffset, angleY, angleX, angleZ);
     }
 
     /** {@link #rotateYXZ(float[], int, float[], int, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.lang.foreign.MemorySegment rotateYXZ(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3x3OpsKernelsSegment.rotateYXZ_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsSegment.rotateYXZ_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static java.lang.foreign.MemorySegment rotateYXZ(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleY, float angleX, float angleZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3x3OpsKernelsSegment.rotateYXZ_unsafe(dest, destOffset, src, srcOffset, angleY, angleX, angleZ);
+        return Float3x3OpsKernelsSegment.rotateYXZ_api(dest, destOffset, src, srcOffset, angleY, angleX, angleZ);
     }
 
     /** {@link #rotateYXZ(float[], int, float[], int, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long rotateYXZ(long dest, long src, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.rotateYXZ_unsafe(dest, src, angleX, angleY, angleZ);
-        rotateYXZ(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 36L), 0L, angleX, angleY, angleZ);
+    public static long rotateYXZ(long dest, long src, float angleY, float angleX, float angleZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.rotateYXZ_unsafe(dest, src, angleY, angleX, angleZ);
+        rotateYXZ(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 36L), 0L, angleY, angleX, angleZ);
         return dest;
     }
 
@@ -7275,12 +7275,12 @@ public final class Float3x3Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return {@code dest}
      */
-    public static float[] rotateYZX(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateYZX(float[] dest, int destOffset, float[] src, int srcOffset, float angleY, float angleZ, float angleX) {
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -7319,27 +7319,27 @@ public final class Float3x3Ops {
     }
 
     /** {@link #rotateYZX(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer rotateYZX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.rotateYZX_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsTypedBuffer.rotateYZX_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static java.nio.FloatBuffer rotateYZX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleY, float angleZ, float angleX) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.rotateYZX_unsafe(dest, destOffset, src, srcOffset, angleY, angleZ, angleX);
+        return Float3x3OpsKernelsTypedBuffer.rotateYZX_api(dest, destOffset, src, srcOffset, angleY, angleZ, angleX);
     }
 
     /** {@link #rotateYZX(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.nio.ByteBuffer rotateYZX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.rotateYZX_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsByteBuffer.rotateYZX_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static java.nio.ByteBuffer rotateYZX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angleY, float angleZ, float angleX) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.rotateYZX_unsafe(dest, destOffset, src, srcOffset, angleY, angleZ, angleX);
+        return Float3x3OpsKernelsByteBuffer.rotateYZX_api(dest, destOffset, src, srcOffset, angleY, angleZ, angleX);
     }
 
     /** {@link #rotateYZX(float[], int, float[], int, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.lang.foreign.MemorySegment rotateYZX(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3x3OpsKernelsSegment.rotateYZX_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsSegment.rotateYZX_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static java.lang.foreign.MemorySegment rotateYZX(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleY, float angleZ, float angleX) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3x3OpsKernelsSegment.rotateYZX_unsafe(dest, destOffset, src, srcOffset, angleY, angleZ, angleX);
+        return Float3x3OpsKernelsSegment.rotateYZX_api(dest, destOffset, src, srcOffset, angleY, angleZ, angleX);
     }
 
     /** {@link #rotateYZX(float[], int, float[], int, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long rotateYZX(long dest, long src, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.rotateYZX_unsafe(dest, src, angleX, angleY, angleZ);
-        rotateYZX(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 36L), 0L, angleX, angleY, angleZ);
+    public static long rotateYZX(long dest, long src, float angleY, float angleZ, float angleX) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.rotateYZX_unsafe(dest, src, angleY, angleZ, angleX);
+        rotateYZX(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 36L), 0L, angleY, angleZ, angleX);
         return dest;
     }
 
@@ -7692,12 +7692,12 @@ public final class Float3x3Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return {@code dest}
      */
-    public static float[] rotateZXY(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateZXY(float[] dest, int destOffset, float[] src, int srcOffset, float angleZ, float angleX, float angleY) {
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -7736,27 +7736,27 @@ public final class Float3x3Ops {
     }
 
     /** {@link #rotateZXY(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer rotateZXY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.rotateZXY_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsTypedBuffer.rotateZXY_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static java.nio.FloatBuffer rotateZXY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleZ, float angleX, float angleY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.rotateZXY_unsafe(dest, destOffset, src, srcOffset, angleZ, angleX, angleY);
+        return Float3x3OpsKernelsTypedBuffer.rotateZXY_api(dest, destOffset, src, srcOffset, angleZ, angleX, angleY);
     }
 
     /** {@link #rotateZXY(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.nio.ByteBuffer rotateZXY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.rotateZXY_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsByteBuffer.rotateZXY_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static java.nio.ByteBuffer rotateZXY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angleZ, float angleX, float angleY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.rotateZXY_unsafe(dest, destOffset, src, srcOffset, angleZ, angleX, angleY);
+        return Float3x3OpsKernelsByteBuffer.rotateZXY_api(dest, destOffset, src, srcOffset, angleZ, angleX, angleY);
     }
 
     /** {@link #rotateZXY(float[], int, float[], int, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.lang.foreign.MemorySegment rotateZXY(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3x3OpsKernelsSegment.rotateZXY_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsSegment.rotateZXY_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static java.lang.foreign.MemorySegment rotateZXY(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleZ, float angleX, float angleY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3x3OpsKernelsSegment.rotateZXY_unsafe(dest, destOffset, src, srcOffset, angleZ, angleX, angleY);
+        return Float3x3OpsKernelsSegment.rotateZXY_api(dest, destOffset, src, srcOffset, angleZ, angleX, angleY);
     }
 
     /** {@link #rotateZXY(float[], int, float[], int, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long rotateZXY(long dest, long src, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.rotateZXY_unsafe(dest, src, angleX, angleY, angleZ);
-        rotateZXY(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 36L), 0L, angleX, angleY, angleZ);
+    public static long rotateZXY(long dest, long src, float angleZ, float angleX, float angleY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.rotateZXY_unsafe(dest, src, angleZ, angleX, angleY);
+        rotateZXY(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 36L), 0L, angleZ, angleX, angleY);
         return dest;
     }
 
@@ -7773,12 +7773,12 @@ public final class Float3x3Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return {@code dest}
      */
-    public static float[] rotateZYX(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateZYX(float[] dest, int destOffset, float[] src, int srcOffset, float angleZ, float angleY, float angleX) {
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -7817,27 +7817,27 @@ public final class Float3x3Ops {
     }
 
     /** {@link #rotateZYX(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer rotateZYX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.rotateZYX_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsTypedBuffer.rotateZYX_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static java.nio.FloatBuffer rotateZYX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleZ, float angleY, float angleX) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.rotateZYX_unsafe(dest, destOffset, src, srcOffset, angleZ, angleY, angleX);
+        return Float3x3OpsKernelsTypedBuffer.rotateZYX_api(dest, destOffset, src, srcOffset, angleZ, angleY, angleX);
     }
 
     /** {@link #rotateZYX(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.nio.ByteBuffer rotateZYX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.rotateZYX_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsByteBuffer.rotateZYX_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static java.nio.ByteBuffer rotateZYX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angleZ, float angleY, float angleX) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.rotateZYX_unsafe(dest, destOffset, src, srcOffset, angleZ, angleY, angleX);
+        return Float3x3OpsKernelsByteBuffer.rotateZYX_api(dest, destOffset, src, srcOffset, angleZ, angleY, angleX);
     }
 
     /** {@link #rotateZYX(float[], int, float[], int, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.lang.foreign.MemorySegment rotateZYX(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3x3OpsKernelsSegment.rotateZYX_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return Float3x3OpsKernelsSegment.rotateZYX_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static java.lang.foreign.MemorySegment rotateZYX(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleZ, float angleY, float angleX) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3x3OpsKernelsSegment.rotateZYX_unsafe(dest, destOffset, src, srcOffset, angleZ, angleY, angleX);
+        return Float3x3OpsKernelsSegment.rotateZYX_api(dest, destOffset, src, srcOffset, angleZ, angleY, angleX);
     }
 
     /** {@link #rotateZYX(float[], int, float[], int, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
-    public static long rotateZYX(long dest, long src, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.rotateZYX_unsafe(dest, src, angleX, angleY, angleZ);
-        rotateZYX(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 36L), 0L, angleX, angleY, angleZ);
+    public static long rotateZYX(long dest, long src, float angleZ, float angleY, float angleX) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.rotateZYX_unsafe(dest, src, angleZ, angleY, angleX);
+        rotateZYX(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 36L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 36L), 0L, angleZ, angleY, angleX);
         return dest;
     }
 

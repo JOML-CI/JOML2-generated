@@ -714,11 +714,11 @@ public interface DoubleTransform extends DoubleTransformR {
      * vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return this
      */
-    @Mutated DoubleTransform makeRotationXZY(double angleX, double angleY, double angleZ);
+    @Mutated DoubleTransform makeRotationXZY(double angleX, double angleZ, double angleY);
 
     /**
      * Set this transform to a rotation of {@code angle} radians about the Y axis.
@@ -733,24 +733,24 @@ public interface DoubleTransform extends DoubleTransformR {
      * about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a
      * vector is rotated about the Z axis first, then X, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated DoubleTransform makeRotationYXZ(double angleX, double angleY, double angleZ);
+    @Mutated DoubleTransform makeRotationYXZ(double angleY, double angleX, double angleZ);
 
     /**
      * Set this transform to a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians
      * about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a
      * vector is rotated about the X axis first, then Z, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated DoubleTransform makeRotationYZX(double angleX, double angleY, double angleZ);
+    @Mutated DoubleTransform makeRotationYZX(double angleY, double angleZ, double angleX);
 
     /**
      * Set this transform to a rotation of {@code angle} radians about the Z axis.
@@ -765,24 +765,24 @@ public interface DoubleTransform extends DoubleTransformR {
      * about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a
      * vector is rotated about the Y axis first, then X, then Z).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated DoubleTransform makeRotationZXY(double angleX, double angleY, double angleZ);
+    @Mutated DoubleTransform makeRotationZXY(double angleZ, double angleX, double angleY);
 
     /**
      * Set this transform to a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians
      * about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a
      * vector is rotated about the X axis first, then Y, then Z).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated DoubleTransform makeRotationZYX(double angleX, double angleY, double angleZ);
+    @Mutated DoubleTransform makeRotationZYX(double angleZ, double angleY, double angleX);
 
     /**
      * Set this transform to a scaling transformation that scales by {@code scale}.
@@ -955,11 +955,11 @@ public interface DoubleTransform extends DoubleTransformR {
      * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated default DoubleTransform rotateXZY(double angleX, double angleY, double angleZ) { return rotateXZY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
+    @Mutated default DoubleTransform rotateXZY(double angleX, double angleZ, double angleY) { return rotateXZY(angleX, angleZ, angleY, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
     /**
      * Apply a rotation of {@code angle} radians about the Y axis to this transform.
@@ -994,12 +994,12 @@ public interface DoubleTransform extends DoubleTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated default DoubleTransform rotateYXZ(double angleX, double angleY, double angleZ) { return rotateYXZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
+    @Mutated default DoubleTransform rotateYXZ(double angleY, double angleX, double angleZ) { return rotateYXZ(angleY, angleX, angleZ, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
@@ -1016,12 +1016,12 @@ public interface DoubleTransform extends DoubleTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated default DoubleTransform rotateYZX(double angleX, double angleY, double angleZ) { return rotateYZX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
+    @Mutated default DoubleTransform rotateYZX(double angleY, double angleZ, double angleX) { return rotateYZX(angleY, angleZ, angleX, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
     /**
      * Apply a rotation of {@code angle} radians about the Z axis to this transform.
@@ -1056,12 +1056,12 @@ public interface DoubleTransform extends DoubleTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated default DoubleTransform rotateZXY(double angleX, double angleY, double angleZ) { return rotateZXY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
+    @Mutated default DoubleTransform rotateZXY(double angleZ, double angleX, double angleY) { return rotateZXY(angleZ, angleX, angleY, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
@@ -1078,12 +1078,12 @@ public interface DoubleTransform extends DoubleTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated default DoubleTransform rotateZYX(double angleX, double angleY, double angleZ) { return rotateZYX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
+    @Mutated default DoubleTransform rotateZYX(double angleZ, double angleY, double angleX) { return rotateZYX(angleZ, angleY, angleX, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
     /**
      * Apply a scaling by {@code scale} to this transform.

@@ -4086,12 +4086,12 @@ public final class Float4x4OpsSimd {
         return dest;
     }
 
-    public static float[] rotateXZY(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (SimdSupport.USE_FMA) return rotateXZY_fma(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return rotateXZY_mulAdd(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static float[] rotateXZY(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleZ, float angleY) {
+        if (SimdSupport.USE_FMA) return rotateXZY_fma(dest, destOffset, src, srcOffset, angleX, angleZ, angleY);
+        return rotateXZY_mulAdd(dest, destOffset, src, srcOffset, angleX, angleZ, angleY);
     }
 
-    public static float[] rotateXZY_fma(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateXZY_fma(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleZ, float angleY) {
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleY);
@@ -4114,7 +4114,7 @@ public final class Float4x4OpsSimd {
         return dest;
     }
 
-    public static float[] rotateXZY_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateXZY_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleZ, float angleY) {
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleY);
@@ -4176,12 +4176,12 @@ public final class Float4x4OpsSimd {
         return dest;
     }
 
-    public static float[] rotateYXZ(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (SimdSupport.USE_FMA) return rotateYXZ_fma(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return rotateYXZ_mulAdd(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static float[] rotateYXZ(float[] dest, int destOffset, float[] src, int srcOffset, float angleY, float angleX, float angleZ) {
+        if (SimdSupport.USE_FMA) return rotateYXZ_fma(dest, destOffset, src, srcOffset, angleY, angleX, angleZ);
+        return rotateYXZ_mulAdd(dest, destOffset, src, srcOffset, angleY, angleX, angleZ);
     }
 
-    public static float[] rotateYXZ_fma(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateYXZ_fma(float[] dest, int destOffset, float[] src, int srcOffset, float angleY, float angleX, float angleZ) {
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleY);
         float _t2 = (float) Math.sin(angleZ);
@@ -4204,7 +4204,7 @@ public final class Float4x4OpsSimd {
         return dest;
     }
 
-    public static float[] rotateYXZ_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateYXZ_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float angleY, float angleX, float angleZ) {
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleY);
         float _t2 = (float) Math.sin(angleZ);
@@ -4227,12 +4227,12 @@ public final class Float4x4OpsSimd {
         return dest;
     }
 
-    public static float[] rotateYZX(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (SimdSupport.USE_FMA) return rotateYZX_fma(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return rotateYZX_mulAdd(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static float[] rotateYZX(float[] dest, int destOffset, float[] src, int srcOffset, float angleY, float angleZ, float angleX) {
+        if (SimdSupport.USE_FMA) return rotateYZX_fma(dest, destOffset, src, srcOffset, angleY, angleZ, angleX);
+        return rotateYZX_mulAdd(dest, destOffset, src, srcOffset, angleY, angleZ, angleX);
     }
 
-    public static float[] rotateYZX_fma(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateYZX_fma(float[] dest, int destOffset, float[] src, int srcOffset, float angleY, float angleZ, float angleX) {
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
@@ -4255,7 +4255,7 @@ public final class Float4x4OpsSimd {
         return dest;
     }
 
-    public static float[] rotateYZX_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateYZX_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float angleY, float angleZ, float angleX) {
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
@@ -4317,12 +4317,12 @@ public final class Float4x4OpsSimd {
         return dest;
     }
 
-    public static float[] rotateZXY(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (SimdSupport.USE_FMA) return rotateZXY_fma(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return rotateZXY_mulAdd(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static float[] rotateZXY(float[] dest, int destOffset, float[] src, int srcOffset, float angleZ, float angleX, float angleY) {
+        if (SimdSupport.USE_FMA) return rotateZXY_fma(dest, destOffset, src, srcOffset, angleZ, angleX, angleY);
+        return rotateZXY_mulAdd(dest, destOffset, src, srcOffset, angleZ, angleX, angleY);
     }
 
-    public static float[] rotateZXY_fma(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateZXY_fma(float[] dest, int destOffset, float[] src, int srcOffset, float angleZ, float angleX, float angleY) {
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.sin(angleX);
         float _t2 = (float) Math.sin(angleZ);
@@ -4345,7 +4345,7 @@ public final class Float4x4OpsSimd {
         return dest;
     }
 
-    public static float[] rotateZXY_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateZXY_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float angleZ, float angleX, float angleY) {
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.sin(angleX);
         float _t2 = (float) Math.sin(angleZ);
@@ -4368,12 +4368,12 @@ public final class Float4x4OpsSimd {
         return dest;
     }
 
-    public static float[] rotateZYX(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (SimdSupport.USE_FMA) return rotateZYX_fma(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
-        return rotateZYX_mulAdd(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+    public static float[] rotateZYX(float[] dest, int destOffset, float[] src, int srcOffset, float angleZ, float angleY, float angleX) {
+        if (SimdSupport.USE_FMA) return rotateZYX_fma(dest, destOffset, src, srcOffset, angleZ, angleY, angleX);
+        return rotateZYX_mulAdd(dest, destOffset, src, srcOffset, angleZ, angleY, angleX);
     }
 
-    public static float[] rotateZYX_fma(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateZYX_fma(float[] dest, int destOffset, float[] src, int srcOffset, float angleZ, float angleY, float angleX) {
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
@@ -4396,7 +4396,7 @@ public final class Float4x4OpsSimd {
         return dest;
     }
 
-    public static float[] rotateZYX_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateZYX_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float angleZ, float angleY, float angleX) {
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);

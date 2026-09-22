@@ -1677,11 +1677,11 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return the resulting transform
      */
-    public static FloatTransform makeRotationXZY(float angleX, float angleY, float angleZ) {
+    public static FloatTransform makeRotationXZY(float angleX, float angleZ, float angleY) {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -1717,12 +1717,12 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
      * about the Z axis first, then X, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return the resulting transform
      */
-    public static FloatTransform makeRotationYXZ(float angleX, float angleY, float angleZ) {
+    public static FloatTransform makeRotationYXZ(float angleY, float angleX, float angleZ) {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
@@ -1745,12 +1745,12 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
      * about the X axis first, then Z, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return the resulting transform
      */
-    public static FloatTransform makeRotationYZX(float angleX, float angleY, float angleZ) {
+    public static FloatTransform makeRotationYZX(float angleY, float angleZ, float angleX) {
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -1786,12 +1786,12 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
      * about the Y axis first, then X, then Z).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return the resulting transform
      */
-    public static FloatTransform makeRotationZXY(float angleX, float angleY, float angleZ) {
+    public static FloatTransform makeRotationZXY(float angleZ, float angleX, float angleY) {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -1814,12 +1814,12 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
      * about the X axis first, then Y, then Z).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return the resulting transform
      */
-    public static FloatTransform makeRotationZYX(float angleX, float angleY, float angleZ) {
+    public static FloatTransform makeRotationZYX(float angleZ, float angleY, float angleX) {
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -2060,7 +2060,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     }
 
     /** Private tail of {@code rotateXZY}; reached only through it. */
-    private FloatTransform rotateXZY_s6e793366_tail(float _t12, float _t5, float _t9, float _t8, float _t19, float _t21, float _t20) {
+    private FloatTransform rotateXZY_s48549da6_tail(float _t12, float _t5, float _t9, float _t8, float _t19, float _t21, float _t20) {
         float _t22 = Math.fma(_t12, _t5, -(_t9 * _t8));
         return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rW * _t22) + Math.fma(this.rZ, _t21, -(this.rX * _t20)), Math.fma(this.rZ, _t19, this.rW * _t20) + Math.fma(this.rX, _t22, -(this.rY * _t21)), Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t22, this.rZ * _t20), this.sX, this.sY, this.sZ);
     }
@@ -2082,11 +2082,11 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return the resulting transform
      */
-    public FloatTransform rotateXZY(float angleX, float angleY, float angleZ) {
+    public FloatTransform rotateXZY(float angleX, float angleZ, float angleY) {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -2103,7 +2103,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
         float _t20 = Math.fma(_t10, _t5, _t11 * _t8);
         float _t21 = Math.fma(_t10, _t8, -(_t11 * _t5));
-        return rotateXZY_s6e793366_tail(_t12, _t5, _t9, _t8, _t19, _t21, _t20);
+        return rotateXZY_s48549da6_tail(_t12, _t5, _t9, _t8, _t19, _t21, _t20);
     }
 
 
@@ -2132,7 +2132,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     }
 
     /** Private tail of {@code rotateYXZ}; reached only through it. */
-    private FloatTransform rotateYXZ_s6e793366_tail(float _t11, float _t8, float _t10, float _t5, float _t19, float _t20, float _t21) {
+    private FloatTransform rotateYXZ_s3dedada6_tail(float _t11, float _t8, float _t10, float _t5, float _t19, float _t20, float _t21) {
         float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
         return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t20) + Math.fma(this.rY, _t21, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rW * _t22) + Math.fma(this.rZ, _t20, -(this.rX * _t21)), Math.fma(this.rZ, _t19, this.rW * _t21) + Math.fma(this.rX, _t22, -(this.rY * _t20)), Math.fma(this.rW, _t19, -(this.rX * _t20)) - Math.fma(this.rY, _t22, this.rZ * _t21), this.sX, this.sY, this.sZ);
     }
@@ -2153,12 +2153,12 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return the resulting transform
      */
-    public FloatTransform rotateYXZ(float angleX, float angleY, float angleZ) {
+    public FloatTransform rotateYXZ(float angleY, float angleX, float angleZ) {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
@@ -2175,11 +2175,11 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
         float _t20 = Math.fma(_t10, _t8, _t11 * _t5);
         float _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
-        return rotateYXZ_s6e793366_tail(_t11, _t8, _t10, _t5, _t19, _t20, _t21);
+        return rotateYXZ_s3dedada6_tail(_t11, _t8, _t10, _t5, _t19, _t20, _t21);
     }
 
     /** Private tail of {@code rotateYZX}; reached only through it. */
-    private FloatTransform rotateYZX_s6e793366_tail(float _t10, float _t8, float _t11, float _t5, float _t21, float _t19, float _t20) {
+    private FloatTransform rotateYZX_s71a48226_tail(float _t10, float _t8, float _t11, float _t5, float _t21, float _t19, float _t20) {
         float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rW * _t20) + Math.fma(this.rZ, _t19, -(this.rX * _t22)), Math.fma(this.rZ, _t21, this.rW * _t22) + Math.fma(this.rX, _t20, -(this.rY * _t19)), Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t20, this.rZ * _t22), this.sX, this.sY, this.sZ);
     }
@@ -2200,12 +2200,12 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return the resulting transform
      */
-    public FloatTransform rotateYZX(float angleX, float angleY, float angleZ) {
+    public FloatTransform rotateYZX(float angleY, float angleZ, float angleX) {
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -2222,7 +2222,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t19 = Math.fma(_t9, _t8, _t14 * _t5);
         float _t20 = Math.fma(_t11, _t8, _t10 * _t5);
         float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
-        return rotateYZX_s6e793366_tail(_t10, _t8, _t11, _t5, _t21, _t19, _t20);
+        return rotateYZX_s71a48226_tail(_t10, _t8, _t11, _t5, _t21, _t19, _t20);
     }
 
 
@@ -2251,7 +2251,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     }
 
     /** Private tail of {@code rotateZXY}; reached only through it. */
-    private FloatTransform rotateZXY_s6e793366_tail(float _t10, float _t8, float _t11, float _t5, float _t21, float _t19, float _t20) {
+    private FloatTransform rotateZXY_s673d9226_tail(float _t10, float _t8, float _t11, float _t5, float _t21, float _t19, float _t20) {
         float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t22) + Math.fma(this.rY, _t19, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rW * _t20) + Math.fma(this.rZ, _t22, -(this.rX * _t19)), Math.fma(this.rZ, _t21, this.rW * _t19) + Math.fma(this.rX, _t20, -(this.rY * _t22)), Math.fma(this.rW, _t21, -(this.rX * _t22)) - Math.fma(this.rY, _t20, this.rZ * _t19), this.sX, this.sY, this.sZ);
     }
@@ -2272,12 +2272,12 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return the resulting transform
      */
-    public FloatTransform rotateZXY(float angleX, float angleY, float angleZ) {
+    public FloatTransform rotateZXY(float angleZ, float angleX, float angleY) {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -2294,11 +2294,11 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t19 = Math.fma(_t10, _t5, _t11 * _t8);
         float _t20 = Math.fma(_t9, _t8, _t14 * _t5);
         float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
-        return rotateZXY_s6e793366_tail(_t10, _t8, _t11, _t5, _t21, _t19, _t20);
+        return rotateZXY_s673d9226_tail(_t10, _t8, _t11, _t5, _t21, _t19, _t20);
     }
 
     /** Private tail of {@code rotateZYX}; reached only through it. */
-    private FloatTransform rotateZYX_s6e793366_tail(float _t10, float _t8, float _t11, float _t5, float _t19, float _t21, float _t20) {
+    private FloatTransform rotateZYX_s4118fc66_tail(float _t10, float _t8, float _t11, float _t5, float _t19, float _t21, float _t20) {
         float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         return new FloatTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t19, this.rW * _t20) + Math.fma(this.rZ, _t21, -(this.rX * _t22)), Math.fma(this.rZ, _t19, this.rW * _t22) + Math.fma(this.rX, _t20, -(this.rY * _t21)), Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t20, this.rZ * _t22), this.sX, this.sY, this.sZ);
     }
@@ -2319,12 +2319,12 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return the resulting transform
      */
-    public FloatTransform rotateZYX(float angleX, float angleY, float angleZ) {
+    public FloatTransform rotateZYX(float angleZ, float angleY, float angleX) {
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -2341,7 +2341,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
         float _t20 = Math.fma(_t11, _t8, _t10 * _t5);
         float _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
-        return rotateZYX_s6e793366_tail(_t10, _t8, _t11, _t5, _t19, _t21, _t20);
+        return rotateZYX_s4118fc66_tail(_t10, _t8, _t11, _t5, _t19, _t21, _t20);
     }
 
 

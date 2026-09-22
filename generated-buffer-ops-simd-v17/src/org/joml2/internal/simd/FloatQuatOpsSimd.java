@@ -846,12 +846,12 @@ public final class FloatQuatOpsSimd {
         return dest;
     }
 
-    public static float[] makeRotationYXZ(float[] dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (SimdSupport.USE_FMA) return makeRotationYXZ_fma(dest, destOffset, angleX, angleY, angleZ);
-        return makeRotationYXZ_mulAdd(dest, destOffset, angleX, angleY, angleZ);
+    public static float[] makeRotationYXZ(float[] dest, int destOffset, float angleY, float angleX, float angleZ) {
+        if (SimdSupport.USE_FMA) return makeRotationYXZ_fma(dest, destOffset, angleY, angleX, angleZ);
+        return makeRotationYXZ_mulAdd(dest, destOffset, angleY, angleX, angleZ);
     }
 
-    public static float[] makeRotationYXZ_fma(float[] dest, int destOffset, float angleX, float angleY, float angleZ) {
+    public static float[] makeRotationYXZ_fma(float[] dest, int destOffset, float angleY, float angleX, float angleZ) {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
@@ -870,7 +870,7 @@ public final class FloatQuatOpsSimd {
         return dest;
     }
 
-    public static float[] makeRotationYXZ_mulAdd(float[] dest, int destOffset, float angleX, float angleY, float angleZ) {
+    public static float[] makeRotationYXZ_mulAdd(float[] dest, int destOffset, float angleY, float angleX, float angleZ) {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;

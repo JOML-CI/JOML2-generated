@@ -1899,12 +1899,12 @@ public interface FloatDualQuatR {
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    FloatDualQuat rotateXZY(float angleX, float angleY, float angleZ, @Mutated FloatDualQuat dest);
+    FloatDualQuat rotateXZY(float angleX, float angleZ, float angleY, @Mutated FloatDualQuat dest);
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
@@ -1920,12 +1920,12 @@ public interface FloatDualQuatR {
      * {@code double} only when stored.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleDualQuat rotateXZY(float angleX, float angleY, float angleZ, @Mutated DoubleDualQuat dest);
+    DoubleDualQuat rotateXZY(float angleX, float angleZ, float angleY, @Mutated DoubleDualQuat dest);
 
     /**
      * Apply a rotation of {@code angle} radians about the Y axis to this dual quaternion and store
@@ -1968,13 +1968,13 @@ public interface FloatDualQuatR {
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    FloatDualQuat rotateYXZ(float angleX, float angleY, float angleZ, @Mutated FloatDualQuat dest);
+    FloatDualQuat rotateYXZ(float angleY, float angleX, float angleZ, @Mutated FloatDualQuat dest);
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
@@ -1989,13 +1989,13 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleDualQuat rotateYXZ(float angleX, float angleY, float angleZ, @Mutated DoubleDualQuat dest);
+    DoubleDualQuat rotateYXZ(float angleY, float angleX, float angleZ, @Mutated DoubleDualQuat dest);
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
@@ -2007,13 +2007,13 @@ public interface FloatDualQuatR {
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    FloatDualQuat rotateYZX(float angleX, float angleY, float angleZ, @Mutated FloatDualQuat dest);
+    FloatDualQuat rotateYZX(float angleY, float angleZ, float angleX, @Mutated FloatDualQuat dest);
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
@@ -2028,13 +2028,13 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleDualQuat rotateYZX(float angleX, float angleY, float angleZ, @Mutated DoubleDualQuat dest);
+    DoubleDualQuat rotateYZX(float angleY, float angleZ, float angleX, @Mutated DoubleDualQuat dest);
 
     /**
      * Apply a rotation of {@code angle} radians about the Z axis to this dual quaternion and store
@@ -2077,13 +2077,13 @@ public interface FloatDualQuatR {
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    FloatDualQuat rotateZXY(float angleX, float angleY, float angleZ, @Mutated FloatDualQuat dest);
+    FloatDualQuat rotateZXY(float angleZ, float angleX, float angleY, @Mutated FloatDualQuat dest);
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
@@ -2098,13 +2098,13 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleDualQuat rotateZXY(float angleX, float angleY, float angleZ, @Mutated DoubleDualQuat dest);
+    DoubleDualQuat rotateZXY(float angleZ, float angleX, float angleY, @Mutated DoubleDualQuat dest);
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
@@ -2116,13 +2116,13 @@ public interface FloatDualQuatR {
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    FloatDualQuat rotateZYX(float angleX, float angleY, float angleZ, @Mutated FloatDualQuat dest);
+    FloatDualQuat rotateZYX(float angleZ, float angleY, float angleX, @Mutated FloatDualQuat dest);
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
@@ -2137,13 +2137,13 @@ public interface FloatDualQuatR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleDualQuat rotateZYX(float angleX, float angleY, float angleZ, @Mutated DoubleDualQuat dest);
+    DoubleDualQuat rotateZYX(float angleZ, float angleY, float angleX, @Mutated DoubleDualQuat dest);
 
     /**
      * Apply a translation by {@code translation} to this dual quaternion and store the result in

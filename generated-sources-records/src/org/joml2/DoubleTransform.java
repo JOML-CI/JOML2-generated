@@ -1681,11 +1681,11 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return the resulting transform
      */
-    public static DoubleTransform makeRotationXZY(double angleX, double angleY, double angleZ) {
+    public static DoubleTransform makeRotationXZY(double angleX, double angleZ, double angleY) {
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
@@ -1721,12 +1721,12 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
      * about the Z axis first, then X, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return the resulting transform
      */
-    public static DoubleTransform makeRotationYXZ(double angleX, double angleY, double angleZ) {
+    public static DoubleTransform makeRotationYXZ(double angleY, double angleX, double angleZ) {
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
@@ -1749,12 +1749,12 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
      * about the X axis first, then Z, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return the resulting transform
      */
-    public static DoubleTransform makeRotationYZX(double angleX, double angleY, double angleZ) {
+    public static DoubleTransform makeRotationYZX(double angleY, double angleZ, double angleX) {
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
@@ -1790,12 +1790,12 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
      * about the Y axis first, then X, then Z).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return the resulting transform
      */
-    public static DoubleTransform makeRotationZXY(double angleX, double angleY, double angleZ) {
+    public static DoubleTransform makeRotationZXY(double angleZ, double angleX, double angleY) {
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
@@ -1818,12 +1818,12 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
      * about the X axis first, then Y, then Z).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return the resulting transform
      */
-    public static DoubleTransform makeRotationZYX(double angleX, double angleY, double angleZ) {
+    public static DoubleTransform makeRotationZYX(double angleZ, double angleY, double angleX) {
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
@@ -2064,7 +2064,7 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     }
 
     /** Private tail of {@code rotateXZY}; reached only through it. */
-    private DoubleTransform rotateXZY_s361a4ff5_tail(double _t12, double _t5, double _t9, double _t8, double _t19, double _t21, double _t20) {
+    private DoubleTransform rotateXZY_s17ac2dd3_tail(double _t12, double _t5, double _t9, double _t8, double _t19, double _t21, double _t20) {
         double _t22 = Math.fma(_t12, _t5, -(_t9 * _t8));
         return new DoubleTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t20, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rW * _t22) + Math.fma(this.rZ, _t21, -(this.rX * _t20)), Math.fma(this.rZ, _t19, this.rW * _t20) + Math.fma(this.rX, _t22, -(this.rY * _t21)), Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t22, this.rZ * _t20), this.sX, this.sY, this.sZ);
     }
@@ -2086,11 +2086,11 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return the resulting transform
      */
-    public DoubleTransform rotateXZY(double angleX, double angleY, double angleZ) {
+    public DoubleTransform rotateXZY(double angleX, double angleZ, double angleY) {
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
@@ -2107,7 +2107,7 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t19 = Math.fma(_t9, _t5, _t12 * _t8);
         double _t20 = Math.fma(_t10, _t5, _t11 * _t8);
         double _t21 = Math.fma(_t10, _t8, -(_t11 * _t5));
-        return rotateXZY_s361a4ff5_tail(_t12, _t5, _t9, _t8, _t19, _t21, _t20);
+        return rotateXZY_s17ac2dd3_tail(_t12, _t5, _t9, _t8, _t19, _t21, _t20);
     }
 
 
@@ -2136,7 +2136,7 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     }
 
     /** Private tail of {@code rotateYXZ}; reached only through it. */
-    private DoubleTransform rotateYXZ_s361a4ff5_tail(double _t11, double _t8, double _t10, double _t5, double _t19, double _t20, double _t21) {
+    private DoubleTransform rotateYXZ_s69713a57_tail(double _t11, double _t8, double _t10, double _t5, double _t19, double _t20, double _t21) {
         double _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
         return new DoubleTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t20) + Math.fma(this.rY, _t21, -(this.rZ * _t22)), Math.fma(this.rY, _t19, this.rW * _t22) + Math.fma(this.rZ, _t20, -(this.rX * _t21)), Math.fma(this.rZ, _t19, this.rW * _t21) + Math.fma(this.rX, _t22, -(this.rY * _t20)), Math.fma(this.rW, _t19, -(this.rX * _t20)) - Math.fma(this.rY, _t22, this.rZ * _t21), this.sX, this.sY, this.sZ);
     }
@@ -2157,12 +2157,12 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return the resulting transform
      */
-    public DoubleTransform rotateYXZ(double angleX, double angleY, double angleZ) {
+    public DoubleTransform rotateYXZ(double angleY, double angleX, double angleZ) {
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
@@ -2179,11 +2179,11 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t19 = Math.fma(_t9, _t5, _t12 * _t8);
         double _t20 = Math.fma(_t10, _t8, _t11 * _t5);
         double _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
-        return rotateYXZ_s361a4ff5_tail(_t11, _t8, _t10, _t5, _t19, _t20, _t21);
+        return rotateYXZ_s69713a57_tail(_t11, _t8, _t10, _t5, _t19, _t20, _t21);
     }
 
     /** Private tail of {@code rotateYZX}; reached only through it. */
-    private DoubleTransform rotateYZX_s361a4ff5_tail(double _t10, double _t8, double _t11, double _t5, double _t21, double _t19, double _t20) {
+    private DoubleTransform rotateYZX_s2c94f613_tail(double _t10, double _t8, double _t11, double _t5, double _t21, double _t19, double _t20) {
         double _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         return new DoubleTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rW * _t20) + Math.fma(this.rZ, _t19, -(this.rX * _t22)), Math.fma(this.rZ, _t21, this.rW * _t22) + Math.fma(this.rX, _t20, -(this.rY * _t19)), Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t20, this.rZ * _t22), this.sX, this.sY, this.sZ);
     }
@@ -2204,12 +2204,12 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return the resulting transform
      */
-    public DoubleTransform rotateYZX(double angleX, double angleY, double angleZ) {
+    public DoubleTransform rotateYZX(double angleY, double angleZ, double angleX) {
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
@@ -2226,7 +2226,7 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t19 = Math.fma(_t9, _t8, _t14 * _t5);
         double _t20 = Math.fma(_t11, _t8, _t10 * _t5);
         double _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
-        return rotateYZX_s361a4ff5_tail(_t10, _t8, _t11, _t5, _t21, _t19, _t20);
+        return rotateYZX_s2c94f613_tail(_t10, _t8, _t11, _t5, _t21, _t19, _t20);
     }
 
 
@@ -2255,7 +2255,7 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     }
 
     /** Private tail of {@code rotateZXY}; reached only through it. */
-    private DoubleTransform rotateZXY_s361a4ff5_tail(double _t10, double _t8, double _t11, double _t5, double _t21, double _t19, double _t20) {
+    private DoubleTransform rotateZXY_s7e5a0297_tail(double _t10, double _t8, double _t11, double _t5, double _t21, double _t19, double _t20) {
         double _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         return new DoubleTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t21, this.rW * _t22) + Math.fma(this.rY, _t19, -(this.rZ * _t20)), Math.fma(this.rY, _t21, this.rW * _t20) + Math.fma(this.rZ, _t22, -(this.rX * _t19)), Math.fma(this.rZ, _t21, this.rW * _t19) + Math.fma(this.rX, _t20, -(this.rY * _t22)), Math.fma(this.rW, _t21, -(this.rX * _t22)) - Math.fma(this.rY, _t20, this.rZ * _t19), this.sX, this.sY, this.sZ);
     }
@@ -2276,12 +2276,12 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return the resulting transform
      */
-    public DoubleTransform rotateZXY(double angleX, double angleY, double angleZ) {
+    public DoubleTransform rotateZXY(double angleZ, double angleX, double angleY) {
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
@@ -2298,11 +2298,11 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t19 = Math.fma(_t10, _t5, _t11 * _t8);
         double _t20 = Math.fma(_t9, _t8, _t14 * _t5);
         double _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
-        return rotateZXY_s361a4ff5_tail(_t10, _t8, _t11, _t5, _t21, _t19, _t20);
+        return rotateZXY_s7e5a0297_tail(_t10, _t8, _t11, _t5, _t21, _t19, _t20);
     }
 
     /** Private tail of {@code rotateZYX}; reached only through it. */
-    private DoubleTransform rotateZYX_s361a4ff5_tail(double _t10, double _t8, double _t11, double _t5, double _t19, double _t21, double _t20) {
+    private DoubleTransform rotateZYX_s5febe075_tail(double _t10, double _t8, double _t11, double _t5, double _t19, double _t21, double _t20) {
         double _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
         return new DoubleTransform(this.tX, this.tY, this.tZ, Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t22, -(this.rZ * _t20)), Math.fma(this.rY, _t19, this.rW * _t20) + Math.fma(this.rZ, _t21, -(this.rX * _t22)), Math.fma(this.rZ, _t19, this.rW * _t22) + Math.fma(this.rX, _t20, -(this.rY * _t21)), Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t20, this.rZ * _t22), this.sX, this.sY, this.sZ);
     }
@@ -2323,12 +2323,12 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return the resulting transform
      */
-    public DoubleTransform rotateZYX(double angleX, double angleY, double angleZ) {
+    public DoubleTransform rotateZYX(double angleZ, double angleY, double angleX) {
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
@@ -2345,7 +2345,7 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t19 = Math.fma(_t9, _t5, _t12 * _t8);
         double _t20 = Math.fma(_t11, _t8, _t10 * _t5);
         double _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
-        return rotateZYX_s361a4ff5_tail(_t10, _t8, _t11, _t5, _t19, _t21, _t20);
+        return rotateZYX_s5febe075_tail(_t10, _t8, _t11, _t5, _t19, _t21, _t20);
     }
 
 

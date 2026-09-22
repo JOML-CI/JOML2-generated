@@ -21305,11 +21305,11 @@ public class Double4x4Impl implements Double4x4 {
      * vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return this
      */
-    @Mutated public Double4x4 makeRotationXZY(double angleX, double angleY, double angleZ) {
+    @Mutated public Double4x4 makeRotationXZY(double angleX, double angleZ, double angleY) {
         double[] dd = this.data;
         double _t0 = Math.sin(angleY);
         double _t1 = Math.sin(angleZ);
@@ -21367,12 +21367,12 @@ public class Double4x4Impl implements Double4x4 {
      * about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a
      * vector is rotated about the Z axis first, then X, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated public Double4x4 makeRotationYXZ(double angleX, double angleY, double angleZ) {
+    @Mutated public Double4x4 makeRotationYXZ(double angleY, double angleX, double angleZ) {
         double[] dd = this.data;
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleY);
@@ -21405,12 +21405,12 @@ public class Double4x4Impl implements Double4x4 {
      * about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a
      * vector is rotated about the X axis first, then Z, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated public Double4x4 makeRotationYZX(double angleX, double angleY, double angleZ) {
+    @Mutated public Double4x4 makeRotationYZX(double angleY, double angleZ, double angleX) {
         double[] dd = this.data;
         double _t0 = Math.sin(angleY);
         double _t1 = Math.sin(angleZ);
@@ -21468,12 +21468,12 @@ public class Double4x4Impl implements Double4x4 {
      * about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a
      * vector is rotated about the Y axis first, then X, then Z).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated public Double4x4 makeRotationZXY(double angleX, double angleY, double angleZ) {
+    @Mutated public Double4x4 makeRotationZXY(double angleZ, double angleX, double angleY) {
         double[] dd = this.data;
         double _t0 = Math.sin(angleY);
         double _t1 = Math.sin(angleZ);
@@ -21506,12 +21506,12 @@ public class Double4x4Impl implements Double4x4 {
      * about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a
      * vector is rotated about the X axis first, then Y, then Z).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated public Double4x4 makeRotationZYX(double angleX, double angleY, double angleZ) {
+    @Mutated public Double4x4 makeRotationZYX(double angleZ, double angleY, double angleX) {
         double[] dd = this.data;
         double _t0 = Math.sin(angleY);
         double _t1 = Math.sin(angleZ);
@@ -47414,8 +47414,8 @@ public class Double4x4Impl implements Double4x4 {
      * Private body of {@code rotateXZY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateXZY} dispatcher.
      */
-    /** Private vector tail of {@code rotateXZY_orthogonal_affine_general_s31f4bb09}: loads, computes and stores every column; reached only through it. */
-    private static void rotateXZY_orthogonal_affine_general_s31f4bb09_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t9, double[] sd) {
+    /** Private vector tail of {@code rotateXZY_orthogonal_affine_general_s50238eeb}: loads, computes and stores every column; reached only through it. */
+    private static void rotateXZY_orthogonal_affine_general_s50238eeb_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t9, double[] sd) {
         var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 8);
         var _sv1 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
         var _sv2 = DoubleVector.fromArray(COL_SPECIES, sd, 4);
@@ -47430,8 +47430,8 @@ public class Double4x4Impl implements Double4x4 {
         _col3.intoArray(dd, 12);
     }
 
-    /** Private vector tail of {@code rotateXZY_orthogonal_affine_general_s7afa254e}: loads, computes and stores every column; reached only through it. */
-    private static void rotateXZY_orthogonal_affine_general_s7afa254e_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t9, double[] sd) {
+    /** Private vector tail of {@code rotateXZY_orthogonal_affine_general_s665d2e2c}: loads, computes and stores every column; reached only through it. */
+    private static void rotateXZY_orthogonal_affine_general_s665d2e2c_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t9, double[] sd) {
         var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 8);
         var _sv1 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
         var _sv2 = DoubleVector.fromArray(COL_SPECIES, sd, 4);
@@ -47446,12 +47446,12 @@ public class Double4x4Impl implements Double4x4 {
         _col3.intoArray(dd, 12);
     }
 
-    private Double4x4 rotateXZY_orthogonal_affine_general(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return rotateXZY_orthogonal_affine_general_fma(angleX, angleY, angleZ, dest, _props);
-        return rotateXZY_orthogonal_affine_general_mulAdd(angleX, angleY, angleZ, dest, _props);
+    private Double4x4 rotateXZY_orthogonal_affine_general(double angleX, double angleZ, double angleY, @Mutated Double4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return rotateXZY_orthogonal_affine_general_fma(angleX, angleZ, angleY, dest, _props);
+        return rotateXZY_orthogonal_affine_general_mulAdd(angleX, angleZ, angleY, dest, _props);
     }
 
-    private Double4x4 rotateXZY_orthogonal_affine_general_fma(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest, int _props) {
+    private Double4x4 rotateXZY_orthogonal_affine_general_fma(double angleX, double angleZ, double angleY, @Mutated Double4x4 dest, int _props) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleX);
@@ -47462,12 +47462,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t5 = Math.cosFromSin(_t1, angleZ);
         double _t6 = _t0 * _t1;
         double _t9 = _t1 * _t4;
-        rotateXZY_orthogonal_affine_general_s31f4bb09_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t9, sd);
+        rotateXZY_orthogonal_affine_general_s50238eeb_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t9, sd);
         ((Double4x4Impl) dest).properties = _props;
         return dest;
     }
 
-    private Double4x4 rotateXZY_orthogonal_affine_general_mulAdd(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest, int _props) {
+    private Double4x4 rotateXZY_orthogonal_affine_general_mulAdd(double angleX, double angleZ, double angleY, @Mutated Double4x4 dest, int _props) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleX);
@@ -47478,7 +47478,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t5 = Math.cosFromSin(_t1, angleZ);
         double _t6 = _t0 * _t1;
         double _t9 = _t1 * _t4;
-        rotateXZY_orthogonal_affine_general_s7afa254e_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t9, sd);
+        rotateXZY_orthogonal_affine_general_s665d2e2c_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t9, sd);
         ((Double4x4Impl) dest).properties = _props;
         return dest;
     }
@@ -47488,7 +47488,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private body of {@code rotateXZY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateXZY} dispatcher.
      */
-    private Double4x4 rotateXZY_identity(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateXZY_identity(double angleX, double angleZ, double angleY, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -47521,7 +47521,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private in-place self-form body of {@code rotateXZY}, specialized by runtime matrix
      * properties; reached only through the public {@code rotateXZY} dispatcher.
      */
-    private Double4x4 rotateXZY_identity_self(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateXZY_identity_self(double angleX, double angleZ, double angleY, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -47550,7 +47550,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private body of {@code rotateXZY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateXZY} dispatcher.
      */
-    private Double4x4 rotateXZY_translation(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateXZY_translation(double angleX, double angleZ, double angleY, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -47586,7 +47586,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private in-place self-form body of {@code rotateXZY}, specialized by runtime matrix
      * properties; reached only through the public {@code rotateXZY} dispatcher.
      */
-    private Double4x4 rotateXZY_translation_self(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateXZY_translation_self(double angleX, double angleZ, double angleY, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -47624,16 +47624,16 @@ public class Double4x4Impl implements Double4x4 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    public Double4x4 rotateXZY(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    public Double4x4 rotateXZY(double angleX, double angleZ, double angleY, @Mutated Double4x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXZY_identity(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXZY_translation(angleX, angleY, angleZ, dest);
-        return rotateXZY_orthogonal_affine_general(angleX, angleY, angleZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXZY_identity(angleX, angleZ, angleY, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXZY_translation(angleX, angleZ, angleY, dest);
+        return rotateXZY_orthogonal_affine_general(angleX, angleZ, angleY, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -47647,16 +47647,16 @@ public class Double4x4Impl implements Double4x4 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated public Double4x4 rotateXZY(double angleX, double angleY, double angleZ) {
-        if (Joml.RETURN_NEW) return rotateXZY(angleX, angleY, angleZ, Joml.double4x4());
+    @Mutated public Double4x4 rotateXZY(double angleX, double angleZ, double angleY) {
+        if (Joml.RETURN_NEW) return rotateXZY(angleX, angleZ, angleY, Joml.double4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXZY_identity_self(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXZY_translation_self(angleX, angleY, angleZ, this);
-        return rotateXZY_orthogonal_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXZY_identity_self(angleX, angleZ, angleY, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXZY_translation_self(angleX, angleZ, angleY, this);
+        return rotateXZY_orthogonal_affine_general(angleX, angleZ, angleY, this, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -47930,8 +47930,8 @@ public class Double4x4Impl implements Double4x4 {
      * Private body of {@code rotateYXZ}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYXZ} dispatcher.
      */
-    /** Private vector tail of {@code rotateYXZ_orthogonal_affine_general_s31f4bb09}: loads, computes and stores every column; reached only through it. */
-    private static void rotateYXZ_orthogonal_affine_general_s31f4bb09_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t8, double[] sd) {
+    /** Private vector tail of {@code rotateYXZ_orthogonal_affine_general_seab66e7}: loads, computes and stores every column; reached only through it. */
+    private static void rotateYXZ_orthogonal_affine_general_seab66e7_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t8, double[] sd) {
         var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 8);
         var _sv1 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
         var _sv2 = DoubleVector.fromArray(COL_SPECIES, sd, 4);
@@ -47946,8 +47946,8 @@ public class Double4x4Impl implements Double4x4 {
         _col3.intoArray(dd, 12);
     }
 
-    /** Private vector tail of {@code rotateYXZ_orthogonal_affine_general_s7afa254e}: loads, computes and stores every column; reached only through it. */
-    private static void rotateYXZ_orthogonal_affine_general_s7afa254e_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t8, double[] sd) {
+    /** Private vector tail of {@code rotateYXZ_orthogonal_affine_general_s28a484b0}: loads, computes and stores every column; reached only through it. */
+    private static void rotateYXZ_orthogonal_affine_general_s28a484b0_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t8, double[] sd) {
         var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 8);
         var _sv1 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
         var _sv2 = DoubleVector.fromArray(COL_SPECIES, sd, 4);
@@ -47962,12 +47962,12 @@ public class Double4x4Impl implements Double4x4 {
         _col3.intoArray(dd, 12);
     }
 
-    private Double4x4 rotateYXZ_orthogonal_affine_general(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return rotateYXZ_orthogonal_affine_general_fma(angleX, angleY, angleZ, dest, _props);
-        return rotateYXZ_orthogonal_affine_general_mulAdd(angleX, angleY, angleZ, dest, _props);
+    private Double4x4 rotateYXZ_orthogonal_affine_general(double angleY, double angleX, double angleZ, @Mutated Double4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return rotateYXZ_orthogonal_affine_general_fma(angleY, angleX, angleZ, dest, _props);
+        return rotateYXZ_orthogonal_affine_general_mulAdd(angleY, angleX, angleZ, dest, _props);
     }
 
-    private Double4x4 rotateYXZ_orthogonal_affine_general_fma(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest, int _props) {
+    private Double4x4 rotateYXZ_orthogonal_affine_general_fma(double angleY, double angleX, double angleZ, @Mutated Double4x4 dest, int _props) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleX);
@@ -47978,12 +47978,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t5 = Math.cosFromSin(_t0, angleX);
         double _t6 = _t0 * _t1;
         double _t8 = _t0 * _t3;
-        rotateYXZ_orthogonal_affine_general_s31f4bb09_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t8, sd);
+        rotateYXZ_orthogonal_affine_general_seab66e7_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t8, sd);
         ((Double4x4Impl) dest).properties = _props;
         return dest;
     }
 
-    private Double4x4 rotateYXZ_orthogonal_affine_general_mulAdd(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest, int _props) {
+    private Double4x4 rotateYXZ_orthogonal_affine_general_mulAdd(double angleY, double angleX, double angleZ, @Mutated Double4x4 dest, int _props) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleX);
@@ -47994,7 +47994,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t5 = Math.cosFromSin(_t0, angleX);
         double _t6 = _t0 * _t1;
         double _t8 = _t0 * _t3;
-        rotateYXZ_orthogonal_affine_general_s7afa254e_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t8, sd);
+        rotateYXZ_orthogonal_affine_general_s28a484b0_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t8, sd);
         ((Double4x4Impl) dest).properties = _props;
         return dest;
     }
@@ -48004,7 +48004,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private body of {@code rotateYXZ}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYXZ} dispatcher.
      */
-    private Double4x4 rotateYXZ_identity(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateYXZ_identity(double angleY, double angleX, double angleZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleX);
@@ -48037,7 +48037,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private in-place self-form body of {@code rotateYXZ}, specialized by runtime matrix
      * properties; reached only through the public {@code rotateYXZ} dispatcher.
      */
-    private Double4x4 rotateYXZ_identity_self(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateYXZ_identity_self(double angleY, double angleX, double angleZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleX);
@@ -48066,7 +48066,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private body of {@code rotateYXZ}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYXZ} dispatcher.
      */
-    private Double4x4 rotateYXZ_translation(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateYXZ_translation(double angleY, double angleX, double angleZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleX);
@@ -48102,7 +48102,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private in-place self-form body of {@code rotateYXZ}, specialized by runtime matrix
      * properties; reached only through the public {@code rotateYXZ} dispatcher.
      */
-    private Double4x4 rotateYXZ_translation_self(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateYXZ_translation_self(double angleY, double angleX, double angleZ, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleX);
@@ -48139,17 +48139,17 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public Double4x4 rotateYXZ(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    public Double4x4 rotateYXZ(double angleY, double angleX, double angleZ, @Mutated Double4x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYXZ_identity(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYXZ_translation(angleX, angleY, angleZ, dest);
-        return rotateYXZ_orthogonal_affine_general(angleX, angleY, angleZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYXZ_identity(angleY, angleX, angleZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYXZ_translation(angleY, angleX, angleZ, dest);
+        return rotateYXZ_orthogonal_affine_general(angleY, angleX, angleZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -48162,17 +48162,17 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated public Double4x4 rotateYXZ(double angleX, double angleY, double angleZ) {
-        if (Joml.RETURN_NEW) return rotateYXZ(angleX, angleY, angleZ, Joml.double4x4());
+    @Mutated public Double4x4 rotateYXZ(double angleY, double angleX, double angleZ) {
+        if (Joml.RETURN_NEW) return rotateYXZ(angleY, angleX, angleZ, Joml.double4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYXZ_identity_self(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYXZ_translation_self(angleX, angleY, angleZ, this);
-        return rotateYXZ_orthogonal_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYXZ_identity_self(angleY, angleX, angleZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYXZ_translation_self(angleY, angleX, angleZ, this);
+        return rotateYXZ_orthogonal_affine_general(angleY, angleX, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -48180,8 +48180,8 @@ public class Double4x4Impl implements Double4x4 {
      * Private body of {@code rotateYZX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYZX} dispatcher.
      */
-    /** Private vector tail of {@code rotateYZX_orthogonal_affine_general_s31f4bb09}: loads, computes and stores every column; reached only through it. */
-    private static void rotateYZX_orthogonal_affine_general_s31f4bb09_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t9, double[] sd) {
+    /** Private vector tail of {@code rotateYZX_orthogonal_affine_general_s4b090eab}: loads, computes and stores every column; reached only through it. */
+    private static void rotateYZX_orthogonal_affine_general_s4b090eab_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t9, double[] sd) {
         var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 8);
         var _sv1 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
         var _sv2 = DoubleVector.fromArray(COL_SPECIES, sd, 4);
@@ -48196,8 +48196,8 @@ public class Double4x4Impl implements Double4x4 {
         _col3.intoArray(dd, 12);
     }
 
-    /** Private vector tail of {@code rotateYZX_orthogonal_affine_general_s7afa254e}: loads, computes and stores every column; reached only through it. */
-    private static void rotateYZX_orthogonal_affine_general_s7afa254e_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t9, double[] sd) {
+    /** Private vector tail of {@code rotateYZX_orthogonal_affine_general_s7f6a966c}: loads, computes and stores every column; reached only through it. */
+    private static void rotateYZX_orthogonal_affine_general_s7f6a966c_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t9, double[] sd) {
         var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 8);
         var _sv1 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
         var _sv2 = DoubleVector.fromArray(COL_SPECIES, sd, 4);
@@ -48212,12 +48212,12 @@ public class Double4x4Impl implements Double4x4 {
         _col3.intoArray(dd, 12);
     }
 
-    private Double4x4 rotateYZX_orthogonal_affine_general(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return rotateYZX_orthogonal_affine_general_fma(angleX, angleY, angleZ, dest, _props);
-        return rotateYZX_orthogonal_affine_general_mulAdd(angleX, angleY, angleZ, dest, _props);
+    private Double4x4 rotateYZX_orthogonal_affine_general(double angleY, double angleZ, double angleX, @Mutated Double4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return rotateYZX_orthogonal_affine_general_fma(angleY, angleZ, angleX, dest, _props);
+        return rotateYZX_orthogonal_affine_general_mulAdd(angleY, angleZ, angleX, dest, _props);
     }
 
-    private Double4x4 rotateYZX_orthogonal_affine_general_fma(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest, int _props) {
+    private Double4x4 rotateYZX_orthogonal_affine_general_fma(double angleY, double angleZ, double angleX, @Mutated Double4x4 dest, int _props) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -48228,12 +48228,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t5 = Math.cosFromSin(_t2, angleX);
         double _t6 = _t0 * _t1;
         double _t9 = _t1 * _t4;
-        rotateYZX_orthogonal_affine_general_s31f4bb09_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t9, sd);
+        rotateYZX_orthogonal_affine_general_s4b090eab_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t9, sd);
         ((Double4x4Impl) dest).properties = _props;
         return dest;
     }
 
-    private Double4x4 rotateYZX_orthogonal_affine_general_mulAdd(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest, int _props) {
+    private Double4x4 rotateYZX_orthogonal_affine_general_mulAdd(double angleY, double angleZ, double angleX, @Mutated Double4x4 dest, int _props) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -48244,7 +48244,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t5 = Math.cosFromSin(_t2, angleX);
         double _t6 = _t0 * _t1;
         double _t9 = _t1 * _t4;
-        rotateYZX_orthogonal_affine_general_s7afa254e_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t9, sd);
+        rotateYZX_orthogonal_affine_general_s7f6a966c_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t9, sd);
         ((Double4x4Impl) dest).properties = _props;
         return dest;
     }
@@ -48254,7 +48254,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private body of {@code rotateYZX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYZX} dispatcher.
      */
-    private Double4x4 rotateYZX_identity(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateYZX_identity(double angleY, double angleZ, double angleX, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -48287,7 +48287,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private in-place self-form body of {@code rotateYZX}, specialized by runtime matrix
      * properties; reached only through the public {@code rotateYZX} dispatcher.
      */
-    private Double4x4 rotateYZX_identity_self(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateYZX_identity_self(double angleY, double angleZ, double angleX, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -48316,7 +48316,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private body of {@code rotateYZX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYZX} dispatcher.
      */
-    private Double4x4 rotateYZX_translation(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateYZX_translation(double angleY, double angleZ, double angleX, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -48352,7 +48352,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private in-place self-form body of {@code rotateYZX}, specialized by runtime matrix
      * properties; reached only through the public {@code rotateYZX} dispatcher.
      */
-    private Double4x4 rotateYZX_translation_self(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateYZX_translation_self(double angleY, double angleZ, double angleX, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -48389,17 +48389,17 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public Double4x4 rotateYZX(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    public Double4x4 rotateYZX(double angleY, double angleZ, double angleX, @Mutated Double4x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYZX_identity(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYZX_translation(angleX, angleY, angleZ, dest);
-        return rotateYZX_orthogonal_affine_general(angleX, angleY, angleZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYZX_identity(angleY, angleZ, angleX, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYZX_translation(angleY, angleZ, angleX, dest);
+        return rotateYZX_orthogonal_affine_general(angleY, angleZ, angleX, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -48412,17 +48412,17 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated public Double4x4 rotateYZX(double angleX, double angleY, double angleZ) {
-        if (Joml.RETURN_NEW) return rotateYZX(angleX, angleY, angleZ, Joml.double4x4());
+    @Mutated public Double4x4 rotateYZX(double angleY, double angleZ, double angleX) {
+        if (Joml.RETURN_NEW) return rotateYZX(angleY, angleZ, angleX, Joml.double4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYZX_identity_self(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYZX_translation_self(angleX, angleY, angleZ, this);
-        return rotateYZX_orthogonal_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYZX_identity_self(angleY, angleZ, angleX, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYZX_translation_self(angleY, angleZ, angleX, this);
+        return rotateYZX_orthogonal_affine_general(angleY, angleZ, angleX, this, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -48696,8 +48696,8 @@ public class Double4x4Impl implements Double4x4 {
      * Private body of {@code rotateZXY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZXY} dispatcher.
      */
-    /** Private vector tail of {@code rotateZXY_orthogonal_affine_general_s31f4bb09}: loads, computes and stores every column; reached only through it. */
-    private static void rotateZXY_orthogonal_affine_general_s31f4bb09_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t8, double[] sd) {
+    /** Private vector tail of {@code rotateZXY_orthogonal_affine_general_s990e6a7}: loads, computes and stores every column; reached only through it. */
+    private static void rotateZXY_orthogonal_affine_general_s990e6a7_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t8, double[] sd) {
         var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 8);
         var _sv1 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
         var _sv2 = DoubleVector.fromArray(COL_SPECIES, sd, 4);
@@ -48712,8 +48712,8 @@ public class Double4x4Impl implements Double4x4 {
         _col3.intoArray(dd, 12);
     }
 
-    /** Private vector tail of {@code rotateZXY_orthogonal_affine_general_s7afa254e}: loads, computes and stores every column; reached only through it. */
-    private static void rotateZXY_orthogonal_affine_general_s7afa254e_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t8, double[] sd) {
+    /** Private vector tail of {@code rotateZXY_orthogonal_affine_general_s41b1ecf0}: loads, computes and stores every column; reached only through it. */
+    private static void rotateZXY_orthogonal_affine_general_s41b1ecf0_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t8, double[] sd) {
         var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 8);
         var _sv1 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
         var _sv2 = DoubleVector.fromArray(COL_SPECIES, sd, 4);
@@ -48728,12 +48728,12 @@ public class Double4x4Impl implements Double4x4 {
         _col3.intoArray(dd, 12);
     }
 
-    private Double4x4 rotateZXY_orthogonal_affine_general(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return rotateZXY_orthogonal_affine_general_fma(angleX, angleY, angleZ, dest, _props);
-        return rotateZXY_orthogonal_affine_general_mulAdd(angleX, angleY, angleZ, dest, _props);
+    private Double4x4 rotateZXY_orthogonal_affine_general(double angleZ, double angleX, double angleY, @Mutated Double4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return rotateZXY_orthogonal_affine_general_fma(angleZ, angleX, angleY, dest, _props);
+        return rotateZXY_orthogonal_affine_general_mulAdd(angleZ, angleX, angleY, dest, _props);
     }
 
-    private Double4x4 rotateZXY_orthogonal_affine_general_fma(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest, int _props) {
+    private Double4x4 rotateZXY_orthogonal_affine_general_fma(double angleZ, double angleX, double angleY, @Mutated Double4x4 dest, int _props) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -48744,12 +48744,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t5 = Math.cosFromSin(_t2, angleZ);
         double _t6 = _t1 * _t2;
         double _t8 = _t1 * _t5;
-        rotateZXY_orthogonal_affine_general_s31f4bb09_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t8, sd);
+        rotateZXY_orthogonal_affine_general_s990e6a7_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t8, sd);
         ((Double4x4Impl) dest).properties = _props;
         return dest;
     }
 
-    private Double4x4 rotateZXY_orthogonal_affine_general_mulAdd(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest, int _props) {
+    private Double4x4 rotateZXY_orthogonal_affine_general_mulAdd(double angleZ, double angleX, double angleY, @Mutated Double4x4 dest, int _props) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -48760,7 +48760,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t5 = Math.cosFromSin(_t2, angleZ);
         double _t6 = _t1 * _t2;
         double _t8 = _t1 * _t5;
-        rotateZXY_orthogonal_affine_general_s7afa254e_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t8, sd);
+        rotateZXY_orthogonal_affine_general_s41b1ecf0_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t8, sd);
         ((Double4x4Impl) dest).properties = _props;
         return dest;
     }
@@ -48770,7 +48770,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private body of {@code rotateZXY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZXY} dispatcher.
      */
-    private Double4x4 rotateZXY_identity(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateZXY_identity(double angleZ, double angleX, double angleY, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -48803,7 +48803,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private in-place self-form body of {@code rotateZXY}, specialized by runtime matrix
      * properties; reached only through the public {@code rotateZXY} dispatcher.
      */
-    private Double4x4 rotateZXY_identity_self(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateZXY_identity_self(double angleZ, double angleX, double angleY, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -48832,7 +48832,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private body of {@code rotateZXY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZXY} dispatcher.
      */
-    private Double4x4 rotateZXY_translation(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateZXY_translation(double angleZ, double angleX, double angleY, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -48868,7 +48868,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private in-place self-form body of {@code rotateZXY}, specialized by runtime matrix
      * properties; reached only through the public {@code rotateZXY} dispatcher.
      */
-    private Double4x4 rotateZXY_translation_self(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateZXY_translation_self(double angleZ, double angleX, double angleY, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -48905,17 +48905,17 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public Double4x4 rotateZXY(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    public Double4x4 rotateZXY(double angleZ, double angleX, double angleY, @Mutated Double4x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZXY_identity(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZXY_translation(angleX, angleY, angleZ, dest);
-        return rotateZXY_orthogonal_affine_general(angleX, angleY, angleZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZXY_identity(angleZ, angleX, angleY, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZXY_translation(angleZ, angleX, angleY, dest);
+        return rotateZXY_orthogonal_affine_general(angleZ, angleX, angleY, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -48928,17 +48928,17 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated public Double4x4 rotateZXY(double angleX, double angleY, double angleZ) {
-        if (Joml.RETURN_NEW) return rotateZXY(angleX, angleY, angleZ, Joml.double4x4());
+    @Mutated public Double4x4 rotateZXY(double angleZ, double angleX, double angleY) {
+        if (Joml.RETURN_NEW) return rotateZXY(angleZ, angleX, angleY, Joml.double4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZXY_identity_self(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZXY_translation_self(angleX, angleY, angleZ, this);
-        return rotateZXY_orthogonal_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZXY_identity_self(angleZ, angleX, angleY, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZXY_translation_self(angleZ, angleX, angleY, this);
+        return rotateZXY_orthogonal_affine_general(angleZ, angleX, angleY, this, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -48946,8 +48946,8 @@ public class Double4x4Impl implements Double4x4 {
      * Private body of {@code rotateZYX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZYX} dispatcher.
      */
-    /** Private vector tail of {@code rotateZYX_orthogonal_affine_general_s31f4bb09}: loads, computes and stores every column; reached only through it. */
-    private static void rotateZYX_orthogonal_affine_general_s31f4bb09_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t10, double[] sd) {
+    /** Private vector tail of {@code rotateZYX_orthogonal_affine_general_s27bfba89}: loads, computes and stores every column; reached only through it. */
+    private static void rotateZYX_orthogonal_affine_general_s27bfba89_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t10, double[] sd) {
         var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 8);
         var _sv1 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
         var _sv2 = DoubleVector.fromArray(COL_SPECIES, sd, 4);
@@ -48962,8 +48962,8 @@ public class Double4x4Impl implements Double4x4 {
         _col3.intoArray(dd, 12);
     }
 
-    /** Private vector tail of {@code rotateZYX_orthogonal_affine_general_s7afa254e}: loads, computes and stores every column; reached only through it. */
-    private static void rotateZYX_orthogonal_affine_general_s7afa254e_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t10, double[] sd) {
+    /** Private vector tail of {@code rotateZYX_orthogonal_affine_general_s2d14f5ce}: loads, computes and stores every column; reached only through it. */
+    private static void rotateZYX_orthogonal_affine_general_s2d14f5ce_tail(double[] dd, double _t0, double _t1, double _t2, double _t3, double _t4, double _t5, double _t6, double _t10, double[] sd) {
         var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 8);
         var _sv1 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
         var _sv2 = DoubleVector.fromArray(COL_SPECIES, sd, 4);
@@ -48978,12 +48978,12 @@ public class Double4x4Impl implements Double4x4 {
         _col3.intoArray(dd, 12);
     }
 
-    private Double4x4 rotateZYX_orthogonal_affine_general(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest, int _props) {
-        if (SimdMath.USE_FMA) return rotateZYX_orthogonal_affine_general_fma(angleX, angleY, angleZ, dest, _props);
-        return rotateZYX_orthogonal_affine_general_mulAdd(angleX, angleY, angleZ, dest, _props);
+    private Double4x4 rotateZYX_orthogonal_affine_general(double angleZ, double angleY, double angleX, @Mutated Double4x4 dest, int _props) {
+        if (SimdMath.USE_FMA) return rotateZYX_orthogonal_affine_general_fma(angleZ, angleY, angleX, dest, _props);
+        return rotateZYX_orthogonal_affine_general_mulAdd(angleZ, angleY, angleX, dest, _props);
     }
 
-    private Double4x4 rotateZYX_orthogonal_affine_general_fma(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest, int _props) {
+    private Double4x4 rotateZYX_orthogonal_affine_general_fma(double angleZ, double angleY, double angleX, @Mutated Double4x4 dest, int _props) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -48994,12 +48994,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t5 = Math.cosFromSin(_t2, angleX);
         double _t6 = _t0 * _t1;
         double _t10 = _t0 * _t4;
-        rotateZYX_orthogonal_affine_general_s31f4bb09_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t10, sd);
+        rotateZYX_orthogonal_affine_general_s27bfba89_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t10, sd);
         ((Double4x4Impl) dest).properties = _props;
         return dest;
     }
 
-    private Double4x4 rotateZYX_orthogonal_affine_general_mulAdd(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest, int _props) {
+    private Double4x4 rotateZYX_orthogonal_affine_general_mulAdd(double angleZ, double angleY, double angleX, @Mutated Double4x4 dest, int _props) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -49010,7 +49010,7 @@ public class Double4x4Impl implements Double4x4 {
         double _t5 = Math.cosFromSin(_t2, angleX);
         double _t6 = _t0 * _t1;
         double _t10 = _t0 * _t4;
-        rotateZYX_orthogonal_affine_general_s7afa254e_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t10, sd);
+        rotateZYX_orthogonal_affine_general_s2d14f5ce_tail(dd, _t0, _t1, _t2, _t3, _t4, _t5, _t6, _t10, sd);
         ((Double4x4Impl) dest).properties = _props;
         return dest;
     }
@@ -49020,7 +49020,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private body of {@code rotateZYX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZYX} dispatcher.
      */
-    private Double4x4 rotateZYX_identity(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateZYX_identity(double angleZ, double angleY, double angleX, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -49053,7 +49053,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private in-place self-form body of {@code rotateZYX}, specialized by runtime matrix
      * properties; reached only through the public {@code rotateZYX} dispatcher.
      */
-    private Double4x4 rotateZYX_identity_self(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateZYX_identity_self(double angleZ, double angleY, double angleX, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -49082,7 +49082,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private body of {@code rotateZYX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZYX} dispatcher.
      */
-    private Double4x4 rotateZYX_translation(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateZYX_translation(double angleZ, double angleY, double angleX, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -49118,7 +49118,7 @@ public class Double4x4Impl implements Double4x4 {
      * Private in-place self-form body of {@code rotateZYX}, specialized by runtime matrix
      * properties; reached only through the public {@code rotateZYX} dispatcher.
      */
-    private Double4x4 rotateZYX_translation_self(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    private Double4x4 rotateZYX_translation_self(double angleZ, double angleY, double angleX, @Mutated Double4x4 dest) {
         double[] sd = this.data;
         double[] dd = ((Double4x4Impl) dest).data;
         double _t0 = Math.sin(angleY);
@@ -49155,17 +49155,17 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public Double4x4 rotateZYX(double angleX, double angleY, double angleZ, @Mutated Double4x4 dest) {
+    public Double4x4 rotateZYX(double angleZ, double angleY, double angleX, @Mutated Double4x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZYX_identity(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZYX_translation(angleX, angleY, angleZ, dest);
-        return rotateZYX_orthogonal_affine_general(angleX, angleY, angleZ, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZYX_identity(angleZ, angleY, angleX, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZYX_translation(angleZ, angleY, angleX, dest);
+        return rotateZYX_orthogonal_affine_general(angleZ, angleY, angleX, dest, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 
@@ -49178,17 +49178,17 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated public Double4x4 rotateZYX(double angleX, double angleY, double angleZ) {
-        if (Joml.RETURN_NEW) return rotateZYX(angleX, angleY, angleZ, Joml.double4x4());
+    @Mutated public Double4x4 rotateZYX(double angleZ, double angleY, double angleX) {
+        if (Joml.RETURN_NEW) return rotateZYX(angleZ, angleY, angleX, Joml.double4x4());
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZYX_identity_self(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZYX_translation_self(angleX, angleY, angleZ, this);
-        return rotateZYX_orthogonal_affine_general(angleX, angleY, angleZ, this, (p & Joml.BIT_ORTHOGONAL) | 0);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZYX_identity_self(angleZ, angleY, angleX, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZYX_translation_self(angleZ, angleY, angleX, this);
+        return rotateZYX_orthogonal_affine_general(angleZ, angleY, angleX, this, (p & Joml.BIT_ORTHOGONAL) | 0);
     }
 
 

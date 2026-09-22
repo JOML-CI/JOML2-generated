@@ -1460,12 +1460,12 @@ public interface DoubleQuatR {
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleQuat rotateXZY(double angleX, double angleY, double angleZ, @Mutated DoubleQuat dest);
+    DoubleQuat rotateXZY(double angleX, double angleZ, double angleY, @Mutated DoubleQuat dest);
 
     /**
      * Rotate this quaternion by {@code angle} radians about the local Y axis and store the result
@@ -1487,13 +1487,13 @@ public interface DoubleQuatR {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleQuat rotateYXZ(double angleX, double angleY, double angleZ, @Mutated DoubleQuat dest);
+    DoubleQuat rotateYXZ(double angleY, double angleX, double angleZ, @Mutated DoubleQuat dest);
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
@@ -1505,13 +1505,13 @@ public interface DoubleQuatR {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleQuat rotateYZX(double angleX, double angleY, double angleZ, @Mutated DoubleQuat dest);
+    DoubleQuat rotateYZX(double angleY, double angleZ, double angleX, @Mutated DoubleQuat dest);
 
     /**
      * Rotate this quaternion by {@code angle} radians about the local Z axis and store the result
@@ -1533,13 +1533,13 @@ public interface DoubleQuatR {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleQuat rotateZXY(double angleX, double angleY, double angleZ, @Mutated DoubleQuat dest);
+    DoubleQuat rotateZXY(double angleZ, double angleX, double angleY, @Mutated DoubleQuat dest);
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
@@ -1551,13 +1551,13 @@ public interface DoubleQuatR {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleQuat rotateZYX(double angleX, double angleY, double angleZ, @Mutated DoubleQuat dest);
+    DoubleQuat rotateZYX(double angleZ, double angleY, double angleX, @Mutated DoubleQuat dest);
 
     /**
      * Transform {@code v} by this quaternion and store the result in {@code dest}.

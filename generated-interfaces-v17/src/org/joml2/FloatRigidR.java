@@ -1126,12 +1126,12 @@ public interface FloatRigidR {
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    FloatRigid rotateXZY(float angleX, float angleY, float angleZ, @Mutated FloatRigid dest);
+    FloatRigid rotateXZY(float angleX, float angleZ, float angleY, @Mutated FloatRigid dest);
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
@@ -1147,12 +1147,12 @@ public interface FloatRigidR {
      * {@code double} only when stored.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleRigid rotateXZY(float angleX, float angleY, float angleZ, @Mutated DoubleRigid dest);
+    DoubleRigid rotateXZY(float angleX, float angleZ, float angleY, @Mutated DoubleRigid dest);
 
     /**
      * Apply a rotation of {@code angle} radians about the Y axis to this rigid transform and store
@@ -1195,13 +1195,13 @@ public interface FloatRigidR {
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    FloatRigid rotateYXZ(float angleX, float angleY, float angleZ, @Mutated FloatRigid dest);
+    FloatRigid rotateYXZ(float angleY, float angleX, float angleZ, @Mutated FloatRigid dest);
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
@@ -1216,13 +1216,13 @@ public interface FloatRigidR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleRigid rotateYXZ(float angleX, float angleY, float angleZ, @Mutated DoubleRigid dest);
+    DoubleRigid rotateYXZ(float angleY, float angleX, float angleZ, @Mutated DoubleRigid dest);
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
@@ -1234,13 +1234,13 @@ public interface FloatRigidR {
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    FloatRigid rotateYZX(float angleX, float angleY, float angleZ, @Mutated FloatRigid dest);
+    FloatRigid rotateYZX(float angleY, float angleZ, float angleX, @Mutated FloatRigid dest);
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
@@ -1255,13 +1255,13 @@ public interface FloatRigidR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleRigid rotateYZX(float angleX, float angleY, float angleZ, @Mutated DoubleRigid dest);
+    DoubleRigid rotateYZX(float angleY, float angleZ, float angleX, @Mutated DoubleRigid dest);
 
     /**
      * Apply a rotation of {@code angle} radians about the Z axis to this rigid transform and store
@@ -1304,13 +1304,13 @@ public interface FloatRigidR {
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    FloatRigid rotateZXY(float angleX, float angleY, float angleZ, @Mutated FloatRigid dest);
+    FloatRigid rotateZXY(float angleZ, float angleX, float angleY, @Mutated FloatRigid dest);
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
@@ -1325,13 +1325,13 @@ public interface FloatRigidR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleRigid rotateZXY(float angleX, float angleY, float angleZ, @Mutated DoubleRigid dest);
+    DoubleRigid rotateZXY(float angleZ, float angleX, float angleY, @Mutated DoubleRigid dest);
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
@@ -1343,13 +1343,13 @@ public interface FloatRigidR {
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    FloatRigid rotateZYX(float angleX, float angleY, float angleZ, @Mutated FloatRigid dest);
+    FloatRigid rotateZYX(float angleZ, float angleY, float angleX, @Mutated FloatRigid dest);
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
@@ -1364,13 +1364,13 @@ public interface FloatRigidR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleRigid rotateZYX(float angleX, float angleY, float angleZ, @Mutated DoubleRigid dest);
+    DoubleRigid rotateZYX(float angleZ, float angleY, float angleX, @Mutated DoubleRigid dest);
 
     /**
      * Apply a translation by {@code translation} to this rigid transform and store the result in

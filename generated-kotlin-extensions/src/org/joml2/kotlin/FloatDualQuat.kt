@@ -29,19 +29,19 @@ inline fun FloatDualQuat.rotateX(angle: Angle): FloatDualQuat = rotateX(angle.ra
 /** [FloatDualQuat.rotateXYZ] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun FloatDualQuat.rotateXYZ(angleX: Angle, angleY: Angle, angleZ: Angle): FloatDualQuat = rotateXYZ(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
 /** [FloatDualQuat.rotateXZY] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun FloatDualQuat.rotateXZY(angleX: Angle, angleY: Angle, angleZ: Angle): FloatDualQuat = rotateXZY(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+inline fun FloatDualQuat.rotateXZY(angleX: Angle, angleZ: Angle, angleY: Angle): FloatDualQuat = rotateXZY(angleX.radians.toFloat(), angleZ.radians.toFloat(), angleY.radians.toFloat())
 /** [FloatDualQuat.rotateY] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun FloatDualQuat.rotateY(angle: Angle): FloatDualQuat = rotateY(angle.radians.toFloat())
 /** [FloatDualQuat.rotateYXZ] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun FloatDualQuat.rotateYXZ(angleX: Angle, angleY: Angle, angleZ: Angle): FloatDualQuat = rotateYXZ(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+inline fun FloatDualQuat.rotateYXZ(angleY: Angle, angleX: Angle, angleZ: Angle): FloatDualQuat = rotateYXZ(angleY.radians.toFloat(), angleX.radians.toFloat(), angleZ.radians.toFloat())
 /** [FloatDualQuat.rotateYZX] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun FloatDualQuat.rotateYZX(angleX: Angle, angleY: Angle, angleZ: Angle): FloatDualQuat = rotateYZX(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+inline fun FloatDualQuat.rotateYZX(angleY: Angle, angleZ: Angle, angleX: Angle): FloatDualQuat = rotateYZX(angleY.radians.toFloat(), angleZ.radians.toFloat(), angleX.radians.toFloat())
 /** [FloatDualQuat.rotateZ] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun FloatDualQuat.rotateZ(angle: Angle): FloatDualQuat = rotateZ(angle.radians.toFloat())
 /** [FloatDualQuat.rotateZXY] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun FloatDualQuat.rotateZXY(angleX: Angle, angleY: Angle, angleZ: Angle): FloatDualQuat = rotateZXY(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+inline fun FloatDualQuat.rotateZXY(angleZ: Angle, angleX: Angle, angleY: Angle): FloatDualQuat = rotateZXY(angleZ.radians.toFloat(), angleX.radians.toFloat(), angleY.radians.toFloat())
 /** [FloatDualQuat.rotateZYX] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun FloatDualQuat.rotateZYX(angleX: Angle, angleY: Angle, angleZ: Angle): FloatDualQuat = rotateZYX(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+inline fun FloatDualQuat.rotateZYX(angleZ: Angle, angleY: Angle, angleX: Angle): FloatDualQuat = rotateZYX(angleZ.radians.toFloat(), angleY.radians.toFloat(), angleX.radians.toFloat())
 /** [FloatDualQuat.transform] as the `*` operator. */
 inline operator fun FloatDualQuat.times(p: Float3): Float3 = transform(p)
 /** Component 1 of this FloatDualQuat (`rX()`), for destructuring declarations. */
@@ -92,17 +92,17 @@ object FloatDualQuatFactory {
     /** [FloatDualQuat.makeRotationXYZ] taking a type-safe [Angle] in place of the angle in radians. */
     inline fun makeRotationXYZ(angleX: Angle, angleY: Angle, angleZ: Angle): FloatDualQuat = FloatDualQuat.makeRotationXYZ(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
     /** [FloatDualQuat.makeRotationXZY] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationXZY(angleX: Angle, angleY: Angle, angleZ: Angle): FloatDualQuat = FloatDualQuat.makeRotationXZY(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+    inline fun makeRotationXZY(angleX: Angle, angleZ: Angle, angleY: Angle): FloatDualQuat = FloatDualQuat.makeRotationXZY(angleX.radians.toFloat(), angleZ.radians.toFloat(), angleY.radians.toFloat())
     /** [FloatDualQuat.makeRotationY] taking a type-safe [Angle] in place of the angle in radians. */
     inline fun makeRotationY(angle: Angle): FloatDualQuat = FloatDualQuat.makeRotationY(angle.radians.toFloat())
     /** [FloatDualQuat.makeRotationYXZ] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationYXZ(angleX: Angle, angleY: Angle, angleZ: Angle): FloatDualQuat = FloatDualQuat.makeRotationYXZ(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+    inline fun makeRotationYXZ(angleY: Angle, angleX: Angle, angleZ: Angle): FloatDualQuat = FloatDualQuat.makeRotationYXZ(angleY.radians.toFloat(), angleX.radians.toFloat(), angleZ.radians.toFloat())
     /** [FloatDualQuat.makeRotationYZX] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationYZX(angleX: Angle, angleY: Angle, angleZ: Angle): FloatDualQuat = FloatDualQuat.makeRotationYZX(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+    inline fun makeRotationYZX(angleY: Angle, angleZ: Angle, angleX: Angle): FloatDualQuat = FloatDualQuat.makeRotationYZX(angleY.radians.toFloat(), angleZ.radians.toFloat(), angleX.radians.toFloat())
     /** [FloatDualQuat.makeRotationZ] taking a type-safe [Angle] in place of the angle in radians. */
     inline fun makeRotationZ(angle: Angle): FloatDualQuat = FloatDualQuat.makeRotationZ(angle.radians.toFloat())
     /** [FloatDualQuat.makeRotationZXY] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationZXY(angleX: Angle, angleY: Angle, angleZ: Angle): FloatDualQuat = FloatDualQuat.makeRotationZXY(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+    inline fun makeRotationZXY(angleZ: Angle, angleX: Angle, angleY: Angle): FloatDualQuat = FloatDualQuat.makeRotationZXY(angleZ.radians.toFloat(), angleX.radians.toFloat(), angleY.radians.toFloat())
     /** [FloatDualQuat.makeRotationZYX] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationZYX(angleX: Angle, angleY: Angle, angleZ: Angle): FloatDualQuat = FloatDualQuat.makeRotationZYX(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+    inline fun makeRotationZYX(angleZ: Angle, angleY: Angle, angleX: Angle): FloatDualQuat = FloatDualQuat.makeRotationZYX(angleZ.radians.toFloat(), angleY.radians.toFloat(), angleX.radians.toFloat())
 }

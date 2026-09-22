@@ -71,19 +71,19 @@ inline fun Float4x4.rotateX(angle: Angle): Float4x4 = rotateX(angle.radians.toFl
 /** [Float4x4.rotateXYZ] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Float4x4.rotateXYZ(angleX: Angle, angleY: Angle, angleZ: Angle): Float4x4 = rotateXYZ(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
 /** [Float4x4.rotateXZY] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun Float4x4.rotateXZY(angleX: Angle, angleY: Angle, angleZ: Angle): Float4x4 = rotateXZY(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+inline fun Float4x4.rotateXZY(angleX: Angle, angleZ: Angle, angleY: Angle): Float4x4 = rotateXZY(angleX.radians.toFloat(), angleZ.radians.toFloat(), angleY.radians.toFloat())
 /** [Float4x4.rotateY] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Float4x4.rotateY(angle: Angle): Float4x4 = rotateY(angle.radians.toFloat())
 /** [Float4x4.rotateYXZ] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun Float4x4.rotateYXZ(angleX: Angle, angleY: Angle, angleZ: Angle): Float4x4 = rotateYXZ(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+inline fun Float4x4.rotateYXZ(angleY: Angle, angleX: Angle, angleZ: Angle): Float4x4 = rotateYXZ(angleY.radians.toFloat(), angleX.radians.toFloat(), angleZ.radians.toFloat())
 /** [Float4x4.rotateYZX] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun Float4x4.rotateYZX(angleX: Angle, angleY: Angle, angleZ: Angle): Float4x4 = rotateYZX(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+inline fun Float4x4.rotateYZX(angleY: Angle, angleZ: Angle, angleX: Angle): Float4x4 = rotateYZX(angleY.radians.toFloat(), angleZ.radians.toFloat(), angleX.radians.toFloat())
 /** [Float4x4.rotateZ] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Float4x4.rotateZ(angle: Angle): Float4x4 = rotateZ(angle.radians.toFloat())
 /** [Float4x4.rotateZXY] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun Float4x4.rotateZXY(angleX: Angle, angleY: Angle, angleZ: Angle): Float4x4 = rotateZXY(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+inline fun Float4x4.rotateZXY(angleZ: Angle, angleX: Angle, angleY: Angle): Float4x4 = rotateZXY(angleZ.radians.toFloat(), angleX.radians.toFloat(), angleY.radians.toFloat())
 /** [Float4x4.rotateZYX] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun Float4x4.rotateZYX(angleX: Angle, angleY: Angle, angleZ: Angle): Float4x4 = rotateZYX(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+inline fun Float4x4.rotateZYX(angleZ: Angle, angleY: Angle, angleX: Angle): Float4x4 = rotateZYX(angleZ.radians.toFloat(), angleY.radians.toFloat(), angleX.radians.toFloat())
 /** [Float4x4.mul] as the `*` operator. */
 inline operator fun Float4x4.times(v: Float4): Float4 = mul(v)
 /** The element of this Float4x4 in the given row and column, throwing `IndexOutOfBoundsException` when either index is out of range. */
@@ -154,17 +154,17 @@ object Float4x4Factory {
     /** [Float4x4.makeRotationXYZ] taking a type-safe [Angle] in place of the angle in radians. */
     inline fun makeRotationXYZ(angleX: Angle, angleY: Angle, angleZ: Angle): Float4x4 = Float4x4.makeRotationXYZ(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
     /** [Float4x4.makeRotationXZY] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationXZY(angleX: Angle, angleY: Angle, angleZ: Angle): Float4x4 = Float4x4.makeRotationXZY(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+    inline fun makeRotationXZY(angleX: Angle, angleZ: Angle, angleY: Angle): Float4x4 = Float4x4.makeRotationXZY(angleX.radians.toFloat(), angleZ.radians.toFloat(), angleY.radians.toFloat())
     /** [Float4x4.makeRotationY] taking a type-safe [Angle] in place of the angle in radians. */
     inline fun makeRotationY(angle: Angle): Float4x4 = Float4x4.makeRotationY(angle.radians.toFloat())
     /** [Float4x4.makeRotationYXZ] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationYXZ(angleX: Angle, angleY: Angle, angleZ: Angle): Float4x4 = Float4x4.makeRotationYXZ(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+    inline fun makeRotationYXZ(angleY: Angle, angleX: Angle, angleZ: Angle): Float4x4 = Float4x4.makeRotationYXZ(angleY.radians.toFloat(), angleX.radians.toFloat(), angleZ.radians.toFloat())
     /** [Float4x4.makeRotationYZX] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationYZX(angleX: Angle, angleY: Angle, angleZ: Angle): Float4x4 = Float4x4.makeRotationYZX(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+    inline fun makeRotationYZX(angleY: Angle, angleZ: Angle, angleX: Angle): Float4x4 = Float4x4.makeRotationYZX(angleY.radians.toFloat(), angleZ.radians.toFloat(), angleX.radians.toFloat())
     /** [Float4x4.makeRotationZ] taking a type-safe [Angle] in place of the angle in radians. */
     inline fun makeRotationZ(angle: Angle): Float4x4 = Float4x4.makeRotationZ(angle.radians.toFloat())
     /** [Float4x4.makeRotationZXY] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationZXY(angleX: Angle, angleY: Angle, angleZ: Angle): Float4x4 = Float4x4.makeRotationZXY(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+    inline fun makeRotationZXY(angleZ: Angle, angleX: Angle, angleY: Angle): Float4x4 = Float4x4.makeRotationZXY(angleZ.radians.toFloat(), angleX.radians.toFloat(), angleY.radians.toFloat())
     /** [Float4x4.makeRotationZYX] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationZYX(angleX: Angle, angleY: Angle, angleZ: Angle): Float4x4 = Float4x4.makeRotationZYX(angleX.radians.toFloat(), angleY.radians.toFloat(), angleZ.radians.toFloat())
+    inline fun makeRotationZYX(angleZ: Angle, angleY: Angle, angleX: Angle): Float4x4 = Float4x4.makeRotationZYX(angleZ.radians.toFloat(), angleY.radians.toFloat(), angleX.radians.toFloat())
 }

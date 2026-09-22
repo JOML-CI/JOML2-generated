@@ -846,12 +846,12 @@ public final class DoubleQuatOpsSimd {
         return dest;
     }
 
-    public static double[] makeRotationYXZ(double[] dest, int destOffset, double angleX, double angleY, double angleZ) {
-        if (SimdSupport.USE_FMA) return makeRotationYXZ_fma(dest, destOffset, angleX, angleY, angleZ);
-        return makeRotationYXZ_mulAdd(dest, destOffset, angleX, angleY, angleZ);
+    public static double[] makeRotationYXZ(double[] dest, int destOffset, double angleY, double angleX, double angleZ) {
+        if (SimdSupport.USE_FMA) return makeRotationYXZ_fma(dest, destOffset, angleY, angleX, angleZ);
+        return makeRotationYXZ_mulAdd(dest, destOffset, angleY, angleX, angleZ);
     }
 
-    public static double[] makeRotationYXZ_fma(double[] dest, int destOffset, double angleX, double angleY, double angleZ) {
+    public static double[] makeRotationYXZ_fma(double[] dest, int destOffset, double angleY, double angleX, double angleZ) {
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
@@ -870,7 +870,7 @@ public final class DoubleQuatOpsSimd {
         return dest;
     }
 
-    public static double[] makeRotationYXZ_mulAdd(double[] dest, int destOffset, double angleX, double angleY, double angleZ) {
+    public static double[] makeRotationYXZ_mulAdd(double[] dest, int destOffset, double angleY, double angleX, double angleZ) {
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;

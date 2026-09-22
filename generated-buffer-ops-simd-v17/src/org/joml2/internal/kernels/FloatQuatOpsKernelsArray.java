@@ -924,7 +924,7 @@ public final class FloatQuatOpsKernelsArray {
         return dest;
     }
 
-    public static float[] makeRotationYXZ_scalar(float[] dest, int destOffset, float angleX, float angleY, float angleZ) {
+    public static float[] makeRotationYXZ_scalar(float[] dest, int destOffset, float angleY, float angleX, float angleZ) {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;

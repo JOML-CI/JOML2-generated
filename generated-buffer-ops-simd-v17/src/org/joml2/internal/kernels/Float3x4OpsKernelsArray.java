@@ -2176,7 +2176,7 @@ public final class Float3x4OpsKernelsArray {
         return dest;
     }
 
-    public static float[] rotateYXZ_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateYXZ_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleY, float angleX, float angleZ) {
         float _self00 = src[srcOffset + 0];
         float _self01 = src[srcOffset + 1];
         float _self02 = src[srcOffset + 2];

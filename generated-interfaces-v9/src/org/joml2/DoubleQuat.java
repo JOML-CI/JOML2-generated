@@ -801,11 +801,11 @@ public interface DoubleQuat extends DoubleQuatR {
      * a vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return this
      */
-    @Mutated DoubleQuat makeRotationXZY(double angleX, double angleY, double angleZ);
+    @Mutated DoubleQuat makeRotationXZY(double angleX, double angleZ, double angleY);
 
     /**
      * Set this quaternion to a rotation of {@code angle} radians about the Y axis.
@@ -820,24 +820,24 @@ public interface DoubleQuat extends DoubleQuatR {
      * radians about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so
      * a vector is rotated about the Z axis first, then X, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated DoubleQuat makeRotationYXZ(double angleX, double angleY, double angleZ);
+    @Mutated DoubleQuat makeRotationYXZ(double angleY, double angleX, double angleZ);
 
     /**
      * Set this quaternion to a rotation of {@code angleY}, {@code angleZ} and {@code angleX}
      * radians about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so
      * a vector is rotated about the X axis first, then Z, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated DoubleQuat makeRotationYZX(double angleX, double angleY, double angleZ);
+    @Mutated DoubleQuat makeRotationYZX(double angleY, double angleZ, double angleX);
 
     /**
      * Set this quaternion to a rotation of {@code angle} radians about the Z axis.
@@ -852,24 +852,24 @@ public interface DoubleQuat extends DoubleQuatR {
      * radians about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so
      * a vector is rotated about the Y axis first, then X, then Z).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated DoubleQuat makeRotationZXY(double angleX, double angleY, double angleZ);
+    @Mutated DoubleQuat makeRotationZXY(double angleZ, double angleX, double angleY);
 
     /**
      * Set this quaternion to a rotation of {@code angleZ}, {@code angleY} and {@code angleX}
      * radians about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so
      * a vector is rotated about the X axis first, then Y, then Z).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated DoubleQuat makeRotationZYX(double angleX, double angleY, double angleZ);
+    @Mutated DoubleQuat makeRotationZYX(double angleZ, double angleY, double angleX);
 
     /**
      * Pre-multiply a rotation of {@code angle} radians about the X axis onto this quaternion.
@@ -1017,11 +1017,11 @@ public interface DoubleQuat extends DoubleQuatR {
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated default DoubleQuat rotateXZY(double angleX, double angleY, double angleZ) { return rotateXZY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
+    @Mutated default DoubleQuat rotateXZY(double angleX, double angleZ, double angleY) { return rotateXZY(angleX, angleZ, angleY, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
     /**
      * Rotate this quaternion by {@code angle} radians about the local Y axis.
@@ -1040,12 +1040,12 @@ public interface DoubleQuat extends DoubleQuatR {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated default DoubleQuat rotateYXZ(double angleX, double angleY, double angleZ) { return rotateYXZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
+    @Mutated default DoubleQuat rotateYXZ(double angleY, double angleX, double angleZ) { return rotateYXZ(angleY, angleX, angleZ, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
@@ -1056,12 +1056,12 @@ public interface DoubleQuat extends DoubleQuatR {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated default DoubleQuat rotateYZX(double angleX, double angleY, double angleZ) { return rotateYZX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
+    @Mutated default DoubleQuat rotateYZX(double angleY, double angleZ, double angleX) { return rotateYZX(angleY, angleZ, angleX, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
     /**
      * Rotate this quaternion by {@code angle} radians about the local Z axis.
@@ -1080,12 +1080,12 @@ public interface DoubleQuat extends DoubleQuatR {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated default DoubleQuat rotateZXY(double angleX, double angleY, double angleZ) { return rotateZXY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
+    @Mutated default DoubleQuat rotateZXY(double angleZ, double angleX, double angleY) { return rotateZXY(angleZ, angleX, angleY, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
@@ -1096,12 +1096,12 @@ public interface DoubleQuat extends DoubleQuatR {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated default DoubleQuat rotateZYX(double angleX, double angleY, double angleZ) { return rotateZYX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
+    @Mutated default DoubleQuat rotateZYX(double angleZ, double angleY, double angleX) { return rotateZYX(angleZ, angleY, angleX, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
     /**
      * Load the elements from the given array.

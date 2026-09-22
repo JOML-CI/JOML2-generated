@@ -2579,11 +2579,11 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * a vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return this
      */
-    @Mutated public DoubleDualQuat makeRotationXZY(double angleX, double angleY, double angleZ) {
+    @Mutated public DoubleDualQuat makeRotationXZY(double angleX, double angleZ, double angleY) {
         double[] dd = this.data;
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
@@ -2631,12 +2631,12 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * radians about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so
      * a vector is rotated about the Z axis first, then X, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated public DoubleDualQuat makeRotationYXZ(double angleX, double angleY, double angleZ) {
+    @Mutated public DoubleDualQuat makeRotationYXZ(double angleY, double angleX, double angleZ) {
         double[] dd = this.data;
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
@@ -2665,12 +2665,12 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * radians about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so
      * a vector is rotated about the X axis first, then Z, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated public DoubleDualQuat makeRotationYZX(double angleX, double angleY, double angleZ) {
+    @Mutated public DoubleDualQuat makeRotationYZX(double angleY, double angleZ, double angleX) {
         double[] dd = this.data;
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
@@ -2718,12 +2718,12 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * radians about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so
      * a vector is rotated about the Y axis first, then X, then Z).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated public DoubleDualQuat makeRotationZXY(double angleX, double angleY, double angleZ) {
+    @Mutated public DoubleDualQuat makeRotationZXY(double angleZ, double angleX, double angleY) {
         double[] dd = this.data;
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
@@ -2752,12 +2752,12 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * radians about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so
      * a vector is rotated about the X axis first, then Y, then Z).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated public DoubleDualQuat makeRotationZYX(double angleX, double angleY, double angleZ) {
+    @Mutated public DoubleDualQuat makeRotationZYX(double angleZ, double angleY, double angleX) {
         double[] dd = this.data;
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
@@ -3008,12 +3008,12 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleDualQuat rotateXZY(double angleX, double angleY, double angleZ, @Mutated DoubleDualQuat dest) {
+    public DoubleDualQuat rotateXZY(double angleX, double angleZ, double angleY, @Mutated DoubleDualQuat dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleDualQuatImpl) dest).data;
         double _t0 = 0.5 * angleX;
@@ -3095,13 +3095,13 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleDualQuat rotateYXZ(double angleX, double angleY, double angleZ, @Mutated DoubleDualQuat dest) {
+    public DoubleDualQuat rotateYXZ(double angleY, double angleX, double angleZ, @Mutated DoubleDualQuat dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleDualQuatImpl) dest).data;
         double _t0 = 0.5 * angleX;
@@ -3149,13 +3149,13 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleDualQuat rotateYZX(double angleX, double angleY, double angleZ, @Mutated DoubleDualQuat dest) {
+    public DoubleDualQuat rotateYZX(double angleY, double angleZ, double angleX, @Mutated DoubleDualQuat dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleDualQuatImpl) dest).data;
         double _t0 = 0.5 * angleY;
@@ -3237,13 +3237,13 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleDualQuat rotateZXY(double angleX, double angleY, double angleZ, @Mutated DoubleDualQuat dest) {
+    public DoubleDualQuat rotateZXY(double angleZ, double angleX, double angleY, @Mutated DoubleDualQuat dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleDualQuatImpl) dest).data;
         double _t0 = 0.5 * angleX;
@@ -3291,13 +3291,13 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleDualQuat rotateZYX(double angleX, double angleY, double angleZ, @Mutated DoubleDualQuat dest) {
+    public DoubleDualQuat rotateZYX(double angleZ, double angleY, double angleX, @Mutated DoubleDualQuat dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleDualQuatImpl) dest).data;
         double _t0 = 0.5 * angleY;

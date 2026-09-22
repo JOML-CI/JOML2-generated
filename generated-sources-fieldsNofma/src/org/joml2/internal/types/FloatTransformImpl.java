@@ -2929,11 +2929,11 @@ public final class FloatTransformImpl implements FloatTransform {
      * vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return this
      */
-    @Mutated public FloatTransform makeRotationXZY(float angleX, float angleY, float angleZ) {
+    @Mutated public FloatTransform makeRotationXZY(float angleX, float angleZ, float angleY) {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -2989,12 +2989,12 @@ public final class FloatTransformImpl implements FloatTransform {
      * about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a
      * vector is rotated about the Z axis first, then X, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated public FloatTransform makeRotationYXZ(float angleX, float angleY, float angleZ) {
+    @Mutated public FloatTransform makeRotationYXZ(float angleY, float angleX, float angleZ) {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
@@ -3027,12 +3027,12 @@ public final class FloatTransformImpl implements FloatTransform {
      * about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a
      * vector is rotated about the X axis first, then Z, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated public FloatTransform makeRotationYZX(float angleX, float angleY, float angleZ) {
+    @Mutated public FloatTransform makeRotationYZX(float angleY, float angleZ, float angleX) {
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -3088,12 +3088,12 @@ public final class FloatTransformImpl implements FloatTransform {
      * about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a
      * vector is rotated about the Y axis first, then X, then Z).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated public FloatTransform makeRotationZXY(float angleX, float angleY, float angleZ) {
+    @Mutated public FloatTransform makeRotationZXY(float angleZ, float angleX, float angleY) {
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -3126,12 +3126,12 @@ public final class FloatTransformImpl implements FloatTransform {
      * about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a
      * vector is rotated about the X axis first, then Y, then Z).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated public FloatTransform makeRotationZYX(float angleX, float angleY, float angleZ) {
+    @Mutated public FloatTransform makeRotationZYX(float angleZ, float angleY, float angleX) {
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -3738,12 +3738,12 @@ public final class FloatTransformImpl implements FloatTransform {
      * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    public FloatTransform rotateXZY(float angleX, float angleY, float angleZ, @Mutated FloatTransform dest) {
+    public FloatTransform rotateXZY(float angleX, float angleZ, float angleY, @Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
@@ -3799,12 +3799,12 @@ public final class FloatTransformImpl implements FloatTransform {
      * {@code double} only when stored.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleTransform rotateXZY(float angleX, float angleY, float angleZ, @Mutated DoubleTransform dest) {
+    public DoubleTransform rotateXZY(float angleX, float angleZ, float angleY, @Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
@@ -3937,13 +3937,13 @@ public final class FloatTransformImpl implements FloatTransform {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public FloatTransform rotateYXZ(float angleX, float angleY, float angleZ, @Mutated FloatTransform dest) {
+    public FloatTransform rotateYXZ(float angleY, float angleX, float angleZ, @Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
@@ -3998,13 +3998,13 @@ public final class FloatTransformImpl implements FloatTransform {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleTransform rotateYXZ(float angleX, float angleY, float angleZ, @Mutated DoubleTransform dest) {
+    public DoubleTransform rotateYXZ(float angleY, float angleX, float angleZ, @Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
@@ -4056,13 +4056,13 @@ public final class FloatTransformImpl implements FloatTransform {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public FloatTransform rotateYZX(float angleX, float angleY, float angleZ, @Mutated FloatTransform dest) {
+    public FloatTransform rotateYZX(float angleY, float angleZ, float angleX, @Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
@@ -4117,13 +4117,13 @@ public final class FloatTransformImpl implements FloatTransform {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleTransform rotateYZX(float angleX, float angleY, float angleZ, @Mutated DoubleTransform dest) {
+    public DoubleTransform rotateYZX(float angleY, float angleZ, float angleX, @Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
@@ -4256,13 +4256,13 @@ public final class FloatTransformImpl implements FloatTransform {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public FloatTransform rotateZXY(float angleX, float angleY, float angleZ, @Mutated FloatTransform dest) {
+    public FloatTransform rotateZXY(float angleZ, float angleX, float angleY, @Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
@@ -4317,13 +4317,13 @@ public final class FloatTransformImpl implements FloatTransform {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleTransform rotateZXY(float angleX, float angleY, float angleZ, @Mutated DoubleTransform dest) {
+    public DoubleTransform rotateZXY(float angleZ, float angleX, float angleY, @Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
@@ -4375,13 +4375,13 @@ public final class FloatTransformImpl implements FloatTransform {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public FloatTransform rotateZYX(float angleX, float angleY, float angleZ, @Mutated FloatTransform dest) {
+    public FloatTransform rotateZYX(float angleZ, float angleY, float angleX, @Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
@@ -4436,13 +4436,13 @@ public final class FloatTransformImpl implements FloatTransform {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleTransform rotateZYX(float angleX, float angleY, float angleZ, @Mutated DoubleTransform dest) {
+    public DoubleTransform rotateZYX(float angleZ, float angleY, float angleX, @Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;

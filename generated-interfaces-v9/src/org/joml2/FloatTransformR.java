@@ -1409,12 +1409,12 @@ public interface FloatTransformR {
      * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    FloatTransform rotateXZY(float angleX, float angleY, float angleZ, @Mutated FloatTransform dest);
+    FloatTransform rotateXZY(float angleX, float angleZ, float angleY, @Mutated FloatTransform dest);
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
@@ -1436,12 +1436,12 @@ public interface FloatTransformR {
      * {@code double} only when stored.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleTransform rotateXZY(float angleX, float angleY, float angleZ, @Mutated DoubleTransform dest);
+    DoubleTransform rotateXZY(float angleX, float angleZ, float angleY, @Mutated DoubleTransform dest);
 
     /**
      * Apply a rotation of {@code angle} radians about the Y axis to this transform and store the
@@ -1502,13 +1502,13 @@ public interface FloatTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    FloatTransform rotateYXZ(float angleX, float angleY, float angleZ, @Mutated FloatTransform dest);
+    FloatTransform rotateYXZ(float angleY, float angleX, float angleZ, @Mutated FloatTransform dest);
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
@@ -1529,13 +1529,13 @@ public interface FloatTransformR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleTransform rotateYXZ(float angleX, float angleY, float angleZ, @Mutated DoubleTransform dest);
+    DoubleTransform rotateYXZ(float angleY, float angleX, float angleZ, @Mutated DoubleTransform dest);
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
@@ -1553,13 +1553,13 @@ public interface FloatTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    FloatTransform rotateYZX(float angleX, float angleY, float angleZ, @Mutated FloatTransform dest);
+    FloatTransform rotateYZX(float angleY, float angleZ, float angleX, @Mutated FloatTransform dest);
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
@@ -1580,13 +1580,13 @@ public interface FloatTransformR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleTransform rotateYZX(float angleX, float angleY, float angleZ, @Mutated DoubleTransform dest);
+    DoubleTransform rotateYZX(float angleY, float angleZ, float angleX, @Mutated DoubleTransform dest);
 
     /**
      * Apply a rotation of {@code angle} radians about the Z axis to this transform and store the
@@ -1647,13 +1647,13 @@ public interface FloatTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    FloatTransform rotateZXY(float angleX, float angleY, float angleZ, @Mutated FloatTransform dest);
+    FloatTransform rotateZXY(float angleZ, float angleX, float angleY, @Mutated FloatTransform dest);
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
@@ -1674,13 +1674,13 @@ public interface FloatTransformR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleTransform rotateZXY(float angleX, float angleY, float angleZ, @Mutated DoubleTransform dest);
+    DoubleTransform rotateZXY(float angleZ, float angleX, float angleY, @Mutated DoubleTransform dest);
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
@@ -1698,13 +1698,13 @@ public interface FloatTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    FloatTransform rotateZYX(float angleX, float angleY, float angleZ, @Mutated FloatTransform dest);
+    FloatTransform rotateZYX(float angleZ, float angleY, float angleX, @Mutated FloatTransform dest);
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
@@ -1725,13 +1725,13 @@ public interface FloatTransformR {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleTransform rotateZYX(float angleX, float angleY, float angleZ, @Mutated DoubleTransform dest);
+    DoubleTransform rotateZYX(float angleZ, float angleY, float angleX, @Mutated DoubleTransform dest);
 
     /**
      * Apply a scaling by {@code scale} to this transform and store the result in {@code dest}.

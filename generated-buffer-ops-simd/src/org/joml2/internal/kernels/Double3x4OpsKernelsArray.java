@@ -2176,7 +2176,7 @@ public final class Double3x4OpsKernelsArray {
         return dest;
     }
 
-    public static double[] rotateYXZ_scalar(double[] dest, int destOffset, double[] src, int srcOffset, double angleX, double angleY, double angleZ) {
+    public static double[] rotateYXZ_scalar(double[] dest, int destOffset, double[] src, int srcOffset, double angleY, double angleX, double angleZ) {
         double _self00 = src[srcOffset + 0];
         double _self01 = src[srcOffset + 1];
         double _self02 = src[srcOffset + 2];

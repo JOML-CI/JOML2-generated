@@ -682,12 +682,12 @@ public interface DoubleTransformR {
      * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleTransform rotateXZY(double angleX, double angleY, double angleZ, @Mutated DoubleTransform dest);
+    DoubleTransform rotateXZY(double angleX, double angleZ, double angleY, @Mutated DoubleTransform dest);
 
     /**
      * Apply a rotation of {@code angle} radians about the Y axis to this transform and store the
@@ -725,13 +725,13 @@ public interface DoubleTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleTransform rotateYXZ(double angleX, double angleY, double angleZ, @Mutated DoubleTransform dest);
+    DoubleTransform rotateYXZ(double angleY, double angleX, double angleZ, @Mutated DoubleTransform dest);
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
@@ -749,13 +749,13 @@ public interface DoubleTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleTransform rotateYZX(double angleX, double angleY, double angleZ, @Mutated DoubleTransform dest);
+    DoubleTransform rotateYZX(double angleY, double angleZ, double angleX, @Mutated DoubleTransform dest);
 
     /**
      * Apply a rotation of {@code angle} radians about the Z axis to this transform and store the
@@ -793,13 +793,13 @@ public interface DoubleTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleTransform rotateZXY(double angleX, double angleY, double angleZ, @Mutated DoubleTransform dest);
+    DoubleTransform rotateZXY(double angleZ, double angleX, double angleY, @Mutated DoubleTransform dest);
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
@@ -817,13 +817,13 @@ public interface DoubleTransformR {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    DoubleTransform rotateZYX(double angleX, double angleY, double angleZ, @Mutated DoubleTransform dest);
+    DoubleTransform rotateZYX(double angleZ, double angleY, double angleX, @Mutated DoubleTransform dest);
 
     /**
      * Apply a scaling by {@code scale} to this transform and store the result in {@code dest}.

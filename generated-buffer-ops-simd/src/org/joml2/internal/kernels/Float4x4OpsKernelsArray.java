@@ -10584,7 +10584,7 @@ public final class Float4x4OpsKernelsArray {
         return dest;
     }
 
-    public static float[] rotateXZY_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateXZY_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleZ, float angleY) {
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -10674,7 +10674,7 @@ public final class Float4x4OpsKernelsArray {
         return dest;
     }
 
-    public static float[] rotateYXZ_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateYXZ_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleY, float angleX, float angleZ) {
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -10726,7 +10726,7 @@ public final class Float4x4OpsKernelsArray {
         return dest;
     }
 
-    public static float[] rotateYZX_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateYZX_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleY, float angleZ, float angleX) {
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -10816,7 +10816,7 @@ public final class Float4x4OpsKernelsArray {
         return dest;
     }
 
-    public static float[] rotateZXY_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateZXY_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleZ, float angleX, float angleY) {
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -10868,7 +10868,7 @@ public final class Float4x4OpsKernelsArray {
         return dest;
     }
 
-    public static float[] rotateZYX_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+    public static float[] rotateZYX_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleZ, float angleY, float angleX) {
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];

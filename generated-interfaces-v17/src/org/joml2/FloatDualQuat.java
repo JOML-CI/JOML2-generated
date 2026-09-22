@@ -932,11 +932,11 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * a vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return this
      */
-    @Mutated FloatDualQuat makeRotationXZY(float angleX, float angleY, float angleZ);
+    @Mutated FloatDualQuat makeRotationXZY(float angleX, float angleZ, float angleY);
 
     /**
      * Set this dual quaternion to a rotation of {@code angle} radians about the Y axis.
@@ -951,24 +951,24 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * radians about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so
      * a vector is rotated about the Z axis first, then X, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated FloatDualQuat makeRotationYXZ(float angleX, float angleY, float angleZ);
+    @Mutated FloatDualQuat makeRotationYXZ(float angleY, float angleX, float angleZ);
 
     /**
      * Set this dual quaternion to a rotation of {@code angleY}, {@code angleZ} and {@code angleX}
      * radians about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so
      * a vector is rotated about the X axis first, then Z, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated FloatDualQuat makeRotationYZX(float angleX, float angleY, float angleZ);
+    @Mutated FloatDualQuat makeRotationYZX(float angleY, float angleZ, float angleX);
 
     /**
      * Set this dual quaternion to a rotation of {@code angle} radians about the Z axis.
@@ -983,24 +983,24 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * radians about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so
      * a vector is rotated about the Y axis first, then X, then Z).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated FloatDualQuat makeRotationZXY(float angleX, float angleY, float angleZ);
+    @Mutated FloatDualQuat makeRotationZXY(float angleZ, float angleX, float angleY);
 
     /**
      * Set this dual quaternion to a rotation of {@code angleZ}, {@code angleY} and {@code angleX}
      * radians about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so
      * a vector is rotated about the X axis first, then Y, then Z).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated FloatDualQuat makeRotationZYX(float angleX, float angleY, float angleZ);
+    @Mutated FloatDualQuat makeRotationZYX(float angleZ, float angleY, float angleX);
 
     /**
      * Apply the rotation represented by the quaternion {@code rotation} to this dual quaternion.
@@ -1105,11 +1105,11 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated default FloatDualQuat rotateXZY(float angleX, float angleY, float angleZ) { return rotateXZY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
+    @Mutated default FloatDualQuat rotateXZY(float angleX, float angleZ, float angleY) { return rotateXZY(angleX, angleZ, angleY, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
     /**
      * Apply a rotation of {@code angle} radians about the Y axis to this dual quaternion.
@@ -1132,12 +1132,12 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated default FloatDualQuat rotateYXZ(float angleX, float angleY, float angleZ) { return rotateYXZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
+    @Mutated default FloatDualQuat rotateYXZ(float angleY, float angleX, float angleZ) { return rotateYXZ(angleY, angleX, angleZ, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
@@ -1148,12 +1148,12 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated default FloatDualQuat rotateYZX(float angleX, float angleY, float angleZ) { return rotateYZX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
+    @Mutated default FloatDualQuat rotateYZX(float angleY, float angleZ, float angleX) { return rotateYZX(angleY, angleZ, angleX, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
     /**
      * Apply a rotation of {@code angle} radians about the Z axis to this dual quaternion.
@@ -1176,12 +1176,12 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated default FloatDualQuat rotateZXY(float angleX, float angleY, float angleZ) { return rotateZXY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
+    @Mutated default FloatDualQuat rotateZXY(float angleZ, float angleX, float angleY) { return rotateZXY(angleZ, angleX, angleY, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
@@ -1192,12 +1192,12 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated default FloatDualQuat rotateZYX(float angleX, float angleY, float angleZ) { return rotateZYX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
+    @Mutated default FloatDualQuat rotateZYX(float angleZ, float angleY, float angleX) { return rotateZYX(angleZ, angleY, angleX, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
     /**
      * Apply a translation by {@code translation} to this dual quaternion.

@@ -8001,11 +8001,11 @@ public class Double3x3Impl implements Double3x3 {
      * vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return this
      */
-    @Mutated public Double3x3 makeRotationXZY(double angleX, double angleY, double angleZ) {
+    @Mutated public Double3x3 makeRotationXZY(double angleX, double angleZ, double angleY) {
         double _t0 = Math.sin(angleY);
         double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleX);
@@ -8056,12 +8056,12 @@ public class Double3x3Impl implements Double3x3 {
      * about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a
      * vector is rotated about the Z axis first, then X, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated public Double3x3 makeRotationYXZ(double angleX, double angleY, double angleZ) {
+    @Mutated public Double3x3 makeRotationYXZ(double angleY, double angleX, double angleZ) {
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleY);
         double _t2 = Math.sin(angleZ);
@@ -8089,12 +8089,12 @@ public class Double3x3Impl implements Double3x3 {
      * about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a
      * vector is rotated about the X axis first, then Z, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated public Double3x3 makeRotationYZX(double angleX, double angleY, double angleZ) {
+    @Mutated public Double3x3 makeRotationYZX(double angleY, double angleZ, double angleX) {
         double _t0 = Math.sin(angleY);
         double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleX);
@@ -8145,12 +8145,12 @@ public class Double3x3Impl implements Double3x3 {
      * about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a
      * vector is rotated about the Y axis first, then X, then Z).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated public Double3x3 makeRotationZXY(double angleX, double angleY, double angleZ) {
+    @Mutated public Double3x3 makeRotationZXY(double angleZ, double angleX, double angleY) {
         double _t0 = Math.sin(angleY);
         double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleX);
@@ -8178,12 +8178,12 @@ public class Double3x3Impl implements Double3x3 {
      * about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a
      * vector is rotated about the X axis first, then Y, then Z).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated public Double3x3 makeRotationZYX(double angleX, double angleY, double angleZ) {
+    @Mutated public Double3x3 makeRotationZYX(double angleZ, double angleY, double angleX) {
         double _t0 = Math.sin(angleY);
         double _t1 = Math.sin(angleZ);
         double _t2 = Math.sin(angleX);
@@ -11682,7 +11682,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateXZY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateXZY} dispatcher.
      */
-    private Double3x3 rotateXZY_identity(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateXZY_identity(double angleX, double angleZ, double angleY, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _t0 = Math.sin(angleY);
         double _t1 = Math.sin(angleZ);
@@ -11710,7 +11710,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateXZY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateXZY} dispatcher.
      */
-    private Double3x3 rotateXZY_translation(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateXZY_translation(double angleX, double angleZ, double angleY, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleZ);
@@ -11737,21 +11737,21 @@ public class Double3x3Impl implements Double3x3 {
     }
 
     /** Private column 0 of {@code rotateXZY_orthogonal}: computes and stores it; reached only through it. */
-    private void rotateXZY_orthogonal_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t20, double _r1, double _t15, double _r2, double _t18, double _r3, double _r4, double _r5) {
+    private void rotateXZY_orthogonal_s4b3494c0_c0(Double3x3Impl _dst, double _r0, double _t20, double _r1, double _t15, double _r2, double _t18, double _r3, double _r4, double _r5) {
         _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t15, _r2 * _t18));
         _dst.m10 = Math.fma(_r3, _t20, Math.fma(_r4, _t15, _r5 * _t18));
         _dst.m20 = _t20;
     }
 
     /** Private column 1 of {@code rotateXZY_orthogonal}: computes and stores it; reached only through it. */
-    private void rotateXZY_orthogonal_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t10, double _r2, double _t16, double _r1, double _t1, double _r3, double _r5, double _r4) {
+    private void rotateXZY_orthogonal_s4b3494c0_c1(Double3x3Impl _dst, double _r0, double _t10, double _r2, double _t16, double _r1, double _t1, double _r3, double _r5, double _r4) {
         _dst.m01 = Math.fma(_r0, _t10, Math.fma(_r2, _t16, -(_r1 * _t1)));
         _dst.m11 = Math.fma(_r3, _t10, Math.fma(_r5, _t16, -(_r4 * _t1)));
         _dst.m21 = _t10;
     }
 
     /** Private column 2 of {@code rotateXZY_orthogonal}: computes and stores it; reached only through it. */
-    private void rotateXZY_orthogonal_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t19, double _r1, double _t11, double _r2, double _t21, double _r3, double _r4, double _r5) {
+    private void rotateXZY_orthogonal_s4b3494c0_c2(Double3x3Impl _dst, double _r0, double _t19, double _r1, double _t11, double _r2, double _t21, double _r3, double _r4, double _r5) {
         _dst.m02 = Math.fma(_r0, _t19, Math.fma(_r1, _t11, _r2 * _t21));
         _dst.m12 = Math.fma(_r3, _t19, Math.fma(_r4, _t11, _r5 * _t21));
         _dst.m22 = _t19;
@@ -11762,7 +11762,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateXZY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateXZY} dispatcher.
      */
-    private Double3x3 rotateXZY_orthogonal(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateXZY_orthogonal(double angleX, double angleZ, double angleY, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _r0 = this.m02;
         double _r1 = this.m00;
@@ -11786,29 +11786,29 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t6, _t2, _t4 * _t3);
         double _t20 = Math.fma(_t6, _t3, -(_t2 * _t4));
         double _t21 = Math.fma(_t9, _t2, -(_t0 * _t3));
-        rotateXZY_orthogonal_s406dbcde_c0(d, _r0, _t20, _r1, _t15, _r2, _t18, _r3, _r4, _r5);
-        rotateXZY_orthogonal_s406dbcde_c1(d, _r0, _t10, _r2, _t16, _r1, _t1, _r3, _r5, _r4);
-        rotateXZY_orthogonal_s406dbcde_c2(d, _r0, _t19, _r1, _t11, _r2, _t21, _r3, _r4, _r5);
+        rotateXZY_orthogonal_s4b3494c0_c0(d, _r0, _t20, _r1, _t15, _r2, _t18, _r3, _r4, _r5);
+        rotateXZY_orthogonal_s4b3494c0_c1(d, _r0, _t10, _r2, _t16, _r1, _t1, _r3, _r5, _r4);
+        rotateXZY_orthogonal_s4b3494c0_c2(d, _r0, _t19, _r1, _t11, _r2, _t21, _r3, _r4, _r5);
         d.properties = 0;
         return d;
     }
 
     /** Private column 0 of {@code rotateXZY_general}: computes and stores it; reached only through it. */
-    private void rotateXZY_general_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t20, double _r1, double _t15, double _r2, double _t18, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+    private void rotateXZY_general_s4b3494c0_c0(Double3x3Impl _dst, double _r0, double _t20, double _r1, double _t15, double _r2, double _t18, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
         _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t15, _r2 * _t18));
         _dst.m10 = Math.fma(_r3, _t20, Math.fma(_r4, _t15, _r5 * _t18));
         _dst.m20 = Math.fma(_r6, _t20, Math.fma(_r7, _t15, _r8 * _t18));
     }
 
     /** Private column 1 of {@code rotateXZY_general}: computes and stores it; reached only through it. */
-    private void rotateXZY_general_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t10, double _r2, double _t16, double _r1, double _t1, double _r3, double _r5, double _r4, double _r6, double _r8, double _r7) {
+    private void rotateXZY_general_s4b3494c0_c1(Double3x3Impl _dst, double _r0, double _t10, double _r2, double _t16, double _r1, double _t1, double _r3, double _r5, double _r4, double _r6, double _r8, double _r7) {
         _dst.m01 = Math.fma(_r0, _t10, Math.fma(_r2, _t16, -(_r1 * _t1)));
         _dst.m11 = Math.fma(_r3, _t10, Math.fma(_r5, _t16, -(_r4 * _t1)));
         _dst.m21 = Math.fma(_r6, _t10, Math.fma(_r8, _t16, -(_r7 * _t1)));
     }
 
     /** Private column 2 of {@code rotateXZY_general}: computes and stores it; reached only through it. */
-    private void rotateXZY_general_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t19, double _r1, double _t11, double _r2, double _t21, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+    private void rotateXZY_general_s4b3494c0_c2(Double3x3Impl _dst, double _r0, double _t19, double _r1, double _t11, double _r2, double _t21, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
         _dst.m02 = Math.fma(_r0, _t19, Math.fma(_r1, _t11, _r2 * _t21));
         _dst.m12 = Math.fma(_r3, _t19, Math.fma(_r4, _t11, _r5 * _t21));
         _dst.m22 = Math.fma(_r6, _t19, Math.fma(_r7, _t11, _r8 * _t21));
@@ -11819,7 +11819,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateXZY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateXZY} dispatcher.
      */
-    private Double3x3 rotateXZY_general(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateXZY_general(double angleX, double angleZ, double angleY, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _r0 = this.m02;
         double _r1 = this.m00;
@@ -11846,9 +11846,9 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t6, _t2, _t4 * _t3);
         double _t20 = Math.fma(_t6, _t3, -(_t2 * _t4));
         double _t21 = Math.fma(_t9, _t2, -(_t0 * _t3));
-        rotateXZY_general_s406dbcde_c0(d, _r0, _t20, _r1, _t15, _r2, _t18, _r3, _r4, _r5, _r6, _r7, _r8);
-        rotateXZY_general_s406dbcde_c1(d, _r0, _t10, _r2, _t16, _r1, _t1, _r3, _r5, _r4, _r6, _r8, _r7);
-        rotateXZY_general_s406dbcde_c2(d, _r0, _t19, _r1, _t11, _r2, _t21, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateXZY_general_s4b3494c0_c0(d, _r0, _t20, _r1, _t15, _r2, _t18, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateXZY_general_s4b3494c0_c1(d, _r0, _t10, _r2, _t16, _r1, _t1, _r3, _r5, _r4, _r6, _r8, _r7);
+        rotateXZY_general_s4b3494c0_c2(d, _r0, _t19, _r1, _t11, _r2, _t21, _r3, _r4, _r5, _r6, _r7, _r8);
         d.properties = 0;
         return d;
     }
@@ -11864,17 +11864,17 @@ public class Double3x3Impl implements Double3x3 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    public Double3x3 rotateXZY(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    public Double3x3 rotateXZY(double angleX, double angleZ, double angleY, @Mutated Double3x3 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXZY_identity(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXZY_translation(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateXZY_orthogonal(angleX, angleY, angleZ, dest);
-        return rotateXZY_general(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXZY_identity(angleX, angleZ, angleY, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXZY_translation(angleX, angleZ, angleY, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateXZY_orthogonal(angleX, angleZ, angleY, dest);
+        return rotateXZY_general(angleX, angleZ, angleY, dest);
     }
 
 
@@ -11888,17 +11888,17 @@ public class Double3x3Impl implements Double3x3 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated public Double3x3 rotateXZY(double angleX, double angleY, double angleZ) {
-        if (Joml.RETURN_NEW) return rotateXZY(angleX, angleY, angleZ, Joml.double3x3());
+    @Mutated public Double3x3 rotateXZY(double angleX, double angleZ, double angleY) {
+        if (Joml.RETURN_NEW) return rotateXZY(angleX, angleZ, angleY, Joml.double3x3());
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXZY_identity(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXZY_translation(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateXZY_orthogonal(angleX, angleY, angleZ, this);
-        return rotateXZY_general(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXZY_identity(angleX, angleZ, angleY, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXZY_translation(angleX, angleZ, angleY, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateXZY_orthogonal(angleX, angleZ, angleY, this);
+        return rotateXZY_general(angleX, angleZ, angleY, this);
     }
 
 
@@ -12548,7 +12548,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateYXZ}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYXZ} dispatcher.
      */
-    private Double3x3 rotateYXZ_identity(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateYXZ_identity(double angleY, double angleX, double angleZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleY);
@@ -12576,7 +12576,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateYXZ}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYXZ} dispatcher.
      */
-    private Double3x3 rotateYXZ_translation(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateYXZ_translation(double angleY, double angleX, double angleZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _t0 = Math.sin(angleX);
         double _t1 = Math.sin(angleY);
@@ -12603,21 +12603,21 @@ public class Double3x3Impl implements Double3x3 {
     }
 
     /** Private column 0 of {@code rotateYXZ_orthogonal}: computes and stores it; reached only through it. */
-    private void rotateYXZ_orthogonal_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t20, double _r1, double _t18, double _r2, double _t10, double _r3, double _r4, double _r5) {
+    private void rotateYXZ_orthogonal_s3503e4bc_c0(Double3x3Impl _dst, double _r0, double _t20, double _r1, double _t18, double _r2, double _t10, double _r3, double _r4, double _r5) {
         _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t18, _r2 * _t10));
         _dst.m10 = Math.fma(_r3, _t20, Math.fma(_r4, _t18, _r5 * _t10));
         _dst.m20 = _t20;
     }
 
     /** Private column 1 of {@code rotateYXZ_orthogonal}: computes and stores it; reached only through it. */
-    private void rotateYXZ_orthogonal_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t19, double _r1, double _t21, double _r2, double _t16, double _r3, double _r4, double _r5) {
+    private void rotateYXZ_orthogonal_s3503e4bc_c1(Double3x3Impl _dst, double _r0, double _t19, double _r1, double _t21, double _r2, double _t16, double _r3, double _r4, double _r5) {
         _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r1, _t21, _r2 * _t16));
         _dst.m11 = Math.fma(_r3, _t19, Math.fma(_r4, _t21, _r5 * _t16));
         _dst.m21 = _t19;
     }
 
     /** Private column 2 of {@code rotateYXZ_orthogonal}: computes and stores it; reached only through it. */
-    private void rotateYXZ_orthogonal_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t17, double _r1, double _t12, double _r2, double _t0, double _r3, double _r4, double _r5) {
+    private void rotateYXZ_orthogonal_s3503e4bc_c2(Double3x3Impl _dst, double _r0, double _t17, double _r1, double _t12, double _r2, double _t0, double _r3, double _r4, double _r5) {
         _dst.m02 = Math.fma(_r0, _t17, Math.fma(_r1, _t12, -(_r2 * _t0)));
         _dst.m12 = Math.fma(_r3, _t17, Math.fma(_r4, _t12, -(_r5 * _t0)));
         _dst.m22 = _t17;
@@ -12628,7 +12628,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateYXZ}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYXZ} dispatcher.
      */
-    private Double3x3 rotateYXZ_orthogonal(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateYXZ_orthogonal(double angleY, double angleX, double angleZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _r0 = this.m02;
         double _r1 = this.m00;
@@ -12652,29 +12652,29 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t8, _t4, _t1 * _t2);
         double _t20 = Math.fma(_t8, _t2, -(_t1 * _t4));
         double _t21 = Math.fma(_t6, _t4, -(_t2 * _t3));
-        rotateYXZ_orthogonal_s406dbcde_c0(d, _r0, _t20, _r1, _t18, _r2, _t10, _r3, _r4, _r5);
-        rotateYXZ_orthogonal_s406dbcde_c1(d, _r0, _t19, _r1, _t21, _r2, _t16, _r3, _r4, _r5);
-        rotateYXZ_orthogonal_s406dbcde_c2(d, _r0, _t17, _r1, _t12, _r2, _t0, _r3, _r4, _r5);
+        rotateYXZ_orthogonal_s3503e4bc_c0(d, _r0, _t20, _r1, _t18, _r2, _t10, _r3, _r4, _r5);
+        rotateYXZ_orthogonal_s3503e4bc_c1(d, _r0, _t19, _r1, _t21, _r2, _t16, _r3, _r4, _r5);
+        rotateYXZ_orthogonal_s3503e4bc_c2(d, _r0, _t17, _r1, _t12, _r2, _t0, _r3, _r4, _r5);
         d.properties = 0;
         return d;
     }
 
     /** Private column 0 of {@code rotateYXZ_general}: computes and stores it; reached only through it. */
-    private void rotateYXZ_general_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t20, double _r1, double _t18, double _r2, double _t10, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+    private void rotateYXZ_general_s3503e4bc_c0(Double3x3Impl _dst, double _r0, double _t20, double _r1, double _t18, double _r2, double _t10, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
         _dst.m00 = Math.fma(_r0, _t20, Math.fma(_r1, _t18, _r2 * _t10));
         _dst.m10 = Math.fma(_r3, _t20, Math.fma(_r4, _t18, _r5 * _t10));
         _dst.m20 = Math.fma(_r6, _t20, Math.fma(_r7, _t18, _r8 * _t10));
     }
 
     /** Private column 1 of {@code rotateYXZ_general}: computes and stores it; reached only through it. */
-    private void rotateYXZ_general_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t19, double _r1, double _t21, double _r2, double _t16, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+    private void rotateYXZ_general_s3503e4bc_c1(Double3x3Impl _dst, double _r0, double _t19, double _r1, double _t21, double _r2, double _t16, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
         _dst.m01 = Math.fma(_r0, _t19, Math.fma(_r1, _t21, _r2 * _t16));
         _dst.m11 = Math.fma(_r3, _t19, Math.fma(_r4, _t21, _r5 * _t16));
         _dst.m21 = Math.fma(_r6, _t19, Math.fma(_r7, _t21, _r8 * _t16));
     }
 
     /** Private column 2 of {@code rotateYXZ_general}: computes and stores it; reached only through it. */
-    private void rotateYXZ_general_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t17, double _r1, double _t12, double _r2, double _t0, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+    private void rotateYXZ_general_s3503e4bc_c2(Double3x3Impl _dst, double _r0, double _t17, double _r1, double _t12, double _r2, double _t0, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
         _dst.m02 = Math.fma(_r0, _t17, Math.fma(_r1, _t12, -(_r2 * _t0)));
         _dst.m12 = Math.fma(_r3, _t17, Math.fma(_r4, _t12, -(_r5 * _t0)));
         _dst.m22 = Math.fma(_r6, _t17, Math.fma(_r7, _t12, -(_r8 * _t0)));
@@ -12685,7 +12685,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateYXZ}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYXZ} dispatcher.
      */
-    private Double3x3 rotateYXZ_general(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateYXZ_general(double angleY, double angleX, double angleZ, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _r0 = this.m02;
         double _r1 = this.m00;
@@ -12712,9 +12712,9 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t8, _t4, _t1 * _t2);
         double _t20 = Math.fma(_t8, _t2, -(_t1 * _t4));
         double _t21 = Math.fma(_t6, _t4, -(_t2 * _t3));
-        rotateYXZ_general_s406dbcde_c0(d, _r0, _t20, _r1, _t18, _r2, _t10, _r3, _r4, _r5, _r6, _r7, _r8);
-        rotateYXZ_general_s406dbcde_c1(d, _r0, _t19, _r1, _t21, _r2, _t16, _r3, _r4, _r5, _r6, _r7, _r8);
-        rotateYXZ_general_s406dbcde_c2(d, _r0, _t17, _r1, _t12, _r2, _t0, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateYXZ_general_s3503e4bc_c0(d, _r0, _t20, _r1, _t18, _r2, _t10, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateYXZ_general_s3503e4bc_c1(d, _r0, _t19, _r1, _t21, _r2, _t16, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateYXZ_general_s3503e4bc_c2(d, _r0, _t17, _r1, _t12, _r2, _t0, _r3, _r4, _r5, _r6, _r7, _r8);
         d.properties = 0;
         return d;
     }
@@ -12729,18 +12729,18 @@ public class Double3x3Impl implements Double3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public Double3x3 rotateYXZ(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    public Double3x3 rotateYXZ(double angleY, double angleX, double angleZ, @Mutated Double3x3 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYXZ_identity(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYXZ_translation(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateYXZ_orthogonal(angleX, angleY, angleZ, dest);
-        return rotateYXZ_general(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYXZ_identity(angleY, angleX, angleZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYXZ_translation(angleY, angleX, angleZ, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateYXZ_orthogonal(angleY, angleX, angleZ, dest);
+        return rotateYXZ_general(angleY, angleX, angleZ, dest);
     }
 
 
@@ -12753,18 +12753,18 @@ public class Double3x3Impl implements Double3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated public Double3x3 rotateYXZ(double angleX, double angleY, double angleZ) {
-        if (Joml.RETURN_NEW) return rotateYXZ(angleX, angleY, angleZ, Joml.double3x3());
+    @Mutated public Double3x3 rotateYXZ(double angleY, double angleX, double angleZ) {
+        if (Joml.RETURN_NEW) return rotateYXZ(angleY, angleX, angleZ, Joml.double3x3());
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYXZ_identity(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYXZ_translation(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateYXZ_orthogonal(angleX, angleY, angleZ, this);
-        return rotateYXZ_general(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYXZ_identity(angleY, angleX, angleZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYXZ_translation(angleY, angleX, angleZ, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateYXZ_orthogonal(angleY, angleX, angleZ, this);
+        return rotateYXZ_general(angleY, angleX, angleZ, this);
     }
 
 
@@ -12772,7 +12772,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateYZX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYZX} dispatcher.
      */
-    private Double3x3 rotateYZX_identity(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateYZX_identity(double angleY, double angleZ, double angleX, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _t0 = Math.sin(angleY);
         double _t1 = Math.sin(angleZ);
@@ -12800,7 +12800,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateYZX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYZX} dispatcher.
      */
-    private Double3x3 rotateYZX_translation(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateYZX_translation(double angleY, double angleZ, double angleX, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _t0 = Math.sin(angleY);
         double _t1 = Math.sin(angleZ);
@@ -12827,21 +12827,21 @@ public class Double3x3Impl implements Double3x3 {
     }
 
     /** Private column 0 of {@code rotateYZX_orthogonal}: computes and stores it; reached only through it. */
-    private void rotateYZX_orthogonal_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t7, double _r1, double _t13, double _r2, double _t1, double _r3, double _r4, double _r5) {
+    private void rotateYZX_orthogonal_s4a919480_c0(Double3x3Impl _dst, double _r0, double _t7, double _r1, double _t13, double _r2, double _t1, double _r3, double _r4, double _r5) {
         _dst.m00 = Math.fma(-_r0, _t7, Math.fma(_r1, _t13, _r2 * _t1));
         _dst.m10 = Math.fma(-_r3, _t7, Math.fma(_r4, _t13, _r5 * _t1));
         _dst.m20 = -_t7;
     }
 
     /** Private column 1 of {@code rotateYZX_orthogonal}: computes and stores it; reached only through it. */
-    private void rotateYZX_orthogonal_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t18, double _r1, double _t20, double _r2, double _t14, double _r3, double _r4, double _r5) {
+    private void rotateYZX_orthogonal_s4a919480_c1(Double3x3Impl _dst, double _r0, double _t18, double _r1, double _t20, double _r2, double _t14, double _r3, double _r4, double _r5) {
         _dst.m01 = Math.fma(_r0, _t18, Math.fma(_r1, _t20, _r2 * _t14));
         _dst.m11 = Math.fma(_r3, _t18, Math.fma(_r4, _t20, _r5 * _t14));
         _dst.m21 = _t18;
     }
 
     /** Private column 2 of {@code rotateYZX_orthogonal}: computes and stores it; reached only through it. */
-    private void rotateYZX_orthogonal_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t21, double _r1, double _t19, double _r2, double _t11, double _r3, double _r4, double _r5) {
+    private void rotateYZX_orthogonal_s4a919480_c2(Double3x3Impl _dst, double _r0, double _t21, double _r1, double _t19, double _r2, double _t11, double _r3, double _r4, double _r5) {
         _dst.m02 = Math.fma(_r0, _t21, Math.fma(_r1, _t19, -(_r2 * _t11)));
         _dst.m12 = Math.fma(_r3, _t21, Math.fma(_r4, _t19, -(_r5 * _t11)));
         _dst.m22 = _t21;
@@ -12852,7 +12852,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateYZX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYZX} dispatcher.
      */
-    private Double3x3 rotateYZX_orthogonal(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateYZX_orthogonal(double angleY, double angleZ, double angleX, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _r0 = this.m02;
         double _r1 = this.m00;
@@ -12876,29 +12876,29 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t9, _t2, _t0 * _t5);
         double _t20 = Math.fma(_t2, _t0, -(_t9 * _t5));
         double _t21 = Math.fma(_t5, _t4, -(_t6 * _t2));
-        rotateYZX_orthogonal_s406dbcde_c0(d, _r0, _t7, _r1, _t13, _r2, _t1, _r3, _r4, _r5);
-        rotateYZX_orthogonal_s406dbcde_c1(d, _r0, _t18, _r1, _t20, _r2, _t14, _r3, _r4, _r5);
-        rotateYZX_orthogonal_s406dbcde_c2(d, _r0, _t21, _r1, _t19, _r2, _t11, _r3, _r4, _r5);
+        rotateYZX_orthogonal_s4a919480_c0(d, _r0, _t7, _r1, _t13, _r2, _t1, _r3, _r4, _r5);
+        rotateYZX_orthogonal_s4a919480_c1(d, _r0, _t18, _r1, _t20, _r2, _t14, _r3, _r4, _r5);
+        rotateYZX_orthogonal_s4a919480_c2(d, _r0, _t21, _r1, _t19, _r2, _t11, _r3, _r4, _r5);
         d.properties = 0;
         return d;
     }
 
     /** Private column 0 of {@code rotateYZX_general}: computes and stores it; reached only through it. */
-    private void rotateYZX_general_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t7, double _r1, double _t13, double _r2, double _t1, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+    private void rotateYZX_general_s4a919480_c0(Double3x3Impl _dst, double _r0, double _t7, double _r1, double _t13, double _r2, double _t1, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
         _dst.m00 = Math.fma(-_r0, _t7, Math.fma(_r1, _t13, _r2 * _t1));
         _dst.m10 = Math.fma(-_r3, _t7, Math.fma(_r4, _t13, _r5 * _t1));
         _dst.m20 = Math.fma(-_r6, _t7, Math.fma(_r7, _t13, _r8 * _t1));
     }
 
     /** Private column 1 of {@code rotateYZX_general}: computes and stores it; reached only through it. */
-    private void rotateYZX_general_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t18, double _r1, double _t20, double _r2, double _t14, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+    private void rotateYZX_general_s4a919480_c1(Double3x3Impl _dst, double _r0, double _t18, double _r1, double _t20, double _r2, double _t14, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
         _dst.m01 = Math.fma(_r0, _t18, Math.fma(_r1, _t20, _r2 * _t14));
         _dst.m11 = Math.fma(_r3, _t18, Math.fma(_r4, _t20, _r5 * _t14));
         _dst.m21 = Math.fma(_r6, _t18, Math.fma(_r7, _t20, _r8 * _t14));
     }
 
     /** Private column 2 of {@code rotateYZX_general}: computes and stores it; reached only through it. */
-    private void rotateYZX_general_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t21, double _r1, double _t19, double _r2, double _t11, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+    private void rotateYZX_general_s4a919480_c2(Double3x3Impl _dst, double _r0, double _t21, double _r1, double _t19, double _r2, double _t11, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
         _dst.m02 = Math.fma(_r0, _t21, Math.fma(_r1, _t19, -(_r2 * _t11)));
         _dst.m12 = Math.fma(_r3, _t21, Math.fma(_r4, _t19, -(_r5 * _t11)));
         _dst.m22 = Math.fma(_r6, _t21, Math.fma(_r7, _t19, -(_r8 * _t11)));
@@ -12909,7 +12909,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateYZX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYZX} dispatcher.
      */
-    private Double3x3 rotateYZX_general(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateYZX_general(double angleY, double angleZ, double angleX, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _r0 = this.m02;
         double _r1 = this.m00;
@@ -12936,9 +12936,9 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t9, _t2, _t0 * _t5);
         double _t20 = Math.fma(_t2, _t0, -(_t9 * _t5));
         double _t21 = Math.fma(_t5, _t4, -(_t6 * _t2));
-        rotateYZX_general_s406dbcde_c0(d, _r0, _t7, _r1, _t13, _r2, _t1, _r3, _r4, _r5, _r6, _r7, _r8);
-        rotateYZX_general_s406dbcde_c1(d, _r0, _t18, _r1, _t20, _r2, _t14, _r3, _r4, _r5, _r6, _r7, _r8);
-        rotateYZX_general_s406dbcde_c2(d, _r0, _t21, _r1, _t19, _r2, _t11, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateYZX_general_s4a919480_c0(d, _r0, _t7, _r1, _t13, _r2, _t1, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateYZX_general_s4a919480_c1(d, _r0, _t18, _r1, _t20, _r2, _t14, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateYZX_general_s4a919480_c2(d, _r0, _t21, _r1, _t19, _r2, _t11, _r3, _r4, _r5, _r6, _r7, _r8);
         d.properties = 0;
         return d;
     }
@@ -12953,18 +12953,18 @@ public class Double3x3Impl implements Double3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public Double3x3 rotateYZX(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    public Double3x3 rotateYZX(double angleY, double angleZ, double angleX, @Mutated Double3x3 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYZX_identity(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYZX_translation(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateYZX_orthogonal(angleX, angleY, angleZ, dest);
-        return rotateYZX_general(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYZX_identity(angleY, angleZ, angleX, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYZX_translation(angleY, angleZ, angleX, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateYZX_orthogonal(angleY, angleZ, angleX, dest);
+        return rotateYZX_general(angleY, angleZ, angleX, dest);
     }
 
 
@@ -12977,18 +12977,18 @@ public class Double3x3Impl implements Double3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated public Double3x3 rotateYZX(double angleX, double angleY, double angleZ) {
-        if (Joml.RETURN_NEW) return rotateYZX(angleX, angleY, angleZ, Joml.double3x3());
+    @Mutated public Double3x3 rotateYZX(double angleY, double angleZ, double angleX) {
+        if (Joml.RETURN_NEW) return rotateYZX(angleY, angleZ, angleX, Joml.double3x3());
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYZX_identity(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYZX_translation(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateYZX_orthogonal(angleX, angleY, angleZ, this);
-        return rotateYZX_general(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYZX_identity(angleY, angleZ, angleX, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYZX_translation(angleY, angleZ, angleX, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateYZX_orthogonal(angleY, angleZ, angleX, this);
+        return rotateYZX_general(angleY, angleZ, angleX, this);
     }
 
 
@@ -13716,7 +13716,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateZXY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZXY} dispatcher.
      */
-    private Double3x3 rotateZXY_identity(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateZXY_identity(double angleZ, double angleX, double angleY, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _t0 = Math.sin(angleY);
         double _t1 = Math.sin(angleZ);
@@ -13744,7 +13744,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateZXY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZXY} dispatcher.
      */
-    private Double3x3 rotateZXY_translation(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateZXY_translation(double angleZ, double angleX, double angleY, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _t0 = Math.sin(angleY);
         double _t1 = Math.sin(angleX);
@@ -13770,21 +13770,21 @@ public class Double3x3Impl implements Double3x3 {
     }
 
     /** Private column 0 of {@code rotateZXY_orthogonal}: computes and stores it; reached only through it. */
-    private void rotateZXY_orthogonal_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t7, double _r1, double _t20, double _r2, double _t18, double _r3, double _r4, double _r5) {
+    private void rotateZXY_orthogonal_s3460e47c_c0(Double3x3Impl _dst, double _r0, double _t7, double _r1, double _t20, double _r2, double _t18, double _r3, double _r4, double _r5) {
         _dst.m00 = Math.fma(-_r0, _t7, Math.fma(_r1, _t20, _r2 * _t18));
         _dst.m10 = Math.fma(-_r3, _t7, Math.fma(_r4, _t20, _r5 * _t18));
         _dst.m20 = -_t7;
     }
 
     /** Private column 1 of {@code rotateZXY_orthogonal}: computes and stores it; reached only through it. */
-    private void rotateZXY_orthogonal_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t1, double _r2, double _t14, double _r1, double _t10, double _r3, double _r5, double _r4) {
+    private void rotateZXY_orthogonal_s3460e47c_c1(Double3x3Impl _dst, double _r0, double _t1, double _r2, double _t14, double _r1, double _t10, double _r3, double _r5, double _r4) {
         _dst.m01 = Math.fma(_r0, _t1, Math.fma(_r2, _t14, -(_r1 * _t10)));
         _dst.m11 = Math.fma(_r3, _t1, Math.fma(_r5, _t14, -(_r4 * _t10)));
         _dst.m21 = _t1;
     }
 
     /** Private column 2 of {@code rotateZXY_orthogonal}: computes and stores it; reached only through it. */
-    private void rotateZXY_orthogonal_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t15, double _r1, double _t19, double _r2, double _t21, double _r3, double _r4, double _r5) {
+    private void rotateZXY_orthogonal_s3460e47c_c2(Double3x3Impl _dst, double _r0, double _t15, double _r1, double _t19, double _r2, double _t21, double _r3, double _r4, double _r5) {
         _dst.m02 = Math.fma(_r0, _t15, Math.fma(_r1, _t19, _r2 * _t21));
         _dst.m12 = Math.fma(_r3, _t15, Math.fma(_r4, _t19, _r5 * _t21));
         _dst.m22 = _t15;
@@ -13795,7 +13795,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateZXY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZXY} dispatcher.
      */
-    private Double3x3 rotateZXY_orthogonal(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateZXY_orthogonal(double angleZ, double angleX, double angleY, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _r0 = this.m02;
         double _r1 = this.m00;
@@ -13819,29 +13819,29 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t6, _t4, _t0 * _t5);
         double _t20 = Math.fma(_t4, _t5, -(_t6 * _t0));
         double _t21 = Math.fma(_t0, _t2, -(_t8 * _t4));
-        rotateZXY_orthogonal_s406dbcde_c0(d, _r0, _t7, _r1, _t20, _r2, _t18, _r3, _r4, _r5);
-        rotateZXY_orthogonal_s406dbcde_c1(d, _r0, _t1, _r2, _t14, _r1, _t10, _r3, _r5, _r4);
-        rotateZXY_orthogonal_s406dbcde_c2(d, _r0, _t15, _r1, _t19, _r2, _t21, _r3, _r4, _r5);
+        rotateZXY_orthogonal_s3460e47c_c0(d, _r0, _t7, _r1, _t20, _r2, _t18, _r3, _r4, _r5);
+        rotateZXY_orthogonal_s3460e47c_c1(d, _r0, _t1, _r2, _t14, _r1, _t10, _r3, _r5, _r4);
+        rotateZXY_orthogonal_s3460e47c_c2(d, _r0, _t15, _r1, _t19, _r2, _t21, _r3, _r4, _r5);
         d.properties = 0;
         return d;
     }
 
     /** Private column 0 of {@code rotateZXY_general}: computes and stores it; reached only through it. */
-    private void rotateZXY_general_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t7, double _r1, double _t20, double _r2, double _t18, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+    private void rotateZXY_general_s3460e47c_c0(Double3x3Impl _dst, double _r0, double _t7, double _r1, double _t20, double _r2, double _t18, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
         _dst.m00 = Math.fma(-_r0, _t7, Math.fma(_r1, _t20, _r2 * _t18));
         _dst.m10 = Math.fma(-_r3, _t7, Math.fma(_r4, _t20, _r5 * _t18));
         _dst.m20 = Math.fma(-_r6, _t7, Math.fma(_r7, _t20, _r8 * _t18));
     }
 
     /** Private column 1 of {@code rotateZXY_general}: computes and stores it; reached only through it. */
-    private void rotateZXY_general_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t1, double _r2, double _t14, double _r1, double _t10, double _r3, double _r5, double _r4, double _r6, double _r8, double _r7) {
+    private void rotateZXY_general_s3460e47c_c1(Double3x3Impl _dst, double _r0, double _t1, double _r2, double _t14, double _r1, double _t10, double _r3, double _r5, double _r4, double _r6, double _r8, double _r7) {
         _dst.m01 = Math.fma(_r0, _t1, Math.fma(_r2, _t14, -(_r1 * _t10)));
         _dst.m11 = Math.fma(_r3, _t1, Math.fma(_r5, _t14, -(_r4 * _t10)));
         _dst.m21 = Math.fma(_r6, _t1, Math.fma(_r8, _t14, -(_r7 * _t10)));
     }
 
     /** Private column 2 of {@code rotateZXY_general}: computes and stores it; reached only through it. */
-    private void rotateZXY_general_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t15, double _r1, double _t19, double _r2, double _t21, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+    private void rotateZXY_general_s3460e47c_c2(Double3x3Impl _dst, double _r0, double _t15, double _r1, double _t19, double _r2, double _t21, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
         _dst.m02 = Math.fma(_r0, _t15, Math.fma(_r1, _t19, _r2 * _t21));
         _dst.m12 = Math.fma(_r3, _t15, Math.fma(_r4, _t19, _r5 * _t21));
         _dst.m22 = Math.fma(_r6, _t15, Math.fma(_r7, _t19, _r8 * _t21));
@@ -13852,7 +13852,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateZXY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZXY} dispatcher.
      */
-    private Double3x3 rotateZXY_general(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateZXY_general(double angleZ, double angleX, double angleY, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _r0 = this.m02;
         double _r1 = this.m00;
@@ -13879,9 +13879,9 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t6, _t4, _t0 * _t5);
         double _t20 = Math.fma(_t4, _t5, -(_t6 * _t0));
         double _t21 = Math.fma(_t0, _t2, -(_t8 * _t4));
-        rotateZXY_general_s406dbcde_c0(d, _r0, _t7, _r1, _t20, _r2, _t18, _r3, _r4, _r5, _r6, _r7, _r8);
-        rotateZXY_general_s406dbcde_c1(d, _r0, _t1, _r2, _t14, _r1, _t10, _r3, _r5, _r4, _r6, _r8, _r7);
-        rotateZXY_general_s406dbcde_c2(d, _r0, _t15, _r1, _t19, _r2, _t21, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateZXY_general_s3460e47c_c0(d, _r0, _t7, _r1, _t20, _r2, _t18, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateZXY_general_s3460e47c_c1(d, _r0, _t1, _r2, _t14, _r1, _t10, _r3, _r5, _r4, _r6, _r8, _r7);
+        rotateZXY_general_s3460e47c_c2(d, _r0, _t15, _r1, _t19, _r2, _t21, _r3, _r4, _r5, _r6, _r7, _r8);
         d.properties = 0;
         return d;
     }
@@ -13896,18 +13896,18 @@ public class Double3x3Impl implements Double3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public Double3x3 rotateZXY(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    public Double3x3 rotateZXY(double angleZ, double angleX, double angleY, @Mutated Double3x3 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZXY_identity(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZXY_translation(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZXY_orthogonal(angleX, angleY, angleZ, dest);
-        return rotateZXY_general(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZXY_identity(angleZ, angleX, angleY, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZXY_translation(angleZ, angleX, angleY, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZXY_orthogonal(angleZ, angleX, angleY, dest);
+        return rotateZXY_general(angleZ, angleX, angleY, dest);
     }
 
 
@@ -13920,18 +13920,18 @@ public class Double3x3Impl implements Double3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated public Double3x3 rotateZXY(double angleX, double angleY, double angleZ) {
-        if (Joml.RETURN_NEW) return rotateZXY(angleX, angleY, angleZ, Joml.double3x3());
+    @Mutated public Double3x3 rotateZXY(double angleZ, double angleX, double angleY) {
+        if (Joml.RETURN_NEW) return rotateZXY(angleZ, angleX, angleY, Joml.double3x3());
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZXY_identity(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZXY_translation(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZXY_orthogonal(angleX, angleY, angleZ, this);
-        return rotateZXY_general(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZXY_identity(angleZ, angleX, angleY, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZXY_translation(angleZ, angleX, angleY, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZXY_orthogonal(angleZ, angleX, angleY, this);
+        return rotateZXY_general(angleZ, angleX, angleY, this);
     }
 
 
@@ -13939,7 +13939,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateZYX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZYX} dispatcher.
      */
-    private Double3x3 rotateZYX_identity(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateZYX_identity(double angleZ, double angleY, double angleX, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _t0 = Math.sin(angleY);
         double _t1 = Math.sin(angleZ);
@@ -13967,7 +13967,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateZYX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZYX} dispatcher.
      */
-    private Double3x3 rotateZYX_translation(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateZYX_translation(double angleZ, double angleY, double angleX, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _t0 = Math.sin(angleY);
         double _t1 = Math.sin(angleZ);
@@ -13993,21 +13993,21 @@ public class Double3x3Impl implements Double3x3 {
     }
 
     /** Private column 0 of {@code rotateZYX_orthogonal}: computes and stores it; reached only through it. */
-    private void rotateZYX_orthogonal_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t0, double _r1, double _t15, double _r2, double _t8, double _r3, double _r4, double _r5) {
+    private void rotateZYX_orthogonal_s3f27bc5e_c0(Double3x3Impl _dst, double _r0, double _t0, double _r1, double _t15, double _r2, double _t8, double _r3, double _r4, double _r5) {
         _dst.m00 = Math.fma(-_r0, _t0, Math.fma(_r1, _t15, _r2 * _t8));
         _dst.m10 = Math.fma(-_r3, _t0, Math.fma(_r4, _t15, _r5 * _t8));
         _dst.m20 = -_t0;
     }
 
     /** Private column 1 of {@code rotateZYX_orthogonal}: computes and stores it; reached only through it. */
-    private void rotateZYX_orthogonal_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t9, double _r1, double _t20, double _r2, double _t18, double _r3, double _r4, double _r5) {
+    private void rotateZYX_orthogonal_s3f27bc5e_c1(Double3x3Impl _dst, double _r0, double _t9, double _r1, double _t20, double _r2, double _t18, double _r3, double _r4, double _r5) {
         _dst.m01 = Math.fma(_r0, _t9, Math.fma(_r1, _t20, _r2 * _t18));
         _dst.m11 = Math.fma(_r3, _t9, Math.fma(_r4, _t20, _r5 * _t18));
         _dst.m21 = _t9;
     }
 
     /** Private column 2 of {@code rotateZYX_orthogonal}: computes and stores it; reached only through it. */
-    private void rotateZYX_orthogonal_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t17, double _r1, double _t19, double _r2, double _t21, double _r3, double _r4, double _r5) {
+    private void rotateZYX_orthogonal_s3f27bc5e_c2(Double3x3Impl _dst, double _r0, double _t17, double _r1, double _t19, double _r2, double _t21, double _r3, double _r4, double _r5) {
         _dst.m02 = Math.fma(_r0, _t17, Math.fma(_r1, _t19, _r2 * _t21));
         _dst.m12 = Math.fma(_r3, _t17, Math.fma(_r4, _t19, _r5 * _t21));
         _dst.m22 = _t17;
@@ -14018,7 +14018,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateZYX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZYX} dispatcher.
      */
-    private Double3x3 rotateZYX_orthogonal(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateZYX_orthogonal(double angleZ, double angleY, double angleX, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _r0 = this.m02;
         double _r1 = this.m00;
@@ -14042,29 +14042,29 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t10, _t5, _t2 * _t1);
         double _t20 = Math.fma(_t10, _t2, -(_t1 * _t5));
         double _t21 = Math.fma(_t6, _t5, -(_t2 * _t4));
-        rotateZYX_orthogonal_s406dbcde_c0(d, _r0, _t0, _r1, _t15, _r2, _t8, _r3, _r4, _r5);
-        rotateZYX_orthogonal_s406dbcde_c1(d, _r0, _t9, _r1, _t20, _r2, _t18, _r3, _r4, _r5);
-        rotateZYX_orthogonal_s406dbcde_c2(d, _r0, _t17, _r1, _t19, _r2, _t21, _r3, _r4, _r5);
+        rotateZYX_orthogonal_s3f27bc5e_c0(d, _r0, _t0, _r1, _t15, _r2, _t8, _r3, _r4, _r5);
+        rotateZYX_orthogonal_s3f27bc5e_c1(d, _r0, _t9, _r1, _t20, _r2, _t18, _r3, _r4, _r5);
+        rotateZYX_orthogonal_s3f27bc5e_c2(d, _r0, _t17, _r1, _t19, _r2, _t21, _r3, _r4, _r5);
         d.properties = 0;
         return d;
     }
 
     /** Private column 0 of {@code rotateZYX_general}: computes and stores it; reached only through it. */
-    private void rotateZYX_general_s406dbcde_c0(Double3x3Impl _dst, double _r0, double _t0, double _r1, double _t15, double _r2, double _t8, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+    private void rotateZYX_general_s3f27bc5e_c0(Double3x3Impl _dst, double _r0, double _t0, double _r1, double _t15, double _r2, double _t8, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
         _dst.m00 = Math.fma(-_r0, _t0, Math.fma(_r1, _t15, _r2 * _t8));
         _dst.m10 = Math.fma(-_r3, _t0, Math.fma(_r4, _t15, _r5 * _t8));
         _dst.m20 = Math.fma(-_r6, _t0, Math.fma(_r7, _t15, _r8 * _t8));
     }
 
     /** Private column 1 of {@code rotateZYX_general}: computes and stores it; reached only through it. */
-    private void rotateZYX_general_s406dbcde_c1(Double3x3Impl _dst, double _r0, double _t9, double _r1, double _t20, double _r2, double _t18, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+    private void rotateZYX_general_s3f27bc5e_c1(Double3x3Impl _dst, double _r0, double _t9, double _r1, double _t20, double _r2, double _t18, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
         _dst.m01 = Math.fma(_r0, _t9, Math.fma(_r1, _t20, _r2 * _t18));
         _dst.m11 = Math.fma(_r3, _t9, Math.fma(_r4, _t20, _r5 * _t18));
         _dst.m21 = Math.fma(_r6, _t9, Math.fma(_r7, _t20, _r8 * _t18));
     }
 
     /** Private column 2 of {@code rotateZYX_general}: computes and stores it; reached only through it. */
-    private void rotateZYX_general_s406dbcde_c2(Double3x3Impl _dst, double _r0, double _t17, double _r1, double _t19, double _r2, double _t21, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
+    private void rotateZYX_general_s3f27bc5e_c2(Double3x3Impl _dst, double _r0, double _t17, double _r1, double _t19, double _r2, double _t21, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8) {
         _dst.m02 = Math.fma(_r0, _t17, Math.fma(_r1, _t19, _r2 * _t21));
         _dst.m12 = Math.fma(_r3, _t17, Math.fma(_r4, _t19, _r5 * _t21));
         _dst.m22 = Math.fma(_r6, _t17, Math.fma(_r7, _t19, _r8 * _t21));
@@ -14075,7 +14075,7 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code rotateZYX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZYX} dispatcher.
      */
-    private Double3x3 rotateZYX_general(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    private Double3x3 rotateZYX_general(double angleZ, double angleY, double angleX, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
         double _r0 = this.m02;
         double _r1 = this.m00;
@@ -14102,9 +14102,9 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = Math.fma(_t10, _t5, _t2 * _t1);
         double _t20 = Math.fma(_t10, _t2, -(_t1 * _t5));
         double _t21 = Math.fma(_t6, _t5, -(_t2 * _t4));
-        rotateZYX_general_s406dbcde_c0(d, _r0, _t0, _r1, _t15, _r2, _t8, _r3, _r4, _r5, _r6, _r7, _r8);
-        rotateZYX_general_s406dbcde_c1(d, _r0, _t9, _r1, _t20, _r2, _t18, _r3, _r4, _r5, _r6, _r7, _r8);
-        rotateZYX_general_s406dbcde_c2(d, _r0, _t17, _r1, _t19, _r2, _t21, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateZYX_general_s3f27bc5e_c0(d, _r0, _t0, _r1, _t15, _r2, _t8, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateZYX_general_s3f27bc5e_c1(d, _r0, _t9, _r1, _t20, _r2, _t18, _r3, _r4, _r5, _r6, _r7, _r8);
+        rotateZYX_general_s3f27bc5e_c2(d, _r0, _t17, _r1, _t19, _r2, _t21, _r3, _r4, _r5, _r6, _r7, _r8);
         d.properties = 0;
         return d;
     }
@@ -14119,18 +14119,18 @@ public class Double3x3Impl implements Double3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public Double3x3 rotateZYX(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+    public Double3x3 rotateZYX(double angleZ, double angleY, double angleX, @Mutated Double3x3 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZYX_identity(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZYX_translation(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZYX_orthogonal(angleX, angleY, angleZ, dest);
-        return rotateZYX_general(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZYX_identity(angleZ, angleY, angleX, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZYX_translation(angleZ, angleY, angleX, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZYX_orthogonal(angleZ, angleY, angleX, dest);
+        return rotateZYX_general(angleZ, angleY, angleX, dest);
     }
 
 
@@ -14143,18 +14143,18 @@ public class Double3x3Impl implements Double3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated public Double3x3 rotateZYX(double angleX, double angleY, double angleZ) {
-        if (Joml.RETURN_NEW) return rotateZYX(angleX, angleY, angleZ, Joml.double3x3());
+    @Mutated public Double3x3 rotateZYX(double angleZ, double angleY, double angleX) {
+        if (Joml.RETURN_NEW) return rotateZYX(angleZ, angleY, angleX, Joml.double3x3());
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZYX_identity(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZYX_translation(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZYX_orthogonal(angleX, angleY, angleZ, this);
-        return rotateZYX_general(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZYX_identity(angleZ, angleY, angleX, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZYX_translation(angleZ, angleY, angleX, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZYX_orthogonal(angleZ, angleY, angleX, this);
+        return rotateZYX_general(angleZ, angleY, angleX, this);
     }
 
 

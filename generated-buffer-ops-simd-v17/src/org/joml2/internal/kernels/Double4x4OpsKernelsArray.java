@@ -10584,7 +10584,7 @@ public final class Double4x4OpsKernelsArray {
         return dest;
     }
 
-    public static double[] rotateXZY_scalar(double[] dest, int destOffset, double[] src, int srcOffset, double angleX, double angleY, double angleZ) {
+    public static double[] rotateXZY_scalar(double[] dest, int destOffset, double[] src, int srcOffset, double angleX, double angleZ, double angleY) {
         double _self00 = src[srcOffset + 0];
         double _self10 = src[srcOffset + 1];
         double _self20 = src[srcOffset + 2];
@@ -10674,7 +10674,7 @@ public final class Double4x4OpsKernelsArray {
         return dest;
     }
 
-    public static double[] rotateYXZ_scalar(double[] dest, int destOffset, double[] src, int srcOffset, double angleX, double angleY, double angleZ) {
+    public static double[] rotateYXZ_scalar(double[] dest, int destOffset, double[] src, int srcOffset, double angleY, double angleX, double angleZ) {
         double _self00 = src[srcOffset + 0];
         double _self10 = src[srcOffset + 1];
         double _self20 = src[srcOffset + 2];
@@ -10726,7 +10726,7 @@ public final class Double4x4OpsKernelsArray {
         return dest;
     }
 
-    public static double[] rotateYZX_scalar(double[] dest, int destOffset, double[] src, int srcOffset, double angleX, double angleY, double angleZ) {
+    public static double[] rotateYZX_scalar(double[] dest, int destOffset, double[] src, int srcOffset, double angleY, double angleZ, double angleX) {
         double _self00 = src[srcOffset + 0];
         double _self10 = src[srcOffset + 1];
         double _self20 = src[srcOffset + 2];
@@ -10816,7 +10816,7 @@ public final class Double4x4OpsKernelsArray {
         return dest;
     }
 
-    public static double[] rotateZXY_scalar(double[] dest, int destOffset, double[] src, int srcOffset, double angleX, double angleY, double angleZ) {
+    public static double[] rotateZXY_scalar(double[] dest, int destOffset, double[] src, int srcOffset, double angleZ, double angleX, double angleY) {
         double _self00 = src[srcOffset + 0];
         double _self10 = src[srcOffset + 1];
         double _self20 = src[srcOffset + 2];
@@ -10868,7 +10868,7 @@ public final class Double4x4OpsKernelsArray {
         return dest;
     }
 
-    public static double[] rotateZYX_scalar(double[] dest, int destOffset, double[] src, int srcOffset, double angleX, double angleY, double angleZ) {
+    public static double[] rotateZYX_scalar(double[] dest, int destOffset, double[] src, int srcOffset, double angleZ, double angleY, double angleX) {
         double _self00 = src[srcOffset + 0];
         double _self10 = src[srcOffset + 1];
         double _self20 = src[srcOffset + 2];

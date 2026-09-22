@@ -43,19 +43,19 @@ inline fun Double3x3.rotateX(angle: Angle): Double3x3 = rotateX(angle.radians)
 /** [Double3x3.rotateXYZ] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Double3x3.rotateXYZ(angleX: Angle, angleY: Angle, angleZ: Angle): Double3x3 = rotateXYZ(angleX.radians, angleY.radians, angleZ.radians)
 /** [Double3x3.rotateXZY] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun Double3x3.rotateXZY(angleX: Angle, angleY: Angle, angleZ: Angle): Double3x3 = rotateXZY(angleX.radians, angleY.radians, angleZ.radians)
+inline fun Double3x3.rotateXZY(angleX: Angle, angleZ: Angle, angleY: Angle): Double3x3 = rotateXZY(angleX.radians, angleZ.radians, angleY.radians)
 /** [Double3x3.rotateY] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Double3x3.rotateY(angle: Angle): Double3x3 = rotateY(angle.radians)
 /** [Double3x3.rotateYXZ] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun Double3x3.rotateYXZ(angleX: Angle, angleY: Angle, angleZ: Angle): Double3x3 = rotateYXZ(angleX.radians, angleY.radians, angleZ.radians)
+inline fun Double3x3.rotateYXZ(angleY: Angle, angleX: Angle, angleZ: Angle): Double3x3 = rotateYXZ(angleY.radians, angleX.radians, angleZ.radians)
 /** [Double3x3.rotateYZX] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun Double3x3.rotateYZX(angleX: Angle, angleY: Angle, angleZ: Angle): Double3x3 = rotateYZX(angleX.radians, angleY.radians, angleZ.radians)
+inline fun Double3x3.rotateYZX(angleY: Angle, angleZ: Angle, angleX: Angle): Double3x3 = rotateYZX(angleY.radians, angleZ.radians, angleX.radians)
 /** [Double3x3.rotateZ] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Double3x3.rotateZ(angle: Angle): Double3x3 = rotateZ(angle.radians)
 /** [Double3x3.rotateZXY] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun Double3x3.rotateZXY(angleX: Angle, angleY: Angle, angleZ: Angle): Double3x3 = rotateZXY(angleX.radians, angleY.radians, angleZ.radians)
+inline fun Double3x3.rotateZXY(angleZ: Angle, angleX: Angle, angleY: Angle): Double3x3 = rotateZXY(angleZ.radians, angleX.radians, angleY.radians)
 /** [Double3x3.rotateZYX] taking a type-safe [Angle] in place of the angle in radians. */
-inline fun Double3x3.rotateZYX(angleX: Angle, angleY: Angle, angleZ: Angle): Double3x3 = rotateZYX(angleX.radians, angleY.radians, angleZ.radians)
+inline fun Double3x3.rotateZYX(angleZ: Angle, angleY: Angle, angleX: Angle): Double3x3 = rotateZYX(angleZ.radians, angleY.radians, angleX.radians)
 /** [Double3x3.mul] as the `*` operator. */
 inline operator fun Double3x3.times(v: Double3): Double3 = mul(v)
 /** The element of this Double3x3 in the given row and column, throwing `IndexOutOfBoundsException` when either index is out of range. */
@@ -89,17 +89,17 @@ object Double3x3Factory {
     /** [Double3x3.makeRotationXYZ] taking a type-safe [Angle] in place of the angle in radians. */
     inline fun makeRotationXYZ(angleX: Angle, angleY: Angle, angleZ: Angle): Double3x3 = Double3x3.makeRotationXYZ(angleX.radians, angleY.radians, angleZ.radians)
     /** [Double3x3.makeRotationXZY] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationXZY(angleX: Angle, angleY: Angle, angleZ: Angle): Double3x3 = Double3x3.makeRotationXZY(angleX.radians, angleY.radians, angleZ.radians)
+    inline fun makeRotationXZY(angleX: Angle, angleZ: Angle, angleY: Angle): Double3x3 = Double3x3.makeRotationXZY(angleX.radians, angleZ.radians, angleY.radians)
     /** [Double3x3.makeRotationY] taking a type-safe [Angle] in place of the angle in radians. */
     inline fun makeRotationY(angle: Angle): Double3x3 = Double3x3.makeRotationY(angle.radians)
     /** [Double3x3.makeRotationYXZ] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationYXZ(angleX: Angle, angleY: Angle, angleZ: Angle): Double3x3 = Double3x3.makeRotationYXZ(angleX.radians, angleY.radians, angleZ.radians)
+    inline fun makeRotationYXZ(angleY: Angle, angleX: Angle, angleZ: Angle): Double3x3 = Double3x3.makeRotationYXZ(angleY.radians, angleX.radians, angleZ.radians)
     /** [Double3x3.makeRotationYZX] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationYZX(angleX: Angle, angleY: Angle, angleZ: Angle): Double3x3 = Double3x3.makeRotationYZX(angleX.radians, angleY.radians, angleZ.radians)
+    inline fun makeRotationYZX(angleY: Angle, angleZ: Angle, angleX: Angle): Double3x3 = Double3x3.makeRotationYZX(angleY.radians, angleZ.radians, angleX.radians)
     /** [Double3x3.makeRotationZ] taking a type-safe [Angle] in place of the angle in radians. */
     inline fun makeRotationZ(angle: Angle): Double3x3 = Double3x3.makeRotationZ(angle.radians)
     /** [Double3x3.makeRotationZXY] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationZXY(angleX: Angle, angleY: Angle, angleZ: Angle): Double3x3 = Double3x3.makeRotationZXY(angleX.radians, angleY.radians, angleZ.radians)
+    inline fun makeRotationZXY(angleZ: Angle, angleX: Angle, angleY: Angle): Double3x3 = Double3x3.makeRotationZXY(angleZ.radians, angleX.radians, angleY.radians)
     /** [Double3x3.makeRotationZYX] taking a type-safe [Angle] in place of the angle in radians. */
-    inline fun makeRotationZYX(angleX: Angle, angleY: Angle, angleZ: Angle): Double3x3 = Double3x3.makeRotationZYX(angleX.radians, angleY.radians, angleZ.radians)
+    inline fun makeRotationZYX(angleZ: Angle, angleY: Angle, angleX: Angle): Double3x3 = Double3x3.makeRotationZYX(angleZ.radians, angleY.radians, angleX.radians)
 }

@@ -2495,12 +2495,12 @@ public interface Float3x3R {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    Float3x3 rotateXZY(float angleX, float angleY, float angleZ, @Mutated Float3x3 dest);
+    Float3x3 rotateXZY(float angleX, float angleZ, float angleY, @Mutated Float3x3 dest);
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
@@ -2515,12 +2515,12 @@ public interface Float3x3R {
      * {@code double} only when stored.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    Double3x3 rotateXZY(float angleX, float angleY, float angleZ, @Mutated Double3x3 dest);
+    Double3x3 rotateXZY(float angleX, float angleZ, float angleY, @Mutated Double3x3 dest);
 
     /**
      * Apply a rotation of -180 degrees about the X axis to this matrix and store the result in
@@ -2736,13 +2736,13 @@ public interface Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    Float3x3 rotateYXZ(float angleX, float angleY, float angleZ, @Mutated Float3x3 dest);
+    Float3x3 rotateYXZ(float angleY, float angleX, float angleZ, @Mutated Float3x3 dest);
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
@@ -2756,13 +2756,13 @@ public interface Float3x3R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    Double3x3 rotateYXZ(float angleX, float angleY, float angleZ, @Mutated Double3x3 dest);
+    Double3x3 rotateYXZ(float angleY, float angleX, float angleZ, @Mutated Double3x3 dest);
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
@@ -2773,13 +2773,13 @@ public interface Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    Float3x3 rotateYZX(float angleX, float angleY, float angleZ, @Mutated Float3x3 dest);
+    Float3x3 rotateYZX(float angleY, float angleZ, float angleX, @Mutated Float3x3 dest);
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
@@ -2793,13 +2793,13 @@ public interface Float3x3R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    Double3x3 rotateYZX(float angleX, float angleY, float angleZ, @Mutated Double3x3 dest);
+    Double3x3 rotateYZX(float angleY, float angleZ, float angleX, @Mutated Double3x3 dest);
 
     /**
      * Apply a rotation of -180 degrees about the Y axis to this matrix and store the result in
@@ -3015,13 +3015,13 @@ public interface Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    Float3x3 rotateZXY(float angleX, float angleY, float angleZ, @Mutated Float3x3 dest);
+    Float3x3 rotateZXY(float angleZ, float angleX, float angleY, @Mutated Float3x3 dest);
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
@@ -3035,13 +3035,13 @@ public interface Float3x3R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    Double3x3 rotateZXY(float angleX, float angleY, float angleZ, @Mutated Double3x3 dest);
+    Double3x3 rotateZXY(float angleZ, float angleX, float angleY, @Mutated Double3x3 dest);
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
@@ -3052,13 +3052,13 @@ public interface Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    Float3x3 rotateZYX(float angleX, float angleY, float angleZ, @Mutated Float3x3 dest);
+    Float3x3 rotateZYX(float angleZ, float angleY, float angleX, @Mutated Float3x3 dest);
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
@@ -3072,13 +3072,13 @@ public interface Float3x3R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    Double3x3 rotateZYX(float angleX, float angleY, float angleZ, @Mutated Double3x3 dest);
+    Double3x3 rotateZYX(float angleZ, float angleY, float angleX, @Mutated Double3x3 dest);
 
     /**
      * Apply a rotation of -180 degrees about the Z axis to this matrix and store the result in

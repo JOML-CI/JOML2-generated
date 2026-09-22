@@ -9034,7 +9034,7 @@ public final class Float4x4OpsKernelsAddress {
         return dest;
     }
 
-    public static long makeRotationXZY_unsafe(long dest, float angleX, float angleY, float angleZ) {
+    public static long makeRotationXZY_unsafe(long dest, float angleX, float angleZ, float angleY) {
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
@@ -9084,7 +9084,7 @@ public final class Float4x4OpsKernelsAddress {
         return dest;
     }
 
-    public static long makeRotationYXZ_unsafe(long dest, float angleX, float angleY, float angleZ) {
+    public static long makeRotationYXZ_unsafe(long dest, float angleY, float angleX, float angleZ) {
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleY);
         float _t2 = (float) Math.sin(angleZ);
@@ -9112,7 +9112,7 @@ public final class Float4x4OpsKernelsAddress {
         return dest;
     }
 
-    public static long makeRotationYZX_unsafe(long dest, float angleX, float angleY, float angleZ) {
+    public static long makeRotationYZX_unsafe(long dest, float angleY, float angleZ, float angleX) {
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
@@ -9162,7 +9162,7 @@ public final class Float4x4OpsKernelsAddress {
         return dest;
     }
 
-    public static long makeRotationZXY_unsafe(long dest, float angleX, float angleY, float angleZ) {
+    public static long makeRotationZXY_unsafe(long dest, float angleZ, float angleX, float angleY) {
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
@@ -9190,7 +9190,7 @@ public final class Float4x4OpsKernelsAddress {
         return dest;
     }
 
-    public static long makeRotationZYX_unsafe(long dest, float angleX, float angleY, float angleZ) {
+    public static long makeRotationZYX_unsafe(long dest, float angleZ, float angleY, float angleX) {
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.sin(angleZ);
         float _t2 = (float) Math.sin(angleX);
@@ -15780,7 +15780,7 @@ public final class Float4x4OpsKernelsAddress {
         return dest;
     }
 
-    public static long rotateXZY_unsafe(long dest, long src, float angleX, float angleY, float angleZ) {
+    public static long rotateXZY_unsafe(long dest, long src, float angleX, float angleZ, float angleY) {
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -15870,7 +15870,7 @@ public final class Float4x4OpsKernelsAddress {
         return dest;
     }
 
-    public static long rotateYXZ_unsafe(long dest, long src, float angleX, float angleY, float angleZ) {
+    public static long rotateYXZ_unsafe(long dest, long src, float angleY, float angleX, float angleZ) {
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -15922,7 +15922,7 @@ public final class Float4x4OpsKernelsAddress {
         return dest;
     }
 
-    public static long rotateYZX_unsafe(long dest, long src, float angleX, float angleY, float angleZ) {
+    public static long rotateYZX_unsafe(long dest, long src, float angleY, float angleZ, float angleX) {
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -16012,7 +16012,7 @@ public final class Float4x4OpsKernelsAddress {
         return dest;
     }
 
-    public static long rotateZXY_unsafe(long dest, long src, float angleX, float angleY, float angleZ) {
+    public static long rotateZXY_unsafe(long dest, long src, float angleZ, float angleX, float angleY) {
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -16064,7 +16064,7 @@ public final class Float4x4OpsKernelsAddress {
         return dest;
     }
 
-    public static long rotateZYX_unsafe(long dest, long src, float angleX, float angleY, float angleZ) {
+    public static long rotateZYX_unsafe(long dest, long src, float angleZ, float angleY, float angleX) {
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);

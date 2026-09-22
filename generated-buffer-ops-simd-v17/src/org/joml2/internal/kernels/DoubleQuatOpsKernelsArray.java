@@ -924,7 +924,7 @@ public final class DoubleQuatOpsKernelsArray {
         return dest;
     }
 
-    public static double[] makeRotationYXZ_scalar(double[] dest, int destOffset, double angleX, double angleY, double angleZ) {
+    public static double[] makeRotationYXZ_scalar(double[] dest, int destOffset, double angleY, double angleX, double angleZ) {
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;

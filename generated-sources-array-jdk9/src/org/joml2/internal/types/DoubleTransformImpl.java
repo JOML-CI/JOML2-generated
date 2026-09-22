@@ -1831,11 +1831,11 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return this
      */
-    @Mutated public DoubleTransform makeRotationXZY(double angleX, double angleY, double angleZ) {
+    @Mutated public DoubleTransform makeRotationXZY(double angleX, double angleZ, double angleY) {
         double[] dd = this.data;
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
@@ -1893,12 +1893,12 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a
      * vector is rotated about the Z axis first, then X, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated public DoubleTransform makeRotationYXZ(double angleX, double angleY, double angleZ) {
+    @Mutated public DoubleTransform makeRotationYXZ(double angleY, double angleX, double angleZ) {
         double[] dd = this.data;
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
@@ -1932,12 +1932,12 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a
      * vector is rotated about the X axis first, then Z, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated public DoubleTransform makeRotationYZX(double angleX, double angleY, double angleZ) {
+    @Mutated public DoubleTransform makeRotationYZX(double angleY, double angleZ, double angleX) {
         double[] dd = this.data;
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
@@ -1995,12 +1995,12 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a
      * vector is rotated about the Y axis first, then X, then Z).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated public DoubleTransform makeRotationZXY(double angleX, double angleY, double angleZ) {
+    @Mutated public DoubleTransform makeRotationZXY(double angleZ, double angleX, double angleY) {
         double[] dd = this.data;
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
@@ -2034,12 +2034,12 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a
      * vector is rotated about the X axis first, then Y, then Z).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated public DoubleTransform makeRotationZYX(double angleX, double angleY, double angleZ) {
+    @Mutated public DoubleTransform makeRotationZYX(double angleZ, double angleY, double angleX) {
         double[] dd = this.data;
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
@@ -2391,12 +2391,12 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleTransform rotateXZY(double angleX, double angleY, double angleZ, @Mutated DoubleTransform dest) {
+    public DoubleTransform rotateXZY(double angleX, double angleZ, double angleY, @Mutated DoubleTransform dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleTransformImpl) dest).data;
         double _t0 = 0.5 * angleX;
@@ -2489,13 +2489,13 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleTransform rotateYXZ(double angleX, double angleY, double angleZ, @Mutated DoubleTransform dest) {
+    public DoubleTransform rotateYXZ(double angleY, double angleX, double angleZ, @Mutated DoubleTransform dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleTransformImpl) dest).data;
         double _t0 = 0.5 * angleX;
@@ -2548,13 +2548,13 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleTransform rotateYZX(double angleX, double angleY, double angleZ, @Mutated DoubleTransform dest) {
+    public DoubleTransform rotateYZX(double angleY, double angleZ, double angleX, @Mutated DoubleTransform dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleTransformImpl) dest).data;
         double _t0 = 0.5 * angleY;
@@ -2647,13 +2647,13 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleTransform rotateZXY(double angleX, double angleY, double angleZ, @Mutated DoubleTransform dest) {
+    public DoubleTransform rotateZXY(double angleZ, double angleX, double angleY, @Mutated DoubleTransform dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleTransformImpl) dest).data;
         double _t0 = 0.5 * angleX;
@@ -2706,13 +2706,13 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
      * {@code transformPositionInverse} is).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleTransform rotateZYX(double angleX, double angleY, double angleZ, @Mutated DoubleTransform dest) {
+    public DoubleTransform rotateZYX(double angleZ, double angleY, double angleX, @Mutated DoubleTransform dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleTransformImpl) dest).data;
         double _t0 = 0.5 * angleY;

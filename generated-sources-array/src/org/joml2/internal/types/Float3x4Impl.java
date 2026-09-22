@@ -13977,11 +13977,11 @@ public class Float3x4Impl implements Float3x4 {
      * vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return this
      */
-    @Mutated public Float3x4 makeRotationXZY(float angleX, float angleY, float angleZ) {
+    @Mutated public Float3x4 makeRotationXZY(float angleX, float angleZ, float angleY) {
         float[] dd = this.data;
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.sin(angleZ);
@@ -14040,12 +14040,12 @@ public class Float3x4Impl implements Float3x4 {
      * about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a
      * vector is rotated about the Z axis first, then X, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated public Float3x4 makeRotationYXZ(float angleX, float angleY, float angleZ) {
+    @Mutated public Float3x4 makeRotationYXZ(float angleY, float angleX, float angleZ) {
         float[] dd = this.data;
         float _t0 = (float) Math.sin(angleX);
         float _t1 = (float) Math.sin(angleY);
@@ -14077,12 +14077,12 @@ public class Float3x4Impl implements Float3x4 {
      * about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a
      * vector is rotated about the X axis first, then Z, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated public Float3x4 makeRotationYZX(float angleX, float angleY, float angleZ) {
+    @Mutated public Float3x4 makeRotationYZX(float angleY, float angleZ, float angleX) {
         float[] dd = this.data;
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.sin(angleZ);
@@ -14141,12 +14141,12 @@ public class Float3x4Impl implements Float3x4 {
      * about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a
      * vector is rotated about the Y axis first, then X, then Z).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated public Float3x4 makeRotationZXY(float angleX, float angleY, float angleZ) {
+    @Mutated public Float3x4 makeRotationZXY(float angleZ, float angleX, float angleY) {
         float[] dd = this.data;
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.sin(angleZ);
@@ -14178,12 +14178,12 @@ public class Float3x4Impl implements Float3x4 {
      * about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a
      * vector is rotated about the X axis first, then Y, then Z).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated public Float3x4 makeRotationZYX(float angleX, float angleY, float angleZ) {
+    @Mutated public Float3x4 makeRotationZYX(float angleZ, float angleY, float angleX) {
         float[] dd = this.data;
         float _t0 = (float) Math.sin(angleY);
         float _t1 = (float) Math.sin(angleZ);
@@ -28028,7 +28028,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code rotateXZY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateXZY} dispatcher.
      */
-    private Float3x4 rotateXZY_orthogonal_general(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest, int _props) {
+    private Float3x4 rotateXZY_orthogonal_general(float angleX, float angleZ, float angleY, @Mutated Float3x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleX);
@@ -28074,7 +28074,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code rotateXZY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateXZY} dispatcher.
      */
-    private Float3x4 rotateXZY_identity(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    private Float3x4 rotateXZY_identity(float angleX, float angleZ, float angleY, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -28106,7 +28106,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private in-place self-form body of {@code rotateXZY}, specialized by runtime matrix
      * properties; reached only through the public {@code rotateXZY} dispatcher.
      */
-    private Float3x4 rotateXZY_identity_self(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    private Float3x4 rotateXZY_identity_self(float angleX, float angleZ, float angleY, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -28135,7 +28135,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code rotateXZY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateXZY} dispatcher.
      */
-    private Float3x4 rotateXZY_translation(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    private Float3x4 rotateXZY_translation(float angleX, float angleZ, float angleY, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -28173,16 +28173,16 @@ public class Float3x4Impl implements Float3x4 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    public Float3x4 rotateXZY(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    public Float3x4 rotateXZY(float angleX, float angleZ, float angleY, @Mutated Float3x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXZY_identity(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXZY_translation(angleX, angleY, angleZ, dest);
-        return rotateXZY_orthogonal_general(angleX, angleY, angleZ, dest, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXZY_identity(angleX, angleZ, angleY, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXZY_translation(angleX, angleZ, angleY, dest);
+        return rotateXZY_orthogonal_general(angleX, angleZ, angleY, dest, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
     }
 
 
@@ -28196,16 +28196,16 @@ public class Float3x4Impl implements Float3x4 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated public Float3x4 rotateXZY(float angleX, float angleY, float angleZ) {
-        if (Joml.RETURN_NEW) return rotateXZY(angleX, angleY, angleZ, Joml.float3x4());
+    @Mutated public Float3x4 rotateXZY(float angleX, float angleZ, float angleY) {
+        if (Joml.RETURN_NEW) return rotateXZY(angleX, angleZ, angleY, Joml.float3x4());
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXZY_identity_self(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXZY_translation(angleX, angleY, angleZ, this);
-        return rotateXZY_orthogonal_general(angleX, angleY, angleZ, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXZY_identity_self(angleX, angleZ, angleY, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXZY_translation(angleX, angleZ, angleY, this);
+        return rotateXZY_orthogonal_general(angleX, angleZ, angleY, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
     }
 
 
@@ -28222,12 +28222,12 @@ public class Float3x4Impl implements Float3x4 {
      * {@code double} only when stored.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    public Double3x4 rotateXZY(float angleX, float angleY, float angleZ, @Mutated Double3x4 dest) {
+    public Double3x4 rotateXZY(float angleX, float angleZ, float angleY, @Mutated Double3x4 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleX);
@@ -28740,7 +28740,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code rotateYXZ}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYXZ} dispatcher.
      */
-    private Float3x4 rotateYXZ_orthogonal_general(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest, int _props) {
+    private Float3x4 rotateYXZ_orthogonal_general(float angleY, float angleX, float angleZ, @Mutated Float3x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleX);
@@ -28786,7 +28786,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code rotateYXZ}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYXZ} dispatcher.
      */
-    private Float3x4 rotateYXZ_identity(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    private Float3x4 rotateYXZ_identity(float angleY, float angleX, float angleZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleX);
@@ -28818,7 +28818,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private in-place self-form body of {@code rotateYXZ}, specialized by runtime matrix
      * properties; reached only through the public {@code rotateYXZ} dispatcher.
      */
-    private Float3x4 rotateYXZ_identity_self(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    private Float3x4 rotateYXZ_identity_self(float angleY, float angleX, float angleZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleX);
@@ -28847,7 +28847,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code rotateYXZ}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYXZ} dispatcher.
      */
-    private Float3x4 rotateYXZ_translation(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    private Float3x4 rotateYXZ_translation(float angleY, float angleX, float angleZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleX);
@@ -28884,17 +28884,17 @@ public class Float3x4Impl implements Float3x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public Float3x4 rotateYXZ(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    public Float3x4 rotateYXZ(float angleY, float angleX, float angleZ, @Mutated Float3x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYXZ_identity(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYXZ_translation(angleX, angleY, angleZ, dest);
-        return rotateYXZ_orthogonal_general(angleX, angleY, angleZ, dest, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYXZ_identity(angleY, angleX, angleZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYXZ_translation(angleY, angleX, angleZ, dest);
+        return rotateYXZ_orthogonal_general(angleY, angleX, angleZ, dest, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
     }
 
 
@@ -28907,17 +28907,17 @@ public class Float3x4Impl implements Float3x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated public Float3x4 rotateYXZ(float angleX, float angleY, float angleZ) {
-        if (Joml.RETURN_NEW) return rotateYXZ(angleX, angleY, angleZ, Joml.float3x4());
+    @Mutated public Float3x4 rotateYXZ(float angleY, float angleX, float angleZ) {
+        if (Joml.RETURN_NEW) return rotateYXZ(angleY, angleX, angleZ, Joml.float3x4());
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYXZ_identity_self(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYXZ_translation(angleX, angleY, angleZ, this);
-        return rotateYXZ_orthogonal_general(angleX, angleY, angleZ, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYXZ_identity_self(angleY, angleX, angleZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYXZ_translation(angleY, angleX, angleZ, this);
+        return rotateYXZ_orthogonal_general(angleY, angleX, angleZ, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
     }
 
 
@@ -28933,13 +28933,13 @@ public class Float3x4Impl implements Float3x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public Double3x4 rotateYXZ(float angleX, float angleY, float angleZ, @Mutated Double3x4 dest) {
+    public Double3x4 rotateYXZ(float angleY, float angleX, float angleZ, @Mutated Double3x4 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleX);
@@ -28985,7 +28985,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code rotateYZX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYZX} dispatcher.
      */
-    private Float3x4 rotateYZX_orthogonal_general(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest, int _props) {
+    private Float3x4 rotateYZX_orthogonal_general(float angleY, float angleZ, float angleX, @Mutated Float3x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -29031,7 +29031,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code rotateYZX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYZX} dispatcher.
      */
-    private Float3x4 rotateYZX_identity(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    private Float3x4 rotateYZX_identity(float angleY, float angleZ, float angleX, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -29063,7 +29063,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private in-place self-form body of {@code rotateYZX}, specialized by runtime matrix
      * properties; reached only through the public {@code rotateYZX} dispatcher.
      */
-    private Float3x4 rotateYZX_identity_self(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    private Float3x4 rotateYZX_identity_self(float angleY, float angleZ, float angleX, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -29092,7 +29092,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code rotateYZX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateYZX} dispatcher.
      */
-    private Float3x4 rotateYZX_translation(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    private Float3x4 rotateYZX_translation(float angleY, float angleZ, float angleX, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -29129,17 +29129,17 @@ public class Float3x4Impl implements Float3x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public Float3x4 rotateYZX(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    public Float3x4 rotateYZX(float angleY, float angleZ, float angleX, @Mutated Float3x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYZX_identity(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYZX_translation(angleX, angleY, angleZ, dest);
-        return rotateYZX_orthogonal_general(angleX, angleY, angleZ, dest, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYZX_identity(angleY, angleZ, angleX, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYZX_translation(angleY, angleZ, angleX, dest);
+        return rotateYZX_orthogonal_general(angleY, angleZ, angleX, dest, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
     }
 
 
@@ -29152,17 +29152,17 @@ public class Float3x4Impl implements Float3x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated public Float3x4 rotateYZX(float angleX, float angleY, float angleZ) {
-        if (Joml.RETURN_NEW) return rotateYZX(angleX, angleY, angleZ, Joml.float3x4());
+    @Mutated public Float3x4 rotateYZX(float angleY, float angleZ, float angleX) {
+        if (Joml.RETURN_NEW) return rotateYZX(angleY, angleZ, angleX, Joml.float3x4());
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYZX_identity_self(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYZX_translation(angleX, angleY, angleZ, this);
-        return rotateYZX_orthogonal_general(angleX, angleY, angleZ, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYZX_identity_self(angleY, angleZ, angleX, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYZX_translation(angleY, angleZ, angleX, this);
+        return rotateYZX_orthogonal_general(angleY, angleZ, angleX, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
     }
 
 
@@ -29178,13 +29178,13 @@ public class Float3x4Impl implements Float3x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public Double3x4 rotateYZX(float angleX, float angleY, float angleZ, @Mutated Double3x4 dest) {
+    public Double3x4 rotateYZX(float angleY, float angleZ, float angleX, @Mutated Double3x4 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -29697,7 +29697,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code rotateZXY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZXY} dispatcher.
      */
-    private Float3x4 rotateZXY_orthogonal_general(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest, int _props) {
+    private Float3x4 rotateZXY_orthogonal_general(float angleZ, float angleX, float angleY, @Mutated Float3x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -29743,7 +29743,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code rotateZXY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZXY} dispatcher.
      */
-    private Float3x4 rotateZXY_identity(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    private Float3x4 rotateZXY_identity(float angleZ, float angleX, float angleY, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -29775,7 +29775,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private in-place self-form body of {@code rotateZXY}, specialized by runtime matrix
      * properties; reached only through the public {@code rotateZXY} dispatcher.
      */
-    private Float3x4 rotateZXY_identity_self(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    private Float3x4 rotateZXY_identity_self(float angleZ, float angleX, float angleY, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -29804,7 +29804,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code rotateZXY}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZXY} dispatcher.
      */
-    private Float3x4 rotateZXY_translation(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    private Float3x4 rotateZXY_translation(float angleZ, float angleX, float angleY, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -29841,17 +29841,17 @@ public class Float3x4Impl implements Float3x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public Float3x4 rotateZXY(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    public Float3x4 rotateZXY(float angleZ, float angleX, float angleY, @Mutated Float3x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZXY_identity(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZXY_translation(angleX, angleY, angleZ, dest);
-        return rotateZXY_orthogonal_general(angleX, angleY, angleZ, dest, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZXY_identity(angleZ, angleX, angleY, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZXY_translation(angleZ, angleX, angleY, dest);
+        return rotateZXY_orthogonal_general(angleZ, angleX, angleY, dest, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
     }
 
 
@@ -29864,17 +29864,17 @@ public class Float3x4Impl implements Float3x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated public Float3x4 rotateZXY(float angleX, float angleY, float angleZ) {
-        if (Joml.RETURN_NEW) return rotateZXY(angleX, angleY, angleZ, Joml.float3x4());
+    @Mutated public Float3x4 rotateZXY(float angleZ, float angleX, float angleY) {
+        if (Joml.RETURN_NEW) return rotateZXY(angleZ, angleX, angleY, Joml.float3x4());
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZXY_identity_self(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZXY_translation(angleX, angleY, angleZ, this);
-        return rotateZXY_orthogonal_general(angleX, angleY, angleZ, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZXY_identity_self(angleZ, angleX, angleY, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZXY_translation(angleZ, angleX, angleY, this);
+        return rotateZXY_orthogonal_general(angleZ, angleX, angleY, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
     }
 
 
@@ -29890,13 +29890,13 @@ public class Float3x4Impl implements Float3x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public Double3x4 rotateZXY(float angleX, float angleY, float angleZ, @Mutated Double3x4 dest) {
+    public Double3x4 rotateZXY(float angleZ, float angleX, float angleY, @Mutated Double3x4 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -29942,7 +29942,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code rotateZYX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZYX} dispatcher.
      */
-    private Float3x4 rotateZYX_orthogonal_general(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest, int _props) {
+    private Float3x4 rotateZYX_orthogonal_general(float angleZ, float angleY, float angleX, @Mutated Float3x4 dest, int _props) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -29988,7 +29988,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code rotateZYX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZYX} dispatcher.
      */
-    private Float3x4 rotateZYX_identity(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    private Float3x4 rotateZYX_identity(float angleZ, float angleY, float angleX, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -30020,7 +30020,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private in-place self-form body of {@code rotateZYX}, specialized by runtime matrix
      * properties; reached only through the public {@code rotateZYX} dispatcher.
      */
-    private Float3x4 rotateZYX_identity_self(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    private Float3x4 rotateZYX_identity_self(float angleZ, float angleY, float angleX, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -30049,7 +30049,7 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code rotateZYX}, specialized by runtime matrix properties; reached only
      * through the public {@code rotateZYX} dispatcher.
      */
-    private Float3x4 rotateZYX_translation(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    private Float3x4 rotateZYX_translation(float angleZ, float angleY, float angleX, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);
@@ -30086,17 +30086,17 @@ public class Float3x4Impl implements Float3x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public Float3x4 rotateZYX(float angleX, float angleY, float angleZ, @Mutated Float3x4 dest) {
+    public Float3x4 rotateZYX(float angleZ, float angleY, float angleX, @Mutated Float3x4 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZYX_identity(angleX, angleY, angleZ, dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZYX_translation(angleX, angleY, angleZ, dest);
-        return rotateZYX_orthogonal_general(angleX, angleY, angleZ, dest, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZYX_identity(angleZ, angleY, angleX, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZYX_translation(angleZ, angleY, angleX, dest);
+        return rotateZYX_orthogonal_general(angleZ, angleY, angleX, dest, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
     }
 
 
@@ -30109,17 +30109,17 @@ public class Float3x4Impl implements Float3x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
-    @Mutated public Float3x4 rotateZYX(float angleX, float angleY, float angleZ) {
-        if (Joml.RETURN_NEW) return rotateZYX(angleX, angleY, angleZ, Joml.float3x4());
+    @Mutated public Float3x4 rotateZYX(float angleZ, float angleY, float angleX) {
+        if (Joml.RETURN_NEW) return rotateZYX(angleZ, angleY, angleX, Joml.float3x4());
         int p = this.properties;
-        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZYX_identity_self(angleX, angleY, angleZ, this);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZYX_translation(angleX, angleY, angleZ, this);
-        return rotateZYX_orthogonal_general(angleX, angleY, angleZ, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZYX_identity_self(angleZ, angleY, angleX, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZYX_translation(angleZ, angleY, angleX, this);
+        return rotateZYX_orthogonal_general(angleZ, angleY, angleX, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
     }
 
 
@@ -30135,13 +30135,13 @@ public class Float3x4Impl implements Float3x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public Double3x4 rotateZYX(float angleX, float angleY, float angleZ, @Mutated Double3x4 dest) {
+    public Double3x4 rotateZYX(float angleZ, float angleY, float angleX, @Mutated Double3x4 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
         float _t0 = (float) Math.sin(angleY);

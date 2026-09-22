@@ -1588,11 +1588,11 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * a vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @return this
      */
-    @Mutated public DoubleRigid makeRotationXZY(double angleX, double angleY, double angleZ) {
+    @Mutated public DoubleRigid makeRotationXZY(double angleX, double angleZ, double angleY) {
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
@@ -1642,12 +1642,12 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * radians about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so
      * a vector is rotated about the Z axis first, then X, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated public DoubleRigid makeRotationYXZ(double angleX, double angleY, double angleZ) {
+    @Mutated public DoubleRigid makeRotationYXZ(double angleY, double angleX, double angleZ) {
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
@@ -1677,12 +1677,12 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * radians about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so
      * a vector is rotated about the X axis first, then Z, then Y).
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated public DoubleRigid makeRotationYZX(double angleX, double angleY, double angleZ) {
+    @Mutated public DoubleRigid makeRotationYZX(double angleY, double angleZ, double angleX) {
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
@@ -1732,12 +1732,12 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * radians about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so
      * a vector is rotated about the Y axis first, then X, then Z).
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @return this
      */
-    @Mutated public DoubleRigid makeRotationZXY(double angleX, double angleY, double angleZ) {
+    @Mutated public DoubleRigid makeRotationZXY(double angleZ, double angleX, double angleY) {
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
@@ -1767,12 +1767,12 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * radians about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so
      * a vector is rotated about the X axis first, then Y, then Z).
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @return this
      */
-    @Mutated public DoubleRigid makeRotationZYX(double angleX, double angleY, double angleZ) {
+    @Mutated public DoubleRigid makeRotationZYX(double angleZ, double angleY, double angleX) {
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
@@ -2005,12 +2005,12 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
      * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleRigid rotateXZY(double angleX, double angleY, double angleZ, @Mutated DoubleRigid dest) {
+    public DoubleRigid rotateXZY(double angleX, double angleZ, double angleY, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
@@ -2083,13 +2083,13 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleRigid rotateYXZ(double angleX, double angleY, double angleZ, @Mutated DoubleRigid dest) {
+    public DoubleRigid rotateYXZ(double angleY, double angleX, double angleZ, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
@@ -2132,13 +2132,13 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleRigid rotateYZX(double angleX, double angleY, double angleZ, @Mutated DoubleRigid dest) {
+    public DoubleRigid rotateYZX(double angleY, double angleZ, double angleX, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
@@ -2211,13 +2211,13 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
+     * @param angleZ the angle in radians to rotate about the Z axis
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @param angleZ the angle in radians to rotate about the Z axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleRigid rotateZXY(double angleX, double angleY, double angleZ, @Mutated DoubleRigid dest) {
+    public DoubleRigid rotateZXY(double angleZ, double angleX, double angleY, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
@@ -2260,13 +2260,13 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
-     * @param angleX the angle in radians to rotate about the X axis
-     * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleX the angle in radians to rotate about the X axis
      * @param dest will hold the result
      * @return dest
      */
-    public DoubleRigid rotateZYX(double angleX, double angleY, double angleZ, @Mutated DoubleRigid dest) {
+    public DoubleRigid rotateZYX(double angleZ, double angleY, double angleX, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
