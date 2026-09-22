@@ -288,6 +288,26 @@ public final class FloatSphereImpl implements FloatSphere {
      * @param dest will hold the result
      * @return dest
      */
+    /** Private vector tail of {@code transform_s248ca5d3}: loads, computes and stores every column; reached only through it. */
+    private static void transform_s248ca5d3_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _t9, float _t10, float _t11, float[] mData) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, mData, 8);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, mData, 0);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, mData, 4);
+        var _sv3 = FloatVector.fromArray(COL_SPECIES, mData, 12);
+        var _col0 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, _r9), _sv1.fma(FloatVector.broadcast(COL_SPECIES, _r10), _sv2.fma(FloatVector.broadcast(COL_SPECIES, _r11), _sv3))).withLane(3, _r12 * (float) Math.sqrt(Math.max(Math.max(Math.fma(_r2, _r2, Math.fma(_r4, _r4, Math.fma(_r0, _r0, _t9 + _t10))), Math.fma(_r3, _r3, Math.fma(_r5, _r5, Math.fma(_r1, _r1, _t9 + _t11)))), Math.fma(_r7, _r7, Math.fma(_r8, _r8, Math.fma(_r6, _r6, _t10 + _t11))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private vector tail of {@code transform_s57bdce44}: loads, computes and stores every column; reached only through it. */
+    private static void transform_s57bdce44_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _t9, float _t10, float _t11, float[] mData) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, mData, 8);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, mData, 0);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, mData, 4);
+        var _sv3 = FloatVector.fromArray(COL_SPECIES, mData, 12);
+        var _col0 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, _r9)).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, _r10)).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, _r11)).add(_sv3))).withLane(3, _r12 * (float) Math.sqrt(Math.max(Math.max(Math.fma(_r2, _r2, Math.fma(_r4, _r4, Math.fma(_r0, _r0, _t9 + _t10))), Math.fma(_r3, _r3, Math.fma(_r5, _r5, Math.fma(_r1, _r1, _t9 + _t11)))), Math.fma(_r7, _r7, Math.fma(_r8, _r8, Math.fma(_r6, _r6, _t10 + _t11))))));
+        _col0.intoArray(dd, 0);
+    }
+
     public FloatSphere transform(Float4x4R m, @Mutated FloatSphere dest) {
         if (SimdMath.USE_FMA) return transform_fma(m, dest);
         return transform_mulAdd(m, dest);
@@ -297,11 +317,23 @@ public final class FloatSphereImpl implements FloatSphere {
         float[] sd = this.data;
         float[] mData = ((Float4x4Impl) m).data;
         float[] dd = ((FloatSphereImpl) dest).data;
-        float _t9 = Math.abs(Math.fma(mData[2], mData[6], Math.fma(mData[0], mData[4], mData[1] * mData[5])));
-        float _t10 = Math.abs(Math.fma(mData[2], mData[10], Math.fma(mData[0], mData[8], mData[1] * mData[9])));
-        float _t11 = Math.abs(Math.fma(mData[6], mData[10], Math.fma(mData[4], mData[8], mData[5] * mData[9])));
-        var _col0 = FloatVector.fromArray(COL_SPECIES, mData, 8).fma(FloatVector.broadcast(COL_SPECIES, sd[2]), FloatVector.fromArray(COL_SPECIES, mData, 0).fma(FloatVector.broadcast(COL_SPECIES, sd[0]), FloatVector.fromArray(COL_SPECIES, mData, 4).fma(FloatVector.broadcast(COL_SPECIES, sd[1]), FloatVector.fromArray(COL_SPECIES, mData, 12)))).withLane(3, sd[3] * (float) Math.sqrt(Math.max(Math.max(Math.fma(mData[0], mData[0], Math.fma(mData[1], mData[1], Math.fma(mData[2], mData[2], _t9 + _t10))), Math.fma(mData[4], mData[4], Math.fma(mData[5], mData[5], Math.fma(mData[6], mData[6], _t9 + _t11)))), Math.fma(mData[8], mData[8], Math.fma(mData[9], mData[9], Math.fma(mData[10], mData[10], _t10 + _t11))))));
-        _col0.intoArray(dd, 0);
+        float _r0 = mData[2];
+        float _r1 = mData[6];
+        float _r2 = mData[0];
+        float _r3 = mData[4];
+        float _r4 = mData[1];
+        float _r5 = mData[5];
+        float _r6 = mData[10];
+        float _r7 = mData[8];
+        float _r8 = mData[9];
+        float _r9 = sd[2];
+        float _r10 = sd[0];
+        float _r11 = sd[1];
+        float _r12 = sd[3];
+        float _t9 = Math.abs(Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5)));
+        float _t10 = Math.abs(Math.fma(_r0, _r6, Math.fma(_r2, _r7, _r4 * _r8)));
+        float _t11 = Math.abs(Math.fma(_r1, _r6, Math.fma(_r3, _r7, _r5 * _r8)));
+        transform_s248ca5d3_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _t9, _t10, _t11, mData);
         return dest;
     }
 
@@ -309,11 +341,23 @@ public final class FloatSphereImpl implements FloatSphere {
         float[] sd = this.data;
         float[] mData = ((Float4x4Impl) m).data;
         float[] dd = ((FloatSphereImpl) dest).data;
-        float _t9 = Math.abs(Math.fma(mData[2], mData[6], Math.fma(mData[0], mData[4], mData[1] * mData[5])));
-        float _t10 = Math.abs(Math.fma(mData[2], mData[10], Math.fma(mData[0], mData[8], mData[1] * mData[9])));
-        float _t11 = Math.abs(Math.fma(mData[6], mData[10], Math.fma(mData[4], mData[8], mData[5] * mData[9])));
-        var _col0 = FloatVector.fromArray(COL_SPECIES, mData, 8).mul(FloatVector.broadcast(COL_SPECIES, sd[2])).add(FloatVector.fromArray(COL_SPECIES, mData, 0).mul(FloatVector.broadcast(COL_SPECIES, sd[0])).add(FloatVector.fromArray(COL_SPECIES, mData, 4).mul(FloatVector.broadcast(COL_SPECIES, sd[1])).add(FloatVector.fromArray(COL_SPECIES, mData, 12)))).withLane(3, sd[3] * (float) Math.sqrt(Math.max(Math.max(Math.fma(mData[0], mData[0], Math.fma(mData[1], mData[1], Math.fma(mData[2], mData[2], _t9 + _t10))), Math.fma(mData[4], mData[4], Math.fma(mData[5], mData[5], Math.fma(mData[6], mData[6], _t9 + _t11)))), Math.fma(mData[8], mData[8], Math.fma(mData[9], mData[9], Math.fma(mData[10], mData[10], _t10 + _t11))))));
-        _col0.intoArray(dd, 0);
+        float _r0 = mData[2];
+        float _r1 = mData[6];
+        float _r2 = mData[0];
+        float _r3 = mData[4];
+        float _r4 = mData[1];
+        float _r5 = mData[5];
+        float _r6 = mData[10];
+        float _r7 = mData[8];
+        float _r8 = mData[9];
+        float _r9 = sd[2];
+        float _r10 = sd[0];
+        float _r11 = sd[1];
+        float _r12 = sd[3];
+        float _t9 = Math.abs(Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5)));
+        float _t10 = Math.abs(Math.fma(_r0, _r6, Math.fma(_r2, _r7, _r4 * _r8)));
+        float _t11 = Math.abs(Math.fma(_r1, _r6, Math.fma(_r3, _r7, _r5 * _r8)));
+        transform_s57bdce44_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _t9, _t10, _t11, mData);
         return dest;
     }
 

@@ -202,6 +202,26 @@ public final class DoubleSphereImpl implements DoubleSphere {
      * @param dest will hold the result
      * @return dest
      */
+    /** Private vector tail of {@code transform_s10286e8d}: loads, computes and stores every column; reached only through it. */
+    private static void transform_s10286e8d_tail(double[] dd, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _t9, double _t10, double _t11, double[] mData) {
+        var _sv0 = DoubleVector.fromArray(COL_SPECIES, mData, 8);
+        var _sv1 = DoubleVector.fromArray(COL_SPECIES, mData, 0);
+        var _sv2 = DoubleVector.fromArray(COL_SPECIES, mData, 4);
+        var _sv3 = DoubleVector.fromArray(COL_SPECIES, mData, 12);
+        var _col0 = _sv0.fma(DoubleVector.broadcast(COL_SPECIES, _r9), _sv1.fma(DoubleVector.broadcast(COL_SPECIES, _r10), _sv2.fma(DoubleVector.broadcast(COL_SPECIES, _r11), _sv3))).withLane(3, _r12 * Math.sqrt(Math.max(Math.max(Math.fma(_r2, _r2, Math.fma(_r4, _r4, Math.fma(_r0, _r0, _t9 + _t10))), Math.fma(_r3, _r3, Math.fma(_r5, _r5, Math.fma(_r1, _r1, _t9 + _t11)))), Math.fma(_r7, _r7, Math.fma(_r8, _r8, Math.fma(_r6, _r6, _t10 + _t11))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private vector tail of {@code transform_s5d81934a}: loads, computes and stores every column; reached only through it. */
+    private static void transform_s5d81934a_tail(double[] dd, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _t9, double _t10, double _t11, double[] mData) {
+        var _sv0 = DoubleVector.fromArray(COL_SPECIES, mData, 8);
+        var _sv1 = DoubleVector.fromArray(COL_SPECIES, mData, 0);
+        var _sv2 = DoubleVector.fromArray(COL_SPECIES, mData, 4);
+        var _sv3 = DoubleVector.fromArray(COL_SPECIES, mData, 12);
+        var _col0 = _sv0.mul(DoubleVector.broadcast(COL_SPECIES, _r9)).add(_sv1.mul(DoubleVector.broadcast(COL_SPECIES, _r10)).add(_sv2.mul(DoubleVector.broadcast(COL_SPECIES, _r11)).add(_sv3))).withLane(3, _r12 * Math.sqrt(Math.max(Math.max(Math.fma(_r2, _r2, Math.fma(_r4, _r4, Math.fma(_r0, _r0, _t9 + _t10))), Math.fma(_r3, _r3, Math.fma(_r5, _r5, Math.fma(_r1, _r1, _t9 + _t11)))), Math.fma(_r7, _r7, Math.fma(_r8, _r8, Math.fma(_r6, _r6, _t10 + _t11))))));
+        _col0.intoArray(dd, 0);
+    }
+
     public DoubleSphere transform(Double4x4R m, @Mutated DoubleSphere dest) {
         if (SimdMath.USE_FMA) return transform_fma(m, dest);
         return transform_mulAdd(m, dest);
@@ -211,11 +231,23 @@ public final class DoubleSphereImpl implements DoubleSphere {
         double[] sd = this.data;
         double[] mData = ((Double4x4Impl) m).data;
         double[] dd = ((DoubleSphereImpl) dest).data;
-        double _t9 = Math.abs(Math.fma(mData[2], mData[6], Math.fma(mData[0], mData[4], mData[1] * mData[5])));
-        double _t10 = Math.abs(Math.fma(mData[2], mData[10], Math.fma(mData[0], mData[8], mData[1] * mData[9])));
-        double _t11 = Math.abs(Math.fma(mData[6], mData[10], Math.fma(mData[4], mData[8], mData[5] * mData[9])));
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, mData, 8).fma(DoubleVector.broadcast(COL_SPECIES, sd[2]), DoubleVector.fromArray(COL_SPECIES, mData, 0).fma(DoubleVector.broadcast(COL_SPECIES, sd[0]), DoubleVector.fromArray(COL_SPECIES, mData, 4).fma(DoubleVector.broadcast(COL_SPECIES, sd[1]), DoubleVector.fromArray(COL_SPECIES, mData, 12)))).withLane(3, sd[3] * Math.sqrt(Math.max(Math.max(Math.fma(mData[0], mData[0], Math.fma(mData[1], mData[1], Math.fma(mData[2], mData[2], _t9 + _t10))), Math.fma(mData[4], mData[4], Math.fma(mData[5], mData[5], Math.fma(mData[6], mData[6], _t9 + _t11)))), Math.fma(mData[8], mData[8], Math.fma(mData[9], mData[9], Math.fma(mData[10], mData[10], _t10 + _t11))))));
-        _col0.intoArray(dd, 0);
+        double _r0 = mData[2];
+        double _r1 = mData[6];
+        double _r2 = mData[0];
+        double _r3 = mData[4];
+        double _r4 = mData[1];
+        double _r5 = mData[5];
+        double _r6 = mData[10];
+        double _r7 = mData[8];
+        double _r8 = mData[9];
+        double _r9 = sd[2];
+        double _r10 = sd[0];
+        double _r11 = sd[1];
+        double _r12 = sd[3];
+        double _t9 = Math.abs(Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5)));
+        double _t10 = Math.abs(Math.fma(_r0, _r6, Math.fma(_r2, _r7, _r4 * _r8)));
+        double _t11 = Math.abs(Math.fma(_r1, _r6, Math.fma(_r3, _r7, _r5 * _r8)));
+        transform_s10286e8d_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _t9, _t10, _t11, mData);
         return dest;
     }
 
@@ -223,11 +255,23 @@ public final class DoubleSphereImpl implements DoubleSphere {
         double[] sd = this.data;
         double[] mData = ((Double4x4Impl) m).data;
         double[] dd = ((DoubleSphereImpl) dest).data;
-        double _t9 = Math.abs(Math.fma(mData[2], mData[6], Math.fma(mData[0], mData[4], mData[1] * mData[5])));
-        double _t10 = Math.abs(Math.fma(mData[2], mData[10], Math.fma(mData[0], mData[8], mData[1] * mData[9])));
-        double _t11 = Math.abs(Math.fma(mData[6], mData[10], Math.fma(mData[4], mData[8], mData[5] * mData[9])));
-        var _col0 = DoubleVector.fromArray(COL_SPECIES, mData, 8).mul(DoubleVector.broadcast(COL_SPECIES, sd[2])).add(DoubleVector.fromArray(COL_SPECIES, mData, 0).mul(DoubleVector.broadcast(COL_SPECIES, sd[0])).add(DoubleVector.fromArray(COL_SPECIES, mData, 4).mul(DoubleVector.broadcast(COL_SPECIES, sd[1])).add(DoubleVector.fromArray(COL_SPECIES, mData, 12)))).withLane(3, sd[3] * Math.sqrt(Math.max(Math.max(Math.fma(mData[0], mData[0], Math.fma(mData[1], mData[1], Math.fma(mData[2], mData[2], _t9 + _t10))), Math.fma(mData[4], mData[4], Math.fma(mData[5], mData[5], Math.fma(mData[6], mData[6], _t9 + _t11)))), Math.fma(mData[8], mData[8], Math.fma(mData[9], mData[9], Math.fma(mData[10], mData[10], _t10 + _t11))))));
-        _col0.intoArray(dd, 0);
+        double _r0 = mData[2];
+        double _r1 = mData[6];
+        double _r2 = mData[0];
+        double _r3 = mData[4];
+        double _r4 = mData[1];
+        double _r5 = mData[5];
+        double _r6 = mData[10];
+        double _r7 = mData[8];
+        double _r8 = mData[9];
+        double _r9 = sd[2];
+        double _r10 = sd[0];
+        double _r11 = sd[1];
+        double _r12 = sd[3];
+        double _t9 = Math.abs(Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5)));
+        double _t10 = Math.abs(Math.fma(_r0, _r6, Math.fma(_r2, _r7, _r4 * _r8)));
+        double _t11 = Math.abs(Math.fma(_r1, _r6, Math.fma(_r3, _r7, _r5 * _r8)));
+        transform_s5d81934a_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _t9, _t10, _t11, mData);
         return dest;
     }
 

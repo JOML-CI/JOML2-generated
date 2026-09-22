@@ -813,6 +813,84 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code getNormalizedRotation}, specialized by runtime matrix properties;
      * reached only through the public {@code getNormalizedRotation} dispatcher.
      */
+    /** Private vector tail of {@code getNormalizedRotation_general_sfb8b4c8}: loads, computes and stores every column; reached only through it. */
+    private static void getNormalizedRotation_general_sfb8b4c8_tail3(float[] dd, float _t23, float _t26, float _t36, float _t39, float _t49, float _t53, float _t55, float _t56, float _t57, float _t58, float _t62, float _t63, float _t64, float _t65, float _t69) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (_t58 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t62)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t36).withLane(1, _t56).withLane(2, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t62)))))) : (_t49 > Math.max(_t23, _t26) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t63)).withLane(1, _t53 * _t69).withLane(2, _t55 * _t69).withLane(3, _t36 * _t69)) : (_t23 > _t26 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t53).withLane(2, _t39).withLane(3, _t56).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t64)))).withLane(1, (float) Math.sqrt(_t64))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t39).withLane(3, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t65)))).withLane(2, (float) Math.sqrt(_t65))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code getNormalizedRotation_general_sfb8b4c8}; reached only through it. */
+    private static void getNormalizedRotation_general_sfb8b4c8_tail(float[] dd, float _r0, float _r3, float _r6, float _r7, float _r8, float _t6, float _t7, float _t8, float _t9, float _t10, float _t11, float _t21, float _t22, float _t23, float _t24) {
+        float _t25 = _t8 > 0.0f ? _r6 * _t11 : 0.0f;
+        float _t26 = _t7 > 0.0f ? _r3 * _t10 : 0.0f;
+        float _t27 = _t6 > 0.0f ? _r0 * _t9 : 0.0f;
+        float _t28 = _t8 > 0.0f ? _r7 * _t11 : 0.0f;
+        float _t29 = _t8 > 0.0f ? _r8 * _t11 : 0.0f;
+        float _t36 = _t27 - _t22;
+        float _t39 = _t27 + _t22;
+        float _t48 = Math.fma(Math.fma(_t21, _t22, -(_t23 * _t24)), _t25, Math.fma(Math.fma(_t23, _t26, -(_t27 * _t22)), _t28, Math.fma(_t27, _t24, -(_t21 * _t26)) * _t29));
+        float _t49 = _t48 < 0.0f ? -_t28 : _t28;
+        float _t50 = _t48 < 0.0f ? -_t29 : _t29;
+        float _t51 = _t48 < 0.0f ? -_t25 : _t25;
+        getNormalizedRotation_general_sfb8b4c8_tail2(dd, _t21, _t23, _t24, _t26, _t36, _t39, _t49, _t50, _t51);
+    }
+
+    /** Private tail of {@code getNormalizedRotation_general_sfb8b4c8}; reached only through it. */
+    private static void getNormalizedRotation_general_sfb8b4c8_tail2(float[] dd, float _t21, float _t23, float _t24, float _t26, float _t36, float _t39, float _t49, float _t50, float _t51) {
+        float _t52 = _t49 + _t23;
+        float _t53 = _t50 + _t21;
+        float _t55 = _t51 + _t24;
+        float _t56 = _t24 - _t51;
+        float _t57 = _t50 - _t21;
+        float _t58 = _t52 + _t26;
+        float _t62 = 1.0f + _t58;
+        float _t63 = 1.0f + (_t49 - (_t23 + _t26));
+        float _t64 = 1.0f + (_t23 - (_t49 + _t26));
+        float _t65 = 1.0f + (_t26 - _t52);
+        float _t69 = (1.0f / (float) Math.sqrt(_t63));
+        getNormalizedRotation_general_sfb8b4c8_tail3(dd, _t23, _t26, _t36, _t39, _t49, _t53, _t55, _t56, _t57, _t58, _t62, _t63, _t64, _t65, _t69);
+    }
+
+    /** Private vector tail of {@code getNormalizedRotation_general_s13de5f2f}: loads, computes and stores every column; reached only through it. */
+    private static void getNormalizedRotation_general_s13de5f2f_tail3(float[] dd, float _t23, float _t26, float _t36, float _t39, float _t49, float _t53, float _t55, float _t56, float _t57, float _t58, float _t62, float _t63, float _t64, float _t65, float _t69) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (_t58 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t62)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t36).withLane(1, _t56).withLane(2, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t62)))))) : (_t49 > Math.max(_t23, _t26) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t63)).withLane(1, _t53 * _t69).withLane(2, _t55 * _t69).withLane(3, _t36 * _t69)) : (_t23 > _t26 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t53).withLane(2, _t39).withLane(3, _t56).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t64)))).withLane(1, (float) Math.sqrt(_t64))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t39).withLane(3, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t65)))).withLane(2, (float) Math.sqrt(_t65))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code getNormalizedRotation_general_s13de5f2f}; reached only through it. */
+    private static void getNormalizedRotation_general_s13de5f2f_tail(float[] dd, float _r0, float _r3, float _r6, float _r7, float _r8, float _t6, float _t7, float _t8, float _t9, float _t10, float _t11, float _t21, float _t22, float _t23, float _t24) {
+        float _t25 = _t8 > 0.0f ? _r6 * _t11 : 0.0f;
+        float _t26 = _t7 > 0.0f ? _r3 * _t10 : 0.0f;
+        float _t27 = _t6 > 0.0f ? _r0 * _t9 : 0.0f;
+        float _t28 = _t8 > 0.0f ? _r7 * _t11 : 0.0f;
+        float _t29 = _t8 > 0.0f ? _r8 * _t11 : 0.0f;
+        float _t36 = _t27 - _t22;
+        float _t39 = _t27 + _t22;
+        float _t48 = Math.fma(Math.fma(_t21, _t22, -(_t23 * _t24)), _t25, Math.fma(Math.fma(_t23, _t26, -(_t27 * _t22)), _t28, Math.fma(_t27, _t24, -(_t21 * _t26)) * _t29));
+        float _t49 = _t48 < 0.0f ? -_t28 : _t28;
+        float _t50 = _t48 < 0.0f ? -_t29 : _t29;
+        float _t51 = _t48 < 0.0f ? -_t25 : _t25;
+        getNormalizedRotation_general_s13de5f2f_tail2(dd, _t21, _t23, _t24, _t26, _t36, _t39, _t49, _t50, _t51);
+    }
+
+    /** Private tail of {@code getNormalizedRotation_general_s13de5f2f}; reached only through it. */
+    private static void getNormalizedRotation_general_s13de5f2f_tail2(float[] dd, float _t21, float _t23, float _t24, float _t26, float _t36, float _t39, float _t49, float _t50, float _t51) {
+        float _t52 = _t49 + _t23;
+        float _t53 = _t50 + _t21;
+        float _t55 = _t51 + _t24;
+        float _t56 = _t24 - _t51;
+        float _t57 = _t50 - _t21;
+        float _t58 = _t52 + _t26;
+        float _t62 = 1.0f + _t58;
+        float _t63 = 1.0f + (_t49 - (_t23 + _t26));
+        float _t64 = 1.0f + (_t23 - (_t49 + _t26));
+        float _t65 = 1.0f + (_t26 - _t52);
+        float _t69 = (1.0f / (float) Math.sqrt(_t63));
+        getNormalizedRotation_general_s13de5f2f_tail3(dd, _t23, _t26, _t36, _t39, _t49, _t53, _t55, _t56, _t57, _t58, _t62, _t63, _t64, _t65, _t69);
+    }
+
     private FloatQuat getNormalizedRotation_general(@Mutated FloatQuat dest) {
         if (SimdMath.USE_FMA) return getNormalizedRotation_general_fma(dest);
         return getNormalizedRotation_general_mulAdd(dest);
@@ -821,82 +899,52 @@ public class Float3x4Impl implements Float3x4 {
     private FloatQuat getNormalizedRotation_general_fma(@Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
-        float _t6 = Math.fma(sd[9], sd[9], Math.fma(sd[1], sd[1], sd[5] * sd[5]));
-        float _t7 = Math.fma(sd[10], sd[10], Math.fma(sd[2], sd[2], sd[6] * sd[6]));
-        float _t8 = Math.fma(sd[8], sd[8], Math.fma(sd[0], sd[0], sd[4] * sd[4]));
+        float _r0 = sd[9];
+        float _r1 = sd[1];
+        float _r2 = sd[5];
+        float _r3 = sd[10];
+        float _r4 = sd[2];
+        float _r5 = sd[6];
+        float _r6 = sd[8];
+        float _r7 = sd[0];
+        float _r8 = sd[4];
+        float _t6 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
+        float _t7 = Math.fma(_r3, _r3, Math.fma(_r4, _r4, _r5 * _r5));
+        float _t8 = Math.fma(_r6, _r6, Math.fma(_r7, _r7, _r8 * _r8));
         float _t9 = (1.0f / (float) Math.sqrt(_t6));
         float _t10 = (1.0f / (float) Math.sqrt(_t7));
         float _t11 = (1.0f / (float) Math.sqrt(_t8));
-        float _t21 = _t6 > 0.0f ? sd[1] * _t9 : 0.0f;
-        float _t22 = _t7 > 0.0f ? sd[6] * _t10 : 0.0f;
-        float _t23 = _t6 > 0.0f ? sd[5] * _t9 : 0.0f;
-        float _t24 = _t7 > 0.0f ? sd[2] * _t10 : 0.0f;
-        float _t25 = _t8 > 0.0f ? sd[8] * _t11 : 0.0f;
-        float _t26 = _t7 > 0.0f ? sd[10] * _t10 : 0.0f;
-        float _t27 = _t6 > 0.0f ? sd[9] * _t9 : 0.0f;
-        float _t28 = _t8 > 0.0f ? sd[0] * _t11 : 0.0f;
-        float _t29 = _t8 > 0.0f ? sd[4] * _t11 : 0.0f;
-        float _t36 = _t27 - _t22;
-        float _t39 = _t27 + _t22;
-        float _t48 = Math.fma(Math.fma(_t21, _t22, -(_t23 * _t24)), _t25, Math.fma(Math.fma(_t23, _t26, -(_t27 * _t22)), _t28, Math.fma(_t27, _t24, -(_t21 * _t26)) * _t29));
-        float _t49 = _t48 < 0.0f ? -_t28 : _t28;
-        float _t50 = _t48 < 0.0f ? -_t29 : _t29;
-        float _t51 = _t48 < 0.0f ? -_t25 : _t25;
-        float _t52 = _t49 + _t23;
-        float _t53 = _t50 + _t21;
-        float _t55 = _t51 + _t24;
-        float _t56 = _t24 - _t51;
-        float _t57 = _t50 - _t21;
-        float _t58 = _t52 + _t26;
-        float _t62 = 1.0f + _t58;
-        float _t63 = 1.0f + (_t49 - (_t23 + _t26));
-        float _t64 = 1.0f + (_t23 - (_t49 + _t26));
-        float _t65 = 1.0f + (_t26 - _t52);
-        float _t69 = (1.0f / (float) Math.sqrt(_t63));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (_t58 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t62)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t36).withLane(1, _t56).withLane(2, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t62)))))) : (_t49 > Math.max(_t23, _t26) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t63)).withLane(1, _t53 * _t69).withLane(2, _t55 * _t69).withLane(3, _t36 * _t69)) : (_t23 > _t26 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t53).withLane(2, _t39).withLane(3, _t56).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t64)))).withLane(1, (float) Math.sqrt(_t64))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t39).withLane(3, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t65)))).withLane(2, (float) Math.sqrt(_t65))))));
-        _col0.intoArray(dd, 0);
+        float _t21 = _t6 > 0.0f ? _r1 * _t9 : 0.0f;
+        float _t22 = _t7 > 0.0f ? _r5 * _t10 : 0.0f;
+        float _t23 = _t6 > 0.0f ? _r2 * _t9 : 0.0f;
+        float _t24 = _t7 > 0.0f ? _r4 * _t10 : 0.0f;
+        getNormalizedRotation_general_sfb8b4c8_tail(dd, _r0, _r3, _r6, _r7, _r8, _t6, _t7, _t8, _t9, _t10, _t11, _t21, _t22, _t23, _t24);
         return dest;
     }
 
     private FloatQuat getNormalizedRotation_general_mulAdd(@Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
-        float _t6 = Math.fma(sd[9], sd[9], Math.fma(sd[1], sd[1], sd[5] * sd[5]));
-        float _t7 = Math.fma(sd[10], sd[10], Math.fma(sd[2], sd[2], sd[6] * sd[6]));
-        float _t8 = Math.fma(sd[8], sd[8], Math.fma(sd[0], sd[0], sd[4] * sd[4]));
+        float _r0 = sd[9];
+        float _r1 = sd[1];
+        float _r2 = sd[5];
+        float _r3 = sd[10];
+        float _r4 = sd[2];
+        float _r5 = sd[6];
+        float _r6 = sd[8];
+        float _r7 = sd[0];
+        float _r8 = sd[4];
+        float _t6 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
+        float _t7 = Math.fma(_r3, _r3, Math.fma(_r4, _r4, _r5 * _r5));
+        float _t8 = Math.fma(_r6, _r6, Math.fma(_r7, _r7, _r8 * _r8));
         float _t9 = (1.0f / (float) Math.sqrt(_t6));
         float _t10 = (1.0f / (float) Math.sqrt(_t7));
         float _t11 = (1.0f / (float) Math.sqrt(_t8));
-        float _t21 = _t6 > 0.0f ? sd[1] * _t9 : 0.0f;
-        float _t22 = _t7 > 0.0f ? sd[6] * _t10 : 0.0f;
-        float _t23 = _t6 > 0.0f ? sd[5] * _t9 : 0.0f;
-        float _t24 = _t7 > 0.0f ? sd[2] * _t10 : 0.0f;
-        float _t25 = _t8 > 0.0f ? sd[8] * _t11 : 0.0f;
-        float _t26 = _t7 > 0.0f ? sd[10] * _t10 : 0.0f;
-        float _t27 = _t6 > 0.0f ? sd[9] * _t9 : 0.0f;
-        float _t28 = _t8 > 0.0f ? sd[0] * _t11 : 0.0f;
-        float _t29 = _t8 > 0.0f ? sd[4] * _t11 : 0.0f;
-        float _t36 = _t27 - _t22;
-        float _t39 = _t27 + _t22;
-        float _t48 = Math.fma(Math.fma(_t21, _t22, -(_t23 * _t24)), _t25, Math.fma(Math.fma(_t23, _t26, -(_t27 * _t22)), _t28, Math.fma(_t27, _t24, -(_t21 * _t26)) * _t29));
-        float _t49 = _t48 < 0.0f ? -_t28 : _t28;
-        float _t50 = _t48 < 0.0f ? -_t29 : _t29;
-        float _t51 = _t48 < 0.0f ? -_t25 : _t25;
-        float _t52 = _t49 + _t23;
-        float _t53 = _t50 + _t21;
-        float _t55 = _t51 + _t24;
-        float _t56 = _t24 - _t51;
-        float _t57 = _t50 - _t21;
-        float _t58 = _t52 + _t26;
-        float _t62 = 1.0f + _t58;
-        float _t63 = 1.0f + (_t49 - (_t23 + _t26));
-        float _t64 = 1.0f + (_t23 - (_t49 + _t26));
-        float _t65 = 1.0f + (_t26 - _t52);
-        float _t69 = (1.0f / (float) Math.sqrt(_t63));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (_t58 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t62)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t36).withLane(1, _t56).withLane(2, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t62)))))) : (_t49 > Math.max(_t23, _t26) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t63)).withLane(1, _t53 * _t69).withLane(2, _t55 * _t69).withLane(3, _t36 * _t69)) : (_t23 > _t26 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t53).withLane(2, _t39).withLane(3, _t56).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t64)))).withLane(1, (float) Math.sqrt(_t64))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t39).withLane(3, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t65)))).withLane(2, (float) Math.sqrt(_t65))))));
-        _col0.intoArray(dd, 0);
+        float _t21 = _t6 > 0.0f ? _r1 * _t9 : 0.0f;
+        float _t22 = _t7 > 0.0f ? _r5 * _t10 : 0.0f;
+        float _t23 = _t6 > 0.0f ? _r2 * _t9 : 0.0f;
+        float _t24 = _t7 > 0.0f ? _r4 * _t10 : 0.0f;
+        getNormalizedRotation_general_s13de5f2f_tail(dd, _r0, _r3, _r6, _r7, _r8, _t6, _t7, _t8, _t9, _t10, _t11, _t21, _t22, _t23, _t24);
         return dest;
     }
 
@@ -1291,6 +1339,20 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code getUnnormalizedRotation}, specialized by runtime matrix properties;
      * reached only through the public {@code getUnnormalizedRotation} dispatcher.
      */
+    /** Private vector tail of {@code getUnnormalizedRotation_orthogonal_sfb8b4c8}: loads, computes and stores every column; reached only through it. */
+    private static void getUnnormalizedRotation_orthogonal_sfb8b4c8_tail(float[] dd, float _r0, float _r1, float _r8, float _t1, float _t4, float _t6, float _t7, float _t8, float _t9, float _t10, float _t14, float _t15, float _t16, float _t17, float _t21) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t14)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private vector tail of {@code getUnnormalizedRotation_orthogonal_s13de5f2f}: loads, computes and stores every column; reached only through it. */
+    private static void getUnnormalizedRotation_orthogonal_s13de5f2f_tail(float[] dd, float _r0, float _r1, float _r8, float _t1, float _t4, float _t6, float _t7, float _t8, float _t9, float _t10, float _t14, float _t15, float _t16, float _t17, float _t21) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t14)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
+        _col0.intoArray(dd, 0);
+    }
+
     private FloatQuat getUnnormalizedRotation_orthogonal(@Mutated FloatQuat dest) {
         if (SimdMath.USE_FMA) return getUnnormalizedRotation_orthogonal_fma(dest);
         return getUnnormalizedRotation_orthogonal_mulAdd(dest);
@@ -1299,52 +1361,62 @@ public class Float3x4Impl implements Float3x4 {
     private FloatQuat getUnnormalizedRotation_orthogonal_fma(@Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
-        float _t0 = sd[0] + sd[5];
-        float _t1 = sd[9] - sd[6];
-        float _t4 = sd[1] + sd[4];
-        float _t6 = sd[2] + sd[8];
-        float _t7 = sd[2] - sd[8];
-        float _t8 = sd[6] + sd[9];
-        float _t9 = sd[4] - sd[1];
-        float _t10 = sd[10] + _t0;
+        float _r0 = sd[0];
+        float _r1 = sd[5];
+        float _r2 = sd[9];
+        float _r3 = sd[6];
+        float _r4 = sd[1];
+        float _r5 = sd[4];
+        float _r6 = sd[2];
+        float _r7 = sd[8];
+        float _r8 = sd[10];
+        float _t0 = _r0 + _r1;
+        float _t1 = _r2 - _r3;
+        float _t4 = _r4 + _r5;
+        float _t6 = _r6 + _r7;
+        float _t7 = _r6 - _r7;
+        float _t8 = _r3 + _r2;
+        float _t9 = _r5 - _r4;
+        float _t10 = _r8 + _t0;
         float _t14 = 1.0f + _t10;
-        float _t15 = 1.0f + (sd[0] - (sd[5] + sd[10]));
-        float _t16 = 1.0f + (sd[5] - (sd[0] + sd[10]));
-        float _t17 = 1.0f + (sd[10] - _t0);
+        float _t15 = 1.0f + (_r0 - (_r1 + _r8));
+        float _t16 = 1.0f + (_r1 - (_r0 + _r8));
+        float _t17 = 1.0f + (_r8 - _t0);
         float _t21 = (1.0f / (float) Math.sqrt(_t15));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t14)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (sd[0] > Math.max(sd[5], sd[10]) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (sd[5] > sd[10] ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
-        _col0.intoArray(dd, 0);
+        getUnnormalizedRotation_orthogonal_sfb8b4c8_tail(dd, _r0, _r1, _r8, _t1, _t4, _t6, _t7, _t8, _t9, _t10, _t14, _t15, _t16, _t17, _t21);
         return dest;
     }
 
     private FloatQuat getUnnormalizedRotation_orthogonal_mulAdd(@Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
-        float _t0 = sd[0] + sd[5];
-        float _t1 = sd[9] - sd[6];
-        float _t4 = sd[1] + sd[4];
-        float _t6 = sd[2] + sd[8];
-        float _t7 = sd[2] - sd[8];
-        float _t8 = sd[6] + sd[9];
-        float _t9 = sd[4] - sd[1];
-        float _t10 = sd[10] + _t0;
+        float _r0 = sd[0];
+        float _r1 = sd[5];
+        float _r2 = sd[9];
+        float _r3 = sd[6];
+        float _r4 = sd[1];
+        float _r5 = sd[4];
+        float _r6 = sd[2];
+        float _r7 = sd[8];
+        float _r8 = sd[10];
+        float _t0 = _r0 + _r1;
+        float _t1 = _r2 - _r3;
+        float _t4 = _r4 + _r5;
+        float _t6 = _r6 + _r7;
+        float _t7 = _r6 - _r7;
+        float _t8 = _r3 + _r2;
+        float _t9 = _r5 - _r4;
+        float _t10 = _r8 + _t0;
         float _t14 = 1.0f + _t10;
-        float _t15 = 1.0f + (sd[0] - (sd[5] + sd[10]));
-        float _t16 = 1.0f + (sd[5] - (sd[0] + sd[10]));
-        float _t17 = 1.0f + (sd[10] - _t0);
+        float _t15 = 1.0f + (_r0 - (_r1 + _r8));
+        float _t16 = 1.0f + (_r1 - (_r0 + _r8));
+        float _t17 = 1.0f + (_r8 - _t0);
         float _t21 = (1.0f / (float) Math.sqrt(_t15));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t14)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (sd[0] > Math.max(sd[5], sd[10]) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (sd[5] > sd[10] ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
-        _col0.intoArray(dd, 0);
+        getUnnormalizedRotation_orthogonal_s13de5f2f_tail(dd, _r0, _r1, _r8, _t1, _t4, _t6, _t7, _t8, _t9, _t10, _t14, _t15, _t16, _t17, _t21);
         return dest;
     }
 
 
-    /**
-     * Private body of {@code getUnnormalizedRotation}, specialized by runtime matrix properties;
-     * reached only through the public {@code getUnnormalizedRotation} dispatcher.
-     */
     private FloatQuat getUnnormalizedRotation_general(@Mutated FloatQuat dest) {
         return getUnnormalizedRotation_orthogonal(dest);
     }
@@ -3429,6 +3501,40 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code invert}, specialized by runtime matrix properties; reached only
      * through the public {@code invert} dispatcher.
      */
+    /** Private vector tail of {@code invert_general_scbf4c04}: loads, computes and stores every column; reached only through it. */
+    private static void invert_general_scbf4c04_tail2(float[] dd, float _r9, float _r10, float _r11, float _t20, float _t21, float _t23, float _t24, float _t25, float _t26, float _t27, float _t28, float _t29, float _t33_inv) {
+        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_r9, _t24, Math.fma(_r10, _t20, _r11 * _t23)) * _t33_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t20).withLane(1, _t23).withLane(2, _t24).mul(FloatVector.broadcast(COL_SPECIES, _t33_inv)));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_r9, _t27, Math.fma(_r10, _t25, _r11 * _t26)) * _t33_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t25).withLane(1, _t26).withLane(2, _t27).mul(FloatVector.broadcast(COL_SPECIES, _t33_inv)));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_r9, _t29, Math.fma(_r10, _t21, _r11 * _t28)) * _t33_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t21).withLane(1, _t28).withLane(2, _t29).mul(FloatVector.broadcast(COL_SPECIES, _t33_inv)));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private tail of {@code invert_general_scbf4c04}; reached only through it. */
+    private static void invert_general_scbf4c04_tail(float[] dd, float _r0, float _r1, float _r2, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t20, float _t21, float _t23, float _t24, float _t25, float _t26, float _t27, float _t28) {
+        float _t29 = Math.fma(_r8, _r0, -(_r7 * _r4));
+        float _t33_inv = 1.0f / Math.fma(_r6, _t21, Math.fma(_r8, _t20, -(_r7 * Math.fma(_r4, _r1, -(_r2 * _r5)))));
+        invert_general_scbf4c04_tail2(dd, _r9, _r10, _r11, _t20, _t21, _t23, _t24, _t25, _t26, _t27, _t28, _t29, _t33_inv);
+    }
+
+    /** Private vector tail of {@code invert_general_s75d7ae73}: loads, computes and stores every column; reached only through it. */
+    private static void invert_general_s75d7ae73_tail2(float[] dd, float _r9, float _r10, float _r11, float _t20, float _t21, float _t23, float _t24, float _t25, float _t26, float _t27, float _t28, float _t29, float _t33_inv) {
+        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_r9, _t24, Math.fma(_r10, _t20, _r11 * _t23)) * _t33_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t20).withLane(1, _t23).withLane(2, _t24).mul(FloatVector.broadcast(COL_SPECIES, _t33_inv)));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_r9, _t27, Math.fma(_r10, _t25, _r11 * _t26)) * _t33_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t25).withLane(1, _t26).withLane(2, _t27).mul(FloatVector.broadcast(COL_SPECIES, _t33_inv)));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_r9, _t29, Math.fma(_r10, _t21, _r11 * _t28)) * _t33_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t21).withLane(1, _t28).withLane(2, _t29).mul(FloatVector.broadcast(COL_SPECIES, _t33_inv)));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private tail of {@code invert_general_s75d7ae73}; reached only through it. */
+    private static void invert_general_s75d7ae73_tail(float[] dd, float _r0, float _r1, float _r2, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t20, float _t21, float _t23, float _t24, float _t25, float _t26, float _t27, float _t28) {
+        float _t29 = Math.fma(_r8, _r0, -(_r7 * _r4));
+        float _t33_inv = 1.0f / Math.fma(_r6, _t21, Math.fma(_r8, _t20, -(_r7 * Math.fma(_r4, _r1, -(_r2 * _r5)))));
+        invert_general_s75d7ae73_tail2(dd, _r9, _r10, _r11, _t20, _t21, _t23, _t24, _t25, _t26, _t27, _t28, _t29, _t33_inv);
+    }
+
     private Float3x4 invert_general(@Mutated Float3x4 dest) {
         if (SimdMath.USE_FMA) return invert_general_fma(dest);
         return invert_general_mulAdd(dest);
@@ -3437,23 +3543,27 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 invert_general_fma(@Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t20 = Math.fma(sd[5], sd[10], -(sd[6] * sd[9]));
-        float _t21 = Math.fma(sd[4], sd[9], -(sd[5] * sd[8]));
-        float _t23 = Math.fma(sd[2], sd[9], -(sd[1] * sd[10]));
-        float _t24 = Math.fma(sd[1], sd[6], -(sd[2] * sd[5]));
-        float _t25 = Math.fma(sd[6], sd[8], -(sd[4] * sd[10]));
-        float _t26 = Math.fma(sd[0], sd[10], -(sd[2] * sd[8]));
-        float _t27 = Math.fma(sd[2], sd[4], -(sd[0] * sd[6]));
-        float _t28 = Math.fma(sd[1], sd[8], -(sd[0] * sd[9]));
-        float _t29 = Math.fma(sd[0], sd[5], -(sd[1] * sd[4]));
-        float _t33_inv = 1.0f / Math.fma(sd[2], _t21, Math.fma(sd[0], _t20, -(sd[1] * Math.fma(sd[4], sd[10], -(sd[6] * sd[8])))));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, _t33_inv);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(sd[11], _t24, Math.fma(sd[3], _t20, sd[7] * _t23)) * _t33_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t20).withLane(1, _t23).withLane(2, _t24).mul(_sv0));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(sd[11], _t27, Math.fma(sd[3], _t25, sd[7] * _t26)) * _t33_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t25).withLane(1, _t26).withLane(2, _t27).mul(_sv0));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(sd[11], _t29, Math.fma(sd[3], _t21, sd[7] * _t28)) * _t33_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t21).withLane(1, _t28).withLane(2, _t29).mul(_sv0));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = sd[5];
+        float _r1 = sd[10];
+        float _r2 = sd[6];
+        float _r3 = sd[9];
+        float _r4 = sd[4];
+        float _r5 = sd[8];
+        float _r6 = sd[2];
+        float _r7 = sd[1];
+        float _r8 = sd[0];
+        float _r9 = sd[11];
+        float _r10 = sd[3];
+        float _r11 = sd[7];
+        float _t20 = Math.fma(_r0, _r1, -(_r2 * _r3));
+        float _t21 = Math.fma(_r4, _r3, -(_r0 * _r5));
+        float _t23 = Math.fma(_r6, _r3, -(_r7 * _r1));
+        float _t24 = Math.fma(_r7, _r2, -(_r6 * _r0));
+        float _t25 = Math.fma(_r2, _r5, -(_r4 * _r1));
+        float _t26 = Math.fma(_r8, _r1, -(_r6 * _r5));
+        float _t27 = Math.fma(_r6, _r4, -(_r8 * _r2));
+        float _t28 = Math.fma(_r7, _r5, -(_r8 * _r3));
+        invert_general_scbf4c04_tail(dd, _r0, _r1, _r2, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t20, _t21, _t23, _t24, _t25, _t26, _t27, _t28);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -3461,23 +3571,27 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 invert_general_mulAdd(@Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t20 = Math.fma(sd[5], sd[10], -(sd[6] * sd[9]));
-        float _t21 = Math.fma(sd[4], sd[9], -(sd[5] * sd[8]));
-        float _t23 = Math.fma(sd[2], sd[9], -(sd[1] * sd[10]));
-        float _t24 = Math.fma(sd[1], sd[6], -(sd[2] * sd[5]));
-        float _t25 = Math.fma(sd[6], sd[8], -(sd[4] * sd[10]));
-        float _t26 = Math.fma(sd[0], sd[10], -(sd[2] * sd[8]));
-        float _t27 = Math.fma(sd[2], sd[4], -(sd[0] * sd[6]));
-        float _t28 = Math.fma(sd[1], sd[8], -(sd[0] * sd[9]));
-        float _t29 = Math.fma(sd[0], sd[5], -(sd[1] * sd[4]));
-        float _t33_inv = 1.0f / Math.fma(sd[2], _t21, Math.fma(sd[0], _t20, -(sd[1] * Math.fma(sd[4], sd[10], -(sd[6] * sd[8])))));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, _t33_inv);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(sd[11], _t24, Math.fma(sd[3], _t20, sd[7] * _t23)) * _t33_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t20).withLane(1, _t23).withLane(2, _t24).mul(_sv0));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(sd[11], _t27, Math.fma(sd[3], _t25, sd[7] * _t26)) * _t33_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t25).withLane(1, _t26).withLane(2, _t27).mul(_sv0));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(sd[11], _t29, Math.fma(sd[3], _t21, sd[7] * _t28)) * _t33_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t21).withLane(1, _t28).withLane(2, _t29).mul(_sv0));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = sd[5];
+        float _r1 = sd[10];
+        float _r2 = sd[6];
+        float _r3 = sd[9];
+        float _r4 = sd[4];
+        float _r5 = sd[8];
+        float _r6 = sd[2];
+        float _r7 = sd[1];
+        float _r8 = sd[0];
+        float _r9 = sd[11];
+        float _r10 = sd[3];
+        float _r11 = sd[7];
+        float _t20 = Math.fma(_r0, _r1, -(_r2 * _r3));
+        float _t21 = Math.fma(_r4, _r3, -(_r0 * _r5));
+        float _t23 = Math.fma(_r6, _r3, -(_r7 * _r1));
+        float _t24 = Math.fma(_r7, _r2, -(_r6 * _r0));
+        float _t25 = Math.fma(_r2, _r5, -(_r4 * _r1));
+        float _t26 = Math.fma(_r8, _r1, -(_r6 * _r5));
+        float _t27 = Math.fma(_r6, _r4, -(_r8 * _r2));
+        float _t28 = Math.fma(_r7, _r5, -(_r8 * _r3));
+        invert_general_s75d7ae73_tail(dd, _r0, _r1, _r2, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t20, _t21, _t23, _t24, _t25, _t26, _t27, _t28);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -3561,6 +3675,88 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
      * through the public {@code invertProduct} dispatcher.
      */
+    /** Private vector tail of {@code invertProduct_general_s341de31d}: loads, computes and stores every column; reached only through it. */
+    private static void invertProduct_general_s341de31d_tail3(float[] dd, float _t33, float _t34, float _t35, float _t56, float _t57, float _t59, float _t60, float _t61, float _t62, float _t63, float _t64, float _t65, float _t69_inv) {
+        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t56).withLane(1, _t59).withLane(2, _t60).mul(FloatVector.broadcast(COL_SPECIES, _t69_inv)));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t61).withLane(1, _t62).withLane(2, _t63).mul(FloatVector.broadcast(COL_SPECIES, _t69_inv)));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t57).withLane(1, _t64).withLane(2, _t65).mul(FloatVector.broadcast(COL_SPECIES, _t69_inv)));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private tail of {@code invertProduct_general_s341de31d}; reached only through it. */
+    private static void invertProduct_general_s341de31d_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20, float _r21, float _r22, float _r23, float _t24) {
+        float _t25 = Math.fma(_r6, _r7, Math.fma(_r8, _r9, _r10 * _r11));
+        float _t26 = Math.fma(_r0, _r7, Math.fma(_r2, _r9, _r4 * _r11));
+        float _t27 = Math.fma(_r6, _r1, Math.fma(_r8, _r3, _r10 * _r5));
+        float _t28 = Math.fma(_r6, _r12, Math.fma(_r8, _r13, _r10 * _r14));
+        float _t29 = Math.fma(_r15, _r1, Math.fma(_r16, _r3, _r17 * _r5));
+        float _t30 = Math.fma(_r15, _r7, Math.fma(_r16, _r9, _r17 * _r11));
+        float _t31 = Math.fma(_r15, _r12, Math.fma(_r16, _r13, _r17 * _r14));
+        float _t32 = Math.fma(_r0, _r12, Math.fma(_r2, _r13, _r4 * _r14));
+        float _t33 = Math.fma(_r18, _r9, Math.fma(_r19, _r11, Math.fma(_r20, _r7, _r21)));
+        float _t34 = Math.fma(_r18, _r13, Math.fma(_r19, _r14, Math.fma(_r20, _r12, _r22)));
+        float _t35 = Math.fma(_r18, _r3, Math.fma(_r19, _r5, Math.fma(_r20, _r1, _r23)));
+        float _t56 = Math.fma(_t24, _t25, -(_t26 * _t27));
+        invertProduct_general_s341de31d_tail2(dd, _t24, _t25, _t26, _t27, _t28, _t29, _t30, _t31, _t32, _t33, _t34, _t35, _t56);
+    }
+
+    /** Private tail of {@code invertProduct_general_s341de31d}; reached only through it. */
+    private static void invertProduct_general_s341de31d_tail2(float[] dd, float _t24, float _t25, float _t26, float _t27, float _t28, float _t29, float _t30, float _t31, float _t32, float _t33, float _t34, float _t35, float _t56) {
+        float _t57 = Math.fma(_t29, _t26, -(_t30 * _t24));
+        float _t59 = Math.fma(_t26, _t28, -(_t32 * _t25));
+        float _t60 = Math.fma(_t32, _t27, -(_t24 * _t28));
+        float _t61 = Math.fma(_t30, _t27, -(_t29 * _t25));
+        float _t62 = Math.fma(_t31, _t25, -(_t30 * _t28));
+        float _t63 = Math.fma(_t29, _t28, -(_t31 * _t27));
+        float _t64 = Math.fma(_t30, _t32, -(_t31 * _t26));
+        float _t65 = Math.fma(_t31, _t24, -(_t29 * _t32));
+        float _t69_inv = 1.0f / Math.fma(_t28, _t57, Math.fma(_t31, _t56, -(_t32 * Math.fma(_t29, _t25, -(_t30 * _t27)))));
+        invertProduct_general_s341de31d_tail3(dd, _t33, _t34, _t35, _t56, _t57, _t59, _t60, _t61, _t62, _t63, _t64, _t65, _t69_inv);
+    }
+
+    /** Private vector tail of {@code invertProduct_general_s6e6914ba}: loads, computes and stores every column; reached only through it. */
+    private static void invertProduct_general_s6e6914ba_tail3(float[] dd, float _t33, float _t34, float _t35, float _t56, float _t57, float _t59, float _t60, float _t61, float _t62, float _t63, float _t64, float _t65, float _t69_inv) {
+        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t56).withLane(1, _t59).withLane(2, _t60).mul(FloatVector.broadcast(COL_SPECIES, _t69_inv)));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t61).withLane(1, _t62).withLane(2, _t63).mul(FloatVector.broadcast(COL_SPECIES, _t69_inv)));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t57).withLane(1, _t64).withLane(2, _t65).mul(FloatVector.broadcast(COL_SPECIES, _t69_inv)));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private tail of {@code invertProduct_general_s6e6914ba}; reached only through it. */
+    private static void invertProduct_general_s6e6914ba_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17, float _r18, float _r19, float _r20, float _r21, float _r22, float _r23, float _t24) {
+        float _t25 = Math.fma(_r6, _r7, Math.fma(_r8, _r9, _r10 * _r11));
+        float _t26 = Math.fma(_r0, _r7, Math.fma(_r2, _r9, _r4 * _r11));
+        float _t27 = Math.fma(_r6, _r1, Math.fma(_r8, _r3, _r10 * _r5));
+        float _t28 = Math.fma(_r6, _r12, Math.fma(_r8, _r13, _r10 * _r14));
+        float _t29 = Math.fma(_r15, _r1, Math.fma(_r16, _r3, _r17 * _r5));
+        float _t30 = Math.fma(_r15, _r7, Math.fma(_r16, _r9, _r17 * _r11));
+        float _t31 = Math.fma(_r15, _r12, Math.fma(_r16, _r13, _r17 * _r14));
+        float _t32 = Math.fma(_r0, _r12, Math.fma(_r2, _r13, _r4 * _r14));
+        float _t33 = Math.fma(_r18, _r9, Math.fma(_r19, _r11, Math.fma(_r20, _r7, _r21)));
+        float _t34 = Math.fma(_r18, _r13, Math.fma(_r19, _r14, Math.fma(_r20, _r12, _r22)));
+        float _t35 = Math.fma(_r18, _r3, Math.fma(_r19, _r5, Math.fma(_r20, _r1, _r23)));
+        float _t56 = Math.fma(_t24, _t25, -(_t26 * _t27));
+        invertProduct_general_s6e6914ba_tail2(dd, _t24, _t25, _t26, _t27, _t28, _t29, _t30, _t31, _t32, _t33, _t34, _t35, _t56);
+    }
+
+    /** Private tail of {@code invertProduct_general_s6e6914ba}; reached only through it. */
+    private static void invertProduct_general_s6e6914ba_tail2(float[] dd, float _t24, float _t25, float _t26, float _t27, float _t28, float _t29, float _t30, float _t31, float _t32, float _t33, float _t34, float _t35, float _t56) {
+        float _t57 = Math.fma(_t29, _t26, -(_t30 * _t24));
+        float _t59 = Math.fma(_t26, _t28, -(_t32 * _t25));
+        float _t60 = Math.fma(_t32, _t27, -(_t24 * _t28));
+        float _t61 = Math.fma(_t30, _t27, -(_t29 * _t25));
+        float _t62 = Math.fma(_t31, _t25, -(_t30 * _t28));
+        float _t63 = Math.fma(_t29, _t28, -(_t31 * _t27));
+        float _t64 = Math.fma(_t30, _t32, -(_t31 * _t26));
+        float _t65 = Math.fma(_t31, _t24, -(_t29 * _t32));
+        float _t69_inv = 1.0f / Math.fma(_t28, _t57, Math.fma(_t31, _t56, -(_t32 * Math.fma(_t29, _t25, -(_t30 * _t27)))));
+        invertProduct_general_s6e6914ba_tail3(dd, _t33, _t34, _t35, _t56, _t57, _t59, _t60, _t61, _t62, _t63, _t64, _t65, _t69_inv);
+    }
+
     private Float3x4 invertProduct_general(Float3x4R other, @Mutated Float3x4 dest, int _props) {
         if (SimdMath.USE_FMA) return invertProduct_general_fma(other, dest, _props);
         return invertProduct_general_mulAdd(other, dest, _props);
@@ -3570,35 +3766,32 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] otherData = ((Float3x4Impl) other).data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t24 = Math.fma(otherData[9], sd[6], Math.fma(otherData[1], sd[4], otherData[5] * sd[5]));
-        float _t25 = Math.fma(otherData[10], sd[10], Math.fma(otherData[2], sd[8], otherData[6] * sd[9]));
-        float _t26 = Math.fma(otherData[9], sd[10], Math.fma(otherData[1], sd[8], otherData[5] * sd[9]));
-        float _t27 = Math.fma(otherData[10], sd[6], Math.fma(otherData[2], sd[4], otherData[6] * sd[5]));
-        float _t28 = Math.fma(otherData[10], sd[2], Math.fma(otherData[2], sd[0], otherData[6] * sd[1]));
-        float _t29 = Math.fma(otherData[8], sd[6], Math.fma(otherData[0], sd[4], otherData[4] * sd[5]));
-        float _t30 = Math.fma(otherData[8], sd[10], Math.fma(otherData[0], sd[8], otherData[4] * sd[9]));
-        float _t31 = Math.fma(otherData[8], sd[2], Math.fma(otherData[0], sd[0], otherData[4] * sd[1]));
-        float _t32 = Math.fma(otherData[9], sd[2], Math.fma(otherData[1], sd[0], otherData[5] * sd[1]));
-        float _t33 = Math.fma(otherData[3], sd[8], Math.fma(otherData[7], sd[9], Math.fma(otherData[11], sd[10], sd[11])));
-        float _t34 = Math.fma(otherData[3], sd[0], Math.fma(otherData[7], sd[1], Math.fma(otherData[11], sd[2], sd[3])));
-        float _t35 = Math.fma(otherData[3], sd[4], Math.fma(otherData[7], sd[5], Math.fma(otherData[11], sd[6], sd[7])));
-        float _t56 = Math.fma(_t24, _t25, -(_t26 * _t27));
-        float _t57 = Math.fma(_t29, _t26, -(_t30 * _t24));
-        float _t59 = Math.fma(_t26, _t28, -(_t32 * _t25));
-        float _t60 = Math.fma(_t32, _t27, -(_t24 * _t28));
-        float _t61 = Math.fma(_t30, _t27, -(_t29 * _t25));
-        float _t62 = Math.fma(_t31, _t25, -(_t30 * _t28));
-        float _t63 = Math.fma(_t29, _t28, -(_t31 * _t27));
-        float _t64 = Math.fma(_t30, _t32, -(_t31 * _t26));
-        float _t65 = Math.fma(_t31, _t24, -(_t29 * _t32));
-        float _t69_inv = 1.0f / Math.fma(_t28, _t57, Math.fma(_t31, _t56, -(_t32 * Math.fma(_t29, _t25, -(_t30 * _t27)))));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, _t69_inv);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t56).withLane(1, _t59).withLane(2, _t60).mul(_sv0));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t61).withLane(1, _t62).withLane(2, _t63).mul(_sv0));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t57).withLane(1, _t64).withLane(2, _t65).mul(_sv0));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = otherData[9];
+        float _r1 = sd[6];
+        float _r2 = otherData[1];
+        float _r3 = sd[4];
+        float _r4 = otherData[5];
+        float _r5 = sd[5];
+        float _r6 = otherData[10];
+        float _r7 = sd[10];
+        float _r8 = otherData[2];
+        float _r9 = sd[8];
+        float _r10 = otherData[6];
+        float _r11 = sd[9];
+        float _r12 = sd[2];
+        float _r13 = sd[0];
+        float _r14 = sd[1];
+        float _r15 = otherData[8];
+        float _r16 = otherData[0];
+        float _r17 = otherData[4];
+        float _r18 = otherData[3];
+        float _r19 = otherData[7];
+        float _r20 = otherData[11];
+        float _r21 = sd[11];
+        float _r22 = sd[3];
+        float _r23 = sd[7];
+        float _t24 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5));
+        invertProduct_general_s341de31d_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19, _r20, _r21, _r22, _r23, _t24);
         ((Float3x4Impl) dest).properties = _props;
         return dest;
     }
@@ -3607,35 +3800,32 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] otherData = ((Float3x4Impl) other).data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t24 = Math.fma(otherData[9], sd[6], Math.fma(otherData[1], sd[4], otherData[5] * sd[5]));
-        float _t25 = Math.fma(otherData[10], sd[10], Math.fma(otherData[2], sd[8], otherData[6] * sd[9]));
-        float _t26 = Math.fma(otherData[9], sd[10], Math.fma(otherData[1], sd[8], otherData[5] * sd[9]));
-        float _t27 = Math.fma(otherData[10], sd[6], Math.fma(otherData[2], sd[4], otherData[6] * sd[5]));
-        float _t28 = Math.fma(otherData[10], sd[2], Math.fma(otherData[2], sd[0], otherData[6] * sd[1]));
-        float _t29 = Math.fma(otherData[8], sd[6], Math.fma(otherData[0], sd[4], otherData[4] * sd[5]));
-        float _t30 = Math.fma(otherData[8], sd[10], Math.fma(otherData[0], sd[8], otherData[4] * sd[9]));
-        float _t31 = Math.fma(otherData[8], sd[2], Math.fma(otherData[0], sd[0], otherData[4] * sd[1]));
-        float _t32 = Math.fma(otherData[9], sd[2], Math.fma(otherData[1], sd[0], otherData[5] * sd[1]));
-        float _t33 = Math.fma(otherData[3], sd[8], Math.fma(otherData[7], sd[9], Math.fma(otherData[11], sd[10], sd[11])));
-        float _t34 = Math.fma(otherData[3], sd[0], Math.fma(otherData[7], sd[1], Math.fma(otherData[11], sd[2], sd[3])));
-        float _t35 = Math.fma(otherData[3], sd[4], Math.fma(otherData[7], sd[5], Math.fma(otherData[11], sd[6], sd[7])));
-        float _t56 = Math.fma(_t24, _t25, -(_t26 * _t27));
-        float _t57 = Math.fma(_t29, _t26, -(_t30 * _t24));
-        float _t59 = Math.fma(_t26, _t28, -(_t32 * _t25));
-        float _t60 = Math.fma(_t32, _t27, -(_t24 * _t28));
-        float _t61 = Math.fma(_t30, _t27, -(_t29 * _t25));
-        float _t62 = Math.fma(_t31, _t25, -(_t30 * _t28));
-        float _t63 = Math.fma(_t29, _t28, -(_t31 * _t27));
-        float _t64 = Math.fma(_t30, _t32, -(_t31 * _t26));
-        float _t65 = Math.fma(_t31, _t24, -(_t29 * _t32));
-        float _t69_inv = 1.0f / Math.fma(_t28, _t57, Math.fma(_t31, _t56, -(_t32 * Math.fma(_t29, _t25, -(_t30 * _t27)))));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, _t69_inv);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t56).withLane(1, _t59).withLane(2, _t60).mul(_sv0));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t61).withLane(1, _t62).withLane(2, _t63).mul(_sv0));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t57).withLane(1, _t64).withLane(2, _t65).mul(_sv0));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = otherData[9];
+        float _r1 = sd[6];
+        float _r2 = otherData[1];
+        float _r3 = sd[4];
+        float _r4 = otherData[5];
+        float _r5 = sd[5];
+        float _r6 = otherData[10];
+        float _r7 = sd[10];
+        float _r8 = otherData[2];
+        float _r9 = sd[8];
+        float _r10 = otherData[6];
+        float _r11 = sd[9];
+        float _r12 = sd[2];
+        float _r13 = sd[0];
+        float _r14 = sd[1];
+        float _r15 = otherData[8];
+        float _r16 = otherData[0];
+        float _r17 = otherData[4];
+        float _r18 = otherData[3];
+        float _r19 = otherData[7];
+        float _r20 = otherData[11];
+        float _r21 = sd[11];
+        float _r22 = sd[3];
+        float _r23 = sd[7];
+        float _t24 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5));
+        invertProduct_general_s6e6914ba_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19, _r20, _r21, _r22, _r23, _t24);
         ((Float3x4Impl) dest).properties = _props;
         return dest;
     }
@@ -3645,6 +3835,40 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
      * through the public {@code invertProduct} dispatcher.
      */
+    /** Private vector tail of {@code invertProduct_identity_s34aa4fe7}: loads, computes and stores every column; reached only through it. */
+    private static void invertProduct_identity_s34aa4fe7_tail2(float[] dd, float _r9, float _r10, float _r11, float _t20, float _t21, float _t23, float _t24, float _t25, float _t26, float _t27, float _t28, float _t29, float _t33_inv) {
+        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_r9, _t24, Math.fma(_r10, _t20, _r11 * _t23)) * _t33_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t20).withLane(1, _t23).withLane(2, _t24).mul(FloatVector.broadcast(COL_SPECIES, _t33_inv)));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_r9, _t27, Math.fma(_r10, _t25, _r11 * _t26)) * _t33_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t25).withLane(1, _t26).withLane(2, _t27).mul(FloatVector.broadcast(COL_SPECIES, _t33_inv)));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_r9, _t29, Math.fma(_r10, _t21, _r11 * _t28)) * _t33_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t21).withLane(1, _t28).withLane(2, _t29).mul(FloatVector.broadcast(COL_SPECIES, _t33_inv)));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private tail of {@code invertProduct_identity_s34aa4fe7}; reached only through it. */
+    private static void invertProduct_identity_s34aa4fe7_tail(float[] dd, float _r0, float _r1, float _r2, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t20, float _t21, float _t23, float _t24, float _t25, float _t26, float _t27, float _t28) {
+        float _t29 = Math.fma(_r8, _r0, -(_r7 * _r4));
+        float _t33_inv = 1.0f / Math.fma(_r6, _t21, Math.fma(_r8, _t20, -(_r7 * Math.fma(_r4, _r1, -(_r2 * _r5)))));
+        invertProduct_identity_s34aa4fe7_tail2(dd, _r9, _r10, _r11, _t20, _t21, _t23, _t24, _t25, _t26, _t27, _t28, _t29, _t33_inv);
+    }
+
+    /** Private vector tail of {@code invertProduct_identity_s43d0fbb0}: loads, computes and stores every column; reached only through it. */
+    private static void invertProduct_identity_s43d0fbb0_tail2(float[] dd, float _r9, float _r10, float _r11, float _t20, float _t21, float _t23, float _t24, float _t25, float _t26, float _t27, float _t28, float _t29, float _t33_inv) {
+        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_r9, _t24, Math.fma(_r10, _t20, _r11 * _t23)) * _t33_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t20).withLane(1, _t23).withLane(2, _t24).mul(FloatVector.broadcast(COL_SPECIES, _t33_inv)));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_r9, _t27, Math.fma(_r10, _t25, _r11 * _t26)) * _t33_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t25).withLane(1, _t26).withLane(2, _t27).mul(FloatVector.broadcast(COL_SPECIES, _t33_inv)));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_r9, _t29, Math.fma(_r10, _t21, _r11 * _t28)) * _t33_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t21).withLane(1, _t28).withLane(2, _t29).mul(FloatVector.broadcast(COL_SPECIES, _t33_inv)));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private tail of {@code invertProduct_identity_s43d0fbb0}; reached only through it. */
+    private static void invertProduct_identity_s43d0fbb0_tail(float[] dd, float _r0, float _r1, float _r2, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t20, float _t21, float _t23, float _t24, float _t25, float _t26, float _t27, float _t28) {
+        float _t29 = Math.fma(_r8, _r0, -(_r7 * _r4));
+        float _t33_inv = 1.0f / Math.fma(_r6, _t21, Math.fma(_r8, _t20, -(_r7 * Math.fma(_r4, _r1, -(_r2 * _r5)))));
+        invertProduct_identity_s43d0fbb0_tail2(dd, _r9, _r10, _r11, _t20, _t21, _t23, _t24, _t25, _t26, _t27, _t28, _t29, _t33_inv);
+    }
+
     private Float3x4 invertProduct_identity(Float3x4R other, @Mutated Float3x4 dest) {
         if (SimdMath.USE_FMA) return invertProduct_identity_fma(other, dest);
         return invertProduct_identity_mulAdd(other, dest);
@@ -3654,23 +3878,27 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] otherData = ((Float3x4Impl) other).data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t20 = Math.fma(otherData[5], otherData[10], -(otherData[6] * otherData[9]));
-        float _t21 = Math.fma(otherData[4], otherData[9], -(otherData[5] * otherData[8]));
-        float _t23 = Math.fma(otherData[2], otherData[9], -(otherData[1] * otherData[10]));
-        float _t24 = Math.fma(otherData[1], otherData[6], -(otherData[2] * otherData[5]));
-        float _t25 = Math.fma(otherData[6], otherData[8], -(otherData[4] * otherData[10]));
-        float _t26 = Math.fma(otherData[0], otherData[10], -(otherData[2] * otherData[8]));
-        float _t27 = Math.fma(otherData[2], otherData[4], -(otherData[0] * otherData[6]));
-        float _t28 = Math.fma(otherData[1], otherData[8], -(otherData[0] * otherData[9]));
-        float _t29 = Math.fma(otherData[0], otherData[5], -(otherData[1] * otherData[4]));
-        float _t33_inv = 1.0f / Math.fma(otherData[2], _t21, Math.fma(otherData[0], _t20, -(otherData[1] * Math.fma(otherData[4], otherData[10], -(otherData[6] * otherData[8])))));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, _t33_inv);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(otherData[11], _t24, Math.fma(otherData[3], _t20, otherData[7] * _t23)) * _t33_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t20).withLane(1, _t23).withLane(2, _t24).mul(_sv0));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(otherData[11], _t27, Math.fma(otherData[3], _t25, otherData[7] * _t26)) * _t33_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t25).withLane(1, _t26).withLane(2, _t27).mul(_sv0));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(otherData[11], _t29, Math.fma(otherData[3], _t21, otherData[7] * _t28)) * _t33_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t21).withLane(1, _t28).withLane(2, _t29).mul(_sv0));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = otherData[5];
+        float _r1 = otherData[10];
+        float _r2 = otherData[6];
+        float _r3 = otherData[9];
+        float _r4 = otherData[4];
+        float _r5 = otherData[8];
+        float _r6 = otherData[2];
+        float _r7 = otherData[1];
+        float _r8 = otherData[0];
+        float _r9 = otherData[11];
+        float _r10 = otherData[3];
+        float _r11 = otherData[7];
+        float _t20 = Math.fma(_r0, _r1, -(_r2 * _r3));
+        float _t21 = Math.fma(_r4, _r3, -(_r0 * _r5));
+        float _t23 = Math.fma(_r6, _r3, -(_r7 * _r1));
+        float _t24 = Math.fma(_r7, _r2, -(_r6 * _r0));
+        float _t25 = Math.fma(_r2, _r5, -(_r4 * _r1));
+        float _t26 = Math.fma(_r8, _r1, -(_r6 * _r5));
+        float _t27 = Math.fma(_r6, _r4, -(_r8 * _r2));
+        float _t28 = Math.fma(_r7, _r5, -(_r8 * _r3));
+        invertProduct_identity_s34aa4fe7_tail(dd, _r0, _r1, _r2, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t20, _t21, _t23, _t24, _t25, _t26, _t27, _t28);
         ((Float3x4Impl) dest).properties = ((Float3x4Impl) other).properties;
         return dest;
     }
@@ -3679,23 +3907,27 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] otherData = ((Float3x4Impl) other).data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t20 = Math.fma(otherData[5], otherData[10], -(otherData[6] * otherData[9]));
-        float _t21 = Math.fma(otherData[4], otherData[9], -(otherData[5] * otherData[8]));
-        float _t23 = Math.fma(otherData[2], otherData[9], -(otherData[1] * otherData[10]));
-        float _t24 = Math.fma(otherData[1], otherData[6], -(otherData[2] * otherData[5]));
-        float _t25 = Math.fma(otherData[6], otherData[8], -(otherData[4] * otherData[10]));
-        float _t26 = Math.fma(otherData[0], otherData[10], -(otherData[2] * otherData[8]));
-        float _t27 = Math.fma(otherData[2], otherData[4], -(otherData[0] * otherData[6]));
-        float _t28 = Math.fma(otherData[1], otherData[8], -(otherData[0] * otherData[9]));
-        float _t29 = Math.fma(otherData[0], otherData[5], -(otherData[1] * otherData[4]));
-        float _t33_inv = 1.0f / Math.fma(otherData[2], _t21, Math.fma(otherData[0], _t20, -(otherData[1] * Math.fma(otherData[4], otherData[10], -(otherData[6] * otherData[8])))));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, _t33_inv);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(otherData[11], _t24, Math.fma(otherData[3], _t20, otherData[7] * _t23)) * _t33_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t20).withLane(1, _t23).withLane(2, _t24).mul(_sv0));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(otherData[11], _t27, Math.fma(otherData[3], _t25, otherData[7] * _t26)) * _t33_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t25).withLane(1, _t26).withLane(2, _t27).mul(_sv0));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(otherData[11], _t29, Math.fma(otherData[3], _t21, otherData[7] * _t28)) * _t33_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t21).withLane(1, _t28).withLane(2, _t29).mul(_sv0));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = otherData[5];
+        float _r1 = otherData[10];
+        float _r2 = otherData[6];
+        float _r3 = otherData[9];
+        float _r4 = otherData[4];
+        float _r5 = otherData[8];
+        float _r6 = otherData[2];
+        float _r7 = otherData[1];
+        float _r8 = otherData[0];
+        float _r9 = otherData[11];
+        float _r10 = otherData[3];
+        float _r11 = otherData[7];
+        float _t20 = Math.fma(_r0, _r1, -(_r2 * _r3));
+        float _t21 = Math.fma(_r4, _r3, -(_r0 * _r5));
+        float _t23 = Math.fma(_r6, _r3, -(_r7 * _r1));
+        float _t24 = Math.fma(_r7, _r2, -(_r6 * _r0));
+        float _t25 = Math.fma(_r2, _r5, -(_r4 * _r1));
+        float _t26 = Math.fma(_r8, _r1, -(_r6 * _r5));
+        float _t27 = Math.fma(_r6, _r4, -(_r8 * _r2));
+        float _t28 = Math.fma(_r7, _r5, -(_r8 * _r3));
+        invertProduct_identity_s43d0fbb0_tail(dd, _r0, _r1, _r2, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t20, _t21, _t23, _t24, _t25, _t26, _t27, _t28);
         ((Float3x4Impl) dest).properties = ((Float3x4Impl) other).properties;
         return dest;
     }
@@ -3705,6 +3937,46 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
      * through the public {@code invertProduct} dispatcher.
      */
+    /** Private vector tail of {@code invertProduct_translation_s34aa4fe7}: loads, computes and stores every column; reached only through it. */
+    private static void invertProduct_translation_s34aa4fe7_tail2(float[] dd, float _t5, float _t6, float _t7, float _t23, float _t24, float _t26, float _t27, float _t28, float _t29, float _t30, float _t31, float _t32, float _t36_inv) {
+        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t5, _t27, Math.fma(_t6, _t23, _t7 * _t26)) * _t36_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t23).withLane(1, _t26).withLane(2, _t27).mul(FloatVector.broadcast(COL_SPECIES, _t36_inv)));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t5, _t30, Math.fma(_t6, _t28, _t7 * _t29)) * _t36_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t28).withLane(1, _t29).withLane(2, _t30).mul(FloatVector.broadcast(COL_SPECIES, _t36_inv)));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t5, _t32, Math.fma(_t6, _t24, _t7 * _t31)) * _t36_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t24).withLane(1, _t31).withLane(2, _t32).mul(FloatVector.broadcast(COL_SPECIES, _t36_inv)));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private tail of {@code invertProduct_translation_s34aa4fe7}; reached only through it. */
+    private static void invertProduct_translation_s34aa4fe7_tail(float[] dd, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _t5, float _t6, float _t7, float _t23, float _t24, float _t26, float _t27, float _t28) {
+        float _t29 = Math.fma(_r14, _r7, -(_r12 * _r11));
+        float _t30 = Math.fma(_r12, _r10, -(_r14 * _r8));
+        float _t31 = Math.fma(_r13, _r11, -(_r14 * _r9));
+        float _t32 = Math.fma(_r14, _r6, -(_r13 * _r10));
+        float _t36_inv = 1.0f / Math.fma(_r12, _t24, Math.fma(_r14, _t23, -(_r13 * Math.fma(_r10, _r7, -(_r8 * _r11)))));
+        invertProduct_translation_s34aa4fe7_tail2(dd, _t5, _t6, _t7, _t23, _t24, _t26, _t27, _t28, _t29, _t30, _t31, _t32, _t36_inv);
+    }
+
+    /** Private vector tail of {@code invertProduct_translation_s43d0fbb0}: loads, computes and stores every column; reached only through it. */
+    private static void invertProduct_translation_s43d0fbb0_tail2(float[] dd, float _t5, float _t6, float _t7, float _t23, float _t24, float _t26, float _t27, float _t28, float _t29, float _t30, float _t31, float _t32, float _t36_inv) {
+        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t5, _t27, Math.fma(_t6, _t23, _t7 * _t26)) * _t36_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t23).withLane(1, _t26).withLane(2, _t27).mul(FloatVector.broadcast(COL_SPECIES, _t36_inv)));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t5, _t30, Math.fma(_t6, _t28, _t7 * _t29)) * _t36_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t28).withLane(1, _t29).withLane(2, _t30).mul(FloatVector.broadcast(COL_SPECIES, _t36_inv)));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t5, _t32, Math.fma(_t6, _t24, _t7 * _t31)) * _t36_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t24).withLane(1, _t31).withLane(2, _t32).mul(FloatVector.broadcast(COL_SPECIES, _t36_inv)));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private tail of {@code invertProduct_translation_s43d0fbb0}; reached only through it. */
+    private static void invertProduct_translation_s43d0fbb0_tail(float[] dd, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _t5, float _t6, float _t7, float _t23, float _t24, float _t26, float _t27, float _t28) {
+        float _t29 = Math.fma(_r14, _r7, -(_r12 * _r11));
+        float _t30 = Math.fma(_r12, _r10, -(_r14 * _r8));
+        float _t31 = Math.fma(_r13, _r11, -(_r14 * _r9));
+        float _t32 = Math.fma(_r14, _r6, -(_r13 * _r10));
+        float _t36_inv = 1.0f / Math.fma(_r12, _t24, Math.fma(_r14, _t23, -(_r13 * Math.fma(_r10, _r7, -(_r8 * _r11)))));
+        invertProduct_translation_s43d0fbb0_tail2(dd, _t5, _t6, _t7, _t23, _t24, _t26, _t27, _t28, _t29, _t30, _t31, _t32, _t36_inv);
+    }
+
     private Float3x4 invertProduct_translation(Float3x4R other, @Mutated Float3x4 dest) {
         if (SimdMath.USE_FMA) return invertProduct_translation_fma(other, dest);
         return invertProduct_translation_mulAdd(other, dest);
@@ -3714,26 +3986,30 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] otherData = ((Float3x4Impl) other).data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t5 = otherData[11] + sd[11];
-        float _t6 = otherData[3] + sd[3];
-        float _t7 = otherData[7] + sd[7];
-        float _t23 = Math.fma(otherData[5], otherData[10], -(otherData[6] * otherData[9]));
-        float _t24 = Math.fma(otherData[4], otherData[9], -(otherData[5] * otherData[8]));
-        float _t26 = Math.fma(otherData[2], otherData[9], -(otherData[1] * otherData[10]));
-        float _t27 = Math.fma(otherData[1], otherData[6], -(otherData[2] * otherData[5]));
-        float _t28 = Math.fma(otherData[6], otherData[8], -(otherData[4] * otherData[10]));
-        float _t29 = Math.fma(otherData[0], otherData[10], -(otherData[2] * otherData[8]));
-        float _t30 = Math.fma(otherData[2], otherData[4], -(otherData[0] * otherData[6]));
-        float _t31 = Math.fma(otherData[1], otherData[8], -(otherData[0] * otherData[9]));
-        float _t32 = Math.fma(otherData[0], otherData[5], -(otherData[1] * otherData[4]));
-        float _t36_inv = 1.0f / Math.fma(otherData[2], _t24, Math.fma(otherData[0], _t23, -(otherData[1] * Math.fma(otherData[4], otherData[10], -(otherData[6] * otherData[8])))));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, _t36_inv);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t5, _t27, Math.fma(_t6, _t23, _t7 * _t26)) * _t36_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t23).withLane(1, _t26).withLane(2, _t27).mul(_sv0));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t5, _t30, Math.fma(_t6, _t28, _t7 * _t29)) * _t36_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t28).withLane(1, _t29).withLane(2, _t30).mul(_sv0));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t5, _t32, Math.fma(_t6, _t24, _t7 * _t31)) * _t36_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t24).withLane(1, _t31).withLane(2, _t32).mul(_sv0));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = otherData[11];
+        float _r1 = sd[11];
+        float _r2 = otherData[3];
+        float _r3 = sd[3];
+        float _r4 = otherData[7];
+        float _r5 = sd[7];
+        float _r6 = otherData[5];
+        float _r7 = otherData[10];
+        float _r8 = otherData[6];
+        float _r9 = otherData[9];
+        float _r10 = otherData[4];
+        float _r11 = otherData[8];
+        float _r12 = otherData[2];
+        float _r13 = otherData[1];
+        float _r14 = otherData[0];
+        float _t5 = _r0 + _r1;
+        float _t6 = _r2 + _r3;
+        float _t7 = _r4 + _r5;
+        float _t23 = Math.fma(_r6, _r7, -(_r8 * _r9));
+        float _t24 = Math.fma(_r10, _r9, -(_r6 * _r11));
+        float _t26 = Math.fma(_r12, _r9, -(_r13 * _r7));
+        float _t27 = Math.fma(_r13, _r8, -(_r12 * _r6));
+        float _t28 = Math.fma(_r8, _r11, -(_r10 * _r7));
+        invertProduct_translation_s34aa4fe7_tail(dd, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _t5, _t6, _t7, _t23, _t24, _t26, _t27, _t28);
         ((Float3x4Impl) dest).properties = Joml.BIT_TRANSLATION & ((Float3x4Impl) other).properties;
         return dest;
     }
@@ -3742,26 +4018,30 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] otherData = ((Float3x4Impl) other).data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t5 = otherData[11] + sd[11];
-        float _t6 = otherData[3] + sd[3];
-        float _t7 = otherData[7] + sd[7];
-        float _t23 = Math.fma(otherData[5], otherData[10], -(otherData[6] * otherData[9]));
-        float _t24 = Math.fma(otherData[4], otherData[9], -(otherData[5] * otherData[8]));
-        float _t26 = Math.fma(otherData[2], otherData[9], -(otherData[1] * otherData[10]));
-        float _t27 = Math.fma(otherData[1], otherData[6], -(otherData[2] * otherData[5]));
-        float _t28 = Math.fma(otherData[6], otherData[8], -(otherData[4] * otherData[10]));
-        float _t29 = Math.fma(otherData[0], otherData[10], -(otherData[2] * otherData[8]));
-        float _t30 = Math.fma(otherData[2], otherData[4], -(otherData[0] * otherData[6]));
-        float _t31 = Math.fma(otherData[1], otherData[8], -(otherData[0] * otherData[9]));
-        float _t32 = Math.fma(otherData[0], otherData[5], -(otherData[1] * otherData[4]));
-        float _t36_inv = 1.0f / Math.fma(otherData[2], _t24, Math.fma(otherData[0], _t23, -(otherData[1] * Math.fma(otherData[4], otherData[10], -(otherData[6] * otherData[8])))));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, _t36_inv);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t5, _t27, Math.fma(_t6, _t23, _t7 * _t26)) * _t36_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t23).withLane(1, _t26).withLane(2, _t27).mul(_sv0));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t5, _t30, Math.fma(_t6, _t28, _t7 * _t29)) * _t36_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t28).withLane(1, _t29).withLane(2, _t30).mul(_sv0));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t5, _t32, Math.fma(_t6, _t24, _t7 * _t31)) * _t36_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t24).withLane(1, _t31).withLane(2, _t32).mul(_sv0));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = otherData[11];
+        float _r1 = sd[11];
+        float _r2 = otherData[3];
+        float _r3 = sd[3];
+        float _r4 = otherData[7];
+        float _r5 = sd[7];
+        float _r6 = otherData[5];
+        float _r7 = otherData[10];
+        float _r8 = otherData[6];
+        float _r9 = otherData[9];
+        float _r10 = otherData[4];
+        float _r11 = otherData[8];
+        float _r12 = otherData[2];
+        float _r13 = otherData[1];
+        float _r14 = otherData[0];
+        float _t5 = _r0 + _r1;
+        float _t6 = _r2 + _r3;
+        float _t7 = _r4 + _r5;
+        float _t23 = Math.fma(_r6, _r7, -(_r8 * _r9));
+        float _t24 = Math.fma(_r10, _r9, -(_r6 * _r11));
+        float _t26 = Math.fma(_r12, _r9, -(_r13 * _r7));
+        float _t27 = Math.fma(_r13, _r8, -(_r12 * _r6));
+        float _t28 = Math.fma(_r8, _r11, -(_r10 * _r7));
+        invertProduct_translation_s43d0fbb0_tail(dd, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _t5, _t6, _t7, _t23, _t24, _t26, _t27, _t28);
         ((Float3x4Impl) dest).properties = Joml.BIT_TRANSLATION & ((Float3x4Impl) other).properties;
         return dest;
     }
@@ -3928,6 +4208,40 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
      * through the public {@code invertProduct} dispatcher.
      */
+    /** Private vector tail of {@code invertProduct_general_identity_s34aa4fe7}: loads, computes and stores every column; reached only through it. */
+    private static void invertProduct_general_identity_s34aa4fe7_tail2(float[] dd, float _r9, float _r10, float _r11, float _t20, float _t21, float _t23, float _t24, float _t25, float _t26, float _t27, float _t28, float _t29, float _t33_inv) {
+        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_r9, _t24, Math.fma(_r10, _t20, _r11 * _t23)) * _t33_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t20).withLane(1, _t23).withLane(2, _t24).mul(FloatVector.broadcast(COL_SPECIES, _t33_inv)));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_r9, _t27, Math.fma(_r10, _t25, _r11 * _t26)) * _t33_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t25).withLane(1, _t26).withLane(2, _t27).mul(FloatVector.broadcast(COL_SPECIES, _t33_inv)));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_r9, _t29, Math.fma(_r10, _t21, _r11 * _t28)) * _t33_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t21).withLane(1, _t28).withLane(2, _t29).mul(FloatVector.broadcast(COL_SPECIES, _t33_inv)));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private tail of {@code invertProduct_general_identity_s34aa4fe7}; reached only through it. */
+    private static void invertProduct_general_identity_s34aa4fe7_tail(float[] dd, float _r0, float _r1, float _r2, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t20, float _t21, float _t23, float _t24, float _t25, float _t26, float _t27, float _t28) {
+        float _t29 = Math.fma(_r8, _r0, -(_r7 * _r4));
+        float _t33_inv = 1.0f / Math.fma(_r6, _t21, Math.fma(_r8, _t20, -(_r7 * Math.fma(_r4, _r1, -(_r2 * _r5)))));
+        invertProduct_general_identity_s34aa4fe7_tail2(dd, _r9, _r10, _r11, _t20, _t21, _t23, _t24, _t25, _t26, _t27, _t28, _t29, _t33_inv);
+    }
+
+    /** Private vector tail of {@code invertProduct_general_identity_s43d0fbb0}: loads, computes and stores every column; reached only through it. */
+    private static void invertProduct_general_identity_s43d0fbb0_tail2(float[] dd, float _r9, float _r10, float _r11, float _t20, float _t21, float _t23, float _t24, float _t25, float _t26, float _t27, float _t28, float _t29, float _t33_inv) {
+        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_r9, _t24, Math.fma(_r10, _t20, _r11 * _t23)) * _t33_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t20).withLane(1, _t23).withLane(2, _t24).mul(FloatVector.broadcast(COL_SPECIES, _t33_inv)));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_r9, _t27, Math.fma(_r10, _t25, _r11 * _t26)) * _t33_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t25).withLane(1, _t26).withLane(2, _t27).mul(FloatVector.broadcast(COL_SPECIES, _t33_inv)));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_r9, _t29, Math.fma(_r10, _t21, _r11 * _t28)) * _t33_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t21).withLane(1, _t28).withLane(2, _t29).mul(FloatVector.broadcast(COL_SPECIES, _t33_inv)));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private tail of {@code invertProduct_general_identity_s43d0fbb0}; reached only through it. */
+    private static void invertProduct_general_identity_s43d0fbb0_tail(float[] dd, float _r0, float _r1, float _r2, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t20, float _t21, float _t23, float _t24, float _t25, float _t26, float _t27, float _t28) {
+        float _t29 = Math.fma(_r8, _r0, -(_r7 * _r4));
+        float _t33_inv = 1.0f / Math.fma(_r6, _t21, Math.fma(_r8, _t20, -(_r7 * Math.fma(_r4, _r1, -(_r2 * _r5)))));
+        invertProduct_general_identity_s43d0fbb0_tail2(dd, _r9, _r10, _r11, _t20, _t21, _t23, _t24, _t25, _t26, _t27, _t28, _t29, _t33_inv);
+    }
+
     private Float3x4 invertProduct_general_identity(Float3x4R other, @Mutated Float3x4 dest) {
         if (SimdMath.USE_FMA) return invertProduct_general_identity_fma(other, dest);
         return invertProduct_general_identity_mulAdd(other, dest);
@@ -3937,23 +4251,27 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] otherData = ((Float3x4Impl) other).data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t20 = Math.fma(sd[5], sd[10], -(sd[6] * sd[9]));
-        float _t21 = Math.fma(sd[4], sd[9], -(sd[5] * sd[8]));
-        float _t23 = Math.fma(sd[2], sd[9], -(sd[1] * sd[10]));
-        float _t24 = Math.fma(sd[1], sd[6], -(sd[2] * sd[5]));
-        float _t25 = Math.fma(sd[6], sd[8], -(sd[4] * sd[10]));
-        float _t26 = Math.fma(sd[0], sd[10], -(sd[2] * sd[8]));
-        float _t27 = Math.fma(sd[2], sd[4], -(sd[0] * sd[6]));
-        float _t28 = Math.fma(sd[1], sd[8], -(sd[0] * sd[9]));
-        float _t29 = Math.fma(sd[0], sd[5], -(sd[1] * sd[4]));
-        float _t33_inv = 1.0f / Math.fma(sd[2], _t21, Math.fma(sd[0], _t20, -(sd[1] * Math.fma(sd[4], sd[10], -(sd[6] * sd[8])))));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, _t33_inv);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(sd[11], _t24, Math.fma(sd[3], _t20, sd[7] * _t23)) * _t33_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t20).withLane(1, _t23).withLane(2, _t24).mul(_sv0));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(sd[11], _t27, Math.fma(sd[3], _t25, sd[7] * _t26)) * _t33_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t25).withLane(1, _t26).withLane(2, _t27).mul(_sv0));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(sd[11], _t29, Math.fma(sd[3], _t21, sd[7] * _t28)) * _t33_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t21).withLane(1, _t28).withLane(2, _t29).mul(_sv0));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = sd[5];
+        float _r1 = sd[10];
+        float _r2 = sd[6];
+        float _r3 = sd[9];
+        float _r4 = sd[4];
+        float _r5 = sd[8];
+        float _r6 = sd[2];
+        float _r7 = sd[1];
+        float _r8 = sd[0];
+        float _r9 = sd[11];
+        float _r10 = sd[3];
+        float _r11 = sd[7];
+        float _t20 = Math.fma(_r0, _r1, -(_r2 * _r3));
+        float _t21 = Math.fma(_r4, _r3, -(_r0 * _r5));
+        float _t23 = Math.fma(_r6, _r3, -(_r7 * _r1));
+        float _t24 = Math.fma(_r7, _r2, -(_r6 * _r0));
+        float _t25 = Math.fma(_r2, _r5, -(_r4 * _r1));
+        float _t26 = Math.fma(_r8, _r1, -(_r6 * _r5));
+        float _t27 = Math.fma(_r6, _r4, -(_r8 * _r2));
+        float _t28 = Math.fma(_r7, _r5, -(_r8 * _r3));
+        invertProduct_general_identity_s34aa4fe7_tail(dd, _r0, _r1, _r2, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t20, _t21, _t23, _t24, _t25, _t26, _t27, _t28);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE & ((Float3x4Impl) other).properties;
         return dest;
     }
@@ -3962,23 +4280,27 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] otherData = ((Float3x4Impl) other).data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t20 = Math.fma(sd[5], sd[10], -(sd[6] * sd[9]));
-        float _t21 = Math.fma(sd[4], sd[9], -(sd[5] * sd[8]));
-        float _t23 = Math.fma(sd[2], sd[9], -(sd[1] * sd[10]));
-        float _t24 = Math.fma(sd[1], sd[6], -(sd[2] * sd[5]));
-        float _t25 = Math.fma(sd[6], sd[8], -(sd[4] * sd[10]));
-        float _t26 = Math.fma(sd[0], sd[10], -(sd[2] * sd[8]));
-        float _t27 = Math.fma(sd[2], sd[4], -(sd[0] * sd[6]));
-        float _t28 = Math.fma(sd[1], sd[8], -(sd[0] * sd[9]));
-        float _t29 = Math.fma(sd[0], sd[5], -(sd[1] * sd[4]));
-        float _t33_inv = 1.0f / Math.fma(sd[2], _t21, Math.fma(sd[0], _t20, -(sd[1] * Math.fma(sd[4], sd[10], -(sd[6] * sd[8])))));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, _t33_inv);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(sd[11], _t24, Math.fma(sd[3], _t20, sd[7] * _t23)) * _t33_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t20).withLane(1, _t23).withLane(2, _t24).mul(_sv0));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(sd[11], _t27, Math.fma(sd[3], _t25, sd[7] * _t26)) * _t33_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t25).withLane(1, _t26).withLane(2, _t27).mul(_sv0));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(sd[11], _t29, Math.fma(sd[3], _t21, sd[7] * _t28)) * _t33_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t21).withLane(1, _t28).withLane(2, _t29).mul(_sv0));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = sd[5];
+        float _r1 = sd[10];
+        float _r2 = sd[6];
+        float _r3 = sd[9];
+        float _r4 = sd[4];
+        float _r5 = sd[8];
+        float _r6 = sd[2];
+        float _r7 = sd[1];
+        float _r8 = sd[0];
+        float _r9 = sd[11];
+        float _r10 = sd[3];
+        float _r11 = sd[7];
+        float _t20 = Math.fma(_r0, _r1, -(_r2 * _r3));
+        float _t21 = Math.fma(_r4, _r3, -(_r0 * _r5));
+        float _t23 = Math.fma(_r6, _r3, -(_r7 * _r1));
+        float _t24 = Math.fma(_r7, _r2, -(_r6 * _r0));
+        float _t25 = Math.fma(_r2, _r5, -(_r4 * _r1));
+        float _t26 = Math.fma(_r8, _r1, -(_r6 * _r5));
+        float _t27 = Math.fma(_r6, _r4, -(_r8 * _r2));
+        float _t28 = Math.fma(_r7, _r5, -(_r8 * _r3));
+        invertProduct_general_identity_s43d0fbb0_tail(dd, _r0, _r1, _r2, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t20, _t21, _t23, _t24, _t25, _t26, _t27, _t28);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE & ((Float3x4Impl) other).properties;
         return dest;
     }
@@ -3988,6 +4310,50 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
      * through the public {@code invertProduct} dispatcher.
      */
+    /** Private vector tail of {@code invertProduct_general_translation_s34aa4fe7}: loads, computes and stores every column; reached only through it. */
+    private static void invertProduct_general_translation_s34aa4fe7_tail2(float[] dd, float _t23, float _t24, float _t26, float _t27, float _t28, float _t29, float _t30, float _t31, float _t32, float _t38, float _t39, float _t40, float _t42_inv) {
+        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t38, _t27, Math.fma(_t39, _t23, _t40 * _t26)) * _t42_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t23).withLane(1, _t26).withLane(2, _t27).mul(FloatVector.broadcast(COL_SPECIES, _t42_inv)));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t38, _t30, Math.fma(_t39, _t28, _t40 * _t29)) * _t42_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t28).withLane(1, _t29).withLane(2, _t30).mul(FloatVector.broadcast(COL_SPECIES, _t42_inv)));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t38, _t32, Math.fma(_t39, _t24, _t40 * _t31)) * _t42_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t24).withLane(1, _t31).withLane(2, _t32).mul(FloatVector.broadcast(COL_SPECIES, _t42_inv)));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private tail of {@code invertProduct_general_translation_s34aa4fe7}; reached only through it. */
+    private static void invertProduct_general_translation_s34aa4fe7_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _t23, float _t24, float _t26, float _t27, float _t28, float _t29) {
+        float _t30 = Math.fma(_r6, _r4, -(_r8 * _r2));
+        float _t31 = Math.fma(_r7, _r5, -(_r8 * _r3));
+        float _t32 = Math.fma(_r8, _r0, -(_r7 * _r4));
+        float _t38 = Math.fma(_r9, _r5, Math.fma(_r10, _r3, Math.fma(_r11, _r1, _r12)));
+        float _t39 = Math.fma(_r9, _r8, Math.fma(_r10, _r7, Math.fma(_r11, _r6, _r13)));
+        float _t40 = Math.fma(_r9, _r4, Math.fma(_r10, _r0, Math.fma(_r11, _r2, _r14)));
+        float _t42_inv = 1.0f / Math.fma(_r6, _t24, Math.fma(_r8, _t23, -(_r7 * Math.fma(_r4, _r1, -(_r2 * _r5)))));
+        invertProduct_general_translation_s34aa4fe7_tail2(dd, _t23, _t24, _t26, _t27, _t28, _t29, _t30, _t31, _t32, _t38, _t39, _t40, _t42_inv);
+    }
+
+    /** Private vector tail of {@code invertProduct_general_translation_s43d0fbb0}: loads, computes and stores every column; reached only through it. */
+    private static void invertProduct_general_translation_s43d0fbb0_tail2(float[] dd, float _t23, float _t24, float _t26, float _t27, float _t28, float _t29, float _t30, float _t31, float _t32, float _t38, float _t39, float _t40, float _t42_inv) {
+        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t38, _t27, Math.fma(_t39, _t23, _t40 * _t26)) * _t42_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t23).withLane(1, _t26).withLane(2, _t27).mul(FloatVector.broadcast(COL_SPECIES, _t42_inv)));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t38, _t30, Math.fma(_t39, _t28, _t40 * _t29)) * _t42_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t28).withLane(1, _t29).withLane(2, _t30).mul(FloatVector.broadcast(COL_SPECIES, _t42_inv)));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t38, _t32, Math.fma(_t39, _t24, _t40 * _t31)) * _t42_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t24).withLane(1, _t31).withLane(2, _t32).mul(FloatVector.broadcast(COL_SPECIES, _t42_inv)));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private tail of {@code invertProduct_general_translation_s43d0fbb0}; reached only through it. */
+    private static void invertProduct_general_translation_s43d0fbb0_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _t23, float _t24, float _t26, float _t27, float _t28, float _t29) {
+        float _t30 = Math.fma(_r6, _r4, -(_r8 * _r2));
+        float _t31 = Math.fma(_r7, _r5, -(_r8 * _r3));
+        float _t32 = Math.fma(_r8, _r0, -(_r7 * _r4));
+        float _t38 = Math.fma(_r9, _r5, Math.fma(_r10, _r3, Math.fma(_r11, _r1, _r12)));
+        float _t39 = Math.fma(_r9, _r8, Math.fma(_r10, _r7, Math.fma(_r11, _r6, _r13)));
+        float _t40 = Math.fma(_r9, _r4, Math.fma(_r10, _r0, Math.fma(_r11, _r2, _r14)));
+        float _t42_inv = 1.0f / Math.fma(_r6, _t24, Math.fma(_r8, _t23, -(_r7 * Math.fma(_r4, _r1, -(_r2 * _r5)))));
+        invertProduct_general_translation_s43d0fbb0_tail2(dd, _t23, _t24, _t26, _t27, _t28, _t29, _t30, _t31, _t32, _t38, _t39, _t40, _t42_inv);
+    }
+
     private Float3x4 invertProduct_general_translation(Float3x4R other, @Mutated Float3x4 dest) {
         if (SimdMath.USE_FMA) return invertProduct_general_translation_fma(other, dest);
         return invertProduct_general_translation_mulAdd(other, dest);
@@ -3997,26 +4363,28 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] otherData = ((Float3x4Impl) other).data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t23 = Math.fma(sd[5], sd[10], -(sd[6] * sd[9]));
-        float _t24 = Math.fma(sd[4], sd[9], -(sd[5] * sd[8]));
-        float _t26 = Math.fma(sd[2], sd[9], -(sd[1] * sd[10]));
-        float _t27 = Math.fma(sd[1], sd[6], -(sd[2] * sd[5]));
-        float _t28 = Math.fma(sd[6], sd[8], -(sd[4] * sd[10]));
-        float _t29 = Math.fma(sd[0], sd[10], -(sd[2] * sd[8]));
-        float _t30 = Math.fma(sd[2], sd[4], -(sd[0] * sd[6]));
-        float _t31 = Math.fma(sd[1], sd[8], -(sd[0] * sd[9]));
-        float _t32 = Math.fma(sd[0], sd[5], -(sd[1] * sd[4]));
-        float _t38 = Math.fma(otherData[3], sd[8], Math.fma(otherData[7], sd[9], Math.fma(otherData[11], sd[10], sd[11])));
-        float _t39 = Math.fma(otherData[3], sd[0], Math.fma(otherData[7], sd[1], Math.fma(otherData[11], sd[2], sd[3])));
-        float _t40 = Math.fma(otherData[3], sd[4], Math.fma(otherData[7], sd[5], Math.fma(otherData[11], sd[6], sd[7])));
-        float _t42_inv = 1.0f / Math.fma(sd[2], _t24, Math.fma(sd[0], _t23, -(sd[1] * Math.fma(sd[4], sd[10], -(sd[6] * sd[8])))));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, _t42_inv);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t38, _t27, Math.fma(_t39, _t23, _t40 * _t26)) * _t42_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t23).withLane(1, _t26).withLane(2, _t27).mul(_sv0));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t38, _t30, Math.fma(_t39, _t28, _t40 * _t29)) * _t42_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t28).withLane(1, _t29).withLane(2, _t30).mul(_sv0));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t38, _t32, Math.fma(_t39, _t24, _t40 * _t31)) * _t42_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t24).withLane(1, _t31).withLane(2, _t32).mul(_sv0));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = sd[5];
+        float _r1 = sd[10];
+        float _r2 = sd[6];
+        float _r3 = sd[9];
+        float _r4 = sd[4];
+        float _r5 = sd[8];
+        float _r6 = sd[2];
+        float _r7 = sd[1];
+        float _r8 = sd[0];
+        float _r9 = otherData[3];
+        float _r10 = otherData[7];
+        float _r11 = otherData[11];
+        float _r12 = sd[11];
+        float _r13 = sd[3];
+        float _r14 = sd[7];
+        float _t23 = Math.fma(_r0, _r1, -(_r2 * _r3));
+        float _t24 = Math.fma(_r4, _r3, -(_r0 * _r5));
+        float _t26 = Math.fma(_r6, _r3, -(_r7 * _r1));
+        float _t27 = Math.fma(_r7, _r2, -(_r6 * _r0));
+        float _t28 = Math.fma(_r2, _r5, -(_r4 * _r1));
+        float _t29 = Math.fma(_r8, _r1, -(_r6 * _r5));
+        invertProduct_general_translation_s34aa4fe7_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _t23, _t24, _t26, _t27, _t28, _t29);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE & ((Float3x4Impl) other).properties;
         return dest;
     }
@@ -4025,26 +4393,28 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] otherData = ((Float3x4Impl) other).data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t23 = Math.fma(sd[5], sd[10], -(sd[6] * sd[9]));
-        float _t24 = Math.fma(sd[4], sd[9], -(sd[5] * sd[8]));
-        float _t26 = Math.fma(sd[2], sd[9], -(sd[1] * sd[10]));
-        float _t27 = Math.fma(sd[1], sd[6], -(sd[2] * sd[5]));
-        float _t28 = Math.fma(sd[6], sd[8], -(sd[4] * sd[10]));
-        float _t29 = Math.fma(sd[0], sd[10], -(sd[2] * sd[8]));
-        float _t30 = Math.fma(sd[2], sd[4], -(sd[0] * sd[6]));
-        float _t31 = Math.fma(sd[1], sd[8], -(sd[0] * sd[9]));
-        float _t32 = Math.fma(sd[0], sd[5], -(sd[1] * sd[4]));
-        float _t38 = Math.fma(otherData[3], sd[8], Math.fma(otherData[7], sd[9], Math.fma(otherData[11], sd[10], sd[11])));
-        float _t39 = Math.fma(otherData[3], sd[0], Math.fma(otherData[7], sd[1], Math.fma(otherData[11], sd[2], sd[3])));
-        float _t40 = Math.fma(otherData[3], sd[4], Math.fma(otherData[7], sd[5], Math.fma(otherData[11], sd[6], sd[7])));
-        float _t42_inv = 1.0f / Math.fma(sd[2], _t24, Math.fma(sd[0], _t23, -(sd[1] * Math.fma(sd[4], sd[10], -(sd[6] * sd[8])))));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, _t42_inv);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t38, _t27, Math.fma(_t39, _t23, _t40 * _t26)) * _t42_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t23).withLane(1, _t26).withLane(2, _t27).mul(_sv0));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t38, _t30, Math.fma(_t39, _t28, _t40 * _t29)) * _t42_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t28).withLane(1, _t29).withLane(2, _t30).mul(_sv0));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t38, _t32, Math.fma(_t39, _t24, _t40 * _t31)) * _t42_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t24).withLane(1, _t31).withLane(2, _t32).mul(_sv0));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = sd[5];
+        float _r1 = sd[10];
+        float _r2 = sd[6];
+        float _r3 = sd[9];
+        float _r4 = sd[4];
+        float _r5 = sd[8];
+        float _r6 = sd[2];
+        float _r7 = sd[1];
+        float _r8 = sd[0];
+        float _r9 = otherData[3];
+        float _r10 = otherData[7];
+        float _r11 = otherData[11];
+        float _r12 = sd[11];
+        float _r13 = sd[3];
+        float _r14 = sd[7];
+        float _t23 = Math.fma(_r0, _r1, -(_r2 * _r3));
+        float _t24 = Math.fma(_r4, _r3, -(_r0 * _r5));
+        float _t26 = Math.fma(_r6, _r3, -(_r7 * _r1));
+        float _t27 = Math.fma(_r7, _r2, -(_r6 * _r0));
+        float _t28 = Math.fma(_r2, _r5, -(_r4 * _r1));
+        float _t29 = Math.fma(_r8, _r1, -(_r6 * _r5));
+        invertProduct_general_translation_s43d0fbb0_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _t23, _t24, _t26, _t27, _t28, _t29);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE & ((Float3x4Impl) other).properties;
         return dest;
     }
@@ -4174,6 +4544,80 @@ public class Float3x4Impl implements Float3x4 {
      * @param dest will hold the result
      * @return dest
      */
+    /** Private vector tail of {@code invertProduct_s5755010a}: loads, computes and stores every column; reached only through it. */
+    private static void invertProduct_s5755010a_tail3(float[] dd, float _t33, float _t34, float _t35, float _t56, float _t57, float _t59, float _t60, float _t61, float _t62, float _t63, float _t64, float _t65, float _t69_inv) {
+        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t56).withLane(1, _t59).withLane(2, _t60).mul(FloatVector.broadcast(COL_SPECIES, _t69_inv)));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t61).withLane(1, _t62).withLane(2, _t63).mul(FloatVector.broadcast(COL_SPECIES, _t69_inv)));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t57).withLane(1, _t64).withLane(2, _t65).mul(FloatVector.broadcast(COL_SPECIES, _t69_inv)));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private tail of {@code invertProduct_s5755010a}; reached only through it. */
+    private static void invertProduct_s5755010a_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t24, float _t25, float _t26, float _t27, float _t28, float m00, float m01, float m03, float m10, float m11, float m13, float m20, float m21, float m23) {
+        float _t29 = Math.fma(m20, _r0, Math.fma(m00, _r1, m10 * _r2));
+        float _t30 = Math.fma(m20, _r3, Math.fma(m00, _r4, m10 * _r5));
+        float _t31 = Math.fma(m20, _r6, Math.fma(m00, _r7, m10 * _r8));
+        float _t32 = Math.fma(m21, _r6, Math.fma(m01, _r7, m11 * _r8));
+        float _t33 = Math.fma(m03, _r4, Math.fma(m13, _r5, Math.fma(m23, _r3, _r9)));
+        float _t34 = Math.fma(m03, _r7, Math.fma(m13, _r8, Math.fma(m23, _r6, _r10)));
+        float _t35 = Math.fma(m03, _r1, Math.fma(m13, _r2, Math.fma(m23, _r0, _r11)));
+        float _t56 = Math.fma(_t24, _t25, -(_t26 * _t27));
+        float _t57 = Math.fma(_t29, _t26, -(_t30 * _t24));
+        float _t59 = Math.fma(_t26, _t28, -(_t32 * _t25));
+        float _t60 = Math.fma(_t32, _t27, -(_t24 * _t28));
+        float _t61 = Math.fma(_t30, _t27, -(_t29 * _t25));
+        invertProduct_s5755010a_tail2(dd, _t24, _t25, _t26, _t27, _t28, _t29, _t30, _t31, _t32, _t33, _t34, _t35, _t56, _t57, _t59, _t60, _t61);
+    }
+
+    /** Private tail of {@code invertProduct_s5755010a}; reached only through it. */
+    private static void invertProduct_s5755010a_tail2(float[] dd, float _t24, float _t25, float _t26, float _t27, float _t28, float _t29, float _t30, float _t31, float _t32, float _t33, float _t34, float _t35, float _t56, float _t57, float _t59, float _t60, float _t61) {
+        float _t62 = Math.fma(_t31, _t25, -(_t30 * _t28));
+        float _t63 = Math.fma(_t29, _t28, -(_t31 * _t27));
+        float _t64 = Math.fma(_t30, _t32, -(_t31 * _t26));
+        float _t65 = Math.fma(_t31, _t24, -(_t29 * _t32));
+        float _t69_inv = 1.0f / Math.fma(_t28, _t57, Math.fma(_t31, _t56, -(_t32 * Math.fma(_t29, _t25, -(_t30 * _t27)))));
+        invertProduct_s5755010a_tail3(dd, _t33, _t34, _t35, _t56, _t57, _t59, _t60, _t61, _t62, _t63, _t64, _t65, _t69_inv);
+    }
+
+    /** Private vector tail of {@code invertProduct_s796c93ad}: loads, computes and stores every column; reached only through it. */
+    private static void invertProduct_s796c93ad_tail3(float[] dd, float _t33, float _t34, float _t35, float _t56, float _t57, float _t59, float _t60, float _t61, float _t62, float _t63, float _t64, float _t65, float _t69_inv) {
+        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t56).withLane(1, _t59).withLane(2, _t60).mul(FloatVector.broadcast(COL_SPECIES, _t69_inv)));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t61).withLane(1, _t62).withLane(2, _t63).mul(FloatVector.broadcast(COL_SPECIES, _t69_inv)));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t57).withLane(1, _t64).withLane(2, _t65).mul(FloatVector.broadcast(COL_SPECIES, _t69_inv)));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private tail of {@code invertProduct_s796c93ad}; reached only through it. */
+    private static void invertProduct_s796c93ad_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t24, float _t25, float _t26, float _t27, float _t28, float m00, float m01, float m03, float m10, float m11, float m13, float m20, float m21, float m23) {
+        float _t29 = Math.fma(m20, _r0, Math.fma(m00, _r1, m10 * _r2));
+        float _t30 = Math.fma(m20, _r3, Math.fma(m00, _r4, m10 * _r5));
+        float _t31 = Math.fma(m20, _r6, Math.fma(m00, _r7, m10 * _r8));
+        float _t32 = Math.fma(m21, _r6, Math.fma(m01, _r7, m11 * _r8));
+        float _t33 = Math.fma(m03, _r4, Math.fma(m13, _r5, Math.fma(m23, _r3, _r9)));
+        float _t34 = Math.fma(m03, _r7, Math.fma(m13, _r8, Math.fma(m23, _r6, _r10)));
+        float _t35 = Math.fma(m03, _r1, Math.fma(m13, _r2, Math.fma(m23, _r0, _r11)));
+        float _t56 = Math.fma(_t24, _t25, -(_t26 * _t27));
+        float _t57 = Math.fma(_t29, _t26, -(_t30 * _t24));
+        float _t59 = Math.fma(_t26, _t28, -(_t32 * _t25));
+        float _t60 = Math.fma(_t32, _t27, -(_t24 * _t28));
+        float _t61 = Math.fma(_t30, _t27, -(_t29 * _t25));
+        invertProduct_s796c93ad_tail2(dd, _t24, _t25, _t26, _t27, _t28, _t29, _t30, _t31, _t32, _t33, _t34, _t35, _t56, _t57, _t59, _t60, _t61);
+    }
+
+    /** Private tail of {@code invertProduct_s796c93ad}; reached only through it. */
+    private static void invertProduct_s796c93ad_tail2(float[] dd, float _t24, float _t25, float _t26, float _t27, float _t28, float _t29, float _t30, float _t31, float _t32, float _t33, float _t34, float _t35, float _t56, float _t57, float _t59, float _t60, float _t61) {
+        float _t62 = Math.fma(_t31, _t25, -(_t30 * _t28));
+        float _t63 = Math.fma(_t29, _t28, -(_t31 * _t27));
+        float _t64 = Math.fma(_t30, _t32, -(_t31 * _t26));
+        float _t65 = Math.fma(_t31, _t24, -(_t29 * _t32));
+        float _t69_inv = 1.0f / Math.fma(_t28, _t57, Math.fma(_t31, _t56, -(_t32 * Math.fma(_t29, _t25, -(_t30 * _t27)))));
+        invertProduct_s796c93ad_tail3(dd, _t33, _t34, _t35, _t56, _t57, _t59, _t60, _t61, _t62, _t63, _t64, _t65, _t69_inv);
+    }
+
     public Float3x4 invertProduct(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, @Mutated Float3x4 dest) {
         if (SimdMath.USE_FMA) return invertProduct_fma(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, dest);
         return invertProduct_mulAdd(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, dest);
@@ -4182,35 +4626,24 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 invertProduct_fma(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t24 = Math.fma(m21, sd[6], Math.fma(m01, sd[4], m11 * sd[5]));
-        float _t25 = Math.fma(m22, sd[10], Math.fma(m02, sd[8], m12 * sd[9]));
-        float _t26 = Math.fma(m21, sd[10], Math.fma(m01, sd[8], m11 * sd[9]));
-        float _t27 = Math.fma(m22, sd[6], Math.fma(m02, sd[4], m12 * sd[5]));
-        float _t28 = Math.fma(m22, sd[2], Math.fma(m02, sd[0], m12 * sd[1]));
-        float _t29 = Math.fma(m20, sd[6], Math.fma(m00, sd[4], m10 * sd[5]));
-        float _t30 = Math.fma(m20, sd[10], Math.fma(m00, sd[8], m10 * sd[9]));
-        float _t31 = Math.fma(m20, sd[2], Math.fma(m00, sd[0], m10 * sd[1]));
-        float _t32 = Math.fma(m21, sd[2], Math.fma(m01, sd[0], m11 * sd[1]));
-        float _t33 = Math.fma(m03, sd[8], Math.fma(m13, sd[9], Math.fma(m23, sd[10], sd[11])));
-        float _t34 = Math.fma(m03, sd[0], Math.fma(m13, sd[1], Math.fma(m23, sd[2], sd[3])));
-        float _t35 = Math.fma(m03, sd[4], Math.fma(m13, sd[5], Math.fma(m23, sd[6], sd[7])));
-        float _t56 = Math.fma(_t24, _t25, -(_t26 * _t27));
-        float _t57 = Math.fma(_t29, _t26, -(_t30 * _t24));
-        float _t59 = Math.fma(_t26, _t28, -(_t32 * _t25));
-        float _t60 = Math.fma(_t32, _t27, -(_t24 * _t28));
-        float _t61 = Math.fma(_t30, _t27, -(_t29 * _t25));
-        float _t62 = Math.fma(_t31, _t25, -(_t30 * _t28));
-        float _t63 = Math.fma(_t29, _t28, -(_t31 * _t27));
-        float _t64 = Math.fma(_t30, _t32, -(_t31 * _t26));
-        float _t65 = Math.fma(_t31, _t24, -(_t29 * _t32));
-        float _t69_inv = 1.0f / Math.fma(_t28, _t57, Math.fma(_t31, _t56, -(_t32 * Math.fma(_t29, _t25, -(_t30 * _t27)))));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, _t69_inv);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t56).withLane(1, _t59).withLane(2, _t60).mul(_sv0));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t61).withLane(1, _t62).withLane(2, _t63).mul(_sv0));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t57).withLane(1, _t64).withLane(2, _t65).mul(_sv0));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = sd[6];
+        float _r1 = sd[4];
+        float _r2 = sd[5];
+        float _r3 = sd[10];
+        float _r4 = sd[8];
+        float _r5 = sd[9];
+        float _r6 = sd[2];
+        float _r7 = sd[0];
+        float _r8 = sd[1];
+        float _r9 = sd[11];
+        float _r10 = sd[3];
+        float _r11 = sd[7];
+        float _t24 = Math.fma(m21, _r0, Math.fma(m01, _r1, m11 * _r2));
+        float _t25 = Math.fma(m22, _r3, Math.fma(m02, _r4, m12 * _r5));
+        float _t26 = Math.fma(m21, _r3, Math.fma(m01, _r4, m11 * _r5));
+        float _t27 = Math.fma(m22, _r0, Math.fma(m02, _r1, m12 * _r2));
+        float _t28 = Math.fma(m22, _r6, Math.fma(m02, _r7, m12 * _r8));
+        invertProduct_s5755010a_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t24, _t25, _t26, _t27, _t28, m00, m01, m03, m10, m11, m13, m20, m21, m23);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -4218,35 +4651,24 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 invertProduct_mulAdd(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t24 = Math.fma(m21, sd[6], Math.fma(m01, sd[4], m11 * sd[5]));
-        float _t25 = Math.fma(m22, sd[10], Math.fma(m02, sd[8], m12 * sd[9]));
-        float _t26 = Math.fma(m21, sd[10], Math.fma(m01, sd[8], m11 * sd[9]));
-        float _t27 = Math.fma(m22, sd[6], Math.fma(m02, sd[4], m12 * sd[5]));
-        float _t28 = Math.fma(m22, sd[2], Math.fma(m02, sd[0], m12 * sd[1]));
-        float _t29 = Math.fma(m20, sd[6], Math.fma(m00, sd[4], m10 * sd[5]));
-        float _t30 = Math.fma(m20, sd[10], Math.fma(m00, sd[8], m10 * sd[9]));
-        float _t31 = Math.fma(m20, sd[2], Math.fma(m00, sd[0], m10 * sd[1]));
-        float _t32 = Math.fma(m21, sd[2], Math.fma(m01, sd[0], m11 * sd[1]));
-        float _t33 = Math.fma(m03, sd[8], Math.fma(m13, sd[9], Math.fma(m23, sd[10], sd[11])));
-        float _t34 = Math.fma(m03, sd[0], Math.fma(m13, sd[1], Math.fma(m23, sd[2], sd[3])));
-        float _t35 = Math.fma(m03, sd[4], Math.fma(m13, sd[5], Math.fma(m23, sd[6], sd[7])));
-        float _t56 = Math.fma(_t24, _t25, -(_t26 * _t27));
-        float _t57 = Math.fma(_t29, _t26, -(_t30 * _t24));
-        float _t59 = Math.fma(_t26, _t28, -(_t32 * _t25));
-        float _t60 = Math.fma(_t32, _t27, -(_t24 * _t28));
-        float _t61 = Math.fma(_t30, _t27, -(_t29 * _t25));
-        float _t62 = Math.fma(_t31, _t25, -(_t30 * _t28));
-        float _t63 = Math.fma(_t29, _t28, -(_t31 * _t27));
-        float _t64 = Math.fma(_t30, _t32, -(_t31 * _t26));
-        float _t65 = Math.fma(_t31, _t24, -(_t29 * _t32));
-        float _t69_inv = 1.0f / Math.fma(_t28, _t57, Math.fma(_t31, _t56, -(_t32 * Math.fma(_t29, _t25, -(_t30 * _t27)))));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, _t69_inv);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t56).withLane(1, _t59).withLane(2, _t60).mul(_sv0));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t61).withLane(1, _t62).withLane(2, _t63).mul(_sv0));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t57).withLane(1, _t64).withLane(2, _t65).mul(_sv0));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = sd[6];
+        float _r1 = sd[4];
+        float _r2 = sd[5];
+        float _r3 = sd[10];
+        float _r4 = sd[8];
+        float _r5 = sd[9];
+        float _r6 = sd[2];
+        float _r7 = sd[0];
+        float _r8 = sd[1];
+        float _r9 = sd[11];
+        float _r10 = sd[3];
+        float _r11 = sd[7];
+        float _t24 = Math.fma(m21, _r0, Math.fma(m01, _r1, m11 * _r2));
+        float _t25 = Math.fma(m22, _r3, Math.fma(m02, _r4, m12 * _r5));
+        float _t26 = Math.fma(m21, _r3, Math.fma(m01, _r4, m11 * _r5));
+        float _t27 = Math.fma(m22, _r0, Math.fma(m02, _r1, m12 * _r2));
+        float _t28 = Math.fma(m22, _r6, Math.fma(m02, _r7, m12 * _r8));
+        invertProduct_s796c93ad_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t24, _t25, _t26, _t27, _t28, m00, m01, m03, m10, m11, m13, m20, m21, m23);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -6586,6 +7008,112 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code decomposeRotation}, specialized by runtime matrix properties; reached
      * only through the public {@code decomposeRotation} dispatcher.
      */
+    /** Private vector tail of {@code decomposeRotation_general_sfb8b4c8}: loads, computes and stores every column; reached only through it. */
+    private static void decomposeRotation_general_sfb8b4c8_tail4(float[] dd, float _t36, float _t56, float _t60, float _t63, float _t73, float _t77, float _t78, float _t80, float _t81, float _t82, float _t86, float _t87, float _t88, float _t89, float _t93) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (_t82 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t86)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t60).withLane(1, _t81).withLane(2, _t78).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t86)))))) : (_t73 > Math.max(_t36, _t56) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t87)).withLane(1, _t77 * _t93).withLane(2, _t80 * _t93).withLane(3, _t60 * _t93)) : (_t36 > _t56 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t77).withLane(2, _t63).withLane(3, _t81).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t88)))).withLane(1, (float) Math.sqrt(_t88))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t80).withLane(1, _t63).withLane(3, _t78).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t89)))).withLane(2, (float) Math.sqrt(_t89))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code decomposeRotation_general_sfb8b4c8}; reached only through it. */
+    private static void decomposeRotation_general_sfb8b4c8_tail(float[] dd, float _r6, float _r7, float _r8, float _t7, float _t8, float _t9, float _t20, float _t21, float _t22, float _t23) {
+        float _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
+        float _t30 = (1.0f / (float) Math.sqrt(_t29));
+        float _t34 = _t29 > 0.0f ? _t22 * _t30 : 0.0f;
+        float _t35 = _t29 > 0.0f ? _t21 * _t30 : 0.0f;
+        float _t36 = _t29 > 0.0f ? _t23 * _t30 : 0.0f;
+        float _t40 = -Math.fma(Math.fma(_t20, _t7, _r6), _t35, Math.fma(Math.fma(_t20, _t8, _r7), _t34, Math.fma(_t20, _t9, _r8) * _t36));
+        float _t44 = Math.fma(_t20, _t7, Math.fma(_t40, _t35, _r6));
+        float _t45 = Math.fma(_t20, _t8, Math.fma(_t40, _t34, _r7));
+        float _t46 = Math.fma(_t20, _t9, Math.fma(_t40, _t36, _r8));
+        float _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
+        float _t50 = (1.0f / (float) Math.sqrt(_t49));
+        float _t54 = _t49 > 0.0f ? _t46 * _t50 : 0.0f;
+        decomposeRotation_general_sfb8b4c8_tail2(dd, _t7, _t8, _t9, _t34, _t35, _t36, _t44, _t45, _t49, _t50, _t54);
+    }
+
+    /** Private tail of {@code decomposeRotation_general_sfb8b4c8}; reached only through it. */
+    private static void decomposeRotation_general_sfb8b4c8_tail2(float[] dd, float _t7, float _t8, float _t9, float _t34, float _t35, float _t36, float _t44, float _t45, float _t49, float _t50, float _t54) {
+        float _t55 = _t49 > 0.0f ? _t45 * _t50 : 0.0f;
+        float _t56 = _t49 > 0.0f ? _t44 * _t50 : 0.0f;
+        float _t60 = _t35 - _t54;
+        float _t63 = _t35 + _t54;
+        float _t72 = Math.fma(Math.fma(_t34, _t54, -(_t36 * _t55)), _t7, Math.fma(Math.fma(_t36, _t56, -(_t35 * _t54)), _t8, Math.fma(_t35, _t55, -(_t34 * _t56)) * _t9));
+        float _t73 = _t72 < 0.0f ? -_t8 : _t8;
+        float _t74 = _t72 < 0.0f ? -_t9 : _t9;
+        float _t75 = _t72 < 0.0f ? -_t7 : _t7;
+        float _t76 = _t73 + _t36;
+        float _t77 = _t74 + _t34;
+        float _t78 = _t74 - _t34;
+        float _t80 = _t75 + _t55;
+        float _t81 = _t55 - _t75;
+        float _t82 = _t76 + _t56;
+        float _t86 = 1.0f + _t82;
+        decomposeRotation_general_sfb8b4c8_tail3(dd, _t36, _t56, _t60, _t63, _t73, _t76, _t77, _t78, _t80, _t81, _t82, _t86);
+    }
+
+    /** Private tail of {@code decomposeRotation_general_sfb8b4c8}; reached only through it. */
+    private static void decomposeRotation_general_sfb8b4c8_tail3(float[] dd, float _t36, float _t56, float _t60, float _t63, float _t73, float _t76, float _t77, float _t78, float _t80, float _t81, float _t82, float _t86) {
+        float _t87 = 1.0f + (_t73 - (_t36 + _t56));
+        float _t88 = 1.0f + (_t36 - (_t73 + _t56));
+        float _t89 = 1.0f + (_t56 - _t76);
+        float _t93 = (1.0f / (float) Math.sqrt(_t87));
+        decomposeRotation_general_sfb8b4c8_tail4(dd, _t36, _t56, _t60, _t63, _t73, _t77, _t78, _t80, _t81, _t82, _t86, _t87, _t88, _t89, _t93);
+    }
+
+    /** Private vector tail of {@code decomposeRotation_general_s13de5f2f}: loads, computes and stores every column; reached only through it. */
+    private static void decomposeRotation_general_s13de5f2f_tail4(float[] dd, float _t36, float _t56, float _t60, float _t63, float _t73, float _t77, float _t78, float _t80, float _t81, float _t82, float _t86, float _t87, float _t88, float _t89, float _t93) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (_t82 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t86)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t60).withLane(1, _t81).withLane(2, _t78).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t86)))))) : (_t73 > Math.max(_t36, _t56) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t87)).withLane(1, _t77 * _t93).withLane(2, _t80 * _t93).withLane(3, _t60 * _t93)) : (_t36 > _t56 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t77).withLane(2, _t63).withLane(3, _t81).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t88)))).withLane(1, (float) Math.sqrt(_t88))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t80).withLane(1, _t63).withLane(3, _t78).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t89)))).withLane(2, (float) Math.sqrt(_t89))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code decomposeRotation_general_s13de5f2f}; reached only through it. */
+    private static void decomposeRotation_general_s13de5f2f_tail(float[] dd, float _r6, float _r7, float _r8, float _t7, float _t8, float _t9, float _t20, float _t21, float _t22, float _t23) {
+        float _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
+        float _t30 = (1.0f / (float) Math.sqrt(_t29));
+        float _t34 = _t29 > 0.0f ? _t22 * _t30 : 0.0f;
+        float _t35 = _t29 > 0.0f ? _t21 * _t30 : 0.0f;
+        float _t36 = _t29 > 0.0f ? _t23 * _t30 : 0.0f;
+        float _t40 = -Math.fma(Math.fma(_t20, _t7, _r6), _t35, Math.fma(Math.fma(_t20, _t8, _r7), _t34, Math.fma(_t20, _t9, _r8) * _t36));
+        float _t44 = Math.fma(_t20, _t7, Math.fma(_t40, _t35, _r6));
+        float _t45 = Math.fma(_t20, _t8, Math.fma(_t40, _t34, _r7));
+        float _t46 = Math.fma(_t20, _t9, Math.fma(_t40, _t36, _r8));
+        float _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
+        float _t50 = (1.0f / (float) Math.sqrt(_t49));
+        float _t54 = _t49 > 0.0f ? _t46 * _t50 : 0.0f;
+        decomposeRotation_general_s13de5f2f_tail2(dd, _t7, _t8, _t9, _t34, _t35, _t36, _t44, _t45, _t49, _t50, _t54);
+    }
+
+    /** Private tail of {@code decomposeRotation_general_s13de5f2f}; reached only through it. */
+    private static void decomposeRotation_general_s13de5f2f_tail2(float[] dd, float _t7, float _t8, float _t9, float _t34, float _t35, float _t36, float _t44, float _t45, float _t49, float _t50, float _t54) {
+        float _t55 = _t49 > 0.0f ? _t45 * _t50 : 0.0f;
+        float _t56 = _t49 > 0.0f ? _t44 * _t50 : 0.0f;
+        float _t60 = _t35 - _t54;
+        float _t63 = _t35 + _t54;
+        float _t72 = Math.fma(Math.fma(_t34, _t54, -(_t36 * _t55)), _t7, Math.fma(Math.fma(_t36, _t56, -(_t35 * _t54)), _t8, Math.fma(_t35, _t55, -(_t34 * _t56)) * _t9));
+        float _t73 = _t72 < 0.0f ? -_t8 : _t8;
+        float _t74 = _t72 < 0.0f ? -_t9 : _t9;
+        float _t75 = _t72 < 0.0f ? -_t7 : _t7;
+        float _t76 = _t73 + _t36;
+        float _t77 = _t74 + _t34;
+        float _t78 = _t74 - _t34;
+        float _t80 = _t75 + _t55;
+        float _t81 = _t55 - _t75;
+        float _t82 = _t76 + _t56;
+        float _t86 = 1.0f + _t82;
+        decomposeRotation_general_s13de5f2f_tail3(dd, _t36, _t56, _t60, _t63, _t73, _t76, _t77, _t78, _t80, _t81, _t82, _t86);
+    }
+
+    /** Private tail of {@code decomposeRotation_general_s13de5f2f}; reached only through it. */
+    private static void decomposeRotation_general_s13de5f2f_tail3(float[] dd, float _t36, float _t56, float _t60, float _t63, float _t73, float _t76, float _t77, float _t78, float _t80, float _t81, float _t82, float _t86) {
+        float _t87 = 1.0f + (_t73 - (_t36 + _t56));
+        float _t88 = 1.0f + (_t36 - (_t73 + _t56));
+        float _t89 = 1.0f + (_t56 - _t76);
+        float _t93 = (1.0f / (float) Math.sqrt(_t87));
+        decomposeRotation_general_s13de5f2f_tail4(dd, _t36, _t56, _t60, _t63, _t73, _t77, _t78, _t80, _t81, _t82, _t86, _t87, _t88, _t89, _t93);
+    }
+
     private FloatQuat decomposeRotation_general(@Mutated FloatQuat dest) {
         if (SimdMath.USE_FMA) return decomposeRotation_general_fma(dest);
         return decomposeRotation_general_mulAdd(dest);
@@ -6594,100 +7122,52 @@ public class Float3x4Impl implements Float3x4 {
     private FloatQuat decomposeRotation_general_fma(@Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
-        float _t2 = Math.fma(sd[8], sd[8], Math.fma(sd[0], sd[0], sd[4] * sd[4]));
+        float _r0 = sd[8];
+        float _r1 = sd[0];
+        float _r2 = sd[4];
+        float _r3 = sd[9];
+        float _r4 = sd[1];
+        float _r5 = sd[5];
+        float _r6 = sd[10];
+        float _r7 = sd[2];
+        float _r8 = sd[6];
+        float _t2 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7 = _t2 > 0.0f ? sd[8] * _t3 : 0.0f;
-        float _t8 = _t2 > 0.0f ? sd[0] * _t3 : 0.0f;
-        float _t9 = _t2 > 0.0f ? sd[4] * _t3 : 0.0f;
-        float _t19 = -Math.fma(sd[9], _t7, Math.fma(sd[1], _t8, sd[5] * _t9));
-        float _t20 = -Math.fma(sd[10], _t7, Math.fma(sd[2], _t8, sd[6] * _t9));
-        float _t21 = Math.fma(_t19, _t7, sd[9]);
-        float _t22 = Math.fma(_t19, _t8, sd[1]);
-        float _t23 = Math.fma(_t19, _t9, sd[5]);
-        float _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        float _t30 = (1.0f / (float) Math.sqrt(_t29));
-        float _t34 = _t29 > 0.0f ? _t22 * _t30 : 0.0f;
-        float _t35 = _t29 > 0.0f ? _t21 * _t30 : 0.0f;
-        float _t36 = _t29 > 0.0f ? _t23 * _t30 : 0.0f;
-        float _t40 = -Math.fma(Math.fma(_t20, _t7, sd[10]), _t35, Math.fma(Math.fma(_t20, _t8, sd[2]), _t34, Math.fma(_t20, _t9, sd[6]) * _t36));
-        float _t44 = Math.fma(_t20, _t7, Math.fma(_t40, _t35, sd[10]));
-        float _t45 = Math.fma(_t20, _t8, Math.fma(_t40, _t34, sd[2]));
-        float _t46 = Math.fma(_t20, _t9, Math.fma(_t40, _t36, sd[6]));
-        float _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
-        float _t50 = (1.0f / (float) Math.sqrt(_t49));
-        float _t54 = _t49 > 0.0f ? _t46 * _t50 : 0.0f;
-        float _t55 = _t49 > 0.0f ? _t45 * _t50 : 0.0f;
-        float _t56 = _t49 > 0.0f ? _t44 * _t50 : 0.0f;
-        float _t60 = _t35 - _t54;
-        float _t63 = _t35 + _t54;
-        float _t72 = Math.fma(Math.fma(_t34, _t54, -(_t36 * _t55)), _t7, Math.fma(Math.fma(_t36, _t56, -(_t35 * _t54)), _t8, Math.fma(_t35, _t55, -(_t34 * _t56)) * _t9));
-        float _t73 = _t72 < 0.0f ? -_t8 : _t8;
-        float _t74 = _t72 < 0.0f ? -_t9 : _t9;
-        float _t75 = _t72 < 0.0f ? -_t7 : _t7;
-        float _t76 = _t73 + _t36;
-        float _t77 = _t74 + _t34;
-        float _t78 = _t74 - _t34;
-        float _t80 = _t75 + _t55;
-        float _t81 = _t55 - _t75;
-        float _t82 = _t76 + _t56;
-        float _t86 = 1.0f + _t82;
-        float _t87 = 1.0f + (_t73 - (_t36 + _t56));
-        float _t88 = 1.0f + (_t36 - (_t73 + _t56));
-        float _t89 = 1.0f + (_t56 - _t76);
-        float _t93 = (1.0f / (float) Math.sqrt(_t87));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (_t82 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t86)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t60).withLane(1, _t81).withLane(2, _t78).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t86)))))) : (_t73 > Math.max(_t36, _t56) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t87)).withLane(1, _t77 * _t93).withLane(2, _t80 * _t93).withLane(3, _t60 * _t93)) : (_t36 > _t56 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t77).withLane(2, _t63).withLane(3, _t81).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t88)))).withLane(1, (float) Math.sqrt(_t88))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t80).withLane(1, _t63).withLane(3, _t78).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t89)))).withLane(2, (float) Math.sqrt(_t89))))));
-        _col0.intoArray(dd, 0);
+        float _t7 = _t2 > 0.0f ? _r0 * _t3 : 0.0f;
+        float _t8 = _t2 > 0.0f ? _r1 * _t3 : 0.0f;
+        float _t9 = _t2 > 0.0f ? _r2 * _t3 : 0.0f;
+        float _t19 = -Math.fma(_r3, _t7, Math.fma(_r4, _t8, _r5 * _t9));
+        float _t20 = -Math.fma(_r6, _t7, Math.fma(_r7, _t8, _r8 * _t9));
+        float _t21 = Math.fma(_t19, _t7, _r3);
+        float _t22 = Math.fma(_t19, _t8, _r4);
+        float _t23 = Math.fma(_t19, _t9, _r5);
+        decomposeRotation_general_sfb8b4c8_tail(dd, _r6, _r7, _r8, _t7, _t8, _t9, _t20, _t21, _t22, _t23);
         return dest;
     }
 
     private FloatQuat decomposeRotation_general_mulAdd(@Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
-        float _t2 = Math.fma(sd[8], sd[8], Math.fma(sd[0], sd[0], sd[4] * sd[4]));
+        float _r0 = sd[8];
+        float _r1 = sd[0];
+        float _r2 = sd[4];
+        float _r3 = sd[9];
+        float _r4 = sd[1];
+        float _r5 = sd[5];
+        float _r6 = sd[10];
+        float _r7 = sd[2];
+        float _r8 = sd[6];
+        float _t2 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7 = _t2 > 0.0f ? sd[8] * _t3 : 0.0f;
-        float _t8 = _t2 > 0.0f ? sd[0] * _t3 : 0.0f;
-        float _t9 = _t2 > 0.0f ? sd[4] * _t3 : 0.0f;
-        float _t19 = -Math.fma(sd[9], _t7, Math.fma(sd[1], _t8, sd[5] * _t9));
-        float _t20 = -Math.fma(sd[10], _t7, Math.fma(sd[2], _t8, sd[6] * _t9));
-        float _t21 = Math.fma(_t19, _t7, sd[9]);
-        float _t22 = Math.fma(_t19, _t8, sd[1]);
-        float _t23 = Math.fma(_t19, _t9, sd[5]);
-        float _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        float _t30 = (1.0f / (float) Math.sqrt(_t29));
-        float _t34 = _t29 > 0.0f ? _t22 * _t30 : 0.0f;
-        float _t35 = _t29 > 0.0f ? _t21 * _t30 : 0.0f;
-        float _t36 = _t29 > 0.0f ? _t23 * _t30 : 0.0f;
-        float _t40 = -Math.fma(Math.fma(_t20, _t7, sd[10]), _t35, Math.fma(Math.fma(_t20, _t8, sd[2]), _t34, Math.fma(_t20, _t9, sd[6]) * _t36));
-        float _t44 = Math.fma(_t20, _t7, Math.fma(_t40, _t35, sd[10]));
-        float _t45 = Math.fma(_t20, _t8, Math.fma(_t40, _t34, sd[2]));
-        float _t46 = Math.fma(_t20, _t9, Math.fma(_t40, _t36, sd[6]));
-        float _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
-        float _t50 = (1.0f / (float) Math.sqrt(_t49));
-        float _t54 = _t49 > 0.0f ? _t46 * _t50 : 0.0f;
-        float _t55 = _t49 > 0.0f ? _t45 * _t50 : 0.0f;
-        float _t56 = _t49 > 0.0f ? _t44 * _t50 : 0.0f;
-        float _t60 = _t35 - _t54;
-        float _t63 = _t35 + _t54;
-        float _t72 = Math.fma(Math.fma(_t34, _t54, -(_t36 * _t55)), _t7, Math.fma(Math.fma(_t36, _t56, -(_t35 * _t54)), _t8, Math.fma(_t35, _t55, -(_t34 * _t56)) * _t9));
-        float _t73 = _t72 < 0.0f ? -_t8 : _t8;
-        float _t74 = _t72 < 0.0f ? -_t9 : _t9;
-        float _t75 = _t72 < 0.0f ? -_t7 : _t7;
-        float _t76 = _t73 + _t36;
-        float _t77 = _t74 + _t34;
-        float _t78 = _t74 - _t34;
-        float _t80 = _t75 + _t55;
-        float _t81 = _t55 - _t75;
-        float _t82 = _t76 + _t56;
-        float _t86 = 1.0f + _t82;
-        float _t87 = 1.0f + (_t73 - (_t36 + _t56));
-        float _t88 = 1.0f + (_t36 - (_t73 + _t56));
-        float _t89 = 1.0f + (_t56 - _t76);
-        float _t93 = (1.0f / (float) Math.sqrt(_t87));
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (_t82 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t86)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t60).withLane(1, _t81).withLane(2, _t78).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t86)))))) : (_t73 > Math.max(_t36, _t56) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t87)).withLane(1, _t77 * _t93).withLane(2, _t80 * _t93).withLane(3, _t60 * _t93)) : (_t36 > _t56 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t77).withLane(2, _t63).withLane(3, _t81).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t88)))).withLane(1, (float) Math.sqrt(_t88))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t80).withLane(1, _t63).withLane(3, _t78).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t89)))).withLane(2, (float) Math.sqrt(_t89))))));
-        _col0.intoArray(dd, 0);
+        float _t7 = _t2 > 0.0f ? _r0 * _t3 : 0.0f;
+        float _t8 = _t2 > 0.0f ? _r1 * _t3 : 0.0f;
+        float _t9 = _t2 > 0.0f ? _r2 * _t3 : 0.0f;
+        float _t19 = -Math.fma(_r3, _t7, Math.fma(_r4, _t8, _r5 * _t9));
+        float _t20 = -Math.fma(_r6, _t7, Math.fma(_r7, _t8, _r8 * _t9));
+        float _t21 = Math.fma(_t19, _t7, _r3);
+        float _t22 = Math.fma(_t19, _t8, _r4);
+        float _t23 = Math.fma(_t19, _t9, _r5);
+        decomposeRotation_general_s13de5f2f_tail(dd, _r6, _r7, _r8, _t7, _t8, _t9, _t20, _t21, _t22, _t23);
         return dest;
     }
 
@@ -7656,6 +8136,32 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
      * the public {@code mul} dispatcher.
      */
+    /** Private vector tail of {@code mul_general_s6e062a29}: loads, computes and stores every column; reached only through it. */
+    private static void mul_general_s6e062a29_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float[] rightData) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, rightData, 0);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, rightData, 4);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, rightData, 8);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _r0).fma(VEC_0, _sv0.fma(FloatVector.broadcast(COL_SPECIES, _r1), _sv1.fma(FloatVector.broadcast(COL_SPECIES, _r2), _sv2.mul(FloatVector.broadcast(COL_SPECIES, _r3)))));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, _r4).fma(VEC_0, _sv0.fma(FloatVector.broadcast(COL_SPECIES, _r5), _sv1.fma(FloatVector.broadcast(COL_SPECIES, _r6), _sv2.mul(FloatVector.broadcast(COL_SPECIES, _r7)))));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, _r8).fma(VEC_0, _sv0.fma(FloatVector.broadcast(COL_SPECIES, _r9), _sv1.fma(FloatVector.broadcast(COL_SPECIES, _r10), _sv2.mul(FloatVector.broadcast(COL_SPECIES, _r11)))));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private vector tail of {@code mul_general_s2bcce22e}: loads, computes and stores every column; reached only through it. */
+    private static void mul_general_s2bcce22e_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float[] rightData) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, rightData, 0);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, rightData, 4);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, rightData, 8);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _r0).mul(VEC_0).add(_sv0.mul(FloatVector.broadcast(COL_SPECIES, _r1)).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, _r2)).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, _r3)))));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, _r4).mul(VEC_0).add(_sv0.mul(FloatVector.broadcast(COL_SPECIES, _r5)).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, _r6)).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, _r7)))));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, _r8).mul(VEC_0).add(_sv0.mul(FloatVector.broadcast(COL_SPECIES, _r9)).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, _r10)).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, _r11)))));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
     private Float3x4 mul_general(Float3x4R right, @Mutated Float3x4 dest, int _props) {
         if (SimdMath.USE_FMA) return mul_general_fma(right, dest, _props);
         return mul_general_mulAdd(right, dest, _props);
@@ -7665,15 +8171,19 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] rightData = ((Float3x4Impl) right).data;
         float[] dd = ((Float3x4Impl) dest).data;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, rightData, 0);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, rightData, 4);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, rightData, 8);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, sd[3]).fma(VEC_0, _sv0.fma(FloatVector.broadcast(COL_SPECIES, sd[0]), _sv1.fma(FloatVector.broadcast(COL_SPECIES, sd[1]), _sv2.mul(FloatVector.broadcast(COL_SPECIES, sd[2])))));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, sd[7]).fma(VEC_0, _sv0.fma(FloatVector.broadcast(COL_SPECIES, sd[4]), _sv1.fma(FloatVector.broadcast(COL_SPECIES, sd[5]), _sv2.mul(FloatVector.broadcast(COL_SPECIES, sd[6])))));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, sd[11]).fma(VEC_0, _sv0.fma(FloatVector.broadcast(COL_SPECIES, sd[8]), _sv1.fma(FloatVector.broadcast(COL_SPECIES, sd[9]), _sv2.mul(FloatVector.broadcast(COL_SPECIES, sd[10])))));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = sd[3];
+        float _r1 = sd[0];
+        float _r2 = sd[1];
+        float _r3 = sd[2];
+        float _r4 = sd[7];
+        float _r5 = sd[4];
+        float _r6 = sd[5];
+        float _r7 = sd[6];
+        float _r8 = sd[11];
+        float _r9 = sd[8];
+        float _r10 = sd[9];
+        float _r11 = sd[10];
+        mul_general_s6e062a29_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, rightData);
         ((Float3x4Impl) dest).properties = _props;
         return dest;
     }
@@ -7682,15 +8192,19 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] rightData = ((Float3x4Impl) right).data;
         float[] dd = ((Float3x4Impl) dest).data;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, rightData, 0);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, rightData, 4);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, rightData, 8);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, sd[3]).mul(VEC_0).add(_sv0.mul(FloatVector.broadcast(COL_SPECIES, sd[0])).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, sd[1])).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, sd[2])))));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, sd[7]).mul(VEC_0).add(_sv0.mul(FloatVector.broadcast(COL_SPECIES, sd[4])).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, sd[5])).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, sd[6])))));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, sd[11]).mul(VEC_0).add(_sv0.mul(FloatVector.broadcast(COL_SPECIES, sd[8])).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, sd[9])).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, sd[10])))));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = sd[3];
+        float _r1 = sd[0];
+        float _r2 = sd[1];
+        float _r3 = sd[2];
+        float _r4 = sd[7];
+        float _r5 = sd[4];
+        float _r6 = sd[5];
+        float _r7 = sd[6];
+        float _r8 = sd[11];
+        float _r9 = sd[8];
+        float _r10 = sd[9];
+        float _r11 = sd[10];
+        mul_general_s2bcce22e_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, rightData);
         ((Float3x4Impl) dest).properties = _props;
         return dest;
     }
@@ -8332,18 +8846,39 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
      * the public {@code mul} dispatcher.
      */
+    /** Private vector tail of {@code mul_orthogonal_s3e49f3f5}: loads, computes and stores every column; reached only through it. */
+    private static void mul_orthogonal_s3e49f3f5_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17) {
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _r0).withLane(1, _r1).mul(FloatVector.broadcast(COL_SPECIES, _r2)).withLane(2, _r3).add(FloatVector.broadcast(COL_SPECIES, _r4).withLane(1, _r5).mul(FloatVector.broadcast(COL_SPECIES, _r6)).withLane(2, _r7 * _r2 + _r8 * _r6)).withLane(3, _r9);
+        var _col1 = FloatVector.broadcast(COL_SPECIES, _r0).withLane(1, _r1).mul(FloatVector.broadcast(COL_SPECIES, _r10)).withLane(2, _r11).add(FloatVector.broadcast(COL_SPECIES, _r4).withLane(1, _r5).mul(FloatVector.broadcast(COL_SPECIES, _r12)).withLane(2, _r7 * _r10 + _r8 * _r12)).withLane(3, _r13);
+        var _col2 = FloatVector.broadcast(COL_SPECIES, _r0).withLane(1, _r1).mul(FloatVector.broadcast(COL_SPECIES, _r14)).withLane(2, _r15).add(FloatVector.broadcast(COL_SPECIES, _r4).withLane(1, _r5).mul(FloatVector.broadcast(COL_SPECIES, _r16)).withLane(2, _r7 * _r14 + _r8 * _r16)).withLane(3, _r17);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
     private Float3x4 mul_orthogonal(Float2x3R right, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] rightData = ((Float2x3Impl) right).data;
         float[] dd = ((Float3x4Impl) dest).data;
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, rightData[0]).withLane(1, rightData[2]);
-        var _sv1 = FloatVector.broadcast(COL_SPECIES, rightData[1]).withLane(1, rightData[3]);
-        var _col0 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, sd[0])).withLane(2, sd[2]).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, sd[1])).withLane(2, rightData[4] * sd[0] + rightData[5] * sd[1])).withLane(3, sd[3]);
-        var _col1 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, sd[4])).withLane(2, sd[6]).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, sd[5])).withLane(2, rightData[4] * sd[4] + rightData[5] * sd[5])).withLane(3, sd[7]);
-        var _col2 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, sd[8])).withLane(2, sd[10]).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, sd[9])).withLane(2, rightData[4] * sd[8] + rightData[5] * sd[9])).withLane(3, sd[11]);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = rightData[0];
+        float _r1 = rightData[2];
+        float _r2 = sd[0];
+        float _r3 = sd[2];
+        float _r4 = rightData[1];
+        float _r5 = rightData[3];
+        float _r6 = sd[1];
+        float _r7 = rightData[4];
+        float _r8 = rightData[5];
+        float _r9 = sd[3];
+        float _r10 = sd[4];
+        float _r11 = sd[6];
+        float _r12 = sd[5];
+        float _r13 = sd[7];
+        float _r14 = sd[8];
+        float _r15 = sd[10];
+        float _r16 = sd[9];
+        float _r17 = sd[11];
+        mul_orthogonal_s3e49f3f5_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17);
         ((Float3x4Impl) dest).properties = (((Float2x3Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_ORTHOGONAL : Joml.BIT_AFFINE;
         return dest;
     }
@@ -8353,18 +8888,39 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
      * the public {@code mul} dispatcher.
      */
+    /** Private vector tail of {@code mul_general_s3e49f3f5}: loads, computes and stores every column; reached only through it. */
+    private static void mul_general_s3e49f3f5_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _r16, float _r17) {
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _r0).withLane(1, _r1).mul(FloatVector.broadcast(COL_SPECIES, _r2)).withLane(2, _r3).add(FloatVector.broadcast(COL_SPECIES, _r4).withLane(1, _r5).mul(FloatVector.broadcast(COL_SPECIES, _r6)).withLane(2, _r7 * _r2 + _r8 * _r6)).withLane(3, _r9);
+        var _col1 = FloatVector.broadcast(COL_SPECIES, _r0).withLane(1, _r1).mul(FloatVector.broadcast(COL_SPECIES, _r10)).withLane(2, _r11).add(FloatVector.broadcast(COL_SPECIES, _r4).withLane(1, _r5).mul(FloatVector.broadcast(COL_SPECIES, _r12)).withLane(2, _r7 * _r10 + _r8 * _r12)).withLane(3, _r13);
+        var _col2 = FloatVector.broadcast(COL_SPECIES, _r0).withLane(1, _r1).mul(FloatVector.broadcast(COL_SPECIES, _r14)).withLane(2, _r15).add(FloatVector.broadcast(COL_SPECIES, _r4).withLane(1, _r5).mul(FloatVector.broadcast(COL_SPECIES, _r16)).withLane(2, _r7 * _r14 + _r8 * _r16)).withLane(3, _r17);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
     private Float3x4 mul_general(Float2x3R right, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] rightData = ((Float2x3Impl) right).data;
         float[] dd = ((Float3x4Impl) dest).data;
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, rightData[0]).withLane(1, rightData[2]);
-        var _sv1 = FloatVector.broadcast(COL_SPECIES, rightData[1]).withLane(1, rightData[3]);
-        var _col0 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, sd[0])).withLane(2, sd[2]).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, sd[1])).withLane(2, rightData[4] * sd[0] + rightData[5] * sd[1])).withLane(3, sd[3]);
-        var _col1 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, sd[4])).withLane(2, sd[6]).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, sd[5])).withLane(2, rightData[4] * sd[4] + rightData[5] * sd[5])).withLane(3, sd[7]);
-        var _col2 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, sd[8])).withLane(2, sd[10]).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, sd[9])).withLane(2, rightData[4] * sd[8] + rightData[5] * sd[9])).withLane(3, sd[11]);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = rightData[0];
+        float _r1 = rightData[2];
+        float _r2 = sd[0];
+        float _r3 = sd[2];
+        float _r4 = rightData[1];
+        float _r5 = rightData[3];
+        float _r6 = sd[1];
+        float _r7 = rightData[4];
+        float _r8 = rightData[5];
+        float _r9 = sd[3];
+        float _r10 = sd[4];
+        float _r11 = sd[6];
+        float _r12 = sd[5];
+        float _r13 = sd[7];
+        float _r14 = sd[8];
+        float _r15 = sd[10];
+        float _r16 = sd[9];
+        float _r17 = sd[11];
+        mul_general_s3e49f3f5_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -8728,6 +9284,26 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
      * the public {@code mul} dispatcher.
      */
+    /** Private vector tail of {@code mul_translation_s7ce00af1}: loads, computes and stores every column; reached only through it. */
+    private static void mul_translation_s7ce00af1_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float[] rightData) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, rightData, 0);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, rightData, 4);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, rightData, 8);
+        var _sv3 = FloatVector.fromArray(COL_SPECIES, rightData, 12);
+        var _sv4 = FloatVector.broadcast(COL_SPECIES, _r0);
+        var _sv5 = FloatVector.broadcast(COL_SPECIES, _r4);
+        var _sv6 = FloatVector.broadcast(COL_SPECIES, _r5);
+        var _sv7 = FloatVector.broadcast(COL_SPECIES, _r6);
+        var _col0 = _sv4.fma(FloatVector.zero(COL_SPECIES).withLane(0, _r1).withLane(1, _r2).withLane(2, _r3), _sv0).withLane(3, _r0);
+        var _col1 = _sv5.fma(FloatVector.zero(COL_SPECIES).withLane(0, _r1).withLane(1, _r2).withLane(2, _r3), _sv1).withLane(3, _r4);
+        var _col2 = _sv6.fma(FloatVector.zero(COL_SPECIES).withLane(0, _r1).withLane(1, _r2).withLane(2, _r3), _sv2).withLane(3, _r5);
+        var _col3 = _sv7.fma(FloatVector.zero(COL_SPECIES).withLane(0, _r1).withLane(1, _r2).withLane(2, _r3), _sv3).withLane(3, _r6);
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+    }
+
     private Float4x4 mul_translation(Float4x4R right, @Mutated Float4x4 dest) {
         if (SimdMath.USE_FMA) return mul_translation_fma(right, dest);
         return mul_translation_mulAdd(right, dest);
@@ -8737,19 +9313,14 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] rightData = ((Float4x4Impl) right).data;
         float[] dd = ((Float4x4Impl) dest).data;
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, rightData[3]);
-        var _sv1 = FloatVector.zero(COL_SPECIES).withLane(0, sd[3]).withLane(1, sd[7]).withLane(2, sd[11]);
-        var _col0 = _sv0.fma(_sv1, FloatVector.fromArray(COL_SPECIES, rightData, 0)).withLane(3, rightData[3]);
-        var _sv2 = FloatVector.broadcast(COL_SPECIES, rightData[7]);
-        var _col1 = _sv2.fma(_sv1, FloatVector.fromArray(COL_SPECIES, rightData, 4)).withLane(3, rightData[7]);
-        var _sv3 = FloatVector.broadcast(COL_SPECIES, rightData[11]);
-        var _col2 = _sv3.fma(_sv1, FloatVector.fromArray(COL_SPECIES, rightData, 8)).withLane(3, rightData[11]);
-        var _sv4 = FloatVector.broadcast(COL_SPECIES, rightData[15]);
-        var _col3 = _sv4.fma(_sv1, FloatVector.fromArray(COL_SPECIES, rightData, 12)).withLane(3, rightData[15]);
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
+        float _r0 = rightData[3];
+        float _r1 = sd[3];
+        float _r2 = sd[7];
+        float _r3 = sd[11];
+        float _r4 = rightData[7];
+        float _r5 = rightData[11];
+        float _r6 = rightData[15];
+        mul_translation_s7ce00af1_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, rightData);
         ((Float4x4Impl) dest).properties = Joml.BIT_TRANSLATION & ((Float4x4Impl) right).properties;
         return dest;
     }
@@ -8962,6 +9533,32 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
      * through the public {@code preMul} dispatcher.
      */
+    /** Private vector tail of {@code preMul_general_s341de31d}: loads, computes and stores every column; reached only through it. */
+    private static void preMul_general_s341de31d_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float[] sd) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 4);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 8);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _r0).fma(VEC_0, FloatVector.broadcast(COL_SPECIES, _r1).fma(_sv0, FloatVector.broadcast(COL_SPECIES, _r2).fma(_sv1, FloatVector.broadcast(COL_SPECIES, _r3).mul(_sv2))));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, _r4).fma(VEC_0, FloatVector.broadcast(COL_SPECIES, _r5).fma(_sv0, FloatVector.broadcast(COL_SPECIES, _r6).fma(_sv1, FloatVector.broadcast(COL_SPECIES, _r7).mul(_sv2))));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, _r8).fma(VEC_0, FloatVector.broadcast(COL_SPECIES, _r9).fma(_sv0, FloatVector.broadcast(COL_SPECIES, _r10).fma(_sv1, FloatVector.broadcast(COL_SPECIES, _r11).mul(_sv2))));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private vector tail of {@code preMul_general_s6e6914ba}: loads, computes and stores every column; reached only through it. */
+    private static void preMul_general_s6e6914ba_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float[] sd) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 4);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 8);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, _r0).mul(VEC_0).add(FloatVector.broadcast(COL_SPECIES, _r1).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, _r2).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, _r3).mul(_sv2))));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, _r4).mul(VEC_0).add(FloatVector.broadcast(COL_SPECIES, _r5).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, _r6).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, _r7).mul(_sv2))));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, _r8).mul(VEC_0).add(FloatVector.broadcast(COL_SPECIES, _r9).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, _r10).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, _r11).mul(_sv2))));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
     private Float3x4 preMul_general(Float3x4R other, @Mutated Float3x4 dest, int _props) {
         if (SimdMath.USE_FMA) return preMul_general_fma(other, dest, _props);
         return preMul_general_mulAdd(other, dest, _props);
@@ -8971,15 +9568,19 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] otherData = ((Float3x4Impl) other).data;
         float[] dd = ((Float3x4Impl) dest).data;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 4);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 8);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, otherData[3]).fma(VEC_0, FloatVector.broadcast(COL_SPECIES, otherData[0]).fma(_sv0, FloatVector.broadcast(COL_SPECIES, otherData[1]).fma(_sv1, FloatVector.broadcast(COL_SPECIES, otherData[2]).mul(_sv2))));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, otherData[7]).fma(VEC_0, FloatVector.broadcast(COL_SPECIES, otherData[4]).fma(_sv0, FloatVector.broadcast(COL_SPECIES, otherData[5]).fma(_sv1, FloatVector.broadcast(COL_SPECIES, otherData[6]).mul(_sv2))));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, otherData[11]).fma(VEC_0, FloatVector.broadcast(COL_SPECIES, otherData[8]).fma(_sv0, FloatVector.broadcast(COL_SPECIES, otherData[9]).fma(_sv1, FloatVector.broadcast(COL_SPECIES, otherData[10]).mul(_sv2))));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = otherData[3];
+        float _r1 = otherData[0];
+        float _r2 = otherData[1];
+        float _r3 = otherData[2];
+        float _r4 = otherData[7];
+        float _r5 = otherData[4];
+        float _r6 = otherData[5];
+        float _r7 = otherData[6];
+        float _r8 = otherData[11];
+        float _r9 = otherData[8];
+        float _r10 = otherData[9];
+        float _r11 = otherData[10];
+        preMul_general_s341de31d_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, sd);
         ((Float3x4Impl) dest).properties = _props;
         return dest;
     }
@@ -8988,15 +9589,19 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] otherData = ((Float3x4Impl) other).data;
         float[] dd = ((Float3x4Impl) dest).data;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 4);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 8);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, otherData[3]).mul(VEC_0).add(FloatVector.broadcast(COL_SPECIES, otherData[0]).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, otherData[1]).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, otherData[2]).mul(_sv2))));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, otherData[7]).mul(VEC_0).add(FloatVector.broadcast(COL_SPECIES, otherData[4]).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, otherData[5]).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, otherData[6]).mul(_sv2))));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, otherData[11]).mul(VEC_0).add(FloatVector.broadcast(COL_SPECIES, otherData[8]).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, otherData[9]).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, otherData[10]).mul(_sv2))));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = otherData[3];
+        float _r1 = otherData[0];
+        float _r2 = otherData[1];
+        float _r3 = otherData[2];
+        float _r4 = otherData[7];
+        float _r5 = otherData[4];
+        float _r6 = otherData[5];
+        float _r7 = otherData[6];
+        float _r8 = otherData[11];
+        float _r9 = otherData[8];
+        float _r10 = otherData[9];
+        float _r11 = otherData[10];
+        preMul_general_s6e6914ba_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, sd);
         ((Float3x4Impl) dest).properties = _props;
         return dest;
     }
@@ -9206,6 +9811,19 @@ public class Float3x4Impl implements Float3x4 {
      * @param dest will hold the result
      * @return dest
      */
+    /** Private vector tail of {@code preMul_s796c93ad}: loads, computes and stores every column; reached only through it. */
+    private static void preMul_s796c93ad_tail(float[] dd, float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float[] sd) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 4);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 8);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, m03).mul(VEC_0).add(FloatVector.broadcast(COL_SPECIES, m00).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, m01).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, m02).mul(_sv2))));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, m13).mul(VEC_0).add(FloatVector.broadcast(COL_SPECIES, m10).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, m11).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, m12).mul(_sv2))));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, m23).mul(VEC_0).add(FloatVector.broadcast(COL_SPECIES, m20).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, m21).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, m22).mul(_sv2))));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
     public Float3x4 preMul(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, @Mutated Float3x4 dest) {
         if (SimdMath.USE_FMA) return preMul_fma(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, dest);
         return preMul_mulAdd(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, dest);
@@ -9230,15 +9848,7 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 preMul_mulAdd(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 4);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 8);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, m03).mul(VEC_0).add(FloatVector.broadcast(COL_SPECIES, m00).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, m01).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, m02).mul(_sv2))));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, m13).mul(VEC_0).add(FloatVector.broadcast(COL_SPECIES, m10).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, m11).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, m12).mul(_sv2))));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, m23).mul(VEC_0).add(FloatVector.broadcast(COL_SPECIES, m20).mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, m21).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, m22).mul(_sv2))));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        preMul_s796c93ad_tail(dd, m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, sd);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -10077,6 +10687,38 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
      * through the public {@code preMul} dispatcher.
      */
+    /** Private vector tail of {@code preMul_general_s21c9181b}: loads, computes and stores every column; reached only through it. */
+    private static void preMul_general_s21c9181b_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float[] otherData) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, otherData, 8);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, otherData, 0);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, otherData, 4);
+        var _sv3 = FloatVector.fromArray(COL_SPECIES, otherData, 12);
+        var _col0 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, _r0), _sv1.fma(FloatVector.broadcast(COL_SPECIES, _r1), _sv2.mul(FloatVector.broadcast(COL_SPECIES, _r2))));
+        var _col1 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, _r3), _sv1.fma(FloatVector.broadcast(COL_SPECIES, _r4), _sv2.mul(FloatVector.broadcast(COL_SPECIES, _r5))));
+        var _col2 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, _r6), _sv1.fma(FloatVector.broadcast(COL_SPECIES, _r7), _sv2.mul(FloatVector.broadcast(COL_SPECIES, _r8))));
+        var _col3 = _sv1.fma(FloatVector.broadcast(COL_SPECIES, _r9), _sv2.fma(FloatVector.broadcast(COL_SPECIES, _r10), _sv0.fma(FloatVector.broadcast(COL_SPECIES, _r11), _sv3)));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+    }
+
+    /** Private vector tail of {@code preMul_general_s34f4d6fc}: loads, computes and stores every column; reached only through it. */
+    private static void preMul_general_s34f4d6fc_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float[] otherData) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, otherData, 8);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, otherData, 0);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, otherData, 4);
+        var _sv3 = FloatVector.fromArray(COL_SPECIES, otherData, 12);
+        var _col0 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, _r0)).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, _r1)).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, _r2))));
+        var _col1 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, _r3)).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, _r4)).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, _r5))));
+        var _col2 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, _r6)).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, _r7)).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, _r8))));
+        var _col3 = _sv1.mul(FloatVector.broadcast(COL_SPECIES, _r9)).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, _r10)).add(_sv0.mul(FloatVector.broadcast(COL_SPECIES, _r11)).add(_sv3)));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+    }
+
     private Float4x4 preMul_general(Float4x4R other, @Mutated Float4x4 dest, int _props) {
         if (SimdMath.USE_FMA) return preMul_general_fma(other, dest, _props);
         return preMul_general_mulAdd(other, dest, _props);
@@ -10086,17 +10728,19 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, otherData, 8);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, otherData, 0);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, otherData, 4);
-        var _col0 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, sd[8]), _sv1.fma(FloatVector.broadcast(COL_SPECIES, sd[0]), _sv2.mul(FloatVector.broadcast(COL_SPECIES, sd[4]))));
-        var _col1 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, sd[9]), _sv1.fma(FloatVector.broadcast(COL_SPECIES, sd[1]), _sv2.mul(FloatVector.broadcast(COL_SPECIES, sd[5]))));
-        var _col2 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, sd[10]), _sv1.fma(FloatVector.broadcast(COL_SPECIES, sd[2]), _sv2.mul(FloatVector.broadcast(COL_SPECIES, sd[6]))));
-        var _col3 = _sv1.fma(FloatVector.broadcast(COL_SPECIES, sd[3]), _sv2.fma(FloatVector.broadcast(COL_SPECIES, sd[7]), _sv0.fma(FloatVector.broadcast(COL_SPECIES, sd[11]), FloatVector.fromArray(COL_SPECIES, otherData, 12))));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
+        float _r0 = sd[8];
+        float _r1 = sd[0];
+        float _r2 = sd[4];
+        float _r3 = sd[9];
+        float _r4 = sd[1];
+        float _r5 = sd[5];
+        float _r6 = sd[10];
+        float _r7 = sd[2];
+        float _r8 = sd[6];
+        float _r9 = sd[3];
+        float _r10 = sd[7];
+        float _r11 = sd[11];
+        preMul_general_s21c9181b_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, otherData);
         ((Float4x4Impl) dest).properties = _props;
         return dest;
     }
@@ -10105,17 +10749,19 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x4Impl) dest).data;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, otherData, 8);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, otherData, 0);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, otherData, 4);
-        var _col0 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, sd[8])).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, sd[0])).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, sd[4]))));
-        var _col1 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, sd[9])).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, sd[1])).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, sd[5]))));
-        var _col2 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, sd[10])).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, sd[2])).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, sd[6]))));
-        var _col3 = _sv1.mul(FloatVector.broadcast(COL_SPECIES, sd[3])).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, sd[7])).add(_sv0.mul(FloatVector.broadcast(COL_SPECIES, sd[11])).add(FloatVector.fromArray(COL_SPECIES, otherData, 12))));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
-        _col3.intoArray(dd, 12);
+        float _r0 = sd[8];
+        float _r1 = sd[0];
+        float _r2 = sd[4];
+        float _r3 = sd[9];
+        float _r4 = sd[1];
+        float _r5 = sd[5];
+        float _r6 = sd[10];
+        float _r7 = sd[2];
+        float _r8 = sd[6];
+        float _r9 = sd[3];
+        float _r10 = sd[7];
+        float _r11 = sd[11];
+        preMul_general_s34f4d6fc_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, otherData);
         ((Float4x4Impl) dest).properties = _props;
         return dest;
     }
@@ -22121,6 +22767,32 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code preRotateAxis}, specialized by runtime matrix properties; reached only
      * through the public {@code preRotateAxis} dispatcher.
      */
+    /** Private vector tail of {@code preRotateAxis_orthogonal_s647afb69}: loads, computes and stores every column; reached only through it. */
+    private static void preRotateAxis_orthogonal_s647afb69_tail(float[] dd, float _t0, float _t1, float _t2, float _t4, float _t6, float _t11, float axisX, float axisY, float axisZ, float[] sd) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
+        var _col0 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(axisY, _t0, _t11 * _t2)), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisX * axisX, _t1)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t4, -(axisZ * _t0))))));
+        var _col1 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t6, -(axisX * _t0))), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(axisZ, _t0, _t11 * _t4)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisY * axisY, _t1)))));
+        var _col2 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisZ * axisZ, _t1)), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t2, -(axisY * _t0))), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(axisX, _t0, _t11 * _t6)))));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private vector tail of {@code preRotateAxis_orthogonal_sff788ee}: loads, computes and stores every column; reached only through it. */
+    private static void preRotateAxis_orthogonal_sff788ee_tail(float[] dd, float _t0, float _t1, float _t2, float _t4, float _t6, float _t11, float axisX, float axisY, float axisZ, float[] sd) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
+        var _col0 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(axisY, _t0, _t11 * _t2))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisX * axisX, _t1))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t4, -(axisZ * _t0))))));
+        var _col1 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t6, -(axisX * _t0)))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(axisZ, _t0, _t11 * _t4))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisY * axisY, _t1)))));
+        var _col2 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisZ * axisZ, _t1))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t2, -(axisY * _t0)))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(axisX, _t0, _t11 * _t6)))));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
     private Float3x4 preRotateAxis_orthogonal(float angle, float axisX, float axisY, float axisZ, @Mutated Float3x4 dest) {
         if (SimdMath.USE_FMA) return preRotateAxis_orthogonal_fma(angle, axisX, axisY, axisZ, dest);
         return preRotateAxis_orthogonal_mulAdd(angle, axisX, axisY, axisZ, dest);
@@ -22135,15 +22807,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t4 = axisX * axisY;
         float _t6 = axisY * axisZ;
         float _t11 = 1.0f - _t1;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
-        var _col0 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(axisY, _t0, _t11 * _t2)), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisX * axisX, _t1)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t4, -(axisZ * _t0))))));
-        var _col1 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t6, -(axisX * _t0))), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(axisZ, _t0, _t11 * _t4)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisY * axisY, _t1)))));
-        var _col2 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisZ * axisZ, _t1)), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t2, -(axisY * _t0))), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(axisX, _t0, _t11 * _t6)))));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        preRotateAxis_orthogonal_s647afb69_tail(dd, _t0, _t1, _t2, _t4, _t6, _t11, axisX, axisY, axisZ, sd);
         ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -22157,15 +22821,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t4 = axisX * axisY;
         float _t6 = axisY * axisZ;
         float _t11 = 1.0f - _t1;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
-        var _col0 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(axisY, _t0, _t11 * _t2))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisX * axisX, _t1))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t4, -(axisZ * _t0))))));
-        var _col1 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t6, -(axisX * _t0)))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(axisZ, _t0, _t11 * _t4))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisY * axisY, _t1)))));
-        var _col2 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisZ * axisZ, _t1))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t2, -(axisY * _t0)))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(axisX, _t0, _t11 * _t6)))));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        preRotateAxis_orthogonal_sff788ee_tail(dd, _t0, _t1, _t2, _t4, _t6, _t11, axisX, axisY, axisZ, sd);
         ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -22175,6 +22831,32 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code preRotateAxis}, specialized by runtime matrix properties; reached only
      * through the public {@code preRotateAxis} dispatcher.
      */
+    /** Private vector tail of {@code preRotateAxis_general_s647afb69}: loads, computes and stores every column; reached only through it. */
+    private static void preRotateAxis_general_s647afb69_tail(float[] dd, float _t0, float _t1, float _t2, float _t4, float _t6, float _t11, float axisX, float axisY, float axisZ, float[] sd) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
+        var _col0 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(axisY, _t0, _t11 * _t2)), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisX * axisX, _t1)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t4, -(axisZ * _t0))))));
+        var _col1 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t6, -(axisX * _t0))), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(axisZ, _t0, _t11 * _t4)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisY * axisY, _t1)))));
+        var _col2 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisZ * axisZ, _t1)), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t2, -(axisY * _t0))), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(axisX, _t0, _t11 * _t6)))));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private vector tail of {@code preRotateAxis_general_sff788ee}: loads, computes and stores every column; reached only through it. */
+    private static void preRotateAxis_general_sff788ee_tail(float[] dd, float _t0, float _t1, float _t2, float _t4, float _t6, float _t11, float axisX, float axisY, float axisZ, float[] sd) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
+        var _col0 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(axisY, _t0, _t11 * _t2))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisX * axisX, _t1))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t4, -(axisZ * _t0))))));
+        var _col1 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t6, -(axisX * _t0)))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(axisZ, _t0, _t11 * _t4))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisY * axisY, _t1)))));
+        var _col2 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisZ * axisZ, _t1))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t2, -(axisY * _t0)))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(axisX, _t0, _t11 * _t6)))));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
     private Float3x4 preRotateAxis_general(float angle, float axisX, float axisY, float axisZ, @Mutated Float3x4 dest) {
         if (SimdMath.USE_FMA) return preRotateAxis_general_fma(angle, axisX, axisY, axisZ, dest);
         return preRotateAxis_general_mulAdd(angle, axisX, axisY, axisZ, dest);
@@ -22189,15 +22871,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t4 = axisX * axisY;
         float _t6 = axisY * axisZ;
         float _t11 = 1.0f - _t1;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
-        var _col0 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(axisY, _t0, _t11 * _t2)), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisX * axisX, _t1)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t4, -(axisZ * _t0))))));
-        var _col1 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t6, -(axisX * _t0))), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(axisZ, _t0, _t11 * _t4)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisY * axisY, _t1)))));
-        var _col2 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisZ * axisZ, _t1)), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t2, -(axisY * _t0))), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(axisX, _t0, _t11 * _t6)))));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        preRotateAxis_general_s647afb69_tail(dd, _t0, _t1, _t2, _t4, _t6, _t11, axisX, axisY, axisZ, sd);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -22211,15 +22885,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t4 = axisX * axisY;
         float _t6 = axisY * axisZ;
         float _t11 = 1.0f - _t1;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
-        var _col0 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(axisY, _t0, _t11 * _t2))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisX * axisX, _t1))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t4, -(axisZ * _t0))))));
-        var _col1 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t6, -(axisX * _t0)))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(axisZ, _t0, _t11 * _t4))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisY * axisY, _t1)))));
-        var _col2 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, axisZ * axisZ, _t1))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t11, _t2, -(axisY * _t0)))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(axisX, _t0, _t11 * _t6)))));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        preRotateAxis_general_sff788ee_tail(dd, _t0, _t1, _t2, _t4, _t6, _t11, axisX, axisY, axisZ, sd);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -22515,6 +23181,32 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code preRotateQuat}, specialized by runtime matrix properties; reached only
      * through the public {@code preRotateQuat} dispatcher.
      */
+    /** Private vector tail of {@code preRotateQuat_orthogonal_s7df7b082}: loads, computes and stores every column; reached only through it. */
+    private static void preRotateQuat_orthogonal_s7df7b082_tail(float[] dd, float _t0, float _t2, float _t3, float _t4, float _t6, float _t7, float _t8, float _t12, float qY, float qZ, float[] sd) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
+        var _col0 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t3, _t6)), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t0, _t4, _t12)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qY, _t3, -_t7)))));
+        var _col1 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t4, -_t8)), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(qY, _t3, _t7)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t2, _t3, _t12)))));
+        var _col2 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f))), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t3, -_t6)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t4, _t8)))));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private vector tail of {@code preRotateQuat_orthogonal_s74e1135}: loads, computes and stores every column; reached only through it. */
+    private static void preRotateQuat_orthogonal_s74e1135_tail(float[] dd, float _t0, float _t2, float _t3, float _t4, float _t6, float _t7, float _t8, float _t12, float qY, float qZ, float[] sd) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
+        var _col0 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t3, _t6))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t0, _t4, _t12))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qY, _t3, -_t7)))));
+        var _col1 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t4, -_t8))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qY, _t3, _t7))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t2, _t3, _t12)))));
+        var _col2 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f)))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t3, -_t6))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t4, _t8)))));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
     private Float3x4 preRotateQuat_orthogonal(float qX, float qY, float qZ, float qW, @Mutated Float3x4 dest) {
         if (SimdMath.USE_FMA) return preRotateQuat_orthogonal_fma(qX, qY, qZ, qW, dest);
         return preRotateQuat_orthogonal_mulAdd(qX, qY, qZ, qW, dest);
@@ -22532,15 +23224,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
         float _t12 = Math.fma(-qZ, _t5, 1.0f);
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
-        var _col0 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t3, _t6)), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t0, _t4, _t12)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qY, _t3, -_t7)))));
-        var _col1 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t4, -_t8)), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(qY, _t3, _t7)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t2, _t3, _t12)))));
-        var _col2 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f))), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t3, -_t6)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t4, _t8)))));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        preRotateQuat_orthogonal_s7df7b082_tail(dd, _t0, _t2, _t3, _t4, _t6, _t7, _t8, _t12, qY, qZ, sd);
         ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -22557,15 +23241,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
         float _t12 = Math.fma(-qZ, _t5, 1.0f);
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
-        var _col0 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t3, _t6))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t0, _t4, _t12))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qY, _t3, -_t7)))));
-        var _col1 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t4, -_t8))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qY, _t3, _t7))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t2, _t3, _t12)))));
-        var _col2 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f)))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t3, -_t6))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t4, _t8)))));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        preRotateQuat_orthogonal_s74e1135_tail(dd, _t0, _t2, _t3, _t4, _t6, _t7, _t8, _t12, qY, qZ, sd);
         ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -22575,6 +23251,32 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code preRotateQuat}, specialized by runtime matrix properties; reached only
      * through the public {@code preRotateQuat} dispatcher.
      */
+    /** Private vector tail of {@code preRotateQuat_general_s7df7b082}: loads, computes and stores every column; reached only through it. */
+    private static void preRotateQuat_general_s7df7b082_tail(float[] dd, float _t0, float _t2, float _t3, float _t4, float _t6, float _t7, float _t8, float _t12, float qY, float qZ, float[] sd) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
+        var _col0 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t3, _t6)), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t0, _t4, _t12)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qY, _t3, -_t7)))));
+        var _col1 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t4, -_t8)), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(qY, _t3, _t7)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t2, _t3, _t12)))));
+        var _col2 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f))), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t3, -_t6)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t4, _t8)))));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private vector tail of {@code preRotateQuat_general_s74e1135}: loads, computes and stores every column; reached only through it. */
+    private static void preRotateQuat_general_s74e1135_tail(float[] dd, float _t0, float _t2, float _t3, float _t4, float _t6, float _t7, float _t8, float _t12, float qY, float qZ, float[] sd) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
+        var _col0 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t3, _t6))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t0, _t4, _t12))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qY, _t3, -_t7)))));
+        var _col1 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t4, -_t8))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qY, _t3, _t7))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t2, _t3, _t12)))));
+        var _col2 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f)))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t3, -_t6))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t4, _t8)))));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
     private Float3x4 preRotateQuat_general(float qX, float qY, float qZ, float qW, @Mutated Float3x4 dest) {
         if (SimdMath.USE_FMA) return preRotateQuat_general_fma(qX, qY, qZ, qW, dest);
         return preRotateQuat_general_mulAdd(qX, qY, qZ, qW, dest);
@@ -22592,15 +23294,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
         float _t12 = Math.fma(-qZ, _t5, 1.0f);
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
-        var _col0 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t3, _t6)), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t0, _t4, _t12)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qY, _t3, -_t7)))));
-        var _col1 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t4, -_t8)), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(qY, _t3, _t7)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t2, _t3, _t12)))));
-        var _col2 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f))), _sv1.fma(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t3, -_t6)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t4, _t8)))));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        preRotateQuat_general_s7df7b082_tail(dd, _t0, _t2, _t3, _t4, _t6, _t7, _t8, _t12, qY, qZ, sd);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -22617,15 +23311,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t7 = qW * _t5;
         float _t8 = qW * _t3;
         float _t12 = Math.fma(-qZ, _t5, 1.0f);
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 8);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 4);
-        var _col0 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t3, _t6))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t0, _t4, _t12))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qY, _t3, -_t7)))));
-        var _col1 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t4, -_t8))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qY, _t3, _t7))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t2, _t3, _t12)))));
-        var _col2 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(_t2, _t3, Math.fma(_t0, _t4, 1.0f)))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t3, -_t6))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, Math.fma(qZ, _t4, _t8)))));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        preRotateQuat_general_s74e1135_tail(dd, _t0, _t2, _t3, _t4, _t6, _t7, _t8, _t12, qY, qZ, sd);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -28798,6 +29484,32 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code scaleAround}, specialized by runtime matrix properties; reached only
      * through the public {@code scaleAround} dispatcher.
      */
+    /** Private vector tail of {@code scaleAround_orthogonal_s52fb4feb}: loads, computes and stores every column; reached only through it. */
+    private static void scaleAround_orthogonal_s52fb4feb_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t3, float _t4, float _t5, float sX, float sY, float sZ, float[] sd) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 4);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 8);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, Math.fma(_r0, _t3, Math.fma(_r1, _t4, Math.fma(_r2, _t5, _r3)))).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, sX).withLane(1, sY).withLane(2, sZ).mul(_sv0));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, Math.fma(_r4, _t3, Math.fma(_r5, _t4, Math.fma(_r6, _t5, _r7)))).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, sX).withLane(1, sY).withLane(2, sZ).mul(_sv1));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, Math.fma(_r8, _t3, Math.fma(_r9, _t4, Math.fma(_r10, _t5, _r11)))).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, sX).withLane(1, sY).withLane(2, sZ).mul(_sv2));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private vector tail of {@code scaleAround_orthogonal_s37e1cd2c}: loads, computes and stores every column; reached only through it. */
+    private static void scaleAround_orthogonal_s37e1cd2c_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _t3, float _t4, float _t5, float sX, float sY, float sZ, float[] sd) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 4);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 8);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, Math.fma(_r0, _t3, Math.fma(_r1, _t4, Math.fma(_r2, _t5, _r3)))).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, sX).withLane(1, sY).withLane(2, sZ).mul(_sv0));
+        var _col1 = FloatVector.broadcast(COL_SPECIES, Math.fma(_r4, _t3, Math.fma(_r5, _t4, Math.fma(_r6, _t5, _r7)))).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, sX).withLane(1, sY).withLane(2, sZ).mul(_sv1));
+        var _col2 = FloatVector.broadcast(COL_SPECIES, Math.fma(_r8, _t3, Math.fma(_r9, _t4, Math.fma(_r10, _t5, _r11)))).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, sX).withLane(1, sY).withLane(2, sZ).mul(_sv2));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
     private Float3x4 scaleAround_orthogonal(float sX, float sY, float sZ, float pivotX, float pivotY, float pivotZ, @Mutated Float3x4 dest) {
         if (SimdMath.USE_FMA) return scaleAround_orthogonal_fma(sX, sY, sZ, pivotX, pivotY, pivotZ, dest);
         return scaleAround_orthogonal_mulAdd(sX, sY, sZ, pivotX, pivotY, pivotZ, dest);
@@ -28806,16 +29518,22 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 scaleAround_orthogonal_fma(float sX, float sY, float sZ, float pivotX, float pivotY, float pivotZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
+        float _r0 = sd[0];
+        float _r1 = sd[1];
+        float _r2 = sd[2];
+        float _r3 = sd[3];
+        float _r4 = sd[4];
+        float _r5 = sd[5];
+        float _r6 = sd[6];
+        float _r7 = sd[7];
+        float _r8 = sd[8];
+        float _r9 = sd[9];
+        float _r10 = sd[10];
+        float _r11 = sd[11];
         float _t3 = Math.fma(-pivotX, sX, pivotX);
         float _t4 = Math.fma(-pivotY, sY, pivotY);
         float _t5 = Math.fma(-pivotZ, sZ, pivotZ);
-        var _sv0 = FloatVector.zero(COL_SPECIES).withLane(0, sX).withLane(1, sY).withLane(2, sZ);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, Math.fma(sd[0], _t3, Math.fma(sd[1], _t4, Math.fma(sd[2], _t5, sd[3])))).fma(VEC_0, _sv0.mul(FloatVector.fromArray(COL_SPECIES, sd, 0)));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, Math.fma(sd[4], _t3, Math.fma(sd[5], _t4, Math.fma(sd[6], _t5, sd[7])))).fma(VEC_0, _sv0.mul(FloatVector.fromArray(COL_SPECIES, sd, 4)));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, Math.fma(sd[8], _t3, Math.fma(sd[9], _t4, Math.fma(sd[10], _t5, sd[11])))).fma(VEC_0, _sv0.mul(FloatVector.fromArray(COL_SPECIES, sd, 8)));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        scaleAround_orthogonal_s52fb4feb_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t3, _t4, _t5, sX, sY, sZ, sd);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -28823,25 +29541,27 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 scaleAround_orthogonal_mulAdd(float sX, float sY, float sZ, float pivotX, float pivotY, float pivotZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
+        float _r0 = sd[0];
+        float _r1 = sd[1];
+        float _r2 = sd[2];
+        float _r3 = sd[3];
+        float _r4 = sd[4];
+        float _r5 = sd[5];
+        float _r6 = sd[6];
+        float _r7 = sd[7];
+        float _r8 = sd[8];
+        float _r9 = sd[9];
+        float _r10 = sd[10];
+        float _r11 = sd[11];
         float _t3 = Math.fma(-pivotX, sX, pivotX);
         float _t4 = Math.fma(-pivotY, sY, pivotY);
         float _t5 = Math.fma(-pivotZ, sZ, pivotZ);
-        var _sv0 = FloatVector.zero(COL_SPECIES).withLane(0, sX).withLane(1, sY).withLane(2, sZ);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, Math.fma(sd[0], _t3, Math.fma(sd[1], _t4, Math.fma(sd[2], _t5, sd[3])))).mul(VEC_0).add(_sv0.mul(FloatVector.fromArray(COL_SPECIES, sd, 0)));
-        var _col1 = FloatVector.broadcast(COL_SPECIES, Math.fma(sd[4], _t3, Math.fma(sd[5], _t4, Math.fma(sd[6], _t5, sd[7])))).mul(VEC_0).add(_sv0.mul(FloatVector.fromArray(COL_SPECIES, sd, 4)));
-        var _col2 = FloatVector.broadcast(COL_SPECIES, Math.fma(sd[8], _t3, Math.fma(sd[9], _t4, Math.fma(sd[10], _t5, sd[11])))).mul(VEC_0).add(_sv0.mul(FloatVector.fromArray(COL_SPECIES, sd, 8)));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        scaleAround_orthogonal_s37e1cd2c_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t3, _t4, _t5, sX, sY, sZ, sd);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
 
 
-    /**
-     * Private body of {@code scaleAround}, specialized by runtime matrix properties; reached only
-     * through the public {@code scaleAround} dispatcher.
-     */
     private Float3x4 scaleAround_general(float sX, float sY, float sZ, float pivotX, float pivotY, float pivotZ, @Mutated Float3x4 dest) {
         return scaleAround_orthogonal(sX, sY, sZ, pivotX, pivotY, pivotZ, dest);
     }

@@ -1099,6 +1099,17 @@ public final class Double4Impl implements Double4 {
      * @param dest will hold the result
      * @return dest
      */
+    /** Private vector tail of {@code catmullRom_s5821807f}: loads, computes and stores every column; reached only through it. */
+    private static void catmullRom_s5821807f_tail(double[] dd, double _t0, double t, double[] sd, double[] p1Data, double[] p2Data, double[] p3Data) {
+        var _sv0 = DoubleVector.fromArray(COL_SPECIES, p1Data, 0);
+        var _sv1 = DoubleVector.fromArray(COL_SPECIES, p2Data, 0);
+        var _sv2 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv3 = DoubleVector.fromArray(COL_SPECIES, p3Data, 0);
+        var _sv4 = DoubleVector.broadcast(COL_SPECIES, 2.0);
+        var _col0 = DoubleVector.broadcast(COL_SPECIES, 0.5).mul(_sv4.mul(_sv0).add(DoubleVector.broadcast(COL_SPECIES, t).mul(_sv1.sub(_sv2))).add(DoubleVector.broadcast(COL_SPECIES, -5.0).mul(_sv0).add(_sv4.mul(_sv2).add(DoubleVector.broadcast(COL_SPECIES, 4.0).mul(_sv1).add(_sv3.neg()))).mul(DoubleVector.broadcast(COL_SPECIES, _t0)).add(DoubleVector.broadcast(COL_SPECIES, -3.0).mul(_sv1).add(DoubleVector.broadcast(COL_SPECIES, 3.0).mul(_sv0).add(_sv3.sub(_sv2))).mul(DoubleVector.broadcast(COL_SPECIES, t * _t0)))));
+        _col0.intoArray(dd, 0);
+    }
+
     public Double4 catmullRom(Double4R p1, Double4R p2, Double4R p3, double t, @Mutated Double4 dest) {
         if (SimdMath.USE_FMA) return catmullRom_fma(p1, p2, p3, t, dest);
         return catmullRom_mulAdd(p1, p2, p3, t, dest);
@@ -1128,13 +1139,7 @@ public final class Double4Impl implements Double4 {
         double[] p3Data = ((Double4Impl) p3).data;
         double[] dd = ((Double4Impl) dest).data;
         double _t0 = t * t;
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 2.0);
-        var _sv1 = DoubleVector.fromArray(COL_SPECIES, p1Data, 0);
-        var _sv2 = DoubleVector.fromArray(COL_SPECIES, p2Data, 0);
-        var _sv3 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv4 = DoubleVector.fromArray(COL_SPECIES, p3Data, 0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, 0.5).mul(_sv0.mul(_sv1).add(DoubleVector.broadcast(COL_SPECIES, t).mul(_sv2.sub(_sv3))).add(DoubleVector.broadcast(COL_SPECIES, -5.0).mul(_sv1).add(_sv0.mul(_sv3).add(DoubleVector.broadcast(COL_SPECIES, 4.0).mul(_sv2).add(_sv4.neg()))).mul(DoubleVector.broadcast(COL_SPECIES, _t0)).add(DoubleVector.broadcast(COL_SPECIES, -3.0).mul(_sv2).add(DoubleVector.broadcast(COL_SPECIES, 3.0).mul(_sv1).add(_sv4.sub(_sv3))).mul(DoubleVector.broadcast(COL_SPECIES, t * _t0)))));
-        _col0.intoArray(dd, 0);
+        catmullRom_s5821807f_tail(dd, _t0, t, sd, p1Data, p2Data, p3Data);
         return dest;
     }
 

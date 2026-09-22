@@ -1697,6 +1697,17 @@ public final class Float4Impl implements Float4 {
      * @param dest will hold the result
      * @return dest
      */
+    /** Private vector tail of {@code catmullRom_s50da4988}: loads, computes and stores every column; reached only through it. */
+    private static void catmullRom_s50da4988_tail(float[] dd, float _t0, float t, float[] sd, float[] p1Data, float[] p2Data, float[] p3Data) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, p1Data, 0);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, p2Data, 0);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv3 = FloatVector.fromArray(COL_SPECIES, p3Data, 0);
+        var _sv4 = FloatVector.broadcast(COL_SPECIES, 2.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 0.5f).mul(_sv4.mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, t).mul(_sv1.sub(_sv2))).add(FloatVector.broadcast(COL_SPECIES, -5.0f).mul(_sv0).add(_sv4.mul(_sv2).add(FloatVector.broadcast(COL_SPECIES, 4.0f).mul(_sv1).add(_sv3.neg()))).mul(FloatVector.broadcast(COL_SPECIES, _t0)).add(FloatVector.broadcast(COL_SPECIES, -3.0f).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, 3.0f).mul(_sv0).add(_sv3.sub(_sv2))).mul(FloatVector.broadcast(COL_SPECIES, t * _t0)))));
+        _col0.intoArray(dd, 0);
+    }
+
     public Float4 catmullRom(Float4R p1, Float4R p2, Float4R p3, float t, @Mutated Float4 dest) {
         if (SimdMath.USE_FMA) return catmullRom_fma(p1, p2, p3, t, dest);
         return catmullRom_mulAdd(p1, p2, p3, t, dest);
@@ -1726,13 +1737,7 @@ public final class Float4Impl implements Float4 {
         float[] p3Data = ((Float4Impl) p3).data;
         float[] dd = ((Float4Impl) dest).data;
         float _t0 = t * t;
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 2.0f);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, p1Data, 0);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, p2Data, 0);
-        var _sv3 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv4 = FloatVector.fromArray(COL_SPECIES, p3Data, 0);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 0.5f).mul(_sv0.mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, t).mul(_sv2.sub(_sv3))).add(FloatVector.broadcast(COL_SPECIES, -5.0f).mul(_sv1).add(_sv0.mul(_sv3).add(FloatVector.broadcast(COL_SPECIES, 4.0f).mul(_sv2).add(_sv4.neg()))).mul(FloatVector.broadcast(COL_SPECIES, _t0)).add(FloatVector.broadcast(COL_SPECIES, -3.0f).mul(_sv2).add(FloatVector.broadcast(COL_SPECIES, 3.0f).mul(_sv1).add(_sv4.sub(_sv3))).mul(FloatVector.broadcast(COL_SPECIES, t * _t0)))));
-        _col0.intoArray(dd, 0);
+        catmullRom_s50da4988_tail(dd, _t0, t, sd, p1Data, p2Data, p3Data);
         return dest;
     }
 

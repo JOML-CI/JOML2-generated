@@ -925,6 +925,34 @@ public class Float4x3Impl implements Float4x3 {
      * @param dest will hold the result
      * @return dest
      */
+    /** Private vector tail of {@code preMul_s296520c6}: loads, computes and stores every column; reached only through it. */
+    private static void preMul_s296520c6_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float[] otherData) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, otherData, 12);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, otherData, 8);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, otherData, 0);
+        var _sv3 = FloatVector.fromArray(COL_SPECIES, otherData, 4);
+        var _col0 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, _r0), _sv1.fma(FloatVector.broadcast(COL_SPECIES, _r1), _sv2.fma(FloatVector.broadcast(COL_SPECIES, _r2), _sv3.mul(FloatVector.broadcast(COL_SPECIES, _r3)))));
+        var _col1 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, _r4), _sv1.fma(FloatVector.broadcast(COL_SPECIES, _r5), _sv2.fma(FloatVector.broadcast(COL_SPECIES, _r6), _sv3.mul(FloatVector.broadcast(COL_SPECIES, _r7)))));
+        var _col2 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, _r8), _sv1.fma(FloatVector.broadcast(COL_SPECIES, _r9), _sv2.fma(FloatVector.broadcast(COL_SPECIES, _r10), _sv3.mul(FloatVector.broadcast(COL_SPECIES, _r11)))));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
+    /** Private vector tail of {@code preMul_s3bc98a71}: loads, computes and stores every column; reached only through it. */
+    private static void preMul_s3bc98a71_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float[] otherData) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, otherData, 12);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, otherData, 8);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, otherData, 0);
+        var _sv3 = FloatVector.fromArray(COL_SPECIES, otherData, 4);
+        var _col0 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, _r0)).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, _r1)).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, _r2)).add(_sv3.mul(FloatVector.broadcast(COL_SPECIES, _r3)))));
+        var _col1 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, _r4)).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, _r5)).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, _r6)).add(_sv3.mul(FloatVector.broadcast(COL_SPECIES, _r7)))));
+        var _col2 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, _r8)).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, _r9)).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, _r10)).add(_sv3.mul(FloatVector.broadcast(COL_SPECIES, _r11)))));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+    }
+
     public Float4x3 preMul(Float4x4R other, @Mutated Float4x3 dest) {
         if (SimdMath.USE_FMA) return preMul_fma(other, dest);
         return preMul_mulAdd(other, dest);
@@ -934,16 +962,19 @@ public class Float4x3Impl implements Float4x3 {
         float[] sd = this.data;
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x3Impl) dest).data;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, otherData, 12);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, otherData, 8);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, otherData, 0);
-        var _sv3 = FloatVector.fromArray(COL_SPECIES, otherData, 4);
-        var _col0 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, sd[3]), _sv1.fma(FloatVector.broadcast(COL_SPECIES, sd[2]), _sv2.fma(FloatVector.broadcast(COL_SPECIES, sd[0]), _sv3.mul(FloatVector.broadcast(COL_SPECIES, sd[1])))));
-        var _col1 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, sd[7]), _sv1.fma(FloatVector.broadcast(COL_SPECIES, sd[6]), _sv2.fma(FloatVector.broadcast(COL_SPECIES, sd[4]), _sv3.mul(FloatVector.broadcast(COL_SPECIES, sd[5])))));
-        var _col2 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, sd[11]), _sv1.fma(FloatVector.broadcast(COL_SPECIES, sd[10]), _sv2.fma(FloatVector.broadcast(COL_SPECIES, sd[8]), _sv3.mul(FloatVector.broadcast(COL_SPECIES, sd[9])))));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = sd[3];
+        float _r1 = sd[2];
+        float _r2 = sd[0];
+        float _r3 = sd[1];
+        float _r4 = sd[7];
+        float _r5 = sd[6];
+        float _r6 = sd[4];
+        float _r7 = sd[5];
+        float _r8 = sd[11];
+        float _r9 = sd[10];
+        float _r10 = sd[8];
+        float _r11 = sd[9];
+        preMul_s296520c6_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, otherData);
         return dest;
     }
 
@@ -951,16 +982,19 @@ public class Float4x3Impl implements Float4x3 {
         float[] sd = this.data;
         float[] otherData = ((Float4x4Impl) other).data;
         float[] dd = ((Float4x3Impl) dest).data;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, otherData, 12);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, otherData, 8);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, otherData, 0);
-        var _sv3 = FloatVector.fromArray(COL_SPECIES, otherData, 4);
-        var _col0 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, sd[3])).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, sd[2])).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, sd[0])).add(_sv3.mul(FloatVector.broadcast(COL_SPECIES, sd[1])))));
-        var _col1 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, sd[7])).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, sd[6])).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, sd[4])).add(_sv3.mul(FloatVector.broadcast(COL_SPECIES, sd[5])))));
-        var _col2 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, sd[11])).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, sd[10])).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, sd[8])).add(_sv3.mul(FloatVector.broadcast(COL_SPECIES, sd[9])))));
-        _col0.intoArray(dd, 0);
-        _col1.intoArray(dd, 4);
-        _col2.intoArray(dd, 8);
+        float _r0 = sd[3];
+        float _r1 = sd[2];
+        float _r2 = sd[0];
+        float _r3 = sd[1];
+        float _r4 = sd[7];
+        float _r5 = sd[6];
+        float _r6 = sd[4];
+        float _r7 = sd[5];
+        float _r8 = sd[11];
+        float _r9 = sd[10];
+        float _r10 = sd[8];
+        float _r11 = sd[9];
+        preMul_s3bc98a71_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, otherData);
         return dest;
     }
 
