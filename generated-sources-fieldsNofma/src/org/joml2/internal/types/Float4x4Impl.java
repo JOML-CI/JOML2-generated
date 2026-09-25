@@ -4477,6 +4477,12 @@ public class Float4x4Impl implements Float4x4 {
         return d;
     }
 
+    /** Private tail of {@code determinant}; reached only through it. */
+    private float determinant_s0_tail(float _t12, float _t13, float _t14, float _t15, float _t16) {
+        float _t17 = this.m20 * this.m31 - this.m21 * this.m30;
+        return this.m00 * (this.m11 * _t12 - this.m12 * _t13 + this.m13 * _t14) - this.m01 * (this.m10 * _t12 - this.m12 * _t15 + this.m13 * _t16) + this.m02 * (this.m10 * _t13 - this.m11 * _t15 + this.m13 * _t17) - this.m03 * (this.m10 * _t14 - this.m11 * _t16 + this.m12 * _t17);
+    }
+
 
     /**
      * Compute the determinant of this matrix.
@@ -4489,8 +4495,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t14 = this.m21 * this.m32 - this.m22 * this.m31;
         float _t15 = this.m20 * this.m33 - this.m23 * this.m30;
         float _t16 = this.m20 * this.m32 - this.m22 * this.m30;
-        float _t17 = this.m20 * this.m31 - this.m21 * this.m30;
-        return this.m00 * (this.m11 * _t12 - this.m12 * _t13 + this.m13 * _t14) - this.m01 * (this.m10 * _t12 - this.m12 * _t15 + this.m13 * _t16) + this.m02 * (this.m10 * _t13 - this.m11 * _t15 + this.m13 * _t17) - this.m03 * (this.m10 * _t14 - this.m11 * _t16 + this.m12 * _t17);
+        return determinant_s0_tail(_t12, _t13, _t14, _t15, _t16);
     }
 
 
@@ -15190,6 +15195,21 @@ public class Float4x4Impl implements Float4x4 {
         return testAabb_no(min.x(), min.y(), min.z(), max.x(), max.y(), max.z());
     }
 
+    /** Private tail of {@code testAabb_no}; reached only through it. */
+    private float testAabb_no_s4a041090_tail(float _t3, float maxX, float minX, float _t4, float maxY, float minY, float _t5, float maxZ, float minZ, float _t6, float _t7, float _t8, float _t9, float _t10, float _t11, float _t12, float _t13, float _t14, float _t15, float _t16, float _t17) {
+        return _t3 * (_t3 >= 0.0f ? maxX : minX) + (_t4 * (_t4 >= 0.0f ? maxY : minY) + (_t5 * (_t5 >= 0.0f ? maxZ : minZ) + (this.m33 - this.m03))) >= 0.0f ? _t6 * (_t6 >= 0.0f ? maxX : minX) + (_t7 * (_t7 >= 0.0f ? maxY : minY) + (_t8 * (_t8 >= 0.0f ? maxZ : minZ) + (this.m13 + this.m33))) >= 0.0f ? testAabb_no_s4a041090_tail2(_t9, maxX, minX, _t10, maxY, minY, _t11, maxZ, minZ, _t12, _t13, _t14, _t15, _t16, _t17) : 0.0f : 0.0f;
+    }
+
+    /** Private tail of {@code testAabb_no}; reached only through it. */
+    private float testAabb_no_s4a041090_tail2(float _t9, float maxX, float minX, float _t10, float maxY, float minY, float _t11, float maxZ, float minZ, float _t12, float _t13, float _t14, float _t15, float _t16, float _t17) {
+        return _t9 * (_t9 >= 0.0f ? maxX : minX) + (_t10 * (_t10 >= 0.0f ? maxY : minY) + (_t11 * (_t11 >= 0.0f ? maxZ : minZ) + (this.m33 - this.m13))) >= 0.0f ? testAabb_no_s4a041090_tail3(_t12, maxX, minX, _t13, maxY, minY, _t14, maxZ, minZ, _t15, _t16, _t17) : 0.0f;
+    }
+
+    /** Private tail of {@code testAabb_no}; reached only through it. */
+    private float testAabb_no_s4a041090_tail3(float _t12, float maxX, float minX, float _t13, float maxY, float minY, float _t14, float maxZ, float minZ, float _t15, float _t16, float _t17) {
+        return _t12 * (_t12 >= 0.0f ? maxX : minX) + (_t13 * (_t13 >= 0.0f ? maxY : minY) + (_t14 * (_t14 >= 0.0f ? maxZ : minZ) + (this.m23 + this.m33))) >= 0.0f ? _t15 * (_t15 >= 0.0f ? maxX : minX) + (_t16 * (_t16 >= 0.0f ? maxY : minY) + (_t17 * (_t17 >= 0.0f ? maxZ : minZ) + (this.m33 - this.m23))) >= 0.0f ? 1.0f : 0.0f : 0.0f;
+    }
+
 
     /**
      * Private body of {@code testAabb} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
@@ -15214,7 +15234,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t15 = this.m30 - this.m20;
         float _t16 = this.m31 - this.m21;
         float _t17 = this.m32 - this.m22;
-        return _t0 * (_t0 >= 0.0f ? maxX : minX) + (_t1 * (_t1 >= 0.0f ? maxY : minY) + (_t2 * (_t2 >= 0.0f ? maxZ : minZ) + (this.m03 + this.m33))) >= 0.0f ? _t3 * (_t3 >= 0.0f ? maxX : minX) + (_t4 * (_t4 >= 0.0f ? maxY : minY) + (_t5 * (_t5 >= 0.0f ? maxZ : minZ) + (this.m33 - this.m03))) >= 0.0f ? _t6 * (_t6 >= 0.0f ? maxX : minX) + (_t7 * (_t7 >= 0.0f ? maxY : minY) + (_t8 * (_t8 >= 0.0f ? maxZ : minZ) + (this.m13 + this.m33))) >= 0.0f ? _t9 * (_t9 >= 0.0f ? maxX : minX) + (_t10 * (_t10 >= 0.0f ? maxY : minY) + (_t11 * (_t11 >= 0.0f ? maxZ : minZ) + (this.m33 - this.m13))) >= 0.0f ? _t12 * (_t12 >= 0.0f ? maxX : minX) + (_t13 * (_t13 >= 0.0f ? maxY : minY) + (_t14 * (_t14 >= 0.0f ? maxZ : minZ) + (this.m23 + this.m33))) >= 0.0f ? _t15 * (_t15 >= 0.0f ? maxX : minX) + (_t16 * (_t16 >= 0.0f ? maxY : minY) + (_t17 * (_t17 >= 0.0f ? maxZ : minZ) + (this.m33 - this.m23))) >= 0.0f ? 1.0f : 0.0f : 0.0f : 0.0f : 0.0f : 0.0f : 0.0f;
+        return _t0 * (_t0 >= 0.0f ? maxX : minX) + (_t1 * (_t1 >= 0.0f ? maxY : minY) + (_t2 * (_t2 >= 0.0f ? maxZ : minZ) + (this.m03 + this.m33))) >= 0.0f ? testAabb_no_s4a041090_tail(_t3, maxX, minX, _t4, maxY, minY, _t5, maxZ, minZ, _t6, _t7, _t8, _t9, _t10, _t11, _t12, _t13, _t14, _t15, _t16, _t17) : 0.0f;
     }
 
 
@@ -15233,6 +15253,21 @@ public class Float4x4Impl implements Float4x4 {
      */
     private float testAabb_zo(Float3R min, Float3R max) {
         return testAabb_zo(min.x(), min.y(), min.z(), max.x(), max.y(), max.z());
+    }
+
+    /** Private tail of {@code testAabb_zo}; reached only through it. */
+    private float testAabb_zo_s4a041090_tail(float _t3, float maxX, float minX, float _t4, float maxY, float minY, float _t5, float maxZ, float minZ, float _t6, float _t7, float _t8, float _t9, float _t10, float _t11, float _t12, float _t13, float _t14) {
+        return _t3 * (_t3 >= 0.0f ? maxX : minX) + (_t4 * (_t4 >= 0.0f ? maxY : minY) + (_t5 * (_t5 >= 0.0f ? maxZ : minZ) + (this.m33 - this.m03))) >= 0.0f ? _t6 * (_t6 >= 0.0f ? maxX : minX) + (_t7 * (_t7 >= 0.0f ? maxY : minY) + (_t8 * (_t8 >= 0.0f ? maxZ : minZ) + (this.m13 + this.m33))) >= 0.0f ? testAabb_zo_s4a041090_tail2(_t9, maxX, minX, _t10, maxY, minY, _t11, maxZ, minZ, _t12, _t13, _t14) : 0.0f : 0.0f;
+    }
+
+    /** Private tail of {@code testAabb_zo}; reached only through it. */
+    private float testAabb_zo_s4a041090_tail2(float _t9, float maxX, float minX, float _t10, float maxY, float minY, float _t11, float maxZ, float minZ, float _t12, float _t13, float _t14) {
+        return _t9 * (_t9 >= 0.0f ? maxX : minX) + (_t10 * (_t10 >= 0.0f ? maxY : minY) + (_t11 * (_t11 >= 0.0f ? maxZ : minZ) + (this.m33 - this.m13))) >= 0.0f ? testAabb_zo_s4a041090_tail3(maxX, minX, maxY, minY, maxZ, minZ, _t12, _t13, _t14) : 0.0f;
+    }
+
+    /** Private tail of {@code testAabb_zo}; reached only through it. */
+    private float testAabb_zo_s4a041090_tail3(float maxX, float minX, float maxY, float minY, float maxZ, float minZ, float _t12, float _t13, float _t14) {
+        return this.m20 * (this.m20 >= 0.0f ? maxX : minX) + (this.m21 * (this.m21 >= 0.0f ? maxY : minY) + (this.m22 * (this.m22 >= 0.0f ? maxZ : minZ) + this.m23)) >= 0.0f ? _t12 * (_t12 >= 0.0f ? maxX : minX) + (_t13 * (_t13 >= 0.0f ? maxY : minY) + (_t14 * (_t14 >= 0.0f ? maxZ : minZ) + (this.m33 - this.m23))) >= 0.0f ? 1.0f : 0.0f : 0.0f;
     }
 
 
@@ -15256,7 +15291,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t12 = this.m30 - this.m20;
         float _t13 = this.m31 - this.m21;
         float _t14 = this.m32 - this.m22;
-        return _t0 * (_t0 >= 0.0f ? maxX : minX) + (_t1 * (_t1 >= 0.0f ? maxY : minY) + (_t2 * (_t2 >= 0.0f ? maxZ : minZ) + (this.m03 + this.m33))) >= 0.0f ? _t3 * (_t3 >= 0.0f ? maxX : minX) + (_t4 * (_t4 >= 0.0f ? maxY : minY) + (_t5 * (_t5 >= 0.0f ? maxZ : minZ) + (this.m33 - this.m03))) >= 0.0f ? _t6 * (_t6 >= 0.0f ? maxX : minX) + (_t7 * (_t7 >= 0.0f ? maxY : minY) + (_t8 * (_t8 >= 0.0f ? maxZ : minZ) + (this.m13 + this.m33))) >= 0.0f ? _t9 * (_t9 >= 0.0f ? maxX : minX) + (_t10 * (_t10 >= 0.0f ? maxY : minY) + (_t11 * (_t11 >= 0.0f ? maxZ : minZ) + (this.m33 - this.m13))) >= 0.0f ? this.m20 * (this.m20 >= 0.0f ? maxX : minX) + (this.m21 * (this.m21 >= 0.0f ? maxY : minY) + (this.m22 * (this.m22 >= 0.0f ? maxZ : minZ) + this.m23)) >= 0.0f ? _t12 * (_t12 >= 0.0f ? maxX : minX) + (_t13 * (_t13 >= 0.0f ? maxY : minY) + (_t14 * (_t14 >= 0.0f ? maxZ : minZ) + (this.m33 - this.m23))) >= 0.0f ? 1.0f : 0.0f : 0.0f : 0.0f : 0.0f : 0.0f : 0.0f;
+        return _t0 * (_t0 >= 0.0f ? maxX : minX) + (_t1 * (_t1 >= 0.0f ? maxY : minY) + (_t2 * (_t2 >= 0.0f ? maxZ : minZ) + (this.m03 + this.m33))) >= 0.0f ? testAabb_zo_s4a041090_tail(_t3, maxX, minX, _t4, maxY, minY, _t5, maxZ, minZ, _t6, _t7, _t8, _t9, _t10, _t11, _t12, _t13, _t14) : 0.0f;
     }
 
 
@@ -15385,13 +15420,18 @@ public class Float4x4Impl implements Float4x4 {
         return testPoint_no(point.x(), point.y(), point.z());
     }
 
+    /** Private tail of {@code testPoint_no}; reached only through it. */
+    private float testPoint_no_s214eb84f_tail(float pointX, float pointY, float pointZ) {
+        return pointX * (this.m30 - this.m10) + (pointY * (this.m31 - this.m11) + (pointZ * (this.m32 - this.m12) + (this.m33 - this.m13))) >= 0.0f ? pointX * (this.m20 + this.m30) + (pointY * (this.m21 + this.m31) + (pointZ * (this.m22 + this.m32) + (this.m23 + this.m33))) >= 0.0f ? pointX * (this.m30 - this.m20) + (pointY * (this.m31 - this.m21) + (pointZ * (this.m32 - this.m22) + (this.m33 - this.m23))) >= 0.0f ? 1.0f : 0.0f : 0.0f : 0.0f;
+    }
+
 
     /**
      * Private body of {@code testPoint} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
      * through the public {@code testPoint} dispatcher.
      */
     private float testPoint_no(float pointX, float pointY, float pointZ) {
-        return pointX * (this.m00 + this.m30) + (pointY * (this.m01 + this.m31) + (pointZ * (this.m02 + this.m32) + (this.m03 + this.m33))) >= 0.0f ? pointX * (this.m30 - this.m00) + (pointY * (this.m31 - this.m01) + (pointZ * (this.m32 - this.m02) + (this.m33 - this.m03))) >= 0.0f ? pointX * (this.m10 + this.m30) + (pointY * (this.m11 + this.m31) + (pointZ * (this.m12 + this.m32) + (this.m13 + this.m33))) >= 0.0f ? pointX * (this.m30 - this.m10) + (pointY * (this.m31 - this.m11) + (pointZ * (this.m32 - this.m12) + (this.m33 - this.m13))) >= 0.0f ? pointX * (this.m20 + this.m30) + (pointY * (this.m21 + this.m31) + (pointZ * (this.m22 + this.m32) + (this.m23 + this.m33))) >= 0.0f ? pointX * (this.m30 - this.m20) + (pointY * (this.m31 - this.m21) + (pointZ * (this.m32 - this.m22) + (this.m33 - this.m23))) >= 0.0f ? 1.0f : 0.0f : 0.0f : 0.0f : 0.0f : 0.0f : 0.0f;
+        return pointX * (this.m00 + this.m30) + (pointY * (this.m01 + this.m31) + (pointZ * (this.m02 + this.m32) + (this.m03 + this.m33))) >= 0.0f ? pointX * (this.m30 - this.m00) + (pointY * (this.m31 - this.m01) + (pointZ * (this.m32 - this.m02) + (this.m33 - this.m03))) >= 0.0f ? pointX * (this.m10 + this.m30) + (pointY * (this.m11 + this.m31) + (pointZ * (this.m12 + this.m32) + (this.m13 + this.m33))) >= 0.0f ? testPoint_no_s214eb84f_tail(pointX, pointY, pointZ) : 0.0f : 0.0f : 0.0f;
     }
 
 
@@ -15403,13 +15443,18 @@ public class Float4x4Impl implements Float4x4 {
         return testPoint_zo(point.x(), point.y(), point.z());
     }
 
+    /** Private tail of {@code testPoint_zo}; reached only through it. */
+    private float testPoint_zo_s214eb84f_tail(float pointX, float pointY, float pointZ) {
+        return pointX * (this.m30 - this.m10) + (pointY * (this.m31 - this.m11) + (pointZ * (this.m32 - this.m12) + (this.m33 - this.m13))) >= 0.0f ? pointX * this.m20 + (pointY * this.m21 + (pointZ * this.m22 + this.m23)) >= 0.0f ? pointX * (this.m30 - this.m20) + (pointY * (this.m31 - this.m21) + (pointZ * (this.m32 - this.m22) + (this.m33 - this.m23))) >= 0.0f ? 1.0f : 0.0f : 0.0f : 0.0f;
+    }
+
 
     /**
      * Private body of {@code testPoint} for {@code DepthRange.ZERO_TO_ONE}; reached only through
      * the public {@code testPoint} dispatcher.
      */
     private float testPoint_zo(float pointX, float pointY, float pointZ) {
-        return pointX * (this.m00 + this.m30) + (pointY * (this.m01 + this.m31) + (pointZ * (this.m02 + this.m32) + (this.m03 + this.m33))) >= 0.0f ? pointX * (this.m30 - this.m00) + (pointY * (this.m31 - this.m01) + (pointZ * (this.m32 - this.m02) + (this.m33 - this.m03))) >= 0.0f ? pointX * (this.m10 + this.m30) + (pointY * (this.m11 + this.m31) + (pointZ * (this.m12 + this.m32) + (this.m13 + this.m33))) >= 0.0f ? pointX * (this.m30 - this.m10) + (pointY * (this.m31 - this.m11) + (pointZ * (this.m32 - this.m12) + (this.m33 - this.m13))) >= 0.0f ? pointX * this.m20 + (pointY * this.m21 + (pointZ * this.m22 + this.m23)) >= 0.0f ? pointX * (this.m30 - this.m20) + (pointY * (this.m31 - this.m21) + (pointZ * (this.m32 - this.m22) + (this.m33 - this.m23))) >= 0.0f ? 1.0f : 0.0f : 0.0f : 0.0f : 0.0f : 0.0f : 0.0f;
+        return pointX * (this.m00 + this.m30) + (pointY * (this.m01 + this.m31) + (pointZ * (this.m02 + this.m32) + (this.m03 + this.m33))) >= 0.0f ? pointX * (this.m30 - this.m00) + (pointY * (this.m31 - this.m01) + (pointZ * (this.m32 - this.m02) + (this.m33 - this.m03))) >= 0.0f ? pointX * (this.m10 + this.m30) + (pointY * (this.m11 + this.m31) + (pointZ * (this.m12 + this.m32) + (this.m13 + this.m33))) >= 0.0f ? testPoint_zo_s214eb84f_tail(pointX, pointY, pointZ) : 0.0f : 0.0f : 0.0f;
     }
 
 
@@ -15485,6 +15530,32 @@ public class Float4x4Impl implements Float4x4 {
         return testSphere_no(center.x(), center.y(), center.z(), radius);
     }
 
+    /** Private tail of {@code testSphere_no}; reached only through it. */
+    private float testSphere_no_s48e18d6a_tail(float centerX, float _t1, float centerY, float _t2, float centerZ, float _t3, float _t5, float _t6, float _t7, float _t9, float _t10, float _t11, float _t13, float _t14, float _t15, float _t17, float _t18, float _t19, float _t21, float _t22, float _t23, float _t25, float _t0) {
+        float _t76 = centerX * _t1 + (centerY * _t2 + (centerZ * _t3 + (this.m03 + this.m33)));
+        float _t77 = centerX * _t5 + (centerY * _t6 + (centerZ * _t7 + (this.m33 - this.m03)));
+        float _t78 = centerX * _t9 + (centerY * _t10 + (centerZ * _t11 + (this.m13 + this.m33)));
+        float _t79 = centerX * _t13 + (centerY * _t14 + (centerZ * _t15 + (this.m33 - this.m13)));
+        float _t80 = centerX * _t17 + (centerY * _t18 + (centerZ * _t19 + (this.m23 + this.m33)));
+        return testSphere_no_s48e18d6a_tail2(centerX, _t21, centerY, _t22, centerZ, _t23, _t25, _t0, _t80, _t17, _t18, _t19, _t79, _t13, _t14, _t15, _t78, _t9, _t10, _t11, _t77, _t5, _t6, _t7, _t76, _t1, _t2, _t3);
+    }
+
+    /** Private tail of {@code testSphere_no}; reached only through it. */
+    private float testSphere_no_s48e18d6a_tail2(float centerX, float _t21, float centerY, float _t22, float centerZ, float _t23, float _t25, float _t0, float _t80, float _t17, float _t18, float _t19, float _t79, float _t13, float _t14, float _t15, float _t78, float _t9, float _t10, float _t11, float _t77, float _t5, float _t6, float _t7, float _t76, float _t1, float _t2, float _t3) {
+        float _t81 = centerX * _t21 + (centerY * _t22 + (centerZ * _t23 + (this.m33 - this.m23)));
+        float _t98 = _t81 >= 0.0f ? _t25 : _t81 * _t81 <= (_t21 * _t21 + _t22 * _t22 + _t23 * _t23) * _t0 ? _t25 : 0.0f;
+        float _t100 = _t80 >= 0.0f ? _t98 : _t80 * _t80 <= (_t17 * _t17 + _t18 * _t18 + _t19 * _t19) * _t0 ? _t98 : 0.0f;
+        float _t102 = _t79 >= 0.0f ? _t100 : _t79 * _t79 <= (_t13 * _t13 + _t14 * _t14 + _t15 * _t15) * _t0 ? _t100 : 0.0f;
+        return testSphere_no_s48e18d6a_tail3(_t78, _t102, _t9, _t10, _t11, _t0, _t77, _t5, _t6, _t7, _t76, _t1, _t2, _t3);
+    }
+
+    /** Private tail of {@code testSphere_no}; reached only through it. */
+    private float testSphere_no_s48e18d6a_tail3(float _t78, float _t102, float _t9, float _t10, float _t11, float _t0, float _t77, float _t5, float _t6, float _t7, float _t76, float _t1, float _t2, float _t3) {
+        float _t104 = _t78 >= 0.0f ? _t102 : _t78 * _t78 <= (_t9 * _t9 + _t10 * _t10 + _t11 * _t11) * _t0 ? _t102 : 0.0f;
+        float _t106 = _t77 >= 0.0f ? _t104 : _t77 * _t77 <= (_t5 * _t5 + _t6 * _t6 + _t7 * _t7) * _t0 ? _t104 : 0.0f;
+        return _t76 >= 0.0f ? _t106 : _t76 * _t76 <= (_t1 * _t1 + _t2 * _t2 + _t3 * _t3) * _t0 ? _t106 : 0.0f;
+    }
+
 
     /**
      * Private body of {@code testSphere} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
@@ -15511,18 +15582,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t22 = this.m31 - this.m21;
         float _t23 = this.m32 - this.m22;
         float _t25 = _t0 >= 0.0f ? 1.0f : 0.0f;
-        float _t76 = centerX * _t1 + (centerY * _t2 + (centerZ * _t3 + (this.m03 + this.m33)));
-        float _t77 = centerX * _t5 + (centerY * _t6 + (centerZ * _t7 + (this.m33 - this.m03)));
-        float _t78 = centerX * _t9 + (centerY * _t10 + (centerZ * _t11 + (this.m13 + this.m33)));
-        float _t79 = centerX * _t13 + (centerY * _t14 + (centerZ * _t15 + (this.m33 - this.m13)));
-        float _t80 = centerX * _t17 + (centerY * _t18 + (centerZ * _t19 + (this.m23 + this.m33)));
-        float _t81 = centerX * _t21 + (centerY * _t22 + (centerZ * _t23 + (this.m33 - this.m23)));
-        float _t98 = _t81 >= 0.0f ? _t25 : _t81 * _t81 <= (_t21 * _t21 + _t22 * _t22 + _t23 * _t23) * _t0 ? _t25 : 0.0f;
-        float _t100 = _t80 >= 0.0f ? _t98 : _t80 * _t80 <= (_t17 * _t17 + _t18 * _t18 + _t19 * _t19) * _t0 ? _t98 : 0.0f;
-        float _t102 = _t79 >= 0.0f ? _t100 : _t79 * _t79 <= (_t13 * _t13 + _t14 * _t14 + _t15 * _t15) * _t0 ? _t100 : 0.0f;
-        float _t104 = _t78 >= 0.0f ? _t102 : _t78 * _t78 <= (_t9 * _t9 + _t10 * _t10 + _t11 * _t11) * _t0 ? _t102 : 0.0f;
-        float _t106 = _t77 >= 0.0f ? _t104 : _t77 * _t77 <= (_t5 * _t5 + _t6 * _t6 + _t7 * _t7) * _t0 ? _t104 : 0.0f;
-        return _t76 >= 0.0f ? _t106 : _t76 * _t76 <= (_t1 * _t1 + _t2 * _t2 + _t3 * _t3) * _t0 ? _t106 : 0.0f;
+        return testSphere_no_s48e18d6a_tail(centerX, _t1, centerY, _t2, centerZ, _t3, _t5, _t6, _t7, _t9, _t10, _t11, _t13, _t14, _t15, _t17, _t18, _t19, _t21, _t22, _t23, _t25, _t0);
     }
 
 
@@ -15541,6 +15601,31 @@ public class Float4x4Impl implements Float4x4 {
      */
     private float testSphere_zo(Float3R center, float radius) {
         return testSphere_zo(center.x(), center.y(), center.z(), radius);
+    }
+
+    /** Private tail of {@code testSphere_zo}; reached only through it. */
+    private float testSphere_zo_s48e18d6a_tail(float centerX, float _t1, float centerY, float _t2, float centerZ, float _t3, float _t5, float _t6, float _t7, float _t9, float _t10, float _t11, float _t13, float _t14, float _t15, float _t20, float _t21, float _t22, float _t27, float _t0, float _t64) {
+        float _t75 = centerX * _t1 + (centerY * _t2 + (centerZ * _t3 + (this.m03 + this.m33)));
+        float _t76 = centerX * _t5 + (centerY * _t6 + (centerZ * _t7 + (this.m33 - this.m03)));
+        float _t77 = centerX * _t9 + (centerY * _t10 + (centerZ * _t11 + (this.m13 + this.m33)));
+        float _t78 = centerX * _t13 + (centerY * _t14 + (centerZ * _t15 + (this.m33 - this.m13)));
+        float _t79 = centerX * _t20 + (centerY * _t21 + (centerZ * _t22 + (this.m33 - this.m23)));
+        return testSphere_zo_s48e18d6a_tail2(_t79, _t27, _t20, _t21, _t22, _t0, _t64, _t78, _t13, _t14, _t15, _t77, _t9, _t10, _t11, _t76, _t5, _t6, _t7, _t75, _t1, _t2, _t3);
+    }
+
+    /** Private tail of {@code testSphere_zo}; reached only through it. */
+    private float testSphere_zo_s48e18d6a_tail2(float _t79, float _t27, float _t20, float _t21, float _t22, float _t0, float _t64, float _t78, float _t13, float _t14, float _t15, float _t77, float _t9, float _t10, float _t11, float _t76, float _t5, float _t6, float _t7, float _t75, float _t1, float _t2, float _t3) {
+        float _t94 = _t79 >= 0.0f ? _t27 : _t79 * _t79 <= (_t20 * _t20 + _t21 * _t21 + _t22 * _t22) * _t0 ? _t27 : 0.0f;
+        float _t96 = _t64 >= 0.0f ? _t94 : _t64 * _t64 <= (this.m20 * this.m20 + this.m21 * this.m21 + this.m22 * this.m22) * _t0 ? _t94 : 0.0f;
+        float _t98 = _t78 >= 0.0f ? _t96 : _t78 * _t78 <= (_t13 * _t13 + _t14 * _t14 + _t15 * _t15) * _t0 ? _t96 : 0.0f;
+        return testSphere_zo_s48e18d6a_tail3(_t77, _t98, _t9, _t10, _t11, _t0, _t76, _t5, _t6, _t7, _t75, _t1, _t2, _t3);
+    }
+
+    /** Private tail of {@code testSphere_zo}; reached only through it. */
+    private float testSphere_zo_s48e18d6a_tail3(float _t77, float _t98, float _t9, float _t10, float _t11, float _t0, float _t76, float _t5, float _t6, float _t7, float _t75, float _t1, float _t2, float _t3) {
+        float _t100 = _t77 >= 0.0f ? _t98 : _t77 * _t77 <= (_t9 * _t9 + _t10 * _t10 + _t11 * _t11) * _t0 ? _t98 : 0.0f;
+        float _t102 = _t76 >= 0.0f ? _t100 : _t76 * _t76 <= (_t5 * _t5 + _t6 * _t6 + _t7 * _t7) * _t0 ? _t100 : 0.0f;
+        return _t75 >= 0.0f ? _t102 : _t75 * _t75 <= (_t1 * _t1 + _t2 * _t2 + _t3 * _t3) * _t0 ? _t102 : 0.0f;
     }
 
 
@@ -15567,17 +15652,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t22 = this.m32 - this.m22;
         float _t27 = _t0 >= 0.0f ? 1.0f : 0.0f;
         float _t64 = centerX * this.m20 + (centerY * this.m21 + (centerZ * this.m22 + this.m23));
-        float _t75 = centerX * _t1 + (centerY * _t2 + (centerZ * _t3 + (this.m03 + this.m33)));
-        float _t76 = centerX * _t5 + (centerY * _t6 + (centerZ * _t7 + (this.m33 - this.m03)));
-        float _t77 = centerX * _t9 + (centerY * _t10 + (centerZ * _t11 + (this.m13 + this.m33)));
-        float _t78 = centerX * _t13 + (centerY * _t14 + (centerZ * _t15 + (this.m33 - this.m13)));
-        float _t79 = centerX * _t20 + (centerY * _t21 + (centerZ * _t22 + (this.m33 - this.m23)));
-        float _t94 = _t79 >= 0.0f ? _t27 : _t79 * _t79 <= (_t20 * _t20 + _t21 * _t21 + _t22 * _t22) * _t0 ? _t27 : 0.0f;
-        float _t96 = _t64 >= 0.0f ? _t94 : _t64 * _t64 <= (this.m20 * this.m20 + this.m21 * this.m21 + this.m22 * this.m22) * _t0 ? _t94 : 0.0f;
-        float _t98 = _t78 >= 0.0f ? _t96 : _t78 * _t78 <= (_t13 * _t13 + _t14 * _t14 + _t15 * _t15) * _t0 ? _t96 : 0.0f;
-        float _t100 = _t77 >= 0.0f ? _t98 : _t77 * _t77 <= (_t9 * _t9 + _t10 * _t10 + _t11 * _t11) * _t0 ? _t98 : 0.0f;
-        float _t102 = _t76 >= 0.0f ? _t100 : _t76 * _t76 <= (_t5 * _t5 + _t6 * _t6 + _t7 * _t7) * _t0 ? _t100 : 0.0f;
-        return _t75 >= 0.0f ? _t102 : _t75 * _t75 <= (_t1 * _t1 + _t2 * _t2 + _t3 * _t3) * _t0 ? _t102 : 0.0f;
+        return testSphere_zo_s48e18d6a_tail(centerX, _t1, centerY, _t2, centerZ, _t3, _t5, _t6, _t7, _t9, _t10, _t11, _t13, _t14, _t15, _t20, _t21, _t22, _t27, _t0, _t64);
     }
 
 

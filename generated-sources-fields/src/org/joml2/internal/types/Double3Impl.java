@@ -2417,6 +2417,17 @@ public final class Double3Impl implements Double3 {
         return orientedAngle_degenerate(other.x(), other.y(), other.z(), normal.x(), normal.y(), normal.z());
     }
 
+    /** Private tail of {@code orientedAngle_degenerate}; reached only through it. */
+    private double orientedAngle_degenerate_s1c8ffe1d_tail(double _t11, double _t14, double _t13, double _t10, double _t24, double _t23, double _t9, double _t12, double normalZ, double _t0, double normalX, double normalY) {
+        double _t25 = Math.fma(_t11, _t14, -(_t13 * _t10));
+        double _t27 = unitScale(_t24, _t25, _t23);
+        double _t31 = _t23 * _t27;
+        double _t32 = _t24 * _t27;
+        double _t33 = _t25 * _t27;
+        double _t40 = Math.atan2(Math.sqrt(Math.fma(_t31, _t31, Math.fma(_t33, _t33, _t32 * _t32))), Math.fma(_t13, _t14, Math.fma(_t11, _t10, _t9 * _t12)) * _t27);
+        return Math.fma(normalZ * _t0, _t31, Math.fma(normalX * _t0, _t32, normalY * _t0 * _t33)) < 0.0 ? -_t40 : _t40;
+    }
+
 
     /**
      * Out-of-range path of {@code orientedAngle}: its methods leave here when the squared length of
@@ -2435,13 +2446,7 @@ public final class Double3Impl implements Double3 {
         double _t14 = this.z * _t2;
         double _t23 = Math.fma(_t9, _t10, -(_t11 * _t12));
         double _t24 = Math.fma(_t13, _t12, -(_t9 * _t14));
-        double _t25 = Math.fma(_t11, _t14, -(_t13 * _t10));
-        double _t27 = unitScale(_t24, _t25, _t23);
-        double _t31 = _t23 * _t27;
-        double _t32 = _t24 * _t27;
-        double _t33 = _t25 * _t27;
-        double _t40 = Math.atan2(Math.sqrt(Math.fma(_t31, _t31, Math.fma(_t33, _t33, _t32 * _t32))), Math.fma(_t13, _t14, Math.fma(_t11, _t10, _t9 * _t12)) * _t27);
-        return Math.fma(normalZ * _t0, _t31, Math.fma(normalX * _t0, _t32, normalY * _t0 * _t33)) < 0.0 ? -_t40 : _t40;
+        return orientedAngle_degenerate_s1c8ffe1d_tail(_t11, _t14, _t13, _t10, _t24, _t23, _t9, _t12, normalZ, _t0, normalX, normalY);
     }
 
 

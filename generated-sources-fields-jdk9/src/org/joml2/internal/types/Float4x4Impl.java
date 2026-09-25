@@ -15005,6 +15005,21 @@ public class Float4x4Impl implements Float4x4 {
         return testAabb_no(min.x(), min.y(), min.z(), max.x(), max.y(), max.z());
     }
 
+    /** Private tail of {@code testAabb_no}; reached only through it. */
+    private float testAabb_no_s4a041090_tail(float _t3, float maxX, float minX, float _t4, float maxY, float minY, float _t5, float maxZ, float minZ, float _t6, float _t7, float _t8, float _t9, float _t10, float _t11, float _t12, float _t13, float _t14, float _t15, float _t16, float _t17) {
+        return Math.fma(_t3, _t3 >= 0.0f ? maxX : minX, Math.fma(_t4, _t4 >= 0.0f ? maxY : minY, Math.fma(_t5, _t5 >= 0.0f ? maxZ : minZ, this.m33 - this.m03))) >= 0.0f ? Math.fma(_t6, _t6 >= 0.0f ? maxX : minX, Math.fma(_t7, _t7 >= 0.0f ? maxY : minY, Math.fma(_t8, _t8 >= 0.0f ? maxZ : minZ, this.m13 + this.m33))) >= 0.0f ? testAabb_no_s4a041090_tail2(_t9, maxX, minX, _t10, maxY, minY, _t11, maxZ, minZ, _t12, _t13, _t14, _t15, _t16, _t17) : 0.0f : 0.0f;
+    }
+
+    /** Private tail of {@code testAabb_no}; reached only through it. */
+    private float testAabb_no_s4a041090_tail2(float _t9, float maxX, float minX, float _t10, float maxY, float minY, float _t11, float maxZ, float minZ, float _t12, float _t13, float _t14, float _t15, float _t16, float _t17) {
+        return Math.fma(_t9, _t9 >= 0.0f ? maxX : minX, Math.fma(_t10, _t10 >= 0.0f ? maxY : minY, Math.fma(_t11, _t11 >= 0.0f ? maxZ : minZ, this.m33 - this.m13))) >= 0.0f ? testAabb_no_s4a041090_tail3(_t12, maxX, minX, _t13, maxY, minY, _t14, maxZ, minZ, _t15, _t16, _t17) : 0.0f;
+    }
+
+    /** Private tail of {@code testAabb_no}; reached only through it. */
+    private float testAabb_no_s4a041090_tail3(float _t12, float maxX, float minX, float _t13, float maxY, float minY, float _t14, float maxZ, float minZ, float _t15, float _t16, float _t17) {
+        return Math.fma(_t12, _t12 >= 0.0f ? maxX : minX, Math.fma(_t13, _t13 >= 0.0f ? maxY : minY, Math.fma(_t14, _t14 >= 0.0f ? maxZ : minZ, this.m23 + this.m33))) >= 0.0f ? Math.fma(_t15, _t15 >= 0.0f ? maxX : minX, Math.fma(_t16, _t16 >= 0.0f ? maxY : minY, Math.fma(_t17, _t17 >= 0.0f ? maxZ : minZ, this.m33 - this.m23))) >= 0.0f ? 1.0f : 0.0f : 0.0f;
+    }
+
 
     /**
      * Private body of {@code testAabb} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
@@ -15029,7 +15044,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t15 = this.m30 - this.m20;
         float _t16 = this.m31 - this.m21;
         float _t17 = this.m32 - this.m22;
-        return Math.fma(_t0, _t0 >= 0.0f ? maxX : minX, Math.fma(_t1, _t1 >= 0.0f ? maxY : minY, Math.fma(_t2, _t2 >= 0.0f ? maxZ : minZ, this.m03 + this.m33))) >= 0.0f ? Math.fma(_t3, _t3 >= 0.0f ? maxX : minX, Math.fma(_t4, _t4 >= 0.0f ? maxY : minY, Math.fma(_t5, _t5 >= 0.0f ? maxZ : minZ, this.m33 - this.m03))) >= 0.0f ? Math.fma(_t6, _t6 >= 0.0f ? maxX : minX, Math.fma(_t7, _t7 >= 0.0f ? maxY : minY, Math.fma(_t8, _t8 >= 0.0f ? maxZ : minZ, this.m13 + this.m33))) >= 0.0f ? Math.fma(_t9, _t9 >= 0.0f ? maxX : minX, Math.fma(_t10, _t10 >= 0.0f ? maxY : minY, Math.fma(_t11, _t11 >= 0.0f ? maxZ : minZ, this.m33 - this.m13))) >= 0.0f ? Math.fma(_t12, _t12 >= 0.0f ? maxX : minX, Math.fma(_t13, _t13 >= 0.0f ? maxY : minY, Math.fma(_t14, _t14 >= 0.0f ? maxZ : minZ, this.m23 + this.m33))) >= 0.0f ? Math.fma(_t15, _t15 >= 0.0f ? maxX : minX, Math.fma(_t16, _t16 >= 0.0f ? maxY : minY, Math.fma(_t17, _t17 >= 0.0f ? maxZ : minZ, this.m33 - this.m23))) >= 0.0f ? 1.0f : 0.0f : 0.0f : 0.0f : 0.0f : 0.0f : 0.0f;
+        return Math.fma(_t0, _t0 >= 0.0f ? maxX : minX, Math.fma(_t1, _t1 >= 0.0f ? maxY : minY, Math.fma(_t2, _t2 >= 0.0f ? maxZ : minZ, this.m03 + this.m33))) >= 0.0f ? testAabb_no_s4a041090_tail(_t3, maxX, minX, _t4, maxY, minY, _t5, maxZ, minZ, _t6, _t7, _t8, _t9, _t10, _t11, _t12, _t13, _t14, _t15, _t16, _t17) : 0.0f;
     }
 
 
@@ -15048,6 +15063,21 @@ public class Float4x4Impl implements Float4x4 {
      */
     private float testAabb_zo(Float3R min, Float3R max) {
         return testAabb_zo(min.x(), min.y(), min.z(), max.x(), max.y(), max.z());
+    }
+
+    /** Private tail of {@code testAabb_zo}; reached only through it. */
+    private float testAabb_zo_s4a041090_tail(float _t3, float maxX, float minX, float _t4, float maxY, float minY, float _t5, float maxZ, float minZ, float _t6, float _t7, float _t8, float _t9, float _t10, float _t11, float _t12, float _t13, float _t14) {
+        return Math.fma(_t3, _t3 >= 0.0f ? maxX : minX, Math.fma(_t4, _t4 >= 0.0f ? maxY : minY, Math.fma(_t5, _t5 >= 0.0f ? maxZ : minZ, this.m33 - this.m03))) >= 0.0f ? Math.fma(_t6, _t6 >= 0.0f ? maxX : minX, Math.fma(_t7, _t7 >= 0.0f ? maxY : minY, Math.fma(_t8, _t8 >= 0.0f ? maxZ : minZ, this.m13 + this.m33))) >= 0.0f ? testAabb_zo_s4a041090_tail2(_t9, maxX, minX, _t10, maxY, minY, _t11, maxZ, minZ, _t12, _t13, _t14) : 0.0f : 0.0f;
+    }
+
+    /** Private tail of {@code testAabb_zo}; reached only through it. */
+    private float testAabb_zo_s4a041090_tail2(float _t9, float maxX, float minX, float _t10, float maxY, float minY, float _t11, float maxZ, float minZ, float _t12, float _t13, float _t14) {
+        return Math.fma(_t9, _t9 >= 0.0f ? maxX : minX, Math.fma(_t10, _t10 >= 0.0f ? maxY : minY, Math.fma(_t11, _t11 >= 0.0f ? maxZ : minZ, this.m33 - this.m13))) >= 0.0f ? testAabb_zo_s4a041090_tail3(maxX, minX, maxY, minY, maxZ, minZ, _t12, _t13, _t14) : 0.0f;
+    }
+
+    /** Private tail of {@code testAabb_zo}; reached only through it. */
+    private float testAabb_zo_s4a041090_tail3(float maxX, float minX, float maxY, float minY, float maxZ, float minZ, float _t12, float _t13, float _t14) {
+        return Math.fma(this.m20, this.m20 >= 0.0f ? maxX : minX, Math.fma(this.m21, this.m21 >= 0.0f ? maxY : minY, Math.fma(this.m22, this.m22 >= 0.0f ? maxZ : minZ, this.m23))) >= 0.0f ? Math.fma(_t12, _t12 >= 0.0f ? maxX : minX, Math.fma(_t13, _t13 >= 0.0f ? maxY : minY, Math.fma(_t14, _t14 >= 0.0f ? maxZ : minZ, this.m33 - this.m23))) >= 0.0f ? 1.0f : 0.0f : 0.0f;
     }
 
 
@@ -15071,7 +15101,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t12 = this.m30 - this.m20;
         float _t13 = this.m31 - this.m21;
         float _t14 = this.m32 - this.m22;
-        return Math.fma(_t0, _t0 >= 0.0f ? maxX : minX, Math.fma(_t1, _t1 >= 0.0f ? maxY : minY, Math.fma(_t2, _t2 >= 0.0f ? maxZ : minZ, this.m03 + this.m33))) >= 0.0f ? Math.fma(_t3, _t3 >= 0.0f ? maxX : minX, Math.fma(_t4, _t4 >= 0.0f ? maxY : minY, Math.fma(_t5, _t5 >= 0.0f ? maxZ : minZ, this.m33 - this.m03))) >= 0.0f ? Math.fma(_t6, _t6 >= 0.0f ? maxX : minX, Math.fma(_t7, _t7 >= 0.0f ? maxY : minY, Math.fma(_t8, _t8 >= 0.0f ? maxZ : minZ, this.m13 + this.m33))) >= 0.0f ? Math.fma(_t9, _t9 >= 0.0f ? maxX : minX, Math.fma(_t10, _t10 >= 0.0f ? maxY : minY, Math.fma(_t11, _t11 >= 0.0f ? maxZ : minZ, this.m33 - this.m13))) >= 0.0f ? Math.fma(this.m20, this.m20 >= 0.0f ? maxX : minX, Math.fma(this.m21, this.m21 >= 0.0f ? maxY : minY, Math.fma(this.m22, this.m22 >= 0.0f ? maxZ : minZ, this.m23))) >= 0.0f ? Math.fma(_t12, _t12 >= 0.0f ? maxX : minX, Math.fma(_t13, _t13 >= 0.0f ? maxY : minY, Math.fma(_t14, _t14 >= 0.0f ? maxZ : minZ, this.m33 - this.m23))) >= 0.0f ? 1.0f : 0.0f : 0.0f : 0.0f : 0.0f : 0.0f : 0.0f;
+        return Math.fma(_t0, _t0 >= 0.0f ? maxX : minX, Math.fma(_t1, _t1 >= 0.0f ? maxY : minY, Math.fma(_t2, _t2 >= 0.0f ? maxZ : minZ, this.m03 + this.m33))) >= 0.0f ? testAabb_zo_s4a041090_tail(_t3, maxX, minX, _t4, maxY, minY, _t5, maxZ, minZ, _t6, _t7, _t8, _t9, _t10, _t11, _t12, _t13, _t14) : 0.0f;
     }
 
 
@@ -15200,13 +15230,18 @@ public class Float4x4Impl implements Float4x4 {
         return testPoint_no(point.x(), point.y(), point.z());
     }
 
+    /** Private tail of {@code testPoint_no}; reached only through it. */
+    private float testPoint_no_s214eb84f_tail(float pointX, float pointY, float pointZ) {
+        return Math.fma(pointX, this.m30 - this.m10, Math.fma(pointY, this.m31 - this.m11, Math.fma(pointZ, this.m32 - this.m12, this.m33 - this.m13))) >= 0.0f ? Math.fma(pointX, this.m20 + this.m30, Math.fma(pointY, this.m21 + this.m31, Math.fma(pointZ, this.m22 + this.m32, this.m23 + this.m33))) >= 0.0f ? Math.fma(pointX, this.m30 - this.m20, Math.fma(pointY, this.m31 - this.m21, Math.fma(pointZ, this.m32 - this.m22, this.m33 - this.m23))) >= 0.0f ? 1.0f : 0.0f : 0.0f : 0.0f;
+    }
+
 
     /**
      * Private body of {@code testPoint} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
      * through the public {@code testPoint} dispatcher.
      */
     private float testPoint_no(float pointX, float pointY, float pointZ) {
-        return Math.fma(pointX, this.m00 + this.m30, Math.fma(pointY, this.m01 + this.m31, Math.fma(pointZ, this.m02 + this.m32, this.m03 + this.m33))) >= 0.0f ? Math.fma(pointX, this.m30 - this.m00, Math.fma(pointY, this.m31 - this.m01, Math.fma(pointZ, this.m32 - this.m02, this.m33 - this.m03))) >= 0.0f ? Math.fma(pointX, this.m10 + this.m30, Math.fma(pointY, this.m11 + this.m31, Math.fma(pointZ, this.m12 + this.m32, this.m13 + this.m33))) >= 0.0f ? Math.fma(pointX, this.m30 - this.m10, Math.fma(pointY, this.m31 - this.m11, Math.fma(pointZ, this.m32 - this.m12, this.m33 - this.m13))) >= 0.0f ? Math.fma(pointX, this.m20 + this.m30, Math.fma(pointY, this.m21 + this.m31, Math.fma(pointZ, this.m22 + this.m32, this.m23 + this.m33))) >= 0.0f ? Math.fma(pointX, this.m30 - this.m20, Math.fma(pointY, this.m31 - this.m21, Math.fma(pointZ, this.m32 - this.m22, this.m33 - this.m23))) >= 0.0f ? 1.0f : 0.0f : 0.0f : 0.0f : 0.0f : 0.0f : 0.0f;
+        return Math.fma(pointX, this.m00 + this.m30, Math.fma(pointY, this.m01 + this.m31, Math.fma(pointZ, this.m02 + this.m32, this.m03 + this.m33))) >= 0.0f ? Math.fma(pointX, this.m30 - this.m00, Math.fma(pointY, this.m31 - this.m01, Math.fma(pointZ, this.m32 - this.m02, this.m33 - this.m03))) >= 0.0f ? Math.fma(pointX, this.m10 + this.m30, Math.fma(pointY, this.m11 + this.m31, Math.fma(pointZ, this.m12 + this.m32, this.m13 + this.m33))) >= 0.0f ? testPoint_no_s214eb84f_tail(pointX, pointY, pointZ) : 0.0f : 0.0f : 0.0f;
     }
 
 
@@ -15218,13 +15253,18 @@ public class Float4x4Impl implements Float4x4 {
         return testPoint_zo(point.x(), point.y(), point.z());
     }
 
+    /** Private tail of {@code testPoint_zo}; reached only through it. */
+    private float testPoint_zo_s214eb84f_tail(float pointX, float pointY, float pointZ) {
+        return Math.fma(pointX, this.m30 - this.m10, Math.fma(pointY, this.m31 - this.m11, Math.fma(pointZ, this.m32 - this.m12, this.m33 - this.m13))) >= 0.0f ? Math.fma(pointX, this.m20, Math.fma(pointY, this.m21, Math.fma(pointZ, this.m22, this.m23))) >= 0.0f ? Math.fma(pointX, this.m30 - this.m20, Math.fma(pointY, this.m31 - this.m21, Math.fma(pointZ, this.m32 - this.m22, this.m33 - this.m23))) >= 0.0f ? 1.0f : 0.0f : 0.0f : 0.0f;
+    }
+
 
     /**
      * Private body of {@code testPoint} for {@code DepthRange.ZERO_TO_ONE}; reached only through
      * the public {@code testPoint} dispatcher.
      */
     private float testPoint_zo(float pointX, float pointY, float pointZ) {
-        return Math.fma(pointX, this.m00 + this.m30, Math.fma(pointY, this.m01 + this.m31, Math.fma(pointZ, this.m02 + this.m32, this.m03 + this.m33))) >= 0.0f ? Math.fma(pointX, this.m30 - this.m00, Math.fma(pointY, this.m31 - this.m01, Math.fma(pointZ, this.m32 - this.m02, this.m33 - this.m03))) >= 0.0f ? Math.fma(pointX, this.m10 + this.m30, Math.fma(pointY, this.m11 + this.m31, Math.fma(pointZ, this.m12 + this.m32, this.m13 + this.m33))) >= 0.0f ? Math.fma(pointX, this.m30 - this.m10, Math.fma(pointY, this.m31 - this.m11, Math.fma(pointZ, this.m32 - this.m12, this.m33 - this.m13))) >= 0.0f ? Math.fma(pointX, this.m20, Math.fma(pointY, this.m21, Math.fma(pointZ, this.m22, this.m23))) >= 0.0f ? Math.fma(pointX, this.m30 - this.m20, Math.fma(pointY, this.m31 - this.m21, Math.fma(pointZ, this.m32 - this.m22, this.m33 - this.m23))) >= 0.0f ? 1.0f : 0.0f : 0.0f : 0.0f : 0.0f : 0.0f : 0.0f;
+        return Math.fma(pointX, this.m00 + this.m30, Math.fma(pointY, this.m01 + this.m31, Math.fma(pointZ, this.m02 + this.m32, this.m03 + this.m33))) >= 0.0f ? Math.fma(pointX, this.m30 - this.m00, Math.fma(pointY, this.m31 - this.m01, Math.fma(pointZ, this.m32 - this.m02, this.m33 - this.m03))) >= 0.0f ? Math.fma(pointX, this.m10 + this.m30, Math.fma(pointY, this.m11 + this.m31, Math.fma(pointZ, this.m12 + this.m32, this.m13 + this.m33))) >= 0.0f ? testPoint_zo_s214eb84f_tail(pointX, pointY, pointZ) : 0.0f : 0.0f : 0.0f;
     }
 
 
@@ -15300,6 +15340,32 @@ public class Float4x4Impl implements Float4x4 {
         return testSphere_no(center.x(), center.y(), center.z(), radius);
     }
 
+    /** Private tail of {@code testSphere_no}; reached only through it. */
+    private float testSphere_no_s48e18d6a_tail(float centerX, float _t1, float centerY, float _t2, float centerZ, float _t3, float _t5, float _t6, float _t7, float _t9, float _t10, float _t11, float _t13, float _t14, float _t15, float _t17, float _t18, float _t19, float _t21, float _t22, float _t23, float _t25, float _t0) {
+        float _t48 = Math.fma(centerX, _t1, Math.fma(centerY, _t2, Math.fma(centerZ, _t3, this.m03 + this.m33)));
+        float _t49 = Math.fma(centerX, _t5, Math.fma(centerY, _t6, Math.fma(centerZ, _t7, this.m33 - this.m03)));
+        float _t50 = Math.fma(centerX, _t9, Math.fma(centerY, _t10, Math.fma(centerZ, _t11, this.m13 + this.m33)));
+        float _t51 = Math.fma(centerX, _t13, Math.fma(centerY, _t14, Math.fma(centerZ, _t15, this.m33 - this.m13)));
+        float _t52 = Math.fma(centerX, _t17, Math.fma(centerY, _t18, Math.fma(centerZ, _t19, this.m23 + this.m33)));
+        float _t53 = Math.fma(centerX, _t21, Math.fma(centerY, _t22, Math.fma(centerZ, _t23, this.m33 - this.m23)));
+        return testSphere_no_s48e18d6a_tail2(_t53, _t25, _t23, _t21, _t22, _t0, _t52, _t19, _t17, _t18, _t51, _t15, _t13, _t14, _t50, _t11, _t9, _t10, _t49, _t7, _t5, _t6, _t48, _t3, _t1, _t2);
+    }
+
+    /** Private tail of {@code testSphere_no}; reached only through it. */
+    private float testSphere_no_s48e18d6a_tail2(float _t53, float _t25, float _t23, float _t21, float _t22, float _t0, float _t52, float _t19, float _t17, float _t18, float _t51, float _t15, float _t13, float _t14, float _t50, float _t11, float _t9, float _t10, float _t49, float _t7, float _t5, float _t6, float _t48, float _t3, float _t1, float _t2) {
+        float _t70 = _t53 >= 0.0f ? _t25 : _t53 * _t53 <= Math.fma(_t23, _t23, Math.fma(_t21, _t21, _t22 * _t22)) * _t0 ? _t25 : 0.0f;
+        float _t72 = _t52 >= 0.0f ? _t70 : _t52 * _t52 <= Math.fma(_t19, _t19, Math.fma(_t17, _t17, _t18 * _t18)) * _t0 ? _t70 : 0.0f;
+        float _t74 = _t51 >= 0.0f ? _t72 : _t51 * _t51 <= Math.fma(_t15, _t15, Math.fma(_t13, _t13, _t14 * _t14)) * _t0 ? _t72 : 0.0f;
+        float _t76 = _t50 >= 0.0f ? _t74 : _t50 * _t50 <= Math.fma(_t11, _t11, Math.fma(_t9, _t9, _t10 * _t10)) * _t0 ? _t74 : 0.0f;
+        return testSphere_no_s48e18d6a_tail3(_t49, _t76, _t7, _t5, _t6, _t0, _t48, _t3, _t1, _t2);
+    }
+
+    /** Private tail of {@code testSphere_no}; reached only through it. */
+    private float testSphere_no_s48e18d6a_tail3(float _t49, float _t76, float _t7, float _t5, float _t6, float _t0, float _t48, float _t3, float _t1, float _t2) {
+        float _t78 = _t49 >= 0.0f ? _t76 : _t49 * _t49 <= Math.fma(_t7, _t7, Math.fma(_t5, _t5, _t6 * _t6)) * _t0 ? _t76 : 0.0f;
+        return _t48 >= 0.0f ? _t78 : _t48 * _t48 <= Math.fma(_t3, _t3, Math.fma(_t1, _t1, _t2 * _t2)) * _t0 ? _t78 : 0.0f;
+    }
+
 
     /**
      * Private body of {@code testSphere} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
@@ -15326,18 +15392,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t22 = this.m31 - this.m21;
         float _t23 = this.m32 - this.m22;
         float _t25 = _t0 >= 0.0f ? 1.0f : 0.0f;
-        float _t48 = Math.fma(centerX, _t1, Math.fma(centerY, _t2, Math.fma(centerZ, _t3, this.m03 + this.m33)));
-        float _t49 = Math.fma(centerX, _t5, Math.fma(centerY, _t6, Math.fma(centerZ, _t7, this.m33 - this.m03)));
-        float _t50 = Math.fma(centerX, _t9, Math.fma(centerY, _t10, Math.fma(centerZ, _t11, this.m13 + this.m33)));
-        float _t51 = Math.fma(centerX, _t13, Math.fma(centerY, _t14, Math.fma(centerZ, _t15, this.m33 - this.m13)));
-        float _t52 = Math.fma(centerX, _t17, Math.fma(centerY, _t18, Math.fma(centerZ, _t19, this.m23 + this.m33)));
-        float _t53 = Math.fma(centerX, _t21, Math.fma(centerY, _t22, Math.fma(centerZ, _t23, this.m33 - this.m23)));
-        float _t70 = _t53 >= 0.0f ? _t25 : _t53 * _t53 <= Math.fma(_t23, _t23, Math.fma(_t21, _t21, _t22 * _t22)) * _t0 ? _t25 : 0.0f;
-        float _t72 = _t52 >= 0.0f ? _t70 : _t52 * _t52 <= Math.fma(_t19, _t19, Math.fma(_t17, _t17, _t18 * _t18)) * _t0 ? _t70 : 0.0f;
-        float _t74 = _t51 >= 0.0f ? _t72 : _t51 * _t51 <= Math.fma(_t15, _t15, Math.fma(_t13, _t13, _t14 * _t14)) * _t0 ? _t72 : 0.0f;
-        float _t76 = _t50 >= 0.0f ? _t74 : _t50 * _t50 <= Math.fma(_t11, _t11, Math.fma(_t9, _t9, _t10 * _t10)) * _t0 ? _t74 : 0.0f;
-        float _t78 = _t49 >= 0.0f ? _t76 : _t49 * _t49 <= Math.fma(_t7, _t7, Math.fma(_t5, _t5, _t6 * _t6)) * _t0 ? _t76 : 0.0f;
-        return _t48 >= 0.0f ? _t78 : _t48 * _t48 <= Math.fma(_t3, _t3, Math.fma(_t1, _t1, _t2 * _t2)) * _t0 ? _t78 : 0.0f;
+        return testSphere_no_s48e18d6a_tail(centerX, _t1, centerY, _t2, centerZ, _t3, _t5, _t6, _t7, _t9, _t10, _t11, _t13, _t14, _t15, _t17, _t18, _t19, _t21, _t22, _t23, _t25, _t0);
     }
 
 
@@ -15356,6 +15411,31 @@ public class Float4x4Impl implements Float4x4 {
      */
     private float testSphere_zo(Float3R center, float radius) {
         return testSphere_zo(center.x(), center.y(), center.z(), radius);
+    }
+
+    /** Private tail of {@code testSphere_zo}; reached only through it. */
+    private float testSphere_zo_s48e18d6a_tail(float centerX, float _t1, float centerY, float _t2, float centerZ, float _t3, float _t5, float _t6, float _t7, float _t9, float _t10, float _t11, float _t13, float _t14, float _t15, float _t17, float _t18, float _t19, float _t23, float _t0, float _t36) {
+        float _t47 = Math.fma(centerX, _t1, Math.fma(centerY, _t2, Math.fma(centerZ, _t3, this.m03 + this.m33)));
+        float _t48 = Math.fma(centerX, _t5, Math.fma(centerY, _t6, Math.fma(centerZ, _t7, this.m33 - this.m03)));
+        float _t49 = Math.fma(centerX, _t9, Math.fma(centerY, _t10, Math.fma(centerZ, _t11, this.m13 + this.m33)));
+        float _t50 = Math.fma(centerX, _t13, Math.fma(centerY, _t14, Math.fma(centerZ, _t15, this.m33 - this.m13)));
+        float _t51 = Math.fma(centerX, _t17, Math.fma(centerY, _t18, Math.fma(centerZ, _t19, this.m33 - this.m23)));
+        float _t66 = _t51 >= 0.0f ? _t23 : _t51 * _t51 <= Math.fma(_t19, _t19, Math.fma(_t17, _t17, _t18 * _t18)) * _t0 ? _t23 : 0.0f;
+        return testSphere_zo_s48e18d6a_tail2(_t36, _t66, _t0, _t50, _t15, _t13, _t14, _t49, _t11, _t9, _t10, _t48, _t7, _t5, _t6, _t47, _t3, _t1, _t2);
+    }
+
+    /** Private tail of {@code testSphere_zo}; reached only through it. */
+    private float testSphere_zo_s48e18d6a_tail2(float _t36, float _t66, float _t0, float _t50, float _t15, float _t13, float _t14, float _t49, float _t11, float _t9, float _t10, float _t48, float _t7, float _t5, float _t6, float _t47, float _t3, float _t1, float _t2) {
+        float _t68 = _t36 >= 0.0f ? _t66 : _t36 * _t36 <= Math.fma(this.m22, this.m22, Math.fma(this.m20, this.m20, this.m21 * this.m21)) * _t0 ? _t66 : 0.0f;
+        float _t70 = _t50 >= 0.0f ? _t68 : _t50 * _t50 <= Math.fma(_t15, _t15, Math.fma(_t13, _t13, _t14 * _t14)) * _t0 ? _t68 : 0.0f;
+        float _t72 = _t49 >= 0.0f ? _t70 : _t49 * _t49 <= Math.fma(_t11, _t11, Math.fma(_t9, _t9, _t10 * _t10)) * _t0 ? _t70 : 0.0f;
+        return testSphere_zo_s48e18d6a_tail3(_t48, _t72, _t7, _t5, _t6, _t0, _t47, _t3, _t1, _t2);
+    }
+
+    /** Private tail of {@code testSphere_zo}; reached only through it. */
+    private float testSphere_zo_s48e18d6a_tail3(float _t48, float _t72, float _t7, float _t5, float _t6, float _t0, float _t47, float _t3, float _t1, float _t2) {
+        float _t74 = _t48 >= 0.0f ? _t72 : _t48 * _t48 <= Math.fma(_t7, _t7, Math.fma(_t5, _t5, _t6 * _t6)) * _t0 ? _t72 : 0.0f;
+        return _t47 >= 0.0f ? _t74 : _t47 * _t47 <= Math.fma(_t3, _t3, Math.fma(_t1, _t1, _t2 * _t2)) * _t0 ? _t74 : 0.0f;
     }
 
 
@@ -15382,17 +15462,7 @@ public class Float4x4Impl implements Float4x4 {
         float _t19 = this.m32 - this.m22;
         float _t23 = _t0 >= 0.0f ? 1.0f : 0.0f;
         float _t36 = Math.fma(centerX, this.m20, Math.fma(centerY, this.m21, Math.fma(centerZ, this.m22, this.m23)));
-        float _t47 = Math.fma(centerX, _t1, Math.fma(centerY, _t2, Math.fma(centerZ, _t3, this.m03 + this.m33)));
-        float _t48 = Math.fma(centerX, _t5, Math.fma(centerY, _t6, Math.fma(centerZ, _t7, this.m33 - this.m03)));
-        float _t49 = Math.fma(centerX, _t9, Math.fma(centerY, _t10, Math.fma(centerZ, _t11, this.m13 + this.m33)));
-        float _t50 = Math.fma(centerX, _t13, Math.fma(centerY, _t14, Math.fma(centerZ, _t15, this.m33 - this.m13)));
-        float _t51 = Math.fma(centerX, _t17, Math.fma(centerY, _t18, Math.fma(centerZ, _t19, this.m33 - this.m23)));
-        float _t66 = _t51 >= 0.0f ? _t23 : _t51 * _t51 <= Math.fma(_t19, _t19, Math.fma(_t17, _t17, _t18 * _t18)) * _t0 ? _t23 : 0.0f;
-        float _t68 = _t36 >= 0.0f ? _t66 : _t36 * _t36 <= Math.fma(this.m22, this.m22, Math.fma(this.m20, this.m20, this.m21 * this.m21)) * _t0 ? _t66 : 0.0f;
-        float _t70 = _t50 >= 0.0f ? _t68 : _t50 * _t50 <= Math.fma(_t15, _t15, Math.fma(_t13, _t13, _t14 * _t14)) * _t0 ? _t68 : 0.0f;
-        float _t72 = _t49 >= 0.0f ? _t70 : _t49 * _t49 <= Math.fma(_t11, _t11, Math.fma(_t9, _t9, _t10 * _t10)) * _t0 ? _t70 : 0.0f;
-        float _t74 = _t48 >= 0.0f ? _t72 : _t48 * _t48 <= Math.fma(_t7, _t7, Math.fma(_t5, _t5, _t6 * _t6)) * _t0 ? _t72 : 0.0f;
-        return _t47 >= 0.0f ? _t74 : _t47 * _t47 <= Math.fma(_t3, _t3, Math.fma(_t1, _t1, _t2 * _t2)) * _t0 ? _t74 : 0.0f;
+        return testSphere_zo_s48e18d6a_tail(centerX, _t1, centerY, _t2, centerZ, _t3, _t5, _t6, _t7, _t9, _t10, _t11, _t13, _t14, _t15, _t17, _t18, _t19, _t23, _t0, _t36);
     }
 
 

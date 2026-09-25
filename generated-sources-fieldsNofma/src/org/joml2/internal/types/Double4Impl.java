@@ -1409,6 +1409,20 @@ public final class Double4Impl implements Double4 {
         return angleBetween_degenerate(other.x(), other.y(), other.z(), other.w());
     }
 
+    /** Private tail of {@code angleBetween_degenerate}; reached only through it. */
+    private double angleBetween_degenerate_s7cee32ca_tail(double _t22, double _t19, double _t16, double _t23, double _t21, double _t20, double _t36, double _t37, double _t38, double _t39, double _t18, double _t17) {
+        double _t40 = _t22 * _t19 - _t16 * _t23;
+        double _t41 = _t22 * _t21 - _t20 * _t23;
+        double _t51 = unitScale(Math.max(Math.abs(_t36), Math.abs(_t37)), Math.max(Math.abs(_t38), Math.abs(_t39)), Math.max(Math.abs(_t40), Math.abs(_t41)));
+        double _t58 = _t36 * _t51;
+        double _t59 = _t37 * _t51;
+        double _t60 = _t38 * _t51;
+        double _t61 = _t39 * _t51;
+        double _t62 = _t40 * _t51;
+        double _t63 = _t41 * _t51;
+        return Math.atan2(Math.sqrt(_t58 * _t58 + _t59 * _t59 + _t60 * _t60 + _t61 * _t61 + _t62 * _t62 + _t63 * _t63), (_t18 * _t17 + _t16 * _t19 + _t20 * _t21 + _t22 * _t23) * _t51);
+    }
+
 
     /**
      * Out-of-range path of {@code angleBetween}: its methods leave here when the squared length of
@@ -1430,16 +1444,7 @@ public final class Double4Impl implements Double4 {
         double _t37 = _t20 * _t17 - _t18 * _t21;
         double _t38 = _t22 * _t17 - _t18 * _t23;
         double _t39 = _t20 * _t19 - _t16 * _t21;
-        double _t40 = _t22 * _t19 - _t16 * _t23;
-        double _t41 = _t22 * _t21 - _t20 * _t23;
-        double _t51 = unitScale(Math.max(Math.abs(_t36), Math.abs(_t37)), Math.max(Math.abs(_t38), Math.abs(_t39)), Math.max(Math.abs(_t40), Math.abs(_t41)));
-        double _t58 = _t36 * _t51;
-        double _t59 = _t37 * _t51;
-        double _t60 = _t38 * _t51;
-        double _t61 = _t39 * _t51;
-        double _t62 = _t40 * _t51;
-        double _t63 = _t41 * _t51;
-        return Math.atan2(Math.sqrt(_t58 * _t58 + _t59 * _t59 + _t60 * _t60 + _t61 * _t61 + _t62 * _t62 + _t63 * _t63), (_t18 * _t17 + _t16 * _t19 + _t20 * _t21 + _t22 * _t23) * _t51);
+        return angleBetween_degenerate_s7cee32ca_tail(_t22, _t19, _t16, _t23, _t21, _t20, _t36, _t37, _t38, _t39, _t18, _t17);
     }
 
 

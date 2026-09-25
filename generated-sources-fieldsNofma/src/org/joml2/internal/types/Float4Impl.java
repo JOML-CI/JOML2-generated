@@ -2491,6 +2491,20 @@ public final class Float4Impl implements Float4 {
         return angleBetween_degenerate(other.x(), other.y(), other.z(), other.w());
     }
 
+    /** Private tail of {@code angleBetween_degenerate}; reached only through it. */
+    private float angleBetween_degenerate_s543b568e_tail(float _t22, float _t19, float _t16, float _t23, float _t21, float _t20, float _t36, float _t37, float _t38, float _t39, float _t18, float _t17) {
+        float _t40 = _t22 * _t19 - _t16 * _t23;
+        float _t41 = _t22 * _t21 - _t20 * _t23;
+        float _t51 = unitScale(Math.max(Math.abs(_t36), Math.abs(_t37)), Math.max(Math.abs(_t38), Math.abs(_t39)), Math.max(Math.abs(_t40), Math.abs(_t41)));
+        float _t58 = _t36 * _t51;
+        float _t59 = _t37 * _t51;
+        float _t60 = _t38 * _t51;
+        float _t61 = _t39 * _t51;
+        float _t62 = _t40 * _t51;
+        float _t63 = _t41 * _t51;
+        return (float) Math.atan2((float) Math.sqrt(_t58 * _t58 + _t59 * _t59 + _t60 * _t60 + _t61 * _t61 + _t62 * _t62 + _t63 * _t63), (_t18 * _t17 + _t16 * _t19 + _t20 * _t21 + _t22 * _t23) * _t51);
+    }
+
 
     /**
      * Out-of-range path of {@code angleBetween}: its methods leave here when the squared length of
@@ -2512,16 +2526,7 @@ public final class Float4Impl implements Float4 {
         float _t37 = _t20 * _t17 - _t18 * _t21;
         float _t38 = _t22 * _t17 - _t18 * _t23;
         float _t39 = _t20 * _t19 - _t16 * _t21;
-        float _t40 = _t22 * _t19 - _t16 * _t23;
-        float _t41 = _t22 * _t21 - _t20 * _t23;
-        float _t51 = unitScale(Math.max(Math.abs(_t36), Math.abs(_t37)), Math.max(Math.abs(_t38), Math.abs(_t39)), Math.max(Math.abs(_t40), Math.abs(_t41)));
-        float _t58 = _t36 * _t51;
-        float _t59 = _t37 * _t51;
-        float _t60 = _t38 * _t51;
-        float _t61 = _t39 * _t51;
-        float _t62 = _t40 * _t51;
-        float _t63 = _t41 * _t51;
-        return (float) Math.atan2((float) Math.sqrt(_t58 * _t58 + _t59 * _t59 + _t60 * _t60 + _t61 * _t61 + _t62 * _t62 + _t63 * _t63), (_t18 * _t17 + _t16 * _t19 + _t20 * _t21 + _t22 * _t23) * _t51);
+        return angleBetween_degenerate_s543b568e_tail(_t22, _t19, _t16, _t23, _t21, _t20, _t36, _t37, _t38, _t39, _t18, _t17);
     }
 
 

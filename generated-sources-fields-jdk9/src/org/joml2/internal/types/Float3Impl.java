@@ -4424,6 +4424,17 @@ public final class Float3Impl implements Float3 {
         return orientedAngle_degenerate(other.x(), other.y(), other.z(), normal.x(), normal.y(), normal.z());
     }
 
+    /** Private tail of {@code orientedAngle_degenerate}; reached only through it. */
+    private float orientedAngle_degenerate_s2503f92b_tail(float _t11, float _t14, float _t13, float _t10, float _t24, float _t23, float _t9, float _t12, float normalZ, float _t0, float normalX, float normalY) {
+        float _t25 = Math.fma(_t11, _t14, -(_t13 * _t10));
+        float _t27 = unitScale(_t24, _t25, _t23);
+        float _t31 = _t23 * _t27;
+        float _t32 = _t24 * _t27;
+        float _t33 = _t25 * _t27;
+        float _t40 = (float) Math.atan2((float) Math.sqrt(Math.fma(_t31, _t31, Math.fma(_t33, _t33, _t32 * _t32))), Math.fma(_t13, _t14, Math.fma(_t11, _t10, _t9 * _t12)) * _t27);
+        return Math.fma(normalZ * _t0, _t31, Math.fma(normalX * _t0, _t32, normalY * _t0 * _t33)) < 0.0f ? -_t40 : _t40;
+    }
+
 
     /**
      * Out-of-range path of {@code orientedAngle}: its methods leave here when the squared length of
@@ -4442,13 +4453,7 @@ public final class Float3Impl implements Float3 {
         float _t14 = this.z * _t2;
         float _t23 = Math.fma(_t9, _t10, -(_t11 * _t12));
         float _t24 = Math.fma(_t13, _t12, -(_t9 * _t14));
-        float _t25 = Math.fma(_t11, _t14, -(_t13 * _t10));
-        float _t27 = unitScale(_t24, _t25, _t23);
-        float _t31 = _t23 * _t27;
-        float _t32 = _t24 * _t27;
-        float _t33 = _t25 * _t27;
-        float _t40 = (float) Math.atan2((float) Math.sqrt(Math.fma(_t31, _t31, Math.fma(_t33, _t33, _t32 * _t32))), Math.fma(_t13, _t14, Math.fma(_t11, _t10, _t9 * _t12)) * _t27);
-        return Math.fma(normalZ * _t0, _t31, Math.fma(normalX * _t0, _t32, normalY * _t0 * _t33)) < 0.0f ? -_t40 : _t40;
+        return orientedAngle_degenerate_s2503f92b_tail(_t11, _t14, _t13, _t10, _t24, _t23, _t9, _t12, normalZ, _t0, normalX, normalY);
     }
 
 

@@ -4436,6 +4436,16 @@ public final class Float3Impl implements Float3 {
         return orientedAngle_degenerate(other.x(), other.y(), other.z(), normal.x(), normal.y(), normal.z());
     }
 
+    /** Private tail of {@code orientedAngle_degenerate}; reached only through it. */
+    private float orientedAngle_degenerate_s2503f92b_tail(float _t24, float _t25, float _t26, float _t13, float _t14, float _t11, float _t10, float _t9, float _t12, float normalX, float _t0, float normalY, float normalZ) {
+        float _t29 = unitScale(_t24, _t25, _t26);
+        float _t33 = _t24 * _t29;
+        float _t34 = _t25 * _t29;
+        float _t35 = _t26 * _t29;
+        float _t44 = (float) Math.atan2((float) Math.sqrt(_t34 * _t34 + _t33 * _t33 + _t35 * _t35), (_t13 * _t14 + _t11 * _t10 + _t9 * _t12) * _t29);
+        return normalX * _t0 * _t33 + normalY * _t0 * _t34 + normalZ * _t0 * _t35 < 0.0f ? -_t44 : _t44;
+    }
+
 
     /**
      * Out-of-range path of {@code orientedAngle}: its methods leave here when the squared length of
@@ -4455,12 +4465,7 @@ public final class Float3Impl implements Float3 {
         float _t24 = _t9 * _t10 - _t11 * _t12;
         float _t25 = _t13 * _t12 - _t9 * _t14;
         float _t26 = _t11 * _t14 - _t13 * _t10;
-        float _t29 = unitScale(_t24, _t25, _t26);
-        float _t33 = _t24 * _t29;
-        float _t34 = _t25 * _t29;
-        float _t35 = _t26 * _t29;
-        float _t44 = (float) Math.atan2((float) Math.sqrt(_t34 * _t34 + _t33 * _t33 + _t35 * _t35), (_t13 * _t14 + _t11 * _t10 + _t9 * _t12) * _t29);
-        return normalX * _t0 * _t33 + normalY * _t0 * _t34 + normalZ * _t0 * _t35 < 0.0f ? -_t44 : _t44;
+        return orientedAngle_degenerate_s2503f92b_tail(_t24, _t25, _t26, _t13, _t14, _t11, _t10, _t9, _t12, normalX, _t0, normalY, normalZ);
     }
 
 
