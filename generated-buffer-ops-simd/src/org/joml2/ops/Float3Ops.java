@@ -8361,7 +8361,7 @@ public final class Float3Ops {
      * overload of the same name, which processes exactly one Float3.
      */
     public static float[] add(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float3OpsSimd.add(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (SimdSupport.VECTOR_API && count < 171) return Float3OpsSimd.add(dest, destOffset, a, aOffset, b, bOffset, count);
         if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
@@ -8423,7 +8423,7 @@ public final class Float3Ops {
      * overload of the same name, which processes exactly one Float3.
      */
     public static float[] sub(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float3OpsSimd.sub(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (SimdSupport.VECTOR_API && count < 171) return Float3OpsSimd.sub(dest, destOffset, a, aOffset, b, bOffset, count);
         if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
@@ -8485,7 +8485,7 @@ public final class Float3Ops {
      * overload of the same name, which processes exactly one Float3.
      */
     public static float[] mul(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float3OpsSimd.mul(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (SimdSupport.VECTOR_API && count < 171) return Float3OpsSimd.mul(dest, destOffset, a, aOffset, b, bOffset, count);
         if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
@@ -8547,7 +8547,7 @@ public final class Float3Ops {
      * overload of the same name, which processes exactly one Float3.
      */
     public static float[] div(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float3OpsSimd.div(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (SimdSupport.VECTOR_API && count < 171) return Float3OpsSimd.div(dest, destOffset, a, aOffset, b, bOffset, count);
         if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
@@ -8609,7 +8609,7 @@ public final class Float3Ops {
      * overload of the same name, which processes exactly one Float3.
      */
     public static float[] min(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float3OpsSimd.min(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (SimdSupport.VECTOR_API && count < 171) return Float3OpsSimd.min(dest, destOffset, a, aOffset, b, bOffset, count);
         if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
@@ -8671,7 +8671,7 @@ public final class Float3Ops {
      * overload of the same name, which processes exactly one Float3.
      */
     public static float[] max(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float3OpsSimd.max(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (SimdSupport.VECTOR_API && count < 171) return Float3OpsSimd.max(dest, destOffset, a, aOffset, b, bOffset, count);
         if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
@@ -8733,7 +8733,7 @@ public final class Float3Ops {
      * overload of the same name, which processes exactly one Float3.
      */
     public static float[] negate(float[] dest, int destOffset, float[] src, int srcOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float3OpsSimd.negate(dest, destOffset, src, srcOffset, count);
+        if (SimdSupport.VECTOR_API && count < 171) return Float3OpsSimd.negate(dest, destOffset, src, srcOffset, count);
         if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
@@ -8795,7 +8795,7 @@ public final class Float3Ops {
      * overload of the same name, which processes exactly one Float3.
      */
     public static float[] abs(float[] dest, int destOffset, float[] src, int srcOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float3OpsSimd.abs(dest, destOffset, src, srcOffset, count);
+        if (SimdSupport.VECTOR_API && count < 171) return Float3OpsSimd.abs(dest, destOffset, src, srcOffset, count);
         if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
@@ -8857,7 +8857,7 @@ public final class Float3Ops {
      * overload of the same name, which processes exactly one Float3.
      */
     public static float[] lerp(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, float t, int count) {
-        if (SimdSupport.VECTOR_API) return Float3OpsSimd.lerp(dest, destOffset, a, aOffset, b, bOffset, t, count);
+        if (SimdSupport.VECTOR_API && count < 171) return Float3OpsSimd.lerp(dest, destOffset, a, aOffset, b, bOffset, t, count);
         if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
@@ -8919,7 +8919,7 @@ public final class Float3Ops {
      * overload of the same name, which processes exactly one Float3.
      */
     public static float[] scale(float[] dest, int destOffset, float[] src, int srcOffset, float s, int count) {
-        if (SimdSupport.VECTOR_API) return Float3OpsSimd.scale(dest, destOffset, src, srcOffset, s, count);
+        if (SimdSupport.VECTOR_API && count < 171) return Float3OpsSimd.scale(dest, destOffset, src, srcOffset, s, count);
         if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
@@ -8981,7 +8981,7 @@ public final class Float3Ops {
      * overload of the same name, which processes exactly one Float3.
      */
     public static float[] fma(float[] dest, int destOffset, float[] self, int selfOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float3OpsSimd.fma(dest, destOffset, self, selfOffset, a, aOffset, b, bOffset, count);
+        if (SimdSupport.VECTOR_API && count < 171) return Float3OpsSimd.fma(dest, destOffset, self, selfOffset, a, aOffset, b, bOffset, count);
         if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
